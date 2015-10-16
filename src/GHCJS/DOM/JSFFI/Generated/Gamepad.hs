@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.Gamepad
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -57,16 +57,16 @@ getMapping ::
 getMapping self = liftIO (fromJSString <$> (js_getMapping (self)))
  
 foreign import javascript unsafe "$1[\"axes\"]" js_getAxes ::
-        Gamepad -> IO JSRef
+        Gamepad -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.axes Mozilla Gamepad.axes documentation> 
 getAxes :: (MonadIO m) => Gamepad -> m [Double]
-getAxes self = liftIO ((js_getAxes (self)) >>= fromJSRefUnchecked)
+getAxes self = liftIO ((js_getAxes (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"buttons\"]" js_getButtons ::
-        Gamepad -> IO JSRef
+        Gamepad -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.buttons Mozilla Gamepad.buttons documentation> 
 getButtons :: (MonadIO m) => Gamepad -> m [Maybe GamepadButton]
 getButtons self
-  = liftIO ((js_getButtons (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getButtons (self)) >>= fromJSValUnchecked)

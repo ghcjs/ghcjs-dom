@@ -8,11 +8,11 @@ module GHCJS.DOM.JSFFI.Generated.IDBCursor
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -22,12 +22,12 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"update\"]($2)" js_update ::
-        IDBCursor -> JSRef -> IO (Nullable IDBRequest)
+        IDBCursor -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.update Mozilla IDBCursor.update documentation> 
 update ::
        (MonadIO m, IsIDBCursor self) =>
-         self -> JSRef -> m (Maybe IDBRequest)
+         self -> JSVal -> m (Maybe IDBRequest)
 update self value
   = liftIO (nullableToMaybe <$> (js_update (toIDBCursor self) value))
  
@@ -39,10 +39,10 @@ advance :: (MonadIO m, IsIDBCursor self) => self -> Word -> m ()
 advance self count = liftIO (js_advance (toIDBCursor self) count)
  
 foreign import javascript unsafe "$1[\"continue\"]($2)" js_continue
-        :: IDBCursor -> JSRef -> IO ()
+        :: IDBCursor -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.continue Mozilla IDBCursor.continue documentation> 
-continue :: (MonadIO m, IsIDBCursor self) => self -> JSRef -> m ()
+continue :: (MonadIO m, IsIDBCursor self) => self -> JSVal -> m ()
 continue self key = liftIO (js_continue (toIDBCursor self) key)
  
 foreign import javascript unsafe "$1[\"delete\"]()" js_delete ::
@@ -74,15 +74,15 @@ getDirection self
   = liftIO (fromJSString <$> (js_getDirection (toIDBCursor self)))
  
 foreign import javascript unsafe "$1[\"key\"]" js_getKey ::
-        IDBCursor -> IO JSRef
+        IDBCursor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.key Mozilla IDBCursor.key documentation> 
-getKey :: (MonadIO m, IsIDBCursor self) => self -> m JSRef
+getKey :: (MonadIO m, IsIDBCursor self) => self -> m JSVal
 getKey self = liftIO (js_getKey (toIDBCursor self))
  
 foreign import javascript unsafe "$1[\"primaryKey\"]"
-        js_getPrimaryKey :: IDBCursor -> IO JSRef
+        js_getPrimaryKey :: IDBCursor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.primaryKey Mozilla IDBCursor.primaryKey documentation> 
-getPrimaryKey :: (MonadIO m, IsIDBCursor self) => self -> m JSRef
+getPrimaryKey :: (MonadIO m, IsIDBCursor self) => self -> m JSVal
 getPrimaryKey self = liftIO (js_getPrimaryKey (toIDBCursor self))

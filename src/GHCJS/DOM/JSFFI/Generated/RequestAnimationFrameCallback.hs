@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.RequestAnimationFrameCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -28,7 +28,7 @@ newRequestAnimationFrameCallback callback
       (RequestAnimationFrameCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ highResTime ->
-              fromJSRefUnchecked highResTime >>=
+              fromJSValUnchecked highResTime >>=
                 \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
@@ -40,7 +40,7 @@ newRequestAnimationFrameCallbackSync callback
       (RequestAnimationFrameCallback <$>
          syncCallback1 ContinueAsync
            (\ highResTime ->
-              fromJSRefUnchecked highResTime >>=
+              fromJSValUnchecked highResTime >>=
                 \ highResTime' -> callback highResTime'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RequestAnimationFrameCallback Mozilla RequestAnimationFrameCallback documentation> 
@@ -52,5 +52,5 @@ newRequestAnimationFrameCallbackAsync callback
       (RequestAnimationFrameCallback <$>
          asyncCallback1
            (\ highResTime ->
-              fromJSRefUnchecked highResTime >>=
+              fromJSValUnchecked highResTime >>=
                 \ highResTime' -> callback highResTime'))

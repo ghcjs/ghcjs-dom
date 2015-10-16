@@ -14,7 +14,7 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 
-import GHCJS.Prim (JSRef(..))
+import GHCJS.Prim (JSVal(..))
 import GHCJS.Types (JSString)
 import GHCJS.DOM.Types
 
@@ -29,8 +29,8 @@ executeSql' :: (MonadIO m, ToJSString sqlStatement, IsObjectArray arguments) =>
               SQLTransaction -> sqlStatement -> Maybe arguments -> m (Either SQLError SQLResultSet)
 executeSql' self sqlStatement arguments = liftIO $ IO $ \s# ->
       case js_executeSql self (toJSString sqlStatement) (maybeToNullable . fmap toObjectArray $ arguments) s# of
-          (# s2#, False, error #) -> (# s2#, Left  (SQLError     (JSRef error)) #)
-          (# s2#, True,  rs    #) -> (# s2#, Right (SQLResultSet (JSRef rs   )) #)
+          (# s2#, False, error #) -> (# s2#, Left  (SQLError     (JSVal error)) #)
+          (# s2#, True,  rs    #) -> (# s2#, Right (SQLResultSet (JSVal rs   )) #)
 
 executeSql :: (MonadIO m, ToJSString sqlStatement, IsObjectArray arguments) =>
               SQLTransaction -> sqlStatement -> Maybe arguments -> m SQLResultSet

@@ -20,11 +20,11 @@ module GHCJS.DOM.JSFFI.Generated.InspectorFrontendHost
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -217,12 +217,12 @@ port self = liftIO (fromJSString <$> (js_port (self)))
  
 foreign import javascript unsafe "$1[\"showContextMenu\"]($2, $3)"
         js_showContextMenu ::
-        InspectorFrontendHost -> Nullable MouseEvent -> JSRef -> IO ()
+        InspectorFrontendHost -> Nullable MouseEvent -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.showContextMenu Mozilla InspectorFrontendHost.showContextMenu documentation> 
 showContextMenu ::
                 (MonadIO m, IsMouseEvent event) =>
-                  InspectorFrontendHost -> Maybe event -> JSRef -> m ()
+                  InspectorFrontendHost -> Maybe event -> JSVal -> m ()
 showContextMenu self event items
   = liftIO
       (js_showContextMenu (self)

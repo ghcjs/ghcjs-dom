@@ -10,11 +10,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaSource
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -54,13 +54,13 @@ removeSourceBuffer self buffer
   = liftIO (js_removeSourceBuffer (self) (maybeToNullable buffer))
  
 foreign import javascript unsafe "$1[\"endOfStream\"]($2)"
-        js_endOfStream :: MediaSource -> JSRef -> IO ()
+        js_endOfStream :: MediaSource -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.endOfStream Mozilla MediaSource.endOfStream documentation> 
 endOfStream ::
             (MonadIO m) => MediaSource -> EndOfStreamError -> m ()
 endOfStream self error
-  = liftIO (js_endOfStream (self) (pToJSRef error))
+  = liftIO (js_endOfStream (self) (pToJSVal error))
  
 foreign import javascript unsafe
         "($1[\"isTypeSupported\"]($2) ? 1 : 0)" js_isTypeSupported ::

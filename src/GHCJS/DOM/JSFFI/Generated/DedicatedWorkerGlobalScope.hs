@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.DedicatedWorkerGlobalScope
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -20,12 +20,12 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
         js_postMessage ::
-        DedicatedWorkerGlobalScope -> JSRef -> Nullable Array -> IO ()
+        DedicatedWorkerGlobalScope -> JSVal -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope.postMessage Mozilla DedicatedWorkerGlobalScope.postMessage documentation> 
 postMessage ::
             (MonadIO m, IsArray messagePorts) =>
-              DedicatedWorkerGlobalScope -> JSRef -> Maybe messagePorts -> m ()
+              DedicatedWorkerGlobalScope -> JSVal -> Maybe messagePorts -> m ()
 postMessage self message messagePorts
   = liftIO
       (js_postMessage (self) message

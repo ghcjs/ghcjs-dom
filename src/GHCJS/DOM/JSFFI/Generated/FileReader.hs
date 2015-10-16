@@ -10,11 +10,11 @@ module GHCJS.DOM.JSFFI.Generated.FileReader
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -90,10 +90,10 @@ getReadyState :: (MonadIO m) => FileReader -> m Word
 getReadyState self = liftIO (js_getReadyState (self))
  
 foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
-        FileReader -> IO JSRef
+        FileReader -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.result Mozilla FileReader.result documentation> 
-getResult :: (MonadIO m) => FileReader -> m JSRef
+getResult :: (MonadIO m) => FileReader -> m JSVal
 getResult self = liftIO (js_getResult (self))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::

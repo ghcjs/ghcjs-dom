@@ -12,7 +12,7 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 
 import Control.Monad.IO.Class (MonadIO(..))
 
-import GHCJS.Prim (JSRef(..))
+import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.PositionError (throwPositionException)
@@ -26,8 +26,8 @@ foreign import javascript interruptible
 getCurrentPosition' :: MonadIO m => Geolocation -> Maybe PositionOptions -> m (Either PositionError Geoposition)
 getCurrentPosition' self options = liftIO . IO $ \s# ->
       case js_getCurrentPosition self (maybeToNullable options) s# of
-          (# s2#, False, error #) -> (# s2#, Left  (PositionError (JSRef error)) #)
-          (# s2#, True,  pos   #) -> (# s2#, Right (Geoposition   (JSRef pos  )) #)
+          (# s2#, False, error #) -> (# s2#, Left  (PositionError (JSVal error)) #)
+          (# s2#, True,  pos   #) -> (# s2#, Right (Geoposition   (JSVal pos  )) #)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.getCurrentPosition Mozilla Geolocation.getCurrentPosition documentation>
 getCurrentPosition :: MonadIO m => Geolocation -> Maybe PositionOptions -> m Geoposition

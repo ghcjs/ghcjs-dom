@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.StorageQuotaCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -26,7 +26,7 @@ newStorageQuotaCallback callback
       (StorageQuotaCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ grantedQuotaInBytes ->
-              fromJSRefUnchecked grantedQuotaInBytes >>=
+              fromJSValUnchecked grantedQuotaInBytes >>=
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
@@ -37,7 +37,7 @@ newStorageQuotaCallbackSync callback
       (StorageQuotaCallback <$>
          syncCallback1 ContinueAsync
            (\ grantedQuotaInBytes ->
-              fromJSRefUnchecked grantedQuotaInBytes >>=
+              fromJSValUnchecked grantedQuotaInBytes >>=
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuotaCallback Mozilla StorageQuotaCallback documentation> 
@@ -48,5 +48,5 @@ newStorageQuotaCallbackAsync callback
       (StorageQuotaCallback <$>
          asyncCallback1
            (\ grantedQuotaInBytes ->
-              fromJSRefUnchecked grantedQuotaInBytes >>=
+              fromJSValUnchecked grantedQuotaInBytes >>=
                 \ grantedQuotaInBytes' -> callback grantedQuotaInBytes'))

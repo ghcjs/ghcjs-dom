@@ -857,7 +857,7 @@ import qualified Data.Text as T (Text)
 import qualified Data.Text.Lazy as LT (Text)
 import Data.JSString (pack, unpack)
 import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
-import GHCJS.Types (JSRef(..), nullRef, isNull, isUndefined, JSString(..))
+import GHCJS.Types (JSVal(..), nullRef, isNull, isUndefined, JSString(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import GHCJS.Nullable (Nullable(..), nullableToMaybe, maybeToNullable)
@@ -875,22 +875,22 @@ import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-maybeJSNullOrUndefined :: JSRef -> Maybe JSRef
+maybeJSNullOrUndefined :: JSVal -> Maybe JSVal
 maybeJSNullOrUndefined r | isNull r || isUndefined r = Nothing
 maybeJSNullOrUndefined r = Just r
 
 propagateGError = id
 
-newtype GType = GType JSRef
+newtype GType = GType JSVal
 
 foreign import javascript unsafe
-  "$1===$2" js_eq :: JSRef -> JSRef -> Bool
+  "$1===$2" js_eq :: JSVal -> JSVal -> Bool
 
 #ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
-    typeInstanceIsA' :: JSRef -> JSRef -> Bool
+    typeInstanceIsA' :: JSVal -> JSVal -> Bool
 #else
-typeInstanceIsA' :: JSRef -> JSRef -> Bool
+typeInstanceIsA' :: JSVal -> JSVal -> Bool
 typeInstanceIsA' = error "typeInstanceIsA': only available in JavaScript"
 #endif
 
@@ -913,7 +913,7 @@ castTo gtype objTypeName obj =
 isA :: IsGObject o => o -> GType -> Bool
 isA obj = typeInstanceIsA (unGObject $ toGObject obj)
 
-newtype GObject = GObject { unGObject :: JSRef }
+newtype GObject = GObject { unGObject :: JSVal }
 
 class (ToJSVal o, FromJSVal o) => IsGObject o where
   -- | Safe upcast.
@@ -930,12 +930,12 @@ instance PFromJSVal GObject where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal GObject where
-  toJSRef = return . unGObject
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGObject
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal GObject where
-  fromJSRef = return . fmap GObject . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap GObject . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 --instance IsGObject o => PToJSVal o where
 --  pToJSVal = unGObject . toGObject
@@ -946,12 +946,12 @@ instance FromJSVal GObject where
 --  {-# INLINE pFromJSVal #-}
 --
 --instance IsGObject o => ToJSVal o where
---  toJSRef = return . unGObject . toGObject
---  {-# INLINE toJSRef #-}
+--  toJSVal = return . unGObject . toGObject
+--  {-# INLINE toJSVal #-}
 --
 --instance IsGObject o => FromJSVal o where
---  fromJSRef = return . fmap (unsafeCastGObject . GObject . castRef) . maybeJSNullOrUndefined
---  {-# INLINE fromJSRef #-}
+--  fromJSVal = return . fmap (unsafeCastGObject . GObject . castRef) . maybeJSNullOrUndefined
+--  {-# INLINE fromJSVal #-}
 
 instance IsGObject GObject where
   toGObject = id
@@ -1028,47 +1028,47 @@ type IsDOMString s = (ToDOMString s, FromDOMString s)
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- Callbacks
-newtype AudioBufferCallback = AudioBufferCallback (Callback (JSRef -> IO ()))
+newtype AudioBufferCallback = AudioBufferCallback (Callback (JSVal -> IO ()))
 instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback (Callback r)) = r
-newtype DatabaseCallback = DatabaseCallback (Callback (JSRef -> IO ()))
+newtype DatabaseCallback = DatabaseCallback (Callback (JSVal -> IO ()))
 instance PToJSVal DatabaseCallback where pToJSVal (DatabaseCallback (Callback r)) = r
-newtype MediaQueryListListener = MediaQueryListListener (Callback (JSRef -> IO ()))
+newtype MediaQueryListListener = MediaQueryListListener (Callback (JSVal -> IO ()))
 instance PToJSVal MediaQueryListListener where pToJSVal (MediaQueryListListener (Callback r)) = r
-newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (Callback (JSRef -> IO ()))
+newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (Callback (JSVal -> IO ()))
 instance PToJSVal MediaStreamTrackSourcesCallback where pToJSVal (MediaStreamTrackSourcesCallback (Callback r)) = r
-newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (Callback (JSRef -> IO ()))
+newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (Callback (JSVal -> IO ()))
 instance PToJSVal NavigatorUserMediaErrorCallback where pToJSVal (NavigatorUserMediaErrorCallback (Callback r)) = r
-newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (Callback (JSRef -> IO ()))
+newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (Callback (JSVal -> IO ()))
 instance PToJSVal NavigatorUserMediaSuccessCallback where pToJSVal (NavigatorUserMediaSuccessCallback (Callback r)) = r
-newtype NotificationPermissionCallback permissions = NotificationPermissionCallback (Callback (JSRef -> IO ()))
+newtype NotificationPermissionCallback permissions = NotificationPermissionCallback (Callback (JSVal -> IO ()))
 instance PToJSVal (NotificationPermissionCallback permissions) where pToJSVal (NotificationPermissionCallback (Callback r)) = r
-newtype PositionCallback = PositionCallback (Callback (JSRef -> IO ()))
+newtype PositionCallback = PositionCallback (Callback (JSVal -> IO ()))
 instance PToJSVal PositionCallback where pToJSVal (PositionCallback (Callback r)) = r
-newtype PositionErrorCallback = PositionErrorCallback (Callback (JSRef -> IO ()))
+newtype PositionErrorCallback = PositionErrorCallback (Callback (JSVal -> IO ()))
 instance PToJSVal PositionErrorCallback where pToJSVal (PositionErrorCallback (Callback r)) = r
-newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (Callback (JSRef -> IO ()))
+newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (Callback (JSVal -> IO ()))
 instance PToJSVal RequestAnimationFrameCallback where pToJSVal (RequestAnimationFrameCallback (Callback r)) = r
-newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (Callback (JSRef -> IO ()))
+newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (Callback (JSVal -> IO ()))
 instance PToJSVal RTCPeerConnectionErrorCallback where pToJSVal (RTCPeerConnectionErrorCallback (Callback r)) = r
-newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (Callback (JSRef -> IO ()))
+newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (Callback (JSVal -> IO ()))
 instance PToJSVal RTCSessionDescriptionCallback where pToJSVal (RTCSessionDescriptionCallback (Callback r)) = r
-newtype RTCStatsCallback = RTCStatsCallback (Callback (JSRef -> IO ()))
+newtype RTCStatsCallback = RTCStatsCallback (Callback (JSVal -> IO ()))
 instance PToJSVal RTCStatsCallback where pToJSVal (RTCStatsCallback (Callback r)) = r
-newtype SQLStatementCallback = SQLStatementCallback (Callback (JSRef -> JSRef -> IO ()))
+newtype SQLStatementCallback = SQLStatementCallback (Callback (JSVal -> JSVal -> IO ()))
 instance PToJSVal SQLStatementCallback where pToJSVal (SQLStatementCallback (Callback r)) = r
-newtype SQLStatementErrorCallback = SQLStatementErrorCallback (Callback (JSRef -> JSRef -> IO ()))
+newtype SQLStatementErrorCallback = SQLStatementErrorCallback (Callback (JSVal -> JSVal -> IO ()))
 instance PToJSVal SQLStatementErrorCallback where pToJSVal (SQLStatementErrorCallback (Callback r)) = r
-newtype SQLTransactionCallback = SQLTransactionCallback (Callback (JSRef -> IO ()))
+newtype SQLTransactionCallback = SQLTransactionCallback (Callback (JSVal -> IO ()))
 instance PToJSVal SQLTransactionCallback where pToJSVal (SQLTransactionCallback (Callback r)) = r
-newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (Callback (JSRef -> IO ()))
+newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (Callback (JSVal -> IO ()))
 instance PToJSVal SQLTransactionErrorCallback where pToJSVal (SQLTransactionErrorCallback (Callback r)) = r
-newtype StorageErrorCallback = StorageErrorCallback (Callback (JSRef -> IO ()))
+newtype StorageErrorCallback = StorageErrorCallback (Callback (JSVal -> IO ()))
 instance PToJSVal StorageErrorCallback where pToJSVal (StorageErrorCallback (Callback r)) = r
-newtype StorageQuotaCallback = StorageQuotaCallback (Callback (JSRef -> IO ()))
+newtype StorageQuotaCallback = StorageQuotaCallback (Callback (JSVal -> IO ()))
 instance PToJSVal StorageQuotaCallback where pToJSVal (StorageQuotaCallback (Callback r)) = r
-newtype StorageUsageCallback = StorageUsageCallback (Callback (JSRef -> JSRef -> IO ()))
+newtype StorageUsageCallback = StorageUsageCallback (Callback (JSVal -> JSVal -> IO ()))
 instance PToJSVal StorageUsageCallback where pToJSVal (StorageUsageCallback (Callback r)) = r
-newtype StringCallback s = StringCallback (Callback (JSRef -> IO ()))
+newtype StringCallback s = StringCallback (Callback (JSVal -> IO ()))
 instance PToJSVal (StringCallback s) where pToJSVal (StringCallback (Callback r)) = r
 newtype VoidCallback = VoidCallback (Callback (IO ()))
 instance PToJSVal VoidCallback where pToJSVal (VoidCallback (Callback r)) = r
@@ -1076,7 +1076,7 @@ instance PToJSVal VoidCallback where pToJSVal (VoidCallback (Callback r)) = r
 
 -- Custom types
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSRef }
+newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSVal }
 
 instance Eq SerializedScriptValue where
   (SerializedScriptValue a) == (SerializedScriptValue b) = js_eq a b
@@ -1090,12 +1090,12 @@ instance PFromJSVal SerializedScriptValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SerializedScriptValue where
-  toJSRef = return . unSerializedScriptValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSerializedScriptValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SerializedScriptValue where
-  fromJSRef = return . fmap SerializedScriptValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SerializedScriptValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsSerializedScriptValue o
 toSerializedScriptValue :: IsSerializedScriptValue o => o -> SerializedScriptValue
@@ -1111,7 +1111,7 @@ instance IsGObject SerializedScriptValue where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype PositionOptions = PositionOptions { unPositionOptions :: JSRef }
+newtype PositionOptions = PositionOptions { unPositionOptions :: JSVal }
 
 instance Eq PositionOptions where
   (PositionOptions a) == (PositionOptions b) = js_eq a b
@@ -1125,12 +1125,12 @@ instance PFromJSVal PositionOptions where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PositionOptions where
-  toJSRef = return . unPositionOptions
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPositionOptions
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PositionOptions where
-  fromJSRef = return . fmap PositionOptions . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PositionOptions . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsPositionOptions o
 toPositionOptions :: IsPositionOptions o => o -> PositionOptions
@@ -1146,7 +1146,7 @@ instance IsGObject PositionOptions where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Dictionary = Dictionary { unDictionary :: JSRef }
+newtype Dictionary = Dictionary { unDictionary :: JSVal }
 
 instance Eq Dictionary where
   (Dictionary a) == (Dictionary b) = js_eq a b
@@ -1160,12 +1160,12 @@ instance PFromJSVal Dictionary where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Dictionary where
-  toJSRef = return . unDictionary
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDictionary
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Dictionary where
-  fromJSRef = return . fmap Dictionary . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Dictionary . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsDictionary o
 toDictionary :: IsDictionary o => o -> Dictionary
@@ -1181,7 +1181,7 @@ instance IsGObject Dictionary where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSRef }
+newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSVal }
 
 instance Eq BlobPropertyBag where
   (BlobPropertyBag a) == (BlobPropertyBag b) = js_eq a b
@@ -1195,12 +1195,12 @@ instance PFromJSVal BlobPropertyBag where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BlobPropertyBag where
-  toJSRef = return . unBlobPropertyBag
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBlobPropertyBag
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BlobPropertyBag where
-  fromJSRef = return . fmap BlobPropertyBag . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BlobPropertyBag . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsBlobPropertyBag o
 toBlobPropertyBag :: IsBlobPropertyBag o => o -> BlobPropertyBag
@@ -1216,7 +1216,7 @@ instance IsGObject BlobPropertyBag where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype MutationCallback = MutationCallback { unMutationCallback :: JSRef }
+newtype MutationCallback = MutationCallback { unMutationCallback :: JSVal }
 
 instance Eq MutationCallback where
   (MutationCallback a) == (MutationCallback b) = js_eq a b
@@ -1230,12 +1230,12 @@ instance PFromJSVal MutationCallback where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MutationCallback where
-  toJSRef = return . unMutationCallback
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMutationCallback
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MutationCallback where
-  fromJSRef = return . fmap MutationCallback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MutationCallback . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsMutationCallback o
 toMutationCallback :: IsMutationCallback o => o -> MutationCallback
@@ -1251,7 +1251,7 @@ instance IsGObject MutationCallback where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Promise = Promise { unPromise :: JSRef }
+newtype Promise = Promise { unPromise :: JSVal }
 
 instance Eq Promise where
   (Promise a) == (Promise b) = js_eq a b
@@ -1265,12 +1265,12 @@ instance PFromJSVal Promise where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Promise where
-  toJSRef = return . unPromise
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPromise
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Promise where
-  fromJSRef = return . fmap Promise . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Promise . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsPromise o
 toPromise :: IsPromise o => o -> Promise
@@ -1291,7 +1291,7 @@ foreign import javascript unsafe "window[\"Promise\"]" gTypePromise :: GType
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSRef }
+newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSVal }
 
 instance Eq ArrayBuffer where
   (ArrayBuffer a) == (ArrayBuffer b) = js_eq a b
@@ -1305,12 +1305,12 @@ instance PFromJSVal ArrayBuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ArrayBuffer where
-  toJSRef = return . unArrayBuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unArrayBuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ArrayBuffer where
-  fromJSRef = return . fmap ArrayBuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ArrayBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsArrayBuffer o
 toArrayBuffer :: IsArrayBuffer o => o -> ArrayBuffer
@@ -1330,7 +1330,7 @@ foreign import javascript unsafe "window[\"ArrayBuffer\"]" gTypeArrayBuffer :: G
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float32Array = Float32Array { unFloat32Array :: JSRef }
+newtype Float32Array = Float32Array { unFloat32Array :: JSVal }
 
 instance Eq Float32Array where
   (Float32Array a) == (Float32Array b) = js_eq a b
@@ -1344,12 +1344,12 @@ instance PFromJSVal Float32Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Float32Array where
-  toJSRef = return . unFloat32Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFloat32Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Float32Array where
-  fromJSRef = return . fmap Float32Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Float32Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsFloat32Array o
 toFloat32Array :: IsFloat32Array o => o -> Float32Array
@@ -1370,7 +1370,7 @@ foreign import javascript unsafe "window[\"Float32Array\"]" gTypeFloat32Array ::
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Float64Array = Float64Array { unFloat64Array :: JSRef }
+newtype Float64Array = Float64Array { unFloat64Array :: JSVal }
 
 instance Eq Float64Array where
   (Float64Array a) == (Float64Array b) = js_eq a b
@@ -1384,12 +1384,12 @@ instance PFromJSVal Float64Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Float64Array where
-  toJSRef = return . unFloat64Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFloat64Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Float64Array where
-  fromJSRef = return . fmap Float64Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Float64Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsFloat64Array o
 toFloat64Array :: IsFloat64Array o => o -> Float64Array
@@ -1410,7 +1410,7 @@ foreign import javascript unsafe "window[\"Float64Array\"]" gTypeFloat64Array ::
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8Array = Uint8Array { unUint8Array :: JSRef }
+newtype Uint8Array = Uint8Array { unUint8Array :: JSVal }
 
 instance Eq Uint8Array where
   (Uint8Array a) == (Uint8Array b) = js_eq a b
@@ -1424,12 +1424,12 @@ instance PFromJSVal Uint8Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Uint8Array where
-  toJSRef = return . unUint8Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUint8Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Uint8Array where
-  fromJSRef = return . fmap Uint8Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Uint8Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsUint8Array o
 toUint8Array :: IsUint8Array o => o -> Uint8Array
@@ -1450,7 +1450,7 @@ foreign import javascript unsafe "window[\"Uint8Array\"]" gTypeUint8Array :: GTy
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSRef }
+newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSVal }
 
 instance Eq Uint8ClampedArray where
   (Uint8ClampedArray a) == (Uint8ClampedArray b) = js_eq a b
@@ -1464,12 +1464,12 @@ instance PFromJSVal Uint8ClampedArray where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Uint8ClampedArray where
-  toJSRef = return . unUint8ClampedArray
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUint8ClampedArray
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Uint8ClampedArray where
-  fromJSRef = return . fmap Uint8ClampedArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Uint8ClampedArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsUint8ClampedArray o
 toUint8ClampedArray :: IsUint8ClampedArray o => o -> Uint8ClampedArray
@@ -1490,7 +1490,7 @@ foreign import javascript unsafe "window[\"Uint8ClampedArray\"]" gTypeUint8Clamp
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint16Array = Uint16Array { unUint16Array :: JSRef }
+newtype Uint16Array = Uint16Array { unUint16Array :: JSVal }
 
 instance Eq Uint16Array where
   (Uint16Array a) == (Uint16Array b) = js_eq a b
@@ -1504,12 +1504,12 @@ instance PFromJSVal Uint16Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Uint16Array where
-  toJSRef = return . unUint16Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUint16Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Uint16Array where
-  fromJSRef = return . fmap Uint16Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Uint16Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsUint16Array o
 toUint16Array :: IsUint16Array o => o -> Uint16Array
@@ -1530,7 +1530,7 @@ foreign import javascript unsafe "window[\"Uint16Array\"]" gTypeUint16Array :: G
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Uint32Array = Uint32Array { unUint32Array :: JSRef }
+newtype Uint32Array = Uint32Array { unUint32Array :: JSVal }
 
 instance Eq Uint32Array where
   (Uint32Array a) == (Uint32Array b) = js_eq a b
@@ -1544,12 +1544,12 @@ instance PFromJSVal Uint32Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Uint32Array where
-  toJSRef = return . unUint32Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUint32Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Uint32Array where
-  fromJSRef = return . fmap Uint32Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Uint32Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsUint32Array o
 toUint32Array :: IsUint32Array o => o -> Uint32Array
@@ -1570,7 +1570,7 @@ foreign import javascript unsafe "window[\"Uint32Array\"]" gTypeUint32Array :: G
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int8Array = Int8Array { unInt8Array :: JSRef }
+newtype Int8Array = Int8Array { unInt8Array :: JSVal }
 
 instance Eq Int8Array where
   (Int8Array a) == (Int8Array b) = js_eq a b
@@ -1584,12 +1584,12 @@ instance PFromJSVal Int8Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Int8Array where
-  toJSRef = return . unInt8Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInt8Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Int8Array where
-  fromJSRef = return . fmap Int8Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Int8Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsInt8Array o
 toInt8Array :: IsInt8Array o => o -> Int8Array
@@ -1610,7 +1610,7 @@ foreign import javascript unsafe "window[\"Int8Array\"]" gTypeInt8Array :: GType
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int16Array = Int16Array { unInt16Array :: JSRef }
+newtype Int16Array = Int16Array { unInt16Array :: JSVal }
 
 instance Eq Int16Array where
   (Int16Array a) == (Int16Array b) = js_eq a b
@@ -1624,12 +1624,12 @@ instance PFromJSVal Int16Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Int16Array where
-  toJSRef = return . unInt16Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInt16Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Int16Array where
-  fromJSRef = return . fmap Int16Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Int16Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsInt16Array o
 toInt16Array :: IsInt16Array o => o -> Int16Array
@@ -1650,7 +1650,7 @@ foreign import javascript unsafe "window[\"Int16Array\"]" gTypeInt16Array :: GTy
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Int32Array = Int32Array { unInt32Array :: JSRef }
+newtype Int32Array = Int32Array { unInt32Array :: JSVal }
 
 instance Eq Int32Array where
   (Int32Array a) == (Int32Array b) = js_eq a b
@@ -1664,12 +1664,12 @@ instance PFromJSVal Int32Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Int32Array where
-  toJSRef = return . unInt32Array
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInt32Array
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Int32Array where
-  fromJSRef = return . fmap Int32Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Int32Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsInt32Array o
 toInt32Array :: IsInt32Array o => o -> Int32Array
@@ -1690,7 +1690,7 @@ foreign import javascript unsafe "window[\"Int32Array\"]" gTypeInt32Array :: GTy
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ObjectArray = ObjectArray { unObjectArray :: JSRef }
+newtype ObjectArray = ObjectArray { unObjectArray :: JSVal }
 
 instance Eq ObjectArray where
   (ObjectArray a) == (ObjectArray b) = js_eq a b
@@ -1704,12 +1704,12 @@ instance PFromJSVal ObjectArray where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ObjectArray where
-  toJSRef = return . unObjectArray
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unObjectArray
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ObjectArray where
-  fromJSRef = return . fmap ObjectArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ObjectArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsObjectArray o
 toObjectArray :: IsObjectArray o => o -> ObjectArray
@@ -1725,7 +1725,7 @@ instance IsGObject ObjectArray where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSRef }
+newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSVal }
 
 instance Eq ArrayBufferView where
   (ArrayBufferView a) == (ArrayBufferView b) = js_eq a b
@@ -1739,12 +1739,12 @@ instance PFromJSVal ArrayBufferView where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ArrayBufferView where
-  toJSRef = return . unArrayBufferView
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unArrayBufferView
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ArrayBufferView where
-  fromJSRef = return . fmap ArrayBufferView . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ArrayBufferView . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsArrayBufferView o
 toArrayBufferView :: IsArrayBufferView o => o -> ArrayBufferView
@@ -1760,7 +1760,7 @@ instance IsGObject ArrayBufferView where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Array = Array { unArray :: JSRef }
+newtype Array = Array { unArray :: JSVal }
 
 instance Eq Array where
   (Array a) == (Array b) = js_eq a b
@@ -1774,12 +1774,12 @@ instance PFromJSVal Array where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Array where
-  toJSRef = return . unArray
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unArray
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Array where
-  fromJSRef = return . fmap Array . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Array . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsArray o
 toArray :: IsArray o => o -> Array
@@ -1800,7 +1800,7 @@ foreign import javascript unsafe "window[\"Array\"]" gTypeArray :: GType
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Date = Date { unDate :: JSRef }
+newtype Date = Date { unDate :: JSVal }
 
 instance Eq Date where
   (Date a) == (Date b) = js_eq a b
@@ -1814,12 +1814,12 @@ instance PFromJSVal Date where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Date where
-  toJSRef = return . unDate
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDate
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Date where
-  fromJSRef = return . fmap Date . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Date . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsDate o
 toDate :: IsDate o => o -> Date
@@ -1840,7 +1840,7 @@ foreign import javascript unsafe "window[\"Date\"]" gTypeDate :: GType
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Acceleration = Acceleration { unAcceleration :: JSRef }
+newtype Acceleration = Acceleration { unAcceleration :: JSVal }
 
 instance Eq Acceleration where
   (Acceleration a) == (Acceleration b) = js_eq a b
@@ -1854,12 +1854,12 @@ instance PFromJSVal Acceleration where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Acceleration where
-  toJSRef = return . unAcceleration
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAcceleration
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Acceleration where
-  fromJSRef = return . fmap Acceleration . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Acceleration . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsAcceleration o
 toAcceleration :: IsAcceleration o => o -> Acceleration
@@ -1875,7 +1875,7 @@ instance IsGObject Acceleration where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype RotationRate = RotationRate { unRotationRate :: JSRef }
+newtype RotationRate = RotationRate { unRotationRate :: JSVal }
 
 instance Eq RotationRate where
   (RotationRate a) == (RotationRate b) = js_eq a b
@@ -1889,12 +1889,12 @@ instance PFromJSVal RotationRate where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RotationRate where
-  toJSRef = return . unRotationRate
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRotationRate
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RotationRate where
-  fromJSRef = return . fmap RotationRate . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RotationRate . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsRotationRate o
 toRotationRate :: IsRotationRate o => o -> RotationRate
@@ -1910,7 +1910,7 @@ instance IsGObject RotationRate where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype Algorithm = Algorithm { unAlgorithm :: JSRef }
+newtype Algorithm = Algorithm { unAlgorithm :: JSVal }
 
 instance Eq Algorithm where
   (Algorithm a) == (Algorithm b) = js_eq a b
@@ -1924,12 +1924,12 @@ instance PFromJSVal Algorithm where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Algorithm where
-  toJSRef = return . unAlgorithm
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAlgorithm
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Algorithm where
-  fromJSRef = return . fmap Algorithm . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Algorithm . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsAlgorithm o
 toAlgorithm :: IsAlgorithm o => o -> Algorithm
@@ -1945,7 +1945,7 @@ instance IsGObject Algorithm where
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSRef }
+newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSVal }
 
 instance Eq CryptoOperationData where
   (CryptoOperationData a) == (CryptoOperationData b) = js_eq a b
@@ -1959,12 +1959,12 @@ instance PFromJSVal CryptoOperationData where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CryptoOperationData where
-  toJSRef = return . unCryptoOperationData
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCryptoOperationData
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CryptoOperationData where
-  fromJSRef = return . fmap CryptoOperationData . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CryptoOperationData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsCryptoOperationData o
 toCryptoOperationData :: IsCryptoOperationData o => o -> CryptoOperationData
@@ -1981,7 +1981,7 @@ instance IsCryptoOperationData ArrayBufferView
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSRef }
+newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSVal }
 
 instance Eq CanvasStyle where
   (CanvasStyle a) == (CanvasStyle b) = js_eq a b
@@ -1995,12 +1995,12 @@ instance PFromJSVal CanvasStyle where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasStyle where
-  toJSRef = return . unCanvasStyle
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasStyle
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasStyle where
-  fromJSRef = return . fmap CanvasStyle . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasStyle . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsCanvasStyle o
 toCanvasStyle :: IsCanvasStyle o => o -> CanvasStyle
@@ -2017,7 +2017,7 @@ instance IsCanvasStyle CanvasPattern
 #endif
 
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-newtype DOMException = DOMException { unDOMException :: JSRef }
+newtype DOMException = DOMException { unDOMException :: JSVal }
 
 instance Eq DOMException where
   (DOMException a) == (DOMException b) = js_eq a b
@@ -2031,12 +2031,12 @@ instance PFromJSVal DOMException where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMException where
-  toJSRef = return . unDOMException
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMException
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMException where
-  fromJSRef = return . fmap DOMException . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMException . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsDOMException o
 toDOMException :: IsDOMException o => o -> DOMException
@@ -2073,7 +2073,7 @@ type GLclampf = Double
 -- | Functions for this inteface are in "GHCJS.DOM.ANGLEInstancedArrays".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ANGLEInstancedArrays Mozilla ANGLEInstancedArrays documentation>
-newtype ANGLEInstancedArrays = ANGLEInstancedArrays { unANGLEInstancedArrays :: JSRef }
+newtype ANGLEInstancedArrays = ANGLEInstancedArrays { unANGLEInstancedArrays :: JSVal }
 
 instance Eq (ANGLEInstancedArrays) where
   (ANGLEInstancedArrays a) == (ANGLEInstancedArrays b) = js_eq a b
@@ -2087,12 +2087,12 @@ instance PFromJSVal ANGLEInstancedArrays where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ANGLEInstancedArrays where
-  toJSRef = return . unANGLEInstancedArrays
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unANGLEInstancedArrays
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ANGLEInstancedArrays where
-  fromJSRef = return . fmap ANGLEInstancedArrays . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ANGLEInstancedArrays . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ANGLEInstancedArrays where
   toGObject = GObject . unANGLEInstancedArrays
@@ -2111,7 +2111,7 @@ foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEIn
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractView".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView Mozilla AbstractView documentation>
-newtype AbstractView = AbstractView { unAbstractView :: JSRef }
+newtype AbstractView = AbstractView { unAbstractView :: JSVal }
 
 instance Eq (AbstractView) where
   (AbstractView a) == (AbstractView b) = js_eq a b
@@ -2125,12 +2125,12 @@ instance PFromJSVal AbstractView where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AbstractView where
-  toJSRef = return . unAbstractView
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAbstractView
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AbstractView where
-  fromJSRef = return . fmap AbstractView . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AbstractView . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AbstractView where
   toGObject = GObject . unAbstractView
@@ -2149,7 +2149,7 @@ foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView ::
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractWorker Mozilla AbstractWorker documentation>
-newtype AbstractWorker = AbstractWorker { unAbstractWorker :: JSRef }
+newtype AbstractWorker = AbstractWorker { unAbstractWorker :: JSVal }
 
 instance Eq (AbstractWorker) where
   (AbstractWorker a) == (AbstractWorker b) = js_eq a b
@@ -2163,12 +2163,12 @@ instance PFromJSVal AbstractWorker where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AbstractWorker where
-  toJSRef = return . unAbstractWorker
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAbstractWorker
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AbstractWorker where
-  fromJSRef = return . fmap AbstractWorker . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AbstractWorker . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AbstractWorker where
   toGObject = GObject . unAbstractWorker
@@ -2190,7 +2190,7 @@ foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorke
 --     * "GHCJS.DOM.MediaStreamCapabilities"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AllAudioCapabilities Mozilla AllAudioCapabilities documentation>
-newtype AllAudioCapabilities = AllAudioCapabilities { unAllAudioCapabilities :: JSRef }
+newtype AllAudioCapabilities = AllAudioCapabilities { unAllAudioCapabilities :: JSVal }
 
 instance Eq (AllAudioCapabilities) where
   (AllAudioCapabilities a) == (AllAudioCapabilities b) = js_eq a b
@@ -2204,12 +2204,12 @@ instance PFromJSVal AllAudioCapabilities where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AllAudioCapabilities where
-  toJSRef = return . unAllAudioCapabilities
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAllAudioCapabilities
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AllAudioCapabilities where
-  fromJSRef = return . fmap AllAudioCapabilities . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AllAudioCapabilities . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsMediaStreamCapabilities AllAudioCapabilities
 instance IsGObject AllAudioCapabilities where
@@ -2232,7 +2232,7 @@ foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudi
 --     * "GHCJS.DOM.MediaStreamCapabilities"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities Mozilla AllVideoCapabilities documentation>
-newtype AllVideoCapabilities = AllVideoCapabilities { unAllVideoCapabilities :: JSRef }
+newtype AllVideoCapabilities = AllVideoCapabilities { unAllVideoCapabilities :: JSVal }
 
 instance Eq (AllVideoCapabilities) where
   (AllVideoCapabilities a) == (AllVideoCapabilities b) = js_eq a b
@@ -2246,12 +2246,12 @@ instance PFromJSVal AllVideoCapabilities where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AllVideoCapabilities where
-  toJSRef = return . unAllVideoCapabilities
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAllVideoCapabilities
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AllVideoCapabilities where
-  fromJSRef = return . fmap AllVideoCapabilities . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AllVideoCapabilities . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsMediaStreamCapabilities AllVideoCapabilities
 instance IsGObject AllVideoCapabilities where
@@ -2275,7 +2275,7 @@ foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVide
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode Mozilla AnalyserNode documentation>
-newtype AnalyserNode = AnalyserNode { unAnalyserNode :: JSRef }
+newtype AnalyserNode = AnalyserNode { unAnalyserNode :: JSVal }
 
 instance Eq (AnalyserNode) where
   (AnalyserNode a) == (AnalyserNode b) = js_eq a b
@@ -2289,12 +2289,12 @@ instance PFromJSVal AnalyserNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AnalyserNode where
-  toJSRef = return . unAnalyserNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAnalyserNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AnalyserNode where
-  fromJSRef = return . fmap AnalyserNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AnalyserNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode AnalyserNode
 instance IsEventTarget AnalyserNode
@@ -2318,7 +2318,7 @@ foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode ::
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent Mozilla AnimationEvent documentation>
-newtype AnimationEvent = AnimationEvent { unAnimationEvent :: JSRef }
+newtype AnimationEvent = AnimationEvent { unAnimationEvent :: JSVal }
 
 instance Eq (AnimationEvent) where
   (AnimationEvent a) == (AnimationEvent b) = js_eq a b
@@ -2332,12 +2332,12 @@ instance PFromJSVal AnimationEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AnimationEvent where
-  toJSRef = return . unAnimationEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAnimationEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AnimationEvent where
-  fromJSRef = return . fmap AnimationEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AnimationEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent AnimationEvent
 instance IsGObject AnimationEvent where
@@ -2360,7 +2360,7 @@ foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEven
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache Mozilla ApplicationCache documentation>
-newtype ApplicationCache = ApplicationCache { unApplicationCache :: JSRef }
+newtype ApplicationCache = ApplicationCache { unApplicationCache :: JSVal }
 
 instance Eq (ApplicationCache) where
   (ApplicationCache a) == (ApplicationCache b) = js_eq a b
@@ -2374,12 +2374,12 @@ instance PFromJSVal ApplicationCache where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ApplicationCache where
-  toJSRef = return . unApplicationCache
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unApplicationCache
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ApplicationCache where
-  fromJSRef = return . fmap ApplicationCache . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ApplicationCache . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget ApplicationCache
 instance IsGObject ApplicationCache where
@@ -2405,7 +2405,7 @@ type IsApplicationCache o = ApplicationCacheClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Attr Mozilla Attr documentation>
-newtype Attr = Attr { unAttr :: JSRef }
+newtype Attr = Attr { unAttr :: JSVal }
 
 instance Eq (Attr) where
   (Attr a) == (Attr b) = js_eq a b
@@ -2419,12 +2419,12 @@ instance PFromJSVal Attr where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Attr where
-  toJSRef = return . unAttr
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAttr
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Attr where
-  fromJSRef = return . fmap Attr . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Attr . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNode Attr
 instance IsEventTarget Attr
@@ -2447,7 +2447,7 @@ type IsAttr o = AttrClass o
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer Mozilla AudioBuffer documentation>
-newtype AudioBuffer = AudioBuffer { unAudioBuffer :: JSRef }
+newtype AudioBuffer = AudioBuffer { unAudioBuffer :: JSVal }
 
 instance Eq (AudioBuffer) where
   (AudioBuffer a) == (AudioBuffer b) = js_eq a b
@@ -2461,12 +2461,12 @@ instance PFromJSVal AudioBuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioBuffer where
-  toJSRef = return . unAudioBuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioBuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioBuffer where
-  fromJSRef = return . fmap AudioBuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioBuffer where
   toGObject = GObject . unAudioBuffer
@@ -2489,7 +2489,7 @@ foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer :: G
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode Mozilla AudioBufferSourceNode documentation>
-newtype AudioBufferSourceNode = AudioBufferSourceNode { unAudioBufferSourceNode :: JSRef }
+newtype AudioBufferSourceNode = AudioBufferSourceNode { unAudioBufferSourceNode :: JSVal }
 
 instance Eq (AudioBufferSourceNode) where
   (AudioBufferSourceNode a) == (AudioBufferSourceNode b) = js_eq a b
@@ -2503,12 +2503,12 @@ instance PFromJSVal AudioBufferSourceNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioBufferSourceNode where
-  toJSRef = return . unAudioBufferSourceNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioBufferSourceNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioBufferSourceNode where
-  fromJSRef = return . fmap AudioBufferSourceNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioBufferSourceNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode AudioBufferSourceNode
 instance IsEventTarget AudioBufferSourceNode
@@ -2532,7 +2532,7 @@ foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioB
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext Mozilla AudioContext documentation>
-newtype AudioContext = AudioContext { unAudioContext :: JSRef }
+newtype AudioContext = AudioContext { unAudioContext :: JSVal }
 
 instance Eq (AudioContext) where
   (AudioContext a) == (AudioContext b) = js_eq a b
@@ -2546,12 +2546,12 @@ instance PFromJSVal AudioContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioContext where
-  toJSRef = return . unAudioContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioContext where
-  fromJSRef = return . fmap AudioContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsAudioContext o
 toAudioContext :: IsAudioContext o => o -> AudioContext
@@ -2580,7 +2580,7 @@ foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioDestinationNode Mozilla AudioDestinationNode documentation>
-newtype AudioDestinationNode = AudioDestinationNode { unAudioDestinationNode :: JSRef }
+newtype AudioDestinationNode = AudioDestinationNode { unAudioDestinationNode :: JSVal }
 
 instance Eq (AudioDestinationNode) where
   (AudioDestinationNode a) == (AudioDestinationNode b) = js_eq a b
@@ -2594,12 +2594,12 @@ instance PFromJSVal AudioDestinationNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioDestinationNode where
-  toJSRef = return . unAudioDestinationNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioDestinationNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioDestinationNode where
-  fromJSRef = return . fmap AudioDestinationNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioDestinationNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode AudioDestinationNode
 instance IsEventTarget AudioDestinationNode
@@ -2620,7 +2620,7 @@ foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDe
 -- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener Mozilla AudioListener documentation>
-newtype AudioListener = AudioListener { unAudioListener :: JSRef }
+newtype AudioListener = AudioListener { unAudioListener :: JSVal }
 
 instance Eq (AudioListener) where
   (AudioListener a) == (AudioListener b) = js_eq a b
@@ -2634,12 +2634,12 @@ instance PFromJSVal AudioListener where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioListener where
-  toJSRef = return . unAudioListener
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioListener
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioListener where
-  fromJSRef = return . fmap AudioListener . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioListener . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioListener where
   toGObject = GObject . unAudioListener
@@ -2661,7 +2661,7 @@ foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode Mozilla AudioNode documentation>
-newtype AudioNode = AudioNode { unAudioNode :: JSRef }
+newtype AudioNode = AudioNode { unAudioNode :: JSVal }
 
 instance Eq (AudioNode) where
   (AudioNode a) == (AudioNode b) = js_eq a b
@@ -2675,12 +2675,12 @@ instance PFromJSVal AudioNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioNode where
-  toJSRef = return . unAudioNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioNode where
-  fromJSRef = return . fmap AudioNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsAudioNode o
 toAudioNode :: IsAudioNode o => o -> AudioNode
@@ -2705,7 +2705,7 @@ foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam Mozilla AudioParam documentation>
-newtype AudioParam = AudioParam { unAudioParam :: JSRef }
+newtype AudioParam = AudioParam { unAudioParam :: JSVal }
 
 instance Eq (AudioParam) where
   (AudioParam a) == (AudioParam b) = js_eq a b
@@ -2719,12 +2719,12 @@ instance PFromJSVal AudioParam where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioParam where
-  toJSRef = return . unAudioParam
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioParam
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioParam where
-  fromJSRef = return . fmap AudioParam . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioParam . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioParam where
   toGObject = GObject . unAudioParam
@@ -2746,7 +2746,7 @@ foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam :: GTy
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent Mozilla AudioProcessingEvent documentation>
-newtype AudioProcessingEvent = AudioProcessingEvent { unAudioProcessingEvent :: JSRef }
+newtype AudioProcessingEvent = AudioProcessingEvent { unAudioProcessingEvent :: JSVal }
 
 instance Eq (AudioProcessingEvent) where
   (AudioProcessingEvent a) == (AudioProcessingEvent b) = js_eq a b
@@ -2760,12 +2760,12 @@ instance PFromJSVal AudioProcessingEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioProcessingEvent where
-  toJSRef = return . unAudioProcessingEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioProcessingEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioProcessingEvent where
-  fromJSRef = return . fmap AudioProcessingEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioProcessingEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent AudioProcessingEvent
 instance IsGObject AudioProcessingEvent where
@@ -2789,7 +2789,7 @@ foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioPr
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioStreamTrack Mozilla AudioStreamTrack documentation>
-newtype AudioStreamTrack = AudioStreamTrack { unAudioStreamTrack :: JSRef }
+newtype AudioStreamTrack = AudioStreamTrack { unAudioStreamTrack :: JSVal }
 
 instance Eq (AudioStreamTrack) where
   (AudioStreamTrack a) == (AudioStreamTrack b) = js_eq a b
@@ -2803,12 +2803,12 @@ instance PFromJSVal AudioStreamTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioStreamTrack where
-  toJSRef = return . unAudioStreamTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioStreamTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioStreamTrack where
-  fromJSRef = return . fmap AudioStreamTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioStreamTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsMediaStreamTrack AudioStreamTrack
 instance IsEventTarget AudioStreamTrack
@@ -2829,7 +2829,7 @@ foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStream
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack Mozilla AudioTrack documentation>
-newtype AudioTrack = AudioTrack { unAudioTrack :: JSRef }
+newtype AudioTrack = AudioTrack { unAudioTrack :: JSVal }
 
 instance Eq (AudioTrack) where
   (AudioTrack a) == (AudioTrack b) = js_eq a b
@@ -2843,12 +2843,12 @@ instance PFromJSVal AudioTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioTrack where
-  toJSRef = return . unAudioTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioTrack where
-  fromJSRef = return . fmap AudioTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioTrack where
   toGObject = GObject . unAudioTrack
@@ -2874,7 +2874,7 @@ type IsAudioTrack o = AudioTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList Mozilla AudioTrackList documentation>
-newtype AudioTrackList = AudioTrackList { unAudioTrackList :: JSRef }
+newtype AudioTrackList = AudioTrackList { unAudioTrackList :: JSVal }
 
 instance Eq (AudioTrackList) where
   (AudioTrackList a) == (AudioTrackList b) = js_eq a b
@@ -2888,12 +2888,12 @@ instance PFromJSVal AudioTrackList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AudioTrackList where
-  toJSRef = return . unAudioTrackList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAudioTrackList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AudioTrackList where
-  fromJSRef = return . fmap AudioTrackList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AudioTrackList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget AudioTrackList
 instance IsGObject AudioTrackList where
@@ -2920,7 +2920,7 @@ type IsAudioTrackList o = AudioTrackListClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AutocompleteErrorEvent Mozilla AutocompleteErrorEvent documentation>
-newtype AutocompleteErrorEvent = AutocompleteErrorEvent { unAutocompleteErrorEvent :: JSRef }
+newtype AutocompleteErrorEvent = AutocompleteErrorEvent { unAutocompleteErrorEvent :: JSVal }
 
 instance Eq (AutocompleteErrorEvent) where
   (AutocompleteErrorEvent a) == (AutocompleteErrorEvent b) = js_eq a b
@@ -2934,12 +2934,12 @@ instance PFromJSVal AutocompleteErrorEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal AutocompleteErrorEvent where
-  toJSRef = return . unAutocompleteErrorEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unAutocompleteErrorEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal AutocompleteErrorEvent where
-  fromJSRef = return . fmap AutocompleteErrorEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap AutocompleteErrorEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent AutocompleteErrorEvent
 instance IsGObject AutocompleteErrorEvent where
@@ -2959,7 +2959,7 @@ foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutoc
 -- | Functions for this inteface are in "GHCJS.DOM.BarProp".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BarProp Mozilla BarProp documentation>
-newtype BarProp = BarProp { unBarProp :: JSRef }
+newtype BarProp = BarProp { unBarProp :: JSVal }
 
 instance Eq (BarProp) where
   (BarProp a) == (BarProp b) = js_eq a b
@@ -2973,12 +2973,12 @@ instance PFromJSVal BarProp where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BarProp where
-  toJSRef = return . unBarProp
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBarProp
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BarProp where
-  fromJSRef = return . fmap BarProp . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BarProp . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject BarProp where
   toGObject = GObject . unBarProp
@@ -3004,7 +3004,7 @@ type IsBarProp o = BarPropClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager Mozilla BatteryManager documentation>
-newtype BatteryManager = BatteryManager { unBatteryManager :: JSRef }
+newtype BatteryManager = BatteryManager { unBatteryManager :: JSVal }
 
 instance Eq (BatteryManager) where
   (BatteryManager a) == (BatteryManager b) = js_eq a b
@@ -3018,12 +3018,12 @@ instance PFromJSVal BatteryManager where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BatteryManager where
-  toJSRef = return . unBatteryManager
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBatteryManager
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BatteryManager where
-  fromJSRef = return . fmap BatteryManager . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BatteryManager . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget BatteryManager
 instance IsGObject BatteryManager where
@@ -3050,7 +3050,7 @@ type IsBatteryManager o = BatteryManagerClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent Mozilla BeforeLoadEvent documentation>
-newtype BeforeLoadEvent = BeforeLoadEvent { unBeforeLoadEvent :: JSRef }
+newtype BeforeLoadEvent = BeforeLoadEvent { unBeforeLoadEvent :: JSVal }
 
 instance Eq (BeforeLoadEvent) where
   (BeforeLoadEvent a) == (BeforeLoadEvent b) = js_eq a b
@@ -3064,12 +3064,12 @@ instance PFromJSVal BeforeLoadEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BeforeLoadEvent where
-  toJSRef = return . unBeforeLoadEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBeforeLoadEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BeforeLoadEvent where
-  fromJSRef = return . fmap BeforeLoadEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BeforeLoadEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent BeforeLoadEvent
 instance IsGObject BeforeLoadEvent where
@@ -3092,7 +3092,7 @@ foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEv
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent Mozilla BeforeUnloadEvent documentation>
-newtype BeforeUnloadEvent = BeforeUnloadEvent { unBeforeUnloadEvent :: JSRef }
+newtype BeforeUnloadEvent = BeforeUnloadEvent { unBeforeUnloadEvent :: JSVal }
 
 instance Eq (BeforeUnloadEvent) where
   (BeforeUnloadEvent a) == (BeforeUnloadEvent b) = js_eq a b
@@ -3106,12 +3106,12 @@ instance PFromJSVal BeforeUnloadEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BeforeUnloadEvent where
-  toJSRef = return . unBeforeUnloadEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBeforeUnloadEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BeforeUnloadEvent where
-  fromJSRef = return . fmap BeforeUnloadEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BeforeUnloadEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent BeforeUnloadEvent
 instance IsGObject BeforeUnloadEvent where
@@ -3135,7 +3135,7 @@ foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnlo
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode Mozilla BiquadFilterNode documentation>
-newtype BiquadFilterNode = BiquadFilterNode { unBiquadFilterNode :: JSRef }
+newtype BiquadFilterNode = BiquadFilterNode { unBiquadFilterNode :: JSVal }
 
 instance Eq (BiquadFilterNode) where
   (BiquadFilterNode a) == (BiquadFilterNode b) = js_eq a b
@@ -3149,12 +3149,12 @@ instance PFromJSVal BiquadFilterNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal BiquadFilterNode where
-  toJSRef = return . unBiquadFilterNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBiquadFilterNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal BiquadFilterNode where
-  fromJSRef = return . fmap BiquadFilterNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap BiquadFilterNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode BiquadFilterNode
 instance IsEventTarget BiquadFilterNode
@@ -3175,7 +3175,7 @@ foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilte
 -- | Functions for this inteface are in "GHCJS.DOM.Blob".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation>
-newtype Blob = Blob { unBlob :: JSRef }
+newtype Blob = Blob { unBlob :: JSVal }
 
 instance Eq (Blob) where
   (Blob a) == (Blob b) = js_eq a b
@@ -3189,12 +3189,12 @@ instance PFromJSVal Blob where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Blob where
-  toJSRef = return . unBlob
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unBlob
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Blob where
-  fromJSRef = return . fmap Blob . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Blob . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsBlob o
 toBlob :: IsBlob o => o -> Blob
@@ -3226,7 +3226,7 @@ type IsBlob o = BlobClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CDATASection Mozilla CDATASection documentation>
-newtype CDATASection = CDATASection { unCDATASection :: JSRef }
+newtype CDATASection = CDATASection { unCDATASection :: JSVal }
 
 instance Eq (CDATASection) where
   (CDATASection a) == (CDATASection b) = js_eq a b
@@ -3240,12 +3240,12 @@ instance PFromJSVal CDATASection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CDATASection where
-  toJSRef = return . unCDATASection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCDATASection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CDATASection where
-  fromJSRef = return . fmap CDATASection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CDATASection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsText CDATASection
 instance IsCharacterData CDATASection
@@ -3270,7 +3270,7 @@ type IsCDATASection o = CDATASectionClass o
 -- | Functions for this inteface are in "GHCJS.DOM.CSS".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSS Mozilla CSS documentation>
-newtype CSS = CSS { unCSS :: JSRef }
+newtype CSS = CSS { unCSS :: JSVal }
 
 instance Eq (CSS) where
   (CSS a) == (CSS b) = js_eq a b
@@ -3284,12 +3284,12 @@ instance PFromJSVal CSS where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSS where
-  toJSRef = return . unCSS
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSS
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSS where
-  fromJSRef = return . fmap CSS . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSS . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CSS where
   toGObject = GObject . unCSS
@@ -3315,7 +3315,7 @@ type IsCSS o = CSSClass o
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSCharsetRule Mozilla CSSCharsetRule documentation>
-newtype CSSCharsetRule = CSSCharsetRule { unCSSCharsetRule :: JSRef }
+newtype CSSCharsetRule = CSSCharsetRule { unCSSCharsetRule :: JSVal }
 
 instance Eq (CSSCharsetRule) where
   (CSSCharsetRule a) == (CSSCharsetRule b) = js_eq a b
@@ -3329,12 +3329,12 @@ instance PFromJSVal CSSCharsetRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSCharsetRule where
-  toJSRef = return . unCSSCharsetRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSCharsetRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSCharsetRule where
-  fromJSRef = return . fmap CSSCharsetRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSCharsetRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSCharsetRule
 instance IsGObject CSSCharsetRule where
@@ -3357,7 +3357,7 @@ foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRul
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent Mozilla CSSFontFaceLoadEvent documentation>
-newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent { unCSSFontFaceLoadEvent :: JSRef }
+newtype CSSFontFaceLoadEvent = CSSFontFaceLoadEvent { unCSSFontFaceLoadEvent :: JSVal }
 
 instance Eq (CSSFontFaceLoadEvent) where
   (CSSFontFaceLoadEvent a) == (CSSFontFaceLoadEvent b) = js_eq a b
@@ -3371,12 +3371,12 @@ instance PFromJSVal CSSFontFaceLoadEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSFontFaceLoadEvent where
-  toJSRef = return . unCSSFontFaceLoadEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSFontFaceLoadEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSFontFaceLoadEvent where
-  fromJSRef = return . fmap CSSFontFaceLoadEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSFontFaceLoadEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent CSSFontFaceLoadEvent
 instance IsGObject CSSFontFaceLoadEvent where
@@ -3399,7 +3399,7 @@ foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFont
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceRule Mozilla CSSFontFaceRule documentation>
-newtype CSSFontFaceRule = CSSFontFaceRule { unCSSFontFaceRule :: JSRef }
+newtype CSSFontFaceRule = CSSFontFaceRule { unCSSFontFaceRule :: JSVal }
 
 instance Eq (CSSFontFaceRule) where
   (CSSFontFaceRule a) == (CSSFontFaceRule b) = js_eq a b
@@ -3413,12 +3413,12 @@ instance PFromJSVal CSSFontFaceRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSFontFaceRule where
-  toJSRef = return . unCSSFontFaceRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSFontFaceRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSFontFaceRule where
-  fromJSRef = return . fmap CSSFontFaceRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSFontFaceRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSFontFaceRule
 instance IsGObject CSSFontFaceRule where
@@ -3441,7 +3441,7 @@ foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceR
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule Mozilla CSSImportRule documentation>
-newtype CSSImportRule = CSSImportRule { unCSSImportRule :: JSRef }
+newtype CSSImportRule = CSSImportRule { unCSSImportRule :: JSVal }
 
 instance Eq (CSSImportRule) where
   (CSSImportRule a) == (CSSImportRule b) = js_eq a b
@@ -3455,12 +3455,12 @@ instance PFromJSVal CSSImportRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSImportRule where
-  toJSRef = return . unCSSImportRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSImportRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSImportRule where
-  fromJSRef = return . fmap CSSImportRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSImportRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSImportRule
 instance IsGObject CSSImportRule where
@@ -3483,7 +3483,7 @@ foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule 
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule Mozilla CSSKeyframeRule documentation>
-newtype CSSKeyframeRule = CSSKeyframeRule { unCSSKeyframeRule :: JSRef }
+newtype CSSKeyframeRule = CSSKeyframeRule { unCSSKeyframeRule :: JSVal }
 
 instance Eq (CSSKeyframeRule) where
   (CSSKeyframeRule a) == (CSSKeyframeRule b) = js_eq a b
@@ -3497,12 +3497,12 @@ instance PFromJSVal CSSKeyframeRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSKeyframeRule where
-  toJSRef = return . unCSSKeyframeRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSKeyframeRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSKeyframeRule where
-  fromJSRef = return . fmap CSSKeyframeRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSKeyframeRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSKeyframeRule
 instance IsGObject CSSKeyframeRule where
@@ -3525,7 +3525,7 @@ foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeR
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule Mozilla CSSKeyframesRule documentation>
-newtype CSSKeyframesRule = CSSKeyframesRule { unCSSKeyframesRule :: JSRef }
+newtype CSSKeyframesRule = CSSKeyframesRule { unCSSKeyframesRule :: JSVal }
 
 instance Eq (CSSKeyframesRule) where
   (CSSKeyframesRule a) == (CSSKeyframesRule b) = js_eq a b
@@ -3539,12 +3539,12 @@ instance PFromJSVal CSSKeyframesRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSKeyframesRule where
-  toJSRef = return . unCSSKeyframesRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSKeyframesRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSKeyframesRule where
-  fromJSRef = return . fmap CSSKeyframesRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSKeyframesRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSKeyframesRule
 instance IsGObject CSSKeyframesRule where
@@ -3567,7 +3567,7 @@ foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframe
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule Mozilla CSSMediaRule documentation>
-newtype CSSMediaRule = CSSMediaRule { unCSSMediaRule :: JSRef }
+newtype CSSMediaRule = CSSMediaRule { unCSSMediaRule :: JSVal }
 
 instance Eq (CSSMediaRule) where
   (CSSMediaRule a) == (CSSMediaRule b) = js_eq a b
@@ -3581,12 +3581,12 @@ instance PFromJSVal CSSMediaRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSMediaRule where
-  toJSRef = return . unCSSMediaRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSMediaRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSMediaRule where
-  fromJSRef = return . fmap CSSMediaRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSMediaRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSMediaRule
 instance IsGObject CSSMediaRule where
@@ -3609,7 +3609,7 @@ foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule ::
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule Mozilla CSSPageRule documentation>
-newtype CSSPageRule = CSSPageRule { unCSSPageRule :: JSRef }
+newtype CSSPageRule = CSSPageRule { unCSSPageRule :: JSVal }
 
 instance Eq (CSSPageRule) where
   (CSSPageRule a) == (CSSPageRule b) = js_eq a b
@@ -3623,12 +3623,12 @@ instance PFromJSVal CSSPageRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSPageRule where
-  toJSRef = return . unCSSPageRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSPageRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSPageRule where
-  fromJSRef = return . fmap CSSPageRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSPageRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSPageRule
 instance IsGObject CSSPageRule where
@@ -3651,7 +3651,7 @@ foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule :: G
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue Mozilla CSSPrimitiveValue documentation>
-newtype CSSPrimitiveValue = CSSPrimitiveValue { unCSSPrimitiveValue :: JSRef }
+newtype CSSPrimitiveValue = CSSPrimitiveValue { unCSSPrimitiveValue :: JSVal }
 
 instance Eq (CSSPrimitiveValue) where
   (CSSPrimitiveValue a) == (CSSPrimitiveValue b) = js_eq a b
@@ -3665,12 +3665,12 @@ instance PFromJSVal CSSPrimitiveValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSPrimitiveValue where
-  toJSRef = return . unCSSPrimitiveValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSPrimitiveValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSPrimitiveValue where
-  fromJSRef = return . fmap CSSPrimitiveValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSPrimitiveValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSValue CSSPrimitiveValue
 instance IsGObject CSSPrimitiveValue where
@@ -3690,7 +3690,7 @@ foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimiti
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule Mozilla CSSRule documentation>
-newtype CSSRule = CSSRule { unCSSRule :: JSRef }
+newtype CSSRule = CSSRule { unCSSRule :: JSVal }
 
 instance Eq (CSSRule) where
   (CSSRule a) == (CSSRule b) = js_eq a b
@@ -3704,12 +3704,12 @@ instance PFromJSVal CSSRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSRule where
-  toJSRef = return . unCSSRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSRule where
-  fromJSRef = return . fmap CSSRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsCSSRule o
 toCSSRule :: IsCSSRule o => o -> CSSRule
@@ -3735,7 +3735,7 @@ type IsCSSRule o = CSSRuleClass o
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList Mozilla CSSRuleList documentation>
-newtype CSSRuleList = CSSRuleList { unCSSRuleList :: JSRef }
+newtype CSSRuleList = CSSRuleList { unCSSRuleList :: JSVal }
 
 instance Eq (CSSRuleList) where
   (CSSRuleList a) == (CSSRuleList b) = js_eq a b
@@ -3749,12 +3749,12 @@ instance PFromJSVal CSSRuleList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSRuleList where
-  toJSRef = return . unCSSRuleList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSRuleList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSRuleList where
-  fromJSRef = return . fmap CSSRuleList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSRuleList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CSSRuleList where
   toGObject = GObject . unCSSRuleList
@@ -3775,7 +3775,7 @@ type IsCSSRuleList o = CSSRuleListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration Mozilla CSSStyleDeclaration documentation>
-newtype CSSStyleDeclaration = CSSStyleDeclaration { unCSSStyleDeclaration :: JSRef }
+newtype CSSStyleDeclaration = CSSStyleDeclaration { unCSSStyleDeclaration :: JSVal }
 
 instance Eq (CSSStyleDeclaration) where
   (CSSStyleDeclaration a) == (CSSStyleDeclaration b) = js_eq a b
@@ -3789,12 +3789,12 @@ instance PFromJSVal CSSStyleDeclaration where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSStyleDeclaration where
-  toJSRef = return . unCSSStyleDeclaration
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSStyleDeclaration
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSStyleDeclaration where
-  fromJSRef = return . fmap CSSStyleDeclaration . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSStyleDeclaration . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CSSStyleDeclaration where
   toGObject = GObject . unCSSStyleDeclaration
@@ -3818,7 +3818,7 @@ type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule Mozilla CSSStyleRule documentation>
-newtype CSSStyleRule = CSSStyleRule { unCSSStyleRule :: JSRef }
+newtype CSSStyleRule = CSSStyleRule { unCSSStyleRule :: JSVal }
 
 instance Eq (CSSStyleRule) where
   (CSSStyleRule a) == (CSSStyleRule b) = js_eq a b
@@ -3832,12 +3832,12 @@ instance PFromJSVal CSSStyleRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSStyleRule where
-  toJSRef = return . unCSSStyleRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSStyleRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSStyleRule where
-  fromJSRef = return . fmap CSSStyleRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSStyleRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSStyleRule
 instance IsGObject CSSStyleRule where
@@ -3860,7 +3860,7 @@ foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule ::
 --     * "GHCJS.DOM.StyleSheet"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet Mozilla CSSStyleSheet documentation>
-newtype CSSStyleSheet = CSSStyleSheet { unCSSStyleSheet :: JSRef }
+newtype CSSStyleSheet = CSSStyleSheet { unCSSStyleSheet :: JSVal }
 
 instance Eq (CSSStyleSheet) where
   (CSSStyleSheet a) == (CSSStyleSheet b) = js_eq a b
@@ -3874,12 +3874,12 @@ instance PFromJSVal CSSStyleSheet where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSStyleSheet where
-  toJSRef = return . unCSSStyleSheet
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSStyleSheet
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSStyleSheet where
-  fromJSRef = return . fmap CSSStyleSheet . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSStyleSheet . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsStyleSheet CSSStyleSheet
 instance IsGObject CSSStyleSheet where
@@ -3904,7 +3904,7 @@ type IsCSSStyleSheet o = CSSStyleSheetClass o
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule Mozilla CSSSupportsRule documentation>
-newtype CSSSupportsRule = CSSSupportsRule { unCSSSupportsRule :: JSRef }
+newtype CSSSupportsRule = CSSSupportsRule { unCSSSupportsRule :: JSVal }
 
 instance Eq (CSSSupportsRule) where
   (CSSSupportsRule a) == (CSSSupportsRule b) = js_eq a b
@@ -3918,12 +3918,12 @@ instance PFromJSVal CSSSupportsRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSSupportsRule where
-  toJSRef = return . unCSSSupportsRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSSupportsRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSSupportsRule where
-  fromJSRef = return . fmap CSSSupportsRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSSupportsRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSSupportsRule
 instance IsGObject CSSSupportsRule where
@@ -3946,7 +3946,7 @@ foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsR
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSUnknownRule Mozilla CSSUnknownRule documentation>
-newtype CSSUnknownRule = CSSUnknownRule { unCSSUnknownRule :: JSRef }
+newtype CSSUnknownRule = CSSUnknownRule { unCSSUnknownRule :: JSVal }
 
 instance Eq (CSSUnknownRule) where
   (CSSUnknownRule a) == (CSSUnknownRule b) = js_eq a b
@@ -3960,12 +3960,12 @@ instance PFromJSVal CSSUnknownRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSUnknownRule where
-  toJSRef = return . unCSSUnknownRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSUnknownRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSUnknownRule where
-  fromJSRef = return . fmap CSSUnknownRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSUnknownRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule CSSUnknownRule
 instance IsGObject CSSUnknownRule where
@@ -3985,7 +3985,7 @@ foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRul
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue Mozilla CSSValue documentation>
-newtype CSSValue = CSSValue { unCSSValue :: JSRef }
+newtype CSSValue = CSSValue { unCSSValue :: JSVal }
 
 instance Eq (CSSValue) where
   (CSSValue a) == (CSSValue b) = js_eq a b
@@ -3999,12 +3999,12 @@ instance PFromJSVal CSSValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSValue where
-  toJSRef = return . unCSSValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSValue where
-  fromJSRef = return . fmap CSSValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsCSSValue o
 toCSSValue :: IsCSSValue o => o -> CSSValue
@@ -4033,7 +4033,7 @@ type IsCSSValue o = CSSValueClass o
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValueList Mozilla CSSValueList documentation>
-newtype CSSValueList = CSSValueList { unCSSValueList :: JSRef }
+newtype CSSValueList = CSSValueList { unCSSValueList :: JSVal }
 
 instance Eq (CSSValueList) where
   (CSSValueList a) == (CSSValueList b) = js_eq a b
@@ -4047,12 +4047,12 @@ instance PFromJSVal CSSValueList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CSSValueList where
-  toJSRef = return . unCSSValueList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCSSValueList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CSSValueList where
-  fromJSRef = return . fmap CSSValueList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CSSValueList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsCSSValue o => IsCSSValueList o
 toCSSValueList :: IsCSSValueList o => o -> CSSValueList
@@ -4077,7 +4077,7 @@ foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList ::
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient Mozilla CanvasGradient documentation>
-newtype CanvasGradient = CanvasGradient { unCanvasGradient :: JSRef }
+newtype CanvasGradient = CanvasGradient { unCanvasGradient :: JSVal }
 
 instance Eq (CanvasGradient) where
   (CanvasGradient a) == (CanvasGradient b) = js_eq a b
@@ -4091,12 +4091,12 @@ instance PFromJSVal CanvasGradient where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasGradient where
-  toJSRef = return . unCanvasGradient
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasGradient
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasGradient where
-  fromJSRef = return . fmap CanvasGradient . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasGradient . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasGradient where
   toGObject = GObject . unCanvasGradient
@@ -4115,7 +4115,7 @@ foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradien
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern Mozilla CanvasPattern documentation>
-newtype CanvasPattern = CanvasPattern { unCanvasPattern :: JSRef }
+newtype CanvasPattern = CanvasPattern { unCanvasPattern :: JSVal }
 
 instance Eq (CanvasPattern) where
   (CanvasPattern a) == (CanvasPattern b) = js_eq a b
@@ -4129,12 +4129,12 @@ instance PFromJSVal CanvasPattern where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasPattern where
-  toJSRef = return . unCanvasPattern
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasPattern
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasPattern where
-  fromJSRef = return . fmap CanvasPattern . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasPattern . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasPattern where
   toGObject = GObject . unCanvasPattern
@@ -4153,7 +4153,7 @@ foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasProxy Mozilla CanvasProxy documentation>
-newtype CanvasProxy = CanvasProxy { unCanvasProxy :: JSRef }
+newtype CanvasProxy = CanvasProxy { unCanvasProxy :: JSVal }
 
 instance Eq (CanvasProxy) where
   (CanvasProxy a) == (CanvasProxy b) = js_eq a b
@@ -4167,12 +4167,12 @@ instance PFromJSVal CanvasProxy where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasProxy where
-  toJSRef = return . unCanvasProxy
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasProxy
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasProxy where
-  fromJSRef = return . fmap CanvasProxy . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasProxy . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasProxy where
   toGObject = GObject . unCanvasProxy
@@ -4191,7 +4191,7 @@ foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy :: G
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext Mozilla CanvasRenderingContext documentation>
-newtype CanvasRenderingContext = CanvasRenderingContext { unCanvasRenderingContext :: JSRef }
+newtype CanvasRenderingContext = CanvasRenderingContext { unCanvasRenderingContext :: JSVal }
 
 instance Eq (CanvasRenderingContext) where
   (CanvasRenderingContext a) == (CanvasRenderingContext b) = js_eq a b
@@ -4205,12 +4205,12 @@ instance PFromJSVal CanvasRenderingContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasRenderingContext where
-  toJSRef = return . unCanvasRenderingContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasRenderingContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasRenderingContext where
-  fromJSRef = return . fmap CanvasRenderingContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasRenderingContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsCanvasRenderingContext o
 toCanvasRenderingContext :: IsCanvasRenderingContext o => o -> CanvasRenderingContext
@@ -4237,7 +4237,7 @@ foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanva
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D Mozilla CanvasRenderingContext2D documentation>
-newtype CanvasRenderingContext2D = CanvasRenderingContext2D { unCanvasRenderingContext2D :: JSRef }
+newtype CanvasRenderingContext2D = CanvasRenderingContext2D { unCanvasRenderingContext2D :: JSVal }
 
 instance Eq (CanvasRenderingContext2D) where
   (CanvasRenderingContext2D a) == (CanvasRenderingContext2D b) = js_eq a b
@@ -4251,12 +4251,12 @@ instance PFromJSVal CanvasRenderingContext2D where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CanvasRenderingContext2D where
-  toJSRef = return . unCanvasRenderingContext2D
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCanvasRenderingContext2D
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CanvasRenderingContext2D where
-  fromJSRef = return . fmap CanvasRenderingContext2D . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CanvasRenderingContext2D . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCanvasRenderingContext CanvasRenderingContext2D
 instance IsGObject CanvasRenderingContext2D where
@@ -4276,7 +4276,7 @@ foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCan
 -- | Functions for this inteface are in "GHCJS.DOM.CapabilityRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange Mozilla CapabilityRange documentation>
-newtype CapabilityRange = CapabilityRange { unCapabilityRange :: JSRef }
+newtype CapabilityRange = CapabilityRange { unCapabilityRange :: JSVal }
 
 instance Eq (CapabilityRange) where
   (CapabilityRange a) == (CapabilityRange b) = js_eq a b
@@ -4290,12 +4290,12 @@ instance PFromJSVal CapabilityRange where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CapabilityRange where
-  toJSRef = return . unCapabilityRange
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCapabilityRange
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CapabilityRange where
-  fromJSRef = return . fmap CapabilityRange . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CapabilityRange . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CapabilityRange where
   toGObject = GObject . unCapabilityRange
@@ -4318,7 +4318,7 @@ foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRa
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode Mozilla ChannelMergerNode documentation>
-newtype ChannelMergerNode = ChannelMergerNode { unChannelMergerNode :: JSRef }
+newtype ChannelMergerNode = ChannelMergerNode { unChannelMergerNode :: JSVal }
 
 instance Eq (ChannelMergerNode) where
   (ChannelMergerNode a) == (ChannelMergerNode b) = js_eq a b
@@ -4332,12 +4332,12 @@ instance PFromJSVal ChannelMergerNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ChannelMergerNode where
-  toJSRef = return . unChannelMergerNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unChannelMergerNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ChannelMergerNode where
-  fromJSRef = return . fmap ChannelMergerNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ChannelMergerNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode ChannelMergerNode
 instance IsEventTarget ChannelMergerNode
@@ -4362,7 +4362,7 @@ foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMer
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode Mozilla ChannelSplitterNode documentation>
-newtype ChannelSplitterNode = ChannelSplitterNode { unChannelSplitterNode :: JSRef }
+newtype ChannelSplitterNode = ChannelSplitterNode { unChannelSplitterNode :: JSVal }
 
 instance Eq (ChannelSplitterNode) where
   (ChannelSplitterNode a) == (ChannelSplitterNode b) = js_eq a b
@@ -4376,12 +4376,12 @@ instance PFromJSVal ChannelSplitterNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ChannelSplitterNode where
-  toJSRef = return . unChannelSplitterNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unChannelSplitterNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ChannelSplitterNode where
-  fromJSRef = return . fmap ChannelSplitterNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ChannelSplitterNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode ChannelSplitterNode
 instance IsEventTarget ChannelSplitterNode
@@ -4406,7 +4406,7 @@ foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelS
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData Mozilla CharacterData documentation>
-newtype CharacterData = CharacterData { unCharacterData :: JSRef }
+newtype CharacterData = CharacterData { unCharacterData :: JSVal }
 
 instance Eq (CharacterData) where
   (CharacterData a) == (CharacterData b) = js_eq a b
@@ -4420,12 +4420,12 @@ instance PFromJSVal CharacterData where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CharacterData where
-  toJSRef = return . unCharacterData
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCharacterData
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CharacterData where
-  fromJSRef = return . fmap CharacterData . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CharacterData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsNode o => IsCharacterData o
 toCharacterData :: IsCharacterData o => o -> CharacterData
@@ -4453,7 +4453,7 @@ type IsCharacterData o = CharacterDataClass o
 -- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode Mozilla ChildNode documentation>
-newtype ChildNode = ChildNode { unChildNode :: JSRef }
+newtype ChildNode = ChildNode { unChildNode :: JSVal }
 
 instance Eq (ChildNode) where
   (ChildNode a) == (ChildNode b) = js_eq a b
@@ -4467,12 +4467,12 @@ instance PFromJSVal ChildNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ChildNode where
-  toJSRef = return . unChildNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unChildNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ChildNode where
-  fromJSRef = return . fmap ChildNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ChildNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ChildNode where
   toGObject = GObject . unChildNode
@@ -4491,7 +4491,7 @@ foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect Mozilla ClientRect documentation>
-newtype ClientRect = ClientRect { unClientRect :: JSRef }
+newtype ClientRect = ClientRect { unClientRect :: JSVal }
 
 instance Eq (ClientRect) where
   (ClientRect a) == (ClientRect b) = js_eq a b
@@ -4505,12 +4505,12 @@ instance PFromJSVal ClientRect where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ClientRect where
-  toJSRef = return . unClientRect
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unClientRect
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ClientRect where
-  fromJSRef = return . fmap ClientRect . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ClientRect . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ClientRect where
   toGObject = GObject . unClientRect
@@ -4529,7 +4529,7 @@ foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList Mozilla ClientRectList documentation>
-newtype ClientRectList = ClientRectList { unClientRectList :: JSRef }
+newtype ClientRectList = ClientRectList { unClientRectList :: JSVal }
 
 instance Eq (ClientRectList) where
   (ClientRectList a) == (ClientRectList b) = js_eq a b
@@ -4543,12 +4543,12 @@ instance PFromJSVal ClientRectList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ClientRectList where
-  toJSRef = return . unClientRectList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unClientRectList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ClientRectList where
-  fromJSRef = return . fmap ClientRectList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ClientRectList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ClientRectList where
   toGObject = GObject . unClientRectList
@@ -4570,7 +4570,7 @@ foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectLis
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent Mozilla CloseEvent documentation>
-newtype CloseEvent = CloseEvent { unCloseEvent :: JSRef }
+newtype CloseEvent = CloseEvent { unCloseEvent :: JSVal }
 
 instance Eq (CloseEvent) where
   (CloseEvent a) == (CloseEvent b) = js_eq a b
@@ -4584,12 +4584,12 @@ instance PFromJSVal CloseEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CloseEvent where
-  toJSRef = return . unCloseEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCloseEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CloseEvent where
-  fromJSRef = return . fmap CloseEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CloseEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent CloseEvent
 instance IsGObject CloseEvent where
@@ -4609,7 +4609,7 @@ foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost Mozilla CommandLineAPIHost documentation>
-newtype CommandLineAPIHost = CommandLineAPIHost { unCommandLineAPIHost :: JSRef }
+newtype CommandLineAPIHost = CommandLineAPIHost { unCommandLineAPIHost :: JSVal }
 
 instance Eq (CommandLineAPIHost) where
   (CommandLineAPIHost a) == (CommandLineAPIHost b) = js_eq a b
@@ -4623,12 +4623,12 @@ instance PFromJSVal CommandLineAPIHost where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CommandLineAPIHost where
-  toJSRef = return . unCommandLineAPIHost
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCommandLineAPIHost
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CommandLineAPIHost where
-  fromJSRef = return . fmap CommandLineAPIHost . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CommandLineAPIHost . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CommandLineAPIHost where
   toGObject = GObject . unCommandLineAPIHost
@@ -4652,7 +4652,7 @@ foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLi
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation>
-newtype Comment = Comment { unComment :: JSRef }
+newtype Comment = Comment { unComment :: JSVal }
 
 instance Eq (Comment) where
   (Comment a) == (Comment b) = js_eq a b
@@ -4666,12 +4666,12 @@ instance PFromJSVal Comment where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Comment where
-  toJSRef = return . unComment
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unComment
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Comment where
-  fromJSRef = return . fmap Comment . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Comment . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCharacterData Comment
 instance IsNode Comment
@@ -4699,7 +4699,7 @@ type IsComment o = CommentClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent Mozilla CompositionEvent documentation>
-newtype CompositionEvent = CompositionEvent { unCompositionEvent :: JSRef }
+newtype CompositionEvent = CompositionEvent { unCompositionEvent :: JSVal }
 
 instance Eq (CompositionEvent) where
   (CompositionEvent a) == (CompositionEvent b) = js_eq a b
@@ -4713,12 +4713,12 @@ instance PFromJSVal CompositionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CompositionEvent where
-  toJSRef = return . unCompositionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCompositionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CompositionEvent where
-  fromJSRef = return . fmap CompositionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CompositionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent CompositionEvent
 instance IsEvent CompositionEvent
@@ -4743,7 +4743,7 @@ foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeComposition
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode Mozilla ConvolverNode documentation>
-newtype ConvolverNode = ConvolverNode { unConvolverNode :: JSRef }
+newtype ConvolverNode = ConvolverNode { unConvolverNode :: JSVal }
 
 instance Eq (ConvolverNode) where
   (ConvolverNode a) == (ConvolverNode b) = js_eq a b
@@ -4757,12 +4757,12 @@ instance PFromJSVal ConvolverNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ConvolverNode where
-  toJSRef = return . unConvolverNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unConvolverNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ConvolverNode where
-  fromJSRef = return . fmap ConvolverNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ConvolverNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode ConvolverNode
 instance IsEventTarget ConvolverNode
@@ -4783,7 +4783,7 @@ foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode 
 -- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates Mozilla Coordinates documentation>
-newtype Coordinates = Coordinates { unCoordinates :: JSRef }
+newtype Coordinates = Coordinates { unCoordinates :: JSVal }
 
 instance Eq (Coordinates) where
   (Coordinates a) == (Coordinates b) = js_eq a b
@@ -4797,12 +4797,12 @@ instance PFromJSVal Coordinates where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Coordinates where
-  toJSRef = return . unCoordinates
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCoordinates
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Coordinates where
-  fromJSRef = return . fmap Coordinates . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Coordinates . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Coordinates where
   toGObject = GObject . unCoordinates
@@ -4821,7 +4821,7 @@ foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates :: G
 -- | Functions for this inteface are in "GHCJS.DOM.Counter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Counter Mozilla Counter documentation>
-newtype Counter = Counter { unCounter :: JSRef }
+newtype Counter = Counter { unCounter :: JSVal }
 
 instance Eq (Counter) where
   (Counter a) == (Counter b) = js_eq a b
@@ -4835,12 +4835,12 @@ instance PFromJSVal Counter where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Counter where
-  toJSRef = return . unCounter
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCounter
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Counter where
-  fromJSRef = return . fmap Counter . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Counter . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Counter where
   toGObject = GObject . unCounter
@@ -4859,7 +4859,7 @@ foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Crypto Mozilla Crypto documentation>
-newtype Crypto = Crypto { unCrypto :: JSRef }
+newtype Crypto = Crypto { unCrypto :: JSVal }
 
 instance Eq (Crypto) where
   (Crypto a) == (Crypto b) = js_eq a b
@@ -4873,12 +4873,12 @@ instance PFromJSVal Crypto where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Crypto where
-  toJSRef = return . unCrypto
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCrypto
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Crypto where
-  fromJSRef = return . fmap Crypto . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Crypto . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Crypto where
   toGObject = GObject . unCrypto
@@ -4897,7 +4897,7 @@ foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey Mozilla CryptoKey documentation>
-newtype CryptoKey = CryptoKey { unCryptoKey :: JSRef }
+newtype CryptoKey = CryptoKey { unCryptoKey :: JSVal }
 
 instance Eq (CryptoKey) where
   (CryptoKey a) == (CryptoKey b) = js_eq a b
@@ -4911,12 +4911,12 @@ instance PFromJSVal CryptoKey where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CryptoKey where
-  toJSRef = return . unCryptoKey
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCryptoKey
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CryptoKey where
-  fromJSRef = return . fmap CryptoKey . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CryptoKey . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CryptoKey where
   toGObject = GObject . unCryptoKey
@@ -4935,7 +4935,7 @@ foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair Mozilla CryptoKeyPair documentation>
-newtype CryptoKeyPair = CryptoKeyPair { unCryptoKeyPair :: JSRef }
+newtype CryptoKeyPair = CryptoKeyPair { unCryptoKeyPair :: JSVal }
 
 instance Eq (CryptoKeyPair) where
   (CryptoKeyPair a) == (CryptoKeyPair b) = js_eq a b
@@ -4949,12 +4949,12 @@ instance PFromJSVal CryptoKeyPair where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CryptoKeyPair where
-  toJSRef = return . unCryptoKeyPair
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCryptoKeyPair
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CryptoKeyPair where
-  fromJSRef = return . fmap CryptoKeyPair . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CryptoKeyPair . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject CryptoKeyPair where
   toGObject = GObject . unCryptoKeyPair
@@ -4976,7 +4976,7 @@ foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent Mozilla CustomEvent documentation>
-newtype CustomEvent = CustomEvent { unCustomEvent :: JSRef }
+newtype CustomEvent = CustomEvent { unCustomEvent :: JSVal }
 
 instance Eq (CustomEvent) where
   (CustomEvent a) == (CustomEvent b) = js_eq a b
@@ -4990,12 +4990,12 @@ instance PFromJSVal CustomEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal CustomEvent where
-  toJSRef = return . unCustomEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unCustomEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal CustomEvent where
-  fromJSRef = return . fmap CustomEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap CustomEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent CustomEvent
 instance IsGObject CustomEvent where
@@ -5015,7 +5015,7 @@ foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent :: G
 -- | Functions for this inteface are in "GHCJS.DOM.DOMError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMError Mozilla DOMError documentation>
-newtype DOMError = DOMError { unDOMError :: JSRef }
+newtype DOMError = DOMError { unDOMError :: JSVal }
 
 instance Eq (DOMError) where
   (DOMError a) == (DOMError b) = js_eq a b
@@ -5029,12 +5029,12 @@ instance PFromJSVal DOMError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMError where
-  toJSRef = return . unDOMError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMError where
-  fromJSRef = return . fmap DOMError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsDOMError o
 toDOMError :: IsDOMError o => o -> DOMError
@@ -5058,7 +5058,7 @@ foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation Mozilla DOMImplementation documentation>
-newtype DOMImplementation = DOMImplementation { unDOMImplementation :: JSRef }
+newtype DOMImplementation = DOMImplementation { unDOMImplementation :: JSVal }
 
 instance Eq (DOMImplementation) where
   (DOMImplementation a) == (DOMImplementation b) = js_eq a b
@@ -5072,12 +5072,12 @@ instance PFromJSVal DOMImplementation where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMImplementation where
-  toJSRef = return . unDOMImplementation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMImplementation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMImplementation where
-  fromJSRef = return . fmap DOMImplementation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMImplementation . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMImplementation where
   toGObject = GObject . unDOMImplementation
@@ -5098,7 +5098,7 @@ type IsDOMImplementation o = DOMImplementationClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection Mozilla WebKitNamedFlowCollection documentation>
-newtype DOMNamedFlowCollection = DOMNamedFlowCollection { unDOMNamedFlowCollection :: JSRef }
+newtype DOMNamedFlowCollection = DOMNamedFlowCollection { unDOMNamedFlowCollection :: JSVal }
 
 instance Eq (DOMNamedFlowCollection) where
   (DOMNamedFlowCollection a) == (DOMNamedFlowCollection b) = js_eq a b
@@ -5112,12 +5112,12 @@ instance PFromJSVal DOMNamedFlowCollection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMNamedFlowCollection where
-  toJSRef = return . unDOMNamedFlowCollection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMNamedFlowCollection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMNamedFlowCollection where
-  fromJSRef = return . fmap DOMNamedFlowCollection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMNamedFlowCollection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMNamedFlowCollection where
   toGObject = GObject . unDOMNamedFlowCollection
@@ -5140,7 +5140,7 @@ type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation>
-newtype DOMParser = DOMParser { unDOMParser :: JSRef }
+newtype DOMParser = DOMParser { unDOMParser :: JSVal }
 
 instance Eq (DOMParser) where
   (DOMParser a) == (DOMParser b) = js_eq a b
@@ -5154,12 +5154,12 @@ instance PFromJSVal DOMParser where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMParser where
-  toJSRef = return . unDOMParser
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMParser
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMParser where
-  fromJSRef = return . fmap DOMParser . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMParser . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMParser where
   toGObject = GObject . unDOMParser
@@ -5181,7 +5181,7 @@ foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser :: GType
 --     * "GHCJS.DOM.DOMTokenList"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMSettableTokenList Mozilla DOMSettableTokenList documentation>
-newtype DOMSettableTokenList = DOMSettableTokenList { unDOMSettableTokenList :: JSRef }
+newtype DOMSettableTokenList = DOMSettableTokenList { unDOMSettableTokenList :: JSVal }
 
 instance Eq (DOMSettableTokenList) where
   (DOMSettableTokenList a) == (DOMSettableTokenList b) = js_eq a b
@@ -5195,12 +5195,12 @@ instance PFromJSVal DOMSettableTokenList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMSettableTokenList where
-  toJSRef = return . unDOMSettableTokenList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMSettableTokenList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMSettableTokenList where
-  fromJSRef = return . fmap DOMSettableTokenList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMSettableTokenList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsDOMTokenList DOMSettableTokenList
 instance IsGObject DOMSettableTokenList where
@@ -5222,7 +5222,7 @@ type IsDOMSettableTokenList o = DOMSettableTokenListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList Mozilla DOMStringList documentation>
-newtype DOMStringList = DOMStringList { unDOMStringList :: JSRef }
+newtype DOMStringList = DOMStringList { unDOMStringList :: JSVal }
 
 instance Eq (DOMStringList) where
   (DOMStringList a) == (DOMStringList b) = js_eq a b
@@ -5236,12 +5236,12 @@ instance PFromJSVal DOMStringList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMStringList where
-  toJSRef = return . unDOMStringList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMStringList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMStringList where
-  fromJSRef = return . fmap DOMStringList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMStringList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMStringList where
   toGObject = GObject . unDOMStringList
@@ -5262,7 +5262,7 @@ type IsDOMStringList o = DOMStringListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringMap Mozilla DOMStringMap documentation>
-newtype DOMStringMap = DOMStringMap { unDOMStringMap :: JSRef }
+newtype DOMStringMap = DOMStringMap { unDOMStringMap :: JSVal }
 
 instance Eq (DOMStringMap) where
   (DOMStringMap a) == (DOMStringMap b) = js_eq a b
@@ -5276,12 +5276,12 @@ instance PFromJSVal DOMStringMap where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMStringMap where
-  toJSRef = return . unDOMStringMap
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMStringMap
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMStringMap where
-  fromJSRef = return . fmap DOMStringMap . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMStringMap . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMStringMap where
   toGObject = GObject . unDOMStringMap
@@ -5300,7 +5300,7 @@ foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap ::
 -- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList Mozilla DOMTokenList documentation>
-newtype DOMTokenList = DOMTokenList { unDOMTokenList :: JSRef }
+newtype DOMTokenList = DOMTokenList { unDOMTokenList :: JSVal }
 
 instance Eq (DOMTokenList) where
   (DOMTokenList a) == (DOMTokenList b) = js_eq a b
@@ -5314,12 +5314,12 @@ instance PFromJSVal DOMTokenList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DOMTokenList where
-  toJSRef = return . unDOMTokenList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDOMTokenList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DOMTokenList where
-  fromJSRef = return . fmap DOMTokenList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DOMTokenList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsDOMTokenList o
 toDOMTokenList :: IsDOMTokenList o => o -> DOMTokenList
@@ -5349,7 +5349,7 @@ type IsDOMTokenList o = DOMTokenListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation>
-newtype DataCue = DataCue { unDataCue :: JSRef }
+newtype DataCue = DataCue { unDataCue :: JSVal }
 
 instance Eq (DataCue) where
   (DataCue a) == (DataCue b) = js_eq a b
@@ -5363,12 +5363,12 @@ instance PFromJSVal DataCue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DataCue where
-  toJSRef = return . unDataCue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDataCue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DataCue where
-  fromJSRef = return . fmap DataCue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DataCue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsTextTrackCue DataCue
 instance IsEventTarget DataCue
@@ -5389,7 +5389,7 @@ foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer Mozilla DataTransfer documentation>
-newtype DataTransfer = DataTransfer { unDataTransfer :: JSRef }
+newtype DataTransfer = DataTransfer { unDataTransfer :: JSVal }
 
 instance Eq (DataTransfer) where
   (DataTransfer a) == (DataTransfer b) = js_eq a b
@@ -5403,12 +5403,12 @@ instance PFromJSVal DataTransfer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DataTransfer where
-  toJSRef = return . unDataTransfer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDataTransfer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DataTransfer where
-  fromJSRef = return . fmap DataTransfer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DataTransfer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransfer where
   toGObject = GObject . unDataTransfer
@@ -5427,7 +5427,7 @@ foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer ::
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem Mozilla DataTransferItem documentation>
-newtype DataTransferItem = DataTransferItem { unDataTransferItem :: JSRef }
+newtype DataTransferItem = DataTransferItem { unDataTransferItem :: JSVal }
 
 instance Eq (DataTransferItem) where
   (DataTransferItem a) == (DataTransferItem b) = js_eq a b
@@ -5441,12 +5441,12 @@ instance PFromJSVal DataTransferItem where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DataTransferItem where
-  toJSRef = return . unDataTransferItem
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDataTransferItem
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DataTransferItem where
-  fromJSRef = return . fmap DataTransferItem . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DataTransferItem . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransferItem where
   toGObject = GObject . unDataTransferItem
@@ -5465,7 +5465,7 @@ foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransfe
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList Mozilla DataTransferItemList documentation>
-newtype DataTransferItemList = DataTransferItemList { unDataTransferItemList :: JSRef }
+newtype DataTransferItemList = DataTransferItemList { unDataTransferItemList :: JSVal }
 
 instance Eq (DataTransferItemList) where
   (DataTransferItemList a) == (DataTransferItemList b) = js_eq a b
@@ -5479,12 +5479,12 @@ instance PFromJSVal DataTransferItemList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DataTransferItemList where
-  toJSRef = return . unDataTransferItemList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDataTransferItemList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DataTransferItemList where
-  fromJSRef = return . fmap DataTransferItemList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DataTransferItemList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransferItemList where
   toGObject = GObject . unDataTransferItemList
@@ -5503,7 +5503,7 @@ foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTra
 -- | Functions for this inteface are in "GHCJS.DOM.Database".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Database Mozilla Database documentation>
-newtype Database = Database { unDatabase :: JSRef }
+newtype Database = Database { unDatabase :: JSVal }
 
 instance Eq (Database) where
   (Database a) == (Database b) = js_eq a b
@@ -5517,12 +5517,12 @@ instance PFromJSVal Database where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Database where
-  toJSRef = return . unDatabase
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDatabase
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Database where
-  fromJSRef = return . fmap Database . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Database . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Database where
   toGObject = GObject . unDatabase
@@ -5545,7 +5545,7 @@ foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope Mozilla DedicatedWorkerGlobalScope documentation>
-newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope { unDedicatedWorkerGlobalScope :: JSRef }
+newtype DedicatedWorkerGlobalScope = DedicatedWorkerGlobalScope { unDedicatedWorkerGlobalScope :: JSVal }
 
 instance Eq (DedicatedWorkerGlobalScope) where
   (DedicatedWorkerGlobalScope a) == (DedicatedWorkerGlobalScope b) = js_eq a b
@@ -5559,12 +5559,12 @@ instance PFromJSVal DedicatedWorkerGlobalScope where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DedicatedWorkerGlobalScope where
-  toJSRef = return . unDedicatedWorkerGlobalScope
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDedicatedWorkerGlobalScope
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DedicatedWorkerGlobalScope where
-  fromJSRef = return . fmap DedicatedWorkerGlobalScope . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DedicatedWorkerGlobalScope . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
 instance IsEventTarget DedicatedWorkerGlobalScope
@@ -5589,7 +5589,7 @@ foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeD
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode Mozilla DelayNode documentation>
-newtype DelayNode = DelayNode { unDelayNode :: JSRef }
+newtype DelayNode = DelayNode { unDelayNode :: JSVal }
 
 instance Eq (DelayNode) where
   (DelayNode a) == (DelayNode b) = js_eq a b
@@ -5603,12 +5603,12 @@ instance PFromJSVal DelayNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DelayNode where
-  toJSRef = return . unDelayNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDelayNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DelayNode where
-  fromJSRef = return . fmap DelayNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DelayNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode DelayNode
 instance IsEventTarget DelayNode
@@ -5632,7 +5632,7 @@ foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode :: GType
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent Mozilla DeviceMotionEvent documentation>
-newtype DeviceMotionEvent = DeviceMotionEvent { unDeviceMotionEvent :: JSRef }
+newtype DeviceMotionEvent = DeviceMotionEvent { unDeviceMotionEvent :: JSVal }
 
 instance Eq (DeviceMotionEvent) where
   (DeviceMotionEvent a) == (DeviceMotionEvent b) = js_eq a b
@@ -5646,12 +5646,12 @@ instance PFromJSVal DeviceMotionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DeviceMotionEvent where
-  toJSRef = return . unDeviceMotionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDeviceMotionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DeviceMotionEvent where
-  fromJSRef = return . fmap DeviceMotionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DeviceMotionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent DeviceMotionEvent
 instance IsGObject DeviceMotionEvent where
@@ -5674,7 +5674,7 @@ foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMoti
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent Mozilla DeviceOrientationEvent documentation>
-newtype DeviceOrientationEvent = DeviceOrientationEvent { unDeviceOrientationEvent :: JSRef }
+newtype DeviceOrientationEvent = DeviceOrientationEvent { unDeviceOrientationEvent :: JSVal }
 
 instance Eq (DeviceOrientationEvent) where
   (DeviceOrientationEvent a) == (DeviceOrientationEvent b) = js_eq a b
@@ -5688,12 +5688,12 @@ instance PFromJSVal DeviceOrientationEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DeviceOrientationEvent where
-  toJSRef = return . unDeviceOrientationEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDeviceOrientationEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DeviceOrientationEvent where
-  fromJSRef = return . fmap DeviceOrientationEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DeviceOrientationEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent DeviceOrientationEvent
 instance IsGObject DeviceOrientationEvent where
@@ -5716,7 +5716,7 @@ foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDevic
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent Mozilla DeviceProximityEvent documentation>
-newtype DeviceProximityEvent = DeviceProximityEvent { unDeviceProximityEvent :: JSRef }
+newtype DeviceProximityEvent = DeviceProximityEvent { unDeviceProximityEvent :: JSVal }
 
 instance Eq (DeviceProximityEvent) where
   (DeviceProximityEvent a) == (DeviceProximityEvent b) = js_eq a b
@@ -5730,12 +5730,12 @@ instance PFromJSVal DeviceProximityEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DeviceProximityEvent where
-  toJSRef = return . unDeviceProximityEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDeviceProximityEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DeviceProximityEvent where
-  fromJSRef = return . fmap DeviceProximityEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DeviceProximityEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent DeviceProximityEvent
 instance IsGObject DeviceProximityEvent where
@@ -5759,7 +5759,7 @@ foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceP
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation>
-newtype Document = Document { unDocument :: JSRef }
+newtype Document = Document { unDocument :: JSVal }
 
 instance Eq (Document) where
   (Document a) == (Document b) = js_eq a b
@@ -5773,12 +5773,12 @@ instance PFromJSVal Document where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Document where
-  toJSRef = return . unDocument
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDocument
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Document where
-  fromJSRef = return . fmap Document . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Document . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsNode o => IsDocument o
 toDocument :: IsDocument o => o -> Document
@@ -5810,7 +5810,7 @@ type IsDocument o = DocumentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation>
-newtype DocumentFragment = DocumentFragment { unDocumentFragment :: JSRef }
+newtype DocumentFragment = DocumentFragment { unDocumentFragment :: JSVal }
 
 instance Eq (DocumentFragment) where
   (DocumentFragment a) == (DocumentFragment b) = js_eq a b
@@ -5824,12 +5824,12 @@ instance PFromJSVal DocumentFragment where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DocumentFragment where
-  toJSRef = return . unDocumentFragment
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDocumentFragment
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DocumentFragment where
-  fromJSRef = return . fmap DocumentFragment . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DocumentFragment . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNode DocumentFragment
 instance IsEventTarget DocumentFragment
@@ -5856,7 +5856,7 @@ type IsDocumentFragment o = DocumentFragmentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType Mozilla DocumentType documentation>
-newtype DocumentType = DocumentType { unDocumentType :: JSRef }
+newtype DocumentType = DocumentType { unDocumentType :: JSVal }
 
 instance Eq (DocumentType) where
   (DocumentType a) == (DocumentType b) = js_eq a b
@@ -5870,12 +5870,12 @@ instance PFromJSVal DocumentType where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DocumentType where
-  toJSRef = return . unDocumentType
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDocumentType
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DocumentType where
-  fromJSRef = return . fmap DocumentType . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DocumentType . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNode DocumentType
 instance IsEventTarget DocumentType
@@ -5902,7 +5902,7 @@ type IsDocumentType o = DocumentTypeClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode Mozilla DynamicsCompressorNode documentation>
-newtype DynamicsCompressorNode = DynamicsCompressorNode { unDynamicsCompressorNode :: JSRef }
+newtype DynamicsCompressorNode = DynamicsCompressorNode { unDynamicsCompressorNode :: JSVal }
 
 instance Eq (DynamicsCompressorNode) where
   (DynamicsCompressorNode a) == (DynamicsCompressorNode b) = js_eq a b
@@ -5916,12 +5916,12 @@ instance PFromJSVal DynamicsCompressorNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal DynamicsCompressorNode where
-  toJSRef = return . unDynamicsCompressorNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unDynamicsCompressorNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal DynamicsCompressorNode where
-  fromJSRef = return . fmap DynamicsCompressorNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap DynamicsCompressorNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode DynamicsCompressorNode
 instance IsEventTarget DynamicsCompressorNode
@@ -5942,7 +5942,7 @@ foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynam
 -- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTBlendMinMax Mozilla EXTBlendMinMax documentation>
-newtype EXTBlendMinMax = EXTBlendMinMax { unEXTBlendMinMax :: JSRef }
+newtype EXTBlendMinMax = EXTBlendMinMax { unEXTBlendMinMax :: JSVal }
 
 instance Eq (EXTBlendMinMax) where
   (EXTBlendMinMax a) == (EXTBlendMinMax b) = js_eq a b
@@ -5956,12 +5956,12 @@ instance PFromJSVal EXTBlendMinMax where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EXTBlendMinMax where
-  toJSRef = return . unEXTBlendMinMax
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEXTBlendMinMax
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EXTBlendMinMax where
-  fromJSRef = return . fmap EXTBlendMinMax . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EXTBlendMinMax . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTBlendMinMax where
   toGObject = GObject . unEXTBlendMinMax
@@ -5980,7 +5980,7 @@ foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMa
 -- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTFragDepth Mozilla EXTFragDepth documentation>
-newtype EXTFragDepth = EXTFragDepth { unEXTFragDepth :: JSRef }
+newtype EXTFragDepth = EXTFragDepth { unEXTFragDepth :: JSVal }
 
 instance Eq (EXTFragDepth) where
   (EXTFragDepth a) == (EXTFragDepth b) = js_eq a b
@@ -5994,12 +5994,12 @@ instance PFromJSVal EXTFragDepth where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EXTFragDepth where
-  toJSRef = return . unEXTFragDepth
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEXTFragDepth
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EXTFragDepth where
-  fromJSRef = return . fmap EXTFragDepth . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EXTFragDepth . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTFragDepth where
   toGObject = GObject . unEXTFragDepth
@@ -6018,7 +6018,7 @@ foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth ::
 -- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTShaderTextureLOD Mozilla EXTShaderTextureLOD documentation>
-newtype EXTShaderTextureLOD = EXTShaderTextureLOD { unEXTShaderTextureLOD :: JSRef }
+newtype EXTShaderTextureLOD = EXTShaderTextureLOD { unEXTShaderTextureLOD :: JSVal }
 
 instance Eq (EXTShaderTextureLOD) where
   (EXTShaderTextureLOD a) == (EXTShaderTextureLOD b) = js_eq a b
@@ -6032,12 +6032,12 @@ instance PFromJSVal EXTShaderTextureLOD where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EXTShaderTextureLOD where
-  toJSRef = return . unEXTShaderTextureLOD
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEXTShaderTextureLOD
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EXTShaderTextureLOD where
-  fromJSRef = return . fmap EXTShaderTextureLOD . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EXTShaderTextureLOD . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTShaderTextureLOD where
   toGObject = GObject . unEXTShaderTextureLOD
@@ -6056,7 +6056,7 @@ foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShade
 -- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTTextureFilterAnisotropic Mozilla EXTTextureFilterAnisotropic documentation>
-newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic { unEXTTextureFilterAnisotropic :: JSRef }
+newtype EXTTextureFilterAnisotropic = EXTTextureFilterAnisotropic { unEXTTextureFilterAnisotropic :: JSVal }
 
 instance Eq (EXTTextureFilterAnisotropic) where
   (EXTTextureFilterAnisotropic a) == (EXTTextureFilterAnisotropic b) = js_eq a b
@@ -6070,12 +6070,12 @@ instance PFromJSVal EXTTextureFilterAnisotropic where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EXTTextureFilterAnisotropic where
-  toJSRef = return . unEXTTextureFilterAnisotropic
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEXTTextureFilterAnisotropic
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EXTTextureFilterAnisotropic where
-  fromJSRef = return . fmap EXTTextureFilterAnisotropic . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EXTTextureFilterAnisotropic . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTTextureFilterAnisotropic where
   toGObject = GObject . unEXTTextureFilterAnisotropic
@@ -6094,7 +6094,7 @@ foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gType
 -- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTsRGB Mozilla EXTsRGB documentation>
-newtype EXTsRGB = EXTsRGB { unEXTsRGB :: JSRef }
+newtype EXTsRGB = EXTsRGB { unEXTsRGB :: JSVal }
 
 instance Eq (EXTsRGB) where
   (EXTsRGB a) == (EXTsRGB b) = js_eq a b
@@ -6108,12 +6108,12 @@ instance PFromJSVal EXTsRGB where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EXTsRGB where
-  toJSRef = return . unEXTsRGB
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEXTsRGB
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EXTsRGB where
-  fromJSRef = return . fmap EXTsRGB . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EXTsRGB . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTsRGB where
   toGObject = GObject . unEXTsRGB
@@ -6136,7 +6136,7 @@ foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Element Mozilla Element documentation>
-newtype Element = Element { unElement :: JSRef }
+newtype Element = Element { unElement :: JSVal }
 
 instance Eq (Element) where
   (Element a) == (Element b) = js_eq a b
@@ -6150,12 +6150,12 @@ instance PFromJSVal Element where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Element where
-  toJSRef = return . unElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Element where
-  fromJSRef = return . fmap Element . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Element . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsNode o => IsElement o
 toElement :: IsElement o => o -> Element
@@ -6187,7 +6187,7 @@ type IsElement o = ElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Entity Mozilla Entity documentation>
-newtype Entity = Entity { unEntity :: JSRef }
+newtype Entity = Entity { unEntity :: JSVal }
 
 instance Eq (Entity) where
   (Entity a) == (Entity b) = js_eq a b
@@ -6201,12 +6201,12 @@ instance PFromJSVal Entity where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Entity where
-  toJSRef = return . unEntity
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEntity
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Entity where
-  fromJSRef = return . fmap Entity . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Entity . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNode Entity
 instance IsEventTarget Entity
@@ -6231,7 +6231,7 @@ foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EntityReference Mozilla EntityReference documentation>
-newtype EntityReference = EntityReference { unEntityReference :: JSRef }
+newtype EntityReference = EntityReference { unEntityReference :: JSVal }
 
 instance Eq (EntityReference) where
   (EntityReference a) == (EntityReference b) = js_eq a b
@@ -6245,12 +6245,12 @@ instance PFromJSVal EntityReference where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EntityReference where
-  toJSRef = return . unEntityReference
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEntityReference
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EntityReference where
-  fromJSRef = return . fmap EntityReference . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EntityReference . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNode EntityReference
 instance IsEventTarget EntityReference
@@ -6276,7 +6276,7 @@ type IsEntityReference o = EntityReferenceClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent Mozilla ErrorEvent documentation>
-newtype ErrorEvent = ErrorEvent { unErrorEvent :: JSRef }
+newtype ErrorEvent = ErrorEvent { unErrorEvent :: JSVal }
 
 instance Eq (ErrorEvent) where
   (ErrorEvent a) == (ErrorEvent b) = js_eq a b
@@ -6290,12 +6290,12 @@ instance PFromJSVal ErrorEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ErrorEvent where
-  toJSRef = return . unErrorEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unErrorEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ErrorEvent where
-  fromJSRef = return . fmap ErrorEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ErrorEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent ErrorEvent
 instance IsGObject ErrorEvent where
@@ -6315,7 +6315,7 @@ foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.Event".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Event Mozilla Event documentation>
-newtype Event = Event { unEvent :: JSRef }
+newtype Event = Event { unEvent :: JSVal }
 
 instance Eq (Event) where
   (Event a) == (Event b) = js_eq a b
@@ -6329,12 +6329,12 @@ instance PFromJSVal Event where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Event where
-  toJSRef = return . unEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Event where
-  fromJSRef = return . fmap Event . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Event . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsEvent o
 toEvent :: IsEvent o => o -> Event
@@ -6360,7 +6360,7 @@ type IsEvent o = EventClass o
 -- | Functions for this inteface are in "GHCJS.DOM.EventListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventListener Mozilla EventListener documentation>
-newtype EventListener = EventListener { unEventListener :: JSRef }
+newtype EventListener = EventListener { unEventListener :: JSVal }
 
 instance Eq (EventListener) where
   (EventListener a) == (EventListener b) = js_eq a b
@@ -6374,12 +6374,12 @@ instance PFromJSVal EventListener where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EventListener where
-  toJSRef = return . unEventListener
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEventListener
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EventListener where
-  fromJSRef = return . fmap EventListener . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EventListener . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject EventListener where
   toGObject = GObject . unEventListener
@@ -6401,7 +6401,7 @@ foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation>
-newtype EventSource = EventSource { unEventSource :: JSRef }
+newtype EventSource = EventSource { unEventSource :: JSVal }
 
 instance Eq (EventSource) where
   (EventSource a) == (EventSource b) = js_eq a b
@@ -6415,12 +6415,12 @@ instance PFromJSVal EventSource where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EventSource where
-  toJSRef = return . unEventSource
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEventSource
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EventSource where
-  fromJSRef = return . fmap EventSource . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EventSource . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget EventSource
 instance IsGObject EventSource where
@@ -6440,7 +6440,7 @@ foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource :: G
 -- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget Mozilla EventTarget documentation>
-newtype EventTarget = EventTarget { unEventTarget :: JSRef }
+newtype EventTarget = EventTarget { unEventTarget :: JSVal }
 
 instance Eq (EventTarget) where
   (EventTarget a) == (EventTarget b) = js_eq a b
@@ -6454,12 +6454,12 @@ instance PFromJSVal EventTarget where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal EventTarget where
-  toJSRef = return . unEventTarget
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unEventTarget
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal EventTarget where
-  fromJSRef = return . fmap EventTarget . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap EventTarget . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsEventTarget o
 toEventTarget :: IsEventTarget o => o -> EventTarget
@@ -6488,7 +6488,7 @@ type IsEventTarget o = EventTargetClass o
 --     * "GHCJS.DOM.Blob"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/File Mozilla File documentation>
-newtype File = File { unFile :: JSRef }
+newtype File = File { unFile :: JSVal }
 
 instance Eq (File) where
   (File a) == (File b) = js_eq a b
@@ -6502,12 +6502,12 @@ instance PFromJSVal File where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal File where
-  toJSRef = return . unFile
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFile
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal File where
-  fromJSRef = return . fmap File . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap File . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsBlob File
 instance IsGObject File where
@@ -6529,7 +6529,7 @@ type IsFile o = FileClass o
 -- | Functions for this inteface are in "GHCJS.DOM.FileError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileError Mozilla FileError documentation>
-newtype FileError = FileError { unFileError :: JSRef }
+newtype FileError = FileError { unFileError :: JSVal }
 
 instance Eq (FileError) where
   (FileError a) == (FileError b) = js_eq a b
@@ -6543,12 +6543,12 @@ instance PFromJSVal FileError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FileError where
-  toJSRef = return . unFileError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFileError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FileError where
-  fromJSRef = return . fmap FileError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FileError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject FileError where
   toGObject = GObject . unFileError
@@ -6567,7 +6567,7 @@ foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.FileList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileList Mozilla FileList documentation>
-newtype FileList = FileList { unFileList :: JSRef }
+newtype FileList = FileList { unFileList :: JSVal }
 
 instance Eq (FileList) where
   (FileList a) == (FileList b) = js_eq a b
@@ -6581,12 +6581,12 @@ instance PFromJSVal FileList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FileList where
-  toJSRef = return . unFileList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFileList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FileList where
-  fromJSRef = return . fmap FileList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FileList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject FileList where
   toGObject = GObject . unFileList
@@ -6610,7 +6610,7 @@ type IsFileList o = FileListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileReader Mozilla FileReader documentation>
-newtype FileReader = FileReader { unFileReader :: JSRef }
+newtype FileReader = FileReader { unFileReader :: JSVal }
 
 instance Eq (FileReader) where
   (FileReader a) == (FileReader b) = js_eq a b
@@ -6624,12 +6624,12 @@ instance PFromJSVal FileReader where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FileReader where
-  toJSRef = return . unFileReader
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFileReader
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FileReader where
-  fromJSRef = return . fmap FileReader . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FileReader . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget FileReader
 instance IsGObject FileReader where
@@ -6649,7 +6649,7 @@ foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation>
-newtype FileReaderSync = FileReaderSync { unFileReaderSync :: JSRef }
+newtype FileReaderSync = FileReaderSync { unFileReaderSync :: JSVal }
 
 instance Eq (FileReaderSync) where
   (FileReaderSync a) == (FileReaderSync b) = js_eq a b
@@ -6663,12 +6663,12 @@ instance PFromJSVal FileReaderSync where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FileReaderSync where
-  toJSRef = return . unFileReaderSync
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFileReaderSync
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FileReaderSync where
-  fromJSRef = return . fmap FileReaderSync . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FileReaderSync . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject FileReaderSync where
   toGObject = GObject . unFileReaderSync
@@ -6691,7 +6691,7 @@ foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSyn
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent Mozilla FocusEvent documentation>
-newtype FocusEvent = FocusEvent { unFocusEvent :: JSRef }
+newtype FocusEvent = FocusEvent { unFocusEvent :: JSVal }
 
 instance Eq (FocusEvent) where
   (FocusEvent a) == (FocusEvent b) = js_eq a b
@@ -6705,12 +6705,12 @@ instance PFromJSVal FocusEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FocusEvent where
-  toJSRef = return . unFocusEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFocusEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FocusEvent where
-  fromJSRef = return . fmap FocusEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FocusEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent FocusEvent
 instance IsEvent FocusEvent
@@ -6734,7 +6734,7 @@ foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent :: GTy
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader Mozilla FontLoader documentation>
-newtype FontLoader = FontLoader { unFontLoader :: JSRef }
+newtype FontLoader = FontLoader { unFontLoader :: JSVal }
 
 instance Eq (FontLoader) where
   (FontLoader a) == (FontLoader b) = js_eq a b
@@ -6748,12 +6748,12 @@ instance PFromJSVal FontLoader where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FontLoader where
-  toJSRef = return . unFontLoader
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFontLoader
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FontLoader where
-  fromJSRef = return . fmap FontLoader . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FontLoader . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget FontLoader
 instance IsGObject FontLoader where
@@ -6773,7 +6773,7 @@ foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.FormData".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
-newtype FormData = FormData { unFormData :: JSRef }
+newtype FormData = FormData { unFormData :: JSVal }
 
 instance Eq (FormData) where
   (FormData a) == (FormData b) = js_eq a b
@@ -6787,12 +6787,12 @@ instance PFromJSVal FormData where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal FormData where
-  toJSRef = return . unFormData
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unFormData
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal FormData where
-  fromJSRef = return . fmap FormData . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap FormData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject FormData where
   toGObject = GObject . unFormData
@@ -6815,7 +6815,7 @@ foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GainNode Mozilla GainNode documentation>
-newtype GainNode = GainNode { unGainNode :: JSRef }
+newtype GainNode = GainNode { unGainNode :: JSVal }
 
 instance Eq (GainNode) where
   (GainNode a) == (GainNode b) = js_eq a b
@@ -6829,12 +6829,12 @@ instance PFromJSVal GainNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal GainNode where
-  toJSRef = return . unGainNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGainNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal GainNode where
-  fromJSRef = return . fmap GainNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap GainNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode GainNode
 instance IsEventTarget GainNode
@@ -6855,7 +6855,7 @@ foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad Mozilla Gamepad documentation>
-newtype Gamepad = Gamepad { unGamepad :: JSRef }
+newtype Gamepad = Gamepad { unGamepad :: JSVal }
 
 instance Eq (Gamepad) where
   (Gamepad a) == (Gamepad b) = js_eq a b
@@ -6869,12 +6869,12 @@ instance PFromJSVal Gamepad where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Gamepad where
-  toJSRef = return . unGamepad
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGamepad
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Gamepad where
-  fromJSRef = return . fmap Gamepad . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Gamepad . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Gamepad where
   toGObject = GObject . unGamepad
@@ -6893,7 +6893,7 @@ foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton Mozilla GamepadButton documentation>
-newtype GamepadButton = GamepadButton { unGamepadButton :: JSRef }
+newtype GamepadButton = GamepadButton { unGamepadButton :: JSVal }
 
 instance Eq (GamepadButton) where
   (GamepadButton a) == (GamepadButton b) = js_eq a b
@@ -6907,12 +6907,12 @@ instance PFromJSVal GamepadButton where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal GamepadButton where
-  toJSRef = return . unGamepadButton
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGamepadButton
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal GamepadButton where
-  fromJSRef = return . fmap GamepadButton . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap GamepadButton . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject GamepadButton where
   toGObject = GObject . unGamepadButton
@@ -6934,7 +6934,7 @@ foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadEvent Mozilla GamepadEvent documentation>
-newtype GamepadEvent = GamepadEvent { unGamepadEvent :: JSRef }
+newtype GamepadEvent = GamepadEvent { unGamepadEvent :: JSVal }
 
 instance Eq (GamepadEvent) where
   (GamepadEvent a) == (GamepadEvent b) = js_eq a b
@@ -6948,12 +6948,12 @@ instance PFromJSVal GamepadEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal GamepadEvent where
-  toJSRef = return . unGamepadEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGamepadEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal GamepadEvent where
-  fromJSRef = return . fmap GamepadEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap GamepadEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent GamepadEvent
 instance IsGObject GamepadEvent where
@@ -6973,7 +6973,7 @@ foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent ::
 -- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation Mozilla Geolocation documentation>
-newtype Geolocation = Geolocation { unGeolocation :: JSRef }
+newtype Geolocation = Geolocation { unGeolocation :: JSVal }
 
 instance Eq (Geolocation) where
   (Geolocation a) == (Geolocation b) = js_eq a b
@@ -6987,12 +6987,12 @@ instance PFromJSVal Geolocation where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Geolocation where
-  toJSRef = return . unGeolocation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGeolocation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Geolocation where
-  fromJSRef = return . fmap Geolocation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Geolocation . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Geolocation where
   toGObject = GObject . unGeolocation
@@ -7013,7 +7013,7 @@ type IsGeolocation o = GeolocationClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition Mozilla Geoposition documentation>
-newtype Geoposition = Geoposition { unGeoposition :: JSRef }
+newtype Geoposition = Geoposition { unGeoposition :: JSVal }
 
 instance Eq (Geoposition) where
   (Geoposition a) == (Geoposition b) = js_eq a b
@@ -7027,12 +7027,12 @@ instance PFromJSVal Geoposition where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Geoposition where
-  toJSRef = return . unGeoposition
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unGeoposition
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Geoposition where
-  fromJSRef = return . fmap Geoposition . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Geoposition . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Geoposition where
   toGObject = GObject . unGeoposition
@@ -7051,7 +7051,7 @@ foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition :: G
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection Mozilla HTMLAllCollection documentation>
-newtype HTMLAllCollection = HTMLAllCollection { unHTMLAllCollection :: JSRef }
+newtype HTMLAllCollection = HTMLAllCollection { unHTMLAllCollection :: JSVal }
 
 instance Eq (HTMLAllCollection) where
   (HTMLAllCollection a) == (HTMLAllCollection b) = js_eq a b
@@ -7065,12 +7065,12 @@ instance PFromJSVal HTMLAllCollection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLAllCollection where
-  toJSRef = return . unHTMLAllCollection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLAllCollection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLAllCollection where
-  fromJSRef = return . fmap HTMLAllCollection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLAllCollection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject HTMLAllCollection where
   toGObject = GObject . unHTMLAllCollection
@@ -7095,7 +7095,7 @@ foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCol
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement Mozilla HTMLAnchorElement documentation>
-newtype HTMLAnchorElement = HTMLAnchorElement { unHTMLAnchorElement :: JSRef }
+newtype HTMLAnchorElement = HTMLAnchorElement { unHTMLAnchorElement :: JSVal }
 
 instance Eq (HTMLAnchorElement) where
   (HTMLAnchorElement a) == (HTMLAnchorElement b) = js_eq a b
@@ -7109,12 +7109,12 @@ instance PFromJSVal HTMLAnchorElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLAnchorElement where
-  toJSRef = return . unHTMLAnchorElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLAnchorElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLAnchorElement where
-  fromJSRef = return . fmap HTMLAnchorElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLAnchorElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLAnchorElement
 instance IsElement HTMLAnchorElement
@@ -7145,7 +7145,7 @@ type IsHTMLAnchorElement o = HTMLAnchorElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement Mozilla HTMLAppletElement documentation>
-newtype HTMLAppletElement = HTMLAppletElement { unHTMLAppletElement :: JSRef }
+newtype HTMLAppletElement = HTMLAppletElement { unHTMLAppletElement :: JSVal }
 
 instance Eq (HTMLAppletElement) where
   (HTMLAppletElement a) == (HTMLAppletElement b) = js_eq a b
@@ -7159,12 +7159,12 @@ instance PFromJSVal HTMLAppletElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLAppletElement where
-  toJSRef = return . unHTMLAppletElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLAppletElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLAppletElement where
-  fromJSRef = return . fmap HTMLAppletElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLAppletElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLAppletElement
 instance IsElement HTMLAppletElement
@@ -7195,7 +7195,7 @@ type IsHTMLAppletElement o = HTMLAppletElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement Mozilla HTMLAreaElement documentation>
-newtype HTMLAreaElement = HTMLAreaElement { unHTMLAreaElement :: JSRef }
+newtype HTMLAreaElement = HTMLAreaElement { unHTMLAreaElement :: JSVal }
 
 instance Eq (HTMLAreaElement) where
   (HTMLAreaElement a) == (HTMLAreaElement b) = js_eq a b
@@ -7209,12 +7209,12 @@ instance PFromJSVal HTMLAreaElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLAreaElement where
-  toJSRef = return . unHTMLAreaElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLAreaElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLAreaElement where
-  fromJSRef = return . fmap HTMLAreaElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLAreaElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLAreaElement
 instance IsElement HTMLAreaElement
@@ -7246,7 +7246,7 @@ type IsHTMLAreaElement o = HTMLAreaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement Mozilla HTMLAudioElement documentation>
-newtype HTMLAudioElement = HTMLAudioElement { unHTMLAudioElement :: JSRef }
+newtype HTMLAudioElement = HTMLAudioElement { unHTMLAudioElement :: JSVal }
 
 instance Eq (HTMLAudioElement) where
   (HTMLAudioElement a) == (HTMLAudioElement b) = js_eq a b
@@ -7260,12 +7260,12 @@ instance PFromJSVal HTMLAudioElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLAudioElement where
-  toJSRef = return . unHTMLAudioElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLAudioElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLAudioElement where
-  fromJSRef = return . fmap HTMLAudioElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLAudioElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLMediaElement HTMLAudioElement
 instance IsHTMLElement HTMLAudioElement
@@ -7297,7 +7297,7 @@ type IsHTMLAudioElement o = HTMLAudioElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement Mozilla HTMLBRElement documentation>
-newtype HTMLBRElement = HTMLBRElement { unHTMLBRElement :: JSRef }
+newtype HTMLBRElement = HTMLBRElement { unHTMLBRElement :: JSVal }
 
 instance Eq (HTMLBRElement) where
   (HTMLBRElement a) == (HTMLBRElement b) = js_eq a b
@@ -7311,12 +7311,12 @@ instance PFromJSVal HTMLBRElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLBRElement where
-  toJSRef = return . unHTMLBRElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLBRElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLBRElement where
-  fromJSRef = return . fmap HTMLBRElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLBRElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLBRElement
 instance IsElement HTMLBRElement
@@ -7347,7 +7347,7 @@ type IsHTMLBRElement o = HTMLBRElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement Mozilla HTMLBaseElement documentation>
-newtype HTMLBaseElement = HTMLBaseElement { unHTMLBaseElement :: JSRef }
+newtype HTMLBaseElement = HTMLBaseElement { unHTMLBaseElement :: JSVal }
 
 instance Eq (HTMLBaseElement) where
   (HTMLBaseElement a) == (HTMLBaseElement b) = js_eq a b
@@ -7361,12 +7361,12 @@ instance PFromJSVal HTMLBaseElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLBaseElement where
-  toJSRef = return . unHTMLBaseElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLBaseElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLBaseElement where
-  fromJSRef = return . fmap HTMLBaseElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLBaseElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLBaseElement
 instance IsElement HTMLBaseElement
@@ -7397,7 +7397,7 @@ type IsHTMLBaseElement o = HTMLBaseElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseFontElement Mozilla HTMLBaseFontElement documentation>
-newtype HTMLBaseFontElement = HTMLBaseFontElement { unHTMLBaseFontElement :: JSRef }
+newtype HTMLBaseFontElement = HTMLBaseFontElement { unHTMLBaseFontElement :: JSVal }
 
 instance Eq (HTMLBaseFontElement) where
   (HTMLBaseFontElement a) == (HTMLBaseFontElement b) = js_eq a b
@@ -7411,12 +7411,12 @@ instance PFromJSVal HTMLBaseFontElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLBaseFontElement where
-  toJSRef = return . unHTMLBaseFontElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLBaseFontElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLBaseFontElement where
-  fromJSRef = return . fmap HTMLBaseFontElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLBaseFontElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLBaseFontElement
 instance IsElement HTMLBaseFontElement
@@ -7447,7 +7447,7 @@ type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement Mozilla HTMLBodyElement documentation>
-newtype HTMLBodyElement = HTMLBodyElement { unHTMLBodyElement :: JSRef }
+newtype HTMLBodyElement = HTMLBodyElement { unHTMLBodyElement :: JSVal }
 
 instance Eq (HTMLBodyElement) where
   (HTMLBodyElement a) == (HTMLBodyElement b) = js_eq a b
@@ -7461,12 +7461,12 @@ instance PFromJSVal HTMLBodyElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLBodyElement where
-  toJSRef = return . unHTMLBodyElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLBodyElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLBodyElement where
-  fromJSRef = return . fmap HTMLBodyElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLBodyElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLBodyElement
 instance IsElement HTMLBodyElement
@@ -7497,7 +7497,7 @@ type IsHTMLBodyElement o = HTMLBodyElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement Mozilla HTMLButtonElement documentation>
-newtype HTMLButtonElement = HTMLButtonElement { unHTMLButtonElement :: JSRef }
+newtype HTMLButtonElement = HTMLButtonElement { unHTMLButtonElement :: JSVal }
 
 instance Eq (HTMLButtonElement) where
   (HTMLButtonElement a) == (HTMLButtonElement b) = js_eq a b
@@ -7511,12 +7511,12 @@ instance PFromJSVal HTMLButtonElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLButtonElement where
-  toJSRef = return . unHTMLButtonElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLButtonElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLButtonElement where
-  fromJSRef = return . fmap HTMLButtonElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLButtonElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLButtonElement
 instance IsElement HTMLButtonElement
@@ -7547,7 +7547,7 @@ type IsHTMLButtonElement o = HTMLButtonElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement Mozilla HTMLCanvasElement documentation>
-newtype HTMLCanvasElement = HTMLCanvasElement { unHTMLCanvasElement :: JSRef }
+newtype HTMLCanvasElement = HTMLCanvasElement { unHTMLCanvasElement :: JSVal }
 
 instance Eq (HTMLCanvasElement) where
   (HTMLCanvasElement a) == (HTMLCanvasElement b) = js_eq a b
@@ -7561,12 +7561,12 @@ instance PFromJSVal HTMLCanvasElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLCanvasElement where
-  toJSRef = return . unHTMLCanvasElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLCanvasElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLCanvasElement where
-  fromJSRef = return . fmap HTMLCanvasElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLCanvasElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLCanvasElement
 instance IsElement HTMLCanvasElement
@@ -7591,7 +7591,7 @@ type IsHTMLCanvasElement o = HTMLCanvasElementClass o
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection Mozilla HTMLCollection documentation>
-newtype HTMLCollection = HTMLCollection { unHTMLCollection :: JSRef }
+newtype HTMLCollection = HTMLCollection { unHTMLCollection :: JSVal }
 
 instance Eq (HTMLCollection) where
   (HTMLCollection a) == (HTMLCollection b) = js_eq a b
@@ -7605,12 +7605,12 @@ instance PFromJSVal HTMLCollection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLCollection where
-  toJSRef = return . unHTMLCollection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLCollection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLCollection where
-  fromJSRef = return . fmap HTMLCollection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLCollection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsHTMLCollection o
 toHTMLCollection :: IsHTMLCollection o => o -> HTMLCollection
@@ -7642,7 +7642,7 @@ type IsHTMLCollection o = HTMLCollectionClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement Mozilla HTMLDListElement documentation>
-newtype HTMLDListElement = HTMLDListElement { unHTMLDListElement :: JSRef }
+newtype HTMLDListElement = HTMLDListElement { unHTMLDListElement :: JSVal }
 
 instance Eq (HTMLDListElement) where
   (HTMLDListElement a) == (HTMLDListElement b) = js_eq a b
@@ -7656,12 +7656,12 @@ instance PFromJSVal HTMLDListElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDListElement where
-  toJSRef = return . unHTMLDListElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDListElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDListElement where
-  fromJSRef = return . fmap HTMLDListElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDListElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLDListElement
 instance IsElement HTMLDListElement
@@ -7692,7 +7692,7 @@ type IsHTMLDListElement o = HTMLDListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataListElement Mozilla HTMLDataListElement documentation>
-newtype HTMLDataListElement = HTMLDataListElement { unHTMLDataListElement :: JSRef }
+newtype HTMLDataListElement = HTMLDataListElement { unHTMLDataListElement :: JSVal }
 
 instance Eq (HTMLDataListElement) where
   (HTMLDataListElement a) == (HTMLDataListElement b) = js_eq a b
@@ -7706,12 +7706,12 @@ instance PFromJSVal HTMLDataListElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDataListElement where
-  toJSRef = return . unHTMLDataListElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDataListElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDataListElement where
-  fromJSRef = return . fmap HTMLDataListElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDataListElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLDataListElement
 instance IsElement HTMLDataListElement
@@ -7740,7 +7740,7 @@ foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLData
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement Mozilla HTMLDetailsElement documentation>
-newtype HTMLDetailsElement = HTMLDetailsElement { unHTMLDetailsElement :: JSRef }
+newtype HTMLDetailsElement = HTMLDetailsElement { unHTMLDetailsElement :: JSVal }
 
 instance Eq (HTMLDetailsElement) where
   (HTMLDetailsElement a) == (HTMLDetailsElement b) = js_eq a b
@@ -7754,12 +7754,12 @@ instance PFromJSVal HTMLDetailsElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDetailsElement where
-  toJSRef = return . unHTMLDetailsElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDetailsElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDetailsElement where
-  fromJSRef = return . fmap HTMLDetailsElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDetailsElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLDetailsElement
 instance IsElement HTMLDetailsElement
@@ -7790,7 +7790,7 @@ type IsHTMLDetailsElement o = HTMLDetailsElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement Mozilla HTMLDirectoryElement documentation>
-newtype HTMLDirectoryElement = HTMLDirectoryElement { unHTMLDirectoryElement :: JSRef }
+newtype HTMLDirectoryElement = HTMLDirectoryElement { unHTMLDirectoryElement :: JSVal }
 
 instance Eq (HTMLDirectoryElement) where
   (HTMLDirectoryElement a) == (HTMLDirectoryElement b) = js_eq a b
@@ -7804,12 +7804,12 @@ instance PFromJSVal HTMLDirectoryElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDirectoryElement where
-  toJSRef = return . unHTMLDirectoryElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDirectoryElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDirectoryElement where
-  fromJSRef = return . fmap HTMLDirectoryElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDirectoryElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLDirectoryElement
 instance IsElement HTMLDirectoryElement
@@ -7840,7 +7840,7 @@ type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement Mozilla HTMLDivElement documentation>
-newtype HTMLDivElement = HTMLDivElement { unHTMLDivElement :: JSRef }
+newtype HTMLDivElement = HTMLDivElement { unHTMLDivElement :: JSVal }
 
 instance Eq (HTMLDivElement) where
   (HTMLDivElement a) == (HTMLDivElement b) = js_eq a b
@@ -7854,12 +7854,12 @@ instance PFromJSVal HTMLDivElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDivElement where
-  toJSRef = return . unHTMLDivElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDivElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDivElement where
-  fromJSRef = return . fmap HTMLDivElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDivElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLDivElement
 instance IsElement HTMLDivElement
@@ -7889,7 +7889,7 @@ type IsHTMLDivElement o = HTMLDivElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument Mozilla HTMLDocument documentation>
-newtype HTMLDocument = HTMLDocument { unHTMLDocument :: JSRef }
+newtype HTMLDocument = HTMLDocument { unHTMLDocument :: JSVal }
 
 instance Eq (HTMLDocument) where
   (HTMLDocument a) == (HTMLDocument b) = js_eq a b
@@ -7903,12 +7903,12 @@ instance PFromJSVal HTMLDocument where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLDocument where
-  toJSRef = return . unHTMLDocument
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLDocument
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLDocument where
-  fromJSRef = return . fmap HTMLDocument . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLDocument . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsDocument HTMLDocument
 instance IsNode HTMLDocument
@@ -7937,7 +7937,7 @@ type IsHTMLDocument o = HTMLDocumentClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation>
-newtype HTMLElement = HTMLElement { unHTMLElement :: JSRef }
+newtype HTMLElement = HTMLElement { unHTMLElement :: JSVal }
 
 instance Eq (HTMLElement) where
   (HTMLElement a) == (HTMLElement b) = js_eq a b
@@ -7951,12 +7951,12 @@ instance PFromJSVal HTMLElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLElement where
-  toJSRef = return . unHTMLElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLElement where
-  fromJSRef = return . fmap HTMLElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsElement o => IsHTMLElement o
 toHTMLElement :: IsHTMLElement o => o -> HTMLElement
@@ -7991,7 +7991,7 @@ type IsHTMLElement o = HTMLElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement Mozilla HTMLEmbedElement documentation>
-newtype HTMLEmbedElement = HTMLEmbedElement { unHTMLEmbedElement :: JSRef }
+newtype HTMLEmbedElement = HTMLEmbedElement { unHTMLEmbedElement :: JSVal }
 
 instance Eq (HTMLEmbedElement) where
   (HTMLEmbedElement a) == (HTMLEmbedElement b) = js_eq a b
@@ -8005,12 +8005,12 @@ instance PFromJSVal HTMLEmbedElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLEmbedElement where
-  toJSRef = return . unHTMLEmbedElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLEmbedElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLEmbedElement where
-  fromJSRef = return . fmap HTMLEmbedElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLEmbedElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLEmbedElement
 instance IsElement HTMLEmbedElement
@@ -8041,7 +8041,7 @@ type IsHTMLEmbedElement o = HTMLEmbedElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement Mozilla HTMLFieldSetElement documentation>
-newtype HTMLFieldSetElement = HTMLFieldSetElement { unHTMLFieldSetElement :: JSRef }
+newtype HTMLFieldSetElement = HTMLFieldSetElement { unHTMLFieldSetElement :: JSVal }
 
 instance Eq (HTMLFieldSetElement) where
   (HTMLFieldSetElement a) == (HTMLFieldSetElement b) = js_eq a b
@@ -8055,12 +8055,12 @@ instance PFromJSVal HTMLFieldSetElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFieldSetElement where
-  toJSRef = return . unHTMLFieldSetElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFieldSetElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFieldSetElement where
-  fromJSRef = return . fmap HTMLFieldSetElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFieldSetElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLFieldSetElement
 instance IsElement HTMLFieldSetElement
@@ -8091,7 +8091,7 @@ type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement Mozilla HTMLFontElement documentation>
-newtype HTMLFontElement = HTMLFontElement { unHTMLFontElement :: JSRef }
+newtype HTMLFontElement = HTMLFontElement { unHTMLFontElement :: JSVal }
 
 instance Eq (HTMLFontElement) where
   (HTMLFontElement a) == (HTMLFontElement b) = js_eq a b
@@ -8105,12 +8105,12 @@ instance PFromJSVal HTMLFontElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFontElement where
-  toJSRef = return . unHTMLFontElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFontElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFontElement where
-  fromJSRef = return . fmap HTMLFontElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFontElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLFontElement
 instance IsElement HTMLFontElement
@@ -8138,7 +8138,7 @@ type IsHTMLFontElement o = HTMLFontElementClass o
 --     * "GHCJS.DOM.HTMLCollection"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection Mozilla HTMLFormControlsCollection documentation>
-newtype HTMLFormControlsCollection = HTMLFormControlsCollection { unHTMLFormControlsCollection :: JSRef }
+newtype HTMLFormControlsCollection = HTMLFormControlsCollection { unHTMLFormControlsCollection :: JSVal }
 
 instance Eq (HTMLFormControlsCollection) where
   (HTMLFormControlsCollection a) == (HTMLFormControlsCollection b) = js_eq a b
@@ -8152,12 +8152,12 @@ instance PFromJSVal HTMLFormControlsCollection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFormControlsCollection where
-  toJSRef = return . unHTMLFormControlsCollection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFormControlsCollection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFormControlsCollection where
-  fromJSRef = return . fmap HTMLFormControlsCollection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFormControlsCollection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLCollection HTMLFormControlsCollection
 instance IsGObject HTMLFormControlsCollection where
@@ -8183,7 +8183,7 @@ foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeH
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement Mozilla HTMLFormElement documentation>
-newtype HTMLFormElement = HTMLFormElement { unHTMLFormElement :: JSRef }
+newtype HTMLFormElement = HTMLFormElement { unHTMLFormElement :: JSVal }
 
 instance Eq (HTMLFormElement) where
   (HTMLFormElement a) == (HTMLFormElement b) = js_eq a b
@@ -8197,12 +8197,12 @@ instance PFromJSVal HTMLFormElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFormElement where
-  toJSRef = return . unHTMLFormElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFormElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFormElement where
-  fromJSRef = return . fmap HTMLFormElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFormElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLFormElement
 instance IsElement HTMLFormElement
@@ -8233,7 +8233,7 @@ type IsHTMLFormElement o = HTMLFormElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement Mozilla HTMLFrameElement documentation>
-newtype HTMLFrameElement = HTMLFrameElement { unHTMLFrameElement :: JSRef }
+newtype HTMLFrameElement = HTMLFrameElement { unHTMLFrameElement :: JSVal }
 
 instance Eq (HTMLFrameElement) where
   (HTMLFrameElement a) == (HTMLFrameElement b) = js_eq a b
@@ -8247,12 +8247,12 @@ instance PFromJSVal HTMLFrameElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFrameElement where
-  toJSRef = return . unHTMLFrameElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFrameElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFrameElement where
-  fromJSRef = return . fmap HTMLFrameElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFrameElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLFrameElement
 instance IsElement HTMLFrameElement
@@ -8283,7 +8283,7 @@ type IsHTMLFrameElement o = HTMLFrameElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement Mozilla HTMLFrameSetElement documentation>
-newtype HTMLFrameSetElement = HTMLFrameSetElement { unHTMLFrameSetElement :: JSRef }
+newtype HTMLFrameSetElement = HTMLFrameSetElement { unHTMLFrameSetElement :: JSVal }
 
 instance Eq (HTMLFrameSetElement) where
   (HTMLFrameSetElement a) == (HTMLFrameSetElement b) = js_eq a b
@@ -8297,12 +8297,12 @@ instance PFromJSVal HTMLFrameSetElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLFrameSetElement where
-  toJSRef = return . unHTMLFrameSetElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLFrameSetElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLFrameSetElement where
-  fromJSRef = return . fmap HTMLFrameSetElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLFrameSetElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLFrameSetElement
 instance IsElement HTMLFrameSetElement
@@ -8333,7 +8333,7 @@ type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement Mozilla HTMLHRElement documentation>
-newtype HTMLHRElement = HTMLHRElement { unHTMLHRElement :: JSRef }
+newtype HTMLHRElement = HTMLHRElement { unHTMLHRElement :: JSVal }
 
 instance Eq (HTMLHRElement) where
   (HTMLHRElement a) == (HTMLHRElement b) = js_eq a b
@@ -8347,12 +8347,12 @@ instance PFromJSVal HTMLHRElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLHRElement where
-  toJSRef = return . unHTMLHRElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLHRElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLHRElement where
-  fromJSRef = return . fmap HTMLHRElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLHRElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLHRElement
 instance IsElement HTMLHRElement
@@ -8383,7 +8383,7 @@ type IsHTMLHRElement o = HTMLHRElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement Mozilla HTMLHeadElement documentation>
-newtype HTMLHeadElement = HTMLHeadElement { unHTMLHeadElement :: JSRef }
+newtype HTMLHeadElement = HTMLHeadElement { unHTMLHeadElement :: JSVal }
 
 instance Eq (HTMLHeadElement) where
   (HTMLHeadElement a) == (HTMLHeadElement b) = js_eq a b
@@ -8397,12 +8397,12 @@ instance PFromJSVal HTMLHeadElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLHeadElement where
-  toJSRef = return . unHTMLHeadElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLHeadElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLHeadElement where
-  fromJSRef = return . fmap HTMLHeadElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLHeadElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLHeadElement
 instance IsElement HTMLHeadElement
@@ -8433,7 +8433,7 @@ type IsHTMLHeadElement o = HTMLHeadElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement Mozilla HTMLHeadingElement documentation>
-newtype HTMLHeadingElement = HTMLHeadingElement { unHTMLHeadingElement :: JSRef }
+newtype HTMLHeadingElement = HTMLHeadingElement { unHTMLHeadingElement :: JSVal }
 
 instance Eq (HTMLHeadingElement) where
   (HTMLHeadingElement a) == (HTMLHeadingElement b) = js_eq a b
@@ -8447,12 +8447,12 @@ instance PFromJSVal HTMLHeadingElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLHeadingElement where
-  toJSRef = return . unHTMLHeadingElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLHeadingElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLHeadingElement where
-  fromJSRef = return . fmap HTMLHeadingElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLHeadingElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLHeadingElement
 instance IsElement HTMLHeadingElement
@@ -8483,7 +8483,7 @@ type IsHTMLHeadingElement o = HTMLHeadingElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement Mozilla HTMLHtmlElement documentation>
-newtype HTMLHtmlElement = HTMLHtmlElement { unHTMLHtmlElement :: JSRef }
+newtype HTMLHtmlElement = HTMLHtmlElement { unHTMLHtmlElement :: JSVal }
 
 instance Eq (HTMLHtmlElement) where
   (HTMLHtmlElement a) == (HTMLHtmlElement b) = js_eq a b
@@ -8497,12 +8497,12 @@ instance PFromJSVal HTMLHtmlElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLHtmlElement where
-  toJSRef = return . unHTMLHtmlElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLHtmlElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLHtmlElement where
-  fromJSRef = return . fmap HTMLHtmlElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLHtmlElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLHtmlElement
 instance IsElement HTMLHtmlElement
@@ -8533,7 +8533,7 @@ type IsHTMLHtmlElement o = HTMLHtmlElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement Mozilla HTMLIFrameElement documentation>
-newtype HTMLIFrameElement = HTMLIFrameElement { unHTMLIFrameElement :: JSRef }
+newtype HTMLIFrameElement = HTMLIFrameElement { unHTMLIFrameElement :: JSVal }
 
 instance Eq (HTMLIFrameElement) where
   (HTMLIFrameElement a) == (HTMLIFrameElement b) = js_eq a b
@@ -8547,12 +8547,12 @@ instance PFromJSVal HTMLIFrameElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLIFrameElement where
-  toJSRef = return . unHTMLIFrameElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLIFrameElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLIFrameElement where
-  fromJSRef = return . fmap HTMLIFrameElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLIFrameElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLIFrameElement
 instance IsElement HTMLIFrameElement
@@ -8583,7 +8583,7 @@ type IsHTMLIFrameElement o = HTMLIFrameElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement Mozilla HTMLImageElement documentation>
-newtype HTMLImageElement = HTMLImageElement { unHTMLImageElement :: JSRef }
+newtype HTMLImageElement = HTMLImageElement { unHTMLImageElement :: JSVal }
 
 instance Eq (HTMLImageElement) where
   (HTMLImageElement a) == (HTMLImageElement b) = js_eq a b
@@ -8597,12 +8597,12 @@ instance PFromJSVal HTMLImageElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLImageElement where
-  toJSRef = return . unHTMLImageElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLImageElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLImageElement where
-  fromJSRef = return . fmap HTMLImageElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLImageElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLImageElement
 instance IsElement HTMLImageElement
@@ -8633,7 +8633,7 @@ type IsHTMLImageElement o = HTMLImageElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement Mozilla HTMLInputElement documentation>
-newtype HTMLInputElement = HTMLInputElement { unHTMLInputElement :: JSRef }
+newtype HTMLInputElement = HTMLInputElement { unHTMLInputElement :: JSVal }
 
 instance Eq (HTMLInputElement) where
   (HTMLInputElement a) == (HTMLInputElement b) = js_eq a b
@@ -8647,12 +8647,12 @@ instance PFromJSVal HTMLInputElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLInputElement where
-  toJSRef = return . unHTMLInputElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLInputElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLInputElement where
-  fromJSRef = return . fmap HTMLInputElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLInputElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLInputElement
 instance IsElement HTMLInputElement
@@ -8683,7 +8683,7 @@ type IsHTMLInputElement o = HTMLInputElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement Mozilla HTMLKeygenElement documentation>
-newtype HTMLKeygenElement = HTMLKeygenElement { unHTMLKeygenElement :: JSRef }
+newtype HTMLKeygenElement = HTMLKeygenElement { unHTMLKeygenElement :: JSVal }
 
 instance Eq (HTMLKeygenElement) where
   (HTMLKeygenElement a) == (HTMLKeygenElement b) = js_eq a b
@@ -8697,12 +8697,12 @@ instance PFromJSVal HTMLKeygenElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLKeygenElement where
-  toJSRef = return . unHTMLKeygenElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLKeygenElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLKeygenElement where
-  fromJSRef = return . fmap HTMLKeygenElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLKeygenElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLKeygenElement
 instance IsElement HTMLKeygenElement
@@ -8733,7 +8733,7 @@ type IsHTMLKeygenElement o = HTMLKeygenElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLIElement Mozilla HTMLLIElement documentation>
-newtype HTMLLIElement = HTMLLIElement { unHTMLLIElement :: JSRef }
+newtype HTMLLIElement = HTMLLIElement { unHTMLLIElement :: JSVal }
 
 instance Eq (HTMLLIElement) where
   (HTMLLIElement a) == (HTMLLIElement b) = js_eq a b
@@ -8747,12 +8747,12 @@ instance PFromJSVal HTMLLIElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLLIElement where
-  toJSRef = return . unHTMLLIElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLLIElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLLIElement where
-  fromJSRef = return . fmap HTMLLIElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLLIElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLLIElement
 instance IsElement HTMLLIElement
@@ -8783,7 +8783,7 @@ type IsHTMLLIElement o = HTMLLIElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement Mozilla HTMLLabelElement documentation>
-newtype HTMLLabelElement = HTMLLabelElement { unHTMLLabelElement :: JSRef }
+newtype HTMLLabelElement = HTMLLabelElement { unHTMLLabelElement :: JSVal }
 
 instance Eq (HTMLLabelElement) where
   (HTMLLabelElement a) == (HTMLLabelElement b) = js_eq a b
@@ -8797,12 +8797,12 @@ instance PFromJSVal HTMLLabelElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLLabelElement where
-  toJSRef = return . unHTMLLabelElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLLabelElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLLabelElement where
-  fromJSRef = return . fmap HTMLLabelElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLLabelElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLLabelElement
 instance IsElement HTMLLabelElement
@@ -8833,7 +8833,7 @@ type IsHTMLLabelElement o = HTMLLabelElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLegendElement Mozilla HTMLLegendElement documentation>
-newtype HTMLLegendElement = HTMLLegendElement { unHTMLLegendElement :: JSRef }
+newtype HTMLLegendElement = HTMLLegendElement { unHTMLLegendElement :: JSVal }
 
 instance Eq (HTMLLegendElement) where
   (HTMLLegendElement a) == (HTMLLegendElement b) = js_eq a b
@@ -8847,12 +8847,12 @@ instance PFromJSVal HTMLLegendElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLLegendElement where
-  toJSRef = return . unHTMLLegendElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLLegendElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLLegendElement where
-  fromJSRef = return . fmap HTMLLegendElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLLegendElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLLegendElement
 instance IsElement HTMLLegendElement
@@ -8883,7 +8883,7 @@ type IsHTMLLegendElement o = HTMLLegendElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement Mozilla HTMLLinkElement documentation>
-newtype HTMLLinkElement = HTMLLinkElement { unHTMLLinkElement :: JSRef }
+newtype HTMLLinkElement = HTMLLinkElement { unHTMLLinkElement :: JSVal }
 
 instance Eq (HTMLLinkElement) where
   (HTMLLinkElement a) == (HTMLLinkElement b) = js_eq a b
@@ -8897,12 +8897,12 @@ instance PFromJSVal HTMLLinkElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLLinkElement where
-  toJSRef = return . unHTMLLinkElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLLinkElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLLinkElement where
-  fromJSRef = return . fmap HTMLLinkElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLLinkElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLLinkElement
 instance IsElement HTMLLinkElement
@@ -8933,7 +8933,7 @@ type IsHTMLLinkElement o = HTMLLinkElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMapElement Mozilla HTMLMapElement documentation>
-newtype HTMLMapElement = HTMLMapElement { unHTMLMapElement :: JSRef }
+newtype HTMLMapElement = HTMLMapElement { unHTMLMapElement :: JSVal }
 
 instance Eq (HTMLMapElement) where
   (HTMLMapElement a) == (HTMLMapElement b) = js_eq a b
@@ -8947,12 +8947,12 @@ instance PFromJSVal HTMLMapElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMapElement where
-  toJSRef = return . unHTMLMapElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMapElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMapElement where
-  fromJSRef = return . fmap HTMLMapElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMapElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLMapElement
 instance IsElement HTMLMapElement
@@ -8983,7 +8983,7 @@ type IsHTMLMapElement o = HTMLMapElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement Mozilla HTMLMarqueeElement documentation>
-newtype HTMLMarqueeElement = HTMLMarqueeElement { unHTMLMarqueeElement :: JSRef }
+newtype HTMLMarqueeElement = HTMLMarqueeElement { unHTMLMarqueeElement :: JSVal }
 
 instance Eq (HTMLMarqueeElement) where
   (HTMLMarqueeElement a) == (HTMLMarqueeElement b) = js_eq a b
@@ -8997,12 +8997,12 @@ instance PFromJSVal HTMLMarqueeElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMarqueeElement where
-  toJSRef = return . unHTMLMarqueeElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMarqueeElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMarqueeElement where
-  fromJSRef = return . fmap HTMLMarqueeElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMarqueeElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLMarqueeElement
 instance IsElement HTMLMarqueeElement
@@ -9033,7 +9033,7 @@ type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement Mozilla HTMLMediaElement documentation>
-newtype HTMLMediaElement = HTMLMediaElement { unHTMLMediaElement :: JSRef }
+newtype HTMLMediaElement = HTMLMediaElement { unHTMLMediaElement :: JSVal }
 
 instance Eq (HTMLMediaElement) where
   (HTMLMediaElement a) == (HTMLMediaElement b) = js_eq a b
@@ -9047,12 +9047,12 @@ instance PFromJSVal HTMLMediaElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMediaElement where
-  toJSRef = return . unHTMLMediaElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMediaElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMediaElement where
-  fromJSRef = return . fmap HTMLMediaElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMediaElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsHTMLElement o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
@@ -9088,7 +9088,7 @@ type IsHTMLMediaElement o = HTMLMediaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMenuElement Mozilla HTMLMenuElement documentation>
-newtype HTMLMenuElement = HTMLMenuElement { unHTMLMenuElement :: JSRef }
+newtype HTMLMenuElement = HTMLMenuElement { unHTMLMenuElement :: JSVal }
 
 instance Eq (HTMLMenuElement) where
   (HTMLMenuElement a) == (HTMLMenuElement b) = js_eq a b
@@ -9102,12 +9102,12 @@ instance PFromJSVal HTMLMenuElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMenuElement where
-  toJSRef = return . unHTMLMenuElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMenuElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMenuElement where
-  fromJSRef = return . fmap HTMLMenuElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMenuElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLMenuElement
 instance IsElement HTMLMenuElement
@@ -9138,7 +9138,7 @@ type IsHTMLMenuElement o = HTMLMenuElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement Mozilla HTMLMetaElement documentation>
-newtype HTMLMetaElement = HTMLMetaElement { unHTMLMetaElement :: JSRef }
+newtype HTMLMetaElement = HTMLMetaElement { unHTMLMetaElement :: JSVal }
 
 instance Eq (HTMLMetaElement) where
   (HTMLMetaElement a) == (HTMLMetaElement b) = js_eq a b
@@ -9152,12 +9152,12 @@ instance PFromJSVal HTMLMetaElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMetaElement where
-  toJSRef = return . unHTMLMetaElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMetaElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMetaElement where
-  fromJSRef = return . fmap HTMLMetaElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMetaElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLMetaElement
 instance IsElement HTMLMetaElement
@@ -9188,7 +9188,7 @@ type IsHTMLMetaElement o = HTMLMetaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement Mozilla HTMLMeterElement documentation>
-newtype HTMLMeterElement = HTMLMeterElement { unHTMLMeterElement :: JSRef }
+newtype HTMLMeterElement = HTMLMeterElement { unHTMLMeterElement :: JSVal }
 
 instance Eq (HTMLMeterElement) where
   (HTMLMeterElement a) == (HTMLMeterElement b) = js_eq a b
@@ -9202,12 +9202,12 @@ instance PFromJSVal HTMLMeterElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLMeterElement where
-  toJSRef = return . unHTMLMeterElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLMeterElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLMeterElement where
-  fromJSRef = return . fmap HTMLMeterElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLMeterElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLMeterElement
 instance IsElement HTMLMeterElement
@@ -9236,7 +9236,7 @@ foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement Mozilla HTMLModElement documentation>
-newtype HTMLModElement = HTMLModElement { unHTMLModElement :: JSRef }
+newtype HTMLModElement = HTMLModElement { unHTMLModElement :: JSVal }
 
 instance Eq (HTMLModElement) where
   (HTMLModElement a) == (HTMLModElement b) = js_eq a b
@@ -9250,12 +9250,12 @@ instance PFromJSVal HTMLModElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLModElement where
-  toJSRef = return . unHTMLModElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLModElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLModElement where
-  fromJSRef = return . fmap HTMLModElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLModElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLModElement
 instance IsElement HTMLModElement
@@ -9286,7 +9286,7 @@ type IsHTMLModElement o = HTMLModElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement Mozilla HTMLOListElement documentation>
-newtype HTMLOListElement = HTMLOListElement { unHTMLOListElement :: JSRef }
+newtype HTMLOListElement = HTMLOListElement { unHTMLOListElement :: JSVal }
 
 instance Eq (HTMLOListElement) where
   (HTMLOListElement a) == (HTMLOListElement b) = js_eq a b
@@ -9300,12 +9300,12 @@ instance PFromJSVal HTMLOListElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLOListElement where
-  toJSRef = return . unHTMLOListElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLOListElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLOListElement where
-  fromJSRef = return . fmap HTMLOListElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLOListElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLOListElement
 instance IsElement HTMLOListElement
@@ -9336,7 +9336,7 @@ type IsHTMLOListElement o = HTMLOListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement Mozilla HTMLObjectElement documentation>
-newtype HTMLObjectElement = HTMLObjectElement { unHTMLObjectElement :: JSRef }
+newtype HTMLObjectElement = HTMLObjectElement { unHTMLObjectElement :: JSVal }
 
 instance Eq (HTMLObjectElement) where
   (HTMLObjectElement a) == (HTMLObjectElement b) = js_eq a b
@@ -9350,12 +9350,12 @@ instance PFromJSVal HTMLObjectElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLObjectElement where
-  toJSRef = return . unHTMLObjectElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLObjectElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLObjectElement where
-  fromJSRef = return . fmap HTMLObjectElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLObjectElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLObjectElement
 instance IsElement HTMLObjectElement
@@ -9386,7 +9386,7 @@ type IsHTMLObjectElement o = HTMLObjectElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement Mozilla HTMLOptGroupElement documentation>
-newtype HTMLOptGroupElement = HTMLOptGroupElement { unHTMLOptGroupElement :: JSRef }
+newtype HTMLOptGroupElement = HTMLOptGroupElement { unHTMLOptGroupElement :: JSVal }
 
 instance Eq (HTMLOptGroupElement) where
   (HTMLOptGroupElement a) == (HTMLOptGroupElement b) = js_eq a b
@@ -9400,12 +9400,12 @@ instance PFromJSVal HTMLOptGroupElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLOptGroupElement where
-  toJSRef = return . unHTMLOptGroupElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLOptGroupElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLOptGroupElement where
-  fromJSRef = return . fmap HTMLOptGroupElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLOptGroupElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLOptGroupElement
 instance IsElement HTMLOptGroupElement
@@ -9436,7 +9436,7 @@ type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement Mozilla HTMLOptionElement documentation>
-newtype HTMLOptionElement = HTMLOptionElement { unHTMLOptionElement :: JSRef }
+newtype HTMLOptionElement = HTMLOptionElement { unHTMLOptionElement :: JSVal }
 
 instance Eq (HTMLOptionElement) where
   (HTMLOptionElement a) == (HTMLOptionElement b) = js_eq a b
@@ -9450,12 +9450,12 @@ instance PFromJSVal HTMLOptionElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLOptionElement where
-  toJSRef = return . unHTMLOptionElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLOptionElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLOptionElement where
-  fromJSRef = return . fmap HTMLOptionElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLOptionElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLOptionElement
 instance IsElement HTMLOptionElement
@@ -9483,7 +9483,7 @@ type IsHTMLOptionElement o = HTMLOptionElementClass o
 --     * "GHCJS.DOM.HTMLCollection"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection Mozilla HTMLOptionsCollection documentation>
-newtype HTMLOptionsCollection = HTMLOptionsCollection { unHTMLOptionsCollection :: JSRef }
+newtype HTMLOptionsCollection = HTMLOptionsCollection { unHTMLOptionsCollection :: JSVal }
 
 instance Eq (HTMLOptionsCollection) where
   (HTMLOptionsCollection a) == (HTMLOptionsCollection b) = js_eq a b
@@ -9497,12 +9497,12 @@ instance PFromJSVal HTMLOptionsCollection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLOptionsCollection where
-  toJSRef = return . unHTMLOptionsCollection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLOptionsCollection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLOptionsCollection where
-  fromJSRef = return . fmap HTMLOptionsCollection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLOptionsCollection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLCollection HTMLOptionsCollection
 instance IsGObject HTMLOptionsCollection where
@@ -9530,7 +9530,7 @@ type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement Mozilla HTMLOutputElement documentation>
-newtype HTMLOutputElement = HTMLOutputElement { unHTMLOutputElement :: JSRef }
+newtype HTMLOutputElement = HTMLOutputElement { unHTMLOutputElement :: JSVal }
 
 instance Eq (HTMLOutputElement) where
   (HTMLOutputElement a) == (HTMLOutputElement b) = js_eq a b
@@ -9544,12 +9544,12 @@ instance PFromJSVal HTMLOutputElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLOutputElement where
-  toJSRef = return . unHTMLOutputElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLOutputElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLOutputElement where
-  fromJSRef = return . fmap HTMLOutputElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLOutputElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLOutputElement
 instance IsElement HTMLOutputElement
@@ -9578,7 +9578,7 @@ foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutput
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement Mozilla HTMLParagraphElement documentation>
-newtype HTMLParagraphElement = HTMLParagraphElement { unHTMLParagraphElement :: JSRef }
+newtype HTMLParagraphElement = HTMLParagraphElement { unHTMLParagraphElement :: JSVal }
 
 instance Eq (HTMLParagraphElement) where
   (HTMLParagraphElement a) == (HTMLParagraphElement b) = js_eq a b
@@ -9592,12 +9592,12 @@ instance PFromJSVal HTMLParagraphElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLParagraphElement where
-  toJSRef = return . unHTMLParagraphElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLParagraphElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLParagraphElement where
-  fromJSRef = return . fmap HTMLParagraphElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLParagraphElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLParagraphElement
 instance IsElement HTMLParagraphElement
@@ -9628,7 +9628,7 @@ type IsHTMLParagraphElement o = HTMLParagraphElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement Mozilla HTMLParamElement documentation>
-newtype HTMLParamElement = HTMLParamElement { unHTMLParamElement :: JSRef }
+newtype HTMLParamElement = HTMLParamElement { unHTMLParamElement :: JSVal }
 
 instance Eq (HTMLParamElement) where
   (HTMLParamElement a) == (HTMLParamElement b) = js_eq a b
@@ -9642,12 +9642,12 @@ instance PFromJSVal HTMLParamElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLParamElement where
-  toJSRef = return . unHTMLParamElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLParamElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLParamElement where
-  fromJSRef = return . fmap HTMLParamElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLParamElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLParamElement
 instance IsElement HTMLParamElement
@@ -9678,7 +9678,7 @@ type IsHTMLParamElement o = HTMLParamElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPreElement Mozilla HTMLPreElement documentation>
-newtype HTMLPreElement = HTMLPreElement { unHTMLPreElement :: JSRef }
+newtype HTMLPreElement = HTMLPreElement { unHTMLPreElement :: JSVal }
 
 instance Eq (HTMLPreElement) where
   (HTMLPreElement a) == (HTMLPreElement b) = js_eq a b
@@ -9692,12 +9692,12 @@ instance PFromJSVal HTMLPreElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLPreElement where
-  toJSRef = return . unHTMLPreElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLPreElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLPreElement where
-  fromJSRef = return . fmap HTMLPreElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLPreElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLPreElement
 instance IsElement HTMLPreElement
@@ -9728,7 +9728,7 @@ type IsHTMLPreElement o = HTMLPreElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement Mozilla HTMLProgressElement documentation>
-newtype HTMLProgressElement = HTMLProgressElement { unHTMLProgressElement :: JSRef }
+newtype HTMLProgressElement = HTMLProgressElement { unHTMLProgressElement :: JSVal }
 
 instance Eq (HTMLProgressElement) where
   (HTMLProgressElement a) == (HTMLProgressElement b) = js_eq a b
@@ -9742,12 +9742,12 @@ instance PFromJSVal HTMLProgressElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLProgressElement where
-  toJSRef = return . unHTMLProgressElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLProgressElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLProgressElement where
-  fromJSRef = return . fmap HTMLProgressElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLProgressElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLProgressElement
 instance IsElement HTMLProgressElement
@@ -9776,7 +9776,7 @@ foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProg
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement Mozilla HTMLQuoteElement documentation>
-newtype HTMLQuoteElement = HTMLQuoteElement { unHTMLQuoteElement :: JSRef }
+newtype HTMLQuoteElement = HTMLQuoteElement { unHTMLQuoteElement :: JSVal }
 
 instance Eq (HTMLQuoteElement) where
   (HTMLQuoteElement a) == (HTMLQuoteElement b) = js_eq a b
@@ -9790,12 +9790,12 @@ instance PFromJSVal HTMLQuoteElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLQuoteElement where
-  toJSRef = return . unHTMLQuoteElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLQuoteElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLQuoteElement where
-  fromJSRef = return . fmap HTMLQuoteElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLQuoteElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLQuoteElement
 instance IsElement HTMLQuoteElement
@@ -9826,7 +9826,7 @@ type IsHTMLQuoteElement o = HTMLQuoteElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement Mozilla HTMLScriptElement documentation>
-newtype HTMLScriptElement = HTMLScriptElement { unHTMLScriptElement :: JSRef }
+newtype HTMLScriptElement = HTMLScriptElement { unHTMLScriptElement :: JSVal }
 
 instance Eq (HTMLScriptElement) where
   (HTMLScriptElement a) == (HTMLScriptElement b) = js_eq a b
@@ -9840,12 +9840,12 @@ instance PFromJSVal HTMLScriptElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLScriptElement where
-  toJSRef = return . unHTMLScriptElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLScriptElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLScriptElement where
-  fromJSRef = return . fmap HTMLScriptElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLScriptElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLScriptElement
 instance IsElement HTMLScriptElement
@@ -9876,7 +9876,7 @@ type IsHTMLScriptElement o = HTMLScriptElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement Mozilla HTMLSelectElement documentation>
-newtype HTMLSelectElement = HTMLSelectElement { unHTMLSelectElement :: JSRef }
+newtype HTMLSelectElement = HTMLSelectElement { unHTMLSelectElement :: JSVal }
 
 instance Eq (HTMLSelectElement) where
   (HTMLSelectElement a) == (HTMLSelectElement b) = js_eq a b
@@ -9890,12 +9890,12 @@ instance PFromJSVal HTMLSelectElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLSelectElement where
-  toJSRef = return . unHTMLSelectElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLSelectElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLSelectElement where
-  fromJSRef = return . fmap HTMLSelectElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLSelectElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLSelectElement
 instance IsElement HTMLSelectElement
@@ -9926,7 +9926,7 @@ type IsHTMLSelectElement o = HTMLSelectElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement Mozilla HTMLSourceElement documentation>
-newtype HTMLSourceElement = HTMLSourceElement { unHTMLSourceElement :: JSRef }
+newtype HTMLSourceElement = HTMLSourceElement { unHTMLSourceElement :: JSVal }
 
 instance Eq (HTMLSourceElement) where
   (HTMLSourceElement a) == (HTMLSourceElement b) = js_eq a b
@@ -9940,12 +9940,12 @@ instance PFromJSVal HTMLSourceElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLSourceElement where
-  toJSRef = return . unHTMLSourceElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLSourceElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLSourceElement where
-  fromJSRef = return . fmap HTMLSourceElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLSourceElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLSourceElement
 instance IsElement HTMLSourceElement
@@ -9974,7 +9974,7 @@ foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSource
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSpanElement Mozilla HTMLSpanElement documentation>
-newtype HTMLSpanElement = HTMLSpanElement { unHTMLSpanElement :: JSRef }
+newtype HTMLSpanElement = HTMLSpanElement { unHTMLSpanElement :: JSVal }
 
 instance Eq (HTMLSpanElement) where
   (HTMLSpanElement a) == (HTMLSpanElement b) = js_eq a b
@@ -9988,12 +9988,12 @@ instance PFromJSVal HTMLSpanElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLSpanElement where
-  toJSRef = return . unHTMLSpanElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLSpanElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLSpanElement where
-  fromJSRef = return . fmap HTMLSpanElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLSpanElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLSpanElement
 instance IsElement HTMLSpanElement
@@ -10022,7 +10022,7 @@ foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement Mozilla HTMLStyleElement documentation>
-newtype HTMLStyleElement = HTMLStyleElement { unHTMLStyleElement :: JSRef }
+newtype HTMLStyleElement = HTMLStyleElement { unHTMLStyleElement :: JSVal }
 
 instance Eq (HTMLStyleElement) where
   (HTMLStyleElement a) == (HTMLStyleElement b) = js_eq a b
@@ -10036,12 +10036,12 @@ instance PFromJSVal HTMLStyleElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLStyleElement where
-  toJSRef = return . unHTMLStyleElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLStyleElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLStyleElement where
-  fromJSRef = return . fmap HTMLStyleElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLStyleElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLStyleElement
 instance IsElement HTMLStyleElement
@@ -10072,7 +10072,7 @@ type IsHTMLStyleElement o = HTMLStyleElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement Mozilla HTMLTableCaptionElement documentation>
-newtype HTMLTableCaptionElement = HTMLTableCaptionElement { unHTMLTableCaptionElement :: JSRef }
+newtype HTMLTableCaptionElement = HTMLTableCaptionElement { unHTMLTableCaptionElement :: JSVal }
 
 instance Eq (HTMLTableCaptionElement) where
   (HTMLTableCaptionElement a) == (HTMLTableCaptionElement b) = js_eq a b
@@ -10086,12 +10086,12 @@ instance PFromJSVal HTMLTableCaptionElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableCaptionElement where
-  toJSRef = return . unHTMLTableCaptionElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableCaptionElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableCaptionElement where
-  fromJSRef = return . fmap HTMLTableCaptionElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableCaptionElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableCaptionElement
 instance IsElement HTMLTableCaptionElement
@@ -10122,7 +10122,7 @@ type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement Mozilla HTMLTableCellElement documentation>
-newtype HTMLTableCellElement = HTMLTableCellElement { unHTMLTableCellElement :: JSRef }
+newtype HTMLTableCellElement = HTMLTableCellElement { unHTMLTableCellElement :: JSVal }
 
 instance Eq (HTMLTableCellElement) where
   (HTMLTableCellElement a) == (HTMLTableCellElement b) = js_eq a b
@@ -10136,12 +10136,12 @@ instance PFromJSVal HTMLTableCellElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableCellElement where
-  toJSRef = return . unHTMLTableCellElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableCellElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableCellElement where
-  fromJSRef = return . fmap HTMLTableCellElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableCellElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableCellElement
 instance IsElement HTMLTableCellElement
@@ -10172,7 +10172,7 @@ type IsHTMLTableCellElement o = HTMLTableCellElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement Mozilla HTMLTableColElement documentation>
-newtype HTMLTableColElement = HTMLTableColElement { unHTMLTableColElement :: JSRef }
+newtype HTMLTableColElement = HTMLTableColElement { unHTMLTableColElement :: JSVal }
 
 instance Eq (HTMLTableColElement) where
   (HTMLTableColElement a) == (HTMLTableColElement b) = js_eq a b
@@ -10186,12 +10186,12 @@ instance PFromJSVal HTMLTableColElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableColElement where
-  toJSRef = return . unHTMLTableColElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableColElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableColElement where
-  fromJSRef = return . fmap HTMLTableColElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableColElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableColElement
 instance IsElement HTMLTableColElement
@@ -10222,7 +10222,7 @@ type IsHTMLTableColElement o = HTMLTableColElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement Mozilla HTMLTableElement documentation>
-newtype HTMLTableElement = HTMLTableElement { unHTMLTableElement :: JSRef }
+newtype HTMLTableElement = HTMLTableElement { unHTMLTableElement :: JSVal }
 
 instance Eq (HTMLTableElement) where
   (HTMLTableElement a) == (HTMLTableElement b) = js_eq a b
@@ -10236,12 +10236,12 @@ instance PFromJSVal HTMLTableElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableElement where
-  toJSRef = return . unHTMLTableElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableElement where
-  fromJSRef = return . fmap HTMLTableElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableElement
 instance IsElement HTMLTableElement
@@ -10272,7 +10272,7 @@ type IsHTMLTableElement o = HTMLTableElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement Mozilla HTMLTableRowElement documentation>
-newtype HTMLTableRowElement = HTMLTableRowElement { unHTMLTableRowElement :: JSRef }
+newtype HTMLTableRowElement = HTMLTableRowElement { unHTMLTableRowElement :: JSVal }
 
 instance Eq (HTMLTableRowElement) where
   (HTMLTableRowElement a) == (HTMLTableRowElement b) = js_eq a b
@@ -10286,12 +10286,12 @@ instance PFromJSVal HTMLTableRowElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableRowElement where
-  toJSRef = return . unHTMLTableRowElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableRowElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableRowElement where
-  fromJSRef = return . fmap HTMLTableRowElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableRowElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableRowElement
 instance IsElement HTMLTableRowElement
@@ -10322,7 +10322,7 @@ type IsHTMLTableRowElement o = HTMLTableRowElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement Mozilla HTMLTableSectionElement documentation>
-newtype HTMLTableSectionElement = HTMLTableSectionElement { unHTMLTableSectionElement :: JSRef }
+newtype HTMLTableSectionElement = HTMLTableSectionElement { unHTMLTableSectionElement :: JSVal }
 
 instance Eq (HTMLTableSectionElement) where
   (HTMLTableSectionElement a) == (HTMLTableSectionElement b) = js_eq a b
@@ -10336,12 +10336,12 @@ instance PFromJSVal HTMLTableSectionElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTableSectionElement where
-  toJSRef = return . unHTMLTableSectionElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTableSectionElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTableSectionElement where
-  fromJSRef = return . fmap HTMLTableSectionElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTableSectionElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTableSectionElement
 instance IsElement HTMLTableSectionElement
@@ -10372,7 +10372,7 @@ type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement Mozilla HTMLTemplateElement documentation>
-newtype HTMLTemplateElement = HTMLTemplateElement { unHTMLTemplateElement :: JSRef }
+newtype HTMLTemplateElement = HTMLTemplateElement { unHTMLTemplateElement :: JSVal }
 
 instance Eq (HTMLTemplateElement) where
   (HTMLTemplateElement a) == (HTMLTemplateElement b) = js_eq a b
@@ -10386,12 +10386,12 @@ instance PFromJSVal HTMLTemplateElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTemplateElement where
-  toJSRef = return . unHTMLTemplateElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTemplateElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTemplateElement where
-  fromJSRef = return . fmap HTMLTemplateElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTemplateElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTemplateElement
 instance IsElement HTMLTemplateElement
@@ -10420,7 +10420,7 @@ foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemp
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement Mozilla HTMLTextAreaElement documentation>
-newtype HTMLTextAreaElement = HTMLTextAreaElement { unHTMLTextAreaElement :: JSRef }
+newtype HTMLTextAreaElement = HTMLTextAreaElement { unHTMLTextAreaElement :: JSVal }
 
 instance Eq (HTMLTextAreaElement) where
   (HTMLTextAreaElement a) == (HTMLTextAreaElement b) = js_eq a b
@@ -10434,12 +10434,12 @@ instance PFromJSVal HTMLTextAreaElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTextAreaElement where
-  toJSRef = return . unHTMLTextAreaElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTextAreaElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTextAreaElement where
-  fromJSRef = return . fmap HTMLTextAreaElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTextAreaElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTextAreaElement
 instance IsElement HTMLTextAreaElement
@@ -10470,7 +10470,7 @@ type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement Mozilla HTMLTitleElement documentation>
-newtype HTMLTitleElement = HTMLTitleElement { unHTMLTitleElement :: JSRef }
+newtype HTMLTitleElement = HTMLTitleElement { unHTMLTitleElement :: JSVal }
 
 instance Eq (HTMLTitleElement) where
   (HTMLTitleElement a) == (HTMLTitleElement b) = js_eq a b
@@ -10484,12 +10484,12 @@ instance PFromJSVal HTMLTitleElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTitleElement where
-  toJSRef = return . unHTMLTitleElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTitleElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTitleElement where
-  fromJSRef = return . fmap HTMLTitleElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTitleElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTitleElement
 instance IsElement HTMLTitleElement
@@ -10520,7 +10520,7 @@ type IsHTMLTitleElement o = HTMLTitleElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement Mozilla HTMLTrackElement documentation>
-newtype HTMLTrackElement = HTMLTrackElement { unHTMLTrackElement :: JSRef }
+newtype HTMLTrackElement = HTMLTrackElement { unHTMLTrackElement :: JSVal }
 
 instance Eq (HTMLTrackElement) where
   (HTMLTrackElement a) == (HTMLTrackElement b) = js_eq a b
@@ -10534,12 +10534,12 @@ instance PFromJSVal HTMLTrackElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLTrackElement where
-  toJSRef = return . unHTMLTrackElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLTrackElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLTrackElement where
-  fromJSRef = return . fmap HTMLTrackElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLTrackElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLTrackElement
 instance IsElement HTMLTrackElement
@@ -10568,7 +10568,7 @@ foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUListElement Mozilla HTMLUListElement documentation>
-newtype HTMLUListElement = HTMLUListElement { unHTMLUListElement :: JSRef }
+newtype HTMLUListElement = HTMLUListElement { unHTMLUListElement :: JSVal }
 
 instance Eq (HTMLUListElement) where
   (HTMLUListElement a) == (HTMLUListElement b) = js_eq a b
@@ -10582,12 +10582,12 @@ instance PFromJSVal HTMLUListElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLUListElement where
-  toJSRef = return . unHTMLUListElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLUListElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLUListElement where
-  fromJSRef = return . fmap HTMLUListElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLUListElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLUListElement
 instance IsElement HTMLUListElement
@@ -10618,7 +10618,7 @@ type IsHTMLUListElement o = HTMLUListElementClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUnknownElement Mozilla HTMLUnknownElement documentation>
-newtype HTMLUnknownElement = HTMLUnknownElement { unHTMLUnknownElement :: JSRef }
+newtype HTMLUnknownElement = HTMLUnknownElement { unHTMLUnknownElement :: JSVal }
 
 instance Eq (HTMLUnknownElement) where
   (HTMLUnknownElement a) == (HTMLUnknownElement b) = js_eq a b
@@ -10632,12 +10632,12 @@ instance PFromJSVal HTMLUnknownElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLUnknownElement where
-  toJSRef = return . unHTMLUnknownElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLUnknownElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLUnknownElement where
-  fromJSRef = return . fmap HTMLUnknownElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLUnknownElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLElement HTMLUnknownElement
 instance IsElement HTMLUnknownElement
@@ -10667,7 +10667,7 @@ foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnkno
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement Mozilla HTMLVideoElement documentation>
-newtype HTMLVideoElement = HTMLVideoElement { unHTMLVideoElement :: JSRef }
+newtype HTMLVideoElement = HTMLVideoElement { unHTMLVideoElement :: JSVal }
 
 instance Eq (HTMLVideoElement) where
   (HTMLVideoElement a) == (HTMLVideoElement b) = js_eq a b
@@ -10681,12 +10681,12 @@ instance PFromJSVal HTMLVideoElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HTMLVideoElement where
-  toJSRef = return . unHTMLVideoElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHTMLVideoElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HTMLVideoElement where
-  fromJSRef = return . fmap HTMLVideoElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HTMLVideoElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsHTMLMediaElement HTMLVideoElement
 instance IsHTMLElement HTMLVideoElement
@@ -10715,7 +10715,7 @@ type IsHTMLVideoElement o = HTMLVideoElementClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent Mozilla HashChangeEvent documentation>
-newtype HashChangeEvent = HashChangeEvent { unHashChangeEvent :: JSRef }
+newtype HashChangeEvent = HashChangeEvent { unHashChangeEvent :: JSVal }
 
 instance Eq (HashChangeEvent) where
   (HashChangeEvent a) == (HashChangeEvent b) = js_eq a b
@@ -10729,12 +10729,12 @@ instance PFromJSVal HashChangeEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal HashChangeEvent where
-  toJSRef = return . unHashChangeEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHashChangeEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal HashChangeEvent where
-  fromJSRef = return . fmap HashChangeEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap HashChangeEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent HashChangeEvent
 instance IsGObject HashChangeEvent where
@@ -10754,7 +10754,7 @@ foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEv
 -- | Functions for this inteface are in "GHCJS.DOM.History".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/History Mozilla History documentation>
-newtype History = History { unHistory :: JSRef }
+newtype History = History { unHistory :: JSVal }
 
 instance Eq (History) where
   (History a) == (History b) = js_eq a b
@@ -10768,12 +10768,12 @@ instance PFromJSVal History where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal History where
-  toJSRef = return . unHistory
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unHistory
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal History where
-  fromJSRef = return . fmap History . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap History . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject History where
   toGObject = GObject . unHistory
@@ -10794,7 +10794,7 @@ type IsHistory o = HistoryClass o
 -- | Functions for this inteface are in "GHCJS.DOM.IDBAny".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBAny Mozilla IDBAny documentation>
-newtype IDBAny = IDBAny { unIDBAny :: JSRef }
+newtype IDBAny = IDBAny { unIDBAny :: JSVal }
 
 instance Eq (IDBAny) where
   (IDBAny a) == (IDBAny b) = js_eq a b
@@ -10808,12 +10808,12 @@ instance PFromJSVal IDBAny where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBAny where
-  toJSRef = return . unIDBAny
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBAny
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBAny where
-  fromJSRef = return . fmap IDBAny . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBAny . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBAny where
   toGObject = GObject . unIDBAny
@@ -10832,7 +10832,7 @@ foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor Mozilla IDBCursor documentation>
-newtype IDBCursor = IDBCursor { unIDBCursor :: JSRef }
+newtype IDBCursor = IDBCursor { unIDBCursor :: JSVal }
 
 instance Eq (IDBCursor) where
   (IDBCursor a) == (IDBCursor b) = js_eq a b
@@ -10846,12 +10846,12 @@ instance PFromJSVal IDBCursor where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBCursor where
-  toJSRef = return . unIDBCursor
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBCursor
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBCursor where
-  fromJSRef = return . fmap IDBCursor . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBCursor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsIDBCursor o
 toIDBCursor :: IsIDBCursor o => o -> IDBCursor
@@ -10878,7 +10878,7 @@ foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor :: GType
 --     * "GHCJS.DOM.IDBCursor"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursorWithValue Mozilla IDBCursorWithValue documentation>
-newtype IDBCursorWithValue = IDBCursorWithValue { unIDBCursorWithValue :: JSRef }
+newtype IDBCursorWithValue = IDBCursorWithValue { unIDBCursorWithValue :: JSVal }
 
 instance Eq (IDBCursorWithValue) where
   (IDBCursorWithValue a) == (IDBCursorWithValue b) = js_eq a b
@@ -10892,12 +10892,12 @@ instance PFromJSVal IDBCursorWithValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBCursorWithValue where
-  toJSRef = return . unIDBCursorWithValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBCursorWithValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBCursorWithValue where
-  fromJSRef = return . fmap IDBCursorWithValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBCursorWithValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsIDBCursor IDBCursorWithValue
 instance IsGObject IDBCursorWithValue where
@@ -10920,7 +10920,7 @@ foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursor
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase Mozilla IDBDatabase documentation>
-newtype IDBDatabase = IDBDatabase { unIDBDatabase :: JSRef }
+newtype IDBDatabase = IDBDatabase { unIDBDatabase :: JSVal }
 
 instance Eq (IDBDatabase) where
   (IDBDatabase a) == (IDBDatabase b) = js_eq a b
@@ -10934,12 +10934,12 @@ instance PFromJSVal IDBDatabase where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBDatabase where
-  toJSRef = return . unIDBDatabase
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBDatabase
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBDatabase where
-  fromJSRef = return . fmap IDBDatabase . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBDatabase . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget IDBDatabase
 instance IsGObject IDBDatabase where
@@ -10959,7 +10959,7 @@ foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase :: G
 -- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory Mozilla IDBFactory documentation>
-newtype IDBFactory = IDBFactory { unIDBFactory :: JSRef }
+newtype IDBFactory = IDBFactory { unIDBFactory :: JSVal }
 
 instance Eq (IDBFactory) where
   (IDBFactory a) == (IDBFactory b) = js_eq a b
@@ -10973,12 +10973,12 @@ instance PFromJSVal IDBFactory where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBFactory where
-  toJSRef = return . unIDBFactory
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBFactory
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBFactory where
-  fromJSRef = return . fmap IDBFactory . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBFactory . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBFactory where
   toGObject = GObject . unIDBFactory
@@ -10997,7 +10997,7 @@ foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex Mozilla IDBIndex documentation>
-newtype IDBIndex = IDBIndex { unIDBIndex :: JSRef }
+newtype IDBIndex = IDBIndex { unIDBIndex :: JSVal }
 
 instance Eq (IDBIndex) where
   (IDBIndex a) == (IDBIndex b) = js_eq a b
@@ -11011,12 +11011,12 @@ instance PFromJSVal IDBIndex where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBIndex where
-  toJSRef = return . unIDBIndex
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBIndex
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBIndex where
-  fromJSRef = return . fmap IDBIndex . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBIndex . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBIndex where
   toGObject = GObject . unIDBIndex
@@ -11035,7 +11035,7 @@ foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange Mozilla IDBKeyRange documentation>
-newtype IDBKeyRange = IDBKeyRange { unIDBKeyRange :: JSRef }
+newtype IDBKeyRange = IDBKeyRange { unIDBKeyRange :: JSVal }
 
 instance Eq (IDBKeyRange) where
   (IDBKeyRange a) == (IDBKeyRange b) = js_eq a b
@@ -11049,12 +11049,12 @@ instance PFromJSVal IDBKeyRange where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBKeyRange where
-  toJSRef = return . unIDBKeyRange
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBKeyRange
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBKeyRange where
-  fromJSRef = return . fmap IDBKeyRange . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBKeyRange . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBKeyRange where
   toGObject = GObject . unIDBKeyRange
@@ -11073,7 +11073,7 @@ foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange :: G
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore Mozilla IDBObjectStore documentation>
-newtype IDBObjectStore = IDBObjectStore { unIDBObjectStore :: JSRef }
+newtype IDBObjectStore = IDBObjectStore { unIDBObjectStore :: JSVal }
 
 instance Eq (IDBObjectStore) where
   (IDBObjectStore a) == (IDBObjectStore b) = js_eq a b
@@ -11087,12 +11087,12 @@ instance PFromJSVal IDBObjectStore where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBObjectStore where
-  toJSRef = return . unIDBObjectStore
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBObjectStore
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBObjectStore where
-  fromJSRef = return . fmap IDBObjectStore . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBObjectStore . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBObjectStore where
   toGObject = GObject . unIDBObjectStore
@@ -11115,7 +11115,7 @@ foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStor
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest Mozilla IDBOpenDBRequest documentation>
-newtype IDBOpenDBRequest = IDBOpenDBRequest { unIDBOpenDBRequest :: JSRef }
+newtype IDBOpenDBRequest = IDBOpenDBRequest { unIDBOpenDBRequest :: JSVal }
 
 instance Eq (IDBOpenDBRequest) where
   (IDBOpenDBRequest a) == (IDBOpenDBRequest b) = js_eq a b
@@ -11129,12 +11129,12 @@ instance PFromJSVal IDBOpenDBRequest where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBOpenDBRequest where
-  toJSRef = return . unIDBOpenDBRequest
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBOpenDBRequest
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBOpenDBRequest where
-  fromJSRef = return . fmap IDBOpenDBRequest . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBOpenDBRequest . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsIDBRequest IDBOpenDBRequest
 instance IsEventTarget IDBOpenDBRequest
@@ -11158,7 +11158,7 @@ foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRe
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest Mozilla IDBRequest documentation>
-newtype IDBRequest = IDBRequest { unIDBRequest :: JSRef }
+newtype IDBRequest = IDBRequest { unIDBRequest :: JSVal }
 
 instance Eq (IDBRequest) where
   (IDBRequest a) == (IDBRequest b) = js_eq a b
@@ -11172,12 +11172,12 @@ instance PFromJSVal IDBRequest where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBRequest where
-  toJSRef = return . unIDBRequest
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBRequest
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBRequest where
-  fromJSRef = return . fmap IDBRequest . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBRequest . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsIDBRequest o
 toIDBRequest :: IsIDBRequest o => o -> IDBRequest
@@ -11205,7 +11205,7 @@ foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest :: GTy
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction Mozilla IDBTransaction documentation>
-newtype IDBTransaction = IDBTransaction { unIDBTransaction :: JSRef }
+newtype IDBTransaction = IDBTransaction { unIDBTransaction :: JSVal }
 
 instance Eq (IDBTransaction) where
   (IDBTransaction a) == (IDBTransaction b) = js_eq a b
@@ -11219,12 +11219,12 @@ instance PFromJSVal IDBTransaction where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBTransaction where
-  toJSRef = return . unIDBTransaction
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBTransaction
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBTransaction where
-  fromJSRef = return . fmap IDBTransaction . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBTransaction . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget IDBTransaction
 instance IsGObject IDBTransaction where
@@ -11247,7 +11247,7 @@ foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransactio
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent Mozilla IDBVersionChangeEvent documentation>
-newtype IDBVersionChangeEvent = IDBVersionChangeEvent { unIDBVersionChangeEvent :: JSRef }
+newtype IDBVersionChangeEvent = IDBVersionChangeEvent { unIDBVersionChangeEvent :: JSVal }
 
 instance Eq (IDBVersionChangeEvent) where
   (IDBVersionChangeEvent a) == (IDBVersionChangeEvent b) = js_eq a b
@@ -11261,12 +11261,12 @@ instance PFromJSVal IDBVersionChangeEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal IDBVersionChangeEvent where
-  toJSRef = return . unIDBVersionChangeEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unIDBVersionChangeEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal IDBVersionChangeEvent where
-  fromJSRef = return . fmap IDBVersionChangeEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap IDBVersionChangeEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent IDBVersionChangeEvent
 instance IsGObject IDBVersionChangeEvent where
@@ -11286,7 +11286,7 @@ foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVer
 -- | Functions for this inteface are in "GHCJS.DOM.ImageData".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation>
-newtype ImageData = ImageData { unImageData :: JSRef }
+newtype ImageData = ImageData { unImageData :: JSVal }
 
 instance Eq (ImageData) where
   (ImageData a) == (ImageData b) = js_eq a b
@@ -11300,12 +11300,12 @@ instance PFromJSVal ImageData where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ImageData where
-  toJSRef = return . unImageData
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unImageData
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ImageData where
-  fromJSRef = return . fmap ImageData . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ImageData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ImageData where
   toGObject = GObject . unImageData
@@ -11324,7 +11324,7 @@ foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost Mozilla InspectorFrontendHost documentation>
-newtype InspectorFrontendHost = InspectorFrontendHost { unInspectorFrontendHost :: JSRef }
+newtype InspectorFrontendHost = InspectorFrontendHost { unInspectorFrontendHost :: JSVal }
 
 instance Eq (InspectorFrontendHost) where
   (InspectorFrontendHost a) == (InspectorFrontendHost b) = js_eq a b
@@ -11338,12 +11338,12 @@ instance PFromJSVal InspectorFrontendHost where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal InspectorFrontendHost where
-  toJSRef = return . unInspectorFrontendHost
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInspectorFrontendHost
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal InspectorFrontendHost where
-  fromJSRef = return . fmap InspectorFrontendHost . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap InspectorFrontendHost . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject InspectorFrontendHost where
   toGObject = GObject . unInspectorFrontendHost
@@ -11364,7 +11364,7 @@ foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspec
 --
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings Mozilla InternalSettings documentation>
-newtype InternalSettings = InternalSettings { unInternalSettings :: JSRef }
+newtype InternalSettings = InternalSettings { unInternalSettings :: JSVal }
 
 instance Eq (InternalSettings) where
   (InternalSettings a) == (InternalSettings b) = js_eq a b
@@ -11378,12 +11378,12 @@ instance PFromJSVal InternalSettings where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal InternalSettings where
-  toJSRef = return . unInternalSettings
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInternalSettings
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal InternalSettings where
-  fromJSRef = return . fmap InternalSettings . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap InternalSettings . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject InternalSettings where
   toGObject = GObject . unInternalSettings
@@ -11402,7 +11402,7 @@ foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSet
 -- | Functions for this inteface are in "GHCJS.DOM.Internals".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Internals Mozilla Internals documentation>
-newtype Internals = Internals { unInternals :: JSRef }
+newtype Internals = Internals { unInternals :: JSVal }
 
 instance Eq (Internals) where
   (Internals a) == (Internals b) = js_eq a b
@@ -11416,12 +11416,12 @@ instance PFromJSVal Internals where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Internals where
-  toJSRef = return . unInternals
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unInternals
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Internals where
-  fromJSRef = return . fmap Internals . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Internals . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Internals where
   toGObject = GObject . unInternals
@@ -11444,7 +11444,7 @@ foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals :: GType
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent Mozilla KeyboardEvent documentation>
-newtype KeyboardEvent = KeyboardEvent { unKeyboardEvent :: JSRef }
+newtype KeyboardEvent = KeyboardEvent { unKeyboardEvent :: JSVal }
 
 instance Eq (KeyboardEvent) where
   (KeyboardEvent a) == (KeyboardEvent b) = js_eq a b
@@ -11458,12 +11458,12 @@ instance PFromJSVal KeyboardEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal KeyboardEvent where
-  toJSRef = return . unKeyboardEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unKeyboardEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal KeyboardEvent where
-  fromJSRef = return . fmap KeyboardEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap KeyboardEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent KeyboardEvent
 instance IsEvent KeyboardEvent
@@ -11488,7 +11488,7 @@ type IsKeyboardEvent o = KeyboardEventClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Location".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Location Mozilla Location documentation>
-newtype Location = Location { unLocation :: JSRef }
+newtype Location = Location { unLocation :: JSVal }
 
 instance Eq (Location) where
   (Location a) == (Location b) = js_eq a b
@@ -11502,12 +11502,12 @@ instance PFromJSVal Location where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Location where
-  toJSRef = return . unLocation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unLocation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Location where
-  fromJSRef = return . fmap Location . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Location . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Location where
   toGObject = GObject . unLocation
@@ -11528,7 +11528,7 @@ type IsLocation o = LocationClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MallocStatistics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics Mozilla MallocStatistics documentation>
-newtype MallocStatistics = MallocStatistics { unMallocStatistics :: JSRef }
+newtype MallocStatistics = MallocStatistics { unMallocStatistics :: JSVal }
 
 instance Eq (MallocStatistics) where
   (MallocStatistics a) == (MallocStatistics b) = js_eq a b
@@ -11542,12 +11542,12 @@ instance PFromJSVal MallocStatistics where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MallocStatistics where
-  toJSRef = return . unMallocStatistics
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMallocStatistics
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MallocStatistics where
-  fromJSRef = return . fmap MallocStatistics . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MallocStatistics . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MallocStatistics where
   toGObject = GObject . unMallocStatistics
@@ -11569,7 +11569,7 @@ foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStati
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaController Mozilla MediaController documentation>
-newtype MediaController = MediaController { unMediaController :: JSRef }
+newtype MediaController = MediaController { unMediaController :: JSVal }
 
 instance Eq (MediaController) where
   (MediaController a) == (MediaController b) = js_eq a b
@@ -11583,12 +11583,12 @@ instance PFromJSVal MediaController where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaController where
-  toJSRef = return . unMediaController
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaController
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaController where
-  fromJSRef = return . fmap MediaController . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaController . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget MediaController
 instance IsGObject MediaController where
@@ -11608,7 +11608,7 @@ foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaControl
 -- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost Mozilla MediaControlsHost documentation>
-newtype MediaControlsHost = MediaControlsHost { unMediaControlsHost :: JSRef }
+newtype MediaControlsHost = MediaControlsHost { unMediaControlsHost :: JSVal }
 
 instance Eq (MediaControlsHost) where
   (MediaControlsHost a) == (MediaControlsHost b) = js_eq a b
@@ -11622,12 +11622,12 @@ instance PFromJSVal MediaControlsHost where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaControlsHost where
-  toJSRef = return . unMediaControlsHost
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaControlsHost
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaControlsHost where
-  fromJSRef = return . fmap MediaControlsHost . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaControlsHost . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaControlsHost where
   toGObject = GObject . unMediaControlsHost
@@ -11650,7 +11650,7 @@ foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaContr
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode Mozilla MediaElementAudioSourceNode documentation>
-newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode { unMediaElementAudioSourceNode :: JSRef }
+newtype MediaElementAudioSourceNode = MediaElementAudioSourceNode { unMediaElementAudioSourceNode :: JSVal }
 
 instance Eq (MediaElementAudioSourceNode) where
   (MediaElementAudioSourceNode a) == (MediaElementAudioSourceNode b) = js_eq a b
@@ -11664,12 +11664,12 @@ instance PFromJSVal MediaElementAudioSourceNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaElementAudioSourceNode where
-  toJSRef = return . unMediaElementAudioSourceNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaElementAudioSourceNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaElementAudioSourceNode where
-  fromJSRef = return . fmap MediaElementAudioSourceNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaElementAudioSourceNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode MediaElementAudioSourceNode
 instance IsEventTarget MediaElementAudioSourceNode
@@ -11690,7 +11690,7 @@ foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gType
 -- | Functions for this inteface are in "GHCJS.DOM.MediaError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaError Mozilla MediaError documentation>
-newtype MediaError = MediaError { unMediaError :: JSRef }
+newtype MediaError = MediaError { unMediaError :: JSVal }
 
 instance Eq (MediaError) where
   (MediaError a) == (MediaError b) = js_eq a b
@@ -11704,12 +11704,12 @@ instance PFromJSVal MediaError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaError where
-  toJSRef = return . unMediaError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaError where
-  fromJSRef = return . fmap MediaError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaError where
   toGObject = GObject . unMediaError
@@ -11730,7 +11730,7 @@ type IsMediaError o = MediaErrorClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError Mozilla WebKitMediaKeyError documentation>
-newtype MediaKeyError = MediaKeyError { unMediaKeyError :: JSRef }
+newtype MediaKeyError = MediaKeyError { unMediaKeyError :: JSVal }
 
 instance Eq (MediaKeyError) where
   (MediaKeyError a) == (MediaKeyError b) = js_eq a b
@@ -11744,12 +11744,12 @@ instance PFromJSVal MediaKeyError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeyError where
-  toJSRef = return . unMediaKeyError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeyError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeyError where
-  fromJSRef = return . fmap MediaKeyError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeyError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaKeyError where
   toGObject = GObject . unMediaKeyError
@@ -11771,7 +11771,7 @@ foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKey
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent Mozilla MediaKeyEvent documentation>
-newtype MediaKeyEvent = MediaKeyEvent { unMediaKeyEvent :: JSRef }
+newtype MediaKeyEvent = MediaKeyEvent { unMediaKeyEvent :: JSVal }
 
 instance Eq (MediaKeyEvent) where
   (MediaKeyEvent a) == (MediaKeyEvent b) = js_eq a b
@@ -11785,12 +11785,12 @@ instance PFromJSVal MediaKeyEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeyEvent where
-  toJSRef = return . unMediaKeyEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeyEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeyEvent where
-  fromJSRef = return . fmap MediaKeyEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeyEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MediaKeyEvent
 instance IsGObject MediaKeyEvent where
@@ -11813,7 +11813,7 @@ foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent Mozilla WebKitMediaKeyMessageEvent documentation>
-newtype MediaKeyMessageEvent = MediaKeyMessageEvent { unMediaKeyMessageEvent :: JSRef }
+newtype MediaKeyMessageEvent = MediaKeyMessageEvent { unMediaKeyMessageEvent :: JSVal }
 
 instance Eq (MediaKeyMessageEvent) where
   (MediaKeyMessageEvent a) == (MediaKeyMessageEvent b) = js_eq a b
@@ -11827,12 +11827,12 @@ instance PFromJSVal MediaKeyMessageEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeyMessageEvent where
-  toJSRef = return . unMediaKeyMessageEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeyMessageEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeyMessageEvent where
-  fromJSRef = return . fmap MediaKeyMessageEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeyMessageEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MediaKeyMessageEvent
 instance IsGObject MediaKeyMessageEvent where
@@ -11855,7 +11855,7 @@ foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeM
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyNeededEvent Mozilla MediaKeyNeededEvent documentation>
-newtype MediaKeyNeededEvent = MediaKeyNeededEvent { unMediaKeyNeededEvent :: JSRef }
+newtype MediaKeyNeededEvent = MediaKeyNeededEvent { unMediaKeyNeededEvent :: JSVal }
 
 instance Eq (MediaKeyNeededEvent) where
   (MediaKeyNeededEvent a) == (MediaKeyNeededEvent b) = js_eq a b
@@ -11869,12 +11869,12 @@ instance PFromJSVal MediaKeyNeededEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeyNeededEvent where
-  toJSRef = return . unMediaKeyNeededEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeyNeededEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeyNeededEvent where
-  fromJSRef = return . fmap MediaKeyNeededEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeyNeededEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MediaKeyNeededEvent
 instance IsGObject MediaKeyNeededEvent where
@@ -11897,7 +11897,7 @@ foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKey
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession Mozilla WebKitMediaKeySession documentation>
-newtype MediaKeySession = MediaKeySession { unMediaKeySession :: JSRef }
+newtype MediaKeySession = MediaKeySession { unMediaKeySession :: JSVal }
 
 instance Eq (MediaKeySession) where
   (MediaKeySession a) == (MediaKeySession b) = js_eq a b
@@ -11911,12 +11911,12 @@ instance PFromJSVal MediaKeySession where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeySession where
-  toJSRef = return . unMediaKeySession
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeySession
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeySession where
-  fromJSRef = return . fmap MediaKeySession . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeySession . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget MediaKeySession
 instance IsGObject MediaKeySession where
@@ -11936,7 +11936,7 @@ foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaK
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation>
-newtype MediaKeys = MediaKeys { unMediaKeys :: JSRef }
+newtype MediaKeys = MediaKeys { unMediaKeys :: JSVal }
 
 instance Eq (MediaKeys) where
   (MediaKeys a) == (MediaKeys b) = js_eq a b
@@ -11950,12 +11950,12 @@ instance PFromJSVal MediaKeys where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaKeys where
-  toJSRef = return . unMediaKeys
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaKeys
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaKeys where
-  fromJSRef = return . fmap MediaKeys . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaKeys . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaKeys where
   toGObject = GObject . unMediaKeys
@@ -11974,7 +11974,7 @@ foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys ::
 -- | Functions for this inteface are in "GHCJS.DOM.MediaList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaList Mozilla MediaList documentation>
-newtype MediaList = MediaList { unMediaList :: JSRef }
+newtype MediaList = MediaList { unMediaList :: JSVal }
 
 instance Eq (MediaList) where
   (MediaList a) == (MediaList b) = js_eq a b
@@ -11988,12 +11988,12 @@ instance PFromJSVal MediaList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaList where
-  toJSRef = return . unMediaList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaList where
-  fromJSRef = return . fmap MediaList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaList where
   toGObject = GObject . unMediaList
@@ -12014,7 +12014,7 @@ type IsMediaList o = MediaListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList Mozilla MediaQueryList documentation>
-newtype MediaQueryList = MediaQueryList { unMediaQueryList :: JSRef }
+newtype MediaQueryList = MediaQueryList { unMediaQueryList :: JSVal }
 
 instance Eq (MediaQueryList) where
   (MediaQueryList a) == (MediaQueryList b) = js_eq a b
@@ -12028,12 +12028,12 @@ instance PFromJSVal MediaQueryList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaQueryList where
-  toJSRef = return . unMediaQueryList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaQueryList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaQueryList where
-  fromJSRef = return . fmap MediaQueryList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaQueryList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaQueryList where
   toGObject = GObject . unMediaQueryList
@@ -12057,7 +12057,7 @@ type IsMediaQueryList o = MediaQueryListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource Mozilla MediaSource documentation>
-newtype MediaSource = MediaSource { unMediaSource :: JSRef }
+newtype MediaSource = MediaSource { unMediaSource :: JSVal }
 
 instance Eq (MediaSource) where
   (MediaSource a) == (MediaSource b) = js_eq a b
@@ -12071,12 +12071,12 @@ instance PFromJSVal MediaSource where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaSource where
-  toJSRef = return . unMediaSource
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaSource
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaSource where
-  fromJSRef = return . fmap MediaSource . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaSource . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget MediaSource
 instance IsGObject MediaSource where
@@ -12096,7 +12096,7 @@ foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource :: G
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSourceStates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates Mozilla MediaSourceStates documentation>
-newtype MediaSourceStates = MediaSourceStates { unMediaSourceStates :: JSRef }
+newtype MediaSourceStates = MediaSourceStates { unMediaSourceStates :: JSVal }
 
 instance Eq (MediaSourceStates) where
   (MediaSourceStates a) == (MediaSourceStates b) = js_eq a b
@@ -12110,12 +12110,12 @@ instance PFromJSVal MediaSourceStates where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaSourceStates where
-  toJSRef = return . unMediaSourceStates
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaSourceStates
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaSourceStates where
-  fromJSRef = return . fmap MediaSourceStates . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaSourceStates . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaSourceStates where
   toGObject = GObject . unMediaSourceStates
@@ -12137,7 +12137,7 @@ foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourc
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation>
-newtype MediaStream = MediaStream { unMediaStream :: JSRef }
+newtype MediaStream = MediaStream { unMediaStream :: JSVal }
 
 instance Eq (MediaStream) where
   (MediaStream a) == (MediaStream b) = js_eq a b
@@ -12151,12 +12151,12 @@ instance PFromJSVal MediaStream where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStream where
-  toJSRef = return . unMediaStream
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStream
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStream where
-  fromJSRef = return . fmap MediaStream . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStream . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget MediaStream
 instance IsGObject MediaStream where
@@ -12180,7 +12180,7 @@ foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStrea
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode Mozilla MediaStreamAudioDestinationNode documentation>
-newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode { unMediaStreamAudioDestinationNode :: JSRef }
+newtype MediaStreamAudioDestinationNode = MediaStreamAudioDestinationNode { unMediaStreamAudioDestinationNode :: JSVal }
 
 instance Eq (MediaStreamAudioDestinationNode) where
   (MediaStreamAudioDestinationNode a) == (MediaStreamAudioDestinationNode b) = js_eq a b
@@ -12194,12 +12194,12 @@ instance PFromJSVal MediaStreamAudioDestinationNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamAudioDestinationNode where
-  toJSRef = return . unMediaStreamAudioDestinationNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamAudioDestinationNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamAudioDestinationNode where
-  fromJSRef = return . fmap MediaStreamAudioDestinationNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamAudioDestinationNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode MediaStreamAudioDestinationNode
 instance IsEventTarget MediaStreamAudioDestinationNode
@@ -12224,7 +12224,7 @@ foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" g
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode Mozilla MediaStreamAudioSourceNode documentation>
-newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode { unMediaStreamAudioSourceNode :: JSRef }
+newtype MediaStreamAudioSourceNode = MediaStreamAudioSourceNode { unMediaStreamAudioSourceNode :: JSVal }
 
 instance Eq (MediaStreamAudioSourceNode) where
   (MediaStreamAudioSourceNode a) == (MediaStreamAudioSourceNode b) = js_eq a b
@@ -12238,12 +12238,12 @@ instance PFromJSVal MediaStreamAudioSourceNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamAudioSourceNode where
-  toJSRef = return . unMediaStreamAudioSourceNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamAudioSourceNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamAudioSourceNode where
-  fromJSRef = return . fmap MediaStreamAudioSourceNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamAudioSourceNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode MediaStreamAudioSourceNode
 instance IsEventTarget MediaStreamAudioSourceNode
@@ -12264,7 +12264,7 @@ foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeM
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamCapabilities".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamCapabilities Mozilla MediaStreamCapabilities documentation>
-newtype MediaStreamCapabilities = MediaStreamCapabilities { unMediaStreamCapabilities :: JSRef }
+newtype MediaStreamCapabilities = MediaStreamCapabilities { unMediaStreamCapabilities :: JSVal }
 
 instance Eq (MediaStreamCapabilities) where
   (MediaStreamCapabilities a) == (MediaStreamCapabilities b) = js_eq a b
@@ -12278,12 +12278,12 @@ instance PFromJSVal MediaStreamCapabilities where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamCapabilities where
-  toJSRef = return . unMediaStreamCapabilities
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamCapabilities
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamCapabilities where
-  fromJSRef = return . fmap MediaStreamCapabilities . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamCapabilities . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsMediaStreamCapabilities o
 toMediaStreamCapabilities :: IsMediaStreamCapabilities o => o -> MediaStreamCapabilities
@@ -12310,7 +12310,7 @@ foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMedi
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent Mozilla MediaStreamEvent documentation>
-newtype MediaStreamEvent = MediaStreamEvent { unMediaStreamEvent :: JSRef }
+newtype MediaStreamEvent = MediaStreamEvent { unMediaStreamEvent :: JSVal }
 
 instance Eq (MediaStreamEvent) where
   (MediaStreamEvent a) == (MediaStreamEvent b) = js_eq a b
@@ -12324,12 +12324,12 @@ instance PFromJSVal MediaStreamEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamEvent where
-  toJSRef = return . unMediaStreamEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamEvent where
-  fromJSRef = return . fmap MediaStreamEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MediaStreamEvent
 instance IsGObject MediaStreamEvent where
@@ -12352,7 +12352,7 @@ foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStream
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack Mozilla MediaStreamTrack documentation>
-newtype MediaStreamTrack = MediaStreamTrack { unMediaStreamTrack :: JSRef }
+newtype MediaStreamTrack = MediaStreamTrack { unMediaStreamTrack :: JSVal }
 
 instance Eq (MediaStreamTrack) where
   (MediaStreamTrack a) == (MediaStreamTrack b) = js_eq a b
@@ -12366,12 +12366,12 @@ instance PFromJSVal MediaStreamTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamTrack where
-  toJSRef = return . unMediaStreamTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamTrack where
-  fromJSRef = return . fmap MediaStreamTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsMediaStreamTrack o
 toMediaStreamTrack :: IsMediaStreamTrack o => o -> MediaStreamTrack
@@ -12399,7 +12399,7 @@ foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStream
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackEvent Mozilla MediaStreamTrackEvent documentation>
-newtype MediaStreamTrackEvent = MediaStreamTrackEvent { unMediaStreamTrackEvent :: JSRef }
+newtype MediaStreamTrackEvent = MediaStreamTrackEvent { unMediaStreamTrackEvent :: JSVal }
 
 instance Eq (MediaStreamTrackEvent) where
   (MediaStreamTrackEvent a) == (MediaStreamTrackEvent b) = js_eq a b
@@ -12413,12 +12413,12 @@ instance PFromJSVal MediaStreamTrackEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaStreamTrackEvent where
-  toJSRef = return . unMediaStreamTrackEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaStreamTrackEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaStreamTrackEvent where
-  fromJSRef = return . fmap MediaStreamTrackEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaStreamTrackEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MediaStreamTrackEvent
 instance IsGObject MediaStreamTrackEvent where
@@ -12438,7 +12438,7 @@ foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaS
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraint Mozilla MediaTrackConstraint documentation>
-newtype MediaTrackConstraint = MediaTrackConstraint { unMediaTrackConstraint :: JSRef }
+newtype MediaTrackConstraint = MediaTrackConstraint { unMediaTrackConstraint :: JSVal }
 
 instance Eq (MediaTrackConstraint) where
   (MediaTrackConstraint a) == (MediaTrackConstraint b) = js_eq a b
@@ -12452,12 +12452,12 @@ instance PFromJSVal MediaTrackConstraint where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaTrackConstraint where
-  toJSRef = return . unMediaTrackConstraint
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaTrackConstraint
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaTrackConstraint where
-  fromJSRef = return . fmap MediaTrackConstraint . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaTrackConstraint . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraint where
   toGObject = GObject . unMediaTrackConstraint
@@ -12476,7 +12476,7 @@ foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTr
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraintSet Mozilla MediaTrackConstraintSet documentation>
-newtype MediaTrackConstraintSet = MediaTrackConstraintSet { unMediaTrackConstraintSet :: JSRef }
+newtype MediaTrackConstraintSet = MediaTrackConstraintSet { unMediaTrackConstraintSet :: JSVal }
 
 instance Eq (MediaTrackConstraintSet) where
   (MediaTrackConstraintSet a) == (MediaTrackConstraintSet b) = js_eq a b
@@ -12490,12 +12490,12 @@ instance PFromJSVal MediaTrackConstraintSet where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaTrackConstraintSet where
-  toJSRef = return . unMediaTrackConstraintSet
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaTrackConstraintSet
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaTrackConstraintSet where
-  fromJSRef = return . fmap MediaTrackConstraintSet . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaTrackConstraintSet . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraintSet where
   toGObject = GObject . unMediaTrackConstraintSet
@@ -12514,7 +12514,7 @@ foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMedi
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints Mozilla MediaTrackConstraints documentation>
-newtype MediaTrackConstraints = MediaTrackConstraints { unMediaTrackConstraints :: JSRef }
+newtype MediaTrackConstraints = MediaTrackConstraints { unMediaTrackConstraints :: JSVal }
 
 instance Eq (MediaTrackConstraints) where
   (MediaTrackConstraints a) == (MediaTrackConstraints b) = js_eq a b
@@ -12528,12 +12528,12 @@ instance PFromJSVal MediaTrackConstraints where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MediaTrackConstraints where
-  toJSRef = return . unMediaTrackConstraints
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMediaTrackConstraints
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MediaTrackConstraints where
-  fromJSRef = return . fmap MediaTrackConstraints . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MediaTrackConstraints . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraints where
   toGObject = GObject . unMediaTrackConstraints
@@ -12552,7 +12552,7 @@ foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaT
 -- | Functions for this inteface are in "GHCJS.DOM.MemoryInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo Mozilla MemoryInfo documentation>
-newtype MemoryInfo = MemoryInfo { unMemoryInfo :: JSRef }
+newtype MemoryInfo = MemoryInfo { unMemoryInfo :: JSVal }
 
 instance Eq (MemoryInfo) where
   (MemoryInfo a) == (MemoryInfo b) = js_eq a b
@@ -12566,12 +12566,12 @@ instance PFromJSVal MemoryInfo where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MemoryInfo where
-  toJSRef = return . unMemoryInfo
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMemoryInfo
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MemoryInfo where
-  fromJSRef = return . fmap MemoryInfo . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MemoryInfo . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MemoryInfo where
   toGObject = GObject . unMemoryInfo
@@ -12590,7 +12590,7 @@ foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel Mozilla MessageChannel documentation>
-newtype MessageChannel = MessageChannel { unMessageChannel :: JSRef }
+newtype MessageChannel = MessageChannel { unMessageChannel :: JSVal }
 
 instance Eq (MessageChannel) where
   (MessageChannel a) == (MessageChannel b) = js_eq a b
@@ -12604,12 +12604,12 @@ instance PFromJSVal MessageChannel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MessageChannel where
-  toJSRef = return . unMessageChannel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMessageChannel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MessageChannel where
-  fromJSRef = return . fmap MessageChannel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MessageChannel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MessageChannel where
   toGObject = GObject . unMessageChannel
@@ -12631,7 +12631,7 @@ foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChanne
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent Mozilla MessageEvent documentation>
-newtype MessageEvent = MessageEvent { unMessageEvent :: JSRef }
+newtype MessageEvent = MessageEvent { unMessageEvent :: JSVal }
 
 instance Eq (MessageEvent) where
   (MessageEvent a) == (MessageEvent b) = js_eq a b
@@ -12645,12 +12645,12 @@ instance PFromJSVal MessageEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MessageEvent where
-  toJSRef = return . unMessageEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMessageEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MessageEvent where
-  fromJSRef = return . fmap MessageEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MessageEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MessageEvent
 instance IsGObject MessageEvent where
@@ -12673,7 +12673,7 @@ foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort Mozilla MessagePort documentation>
-newtype MessagePort = MessagePort { unMessagePort :: JSRef }
+newtype MessagePort = MessagePort { unMessagePort :: JSVal }
 
 instance Eq (MessagePort) where
   (MessagePort a) == (MessagePort b) = js_eq a b
@@ -12687,12 +12687,12 @@ instance PFromJSVal MessagePort where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MessagePort where
-  toJSRef = return . unMessagePort
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMessagePort
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MessagePort where
-  fromJSRef = return . fmap MessagePort . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MessagePort . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget MessagePort
 instance IsGObject MessagePort where
@@ -12714,7 +12714,7 @@ type IsMessagePort o = MessagePortClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MimeType".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MimeType Mozilla MimeType documentation>
-newtype MimeType = MimeType { unMimeType :: JSRef }
+newtype MimeType = MimeType { unMimeType :: JSVal }
 
 instance Eq (MimeType) where
   (MimeType a) == (MimeType b) = js_eq a b
@@ -12728,12 +12728,12 @@ instance PFromJSVal MimeType where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MimeType where
-  toJSRef = return . unMimeType
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMimeType
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MimeType where
-  fromJSRef = return . fmap MimeType . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MimeType . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MimeType where
   toGObject = GObject . unMimeType
@@ -12754,7 +12754,7 @@ type IsMimeType o = MimeTypeClass o
 -- | Functions for this inteface are in "GHCJS.DOM.MimeTypeArray".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray Mozilla MimeTypeArray documentation>
-newtype MimeTypeArray = MimeTypeArray { unMimeTypeArray :: JSRef }
+newtype MimeTypeArray = MimeTypeArray { unMimeTypeArray :: JSVal }
 
 instance Eq (MimeTypeArray) where
   (MimeTypeArray a) == (MimeTypeArray b) = js_eq a b
@@ -12768,12 +12768,12 @@ instance PFromJSVal MimeTypeArray where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MimeTypeArray where
-  toJSRef = return . unMimeTypeArray
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMimeTypeArray
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MimeTypeArray where
-  fromJSRef = return . fmap MimeTypeArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MimeTypeArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MimeTypeArray where
   toGObject = GObject . unMimeTypeArray
@@ -12798,7 +12798,7 @@ type IsMimeTypeArray o = MimeTypeArrayClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent Mozilla MouseEvent documentation>
-newtype MouseEvent = MouseEvent { unMouseEvent :: JSRef }
+newtype MouseEvent = MouseEvent { unMouseEvent :: JSVal }
 
 instance Eq (MouseEvent) where
   (MouseEvent a) == (MouseEvent b) = js_eq a b
@@ -12812,12 +12812,12 @@ instance PFromJSVal MouseEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MouseEvent where
-  toJSRef = return . unMouseEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMouseEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MouseEvent where
-  fromJSRef = return . fmap MouseEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MouseEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsUIEvent o => IsMouseEvent o
 toMouseEvent :: IsMouseEvent o => o -> MouseEvent
@@ -12848,7 +12848,7 @@ type IsMouseEvent o = MouseEventClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent Mozilla MutationEvent documentation>
-newtype MutationEvent = MutationEvent { unMutationEvent :: JSRef }
+newtype MutationEvent = MutationEvent { unMutationEvent :: JSVal }
 
 instance Eq (MutationEvent) where
   (MutationEvent a) == (MutationEvent b) = js_eq a b
@@ -12862,12 +12862,12 @@ instance PFromJSVal MutationEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MutationEvent where
-  toJSRef = return . unMutationEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMutationEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MutationEvent where
-  fromJSRef = return . fmap MutationEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MutationEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent MutationEvent
 instance IsGObject MutationEvent where
@@ -12887,7 +12887,7 @@ foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation>
-newtype MutationObserver = MutationObserver { unMutationObserver :: JSRef }
+newtype MutationObserver = MutationObserver { unMutationObserver :: JSVal }
 
 instance Eq (MutationObserver) where
   (MutationObserver a) == (MutationObserver b) = js_eq a b
@@ -12901,12 +12901,12 @@ instance PFromJSVal MutationObserver where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MutationObserver where
-  toJSRef = return . unMutationObserver
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMutationObserver
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MutationObserver where
-  fromJSRef = return . fmap MutationObserver . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MutationObserver . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MutationObserver where
   toGObject = GObject . unMutationObserver
@@ -12925,7 +12925,7 @@ foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObs
 -- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord Mozilla MutationRecord documentation>
-newtype MutationRecord = MutationRecord { unMutationRecord :: JSRef }
+newtype MutationRecord = MutationRecord { unMutationRecord :: JSVal }
 
 instance Eq (MutationRecord) where
   (MutationRecord a) == (MutationRecord b) = js_eq a b
@@ -12939,12 +12939,12 @@ instance PFromJSVal MutationRecord where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal MutationRecord where
-  toJSRef = return . unMutationRecord
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unMutationRecord
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal MutationRecord where
-  fromJSRef = return . fmap MutationRecord . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap MutationRecord . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject MutationRecord where
   toGObject = GObject . unMutationRecord
@@ -12963,7 +12963,7 @@ foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecor
 -- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap Mozilla NamedNodeMap documentation>
-newtype NamedNodeMap = NamedNodeMap { unNamedNodeMap :: JSRef }
+newtype NamedNodeMap = NamedNodeMap { unNamedNodeMap :: JSVal }
 
 instance Eq (NamedNodeMap) where
   (NamedNodeMap a) == (NamedNodeMap b) = js_eq a b
@@ -12977,12 +12977,12 @@ instance PFromJSVal NamedNodeMap where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NamedNodeMap where
-  toJSRef = return . unNamedNodeMap
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNamedNodeMap
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NamedNodeMap where
-  fromJSRef = return . fmap NamedNodeMap . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NamedNodeMap . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject NamedNodeMap where
   toGObject = GObject . unNamedNodeMap
@@ -13003,7 +13003,7 @@ type IsNamedNodeMap o = NamedNodeMapClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Navigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Navigator Mozilla Navigator documentation>
-newtype Navigator = Navigator { unNavigator :: JSRef }
+newtype Navigator = Navigator { unNavigator :: JSVal }
 
 instance Eq (Navigator) where
   (Navigator a) == (Navigator b) = js_eq a b
@@ -13017,12 +13017,12 @@ instance PFromJSVal Navigator where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Navigator where
-  toJSRef = return . unNavigator
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNavigator
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Navigator where
-  fromJSRef = return . fmap Navigator . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Navigator . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Navigator where
   toGObject = GObject . unNavigator
@@ -13046,7 +13046,7 @@ type IsNavigator o = NavigatorClass o
 --     * "GHCJS.DOM.DOMError"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaError Mozilla NavigatorUserMediaError documentation>
-newtype NavigatorUserMediaError = NavigatorUserMediaError { unNavigatorUserMediaError :: JSRef }
+newtype NavigatorUserMediaError = NavigatorUserMediaError { unNavigatorUserMediaError :: JSVal }
 
 instance Eq (NavigatorUserMediaError) where
   (NavigatorUserMediaError a) == (NavigatorUserMediaError b) = js_eq a b
@@ -13060,12 +13060,12 @@ instance PFromJSVal NavigatorUserMediaError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NavigatorUserMediaError where
-  toJSRef = return . unNavigatorUserMediaError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNavigatorUserMediaError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NavigatorUserMediaError where
-  fromJSRef = return . fmap NavigatorUserMediaError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NavigatorUserMediaError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsDOMError NavigatorUserMediaError
 instance IsGObject NavigatorUserMediaError where
@@ -13088,7 +13088,7 @@ foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavi
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Node Mozilla Node documentation>
-newtype Node = Node { unNode :: JSRef }
+newtype Node = Node { unNode :: JSVal }
 
 instance Eq (Node) where
   (Node a) == (Node b) = js_eq a b
@@ -13102,12 +13102,12 @@ instance PFromJSVal Node where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Node where
-  toJSRef = return . unNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Node where
-  fromJSRef = return . fmap Node . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Node . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsNode o
 toNode :: IsNode o => o -> Node
@@ -13134,7 +13134,7 @@ type IsNode o = NodeClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeFilter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation>
-newtype NodeFilter = NodeFilter { unNodeFilter :: JSRef }
+newtype NodeFilter = NodeFilter { unNodeFilter :: JSVal }
 
 instance Eq (NodeFilter) where
   (NodeFilter a) == (NodeFilter b) = js_eq a b
@@ -13148,12 +13148,12 @@ instance PFromJSVal NodeFilter where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NodeFilter where
-  toJSRef = return . unNodeFilter
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNodeFilter
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NodeFilter where
-  fromJSRef = return . fmap NodeFilter . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NodeFilter . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject NodeFilter where
   toGObject = GObject . unNodeFilter
@@ -13174,7 +13174,7 @@ type IsNodeFilter o = NodeFilterClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator Mozilla NodeIterator documentation>
-newtype NodeIterator = NodeIterator { unNodeIterator :: JSRef }
+newtype NodeIterator = NodeIterator { unNodeIterator :: JSVal }
 
 instance Eq (NodeIterator) where
   (NodeIterator a) == (NodeIterator b) = js_eq a b
@@ -13188,12 +13188,12 @@ instance PFromJSVal NodeIterator where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NodeIterator where
-  toJSRef = return . unNodeIterator
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNodeIterator
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NodeIterator where
-  fromJSRef = return . fmap NodeIterator . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NodeIterator . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject NodeIterator where
   toGObject = GObject . unNodeIterator
@@ -13214,7 +13214,7 @@ type IsNodeIterator o = NodeIteratorClass o
 -- | Functions for this inteface are in "GHCJS.DOM.NodeList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeList Mozilla NodeList documentation>
-newtype NodeList = NodeList { unNodeList :: JSRef }
+newtype NodeList = NodeList { unNodeList :: JSVal }
 
 instance Eq (NodeList) where
   (NodeList a) == (NodeList b) = js_eq a b
@@ -13228,12 +13228,12 @@ instance PFromJSVal NodeList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NodeList where
-  toJSRef = return . unNodeList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNodeList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NodeList where
-  fromJSRef = return . fmap NodeList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NodeList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsNodeList o
 toNodeList :: IsNodeList o => o -> NodeList
@@ -13262,7 +13262,7 @@ type IsNodeList o = NodeListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Notification Mozilla Notification documentation>
-newtype Notification = Notification { unNotification :: JSRef }
+newtype Notification = Notification { unNotification :: JSVal }
 
 instance Eq (Notification) where
   (Notification a) == (Notification b) = js_eq a b
@@ -13276,12 +13276,12 @@ instance PFromJSVal Notification where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Notification where
-  toJSRef = return . unNotification
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNotification
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Notification where
-  fromJSRef = return . fmap Notification . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Notification . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget Notification
 instance IsGObject Notification where
@@ -13301,7 +13301,7 @@ foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification ::
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter Mozilla NotificationCenter documentation>
-newtype NotificationCenter = NotificationCenter { unNotificationCenter :: JSRef }
+newtype NotificationCenter = NotificationCenter { unNotificationCenter :: JSVal }
 
 instance Eq (NotificationCenter) where
   (NotificationCenter a) == (NotificationCenter b) = js_eq a b
@@ -13315,12 +13315,12 @@ instance PFromJSVal NotificationCenter where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal NotificationCenter where
-  toJSRef = return . unNotificationCenter
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unNotificationCenter
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal NotificationCenter where
-  fromJSRef = return . fmap NotificationCenter . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap NotificationCenter . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject NotificationCenter where
   toGObject = GObject . unNotificationCenter
@@ -13339,7 +13339,7 @@ foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificat
 -- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESElementIndexUint Mozilla OESElementIndexUint documentation>
-newtype OESElementIndexUint = OESElementIndexUint { unOESElementIndexUint :: JSRef }
+newtype OESElementIndexUint = OESElementIndexUint { unOESElementIndexUint :: JSVal }
 
 instance Eq (OESElementIndexUint) where
   (OESElementIndexUint a) == (OESElementIndexUint b) = js_eq a b
@@ -13353,12 +13353,12 @@ instance PFromJSVal OESElementIndexUint where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESElementIndexUint where
-  toJSRef = return . unOESElementIndexUint
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESElementIndexUint
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESElementIndexUint where
-  fromJSRef = return . fmap OESElementIndexUint . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESElementIndexUint . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESElementIndexUint where
   toGObject = GObject . unOESElementIndexUint
@@ -13377,7 +13377,7 @@ foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESEleme
 -- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESStandardDerivatives Mozilla OESStandardDerivatives documentation>
-newtype OESStandardDerivatives = OESStandardDerivatives { unOESStandardDerivatives :: JSRef }
+newtype OESStandardDerivatives = OESStandardDerivatives { unOESStandardDerivatives :: JSVal }
 
 instance Eq (OESStandardDerivatives) where
   (OESStandardDerivatives a) == (OESStandardDerivatives b) = js_eq a b
@@ -13391,12 +13391,12 @@ instance PFromJSVal OESStandardDerivatives where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESStandardDerivatives where
-  toJSRef = return . unOESStandardDerivatives
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESStandardDerivatives
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESStandardDerivatives where
-  fromJSRef = return . fmap OESStandardDerivatives . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESStandardDerivatives . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESStandardDerivatives where
   toGObject = GObject . unOESStandardDerivatives
@@ -13415,7 +13415,7 @@ foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESSt
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloat Mozilla OESTextureFloat documentation>
-newtype OESTextureFloat = OESTextureFloat { unOESTextureFloat :: JSRef }
+newtype OESTextureFloat = OESTextureFloat { unOESTextureFloat :: JSVal }
 
 instance Eq (OESTextureFloat) where
   (OESTextureFloat a) == (OESTextureFloat b) = js_eq a b
@@ -13429,12 +13429,12 @@ instance PFromJSVal OESTextureFloat where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESTextureFloat where
-  toJSRef = return . unOESTextureFloat
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESTextureFloat
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESTextureFloat where
-  fromJSRef = return . fmap OESTextureFloat . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESTextureFloat . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureFloat where
   toGObject = GObject . unOESTextureFloat
@@ -13453,7 +13453,7 @@ foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFl
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloatLinear Mozilla OESTextureFloatLinear documentation>
-newtype OESTextureFloatLinear = OESTextureFloatLinear { unOESTextureFloatLinear :: JSRef }
+newtype OESTextureFloatLinear = OESTextureFloatLinear { unOESTextureFloatLinear :: JSVal }
 
 instance Eq (OESTextureFloatLinear) where
   (OESTextureFloatLinear a) == (OESTextureFloatLinear b) = js_eq a b
@@ -13467,12 +13467,12 @@ instance PFromJSVal OESTextureFloatLinear where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESTextureFloatLinear where
-  toJSRef = return . unOESTextureFloatLinear
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESTextureFloatLinear
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESTextureFloatLinear where
-  fromJSRef = return . fmap OESTextureFloatLinear . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESTextureFloatLinear . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureFloatLinear where
   toGObject = GObject . unOESTextureFloatLinear
@@ -13491,7 +13491,7 @@ foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTex
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloat Mozilla OESTextureHalfFloat documentation>
-newtype OESTextureHalfFloat = OESTextureHalfFloat { unOESTextureHalfFloat :: JSRef }
+newtype OESTextureHalfFloat = OESTextureHalfFloat { unOESTextureHalfFloat :: JSVal }
 
 instance Eq (OESTextureHalfFloat) where
   (OESTextureHalfFloat a) == (OESTextureHalfFloat b) = js_eq a b
@@ -13505,12 +13505,12 @@ instance PFromJSVal OESTextureHalfFloat where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESTextureHalfFloat where
-  toJSRef = return . unOESTextureHalfFloat
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESTextureHalfFloat
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESTextureHalfFloat where
-  fromJSRef = return . fmap OESTextureHalfFloat . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESTextureHalfFloat . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureHalfFloat where
   toGObject = GObject . unOESTextureHalfFloat
@@ -13529,7 +13529,7 @@ foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextu
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloatLinear Mozilla OESTextureHalfFloatLinear documentation>
-newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear { unOESTextureHalfFloatLinear :: JSRef }
+newtype OESTextureHalfFloatLinear = OESTextureHalfFloatLinear { unOESTextureHalfFloatLinear :: JSVal }
 
 instance Eq (OESTextureHalfFloatLinear) where
   (OESTextureHalfFloatLinear a) == (OESTextureHalfFloatLinear b) = js_eq a b
@@ -13543,12 +13543,12 @@ instance PFromJSVal OESTextureHalfFloatLinear where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESTextureHalfFloatLinear where
-  toJSRef = return . unOESTextureHalfFloatLinear
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESTextureHalfFloatLinear
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESTextureHalfFloatLinear where
-  fromJSRef = return . fmap OESTextureHalfFloatLinear . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESTextureHalfFloatLinear . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureHalfFloatLinear where
   toGObject = GObject . unOESTextureHalfFloatLinear
@@ -13567,7 +13567,7 @@ foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOE
 -- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject Mozilla OESVertexArrayObject documentation>
-newtype OESVertexArrayObject = OESVertexArrayObject { unOESVertexArrayObject :: JSRef }
+newtype OESVertexArrayObject = OESVertexArrayObject { unOESVertexArrayObject :: JSVal }
 
 instance Eq (OESVertexArrayObject) where
   (OESVertexArrayObject a) == (OESVertexArrayObject b) = js_eq a b
@@ -13581,12 +13581,12 @@ instance PFromJSVal OESVertexArrayObject where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OESVertexArrayObject where
-  toJSRef = return . unOESVertexArrayObject
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOESVertexArrayObject
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OESVertexArrayObject where
-  fromJSRef = return . fmap OESVertexArrayObject . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OESVertexArrayObject . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject OESVertexArrayObject where
   toGObject = GObject . unOESVertexArrayObject
@@ -13608,7 +13608,7 @@ foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVert
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioCompletionEvent Mozilla OfflineAudioCompletionEvent documentation>
-newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent { unOfflineAudioCompletionEvent :: JSRef }
+newtype OfflineAudioCompletionEvent = OfflineAudioCompletionEvent { unOfflineAudioCompletionEvent :: JSVal }
 
 instance Eq (OfflineAudioCompletionEvent) where
   (OfflineAudioCompletionEvent a) == (OfflineAudioCompletionEvent b) = js_eq a b
@@ -13622,12 +13622,12 @@ instance PFromJSVal OfflineAudioCompletionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OfflineAudioCompletionEvent where
-  toJSRef = return . unOfflineAudioCompletionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOfflineAudioCompletionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OfflineAudioCompletionEvent where
-  fromJSRef = return . fmap OfflineAudioCompletionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OfflineAudioCompletionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent OfflineAudioCompletionEvent
 instance IsGObject OfflineAudioCompletionEvent where
@@ -13651,7 +13651,7 @@ foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext Mozilla OfflineAudioContext documentation>
-newtype OfflineAudioContext = OfflineAudioContext { unOfflineAudioContext :: JSRef }
+newtype OfflineAudioContext = OfflineAudioContext { unOfflineAudioContext :: JSVal }
 
 instance Eq (OfflineAudioContext) where
   (OfflineAudioContext a) == (OfflineAudioContext b) = js_eq a b
@@ -13665,12 +13665,12 @@ instance PFromJSVal OfflineAudioContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OfflineAudioContext where
-  toJSRef = return . unOfflineAudioContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOfflineAudioContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OfflineAudioContext where
-  fromJSRef = return . fmap OfflineAudioContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OfflineAudioContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioContext OfflineAudioContext
 instance IsEventTarget OfflineAudioContext
@@ -13695,7 +13695,7 @@ foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineA
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode Mozilla OscillatorNode documentation>
-newtype OscillatorNode = OscillatorNode { unOscillatorNode :: JSRef }
+newtype OscillatorNode = OscillatorNode { unOscillatorNode :: JSVal }
 
 instance Eq (OscillatorNode) where
   (OscillatorNode a) == (OscillatorNode b) = js_eq a b
@@ -13709,12 +13709,12 @@ instance PFromJSVal OscillatorNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OscillatorNode where
-  toJSRef = return . unOscillatorNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOscillatorNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OscillatorNode where
-  fromJSRef = return . fmap OscillatorNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OscillatorNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode OscillatorNode
 instance IsEventTarget OscillatorNode
@@ -13738,7 +13738,7 @@ foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNod
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent Mozilla OverflowEvent documentation>
-newtype OverflowEvent = OverflowEvent { unOverflowEvent :: JSRef }
+newtype OverflowEvent = OverflowEvent { unOverflowEvent :: JSVal }
 
 instance Eq (OverflowEvent) where
   (OverflowEvent a) == (OverflowEvent b) = js_eq a b
@@ -13752,12 +13752,12 @@ instance PFromJSVal OverflowEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal OverflowEvent where
-  toJSRef = return . unOverflowEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unOverflowEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal OverflowEvent where
-  fromJSRef = return . fmap OverflowEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap OverflowEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent OverflowEvent
 instance IsGObject OverflowEvent where
@@ -13780,7 +13780,7 @@ foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent Mozilla PageTransitionEvent documentation>
-newtype PageTransitionEvent = PageTransitionEvent { unPageTransitionEvent :: JSRef }
+newtype PageTransitionEvent = PageTransitionEvent { unPageTransitionEvent :: JSVal }
 
 instance Eq (PageTransitionEvent) where
   (PageTransitionEvent a) == (PageTransitionEvent b) = js_eq a b
@@ -13794,12 +13794,12 @@ instance PFromJSVal PageTransitionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PageTransitionEvent where
-  toJSRef = return . unPageTransitionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPageTransitionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PageTransitionEvent where
-  fromJSRef = return . fmap PageTransitionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PageTransitionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent PageTransitionEvent
 instance IsGObject PageTransitionEvent where
@@ -13823,7 +13823,7 @@ foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTran
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode Mozilla webkitAudioPannerNode documentation>
-newtype PannerNode = PannerNode { unPannerNode :: JSRef }
+newtype PannerNode = PannerNode { unPannerNode :: JSVal }
 
 instance Eq (PannerNode) where
   (PannerNode a) == (PannerNode b) = js_eq a b
@@ -13837,12 +13837,12 @@ instance PFromJSVal PannerNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PannerNode where
-  toJSRef = return . unPannerNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPannerNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PannerNode where
-  fromJSRef = return . fmap PannerNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PannerNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode PannerNode
 instance IsEventTarget PannerNode
@@ -13863,7 +13863,7 @@ foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePanner
 -- | Functions for this inteface are in "GHCJS.DOM.Path2D".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation>
-newtype Path2D = Path2D { unPath2D :: JSRef }
+newtype Path2D = Path2D { unPath2D :: JSVal }
 
 instance Eq (Path2D) where
   (Path2D a) == (Path2D b) = js_eq a b
@@ -13877,12 +13877,12 @@ instance PFromJSVal Path2D where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Path2D where
-  toJSRef = return . unPath2D
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPath2D
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Path2D where
-  fromJSRef = return . fmap Path2D . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Path2D . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Path2D where
   toGObject = GObject . unPath2D
@@ -13904,7 +13904,7 @@ foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Performance Mozilla Performance documentation>
-newtype Performance = Performance { unPerformance :: JSRef }
+newtype Performance = Performance { unPerformance :: JSVal }
 
 instance Eq (Performance) where
   (Performance a) == (Performance b) = js_eq a b
@@ -13918,12 +13918,12 @@ instance PFromJSVal Performance where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Performance where
-  toJSRef = return . unPerformance
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformance
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Performance where
-  fromJSRef = return . fmap Performance . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Performance . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget Performance
 instance IsGObject Performance where
@@ -13947,7 +13947,7 @@ type IsPerformance o = PerformanceClass o
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry Mozilla PerformanceEntry documentation>
-newtype PerformanceEntry = PerformanceEntry { unPerformanceEntry :: JSRef }
+newtype PerformanceEntry = PerformanceEntry { unPerformanceEntry :: JSVal }
 
 instance Eq (PerformanceEntry) where
   (PerformanceEntry a) == (PerformanceEntry b) = js_eq a b
@@ -13961,12 +13961,12 @@ instance PFromJSVal PerformanceEntry where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceEntry where
-  toJSRef = return . unPerformanceEntry
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceEntry
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceEntry where
-  fromJSRef = return . fmap PerformanceEntry . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceEntry . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsPerformanceEntry o
 toPerformanceEntry :: IsPerformanceEntry o => o -> PerformanceEntry
@@ -13990,7 +13990,7 @@ foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformance
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList Mozilla PerformanceEntryList documentation>
-newtype PerformanceEntryList = PerformanceEntryList { unPerformanceEntryList :: JSRef }
+newtype PerformanceEntryList = PerformanceEntryList { unPerformanceEntryList :: JSVal }
 
 instance Eq (PerformanceEntryList) where
   (PerformanceEntryList a) == (PerformanceEntryList b) = js_eq a b
@@ -14004,12 +14004,12 @@ instance PFromJSVal PerformanceEntryList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceEntryList where
-  toJSRef = return . unPerformanceEntryList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceEntryList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceEntryList where
-  fromJSRef = return . fmap PerformanceEntryList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceEntryList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceEntryList where
   toGObject = GObject . unPerformanceEntryList
@@ -14031,7 +14031,7 @@ foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerform
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMark Mozilla PerformanceMark documentation>
-newtype PerformanceMark = PerformanceMark { unPerformanceMark :: JSRef }
+newtype PerformanceMark = PerformanceMark { unPerformanceMark :: JSVal }
 
 instance Eq (PerformanceMark) where
   (PerformanceMark a) == (PerformanceMark b) = js_eq a b
@@ -14045,12 +14045,12 @@ instance PFromJSVal PerformanceMark where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceMark where
-  toJSRef = return . unPerformanceMark
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceMark
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceMark where
-  fromJSRef = return . fmap PerformanceMark . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceMark . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsPerformanceEntry PerformanceMark
 instance IsGObject PerformanceMark where
@@ -14073,7 +14073,7 @@ foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceM
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceMeasure Mozilla PerformanceMeasure documentation>
-newtype PerformanceMeasure = PerformanceMeasure { unPerformanceMeasure :: JSRef }
+newtype PerformanceMeasure = PerformanceMeasure { unPerformanceMeasure :: JSVal }
 
 instance Eq (PerformanceMeasure) where
   (PerformanceMeasure a) == (PerformanceMeasure b) = js_eq a b
@@ -14087,12 +14087,12 @@ instance PFromJSVal PerformanceMeasure where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceMeasure where
-  toJSRef = return . unPerformanceMeasure
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceMeasure
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceMeasure where
-  fromJSRef = return . fmap PerformanceMeasure . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceMeasure . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsPerformanceEntry PerformanceMeasure
 instance IsGObject PerformanceMeasure where
@@ -14112,7 +14112,7 @@ foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerforman
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation Mozilla PerformanceNavigation documentation>
-newtype PerformanceNavigation = PerformanceNavigation { unPerformanceNavigation :: JSRef }
+newtype PerformanceNavigation = PerformanceNavigation { unPerformanceNavigation :: JSVal }
 
 instance Eq (PerformanceNavigation) where
   (PerformanceNavigation a) == (PerformanceNavigation b) = js_eq a b
@@ -14126,12 +14126,12 @@ instance PFromJSVal PerformanceNavigation where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceNavigation where
-  toJSRef = return . unPerformanceNavigation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceNavigation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceNavigation where
-  fromJSRef = return . fmap PerformanceNavigation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceNavigation . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceNavigation where
   toGObject = GObject . unPerformanceNavigation
@@ -14157,7 +14157,7 @@ type IsPerformanceNavigation o = PerformanceNavigationClass o
 --     * "GHCJS.DOM.PerformanceEntry"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming Mozilla PerformanceResourceTiming documentation>
-newtype PerformanceResourceTiming = PerformanceResourceTiming { unPerformanceResourceTiming :: JSRef }
+newtype PerformanceResourceTiming = PerformanceResourceTiming { unPerformanceResourceTiming :: JSVal }
 
 instance Eq (PerformanceResourceTiming) where
   (PerformanceResourceTiming a) == (PerformanceResourceTiming b) = js_eq a b
@@ -14171,12 +14171,12 @@ instance PFromJSVal PerformanceResourceTiming where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceResourceTiming where
-  toJSRef = return . unPerformanceResourceTiming
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceResourceTiming
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceResourceTiming where
-  fromJSRef = return . fmap PerformanceResourceTiming . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceResourceTiming . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsPerformanceEntry PerformanceResourceTiming
 instance IsGObject PerformanceResourceTiming where
@@ -14196,7 +14196,7 @@ foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePe
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming Mozilla PerformanceTiming documentation>
-newtype PerformanceTiming = PerformanceTiming { unPerformanceTiming :: JSRef }
+newtype PerformanceTiming = PerformanceTiming { unPerformanceTiming :: JSVal }
 
 instance Eq (PerformanceTiming) where
   (PerformanceTiming a) == (PerformanceTiming b) = js_eq a b
@@ -14210,12 +14210,12 @@ instance PFromJSVal PerformanceTiming where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PerformanceTiming where
-  toJSRef = return . unPerformanceTiming
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPerformanceTiming
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PerformanceTiming where
-  fromJSRef = return . fmap PerformanceTiming . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PerformanceTiming . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceTiming where
   toGObject = GObject . unPerformanceTiming
@@ -14238,7 +14238,7 @@ type IsPerformanceTiming o = PerformanceTimingClass o
 -- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PeriodicWave Mozilla PeriodicWave documentation>
-newtype PeriodicWave = PeriodicWave { unPeriodicWave :: JSRef }
+newtype PeriodicWave = PeriodicWave { unPeriodicWave :: JSVal }
 
 instance Eq (PeriodicWave) where
   (PeriodicWave a) == (PeriodicWave b) = js_eq a b
@@ -14252,12 +14252,12 @@ instance PFromJSVal PeriodicWave where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PeriodicWave where
-  toJSRef = return . unPeriodicWave
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPeriodicWave
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PeriodicWave where
-  fromJSRef = return . fmap PeriodicWave . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PeriodicWave . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PeriodicWave where
   toGObject = GObject . unPeriodicWave
@@ -14276,7 +14276,7 @@ foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave ::
 -- | Functions for this inteface are in "GHCJS.DOM.Plugin".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Plugin Mozilla Plugin documentation>
-newtype Plugin = Plugin { unPlugin :: JSRef }
+newtype Plugin = Plugin { unPlugin :: JSVal }
 
 instance Eq (Plugin) where
   (Plugin a) == (Plugin b) = js_eq a b
@@ -14290,12 +14290,12 @@ instance PFromJSVal Plugin where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Plugin where
-  toJSRef = return . unPlugin
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPlugin
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Plugin where
-  fromJSRef = return . fmap Plugin . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Plugin . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Plugin where
   toGObject = GObject . unPlugin
@@ -14316,7 +14316,7 @@ type IsPlugin o = PluginClass o
 -- | Functions for this inteface are in "GHCJS.DOM.PluginArray".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray Mozilla PluginArray documentation>
-newtype PluginArray = PluginArray { unPluginArray :: JSRef }
+newtype PluginArray = PluginArray { unPluginArray :: JSVal }
 
 instance Eq (PluginArray) where
   (PluginArray a) == (PluginArray b) = js_eq a b
@@ -14330,12 +14330,12 @@ instance PFromJSVal PluginArray where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PluginArray where
-  toJSRef = return . unPluginArray
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPluginArray
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PluginArray where
-  fromJSRef = return . fmap PluginArray . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PluginArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PluginArray where
   toGObject = GObject . unPluginArray
@@ -14359,7 +14359,7 @@ type IsPluginArray o = PluginArrayClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent Mozilla PopStateEvent documentation>
-newtype PopStateEvent = PopStateEvent { unPopStateEvent :: JSRef }
+newtype PopStateEvent = PopStateEvent { unPopStateEvent :: JSVal }
 
 instance Eq (PopStateEvent) where
   (PopStateEvent a) == (PopStateEvent b) = js_eq a b
@@ -14373,12 +14373,12 @@ instance PFromJSVal PopStateEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PopStateEvent where
-  toJSRef = return . unPopStateEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPopStateEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PopStateEvent where
-  fromJSRef = return . fmap PopStateEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PopStateEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent PopStateEvent
 instance IsGObject PopStateEvent where
@@ -14398,7 +14398,7 @@ foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent 
 -- | Functions for this inteface are in "GHCJS.DOM.PositionError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PositionError Mozilla PositionError documentation>
-newtype PositionError = PositionError { unPositionError :: JSRef }
+newtype PositionError = PositionError { unPositionError :: JSVal }
 
 instance Eq (PositionError) where
   (PositionError a) == (PositionError b) = js_eq a b
@@ -14412,12 +14412,12 @@ instance PFromJSVal PositionError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal PositionError where
-  toJSRef = return . unPositionError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unPositionError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal PositionError where
-  fromJSRef = return . fmap PositionError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap PositionError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject PositionError where
   toGObject = GObject . unPositionError
@@ -14441,7 +14441,7 @@ foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ProcessingInstruction Mozilla ProcessingInstruction documentation>
-newtype ProcessingInstruction = ProcessingInstruction { unProcessingInstruction :: JSRef }
+newtype ProcessingInstruction = ProcessingInstruction { unProcessingInstruction :: JSVal }
 
 instance Eq (ProcessingInstruction) where
   (ProcessingInstruction a) == (ProcessingInstruction b) = js_eq a b
@@ -14455,12 +14455,12 @@ instance PFromJSVal ProcessingInstruction where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ProcessingInstruction where
-  toJSRef = return . unProcessingInstruction
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unProcessingInstruction
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ProcessingInstruction where
-  fromJSRef = return . fmap ProcessingInstruction . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ProcessingInstruction . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCharacterData ProcessingInstruction
 instance IsNode ProcessingInstruction
@@ -14487,7 +14487,7 @@ type IsProcessingInstruction o = ProcessingInstructionClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent Mozilla ProgressEvent documentation>
-newtype ProgressEvent = ProgressEvent { unProgressEvent :: JSRef }
+newtype ProgressEvent = ProgressEvent { unProgressEvent :: JSVal }
 
 instance Eq (ProgressEvent) where
   (ProgressEvent a) == (ProgressEvent b) = js_eq a b
@@ -14501,12 +14501,12 @@ instance PFromJSVal ProgressEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ProgressEvent where
-  toJSRef = return . unProgressEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unProgressEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ProgressEvent where
-  fromJSRef = return . fmap ProgressEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ProgressEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEvent o => IsProgressEvent o
 toProgressEvent :: IsProgressEvent o => o -> ProgressEvent
@@ -14531,7 +14531,7 @@ foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent 
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement Mozilla QuickTimePluginReplacement documentation>
-newtype QuickTimePluginReplacement = QuickTimePluginReplacement { unQuickTimePluginReplacement :: JSRef }
+newtype QuickTimePluginReplacement = QuickTimePluginReplacement { unQuickTimePluginReplacement :: JSVal }
 
 instance Eq (QuickTimePluginReplacement) where
   (QuickTimePluginReplacement a) == (QuickTimePluginReplacement b) = js_eq a b
@@ -14545,12 +14545,12 @@ instance PFromJSVal QuickTimePluginReplacement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal QuickTimePluginReplacement where
-  toJSRef = return . unQuickTimePluginReplacement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unQuickTimePluginReplacement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal QuickTimePluginReplacement where
-  fromJSRef = return . fmap QuickTimePluginReplacement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap QuickTimePluginReplacement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject QuickTimePluginReplacement where
   toGObject = GObject . unQuickTimePluginReplacement
@@ -14569,7 +14569,7 @@ foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQ
 -- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor Mozilla RGBColor documentation>
-newtype RGBColor = RGBColor { unRGBColor :: JSRef }
+newtype RGBColor = RGBColor { unRGBColor :: JSVal }
 
 instance Eq (RGBColor) where
   (RGBColor a) == (RGBColor b) = js_eq a b
@@ -14583,12 +14583,12 @@ instance PFromJSVal RGBColor where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RGBColor where
-  toJSRef = return . unRGBColor
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRGBColor
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RGBColor where
-  fromJSRef = return . fmap RGBColor . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RGBColor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RGBColor where
   toGObject = GObject . unRGBColor
@@ -14607,7 +14607,7 @@ foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration Mozilla RTCConfiguration documentation>
-newtype RTCConfiguration = RTCConfiguration { unRTCConfiguration :: JSRef }
+newtype RTCConfiguration = RTCConfiguration { unRTCConfiguration :: JSVal }
 
 instance Eq (RTCConfiguration) where
   (RTCConfiguration a) == (RTCConfiguration b) = js_eq a b
@@ -14621,12 +14621,12 @@ instance PFromJSVal RTCConfiguration where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCConfiguration where
-  toJSRef = return . unRTCConfiguration
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCConfiguration
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCConfiguration where
-  fromJSRef = return . fmap RTCConfiguration . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCConfiguration . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCConfiguration where
   toGObject = GObject . unRTCConfiguration
@@ -14648,7 +14648,7 @@ foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfigur
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender Mozilla RTCDTMFSender documentation>
-newtype RTCDTMFSender = RTCDTMFSender { unRTCDTMFSender :: JSRef }
+newtype RTCDTMFSender = RTCDTMFSender { unRTCDTMFSender :: JSVal }
 
 instance Eq (RTCDTMFSender) where
   (RTCDTMFSender a) == (RTCDTMFSender b) = js_eq a b
@@ -14662,12 +14662,12 @@ instance PFromJSVal RTCDTMFSender where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCDTMFSender where
-  toJSRef = return . unRTCDTMFSender
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCDTMFSender
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCDTMFSender where
-  fromJSRef = return . fmap RTCDTMFSender . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCDTMFSender . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget RTCDTMFSender
 instance IsGObject RTCDTMFSender where
@@ -14690,7 +14690,7 @@ foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFToneChangeEvent Mozilla RTCDTMFToneChangeEvent documentation>
-newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent { unRTCDTMFToneChangeEvent :: JSRef }
+newtype RTCDTMFToneChangeEvent = RTCDTMFToneChangeEvent { unRTCDTMFToneChangeEvent :: JSVal }
 
 instance Eq (RTCDTMFToneChangeEvent) where
   (RTCDTMFToneChangeEvent a) == (RTCDTMFToneChangeEvent b) = js_eq a b
@@ -14704,12 +14704,12 @@ instance PFromJSVal RTCDTMFToneChangeEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCDTMFToneChangeEvent where
-  toJSRef = return . unRTCDTMFToneChangeEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCDTMFToneChangeEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCDTMFToneChangeEvent where
-  fromJSRef = return . fmap RTCDTMFToneChangeEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCDTMFToneChangeEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent RTCDTMFToneChangeEvent
 instance IsGObject RTCDTMFToneChangeEvent where
@@ -14732,7 +14732,7 @@ foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDT
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel Mozilla RTCDataChannel documentation>
-newtype RTCDataChannel = RTCDataChannel { unRTCDataChannel :: JSRef }
+newtype RTCDataChannel = RTCDataChannel { unRTCDataChannel :: JSVal }
 
 instance Eq (RTCDataChannel) where
   (RTCDataChannel a) == (RTCDataChannel b) = js_eq a b
@@ -14746,12 +14746,12 @@ instance PFromJSVal RTCDataChannel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCDataChannel where
-  toJSRef = return . unRTCDataChannel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCDataChannel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCDataChannel where
-  fromJSRef = return . fmap RTCDataChannel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCDataChannel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget RTCDataChannel
 instance IsGObject RTCDataChannel where
@@ -14774,7 +14774,7 @@ foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChanne
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEvent Mozilla RTCDataChannelEvent documentation>
-newtype RTCDataChannelEvent = RTCDataChannelEvent { unRTCDataChannelEvent :: JSRef }
+newtype RTCDataChannelEvent = RTCDataChannelEvent { unRTCDataChannelEvent :: JSVal }
 
 instance Eq (RTCDataChannelEvent) where
   (RTCDataChannelEvent a) == (RTCDataChannelEvent b) = js_eq a b
@@ -14788,12 +14788,12 @@ instance PFromJSVal RTCDataChannelEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCDataChannelEvent where
-  toJSRef = return . unRTCDataChannelEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCDataChannelEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCDataChannelEvent where
-  fromJSRef = return . fmap RTCDataChannelEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCDataChannelEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent RTCDataChannelEvent
 instance IsGObject RTCDataChannelEvent where
@@ -14813,7 +14813,7 @@ foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataC
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate Mozilla RTCIceCandidate documentation>
-newtype RTCIceCandidate = RTCIceCandidate { unRTCIceCandidate :: JSRef }
+newtype RTCIceCandidate = RTCIceCandidate { unRTCIceCandidate :: JSVal }
 
 instance Eq (RTCIceCandidate) where
   (RTCIceCandidate a) == (RTCIceCandidate b) = js_eq a b
@@ -14827,12 +14827,12 @@ instance PFromJSVal RTCIceCandidate where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCIceCandidate where
-  toJSRef = return . unRTCIceCandidate
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCIceCandidate
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCIceCandidate where
-  fromJSRef = return . fmap RTCIceCandidate . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCIceCandidate . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCIceCandidate where
   toGObject = GObject . unRTCIceCandidate
@@ -14854,7 +14854,7 @@ foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandid
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidateEvent Mozilla RTCIceCandidateEvent documentation>
-newtype RTCIceCandidateEvent = RTCIceCandidateEvent { unRTCIceCandidateEvent :: JSRef }
+newtype RTCIceCandidateEvent = RTCIceCandidateEvent { unRTCIceCandidateEvent :: JSVal }
 
 instance Eq (RTCIceCandidateEvent) where
   (RTCIceCandidateEvent a) == (RTCIceCandidateEvent b) = js_eq a b
@@ -14868,12 +14868,12 @@ instance PFromJSVal RTCIceCandidateEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCIceCandidateEvent where
-  toJSRef = return . unRTCIceCandidateEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCIceCandidateEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCIceCandidateEvent where
-  fromJSRef = return . fmap RTCIceCandidateEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCIceCandidateEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent RTCIceCandidateEvent
 instance IsGObject RTCIceCandidateEvent where
@@ -14893,7 +14893,7 @@ foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceC
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer Mozilla RTCIceServer documentation>
-newtype RTCIceServer = RTCIceServer { unRTCIceServer :: JSRef }
+newtype RTCIceServer = RTCIceServer { unRTCIceServer :: JSVal }
 
 instance Eq (RTCIceServer) where
   (RTCIceServer a) == (RTCIceServer b) = js_eq a b
@@ -14907,12 +14907,12 @@ instance PFromJSVal RTCIceServer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCIceServer where
-  toJSRef = return . unRTCIceServer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCIceServer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCIceServer where
-  fromJSRef = return . fmap RTCIceServer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCIceServer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCIceServer where
   toGObject = GObject . unRTCIceServer
@@ -14934,7 +14934,7 @@ foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection Mozilla webkitRTCPeerConnection documentation>
-newtype RTCPeerConnection = RTCPeerConnection { unRTCPeerConnection :: JSRef }
+newtype RTCPeerConnection = RTCPeerConnection { unRTCPeerConnection :: JSVal }
 
 instance Eq (RTCPeerConnection) where
   (RTCPeerConnection a) == (RTCPeerConnection b) = js_eq a b
@@ -14948,12 +14948,12 @@ instance PFromJSVal RTCPeerConnection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCPeerConnection where
-  toJSRef = return . unRTCPeerConnection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCPeerConnection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCPeerConnection where
-  fromJSRef = return . fmap RTCPeerConnection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCPeerConnection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget RTCPeerConnection
 instance IsGObject RTCPeerConnection where
@@ -14973,7 +14973,7 @@ foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCP
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription Mozilla RTCSessionDescription documentation>
-newtype RTCSessionDescription = RTCSessionDescription { unRTCSessionDescription :: JSRef }
+newtype RTCSessionDescription = RTCSessionDescription { unRTCSessionDescription :: JSVal }
 
 instance Eq (RTCSessionDescription) where
   (RTCSessionDescription a) == (RTCSessionDescription b) = js_eq a b
@@ -14987,12 +14987,12 @@ instance PFromJSVal RTCSessionDescription where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCSessionDescription where
-  toJSRef = return . unRTCSessionDescription
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCSessionDescription
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCSessionDescription where
-  fromJSRef = return . fmap RTCSessionDescription . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCSessionDescription . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCSessionDescription where
   toGObject = GObject . unRTCSessionDescription
@@ -15011,7 +15011,7 @@ foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSes
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport Mozilla RTCStatsReport documentation>
-newtype RTCStatsReport = RTCStatsReport { unRTCStatsReport :: JSRef }
+newtype RTCStatsReport = RTCStatsReport { unRTCStatsReport :: JSVal }
 
 instance Eq (RTCStatsReport) where
   (RTCStatsReport a) == (RTCStatsReport b) = js_eq a b
@@ -15025,12 +15025,12 @@ instance PFromJSVal RTCStatsReport where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCStatsReport where
-  toJSRef = return . unRTCStatsReport
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCStatsReport
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCStatsReport where
-  fromJSRef = return . fmap RTCStatsReport . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCStatsReport . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCStatsReport where
   toGObject = GObject . unRTCStatsReport
@@ -15049,7 +15049,7 @@ foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsRepor
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsResponse".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse Mozilla RTCStatsResponse documentation>
-newtype RTCStatsResponse = RTCStatsResponse { unRTCStatsResponse :: JSRef }
+newtype RTCStatsResponse = RTCStatsResponse { unRTCStatsResponse :: JSVal }
 
 instance Eq (RTCStatsResponse) where
   (RTCStatsResponse a) == (RTCStatsResponse b) = js_eq a b
@@ -15063,12 +15063,12 @@ instance PFromJSVal RTCStatsResponse where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RTCStatsResponse where
-  toJSRef = return . unRTCStatsResponse
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRTCStatsResponse
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RTCStatsResponse where
-  fromJSRef = return . fmap RTCStatsResponse . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RTCStatsResponse . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCStatsResponse where
   toGObject = GObject . unRTCStatsResponse
@@ -15090,7 +15090,7 @@ foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsRes
 --     * "GHCJS.DOM.NodeList"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RadioNodeList Mozilla RadioNodeList documentation>
-newtype RadioNodeList = RadioNodeList { unRadioNodeList :: JSRef }
+newtype RadioNodeList = RadioNodeList { unRadioNodeList :: JSVal }
 
 instance Eq (RadioNodeList) where
   (RadioNodeList a) == (RadioNodeList b) = js_eq a b
@@ -15104,12 +15104,12 @@ instance PFromJSVal RadioNodeList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal RadioNodeList where
-  toJSRef = return . unRadioNodeList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRadioNodeList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal RadioNodeList where
-  fromJSRef = return . fmap RadioNodeList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap RadioNodeList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsNodeList RadioNodeList
 instance IsGObject RadioNodeList where
@@ -15129,7 +15129,7 @@ foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList 
 -- | Functions for this inteface are in "GHCJS.DOM.Range".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Range Mozilla Range documentation>
-newtype Range = Range { unRange :: JSRef }
+newtype Range = Range { unRange :: JSVal }
 
 instance Eq (Range) where
   (Range a) == (Range b) = js_eq a b
@@ -15143,12 +15143,12 @@ instance PFromJSVal Range where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Range where
-  toJSRef = return . unRange
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRange
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Range where
-  fromJSRef = return . fmap Range . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Range . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Range where
   toGObject = GObject . unRange
@@ -15169,7 +15169,7 @@ type IsRange o = RangeClass o
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation>
-newtype ReadableStream = ReadableStream { unReadableStream :: JSRef }
+newtype ReadableStream = ReadableStream { unReadableStream :: JSVal }
 
 instance Eq (ReadableStream) where
   (ReadableStream a) == (ReadableStream b) = js_eq a b
@@ -15183,12 +15183,12 @@ instance PFromJSVal ReadableStream where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ReadableStream where
-  toJSRef = return . unReadableStream
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unReadableStream
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ReadableStream where
-  fromJSRef = return . fmap ReadableStream . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ReadableStream . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ReadableStream where
   toGObject = GObject . unReadableStream
@@ -15207,7 +15207,7 @@ foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStrea
 -- | Functions for this inteface are in "GHCJS.DOM.Rect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Rect Mozilla Rect documentation>
-newtype Rect = Rect { unRect :: JSRef }
+newtype Rect = Rect { unRect :: JSVal }
 
 instance Eq (Rect) where
   (Rect a) == (Rect b) = js_eq a b
@@ -15221,12 +15221,12 @@ instance PFromJSVal Rect where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Rect where
-  toJSRef = return . unRect
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unRect
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Rect where
-  fromJSRef = return . fmap Rect . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Rect . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Rect where
   toGObject = GObject . unRect
@@ -15245,7 +15245,7 @@ foreign import javascript unsafe "window[\"Rect\"]" gTypeRect :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.SQLError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLError Mozilla SQLError documentation>
-newtype SQLError = SQLError { unSQLError :: JSRef }
+newtype SQLError = SQLError { unSQLError :: JSVal }
 
 instance Eq (SQLError) where
   (SQLError a) == (SQLError b) = js_eq a b
@@ -15259,12 +15259,12 @@ instance PFromJSVal SQLError where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SQLError where
-  toJSRef = return . unSQLError
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSQLError
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SQLError where
-  fromJSRef = return . fmap SQLError . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SQLError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLError where
   toGObject = GObject . unSQLError
@@ -15283,7 +15283,7 @@ foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet Mozilla SQLResultSet documentation>
-newtype SQLResultSet = SQLResultSet { unSQLResultSet :: JSRef }
+newtype SQLResultSet = SQLResultSet { unSQLResultSet :: JSVal }
 
 instance Eq (SQLResultSet) where
   (SQLResultSet a) == (SQLResultSet b) = js_eq a b
@@ -15297,12 +15297,12 @@ instance PFromJSVal SQLResultSet where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SQLResultSet where
-  toJSRef = return . unSQLResultSet
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSQLResultSet
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SQLResultSet where
-  fromJSRef = return . fmap SQLResultSet . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SQLResultSet . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLResultSet where
   toGObject = GObject . unSQLResultSet
@@ -15321,7 +15321,7 @@ foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet ::
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList Mozilla SQLResultSetRowList documentation>
-newtype SQLResultSetRowList = SQLResultSetRowList { unSQLResultSetRowList :: JSRef }
+newtype SQLResultSetRowList = SQLResultSetRowList { unSQLResultSetRowList :: JSVal }
 
 instance Eq (SQLResultSetRowList) where
   (SQLResultSetRowList a) == (SQLResultSetRowList b) = js_eq a b
@@ -15335,12 +15335,12 @@ instance PFromJSVal SQLResultSetRowList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SQLResultSetRowList where
-  toJSRef = return . unSQLResultSetRowList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSQLResultSetRowList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SQLResultSetRowList where
-  fromJSRef = return . fmap SQLResultSetRowList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SQLResultSetRowList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLResultSetRowList where
   toGObject = GObject . unSQLResultSetRowList
@@ -15359,7 +15359,7 @@ foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResul
 -- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction Mozilla SQLTransaction documentation>
-newtype SQLTransaction = SQLTransaction { unSQLTransaction :: JSRef }
+newtype SQLTransaction = SQLTransaction { unSQLTransaction :: JSVal }
 
 instance Eq (SQLTransaction) where
   (SQLTransaction a) == (SQLTransaction b) = js_eq a b
@@ -15373,12 +15373,12 @@ instance PFromJSVal SQLTransaction where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SQLTransaction where
-  toJSRef = return . unSQLTransaction
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSQLTransaction
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SQLTransaction where
-  fromJSRef = return . fmap SQLTransaction . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SQLTransaction . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLTransaction where
   toGObject = GObject . unSQLTransaction
@@ -15404,7 +15404,7 @@ foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransactio
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAElement Mozilla SVGAElement documentation>
-newtype SVGAElement = SVGAElement { unSVGAElement :: JSRef }
+newtype SVGAElement = SVGAElement { unSVGAElement :: JSVal }
 
 instance Eq (SVGAElement) where
   (SVGAElement a) == (SVGAElement b) = js_eq a b
@@ -15418,12 +15418,12 @@ instance PFromJSVal SVGAElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAElement where
-  toJSRef = return . unSVGAElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAElement where
-  fromJSRef = return . fmap SVGAElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGAElement
 instance IsSVGElement SVGAElement
@@ -15453,7 +15453,7 @@ foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: G
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphDefElement Mozilla SVGAltGlyphDefElement documentation>
-newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement { unSVGAltGlyphDefElement :: JSRef }
+newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement { unSVGAltGlyphDefElement :: JSVal }
 
 instance Eq (SVGAltGlyphDefElement) where
   (SVGAltGlyphDefElement a) == (SVGAltGlyphDefElement b) = js_eq a b
@@ -15467,12 +15467,12 @@ instance PFromJSVal SVGAltGlyphDefElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAltGlyphDefElement where
-  toJSRef = return . unSVGAltGlyphDefElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAltGlyphDefElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAltGlyphDefElement where
-  fromJSRef = return . fmap SVGAltGlyphDefElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAltGlyphDefElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGAltGlyphDefElement
 instance IsElement SVGAltGlyphDefElement
@@ -15504,7 +15504,7 @@ foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAlt
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphElement Mozilla SVGAltGlyphElement documentation>
-newtype SVGAltGlyphElement = SVGAltGlyphElement { unSVGAltGlyphElement :: JSRef }
+newtype SVGAltGlyphElement = SVGAltGlyphElement { unSVGAltGlyphElement :: JSVal }
 
 instance Eq (SVGAltGlyphElement) where
   (SVGAltGlyphElement a) == (SVGAltGlyphElement b) = js_eq a b
@@ -15518,12 +15518,12 @@ instance PFromJSVal SVGAltGlyphElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAltGlyphElement where
-  toJSRef = return . unSVGAltGlyphElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAltGlyphElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAltGlyphElement where
-  fromJSRef = return . fmap SVGAltGlyphElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAltGlyphElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGTextPositioningElement SVGAltGlyphElement
 instance IsSVGTextContentElement SVGAltGlyphElement
@@ -15555,7 +15555,7 @@ foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGly
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphItemElement Mozilla SVGAltGlyphItemElement documentation>
-newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement { unSVGAltGlyphItemElement :: JSRef }
+newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement { unSVGAltGlyphItemElement :: JSVal }
 
 instance Eq (SVGAltGlyphItemElement) where
   (SVGAltGlyphItemElement a) == (SVGAltGlyphItemElement b) = js_eq a b
@@ -15569,12 +15569,12 @@ instance PFromJSVal SVGAltGlyphItemElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAltGlyphItemElement where
-  toJSRef = return . unSVGAltGlyphItemElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAltGlyphItemElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAltGlyphItemElement where
-  fromJSRef = return . fmap SVGAltGlyphItemElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAltGlyphItemElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGAltGlyphItemElement
 instance IsElement SVGAltGlyphItemElement
@@ -15597,7 +15597,7 @@ foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAl
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle Mozilla SVGAngle documentation>
-newtype SVGAngle = SVGAngle { unSVGAngle :: JSRef }
+newtype SVGAngle = SVGAngle { unSVGAngle :: JSVal }
 
 instance Eq (SVGAngle) where
   (SVGAngle a) == (SVGAngle b) = js_eq a b
@@ -15611,12 +15611,12 @@ instance PFromJSVal SVGAngle where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAngle where
-  toJSRef = return . unSVGAngle
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAngle
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAngle where
-  fromJSRef = return . fmap SVGAngle . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAngle . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAngle where
   toGObject = GObject . unSVGAngle
@@ -15642,7 +15642,7 @@ foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateColorElement Mozilla SVGAnimateColorElement documentation>
-newtype SVGAnimateColorElement = SVGAnimateColorElement { unSVGAnimateColorElement :: JSRef }
+newtype SVGAnimateColorElement = SVGAnimateColorElement { unSVGAnimateColorElement :: JSVal }
 
 instance Eq (SVGAnimateColorElement) where
   (SVGAnimateColorElement a) == (SVGAnimateColorElement b) = js_eq a b
@@ -15656,12 +15656,12 @@ instance PFromJSVal SVGAnimateColorElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimateColorElement where
-  toJSRef = return . unSVGAnimateColorElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimateColorElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimateColorElement where
-  fromJSRef = return . fmap SVGAnimateColorElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimateColorElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGAnimationElement SVGAnimateColorElement
 instance IsSVGElement SVGAnimateColorElement
@@ -15692,7 +15692,7 @@ foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAn
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateElement Mozilla SVGAnimateElement documentation>
-newtype SVGAnimateElement = SVGAnimateElement { unSVGAnimateElement :: JSRef }
+newtype SVGAnimateElement = SVGAnimateElement { unSVGAnimateElement :: JSVal }
 
 instance Eq (SVGAnimateElement) where
   (SVGAnimateElement a) == (SVGAnimateElement b) = js_eq a b
@@ -15706,12 +15706,12 @@ instance PFromJSVal SVGAnimateElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimateElement where
-  toJSRef = return . unSVGAnimateElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimateElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimateElement where
-  fromJSRef = return . fmap SVGAnimateElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimateElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGAnimationElement SVGAnimateElement
 instance IsSVGElement SVGAnimateElement
@@ -15742,7 +15742,7 @@ foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimate
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateMotionElement Mozilla SVGAnimateMotionElement documentation>
-newtype SVGAnimateMotionElement = SVGAnimateMotionElement { unSVGAnimateMotionElement :: JSRef }
+newtype SVGAnimateMotionElement = SVGAnimateMotionElement { unSVGAnimateMotionElement :: JSVal }
 
 instance Eq (SVGAnimateMotionElement) where
   (SVGAnimateMotionElement a) == (SVGAnimateMotionElement b) = js_eq a b
@@ -15756,12 +15756,12 @@ instance PFromJSVal SVGAnimateMotionElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimateMotionElement where
-  toJSRef = return . unSVGAnimateMotionElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimateMotionElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimateMotionElement where
-  fromJSRef = return . fmap SVGAnimateMotionElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimateMotionElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGAnimationElement SVGAnimateMotionElement
 instance IsSVGElement SVGAnimateMotionElement
@@ -15792,7 +15792,7 @@ foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGA
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimateTransformElement Mozilla SVGAnimateTransformElement documentation>
-newtype SVGAnimateTransformElement = SVGAnimateTransformElement { unSVGAnimateTransformElement :: JSRef }
+newtype SVGAnimateTransformElement = SVGAnimateTransformElement { unSVGAnimateTransformElement :: JSVal }
 
 instance Eq (SVGAnimateTransformElement) where
   (SVGAnimateTransformElement a) == (SVGAnimateTransformElement b) = js_eq a b
@@ -15806,12 +15806,12 @@ instance PFromJSVal SVGAnimateTransformElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimateTransformElement where
-  toJSRef = return . unSVGAnimateTransformElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimateTransformElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimateTransformElement where
-  fromJSRef = return . fmap SVGAnimateTransformElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimateTransformElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGAnimationElement SVGAnimateTransformElement
 instance IsSVGElement SVGAnimateTransformElement
@@ -15835,7 +15835,7 @@ foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeS
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle Mozilla SVGAnimatedAngle documentation>
-newtype SVGAnimatedAngle = SVGAnimatedAngle { unSVGAnimatedAngle :: JSRef }
+newtype SVGAnimatedAngle = SVGAnimatedAngle { unSVGAnimatedAngle :: JSVal }
 
 instance Eq (SVGAnimatedAngle) where
   (SVGAnimatedAngle a) == (SVGAnimatedAngle b) = js_eq a b
@@ -15849,12 +15849,12 @@ instance PFromJSVal SVGAnimatedAngle where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedAngle where
-  toJSRef = return . unSVGAnimatedAngle
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedAngle
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedAngle where
-  fromJSRef = return . fmap SVGAnimatedAngle . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedAngle . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedAngle where
   toGObject = GObject . unSVGAnimatedAngle
@@ -15873,7 +15873,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimated
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean Mozilla SVGAnimatedBoolean documentation>
-newtype SVGAnimatedBoolean = SVGAnimatedBoolean { unSVGAnimatedBoolean :: JSRef }
+newtype SVGAnimatedBoolean = SVGAnimatedBoolean { unSVGAnimatedBoolean :: JSVal }
 
 instance Eq (SVGAnimatedBoolean) where
   (SVGAnimatedBoolean a) == (SVGAnimatedBoolean b) = js_eq a b
@@ -15887,12 +15887,12 @@ instance PFromJSVal SVGAnimatedBoolean where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedBoolean where
-  toJSRef = return . unSVGAnimatedBoolean
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedBoolean
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedBoolean where
-  fromJSRef = return . fmap SVGAnimatedBoolean . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedBoolean . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedBoolean where
   toGObject = GObject . unSVGAnimatedBoolean
@@ -15911,7 +15911,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimat
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration Mozilla SVGAnimatedEnumeration documentation>
-newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration { unSVGAnimatedEnumeration :: JSRef }
+newtype SVGAnimatedEnumeration = SVGAnimatedEnumeration { unSVGAnimatedEnumeration :: JSVal }
 
 instance Eq (SVGAnimatedEnumeration) where
   (SVGAnimatedEnumeration a) == (SVGAnimatedEnumeration b) = js_eq a b
@@ -15925,12 +15925,12 @@ instance PFromJSVal SVGAnimatedEnumeration where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedEnumeration where
-  toJSRef = return . unSVGAnimatedEnumeration
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedEnumeration
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedEnumeration where
-  fromJSRef = return . fmap SVGAnimatedEnumeration . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedEnumeration . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedEnumeration where
   toGObject = GObject . unSVGAnimatedEnumeration
@@ -15949,7 +15949,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAn
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger Mozilla SVGAnimatedInteger documentation>
-newtype SVGAnimatedInteger = SVGAnimatedInteger { unSVGAnimatedInteger :: JSRef }
+newtype SVGAnimatedInteger = SVGAnimatedInteger { unSVGAnimatedInteger :: JSVal }
 
 instance Eq (SVGAnimatedInteger) where
   (SVGAnimatedInteger a) == (SVGAnimatedInteger b) = js_eq a b
@@ -15963,12 +15963,12 @@ instance PFromJSVal SVGAnimatedInteger where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedInteger where
-  toJSRef = return . unSVGAnimatedInteger
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedInteger
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedInteger where
-  fromJSRef = return . fmap SVGAnimatedInteger . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedInteger . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedInteger where
   toGObject = GObject . unSVGAnimatedInteger
@@ -15987,7 +15987,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimat
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength Mozilla SVGAnimatedLength documentation>
-newtype SVGAnimatedLength = SVGAnimatedLength { unSVGAnimatedLength :: JSRef }
+newtype SVGAnimatedLength = SVGAnimatedLength { unSVGAnimatedLength :: JSVal }
 
 instance Eq (SVGAnimatedLength) where
   (SVGAnimatedLength a) == (SVGAnimatedLength b) = js_eq a b
@@ -16001,12 +16001,12 @@ instance PFromJSVal SVGAnimatedLength where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedLength where
-  toJSRef = return . unSVGAnimatedLength
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedLength
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedLength where
-  fromJSRef = return . fmap SVGAnimatedLength . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedLength . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedLength where
   toGObject = GObject . unSVGAnimatedLength
@@ -16025,7 +16025,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimate
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList Mozilla SVGAnimatedLengthList documentation>
-newtype SVGAnimatedLengthList = SVGAnimatedLengthList { unSVGAnimatedLengthList :: JSRef }
+newtype SVGAnimatedLengthList = SVGAnimatedLengthList { unSVGAnimatedLengthList :: JSVal }
 
 instance Eq (SVGAnimatedLengthList) where
   (SVGAnimatedLengthList a) == (SVGAnimatedLengthList b) = js_eq a b
@@ -16039,12 +16039,12 @@ instance PFromJSVal SVGAnimatedLengthList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedLengthList where
-  toJSRef = return . unSVGAnimatedLengthList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedLengthList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedLengthList where
-  fromJSRef = return . fmap SVGAnimatedLengthList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedLengthList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedLengthList where
   toGObject = GObject . unSVGAnimatedLengthList
@@ -16063,7 +16063,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAni
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber Mozilla SVGAnimatedNumber documentation>
-newtype SVGAnimatedNumber = SVGAnimatedNumber { unSVGAnimatedNumber :: JSRef }
+newtype SVGAnimatedNumber = SVGAnimatedNumber { unSVGAnimatedNumber :: JSVal }
 
 instance Eq (SVGAnimatedNumber) where
   (SVGAnimatedNumber a) == (SVGAnimatedNumber b) = js_eq a b
@@ -16077,12 +16077,12 @@ instance PFromJSVal SVGAnimatedNumber where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedNumber where
-  toJSRef = return . unSVGAnimatedNumber
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedNumber
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedNumber where
-  fromJSRef = return . fmap SVGAnimatedNumber . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedNumber . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedNumber where
   toGObject = GObject . unSVGAnimatedNumber
@@ -16101,7 +16101,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimate
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList Mozilla SVGAnimatedNumberList documentation>
-newtype SVGAnimatedNumberList = SVGAnimatedNumberList { unSVGAnimatedNumberList :: JSRef }
+newtype SVGAnimatedNumberList = SVGAnimatedNumberList { unSVGAnimatedNumberList :: JSVal }
 
 instance Eq (SVGAnimatedNumberList) where
   (SVGAnimatedNumberList a) == (SVGAnimatedNumberList b) = js_eq a b
@@ -16115,12 +16115,12 @@ instance PFromJSVal SVGAnimatedNumberList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedNumberList where
-  toJSRef = return . unSVGAnimatedNumberList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedNumberList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedNumberList where
-  fromJSRef = return . fmap SVGAnimatedNumberList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedNumberList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedNumberList where
   toGObject = GObject . unSVGAnimatedNumberList
@@ -16139,7 +16139,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAni
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio Mozilla SVGAnimatedPreserveAspectRatio documentation>
-newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio { unSVGAnimatedPreserveAspectRatio :: JSRef }
+newtype SVGAnimatedPreserveAspectRatio = SVGAnimatedPreserveAspectRatio { unSVGAnimatedPreserveAspectRatio :: JSVal }
 
 instance Eq (SVGAnimatedPreserveAspectRatio) where
   (SVGAnimatedPreserveAspectRatio a) == (SVGAnimatedPreserveAspectRatio b) = js_eq a b
@@ -16153,12 +16153,12 @@ instance PFromJSVal SVGAnimatedPreserveAspectRatio where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedPreserveAspectRatio where
-  toJSRef = return . unSVGAnimatedPreserveAspectRatio
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedPreserveAspectRatio
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedPreserveAspectRatio where
-  fromJSRef = return . fmap SVGAnimatedPreserveAspectRatio . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedPreserveAspectRatio . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedPreserveAspectRatio where
   toGObject = GObject . unSVGAnimatedPreserveAspectRatio
@@ -16177,7 +16177,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gT
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedRect Mozilla SVGAnimatedRect documentation>
-newtype SVGAnimatedRect = SVGAnimatedRect { unSVGAnimatedRect :: JSRef }
+newtype SVGAnimatedRect = SVGAnimatedRect { unSVGAnimatedRect :: JSVal }
 
 instance Eq (SVGAnimatedRect) where
   (SVGAnimatedRect a) == (SVGAnimatedRect b) = js_eq a b
@@ -16191,12 +16191,12 @@ instance PFromJSVal SVGAnimatedRect where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedRect where
-  toJSRef = return . unSVGAnimatedRect
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedRect
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedRect where
-  fromJSRef = return . fmap SVGAnimatedRect . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedRect . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedRect where
   toGObject = GObject . unSVGAnimatedRect
@@ -16215,7 +16215,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedR
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString Mozilla SVGAnimatedString documentation>
-newtype SVGAnimatedString = SVGAnimatedString { unSVGAnimatedString :: JSRef }
+newtype SVGAnimatedString = SVGAnimatedString { unSVGAnimatedString :: JSVal }
 
 instance Eq (SVGAnimatedString) where
   (SVGAnimatedString a) == (SVGAnimatedString b) = js_eq a b
@@ -16229,12 +16229,12 @@ instance PFromJSVal SVGAnimatedString where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedString where
-  toJSRef = return . unSVGAnimatedString
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedString
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedString where
-  fromJSRef = return . fmap SVGAnimatedString . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedString . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedString where
   toGObject = GObject . unSVGAnimatedString
@@ -16253,7 +16253,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimate
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList Mozilla SVGAnimatedTransformList documentation>
-newtype SVGAnimatedTransformList = SVGAnimatedTransformList { unSVGAnimatedTransformList :: JSRef }
+newtype SVGAnimatedTransformList = SVGAnimatedTransformList { unSVGAnimatedTransformList :: JSVal }
 
 instance Eq (SVGAnimatedTransformList) where
   (SVGAnimatedTransformList a) == (SVGAnimatedTransformList b) = js_eq a b
@@ -16267,12 +16267,12 @@ instance PFromJSVal SVGAnimatedTransformList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimatedTransformList where
-  toJSRef = return . unSVGAnimatedTransformList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimatedTransformList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimatedTransformList where
-  fromJSRef = return . fmap SVGAnimatedTransformList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimatedTransformList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedTransformList where
   toGObject = GObject . unSVGAnimatedTransformList
@@ -16297,7 +16297,7 @@ foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement Mozilla SVGAnimationElement documentation>
-newtype SVGAnimationElement = SVGAnimationElement { unSVGAnimationElement :: JSRef }
+newtype SVGAnimationElement = SVGAnimationElement { unSVGAnimationElement :: JSVal }
 
 instance Eq (SVGAnimationElement) where
   (SVGAnimationElement a) == (SVGAnimationElement b) = js_eq a b
@@ -16311,12 +16311,12 @@ instance PFromJSVal SVGAnimationElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGAnimationElement where
-  toJSRef = return . unSVGAnimationElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGAnimationElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGAnimationElement where
-  fromJSRef = return . fmap SVGAnimationElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGAnimationElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGElement o => IsSVGAnimationElement o
 toSVGAnimationElement :: IsSVGAnimationElement o => o -> SVGAnimationElement
@@ -16351,7 +16351,7 @@ foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnima
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement Mozilla SVGCircleElement documentation>
-newtype SVGCircleElement = SVGCircleElement { unSVGCircleElement :: JSRef }
+newtype SVGCircleElement = SVGCircleElement { unSVGCircleElement :: JSVal }
 
 instance Eq (SVGCircleElement) where
   (SVGCircleElement a) == (SVGCircleElement b) = js_eq a b
@@ -16365,12 +16365,12 @@ instance PFromJSVal SVGCircleElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGCircleElement where
-  toJSRef = return . unSVGCircleElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGCircleElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGCircleElement where
-  fromJSRef = return . fmap SVGCircleElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGCircleElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGCircleElement
 instance IsSVGElement SVGCircleElement
@@ -16401,7 +16401,7 @@ foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGClipPathElement Mozilla SVGClipPathElement documentation>
-newtype SVGClipPathElement = SVGClipPathElement { unSVGClipPathElement :: JSRef }
+newtype SVGClipPathElement = SVGClipPathElement { unSVGClipPathElement :: JSVal }
 
 instance Eq (SVGClipPathElement) where
   (SVGClipPathElement a) == (SVGClipPathElement b) = js_eq a b
@@ -16415,12 +16415,12 @@ instance PFromJSVal SVGClipPathElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGClipPathElement where
-  toJSRef = return . unSVGClipPathElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGClipPathElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGClipPathElement where
-  fromJSRef = return . fmap SVGClipPathElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGClipPathElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGClipPathElement
 instance IsSVGElement SVGClipPathElement
@@ -16447,7 +16447,7 @@ foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPa
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor Mozilla SVGColor documentation>
-newtype SVGColor = SVGColor { unSVGColor :: JSRef }
+newtype SVGColor = SVGColor { unSVGColor :: JSVal }
 
 instance Eq (SVGColor) where
   (SVGColor a) == (SVGColor b) = js_eq a b
@@ -16461,12 +16461,12 @@ instance PFromJSVal SVGColor where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGColor where
-  toJSRef = return . unSVGColor
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGColor
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGColor where
-  fromJSRef = return . fmap SVGColor . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGColor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsCSSValue o => IsSVGColor o
 toSVGColor :: IsSVGColor o => o -> SVGColor
@@ -16497,7 +16497,7 @@ foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement Mozilla SVGComponentTransferFunctionElement documentation>
-newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement { unSVGComponentTransferFunctionElement :: JSRef }
+newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement { unSVGComponentTransferFunctionElement :: JSVal }
 
 instance Eq (SVGComponentTransferFunctionElement) where
   (SVGComponentTransferFunctionElement a) == (SVGComponentTransferFunctionElement b) = js_eq a b
@@ -16511,12 +16511,12 @@ instance PFromJSVal SVGComponentTransferFunctionElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGComponentTransferFunctionElement where
-  toJSRef = return . unSVGComponentTransferFunctionElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGComponentTransferFunctionElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGComponentTransferFunctionElement where
-  fromJSRef = return . fmap SVGComponentTransferFunctionElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGComponentTransferFunctionElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGElement o => IsSVGComponentTransferFunctionElement o
 toSVGComponentTransferFunctionElement :: IsSVGComponentTransferFunctionElement o => o -> SVGComponentTransferFunctionElement
@@ -16550,7 +16550,7 @@ foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGCursorElement Mozilla SVGCursorElement documentation>
-newtype SVGCursorElement = SVGCursorElement { unSVGCursorElement :: JSRef }
+newtype SVGCursorElement = SVGCursorElement { unSVGCursorElement :: JSVal }
 
 instance Eq (SVGCursorElement) where
   (SVGCursorElement a) == (SVGCursorElement b) = js_eq a b
@@ -16564,12 +16564,12 @@ instance PFromJSVal SVGCursorElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGCursorElement where
-  toJSRef = return . unSVGCursorElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGCursorElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGCursorElement where
-  fromJSRef = return . fmap SVGCursorElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGCursorElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGCursorElement
 instance IsElement SVGCursorElement
@@ -16599,7 +16599,7 @@ foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDefsElement Mozilla SVGDefsElement documentation>
-newtype SVGDefsElement = SVGDefsElement { unSVGDefsElement :: JSRef }
+newtype SVGDefsElement = SVGDefsElement { unSVGDefsElement :: JSVal }
 
 instance Eq (SVGDefsElement) where
   (SVGDefsElement a) == (SVGDefsElement b) = js_eq a b
@@ -16613,12 +16613,12 @@ instance PFromJSVal SVGDefsElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGDefsElement where
-  toJSRef = return . unSVGDefsElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGDefsElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGDefsElement where
-  fromJSRef = return . fmap SVGDefsElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGDefsElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGDefsElement
 instance IsSVGElement SVGDefsElement
@@ -16648,7 +16648,7 @@ foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDescElement Mozilla SVGDescElement documentation>
-newtype SVGDescElement = SVGDescElement { unSVGDescElement :: JSRef }
+newtype SVGDescElement = SVGDescElement { unSVGDescElement :: JSVal }
 
 instance Eq (SVGDescElement) where
   (SVGDescElement a) == (SVGDescElement b) = js_eq a b
@@ -16662,12 +16662,12 @@ instance PFromJSVal SVGDescElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGDescElement where
-  toJSRef = return . unSVGDescElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGDescElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGDescElement where
-  fromJSRef = return . fmap SVGDescElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGDescElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGDescElement
 instance IsElement SVGDescElement
@@ -16695,7 +16695,7 @@ foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDocument Mozilla SVGDocument documentation>
-newtype SVGDocument = SVGDocument { unSVGDocument :: JSRef }
+newtype SVGDocument = SVGDocument { unSVGDocument :: JSVal }
 
 instance Eq (SVGDocument) where
   (SVGDocument a) == (SVGDocument b) = js_eq a b
@@ -16709,12 +16709,12 @@ instance PFromJSVal SVGDocument where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGDocument where
-  toJSRef = return . unSVGDocument
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGDocument
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGDocument where
-  fromJSRef = return . fmap SVGDocument . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGDocument . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsDocument SVGDocument
 instance IsNode SVGDocument
@@ -16741,7 +16741,7 @@ foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument :: G
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement Mozilla SVGElement documentation>
-newtype SVGElement = SVGElement { unSVGElement :: JSRef }
+newtype SVGElement = SVGElement { unSVGElement :: JSVal }
 
 instance Eq (SVGElement) where
   (SVGElement a) == (SVGElement b) = js_eq a b
@@ -16755,12 +16755,12 @@ instance PFromJSVal SVGElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGElement where
-  toJSRef = return . unSVGElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGElement where
-  fromJSRef = return . fmap SVGElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsElement o => IsSVGElement o
 toSVGElement :: IsSVGElement o => o -> SVGElement
@@ -16794,7 +16794,7 @@ foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GTy
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGEllipseElement Mozilla SVGEllipseElement documentation>
-newtype SVGEllipseElement = SVGEllipseElement { unSVGEllipseElement :: JSRef }
+newtype SVGEllipseElement = SVGEllipseElement { unSVGEllipseElement :: JSVal }
 
 instance Eq (SVGEllipseElement) where
   (SVGEllipseElement a) == (SVGEllipseElement b) = js_eq a b
@@ -16808,12 +16808,12 @@ instance PFromJSVal SVGEllipseElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGEllipseElement where
-  toJSRef = return . unSVGEllipseElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGEllipseElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGEllipseElement where
-  fromJSRef = return . fmap SVGEllipseElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGEllipseElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGEllipseElement
 instance IsSVGElement SVGEllipseElement
@@ -16837,7 +16837,7 @@ foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipse
 -- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired Mozilla SVGExternalResourcesRequired documentation>
-newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired { unSVGExternalResourcesRequired :: JSRef }
+newtype SVGExternalResourcesRequired = SVGExternalResourcesRequired { unSVGExternalResourcesRequired :: JSVal }
 
 instance Eq (SVGExternalResourcesRequired) where
   (SVGExternalResourcesRequired a) == (SVGExternalResourcesRequired b) = js_eq a b
@@ -16851,12 +16851,12 @@ instance PFromJSVal SVGExternalResourcesRequired where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGExternalResourcesRequired where
-  toJSRef = return . unSVGExternalResourcesRequired
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGExternalResourcesRequired
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGExternalResourcesRequired where
-  fromJSRef = return . fmap SVGExternalResourcesRequired . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGExternalResourcesRequired . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGExternalResourcesRequired where
   toGObject = GObject . unSVGExternalResourcesRequired
@@ -16881,7 +16881,7 @@ foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTyp
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement Mozilla SVGFEBlendElement documentation>
-newtype SVGFEBlendElement = SVGFEBlendElement { unSVGFEBlendElement :: JSRef }
+newtype SVGFEBlendElement = SVGFEBlendElement { unSVGFEBlendElement :: JSVal }
 
 instance Eq (SVGFEBlendElement) where
   (SVGFEBlendElement a) == (SVGFEBlendElement b) = js_eq a b
@@ -16895,12 +16895,12 @@ instance PFromJSVal SVGFEBlendElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEBlendElement where
-  toJSRef = return . unSVGFEBlendElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEBlendElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEBlendElement where
-  fromJSRef = return . fmap SVGFEBlendElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEBlendElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEBlendElement
 instance IsElement SVGFEBlendElement
@@ -16929,7 +16929,7 @@ foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlend
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement Mozilla SVGFEColorMatrixElement documentation>
-newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement { unSVGFEColorMatrixElement :: JSRef }
+newtype SVGFEColorMatrixElement = SVGFEColorMatrixElement { unSVGFEColorMatrixElement :: JSVal }
 
 instance Eq (SVGFEColorMatrixElement) where
   (SVGFEColorMatrixElement a) == (SVGFEColorMatrixElement b) = js_eq a b
@@ -16943,12 +16943,12 @@ instance PFromJSVal SVGFEColorMatrixElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEColorMatrixElement where
-  toJSRef = return . unSVGFEColorMatrixElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEColorMatrixElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEColorMatrixElement where
-  fromJSRef = return . fmap SVGFEColorMatrixElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEColorMatrixElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEColorMatrixElement
 instance IsElement SVGFEColorMatrixElement
@@ -16977,7 +16977,7 @@ foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGF
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement Mozilla SVGFEComponentTransferElement documentation>
-newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement { unSVGFEComponentTransferElement :: JSRef }
+newtype SVGFEComponentTransferElement = SVGFEComponentTransferElement { unSVGFEComponentTransferElement :: JSVal }
 
 instance Eq (SVGFEComponentTransferElement) where
   (SVGFEComponentTransferElement a) == (SVGFEComponentTransferElement b) = js_eq a b
@@ -16991,12 +16991,12 @@ instance PFromJSVal SVGFEComponentTransferElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEComponentTransferElement where
-  toJSRef = return . unSVGFEComponentTransferElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEComponentTransferElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEComponentTransferElement where
-  fromJSRef = return . fmap SVGFEComponentTransferElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEComponentTransferElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEComponentTransferElement
 instance IsElement SVGFEComponentTransferElement
@@ -17025,7 +17025,7 @@ foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTy
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement Mozilla SVGFECompositeElement documentation>
-newtype SVGFECompositeElement = SVGFECompositeElement { unSVGFECompositeElement :: JSRef }
+newtype SVGFECompositeElement = SVGFECompositeElement { unSVGFECompositeElement :: JSVal }
 
 instance Eq (SVGFECompositeElement) where
   (SVGFECompositeElement a) == (SVGFECompositeElement b) = js_eq a b
@@ -17039,12 +17039,12 @@ instance PFromJSVal SVGFECompositeElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFECompositeElement where
-  toJSRef = return . unSVGFECompositeElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFECompositeElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFECompositeElement where
-  fromJSRef = return . fmap SVGFECompositeElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFECompositeElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFECompositeElement
 instance IsElement SVGFECompositeElement
@@ -17073,7 +17073,7 @@ foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFEC
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement Mozilla SVGFEConvolveMatrixElement documentation>
-newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement { unSVGFEConvolveMatrixElement :: JSRef }
+newtype SVGFEConvolveMatrixElement = SVGFEConvolveMatrixElement { unSVGFEConvolveMatrixElement :: JSVal }
 
 instance Eq (SVGFEConvolveMatrixElement) where
   (SVGFEConvolveMatrixElement a) == (SVGFEConvolveMatrixElement b) = js_eq a b
@@ -17087,12 +17087,12 @@ instance PFromJSVal SVGFEConvolveMatrixElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEConvolveMatrixElement where
-  toJSRef = return . unSVGFEConvolveMatrixElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEConvolveMatrixElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEConvolveMatrixElement where
-  fromJSRef = return . fmap SVGFEConvolveMatrixElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEConvolveMatrixElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEConvolveMatrixElement
 instance IsElement SVGFEConvolveMatrixElement
@@ -17121,7 +17121,7 @@ foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeS
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement Mozilla SVGFEDiffuseLightingElement documentation>
-newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement { unSVGFEDiffuseLightingElement :: JSRef }
+newtype SVGFEDiffuseLightingElement = SVGFEDiffuseLightingElement { unSVGFEDiffuseLightingElement :: JSVal }
 
 instance Eq (SVGFEDiffuseLightingElement) where
   (SVGFEDiffuseLightingElement a) == (SVGFEDiffuseLightingElement b) = js_eq a b
@@ -17135,12 +17135,12 @@ instance PFromJSVal SVGFEDiffuseLightingElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEDiffuseLightingElement where
-  toJSRef = return . unSVGFEDiffuseLightingElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEDiffuseLightingElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEDiffuseLightingElement where
-  fromJSRef = return . fmap SVGFEDiffuseLightingElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEDiffuseLightingElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEDiffuseLightingElement
 instance IsElement SVGFEDiffuseLightingElement
@@ -17169,7 +17169,7 @@ foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement Mozilla SVGFEDisplacementMapElement documentation>
-newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement { unSVGFEDisplacementMapElement :: JSRef }
+newtype SVGFEDisplacementMapElement = SVGFEDisplacementMapElement { unSVGFEDisplacementMapElement :: JSVal }
 
 instance Eq (SVGFEDisplacementMapElement) where
   (SVGFEDisplacementMapElement a) == (SVGFEDisplacementMapElement b) = js_eq a b
@@ -17183,12 +17183,12 @@ instance PFromJSVal SVGFEDisplacementMapElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEDisplacementMapElement where
-  toJSRef = return . unSVGFEDisplacementMapElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEDisplacementMapElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEDisplacementMapElement where
-  fromJSRef = return . fmap SVGFEDisplacementMapElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEDisplacementMapElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEDisplacementMapElement
 instance IsElement SVGFEDisplacementMapElement
@@ -17217,7 +17217,7 @@ foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement Mozilla SVGFEDistantLightElement documentation>
-newtype SVGFEDistantLightElement = SVGFEDistantLightElement { unSVGFEDistantLightElement :: JSRef }
+newtype SVGFEDistantLightElement = SVGFEDistantLightElement { unSVGFEDistantLightElement :: JSVal }
 
 instance Eq (SVGFEDistantLightElement) where
   (SVGFEDistantLightElement a) == (SVGFEDistantLightElement b) = js_eq a b
@@ -17231,12 +17231,12 @@ instance PFromJSVal SVGFEDistantLightElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEDistantLightElement where
-  toJSRef = return . unSVGFEDistantLightElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEDistantLightElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEDistantLightElement where
-  fromJSRef = return . fmap SVGFEDistantLightElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEDistantLightElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEDistantLightElement
 instance IsElement SVGFEDistantLightElement
@@ -17265,7 +17265,7 @@ foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement Mozilla SVGFEDropShadowElement documentation>
-newtype SVGFEDropShadowElement = SVGFEDropShadowElement { unSVGFEDropShadowElement :: JSRef }
+newtype SVGFEDropShadowElement = SVGFEDropShadowElement { unSVGFEDropShadowElement :: JSVal }
 
 instance Eq (SVGFEDropShadowElement) where
   (SVGFEDropShadowElement a) == (SVGFEDropShadowElement b) = js_eq a b
@@ -17279,12 +17279,12 @@ instance PFromJSVal SVGFEDropShadowElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEDropShadowElement where
-  toJSRef = return . unSVGFEDropShadowElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEDropShadowElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEDropShadowElement where
-  fromJSRef = return . fmap SVGFEDropShadowElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEDropShadowElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEDropShadowElement
 instance IsElement SVGFEDropShadowElement
@@ -17313,7 +17313,7 @@ foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFloodElement Mozilla SVGFEFloodElement documentation>
-newtype SVGFEFloodElement = SVGFEFloodElement { unSVGFEFloodElement :: JSRef }
+newtype SVGFEFloodElement = SVGFEFloodElement { unSVGFEFloodElement :: JSVal }
 
 instance Eq (SVGFEFloodElement) where
   (SVGFEFloodElement a) == (SVGFEFloodElement b) = js_eq a b
@@ -17327,12 +17327,12 @@ instance PFromJSVal SVGFEFloodElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEFloodElement where
-  toJSRef = return . unSVGFEFloodElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEFloodElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEFloodElement where
-  fromJSRef = return . fmap SVGFEFloodElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEFloodElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEFloodElement
 instance IsElement SVGFEFloodElement
@@ -17362,7 +17362,7 @@ foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFlood
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncAElement Mozilla SVGFEFuncAElement documentation>
-newtype SVGFEFuncAElement = SVGFEFuncAElement { unSVGFEFuncAElement :: JSRef }
+newtype SVGFEFuncAElement = SVGFEFuncAElement { unSVGFEFuncAElement :: JSVal }
 
 instance Eq (SVGFEFuncAElement) where
   (SVGFEFuncAElement a) == (SVGFEFuncAElement b) = js_eq a b
@@ -17376,12 +17376,12 @@ instance PFromJSVal SVGFEFuncAElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEFuncAElement where
-  toJSRef = return . unSVGFEFuncAElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEFuncAElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEFuncAElement where
-  fromJSRef = return . fmap SVGFEFuncAElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEFuncAElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGComponentTransferFunctionElement SVGFEFuncAElement
 instance IsSVGElement SVGFEFuncAElement
@@ -17412,7 +17412,7 @@ foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncA
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncBElement Mozilla SVGFEFuncBElement documentation>
-newtype SVGFEFuncBElement = SVGFEFuncBElement { unSVGFEFuncBElement :: JSRef }
+newtype SVGFEFuncBElement = SVGFEFuncBElement { unSVGFEFuncBElement :: JSVal }
 
 instance Eq (SVGFEFuncBElement) where
   (SVGFEFuncBElement a) == (SVGFEFuncBElement b) = js_eq a b
@@ -17426,12 +17426,12 @@ instance PFromJSVal SVGFEFuncBElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEFuncBElement where
-  toJSRef = return . unSVGFEFuncBElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEFuncBElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEFuncBElement where
-  fromJSRef = return . fmap SVGFEFuncBElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEFuncBElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGComponentTransferFunctionElement SVGFEFuncBElement
 instance IsSVGElement SVGFEFuncBElement
@@ -17462,7 +17462,7 @@ foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncB
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncGElement Mozilla SVGFEFuncGElement documentation>
-newtype SVGFEFuncGElement = SVGFEFuncGElement { unSVGFEFuncGElement :: JSRef }
+newtype SVGFEFuncGElement = SVGFEFuncGElement { unSVGFEFuncGElement :: JSVal }
 
 instance Eq (SVGFEFuncGElement) where
   (SVGFEFuncGElement a) == (SVGFEFuncGElement b) = js_eq a b
@@ -17476,12 +17476,12 @@ instance PFromJSVal SVGFEFuncGElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEFuncGElement where
-  toJSRef = return . unSVGFEFuncGElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEFuncGElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEFuncGElement where
-  fromJSRef = return . fmap SVGFEFuncGElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEFuncGElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGComponentTransferFunctionElement SVGFEFuncGElement
 instance IsSVGElement SVGFEFuncGElement
@@ -17512,7 +17512,7 @@ foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncRElement Mozilla SVGFEFuncRElement documentation>
-newtype SVGFEFuncRElement = SVGFEFuncRElement { unSVGFEFuncRElement :: JSRef }
+newtype SVGFEFuncRElement = SVGFEFuncRElement { unSVGFEFuncRElement :: JSVal }
 
 instance Eq (SVGFEFuncRElement) where
   (SVGFEFuncRElement a) == (SVGFEFuncRElement b) = js_eq a b
@@ -17526,12 +17526,12 @@ instance PFromJSVal SVGFEFuncRElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEFuncRElement where
-  toJSRef = return . unSVGFEFuncRElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEFuncRElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEFuncRElement where
-  fromJSRef = return . fmap SVGFEFuncRElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEFuncRElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGComponentTransferFunctionElement SVGFEFuncRElement
 instance IsSVGElement SVGFEFuncRElement
@@ -17561,7 +17561,7 @@ foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncR
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement Mozilla SVGFEGaussianBlurElement documentation>
-newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement { unSVGFEGaussianBlurElement :: JSRef }
+newtype SVGFEGaussianBlurElement = SVGFEGaussianBlurElement { unSVGFEGaussianBlurElement :: JSVal }
 
 instance Eq (SVGFEGaussianBlurElement) where
   (SVGFEGaussianBlurElement a) == (SVGFEGaussianBlurElement b) = js_eq a b
@@ -17575,12 +17575,12 @@ instance PFromJSVal SVGFEGaussianBlurElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEGaussianBlurElement where
-  toJSRef = return . unSVGFEGaussianBlurElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEGaussianBlurElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEGaussianBlurElement where
-  fromJSRef = return . fmap SVGFEGaussianBlurElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEGaussianBlurElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEGaussianBlurElement
 instance IsElement SVGFEGaussianBlurElement
@@ -17609,7 +17609,7 @@ foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEImageElement Mozilla SVGFEImageElement documentation>
-newtype SVGFEImageElement = SVGFEImageElement { unSVGFEImageElement :: JSRef }
+newtype SVGFEImageElement = SVGFEImageElement { unSVGFEImageElement :: JSVal }
 
 instance Eq (SVGFEImageElement) where
   (SVGFEImageElement a) == (SVGFEImageElement b) = js_eq a b
@@ -17623,12 +17623,12 @@ instance PFromJSVal SVGFEImageElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEImageElement where
-  toJSRef = return . unSVGFEImageElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEImageElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEImageElement where
-  fromJSRef = return . fmap SVGFEImageElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEImageElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEImageElement
 instance IsElement SVGFEImageElement
@@ -17657,7 +17657,7 @@ foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImage
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeElement Mozilla SVGFEMergeElement documentation>
-newtype SVGFEMergeElement = SVGFEMergeElement { unSVGFEMergeElement :: JSRef }
+newtype SVGFEMergeElement = SVGFEMergeElement { unSVGFEMergeElement :: JSVal }
 
 instance Eq (SVGFEMergeElement) where
   (SVGFEMergeElement a) == (SVGFEMergeElement b) = js_eq a b
@@ -17671,12 +17671,12 @@ instance PFromJSVal SVGFEMergeElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEMergeElement where
-  toJSRef = return . unSVGFEMergeElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEMergeElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEMergeElement where
-  fromJSRef = return . fmap SVGFEMergeElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEMergeElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEMergeElement
 instance IsElement SVGFEMergeElement
@@ -17705,7 +17705,7 @@ foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMerge
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement Mozilla SVGFEMergeNodeElement documentation>
-newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement { unSVGFEMergeNodeElement :: JSRef }
+newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement { unSVGFEMergeNodeElement :: JSVal }
 
 instance Eq (SVGFEMergeNodeElement) where
   (SVGFEMergeNodeElement a) == (SVGFEMergeNodeElement b) = js_eq a b
@@ -17719,12 +17719,12 @@ instance PFromJSVal SVGFEMergeNodeElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEMergeNodeElement where
-  toJSRef = return . unSVGFEMergeNodeElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEMergeNodeElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEMergeNodeElement where
-  fromJSRef = return . fmap SVGFEMergeNodeElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEMergeNodeElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEMergeNodeElement
 instance IsElement SVGFEMergeNodeElement
@@ -17753,7 +17753,7 @@ foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEM
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement Mozilla SVGFEMorphologyElement documentation>
-newtype SVGFEMorphologyElement = SVGFEMorphologyElement { unSVGFEMorphologyElement :: JSRef }
+newtype SVGFEMorphologyElement = SVGFEMorphologyElement { unSVGFEMorphologyElement :: JSVal }
 
 instance Eq (SVGFEMorphologyElement) where
   (SVGFEMorphologyElement a) == (SVGFEMorphologyElement b) = js_eq a b
@@ -17767,12 +17767,12 @@ instance PFromJSVal SVGFEMorphologyElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEMorphologyElement where
-  toJSRef = return . unSVGFEMorphologyElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEMorphologyElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEMorphologyElement where
-  fromJSRef = return . fmap SVGFEMorphologyElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEMorphologyElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEMorphologyElement
 instance IsElement SVGFEMorphologyElement
@@ -17801,7 +17801,7 @@ foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement Mozilla SVGFEOffsetElement documentation>
-newtype SVGFEOffsetElement = SVGFEOffsetElement { unSVGFEOffsetElement :: JSRef }
+newtype SVGFEOffsetElement = SVGFEOffsetElement { unSVGFEOffsetElement :: JSVal }
 
 instance Eq (SVGFEOffsetElement) where
   (SVGFEOffsetElement a) == (SVGFEOffsetElement b) = js_eq a b
@@ -17815,12 +17815,12 @@ instance PFromJSVal SVGFEOffsetElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEOffsetElement where
-  toJSRef = return . unSVGFEOffsetElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEOffsetElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEOffsetElement where
-  fromJSRef = return . fmap SVGFEOffsetElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEOffsetElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEOffsetElement
 instance IsElement SVGFEOffsetElement
@@ -17849,7 +17849,7 @@ foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffs
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement Mozilla SVGFEPointLightElement documentation>
-newtype SVGFEPointLightElement = SVGFEPointLightElement { unSVGFEPointLightElement :: JSRef }
+newtype SVGFEPointLightElement = SVGFEPointLightElement { unSVGFEPointLightElement :: JSVal }
 
 instance Eq (SVGFEPointLightElement) where
   (SVGFEPointLightElement a) == (SVGFEPointLightElement b) = js_eq a b
@@ -17863,12 +17863,12 @@ instance PFromJSVal SVGFEPointLightElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFEPointLightElement where
-  toJSRef = return . unSVGFEPointLightElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFEPointLightElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFEPointLightElement where
-  fromJSRef = return . fmap SVGFEPointLightElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFEPointLightElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFEPointLightElement
 instance IsElement SVGFEPointLightElement
@@ -17897,7 +17897,7 @@ foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement Mozilla SVGFESpecularLightingElement documentation>
-newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement { unSVGFESpecularLightingElement :: JSRef }
+newtype SVGFESpecularLightingElement = SVGFESpecularLightingElement { unSVGFESpecularLightingElement :: JSVal }
 
 instance Eq (SVGFESpecularLightingElement) where
   (SVGFESpecularLightingElement a) == (SVGFESpecularLightingElement b) = js_eq a b
@@ -17911,12 +17911,12 @@ instance PFromJSVal SVGFESpecularLightingElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFESpecularLightingElement where
-  toJSRef = return . unSVGFESpecularLightingElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFESpecularLightingElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFESpecularLightingElement where
-  fromJSRef = return . fmap SVGFESpecularLightingElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFESpecularLightingElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFESpecularLightingElement
 instance IsElement SVGFESpecularLightingElement
@@ -17945,7 +17945,7 @@ foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTyp
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement Mozilla SVGFESpotLightElement documentation>
-newtype SVGFESpotLightElement = SVGFESpotLightElement { unSVGFESpotLightElement :: JSRef }
+newtype SVGFESpotLightElement = SVGFESpotLightElement { unSVGFESpotLightElement :: JSVal }
 
 instance Eq (SVGFESpotLightElement) where
   (SVGFESpotLightElement a) == (SVGFESpotLightElement b) = js_eq a b
@@ -17959,12 +17959,12 @@ instance PFromJSVal SVGFESpotLightElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFESpotLightElement where
-  toJSRef = return . unSVGFESpotLightElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFESpotLightElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFESpotLightElement where
-  fromJSRef = return . fmap SVGFESpotLightElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFESpotLightElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFESpotLightElement
 instance IsElement SVGFESpotLightElement
@@ -17993,7 +17993,7 @@ foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFES
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement Mozilla SVGFETileElement documentation>
-newtype SVGFETileElement = SVGFETileElement { unSVGFETileElement :: JSRef }
+newtype SVGFETileElement = SVGFETileElement { unSVGFETileElement :: JSVal }
 
 instance Eq (SVGFETileElement) where
   (SVGFETileElement a) == (SVGFETileElement b) = js_eq a b
@@ -18007,12 +18007,12 @@ instance PFromJSVal SVGFETileElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFETileElement where
-  toJSRef = return . unSVGFETileElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFETileElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFETileElement where
-  fromJSRef = return . fmap SVGFETileElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFETileElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFETileElement
 instance IsElement SVGFETileElement
@@ -18041,7 +18041,7 @@ foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement Mozilla SVGFETurbulenceElement documentation>
-newtype SVGFETurbulenceElement = SVGFETurbulenceElement { unSVGFETurbulenceElement :: JSRef }
+newtype SVGFETurbulenceElement = SVGFETurbulenceElement { unSVGFETurbulenceElement :: JSVal }
 
 instance Eq (SVGFETurbulenceElement) where
   (SVGFETurbulenceElement a) == (SVGFETurbulenceElement b) = js_eq a b
@@ -18055,12 +18055,12 @@ instance PFromJSVal SVGFETurbulenceElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFETurbulenceElement where
-  toJSRef = return . unSVGFETurbulenceElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFETurbulenceElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFETurbulenceElement where
-  fromJSRef = return . fmap SVGFETurbulenceElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFETurbulenceElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFETurbulenceElement
 instance IsElement SVGFETurbulenceElement
@@ -18089,7 +18089,7 @@ foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement Mozilla SVGFilterElement documentation>
-newtype SVGFilterElement = SVGFilterElement { unSVGFilterElement :: JSRef }
+newtype SVGFilterElement = SVGFilterElement { unSVGFilterElement :: JSVal }
 
 instance Eq (SVGFilterElement) where
   (SVGFilterElement a) == (SVGFilterElement b) = js_eq a b
@@ -18103,12 +18103,12 @@ instance PFromJSVal SVGFilterElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFilterElement where
-  toJSRef = return . unSVGFilterElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFilterElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFilterElement where
-  fromJSRef = return . fmap SVGFilterElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFilterElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFilterElement
 instance IsElement SVGFilterElement
@@ -18131,7 +18131,7 @@ foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterEl
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes Mozilla SVGFilterPrimitiveStandardAttributes documentation>
-newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes { unSVGFilterPrimitiveStandardAttributes :: JSRef }
+newtype SVGFilterPrimitiveStandardAttributes = SVGFilterPrimitiveStandardAttributes { unSVGFilterPrimitiveStandardAttributes :: JSVal }
 
 instance Eq (SVGFilterPrimitiveStandardAttributes) where
   (SVGFilterPrimitiveStandardAttributes a) == (SVGFilterPrimitiveStandardAttributes b) = js_eq a b
@@ -18145,12 +18145,12 @@ instance PFromJSVal SVGFilterPrimitiveStandardAttributes where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFilterPrimitiveStandardAttributes where
-  toJSRef = return . unSVGFilterPrimitiveStandardAttributes
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFilterPrimitiveStandardAttributes
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFilterPrimitiveStandardAttributes where
-  fromJSRef = return . fmap SVGFilterPrimitiveStandardAttributes . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFilterPrimitiveStandardAttributes . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGFilterPrimitiveStandardAttributes where
   toGObject = GObject . unSVGFilterPrimitiveStandardAttributes
@@ -18169,7 +18169,7 @@ foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox Mozilla SVGFitToViewBox documentation>
-newtype SVGFitToViewBox = SVGFitToViewBox { unSVGFitToViewBox :: JSRef }
+newtype SVGFitToViewBox = SVGFitToViewBox { unSVGFitToViewBox :: JSVal }
 
 instance Eq (SVGFitToViewBox) where
   (SVGFitToViewBox a) == (SVGFitToViewBox b) = js_eq a b
@@ -18183,12 +18183,12 @@ instance PFromJSVal SVGFitToViewBox where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFitToViewBox where
-  toJSRef = return . unSVGFitToViewBox
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFitToViewBox
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFitToViewBox where
-  fromJSRef = return . fmap SVGFitToViewBox . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFitToViewBox . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGFitToViewBox where
   toGObject = GObject . unSVGFitToViewBox
@@ -18213,7 +18213,7 @@ foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToView
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontElement Mozilla SVGFontElement documentation>
-newtype SVGFontElement = SVGFontElement { unSVGFontElement :: JSRef }
+newtype SVGFontElement = SVGFontElement { unSVGFontElement :: JSVal }
 
 instance Eq (SVGFontElement) where
   (SVGFontElement a) == (SVGFontElement b) = js_eq a b
@@ -18227,12 +18227,12 @@ instance PFromJSVal SVGFontElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontElement where
-  toJSRef = return . unSVGFontElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontElement where
-  fromJSRef = return . fmap SVGFontElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontElement
 instance IsElement SVGFontElement
@@ -18261,7 +18261,7 @@ foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceElement Mozilla SVGFontFaceElement documentation>
-newtype SVGFontFaceElement = SVGFontFaceElement { unSVGFontFaceElement :: JSRef }
+newtype SVGFontFaceElement = SVGFontFaceElement { unSVGFontFaceElement :: JSVal }
 
 instance Eq (SVGFontFaceElement) where
   (SVGFontFaceElement a) == (SVGFontFaceElement b) = js_eq a b
@@ -18275,12 +18275,12 @@ instance PFromJSVal SVGFontFaceElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontFaceElement where
-  toJSRef = return . unSVGFontFaceElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontFaceElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontFaceElement where
-  fromJSRef = return . fmap SVGFontFaceElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontFaceElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontFaceElement
 instance IsElement SVGFontFaceElement
@@ -18309,7 +18309,7 @@ foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFa
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceFormatElement Mozilla SVGFontFaceFormatElement documentation>
-newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement { unSVGFontFaceFormatElement :: JSRef }
+newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement { unSVGFontFaceFormatElement :: JSVal }
 
 instance Eq (SVGFontFaceFormatElement) where
   (SVGFontFaceFormatElement a) == (SVGFontFaceFormatElement b) = js_eq a b
@@ -18323,12 +18323,12 @@ instance PFromJSVal SVGFontFaceFormatElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontFaceFormatElement where
-  toJSRef = return . unSVGFontFaceFormatElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontFaceFormatElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontFaceFormatElement where
-  fromJSRef = return . fmap SVGFontFaceFormatElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontFaceFormatElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontFaceFormatElement
 instance IsElement SVGFontFaceFormatElement
@@ -18357,7 +18357,7 @@ foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceNameElement Mozilla SVGFontFaceNameElement documentation>
-newtype SVGFontFaceNameElement = SVGFontFaceNameElement { unSVGFontFaceNameElement :: JSRef }
+newtype SVGFontFaceNameElement = SVGFontFaceNameElement { unSVGFontFaceNameElement :: JSVal }
 
 instance Eq (SVGFontFaceNameElement) where
   (SVGFontFaceNameElement a) == (SVGFontFaceNameElement b) = js_eq a b
@@ -18371,12 +18371,12 @@ instance PFromJSVal SVGFontFaceNameElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontFaceNameElement where
-  toJSRef = return . unSVGFontFaceNameElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontFaceNameElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontFaceNameElement where
-  fromJSRef = return . fmap SVGFontFaceNameElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontFaceNameElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontFaceNameElement
 instance IsElement SVGFontFaceNameElement
@@ -18405,7 +18405,7 @@ foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFo
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceSrcElement Mozilla SVGFontFaceSrcElement documentation>
-newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement { unSVGFontFaceSrcElement :: JSRef }
+newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement { unSVGFontFaceSrcElement :: JSVal }
 
 instance Eq (SVGFontFaceSrcElement) where
   (SVGFontFaceSrcElement a) == (SVGFontFaceSrcElement b) = js_eq a b
@@ -18419,12 +18419,12 @@ instance PFromJSVal SVGFontFaceSrcElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontFaceSrcElement where
-  toJSRef = return . unSVGFontFaceSrcElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontFaceSrcElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontFaceSrcElement where
-  fromJSRef = return . fmap SVGFontFaceSrcElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontFaceSrcElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontFaceSrcElement
 instance IsElement SVGFontFaceSrcElement
@@ -18453,7 +18453,7 @@ foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFon
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceUriElement Mozilla SVGFontFaceUriElement documentation>
-newtype SVGFontFaceUriElement = SVGFontFaceUriElement { unSVGFontFaceUriElement :: JSRef }
+newtype SVGFontFaceUriElement = SVGFontFaceUriElement { unSVGFontFaceUriElement :: JSVal }
 
 instance Eq (SVGFontFaceUriElement) where
   (SVGFontFaceUriElement a) == (SVGFontFaceUriElement b) = js_eq a b
@@ -18467,12 +18467,12 @@ instance PFromJSVal SVGFontFaceUriElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGFontFaceUriElement where
-  toJSRef = return . unSVGFontFaceUriElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGFontFaceUriElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGFontFaceUriElement where
-  fromJSRef = return . fmap SVGFontFaceUriElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGFontFaceUriElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGFontFaceUriElement
 instance IsElement SVGFontFaceUriElement
@@ -18502,7 +18502,7 @@ foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFon
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGForeignObjectElement Mozilla SVGForeignObjectElement documentation>
-newtype SVGForeignObjectElement = SVGForeignObjectElement { unSVGForeignObjectElement :: JSRef }
+newtype SVGForeignObjectElement = SVGForeignObjectElement { unSVGForeignObjectElement :: JSVal }
 
 instance Eq (SVGForeignObjectElement) where
   (SVGForeignObjectElement a) == (SVGForeignObjectElement b) = js_eq a b
@@ -18516,12 +18516,12 @@ instance PFromJSVal SVGForeignObjectElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGForeignObjectElement where
-  toJSRef = return . unSVGForeignObjectElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGForeignObjectElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGForeignObjectElement where
-  fromJSRef = return . fmap SVGForeignObjectElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGForeignObjectElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGForeignObjectElement
 instance IsSVGElement SVGForeignObjectElement
@@ -18552,7 +18552,7 @@ foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGF
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGElement Mozilla SVGGElement documentation>
-newtype SVGGElement = SVGGElement { unSVGGElement :: JSRef }
+newtype SVGGElement = SVGGElement { unSVGGElement :: JSVal }
 
 instance Eq (SVGGElement) where
   (SVGGElement a) == (SVGGElement b) = js_eq a b
@@ -18566,12 +18566,12 @@ instance PFromJSVal SVGGElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGGElement where
-  toJSRef = return . unSVGGElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGGElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGGElement where
-  fromJSRef = return . fmap SVGGElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGGElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGGElement
 instance IsSVGElement SVGGElement
@@ -18601,7 +18601,7 @@ foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: G
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphElement Mozilla SVGGlyphElement documentation>
-newtype SVGGlyphElement = SVGGlyphElement { unSVGGlyphElement :: JSRef }
+newtype SVGGlyphElement = SVGGlyphElement { unSVGGlyphElement :: JSVal }
 
 instance Eq (SVGGlyphElement) where
   (SVGGlyphElement a) == (SVGGlyphElement b) = js_eq a b
@@ -18615,12 +18615,12 @@ instance PFromJSVal SVGGlyphElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGGlyphElement where
-  toJSRef = return . unSVGGlyphElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGGlyphElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGGlyphElement where
-  fromJSRef = return . fmap SVGGlyphElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGGlyphElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGGlyphElement
 instance IsElement SVGGlyphElement
@@ -18649,7 +18649,7 @@ foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement Mozilla SVGGlyphRefElement documentation>
-newtype SVGGlyphRefElement = SVGGlyphRefElement { unSVGGlyphRefElement :: JSRef }
+newtype SVGGlyphRefElement = SVGGlyphRefElement { unSVGGlyphRefElement :: JSVal }
 
 instance Eq (SVGGlyphRefElement) where
   (SVGGlyphRefElement a) == (SVGGlyphRefElement b) = js_eq a b
@@ -18663,12 +18663,12 @@ instance PFromJSVal SVGGlyphRefElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGGlyphRefElement where
-  toJSRef = return . unSVGGlyphRefElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGGlyphRefElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGGlyphRefElement where
-  fromJSRef = return . fmap SVGGlyphRefElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGGlyphRefElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGGlyphRefElement
 instance IsElement SVGGlyphRefElement
@@ -18697,7 +18697,7 @@ foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphR
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement Mozilla SVGGradientElement documentation>
-newtype SVGGradientElement = SVGGradientElement { unSVGGradientElement :: JSRef }
+newtype SVGGradientElement = SVGGradientElement { unSVGGradientElement :: JSVal }
 
 instance Eq (SVGGradientElement) where
   (SVGGradientElement a) == (SVGGradientElement b) = js_eq a b
@@ -18711,12 +18711,12 @@ instance PFromJSVal SVGGradientElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGGradientElement where
-  toJSRef = return . unSVGGradientElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGGradientElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGGradientElement where
-  fromJSRef = return . fmap SVGGradientElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGGradientElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGElement o => IsSVGGradientElement o
 toSVGGradientElement :: IsSVGGradientElement o => o -> SVGGradientElement
@@ -18750,7 +18750,7 @@ foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradie
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement Mozilla SVGGraphicsElement documentation>
-newtype SVGGraphicsElement = SVGGraphicsElement { unSVGGraphicsElement :: JSRef }
+newtype SVGGraphicsElement = SVGGraphicsElement { unSVGGraphicsElement :: JSVal }
 
 instance Eq (SVGGraphicsElement) where
   (SVGGraphicsElement a) == (SVGGraphicsElement b) = js_eq a b
@@ -18764,12 +18764,12 @@ instance PFromJSVal SVGGraphicsElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGGraphicsElement where
-  toJSRef = return . unSVGGraphicsElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGGraphicsElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGGraphicsElement where
-  fromJSRef = return . fmap SVGGraphicsElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGGraphicsElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGElement o => IsSVGGraphicsElement o
 toSVGGraphicsElement :: IsSVGGraphicsElement o => o -> SVGGraphicsElement
@@ -18803,7 +18803,7 @@ foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphi
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGHKernElement Mozilla SVGHKernElement documentation>
-newtype SVGHKernElement = SVGHKernElement { unSVGHKernElement :: JSRef }
+newtype SVGHKernElement = SVGHKernElement { unSVGHKernElement :: JSVal }
 
 instance Eq (SVGHKernElement) where
   (SVGHKernElement a) == (SVGHKernElement b) = js_eq a b
@@ -18817,12 +18817,12 @@ instance PFromJSVal SVGHKernElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGHKernElement where
-  toJSRef = return . unSVGHKernElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGHKernElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGHKernElement where
-  fromJSRef = return . fmap SVGHKernElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGHKernElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGHKernElement
 instance IsElement SVGHKernElement
@@ -18852,7 +18852,7 @@ foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement Mozilla SVGImageElement documentation>
-newtype SVGImageElement = SVGImageElement { unSVGImageElement :: JSRef }
+newtype SVGImageElement = SVGImageElement { unSVGImageElement :: JSVal }
 
 instance Eq (SVGImageElement) where
   (SVGImageElement a) == (SVGImageElement b) = js_eq a b
@@ -18866,12 +18866,12 @@ instance PFromJSVal SVGImageElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGImageElement where
-  toJSRef = return . unSVGImageElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGImageElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGImageElement where
-  fromJSRef = return . fmap SVGImageElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGImageElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGImageElement
 instance IsSVGElement SVGImageElement
@@ -18895,7 +18895,7 @@ foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElem
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength Mozilla SVGLength documentation>
-newtype SVGLength = SVGLength { unSVGLength :: JSRef }
+newtype SVGLength = SVGLength { unSVGLength :: JSVal }
 
 instance Eq (SVGLength) where
   (SVGLength a) == (SVGLength b) = js_eq a b
@@ -18909,12 +18909,12 @@ instance PFromJSVal SVGLength where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGLength where
-  toJSRef = return . unSVGLength
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGLength
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGLength where
-  fromJSRef = return . fmap SVGLength . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGLength . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGLength where
   toGObject = GObject . unSVGLength
@@ -18933,7 +18933,7 @@ foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList Mozilla SVGLengthList documentation>
-newtype SVGLengthList = SVGLengthList { unSVGLengthList :: JSRef }
+newtype SVGLengthList = SVGLengthList { unSVGLengthList :: JSVal }
 
 instance Eq (SVGLengthList) where
   (SVGLengthList a) == (SVGLengthList b) = js_eq a b
@@ -18947,12 +18947,12 @@ instance PFromJSVal SVGLengthList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGLengthList where
-  toJSRef = return . unSVGLengthList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGLengthList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGLengthList where
-  fromJSRef = return . fmap SVGLengthList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGLengthList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGLengthList where
   toGObject = GObject . unSVGLengthList
@@ -18978,7 +18978,7 @@ foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLineElement Mozilla SVGLineElement documentation>
-newtype SVGLineElement = SVGLineElement { unSVGLineElement :: JSRef }
+newtype SVGLineElement = SVGLineElement { unSVGLineElement :: JSVal }
 
 instance Eq (SVGLineElement) where
   (SVGLineElement a) == (SVGLineElement b) = js_eq a b
@@ -18992,12 +18992,12 @@ instance PFromJSVal SVGLineElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGLineElement where
-  toJSRef = return . unSVGLineElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGLineElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGLineElement where
-  fromJSRef = return . fmap SVGLineElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGLineElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGLineElement
 instance IsSVGElement SVGLineElement
@@ -19028,7 +19028,7 @@ foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLinearGradientElement Mozilla SVGLinearGradientElement documentation>
-newtype SVGLinearGradientElement = SVGLinearGradientElement { unSVGLinearGradientElement :: JSRef }
+newtype SVGLinearGradientElement = SVGLinearGradientElement { unSVGLinearGradientElement :: JSVal }
 
 instance Eq (SVGLinearGradientElement) where
   (SVGLinearGradientElement a) == (SVGLinearGradientElement b) = js_eq a b
@@ -19042,12 +19042,12 @@ instance PFromJSVal SVGLinearGradientElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGLinearGradientElement where
-  toJSRef = return . unSVGLinearGradientElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGLinearGradientElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGLinearGradientElement where
-  fromJSRef = return . fmap SVGLinearGradientElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGLinearGradientElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGradientElement SVGLinearGradientElement
 instance IsSVGElement SVGLinearGradientElement
@@ -19077,7 +19077,7 @@ foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVG
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMPathElement Mozilla SVGMPathElement documentation>
-newtype SVGMPathElement = SVGMPathElement { unSVGMPathElement :: JSRef }
+newtype SVGMPathElement = SVGMPathElement { unSVGMPathElement :: JSVal }
 
 instance Eq (SVGMPathElement) where
   (SVGMPathElement a) == (SVGMPathElement b) = js_eq a b
@@ -19091,12 +19091,12 @@ instance PFromJSVal SVGMPathElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMPathElement where
-  toJSRef = return . unSVGMPathElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMPathElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMPathElement where
-  fromJSRef = return . fmap SVGMPathElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMPathElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGMPathElement
 instance IsElement SVGMPathElement
@@ -19125,7 +19125,7 @@ foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement Mozilla SVGMarkerElement documentation>
-newtype SVGMarkerElement = SVGMarkerElement { unSVGMarkerElement :: JSRef }
+newtype SVGMarkerElement = SVGMarkerElement { unSVGMarkerElement :: JSVal }
 
 instance Eq (SVGMarkerElement) where
   (SVGMarkerElement a) == (SVGMarkerElement b) = js_eq a b
@@ -19139,12 +19139,12 @@ instance PFromJSVal SVGMarkerElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMarkerElement where
-  toJSRef = return . unSVGMarkerElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMarkerElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMarkerElement where
-  fromJSRef = return . fmap SVGMarkerElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMarkerElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGMarkerElement
 instance IsElement SVGMarkerElement
@@ -19173,7 +19173,7 @@ foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement Mozilla SVGMaskElement documentation>
-newtype SVGMaskElement = SVGMaskElement { unSVGMaskElement :: JSRef }
+newtype SVGMaskElement = SVGMaskElement { unSVGMaskElement :: JSVal }
 
 instance Eq (SVGMaskElement) where
   (SVGMaskElement a) == (SVGMaskElement b) = js_eq a b
@@ -19187,12 +19187,12 @@ instance PFromJSVal SVGMaskElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMaskElement where
-  toJSRef = return . unSVGMaskElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMaskElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMaskElement where
-  fromJSRef = return . fmap SVGMaskElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMaskElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGMaskElement
 instance IsElement SVGMaskElement
@@ -19215,7 +19215,7 @@ foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElemen
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix Mozilla SVGMatrix documentation>
-newtype SVGMatrix = SVGMatrix { unSVGMatrix :: JSRef }
+newtype SVGMatrix = SVGMatrix { unSVGMatrix :: JSVal }
 
 instance Eq (SVGMatrix) where
   (SVGMatrix a) == (SVGMatrix b) = js_eq a b
@@ -19229,12 +19229,12 @@ instance PFromJSVal SVGMatrix where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMatrix where
-  toJSRef = return . unSVGMatrix
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMatrix
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMatrix where
-  fromJSRef = return . fmap SVGMatrix . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMatrix . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGMatrix where
   toGObject = GObject . unSVGMatrix
@@ -19259,7 +19259,7 @@ foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMetadataElement Mozilla SVGMetadataElement documentation>
-newtype SVGMetadataElement = SVGMetadataElement { unSVGMetadataElement :: JSRef }
+newtype SVGMetadataElement = SVGMetadataElement { unSVGMetadataElement :: JSVal }
 
 instance Eq (SVGMetadataElement) where
   (SVGMetadataElement a) == (SVGMetadataElement b) = js_eq a b
@@ -19273,12 +19273,12 @@ instance PFromJSVal SVGMetadataElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMetadataElement where
-  toJSRef = return . unSVGMetadataElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMetadataElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMetadataElement where
-  fromJSRef = return . fmap SVGMetadataElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMetadataElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGMetadataElement
 instance IsElement SVGMetadataElement
@@ -19307,7 +19307,7 @@ foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetada
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMissingGlyphElement Mozilla SVGMissingGlyphElement documentation>
-newtype SVGMissingGlyphElement = SVGMissingGlyphElement { unSVGMissingGlyphElement :: JSRef }
+newtype SVGMissingGlyphElement = SVGMissingGlyphElement { unSVGMissingGlyphElement :: JSVal }
 
 instance Eq (SVGMissingGlyphElement) where
   (SVGMissingGlyphElement a) == (SVGMissingGlyphElement b) = js_eq a b
@@ -19321,12 +19321,12 @@ instance PFromJSVal SVGMissingGlyphElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGMissingGlyphElement where
-  toJSRef = return . unSVGMissingGlyphElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGMissingGlyphElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGMissingGlyphElement where
-  fromJSRef = return . fmap SVGMissingGlyphElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGMissingGlyphElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGMissingGlyphElement
 instance IsElement SVGMissingGlyphElement
@@ -19349,7 +19349,7 @@ foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMi
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber Mozilla SVGNumber documentation>
-newtype SVGNumber = SVGNumber { unSVGNumber :: JSRef }
+newtype SVGNumber = SVGNumber { unSVGNumber :: JSVal }
 
 instance Eq (SVGNumber) where
   (SVGNumber a) == (SVGNumber b) = js_eq a b
@@ -19363,12 +19363,12 @@ instance PFromJSVal SVGNumber where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGNumber where
-  toJSRef = return . unSVGNumber
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGNumber
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGNumber where
-  fromJSRef = return . fmap SVGNumber . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGNumber . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGNumber where
   toGObject = GObject . unSVGNumber
@@ -19387,7 +19387,7 @@ foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList Mozilla SVGNumberList documentation>
-newtype SVGNumberList = SVGNumberList { unSVGNumberList :: JSRef }
+newtype SVGNumberList = SVGNumberList { unSVGNumberList :: JSVal }
 
 instance Eq (SVGNumberList) where
   (SVGNumberList a) == (SVGNumberList b) = js_eq a b
@@ -19401,12 +19401,12 @@ instance PFromJSVal SVGNumberList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGNumberList where
-  toJSRef = return . unSVGNumberList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGNumberList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGNumberList where
-  fromJSRef = return . fmap SVGNumberList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGNumberList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGNumberList where
   toGObject = GObject . unSVGNumberList
@@ -19429,7 +19429,7 @@ foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList 
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPaint Mozilla SVGPaint documentation>
-newtype SVGPaint = SVGPaint { unSVGPaint :: JSRef }
+newtype SVGPaint = SVGPaint { unSVGPaint :: JSVal }
 
 instance Eq (SVGPaint) where
   (SVGPaint a) == (SVGPaint b) = js_eq a b
@@ -19443,12 +19443,12 @@ instance PFromJSVal SVGPaint where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPaint where
-  toJSRef = return . unSVGPaint
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPaint
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPaint where
-  fromJSRef = return . fmap SVGPaint . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPaint . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGColor SVGPaint
 instance IsCSSValue SVGPaint
@@ -19476,7 +19476,7 @@ foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement Mozilla SVGPathElement documentation>
-newtype SVGPathElement = SVGPathElement { unSVGPathElement :: JSRef }
+newtype SVGPathElement = SVGPathElement { unSVGPathElement :: JSVal }
 
 instance Eq (SVGPathElement) where
   (SVGPathElement a) == (SVGPathElement b) = js_eq a b
@@ -19490,12 +19490,12 @@ instance PFromJSVal SVGPathElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathElement where
-  toJSRef = return . unSVGPathElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathElement where
-  fromJSRef = return . fmap SVGPathElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGPathElement
 instance IsSVGElement SVGPathElement
@@ -19519,7 +19519,7 @@ foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElemen
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg Mozilla SVGPathSeg documentation>
-newtype SVGPathSeg = SVGPathSeg { unSVGPathSeg :: JSRef }
+newtype SVGPathSeg = SVGPathSeg { unSVGPathSeg :: JSVal }
 
 instance Eq (SVGPathSeg) where
   (SVGPathSeg a) == (SVGPathSeg b) = js_eq a b
@@ -19533,12 +19533,12 @@ instance PFromJSVal SVGPathSeg where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSeg where
-  toJSRef = return . unSVGPathSeg
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSeg
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSeg where
-  fromJSRef = return . fmap SVGPathSeg . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSeg . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsSVGPathSeg o
 toSVGPathSeg :: IsSVGPathSeg o => o -> SVGPathSeg
@@ -19565,7 +19565,7 @@ foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg :: GTy
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs Mozilla SVGPathSegArcAbs documentation>
-newtype SVGPathSegArcAbs = SVGPathSegArcAbs { unSVGPathSegArcAbs :: JSRef }
+newtype SVGPathSegArcAbs = SVGPathSegArcAbs { unSVGPathSegArcAbs :: JSVal }
 
 instance Eq (SVGPathSegArcAbs) where
   (SVGPathSegArcAbs a) == (SVGPathSegArcAbs b) = js_eq a b
@@ -19579,12 +19579,12 @@ instance PFromJSVal SVGPathSegArcAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegArcAbs where
-  toJSRef = return . unSVGPathSegArcAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegArcAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegArcAbs where
-  fromJSRef = return . fmap SVGPathSegArcAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegArcAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegArcAbs
 instance IsGObject SVGPathSegArcAbs where
@@ -19607,7 +19607,7 @@ foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegA
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel Mozilla SVGPathSegArcRel documentation>
-newtype SVGPathSegArcRel = SVGPathSegArcRel { unSVGPathSegArcRel :: JSRef }
+newtype SVGPathSegArcRel = SVGPathSegArcRel { unSVGPathSegArcRel :: JSVal }
 
 instance Eq (SVGPathSegArcRel) where
   (SVGPathSegArcRel a) == (SVGPathSegArcRel b) = js_eq a b
@@ -19621,12 +19621,12 @@ instance PFromJSVal SVGPathSegArcRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegArcRel where
-  toJSRef = return . unSVGPathSegArcRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegArcRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegArcRel where
-  fromJSRef = return . fmap SVGPathSegArcRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegArcRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegArcRel
 instance IsGObject SVGPathSegArcRel where
@@ -19649,7 +19649,7 @@ foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegA
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegClosePath Mozilla SVGPathSegClosePath documentation>
-newtype SVGPathSegClosePath = SVGPathSegClosePath { unSVGPathSegClosePath :: JSRef }
+newtype SVGPathSegClosePath = SVGPathSegClosePath { unSVGPathSegClosePath :: JSVal }
 
 instance Eq (SVGPathSegClosePath) where
   (SVGPathSegClosePath a) == (SVGPathSegClosePath b) = js_eq a b
@@ -19663,12 +19663,12 @@ instance PFromJSVal SVGPathSegClosePath where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegClosePath where
-  toJSRef = return . unSVGPathSegClosePath
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegClosePath
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegClosePath where
-  fromJSRef = return . fmap SVGPathSegClosePath . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegClosePath . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegClosePath
 instance IsGObject SVGPathSegClosePath where
@@ -19691,7 +19691,7 @@ foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicAbs Mozilla SVGPathSegCurvetoCubicAbs documentation>
-newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs { unSVGPathSegCurvetoCubicAbs :: JSRef }
+newtype SVGPathSegCurvetoCubicAbs = SVGPathSegCurvetoCubicAbs { unSVGPathSegCurvetoCubicAbs :: JSVal }
 
 instance Eq (SVGPathSegCurvetoCubicAbs) where
   (SVGPathSegCurvetoCubicAbs a) == (SVGPathSegCurvetoCubicAbs b) = js_eq a b
@@ -19705,12 +19705,12 @@ instance PFromJSVal SVGPathSegCurvetoCubicAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoCubicAbs where
-  toJSRef = return . unSVGPathSegCurvetoCubicAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoCubicAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoCubicAbs where
-  fromJSRef = return . fmap SVGPathSegCurvetoCubicAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoCubicAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicAbs
 instance IsGObject SVGPathSegCurvetoCubicAbs where
@@ -19733,7 +19733,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSV
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicRel Mozilla SVGPathSegCurvetoCubicRel documentation>
-newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel { unSVGPathSegCurvetoCubicRel :: JSRef }
+newtype SVGPathSegCurvetoCubicRel = SVGPathSegCurvetoCubicRel { unSVGPathSegCurvetoCubicRel :: JSVal }
 
 instance Eq (SVGPathSegCurvetoCubicRel) where
   (SVGPathSegCurvetoCubicRel a) == (SVGPathSegCurvetoCubicRel b) = js_eq a b
@@ -19747,12 +19747,12 @@ instance PFromJSVal SVGPathSegCurvetoCubicRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoCubicRel where
-  toJSRef = return . unSVGPathSegCurvetoCubicRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoCubicRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoCubicRel where
-  fromJSRef = return . fmap SVGPathSegCurvetoCubicRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoCubicRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicRel
 instance IsGObject SVGPathSegCurvetoCubicRel where
@@ -19775,7 +19775,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSV
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothAbs Mozilla SVGPathSegCurvetoCubicSmoothAbs documentation>
-newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs { unSVGPathSegCurvetoCubicSmoothAbs :: JSRef }
+newtype SVGPathSegCurvetoCubicSmoothAbs = SVGPathSegCurvetoCubicSmoothAbs { unSVGPathSegCurvetoCubicSmoothAbs :: JSVal }
 
 instance Eq (SVGPathSegCurvetoCubicSmoothAbs) where
   (SVGPathSegCurvetoCubicSmoothAbs a) == (SVGPathSegCurvetoCubicSmoothAbs b) = js_eq a b
@@ -19789,12 +19789,12 @@ instance PFromJSVal SVGPathSegCurvetoCubicSmoothAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoCubicSmoothAbs where
-  toJSRef = return . unSVGPathSegCurvetoCubicSmoothAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoCubicSmoothAbs where
-  fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoCubicSmoothAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothAbs
 instance IsGObject SVGPathSegCurvetoCubicSmoothAbs where
@@ -19817,7 +19817,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" g
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoCubicSmoothRel Mozilla SVGPathSegCurvetoCubicSmoothRel documentation>
-newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel { unSVGPathSegCurvetoCubicSmoothRel :: JSRef }
+newtype SVGPathSegCurvetoCubicSmoothRel = SVGPathSegCurvetoCubicSmoothRel { unSVGPathSegCurvetoCubicSmoothRel :: JSVal }
 
 instance Eq (SVGPathSegCurvetoCubicSmoothRel) where
   (SVGPathSegCurvetoCubicSmoothRel a) == (SVGPathSegCurvetoCubicSmoothRel b) = js_eq a b
@@ -19831,12 +19831,12 @@ instance PFromJSVal SVGPathSegCurvetoCubicSmoothRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoCubicSmoothRel where
-  toJSRef = return . unSVGPathSegCurvetoCubicSmoothRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoCubicSmoothRel where
-  fromJSRef = return . fmap SVGPathSegCurvetoCubicSmoothRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoCubicSmoothRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothRel
 instance IsGObject SVGPathSegCurvetoCubicSmoothRel where
@@ -19859,7 +19859,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" g
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs Mozilla SVGPathSegCurvetoQuadraticAbs documentation>
-newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs { unSVGPathSegCurvetoQuadraticAbs :: JSRef }
+newtype SVGPathSegCurvetoQuadraticAbs = SVGPathSegCurvetoQuadraticAbs { unSVGPathSegCurvetoQuadraticAbs :: JSVal }
 
 instance Eq (SVGPathSegCurvetoQuadraticAbs) where
   (SVGPathSegCurvetoQuadraticAbs a) == (SVGPathSegCurvetoQuadraticAbs b) = js_eq a b
@@ -19873,12 +19873,12 @@ instance PFromJSVal SVGPathSegCurvetoQuadraticAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoQuadraticAbs where
-  toJSRef = return . unSVGPathSegCurvetoQuadraticAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoQuadraticAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoQuadraticAbs where
-  fromJSRef = return . fmap SVGPathSegCurvetoQuadraticAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoQuadraticAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticAbs
 instance IsGObject SVGPathSegCurvetoQuadraticAbs where
@@ -19901,7 +19901,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTy
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticRel Mozilla SVGPathSegCurvetoQuadraticRel documentation>
-newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel { unSVGPathSegCurvetoQuadraticRel :: JSRef }
+newtype SVGPathSegCurvetoQuadraticRel = SVGPathSegCurvetoQuadraticRel { unSVGPathSegCurvetoQuadraticRel :: JSVal }
 
 instance Eq (SVGPathSegCurvetoQuadraticRel) where
   (SVGPathSegCurvetoQuadraticRel a) == (SVGPathSegCurvetoQuadraticRel b) = js_eq a b
@@ -19915,12 +19915,12 @@ instance PFromJSVal SVGPathSegCurvetoQuadraticRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoQuadraticRel where
-  toJSRef = return . unSVGPathSegCurvetoQuadraticRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoQuadraticRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoQuadraticRel where
-  fromJSRef = return . fmap SVGPathSegCurvetoQuadraticRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoQuadraticRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticRel
 instance IsGObject SVGPathSegCurvetoQuadraticRel where
@@ -19943,7 +19943,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTy
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothAbs Mozilla SVGPathSegCurvetoQuadraticSmoothAbs documentation>
-newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs { unSVGPathSegCurvetoQuadraticSmoothAbs :: JSRef }
+newtype SVGPathSegCurvetoQuadraticSmoothAbs = SVGPathSegCurvetoQuadraticSmoothAbs { unSVGPathSegCurvetoQuadraticSmoothAbs :: JSVal }
 
 instance Eq (SVGPathSegCurvetoQuadraticSmoothAbs) where
   (SVGPathSegCurvetoQuadraticSmoothAbs a) == (SVGPathSegCurvetoQuadraticSmoothAbs b) = js_eq a b
@@ -19957,12 +19957,12 @@ instance PFromJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
-  toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
-  fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoQuadraticSmoothAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothAbs
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothAbs where
@@ -19985,7 +19985,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticSmoothRel Mozilla SVGPathSegCurvetoQuadraticSmoothRel documentation>
-newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel { unSVGPathSegCurvetoQuadraticSmoothRel :: JSRef }
+newtype SVGPathSegCurvetoQuadraticSmoothRel = SVGPathSegCurvetoQuadraticSmoothRel { unSVGPathSegCurvetoQuadraticSmoothRel :: JSVal }
 
 instance Eq (SVGPathSegCurvetoQuadraticSmoothRel) where
   (SVGPathSegCurvetoQuadraticSmoothRel a) == (SVGPathSegCurvetoQuadraticSmoothRel b) = js_eq a b
@@ -19999,12 +19999,12 @@ instance PFromJSVal SVGPathSegCurvetoQuadraticSmoothRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegCurvetoQuadraticSmoothRel where
-  toJSRef = return . unSVGPathSegCurvetoQuadraticSmoothRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegCurvetoQuadraticSmoothRel where
-  fromJSRef = return . fmap SVGPathSegCurvetoQuadraticSmoothRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegCurvetoQuadraticSmoothRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothRel
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothRel where
@@ -20027,7 +20027,7 @@ foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoAbs Mozilla SVGPathSegLinetoAbs documentation>
-newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs { unSVGPathSegLinetoAbs :: JSRef }
+newtype SVGPathSegLinetoAbs = SVGPathSegLinetoAbs { unSVGPathSegLinetoAbs :: JSVal }
 
 instance Eq (SVGPathSegLinetoAbs) where
   (SVGPathSegLinetoAbs a) == (SVGPathSegLinetoAbs b) = js_eq a b
@@ -20041,12 +20041,12 @@ instance PFromJSVal SVGPathSegLinetoAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoAbs where
-  toJSRef = return . unSVGPathSegLinetoAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoAbs where
-  fromJSRef = return . fmap SVGPathSegLinetoAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoAbs
 instance IsGObject SVGPathSegLinetoAbs where
@@ -20069,7 +20069,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalAbs Mozilla SVGPathSegLinetoHorizontalAbs documentation>
-newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs { unSVGPathSegLinetoHorizontalAbs :: JSRef }
+newtype SVGPathSegLinetoHorizontalAbs = SVGPathSegLinetoHorizontalAbs { unSVGPathSegLinetoHorizontalAbs :: JSVal }
 
 instance Eq (SVGPathSegLinetoHorizontalAbs) where
   (SVGPathSegLinetoHorizontalAbs a) == (SVGPathSegLinetoHorizontalAbs b) = js_eq a b
@@ -20083,12 +20083,12 @@ instance PFromJSVal SVGPathSegLinetoHorizontalAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoHorizontalAbs where
-  toJSRef = return . unSVGPathSegLinetoHorizontalAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoHorizontalAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoHorizontalAbs where
-  fromJSRef = return . fmap SVGPathSegLinetoHorizontalAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoHorizontalAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalAbs
 instance IsGObject SVGPathSegLinetoHorizontalAbs where
@@ -20111,7 +20111,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTy
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoHorizontalRel Mozilla SVGPathSegLinetoHorizontalRel documentation>
-newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel { unSVGPathSegLinetoHorizontalRel :: JSRef }
+newtype SVGPathSegLinetoHorizontalRel = SVGPathSegLinetoHorizontalRel { unSVGPathSegLinetoHorizontalRel :: JSVal }
 
 instance Eq (SVGPathSegLinetoHorizontalRel) where
   (SVGPathSegLinetoHorizontalRel a) == (SVGPathSegLinetoHorizontalRel b) = js_eq a b
@@ -20125,12 +20125,12 @@ instance PFromJSVal SVGPathSegLinetoHorizontalRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoHorizontalRel where
-  toJSRef = return . unSVGPathSegLinetoHorizontalRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoHorizontalRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoHorizontalRel where
-  fromJSRef = return . fmap SVGPathSegLinetoHorizontalRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoHorizontalRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalRel
 instance IsGObject SVGPathSegLinetoHorizontalRel where
@@ -20153,7 +20153,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTy
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoRel Mozilla SVGPathSegLinetoRel documentation>
-newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel { unSVGPathSegLinetoRel :: JSRef }
+newtype SVGPathSegLinetoRel = SVGPathSegLinetoRel { unSVGPathSegLinetoRel :: JSVal }
 
 instance Eq (SVGPathSegLinetoRel) where
   (SVGPathSegLinetoRel a) == (SVGPathSegLinetoRel b) = js_eq a b
@@ -20167,12 +20167,12 @@ instance PFromJSVal SVGPathSegLinetoRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoRel where
-  toJSRef = return . unSVGPathSegLinetoRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoRel where
-  fromJSRef = return . fmap SVGPathSegLinetoRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoRel
 instance IsGObject SVGPathSegLinetoRel where
@@ -20195,7 +20195,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalAbs Mozilla SVGPathSegLinetoVerticalAbs documentation>
-newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs { unSVGPathSegLinetoVerticalAbs :: JSRef }
+newtype SVGPathSegLinetoVerticalAbs = SVGPathSegLinetoVerticalAbs { unSVGPathSegLinetoVerticalAbs :: JSVal }
 
 instance Eq (SVGPathSegLinetoVerticalAbs) where
   (SVGPathSegLinetoVerticalAbs a) == (SVGPathSegLinetoVerticalAbs b) = js_eq a b
@@ -20209,12 +20209,12 @@ instance PFromJSVal SVGPathSegLinetoVerticalAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoVerticalAbs where
-  toJSRef = return . unSVGPathSegLinetoVerticalAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoVerticalAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoVerticalAbs where
-  fromJSRef = return . fmap SVGPathSegLinetoVerticalAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoVerticalAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoVerticalAbs
 instance IsGObject SVGPathSegLinetoVerticalAbs where
@@ -20237,7 +20237,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gType
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegLinetoVerticalRel Mozilla SVGPathSegLinetoVerticalRel documentation>
-newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel { unSVGPathSegLinetoVerticalRel :: JSRef }
+newtype SVGPathSegLinetoVerticalRel = SVGPathSegLinetoVerticalRel { unSVGPathSegLinetoVerticalRel :: JSVal }
 
 instance Eq (SVGPathSegLinetoVerticalRel) where
   (SVGPathSegLinetoVerticalRel a) == (SVGPathSegLinetoVerticalRel b) = js_eq a b
@@ -20251,12 +20251,12 @@ instance PFromJSVal SVGPathSegLinetoVerticalRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegLinetoVerticalRel where
-  toJSRef = return . unSVGPathSegLinetoVerticalRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegLinetoVerticalRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegLinetoVerticalRel where
-  fromJSRef = return . fmap SVGPathSegLinetoVerticalRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegLinetoVerticalRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegLinetoVerticalRel
 instance IsGObject SVGPathSegLinetoVerticalRel where
@@ -20276,7 +20276,7 @@ foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gType
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList Mozilla SVGPathSegList documentation>
-newtype SVGPathSegList = SVGPathSegList { unSVGPathSegList :: JSRef }
+newtype SVGPathSegList = SVGPathSegList { unSVGPathSegList :: JSVal }
 
 instance Eq (SVGPathSegList) where
   (SVGPathSegList a) == (SVGPathSegList b) = js_eq a b
@@ -20290,12 +20290,12 @@ instance PFromJSVal SVGPathSegList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegList where
-  toJSRef = return . unSVGPathSegList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegList where
-  fromJSRef = return . fmap SVGPathSegList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPathSegList where
   toGObject = GObject . unSVGPathSegList
@@ -20317,7 +20317,7 @@ foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegLis
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoAbs Mozilla SVGPathSegMovetoAbs documentation>
-newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs { unSVGPathSegMovetoAbs :: JSRef }
+newtype SVGPathSegMovetoAbs = SVGPathSegMovetoAbs { unSVGPathSegMovetoAbs :: JSVal }
 
 instance Eq (SVGPathSegMovetoAbs) where
   (SVGPathSegMovetoAbs a) == (SVGPathSegMovetoAbs b) = js_eq a b
@@ -20331,12 +20331,12 @@ instance PFromJSVal SVGPathSegMovetoAbs where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegMovetoAbs where
-  toJSRef = return . unSVGPathSegMovetoAbs
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegMovetoAbs
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegMovetoAbs where
-  fromJSRef = return . fmap SVGPathSegMovetoAbs . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegMovetoAbs . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegMovetoAbs
 instance IsGObject SVGPathSegMovetoAbs where
@@ -20359,7 +20359,7 @@ foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.SVGPathSeg"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel Mozilla SVGPathSegMovetoRel documentation>
-newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel { unSVGPathSegMovetoRel :: JSRef }
+newtype SVGPathSegMovetoRel = SVGPathSegMovetoRel { unSVGPathSegMovetoRel :: JSVal }
 
 instance Eq (SVGPathSegMovetoRel) where
   (SVGPathSegMovetoRel a) == (SVGPathSegMovetoRel b) = js_eq a b
@@ -20373,12 +20373,12 @@ instance PFromJSVal SVGPathSegMovetoRel where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPathSegMovetoRel where
-  toJSRef = return . unSVGPathSegMovetoRel
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPathSegMovetoRel
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPathSegMovetoRel where
-  fromJSRef = return . fmap SVGPathSegMovetoRel . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPathSegMovetoRel . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGPathSeg SVGPathSegMovetoRel
 instance IsGObject SVGPathSegMovetoRel where
@@ -20404,7 +20404,7 @@ foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPatternElement Mozilla SVGPatternElement documentation>
-newtype SVGPatternElement = SVGPatternElement { unSVGPatternElement :: JSRef }
+newtype SVGPatternElement = SVGPatternElement { unSVGPatternElement :: JSVal }
 
 instance Eq (SVGPatternElement) where
   (SVGPatternElement a) == (SVGPatternElement b) = js_eq a b
@@ -20418,12 +20418,12 @@ instance PFromJSVal SVGPatternElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPatternElement where
-  toJSRef = return . unSVGPatternElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPatternElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPatternElement where
-  fromJSRef = return . fmap SVGPatternElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPatternElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGPatternElement
 instance IsElement SVGPatternElement
@@ -20446,7 +20446,7 @@ foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPattern
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint Mozilla SVGPoint documentation>
-newtype SVGPoint = SVGPoint { unSVGPoint :: JSRef }
+newtype SVGPoint = SVGPoint { unSVGPoint :: JSVal }
 
 instance Eq (SVGPoint) where
   (SVGPoint a) == (SVGPoint b) = js_eq a b
@@ -20460,12 +20460,12 @@ instance PFromJSVal SVGPoint where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPoint where
-  toJSRef = return . unSVGPoint
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPoint
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPoint where
-  fromJSRef = return . fmap SVGPoint . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPoint . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPoint where
   toGObject = GObject . unSVGPoint
@@ -20484,7 +20484,7 @@ foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList Mozilla SVGPointList documentation>
-newtype SVGPointList = SVGPointList { unSVGPointList :: JSRef }
+newtype SVGPointList = SVGPointList { unSVGPointList :: JSVal }
 
 instance Eq (SVGPointList) where
   (SVGPointList a) == (SVGPointList b) = js_eq a b
@@ -20498,12 +20498,12 @@ instance PFromJSVal SVGPointList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPointList where
-  toJSRef = return . unSVGPointList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPointList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPointList where
-  fromJSRef = return . fmap SVGPointList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPointList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPointList where
   toGObject = GObject . unSVGPointList
@@ -20529,7 +20529,7 @@ foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolygonElement Mozilla SVGPolygonElement documentation>
-newtype SVGPolygonElement = SVGPolygonElement { unSVGPolygonElement :: JSRef }
+newtype SVGPolygonElement = SVGPolygonElement { unSVGPolygonElement :: JSVal }
 
 instance Eq (SVGPolygonElement) where
   (SVGPolygonElement a) == (SVGPolygonElement b) = js_eq a b
@@ -20543,12 +20543,12 @@ instance PFromJSVal SVGPolygonElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPolygonElement where
-  toJSRef = return . unSVGPolygonElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPolygonElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPolygonElement where
-  fromJSRef = return . fmap SVGPolygonElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPolygonElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGPolygonElement
 instance IsSVGElement SVGPolygonElement
@@ -20579,7 +20579,7 @@ foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygon
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement Mozilla SVGPolylineElement documentation>
-newtype SVGPolylineElement = SVGPolylineElement { unSVGPolylineElement :: JSRef }
+newtype SVGPolylineElement = SVGPolylineElement { unSVGPolylineElement :: JSVal }
 
 instance Eq (SVGPolylineElement) where
   (SVGPolylineElement a) == (SVGPolylineElement b) = js_eq a b
@@ -20593,12 +20593,12 @@ instance PFromJSVal SVGPolylineElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPolylineElement where
-  toJSRef = return . unSVGPolylineElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPolylineElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPolylineElement where
-  fromJSRef = return . fmap SVGPolylineElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPolylineElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGPolylineElement
 instance IsSVGElement SVGPolylineElement
@@ -20622,7 +20622,7 @@ foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolyli
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio Mozilla SVGPreserveAspectRatio documentation>
-newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio { unSVGPreserveAspectRatio :: JSRef }
+newtype SVGPreserveAspectRatio = SVGPreserveAspectRatio { unSVGPreserveAspectRatio :: JSVal }
 
 instance Eq (SVGPreserveAspectRatio) where
   (SVGPreserveAspectRatio a) == (SVGPreserveAspectRatio b) = js_eq a b
@@ -20636,12 +20636,12 @@ instance PFromJSVal SVGPreserveAspectRatio where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGPreserveAspectRatio where
-  toJSRef = return . unSVGPreserveAspectRatio
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGPreserveAspectRatio
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGPreserveAspectRatio where
-  fromJSRef = return . fmap SVGPreserveAspectRatio . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGPreserveAspectRatio . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPreserveAspectRatio where
   toGObject = GObject . unSVGPreserveAspectRatio
@@ -20667,7 +20667,7 @@ foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPr
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRadialGradientElement Mozilla SVGRadialGradientElement documentation>
-newtype SVGRadialGradientElement = SVGRadialGradientElement { unSVGRadialGradientElement :: JSRef }
+newtype SVGRadialGradientElement = SVGRadialGradientElement { unSVGRadialGradientElement :: JSVal }
 
 instance Eq (SVGRadialGradientElement) where
   (SVGRadialGradientElement a) == (SVGRadialGradientElement b) = js_eq a b
@@ -20681,12 +20681,12 @@ instance PFromJSVal SVGRadialGradientElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGRadialGradientElement where
-  toJSRef = return . unSVGRadialGradientElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGRadialGradientElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGRadialGradientElement where
-  fromJSRef = return . fmap SVGRadialGradientElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGRadialGradientElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGradientElement SVGRadialGradientElement
 instance IsSVGElement SVGRadialGradientElement
@@ -20710,7 +20710,7 @@ foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVG
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect Mozilla SVGRect documentation>
-newtype SVGRect = SVGRect { unSVGRect :: JSRef }
+newtype SVGRect = SVGRect { unSVGRect :: JSVal }
 
 instance Eq (SVGRect) where
   (SVGRect a) == (SVGRect b) = js_eq a b
@@ -20724,12 +20724,12 @@ instance PFromJSVal SVGRect where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGRect where
-  toJSRef = return . unSVGRect
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGRect
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGRect where
-  fromJSRef = return . fmap SVGRect . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGRect . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGRect where
   toGObject = GObject . unSVGRect
@@ -20755,7 +20755,7 @@ foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement Mozilla SVGRectElement documentation>
-newtype SVGRectElement = SVGRectElement { unSVGRectElement :: JSRef }
+newtype SVGRectElement = SVGRectElement { unSVGRectElement :: JSVal }
 
 instance Eq (SVGRectElement) where
   (SVGRectElement a) == (SVGRectElement b) = js_eq a b
@@ -20769,12 +20769,12 @@ instance PFromJSVal SVGRectElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGRectElement where
-  toJSRef = return . unSVGRectElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGRectElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGRectElement where
-  fromJSRef = return . fmap SVGRectElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGRectElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGRectElement
 instance IsSVGElement SVGRectElement
@@ -20798,7 +20798,7 @@ foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElemen
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRenderingIntent Mozilla SVGRenderingIntent documentation>
-newtype SVGRenderingIntent = SVGRenderingIntent { unSVGRenderingIntent :: JSRef }
+newtype SVGRenderingIntent = SVGRenderingIntent { unSVGRenderingIntent :: JSVal }
 
 instance Eq (SVGRenderingIntent) where
   (SVGRenderingIntent a) == (SVGRenderingIntent b) = js_eq a b
@@ -20812,12 +20812,12 @@ instance PFromJSVal SVGRenderingIntent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGRenderingIntent where
-  toJSRef = return . unSVGRenderingIntent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGRenderingIntent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGRenderingIntent where
-  fromJSRef = return . fmap SVGRenderingIntent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGRenderingIntent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGRenderingIntent where
   toGObject = GObject . unSVGRenderingIntent
@@ -20843,7 +20843,7 @@ foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRender
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement Mozilla SVGSVGElement documentation>
-newtype SVGSVGElement = SVGSVGElement { unSVGSVGElement :: JSRef }
+newtype SVGSVGElement = SVGSVGElement { unSVGSVGElement :: JSVal }
 
 instance Eq (SVGSVGElement) where
   (SVGSVGElement a) == (SVGSVGElement b) = js_eq a b
@@ -20857,12 +20857,12 @@ instance PFromJSVal SVGSVGElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGSVGElement where
-  toJSRef = return . unSVGSVGElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGSVGElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGSVGElement where
-  fromJSRef = return . fmap SVGSVGElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGSVGElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGSVGElement
 instance IsSVGElement SVGSVGElement
@@ -20892,7 +20892,7 @@ foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGScriptElement Mozilla SVGScriptElement documentation>
-newtype SVGScriptElement = SVGScriptElement { unSVGScriptElement :: JSRef }
+newtype SVGScriptElement = SVGScriptElement { unSVGScriptElement :: JSVal }
 
 instance Eq (SVGScriptElement) where
   (SVGScriptElement a) == (SVGScriptElement b) = js_eq a b
@@ -20906,12 +20906,12 @@ instance PFromJSVal SVGScriptElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGScriptElement where
-  toJSRef = return . unSVGScriptElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGScriptElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGScriptElement where
-  fromJSRef = return . fmap SVGScriptElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGScriptElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGScriptElement
 instance IsElement SVGScriptElement
@@ -20941,7 +20941,7 @@ foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSetElement Mozilla SVGSetElement documentation>
-newtype SVGSetElement = SVGSetElement { unSVGSetElement :: JSRef }
+newtype SVGSetElement = SVGSetElement { unSVGSetElement :: JSVal }
 
 instance Eq (SVGSetElement) where
   (SVGSetElement a) == (SVGSetElement b) = js_eq a b
@@ -20955,12 +20955,12 @@ instance PFromJSVal SVGSetElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGSetElement where
-  toJSRef = return . unSVGSetElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGSetElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGSetElement where
-  fromJSRef = return . fmap SVGSetElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGSetElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGAnimationElement SVGSetElement
 instance IsSVGElement SVGSetElement
@@ -20990,7 +20990,7 @@ foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement Mozilla SVGStopElement documentation>
-newtype SVGStopElement = SVGStopElement { unSVGStopElement :: JSRef }
+newtype SVGStopElement = SVGStopElement { unSVGStopElement :: JSVal }
 
 instance Eq (SVGStopElement) where
   (SVGStopElement a) == (SVGStopElement b) = js_eq a b
@@ -21004,12 +21004,12 @@ instance PFromJSVal SVGStopElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGStopElement where
-  toJSRef = return . unSVGStopElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGStopElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGStopElement where
-  fromJSRef = return . fmap SVGStopElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGStopElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGStopElement
 instance IsElement SVGStopElement
@@ -21032,7 +21032,7 @@ foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElemen
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList Mozilla SVGStringList documentation>
-newtype SVGStringList = SVGStringList { unSVGStringList :: JSRef }
+newtype SVGStringList = SVGStringList { unSVGStringList :: JSVal }
 
 instance Eq (SVGStringList) where
   (SVGStringList a) == (SVGStringList b) = js_eq a b
@@ -21046,12 +21046,12 @@ instance PFromJSVal SVGStringList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGStringList where
-  toJSRef = return . unSVGStringList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGStringList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGStringList where
-  fromJSRef = return . fmap SVGStringList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGStringList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGStringList where
   toGObject = GObject . unSVGStringList
@@ -21076,7 +21076,7 @@ foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement Mozilla SVGStyleElement documentation>
-newtype SVGStyleElement = SVGStyleElement { unSVGStyleElement :: JSRef }
+newtype SVGStyleElement = SVGStyleElement { unSVGStyleElement :: JSVal }
 
 instance Eq (SVGStyleElement) where
   (SVGStyleElement a) == (SVGStyleElement b) = js_eq a b
@@ -21090,12 +21090,12 @@ instance PFromJSVal SVGStyleElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGStyleElement where
-  toJSRef = return . unSVGStyleElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGStyleElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGStyleElement where
-  fromJSRef = return . fmap SVGStyleElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGStyleElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGStyleElement
 instance IsElement SVGStyleElement
@@ -21125,7 +21125,7 @@ foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSwitchElement Mozilla SVGSwitchElement documentation>
-newtype SVGSwitchElement = SVGSwitchElement { unSVGSwitchElement :: JSRef }
+newtype SVGSwitchElement = SVGSwitchElement { unSVGSwitchElement :: JSVal }
 
 instance Eq (SVGSwitchElement) where
   (SVGSwitchElement a) == (SVGSwitchElement b) = js_eq a b
@@ -21139,12 +21139,12 @@ instance PFromJSVal SVGSwitchElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGSwitchElement where
-  toJSRef = return . unSVGSwitchElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGSwitchElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGSwitchElement where
-  fromJSRef = return . fmap SVGSwitchElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGSwitchElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGSwitchElement
 instance IsSVGElement SVGSwitchElement
@@ -21174,7 +21174,7 @@ foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGSymbolElement Mozilla SVGSymbolElement documentation>
-newtype SVGSymbolElement = SVGSymbolElement { unSVGSymbolElement :: JSRef }
+newtype SVGSymbolElement = SVGSymbolElement { unSVGSymbolElement :: JSVal }
 
 instance Eq (SVGSymbolElement) where
   (SVGSymbolElement a) == (SVGSymbolElement b) = js_eq a b
@@ -21188,12 +21188,12 @@ instance PFromJSVal SVGSymbolElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGSymbolElement where
-  toJSRef = return . unSVGSymbolElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGSymbolElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGSymbolElement where
-  fromJSRef = return . fmap SVGSymbolElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGSymbolElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGSymbolElement
 instance IsElement SVGSymbolElement
@@ -21225,7 +21225,7 @@ foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolEl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTRefElement Mozilla SVGTRefElement documentation>
-newtype SVGTRefElement = SVGTRefElement { unSVGTRefElement :: JSRef }
+newtype SVGTRefElement = SVGTRefElement { unSVGTRefElement :: JSVal }
 
 instance Eq (SVGTRefElement) where
   (SVGTRefElement a) == (SVGTRefElement b) = js_eq a b
@@ -21239,12 +21239,12 @@ instance PFromJSVal SVGTRefElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTRefElement where
-  toJSRef = return . unSVGTRefElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTRefElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTRefElement where
-  fromJSRef = return . fmap SVGTRefElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTRefElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGTextPositioningElement SVGTRefElement
 instance IsSVGTextContentElement SVGTRefElement
@@ -21279,7 +21279,7 @@ foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTSpanElement Mozilla SVGTSpanElement documentation>
-newtype SVGTSpanElement = SVGTSpanElement { unSVGTSpanElement :: JSRef }
+newtype SVGTSpanElement = SVGTSpanElement { unSVGTSpanElement :: JSVal }
 
 instance Eq (SVGTSpanElement) where
   (SVGTSpanElement a) == (SVGTSpanElement b) = js_eq a b
@@ -21293,12 +21293,12 @@ instance PFromJSVal SVGTSpanElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTSpanElement where
-  toJSRef = return . unSVGTSpanElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTSpanElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTSpanElement where
-  fromJSRef = return . fmap SVGTSpanElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTSpanElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGTextPositioningElement SVGTSpanElement
 instance IsSVGTextContentElement SVGTSpanElement
@@ -21324,7 +21324,7 @@ foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElem
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests Mozilla SVGTests documentation>
-newtype SVGTests = SVGTests { unSVGTests :: JSRef }
+newtype SVGTests = SVGTests { unSVGTests :: JSVal }
 
 instance Eq (SVGTests) where
   (SVGTests a) == (SVGTests b) = js_eq a b
@@ -21338,12 +21338,12 @@ instance PFromJSVal SVGTests where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTests where
-  toJSRef = return . unSVGTests
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTests
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTests where
-  fromJSRef = return . fmap SVGTests . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTests . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTests where
   toGObject = GObject . unSVGTests
@@ -21369,7 +21369,7 @@ foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement Mozilla SVGTextContentElement documentation>
-newtype SVGTextContentElement = SVGTextContentElement { unSVGTextContentElement :: JSRef }
+newtype SVGTextContentElement = SVGTextContentElement { unSVGTextContentElement :: JSVal }
 
 instance Eq (SVGTextContentElement) where
   (SVGTextContentElement a) == (SVGTextContentElement b) = js_eq a b
@@ -21383,12 +21383,12 @@ instance PFromJSVal SVGTextContentElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTextContentElement where
-  toJSRef = return . unSVGTextContentElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTextContentElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTextContentElement where
-  fromJSRef = return . fmap SVGTextContentElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTextContentElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGGraphicsElement o => IsSVGTextContentElement o
 toSVGTextContentElement :: IsSVGTextContentElement o => o -> SVGTextContentElement
@@ -21426,7 +21426,7 @@ foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTex
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextElement Mozilla SVGTextElement documentation>
-newtype SVGTextElement = SVGTextElement { unSVGTextElement :: JSRef }
+newtype SVGTextElement = SVGTextElement { unSVGTextElement :: JSVal }
 
 instance Eq (SVGTextElement) where
   (SVGTextElement a) == (SVGTextElement b) = js_eq a b
@@ -21440,12 +21440,12 @@ instance PFromJSVal SVGTextElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTextElement where
-  toJSRef = return . unSVGTextElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTextElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTextElement where
-  fromJSRef = return . fmap SVGTextElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTextElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGTextPositioningElement SVGTextElement
 instance IsSVGTextContentElement SVGTextElement
@@ -21479,7 +21479,7 @@ foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElemen
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement Mozilla SVGTextPathElement documentation>
-newtype SVGTextPathElement = SVGTextPathElement { unSVGTextPathElement :: JSRef }
+newtype SVGTextPathElement = SVGTextPathElement { unSVGTextPathElement :: JSVal }
 
 instance Eq (SVGTextPathElement) where
   (SVGTextPathElement a) == (SVGTextPathElement b) = js_eq a b
@@ -21493,12 +21493,12 @@ instance PFromJSVal SVGTextPathElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTextPathElement where
-  toJSRef = return . unSVGTextPathElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTextPathElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTextPathElement where
-  fromJSRef = return . fmap SVGTextPathElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTextPathElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGTextContentElement SVGTextPathElement
 instance IsSVGGraphicsElement SVGTextPathElement
@@ -21531,7 +21531,7 @@ foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPa
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement Mozilla SVGTextPositioningElement documentation>
-newtype SVGTextPositioningElement = SVGTextPositioningElement { unSVGTextPositioningElement :: JSRef }
+newtype SVGTextPositioningElement = SVGTextPositioningElement { unSVGTextPositioningElement :: JSVal }
 
 instance Eq (SVGTextPositioningElement) where
   (SVGTextPositioningElement a) == (SVGTextPositioningElement b) = js_eq a b
@@ -21545,12 +21545,12 @@ instance PFromJSVal SVGTextPositioningElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTextPositioningElement where
-  toJSRef = return . unSVGTextPositioningElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTextPositioningElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTextPositioningElement where
-  fromJSRef = return . fmap SVGTextPositioningElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTextPositioningElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsSVGTextContentElement o => IsSVGTextPositioningElement o
 toSVGTextPositioningElement :: IsSVGTextPositioningElement o => o -> SVGTextPositioningElement
@@ -21586,7 +21586,7 @@ foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSV
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTitleElement Mozilla SVGTitleElement documentation>
-newtype SVGTitleElement = SVGTitleElement { unSVGTitleElement :: JSRef }
+newtype SVGTitleElement = SVGTitleElement { unSVGTitleElement :: JSVal }
 
 instance Eq (SVGTitleElement) where
   (SVGTitleElement a) == (SVGTitleElement b) = js_eq a b
@@ -21600,12 +21600,12 @@ instance PFromJSVal SVGTitleElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTitleElement where
-  toJSRef = return . unSVGTitleElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTitleElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTitleElement where
-  fromJSRef = return . fmap SVGTitleElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTitleElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGTitleElement
 instance IsElement SVGTitleElement
@@ -21628,7 +21628,7 @@ foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElem
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform Mozilla SVGTransform documentation>
-newtype SVGTransform = SVGTransform { unSVGTransform :: JSRef }
+newtype SVGTransform = SVGTransform { unSVGTransform :: JSVal }
 
 instance Eq (SVGTransform) where
   (SVGTransform a) == (SVGTransform b) = js_eq a b
@@ -21642,12 +21642,12 @@ instance PFromJSVal SVGTransform where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTransform where
-  toJSRef = return . unSVGTransform
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTransform
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTransform where
-  fromJSRef = return . fmap SVGTransform . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTransform . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTransform where
   toGObject = GObject . unSVGTransform
@@ -21666,7 +21666,7 @@ foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform ::
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList Mozilla SVGTransformList documentation>
-newtype SVGTransformList = SVGTransformList { unSVGTransformList :: JSRef }
+newtype SVGTransformList = SVGTransformList { unSVGTransformList :: JSVal }
 
 instance Eq (SVGTransformList) where
   (SVGTransformList a) == (SVGTransformList b) = js_eq a b
@@ -21680,12 +21680,12 @@ instance PFromJSVal SVGTransformList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGTransformList where
-  toJSRef = return . unSVGTransformList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGTransformList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGTransformList where
-  fromJSRef = return . fmap SVGTransformList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGTransformList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTransformList where
   toGObject = GObject . unSVGTransformList
@@ -21704,7 +21704,7 @@ foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransfor
 -- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGURIReference Mozilla SVGURIReference documentation>
-newtype SVGURIReference = SVGURIReference { unSVGURIReference :: JSRef }
+newtype SVGURIReference = SVGURIReference { unSVGURIReference :: JSVal }
 
 instance Eq (SVGURIReference) where
   (SVGURIReference a) == (SVGURIReference b) = js_eq a b
@@ -21718,12 +21718,12 @@ instance PFromJSVal SVGURIReference where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGURIReference where
-  toJSRef = return . unSVGURIReference
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGURIReference
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGURIReference where
-  fromJSRef = return . fmap SVGURIReference . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGURIReference . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGURIReference where
   toGObject = GObject . unSVGURIReference
@@ -21742,7 +21742,7 @@ foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIRefere
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUnitTypes Mozilla SVGUnitTypes documentation>
-newtype SVGUnitTypes = SVGUnitTypes { unSVGUnitTypes :: JSRef }
+newtype SVGUnitTypes = SVGUnitTypes { unSVGUnitTypes :: JSVal }
 
 instance Eq (SVGUnitTypes) where
   (SVGUnitTypes a) == (SVGUnitTypes b) = js_eq a b
@@ -21756,12 +21756,12 @@ instance PFromJSVal SVGUnitTypes where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGUnitTypes where
-  toJSRef = return . unSVGUnitTypes
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGUnitTypes
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGUnitTypes where
-  fromJSRef = return . fmap SVGUnitTypes . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGUnitTypes . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGUnitTypes where
   toGObject = GObject . unSVGUnitTypes
@@ -21787,7 +21787,7 @@ foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUseElement Mozilla SVGUseElement documentation>
-newtype SVGUseElement = SVGUseElement { unSVGUseElement :: JSRef }
+newtype SVGUseElement = SVGUseElement { unSVGUseElement :: JSVal }
 
 instance Eq (SVGUseElement) where
   (SVGUseElement a) == (SVGUseElement b) = js_eq a b
@@ -21801,12 +21801,12 @@ instance PFromJSVal SVGUseElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGUseElement where
-  toJSRef = return . unSVGUseElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGUseElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGUseElement where
-  fromJSRef = return . fmap SVGUseElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGUseElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGGraphicsElement SVGUseElement
 instance IsSVGElement SVGUseElement
@@ -21836,7 +21836,7 @@ foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement 
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGVKernElement Mozilla SVGVKernElement documentation>
-newtype SVGVKernElement = SVGVKernElement { unSVGVKernElement :: JSRef }
+newtype SVGVKernElement = SVGVKernElement { unSVGVKernElement :: JSVal }
 
 instance Eq (SVGVKernElement) where
   (SVGVKernElement a) == (SVGVKernElement b) = js_eq a b
@@ -21850,12 +21850,12 @@ instance PFromJSVal SVGVKernElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGVKernElement where
-  toJSRef = return . unSVGVKernElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGVKernElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGVKernElement where
-  fromJSRef = return . fmap SVGVKernElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGVKernElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGVKernElement
 instance IsElement SVGVKernElement
@@ -21884,7 +21884,7 @@ foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElem
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewElement Mozilla SVGViewElement documentation>
-newtype SVGViewElement = SVGViewElement { unSVGViewElement :: JSRef }
+newtype SVGViewElement = SVGViewElement { unSVGViewElement :: JSVal }
 
 instance Eq (SVGViewElement) where
   (SVGViewElement a) == (SVGViewElement b) = js_eq a b
@@ -21898,12 +21898,12 @@ instance PFromJSVal SVGViewElement where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGViewElement where
-  toJSRef = return . unSVGViewElement
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGViewElement
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGViewElement where
-  fromJSRef = return . fmap SVGViewElement . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGViewElement . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsSVGElement SVGViewElement
 instance IsElement SVGViewElement
@@ -21926,7 +21926,7 @@ foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElemen
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec Mozilla SVGViewSpec documentation>
-newtype SVGViewSpec = SVGViewSpec { unSVGViewSpec :: JSRef }
+newtype SVGViewSpec = SVGViewSpec { unSVGViewSpec :: JSVal }
 
 instance Eq (SVGViewSpec) where
   (SVGViewSpec a) == (SVGViewSpec b) = js_eq a b
@@ -21940,12 +21940,12 @@ instance PFromJSVal SVGViewSpec where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGViewSpec where
-  toJSRef = return . unSVGViewSpec
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGViewSpec
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGViewSpec where
-  fromJSRef = return . fmap SVGViewSpec . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGViewSpec . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGViewSpec where
   toGObject = GObject . unSVGViewSpec
@@ -21964,7 +21964,7 @@ foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec :: G
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan Mozilla SVGZoomAndPan documentation>
-newtype SVGZoomAndPan = SVGZoomAndPan { unSVGZoomAndPan :: JSRef }
+newtype SVGZoomAndPan = SVGZoomAndPan { unSVGZoomAndPan :: JSVal }
 
 instance Eq (SVGZoomAndPan) where
   (SVGZoomAndPan a) == (SVGZoomAndPan b) = js_eq a b
@@ -21978,12 +21978,12 @@ instance PFromJSVal SVGZoomAndPan where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGZoomAndPan where
-  toJSRef = return . unSVGZoomAndPan
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGZoomAndPan
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGZoomAndPan where
-  fromJSRef = return . fmap SVGZoomAndPan . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGZoomAndPan . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGZoomAndPan where
   toGObject = GObject . unSVGZoomAndPan
@@ -22006,7 +22006,7 @@ foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan 
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent Mozilla SVGZoomEvent documentation>
-newtype SVGZoomEvent = SVGZoomEvent { unSVGZoomEvent :: JSRef }
+newtype SVGZoomEvent = SVGZoomEvent { unSVGZoomEvent :: JSVal }
 
 instance Eq (SVGZoomEvent) where
   (SVGZoomEvent a) == (SVGZoomEvent b) = js_eq a b
@@ -22020,12 +22020,12 @@ instance PFromJSVal SVGZoomEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SVGZoomEvent where
-  toJSRef = return . unSVGZoomEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSVGZoomEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SVGZoomEvent where
-  fromJSRef = return . fmap SVGZoomEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SVGZoomEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent SVGZoomEvent
 instance IsEvent SVGZoomEvent
@@ -22046,7 +22046,7 @@ foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent ::
 -- | Functions for this inteface are in "GHCJS.DOM.Screen".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Screen Mozilla Screen documentation>
-newtype Screen = Screen { unScreen :: JSRef }
+newtype Screen = Screen { unScreen :: JSVal }
 
 instance Eq (Screen) where
   (Screen a) == (Screen b) = js_eq a b
@@ -22060,12 +22060,12 @@ instance PFromJSVal Screen where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Screen where
-  toJSRef = return . unScreen
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unScreen
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Screen where
-  fromJSRef = return . fmap Screen . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Screen . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Screen where
   toGObject = GObject . unScreen
@@ -22090,7 +22090,7 @@ type IsScreen o = ScreenClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode Mozilla ScriptProcessorNode documentation>
-newtype ScriptProcessorNode = ScriptProcessorNode { unScriptProcessorNode :: JSRef }
+newtype ScriptProcessorNode = ScriptProcessorNode { unScriptProcessorNode :: JSVal }
 
 instance Eq (ScriptProcessorNode) where
   (ScriptProcessorNode a) == (ScriptProcessorNode b) = js_eq a b
@@ -22104,12 +22104,12 @@ instance PFromJSVal ScriptProcessorNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ScriptProcessorNode where
-  toJSRef = return . unScriptProcessorNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unScriptProcessorNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ScriptProcessorNode where
-  fromJSRef = return . fmap ScriptProcessorNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ScriptProcessorNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode ScriptProcessorNode
 instance IsEventTarget ScriptProcessorNode
@@ -22130,7 +22130,7 @@ foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptPr
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfile".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile Mozilla ScriptProfile documentation>
-newtype ScriptProfile = ScriptProfile { unScriptProfile :: JSRef }
+newtype ScriptProfile = ScriptProfile { unScriptProfile :: JSVal }
 
 instance Eq (ScriptProfile) where
   (ScriptProfile a) == (ScriptProfile b) = js_eq a b
@@ -22144,12 +22144,12 @@ instance PFromJSVal ScriptProfile where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ScriptProfile where
-  toJSRef = return . unScriptProfile
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unScriptProfile
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ScriptProfile where
-  fromJSRef = return . fmap ScriptProfile . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ScriptProfile . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ScriptProfile where
   toGObject = GObject . unScriptProfile
@@ -22168,7 +22168,7 @@ foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile 
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfileNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode Mozilla ScriptProfileNode documentation>
-newtype ScriptProfileNode = ScriptProfileNode { unScriptProfileNode :: JSRef }
+newtype ScriptProfileNode = ScriptProfileNode { unScriptProfileNode :: JSVal }
 
 instance Eq (ScriptProfileNode) where
   (ScriptProfileNode a) == (ScriptProfileNode b) = js_eq a b
@@ -22182,12 +22182,12 @@ instance PFromJSVal ScriptProfileNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ScriptProfileNode where
-  toJSRef = return . unScriptProfileNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unScriptProfileNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ScriptProfileNode where
-  fromJSRef = return . fmap ScriptProfileNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ScriptProfileNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ScriptProfileNode where
   toGObject = GObject . unScriptProfileNode
@@ -22206,7 +22206,7 @@ foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProf
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicy".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy Mozilla SecurityPolicy documentation>
-newtype SecurityPolicy = SecurityPolicy { unSecurityPolicy :: JSRef }
+newtype SecurityPolicy = SecurityPolicy { unSecurityPolicy :: JSVal }
 
 instance Eq (SecurityPolicy) where
   (SecurityPolicy a) == (SecurityPolicy b) = js_eq a b
@@ -22220,12 +22220,12 @@ instance PFromJSVal SecurityPolicy where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SecurityPolicy where
-  toJSRef = return . unSecurityPolicy
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSecurityPolicy
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SecurityPolicy where
-  fromJSRef = return . fmap SecurityPolicy . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SecurityPolicy . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SecurityPolicy where
   toGObject = GObject . unSecurityPolicy
@@ -22251,7 +22251,7 @@ type IsSecurityPolicy o = SecurityPolicyClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent Mozilla SecurityPolicyViolationEvent documentation>
-newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent { unSecurityPolicyViolationEvent :: JSRef }
+newtype SecurityPolicyViolationEvent = SecurityPolicyViolationEvent { unSecurityPolicyViolationEvent :: JSVal }
 
 instance Eq (SecurityPolicyViolationEvent) where
   (SecurityPolicyViolationEvent a) == (SecurityPolicyViolationEvent b) = js_eq a b
@@ -22265,12 +22265,12 @@ instance PFromJSVal SecurityPolicyViolationEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SecurityPolicyViolationEvent where
-  toJSRef = return . unSecurityPolicyViolationEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSecurityPolicyViolationEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SecurityPolicyViolationEvent where
-  fromJSRef = return . fmap SecurityPolicyViolationEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SecurityPolicyViolationEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent SecurityPolicyViolationEvent
 instance IsGObject SecurityPolicyViolationEvent where
@@ -22290,7 +22290,7 @@ foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTyp
 -- | Functions for this inteface are in "GHCJS.DOM.Selection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Selection Mozilla Selection documentation>
-newtype Selection = Selection { unSelection :: JSRef }
+newtype Selection = Selection { unSelection :: JSVal }
 
 instance Eq (Selection) where
   (Selection a) == (Selection b) = js_eq a b
@@ -22304,12 +22304,12 @@ instance PFromJSVal Selection where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Selection where
-  toJSRef = return . unSelection
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSelection
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Selection where
-  fromJSRef = return . fmap Selection . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Selection . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Selection where
   toGObject = GObject . unSelection
@@ -22333,7 +22333,7 @@ type IsSelection o = SelectionClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer Mozilla SourceBuffer documentation>
-newtype SourceBuffer = SourceBuffer { unSourceBuffer :: JSRef }
+newtype SourceBuffer = SourceBuffer { unSourceBuffer :: JSVal }
 
 instance Eq (SourceBuffer) where
   (SourceBuffer a) == (SourceBuffer b) = js_eq a b
@@ -22347,12 +22347,12 @@ instance PFromJSVal SourceBuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SourceBuffer where
-  toJSRef = return . unSourceBuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSourceBuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SourceBuffer where
-  fromJSRef = return . fmap SourceBuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SourceBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget SourceBuffer
 instance IsGObject SourceBuffer where
@@ -22375,7 +22375,7 @@ foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceBufferList Mozilla SourceBufferList documentation>
-newtype SourceBufferList = SourceBufferList { unSourceBufferList :: JSRef }
+newtype SourceBufferList = SourceBufferList { unSourceBufferList :: JSVal }
 
 instance Eq (SourceBufferList) where
   (SourceBufferList a) == (SourceBufferList b) = js_eq a b
@@ -22389,12 +22389,12 @@ instance PFromJSVal SourceBufferList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SourceBufferList where
-  toJSRef = return . unSourceBufferList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSourceBufferList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SourceBufferList where
-  fromJSRef = return . fmap SourceBufferList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SourceBufferList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget SourceBufferList
 instance IsGObject SourceBufferList where
@@ -22414,7 +22414,7 @@ foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBuffe
 -- | Functions for this inteface are in "GHCJS.DOM.SourceInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo Mozilla SourceInfo documentation>
-newtype SourceInfo = SourceInfo { unSourceInfo :: JSRef }
+newtype SourceInfo = SourceInfo { unSourceInfo :: JSVal }
 
 instance Eq (SourceInfo) where
   (SourceInfo a) == (SourceInfo b) = js_eq a b
@@ -22428,12 +22428,12 @@ instance PFromJSVal SourceInfo where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SourceInfo where
-  toJSRef = return . unSourceInfo
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSourceInfo
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SourceInfo where
-  fromJSRef = return . fmap SourceInfo . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SourceInfo . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SourceInfo where
   toGObject = GObject . unSourceInfo
@@ -22452,7 +22452,7 @@ foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis Mozilla SpeechSynthesis documentation>
-newtype SpeechSynthesis = SpeechSynthesis { unSpeechSynthesis :: JSRef }
+newtype SpeechSynthesis = SpeechSynthesis { unSpeechSynthesis :: JSVal }
 
 instance Eq (SpeechSynthesis) where
   (SpeechSynthesis a) == (SpeechSynthesis b) = js_eq a b
@@ -22466,12 +22466,12 @@ instance PFromJSVal SpeechSynthesis where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SpeechSynthesis where
-  toJSRef = return . unSpeechSynthesis
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSpeechSynthesis
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SpeechSynthesis where
-  fromJSRef = return . fmap SpeechSynthesis . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SpeechSynthesis . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SpeechSynthesis where
   toGObject = GObject . unSpeechSynthesis
@@ -22493,7 +22493,7 @@ foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthe
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent Mozilla SpeechSynthesisEvent documentation>
-newtype SpeechSynthesisEvent = SpeechSynthesisEvent { unSpeechSynthesisEvent :: JSRef }
+newtype SpeechSynthesisEvent = SpeechSynthesisEvent { unSpeechSynthesisEvent :: JSVal }
 
 instance Eq (SpeechSynthesisEvent) where
   (SpeechSynthesisEvent a) == (SpeechSynthesisEvent b) = js_eq a b
@@ -22507,12 +22507,12 @@ instance PFromJSVal SpeechSynthesisEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SpeechSynthesisEvent where
-  toJSRef = return . unSpeechSynthesisEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSpeechSynthesisEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SpeechSynthesisEvent where
-  fromJSRef = return . fmap SpeechSynthesisEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SpeechSynthesisEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent SpeechSynthesisEvent
 instance IsGObject SpeechSynthesisEvent where
@@ -22535,7 +22535,7 @@ foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechS
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance Mozilla SpeechSynthesisUtterance documentation>
-newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance { unSpeechSynthesisUtterance :: JSRef }
+newtype SpeechSynthesisUtterance = SpeechSynthesisUtterance { unSpeechSynthesisUtterance :: JSVal }
 
 instance Eq (SpeechSynthesisUtterance) where
   (SpeechSynthesisUtterance a) == (SpeechSynthesisUtterance b) = js_eq a b
@@ -22549,12 +22549,12 @@ instance PFromJSVal SpeechSynthesisUtterance where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SpeechSynthesisUtterance where
-  toJSRef = return . unSpeechSynthesisUtterance
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSpeechSynthesisUtterance
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SpeechSynthesisUtterance where
-  fromJSRef = return . fmap SpeechSynthesisUtterance . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SpeechSynthesisUtterance . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget SpeechSynthesisUtterance
 instance IsGObject SpeechSynthesisUtterance where
@@ -22574,7 +22574,7 @@ foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpe
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice Mozilla SpeechSynthesisVoice documentation>
-newtype SpeechSynthesisVoice = SpeechSynthesisVoice { unSpeechSynthesisVoice :: JSRef }
+newtype SpeechSynthesisVoice = SpeechSynthesisVoice { unSpeechSynthesisVoice :: JSVal }
 
 instance Eq (SpeechSynthesisVoice) where
   (SpeechSynthesisVoice a) == (SpeechSynthesisVoice b) = js_eq a b
@@ -22588,12 +22588,12 @@ instance PFromJSVal SpeechSynthesisVoice where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SpeechSynthesisVoice where
-  toJSRef = return . unSpeechSynthesisVoice
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSpeechSynthesisVoice
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SpeechSynthesisVoice where
-  fromJSRef = return . fmap SpeechSynthesisVoice . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SpeechSynthesisVoice . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SpeechSynthesisVoice where
   toGObject = GObject . unSpeechSynthesisVoice
@@ -22612,7 +22612,7 @@ foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechS
 -- | Functions for this inteface are in "GHCJS.DOM.Storage".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Storage Mozilla Storage documentation>
-newtype Storage = Storage { unStorage :: JSRef }
+newtype Storage = Storage { unStorage :: JSVal }
 
 instance Eq (Storage) where
   (Storage a) == (Storage b) = js_eq a b
@@ -22626,12 +22626,12 @@ instance PFromJSVal Storage where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Storage where
-  toJSRef = return . unStorage
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStorage
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Storage where
-  fromJSRef = return . fmap Storage . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Storage . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Storage where
   toGObject = GObject . unStorage
@@ -22655,7 +22655,7 @@ type IsStorage o = StorageClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent Mozilla StorageEvent documentation>
-newtype StorageEvent = StorageEvent { unStorageEvent :: JSRef }
+newtype StorageEvent = StorageEvent { unStorageEvent :: JSVal }
 
 instance Eq (StorageEvent) where
   (StorageEvent a) == (StorageEvent b) = js_eq a b
@@ -22669,12 +22669,12 @@ instance PFromJSVal StorageEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StorageEvent where
-  toJSRef = return . unStorageEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStorageEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StorageEvent where
-  fromJSRef = return . fmap StorageEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StorageEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent StorageEvent
 instance IsGObject StorageEvent where
@@ -22694,7 +22694,7 @@ foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent ::
 -- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo Mozilla StorageInfo documentation>
-newtype StorageInfo = StorageInfo { unStorageInfo :: JSRef }
+newtype StorageInfo = StorageInfo { unStorageInfo :: JSVal }
 
 instance Eq (StorageInfo) where
   (StorageInfo a) == (StorageInfo b) = js_eq a b
@@ -22708,12 +22708,12 @@ instance PFromJSVal StorageInfo where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StorageInfo where
-  toJSRef = return . unStorageInfo
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStorageInfo
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StorageInfo where
-  fromJSRef = return . fmap StorageInfo . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StorageInfo . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject StorageInfo where
   toGObject = GObject . unStorageInfo
@@ -22736,7 +22736,7 @@ type IsStorageInfo o = StorageInfoClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota Mozilla StorageQuota documentation>
-newtype StorageQuota = StorageQuota { unStorageQuota :: JSRef }
+newtype StorageQuota = StorageQuota { unStorageQuota :: JSVal }
 
 instance Eq (StorageQuota) where
   (StorageQuota a) == (StorageQuota b) = js_eq a b
@@ -22750,12 +22750,12 @@ instance PFromJSVal StorageQuota where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StorageQuota where
-  toJSRef = return . unStorageQuota
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStorageQuota
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StorageQuota where
-  fromJSRef = return . fmap StorageQuota . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StorageQuota . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject StorageQuota where
   toGObject = GObject . unStorageQuota
@@ -22778,7 +22778,7 @@ type IsStorageQuota o = StorageQuotaClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia Mozilla StyleMedia documentation>
-newtype StyleMedia = StyleMedia { unStyleMedia :: JSRef }
+newtype StyleMedia = StyleMedia { unStyleMedia :: JSVal }
 
 instance Eq (StyleMedia) where
   (StyleMedia a) == (StyleMedia b) = js_eq a b
@@ -22792,12 +22792,12 @@ instance PFromJSVal StyleMedia where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StyleMedia where
-  toJSRef = return . unStyleMedia
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStyleMedia
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StyleMedia where
-  fromJSRef = return . fmap StyleMedia . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StyleMedia . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject StyleMedia where
   toGObject = GObject . unStyleMedia
@@ -22818,7 +22818,7 @@ type IsStyleMedia o = StyleMediaClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet Mozilla StyleSheet documentation>
-newtype StyleSheet = StyleSheet { unStyleSheet :: JSRef }
+newtype StyleSheet = StyleSheet { unStyleSheet :: JSVal }
 
 instance Eq (StyleSheet) where
   (StyleSheet a) == (StyleSheet b) = js_eq a b
@@ -22832,12 +22832,12 @@ instance PFromJSVal StyleSheet where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StyleSheet where
-  toJSRef = return . unStyleSheet
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStyleSheet
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StyleSheet where
-  fromJSRef = return . fmap StyleSheet . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StyleSheet . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsGObject o => IsStyleSheet o
 toStyleSheet :: IsStyleSheet o => o -> StyleSheet
@@ -22863,7 +22863,7 @@ type IsStyleSheet o = StyleSheetClass o
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList Mozilla StyleSheetList documentation>
-newtype StyleSheetList = StyleSheetList { unStyleSheetList :: JSRef }
+newtype StyleSheetList = StyleSheetList { unStyleSheetList :: JSVal }
 
 instance Eq (StyleSheetList) where
   (StyleSheetList a) == (StyleSheetList b) = js_eq a b
@@ -22877,12 +22877,12 @@ instance PFromJSVal StyleSheetList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal StyleSheetList where
-  toJSRef = return . unStyleSheetList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unStyleSheetList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal StyleSheetList where
-  fromJSRef = return . fmap StyleSheetList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap StyleSheetList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject StyleSheetList where
   toGObject = GObject . unStyleSheetList
@@ -22903,7 +22903,7 @@ type IsStyleSheetList o = StyleSheetListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto Mozilla WebKitSubtleCrypto documentation>
-newtype SubtleCrypto = SubtleCrypto { unSubtleCrypto :: JSRef }
+newtype SubtleCrypto = SubtleCrypto { unSubtleCrypto :: JSVal }
 
 instance Eq (SubtleCrypto) where
   (SubtleCrypto a) == (SubtleCrypto b) = js_eq a b
@@ -22917,12 +22917,12 @@ instance PFromJSVal SubtleCrypto where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal SubtleCrypto where
-  toJSRef = return . unSubtleCrypto
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unSubtleCrypto
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal SubtleCrypto where
-  fromJSRef = return . fmap SubtleCrypto . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap SubtleCrypto . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject SubtleCrypto where
   toGObject = GObject . unSubtleCrypto
@@ -22946,7 +22946,7 @@ foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCry
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation>
-newtype Text = Text { unText :: JSRef }
+newtype Text = Text { unText :: JSVal }
 
 instance Eq (Text) where
   (Text a) == (Text b) = js_eq a b
@@ -22960,12 +22960,12 @@ instance PFromJSVal Text where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Text where
-  toJSRef = return . unText
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unText
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Text where
-  fromJSRef = return . fmap Text . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Text . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsCharacterData o => IsText o
 toText :: IsText o => o -> Text
@@ -22998,7 +22998,7 @@ type IsText o = TextClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextEvent Mozilla TextEvent documentation>
-newtype TextEvent = TextEvent { unTextEvent :: JSRef }
+newtype TextEvent = TextEvent { unTextEvent :: JSVal }
 
 instance Eq (TextEvent) where
   (TextEvent a) == (TextEvent b) = js_eq a b
@@ -23012,12 +23012,12 @@ instance PFromJSVal TextEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextEvent where
-  toJSRef = return . unTextEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextEvent where
-  fromJSRef = return . fmap TextEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent TextEvent
 instance IsEvent TextEvent
@@ -23038,7 +23038,7 @@ foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics Mozilla TextMetrics documentation>
-newtype TextMetrics = TextMetrics { unTextMetrics :: JSRef }
+newtype TextMetrics = TextMetrics { unTextMetrics :: JSVal }
 
 instance Eq (TextMetrics) where
   (TextMetrics a) == (TextMetrics b) = js_eq a b
@@ -23052,12 +23052,12 @@ instance PFromJSVal TextMetrics where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextMetrics where
-  toJSRef = return . unTextMetrics
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextMetrics
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextMetrics where
-  fromJSRef = return . fmap TextMetrics . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextMetrics . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TextMetrics where
   toGObject = GObject . unTextMetrics
@@ -23079,7 +23079,7 @@ foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics :: G
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack Mozilla TextTrack documentation>
-newtype TextTrack = TextTrack { unTextTrack :: JSRef }
+newtype TextTrack = TextTrack { unTextTrack :: JSVal }
 
 instance Eq (TextTrack) where
   (TextTrack a) == (TextTrack b) = js_eq a b
@@ -23093,12 +23093,12 @@ instance PFromJSVal TextTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextTrack where
-  toJSRef = return . unTextTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextTrack where
-  fromJSRef = return . fmap TextTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget TextTrack
 instance IsGObject TextTrack where
@@ -23125,7 +23125,7 @@ type IsTextTrack o = TextTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue Mozilla TextTrackCue documentation>
-newtype TextTrackCue = TextTrackCue { unTextTrackCue :: JSRef }
+newtype TextTrackCue = TextTrackCue { unTextTrackCue :: JSVal }
 
 instance Eq (TextTrackCue) where
   (TextTrackCue a) == (TextTrackCue b) = js_eq a b
@@ -23139,12 +23139,12 @@ instance PFromJSVal TextTrackCue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextTrackCue where
-  toJSRef = return . unTextTrackCue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextTrackCue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextTrackCue where
-  fromJSRef = return . fmap TextTrackCue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextTrackCue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsTextTrackCue o
 toTextTrackCue :: IsTextTrackCue o => o -> TextTrackCue
@@ -23173,7 +23173,7 @@ type IsTextTrackCue o = TextTrackCueClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCueList Mozilla TextTrackCueList documentation>
-newtype TextTrackCueList = TextTrackCueList { unTextTrackCueList :: JSRef }
+newtype TextTrackCueList = TextTrackCueList { unTextTrackCueList :: JSVal }
 
 instance Eq (TextTrackCueList) where
   (TextTrackCueList a) == (TextTrackCueList b) = js_eq a b
@@ -23187,12 +23187,12 @@ instance PFromJSVal TextTrackCueList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextTrackCueList where
-  toJSRef = return . unTextTrackCueList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextTrackCueList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextTrackCueList where
-  fromJSRef = return . fmap TextTrackCueList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextTrackCueList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TextTrackCueList where
   toGObject = GObject . unTextTrackCueList
@@ -23218,7 +23218,7 @@ type IsTextTrackCueList o = TextTrackCueListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList Mozilla TextTrackList documentation>
-newtype TextTrackList = TextTrackList { unTextTrackList :: JSRef }
+newtype TextTrackList = TextTrackList { unTextTrackList :: JSVal }
 
 instance Eq (TextTrackList) where
   (TextTrackList a) == (TextTrackList b) = js_eq a b
@@ -23232,12 +23232,12 @@ instance PFromJSVal TextTrackList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TextTrackList where
-  toJSRef = return . unTextTrackList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTextTrackList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TextTrackList where
-  fromJSRef = return . fmap TextTrackList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TextTrackList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget TextTrackList
 instance IsGObject TextTrackList where
@@ -23261,7 +23261,7 @@ type IsTextTrackList o = TextTrackListClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges Mozilla TimeRanges documentation>
-newtype TimeRanges = TimeRanges { unTimeRanges :: JSRef }
+newtype TimeRanges = TimeRanges { unTimeRanges :: JSVal }
 
 instance Eq (TimeRanges) where
   (TimeRanges a) == (TimeRanges b) = js_eq a b
@@ -23275,12 +23275,12 @@ instance PFromJSVal TimeRanges where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TimeRanges where
-  toJSRef = return . unTimeRanges
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTimeRanges
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TimeRanges where
-  fromJSRef = return . fmap TimeRanges . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TimeRanges . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TimeRanges where
   toGObject = GObject . unTimeRanges
@@ -23301,7 +23301,7 @@ type IsTimeRanges o = TimeRangesClass o
 -- | Functions for this inteface are in "GHCJS.DOM.Touch".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Touch Mozilla Touch documentation>
-newtype Touch = Touch { unTouch :: JSRef }
+newtype Touch = Touch { unTouch :: JSVal }
 
 instance Eq (Touch) where
   (Touch a) == (Touch b) = js_eq a b
@@ -23315,12 +23315,12 @@ instance PFromJSVal Touch where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Touch where
-  toJSRef = return . unTouch
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTouch
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Touch where
-  fromJSRef = return . fmap Touch . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Touch . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject Touch where
   toGObject = GObject . unTouch
@@ -23347,7 +23347,7 @@ type IsTouch o = TouchClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent Mozilla TouchEvent documentation>
-newtype TouchEvent = TouchEvent { unTouchEvent :: JSRef }
+newtype TouchEvent = TouchEvent { unTouchEvent :: JSVal }
 
 instance Eq (TouchEvent) where
   (TouchEvent a) == (TouchEvent b) = js_eq a b
@@ -23361,12 +23361,12 @@ instance PFromJSVal TouchEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TouchEvent where
-  toJSRef = return . unTouchEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTouchEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TouchEvent where
-  fromJSRef = return . fmap TouchEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TouchEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent TouchEvent
 instance IsEvent TouchEvent
@@ -23387,7 +23387,7 @@ foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.TouchList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TouchList Mozilla TouchList documentation>
-newtype TouchList = TouchList { unTouchList :: JSRef }
+newtype TouchList = TouchList { unTouchList :: JSVal }
 
 instance Eq (TouchList) where
   (TouchList a) == (TouchList b) = js_eq a b
@@ -23401,12 +23401,12 @@ instance PFromJSVal TouchList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TouchList where
-  toJSRef = return . unTouchList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTouchList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TouchList where
-  fromJSRef = return . fmap TouchList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TouchList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TouchList where
   toGObject = GObject . unTouchList
@@ -23428,7 +23428,7 @@ foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList :: GType
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TrackEvent Mozilla TrackEvent documentation>
-newtype TrackEvent = TrackEvent { unTrackEvent :: JSRef }
+newtype TrackEvent = TrackEvent { unTrackEvent :: JSVal }
 
 instance Eq (TrackEvent) where
   (TrackEvent a) == (TrackEvent b) = js_eq a b
@@ -23442,12 +23442,12 @@ instance PFromJSVal TrackEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TrackEvent where
-  toJSRef = return . unTrackEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTrackEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TrackEvent where
-  fromJSRef = return . fmap TrackEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TrackEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent TrackEvent
 instance IsGObject TrackEvent where
@@ -23470,7 +23470,7 @@ foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent :: GTy
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent Mozilla TransitionEvent documentation>
-newtype TransitionEvent = TransitionEvent { unTransitionEvent :: JSRef }
+newtype TransitionEvent = TransitionEvent { unTransitionEvent :: JSVal }
 
 instance Eq (TransitionEvent) where
   (TransitionEvent a) == (TransitionEvent b) = js_eq a b
@@ -23484,12 +23484,12 @@ instance PFromJSVal TransitionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TransitionEvent where
-  toJSRef = return . unTransitionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTransitionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TransitionEvent where
-  fromJSRef = return . fmap TransitionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TransitionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent TransitionEvent
 instance IsGObject TransitionEvent where
@@ -23509,7 +23509,7 @@ foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEv
 -- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker Mozilla TreeWalker documentation>
-newtype TreeWalker = TreeWalker { unTreeWalker :: JSRef }
+newtype TreeWalker = TreeWalker { unTreeWalker :: JSVal }
 
 instance Eq (TreeWalker) where
   (TreeWalker a) == (TreeWalker b) = js_eq a b
@@ -23523,12 +23523,12 @@ instance PFromJSVal TreeWalker where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TreeWalker where
-  toJSRef = return . unTreeWalker
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTreeWalker
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TreeWalker where
-  fromJSRef = return . fmap TreeWalker . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TreeWalker . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TreeWalker where
   toGObject = GObject . unTreeWalker
@@ -23549,7 +23549,7 @@ type IsTreeWalker o = TreeWalkerClass o
 -- | Functions for this inteface are in "GHCJS.DOM.TypeConversions".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions Mozilla TypeConversions documentation>
-newtype TypeConversions = TypeConversions { unTypeConversions :: JSRef }
+newtype TypeConversions = TypeConversions { unTypeConversions :: JSVal }
 
 instance Eq (TypeConversions) where
   (TypeConversions a) == (TypeConversions b) = js_eq a b
@@ -23563,12 +23563,12 @@ instance PFromJSVal TypeConversions where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal TypeConversions where
-  toJSRef = return . unTypeConversions
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unTypeConversions
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal TypeConversions where
-  fromJSRef = return . fmap TypeConversions . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap TypeConversions . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject TypeConversions where
   toGObject = GObject . unTypeConversions
@@ -23590,7 +23590,7 @@ foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversi
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent Mozilla UIEvent documentation>
-newtype UIEvent = UIEvent { unUIEvent :: JSRef }
+newtype UIEvent = UIEvent { unUIEvent :: JSVal }
 
 instance Eq (UIEvent) where
   (UIEvent a) == (UIEvent b) = js_eq a b
@@ -23604,12 +23604,12 @@ instance PFromJSVal UIEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal UIEvent where
-  toJSRef = return . unUIEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUIEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal UIEvent where
-  fromJSRef = return . fmap UIEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap UIEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEvent o => IsUIEvent o
 toUIEvent :: IsUIEvent o => o -> UIEvent
@@ -23640,7 +23640,7 @@ type IsUIEvent o = UIEventClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UIRequestEvent Mozilla UIRequestEvent documentation>
-newtype UIRequestEvent = UIRequestEvent { unUIRequestEvent :: JSRef }
+newtype UIRequestEvent = UIRequestEvent { unUIRequestEvent :: JSVal }
 
 instance Eq (UIRequestEvent) where
   (UIRequestEvent a) == (UIRequestEvent b) = js_eq a b
@@ -23654,12 +23654,12 @@ instance PFromJSVal UIRequestEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal UIRequestEvent where
-  toJSRef = return . unUIRequestEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUIRequestEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal UIRequestEvent where
-  fromJSRef = return . fmap UIRequestEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap UIRequestEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsUIEvent UIRequestEvent
 instance IsEvent UIRequestEvent
@@ -23680,7 +23680,7 @@ foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEven
 -- | Functions for this inteface are in "GHCJS.DOM.URL".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation>
-newtype URL = URL { unURL :: JSRef }
+newtype URL = URL { unURL :: JSVal }
 
 instance Eq (URL) where
   (URL a) == (URL b) = js_eq a b
@@ -23694,12 +23694,12 @@ instance PFromJSVal URL where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal URL where
-  toJSRef = return . unURL
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unURL
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal URL where
-  fromJSRef = return . fmap URL . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap URL . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject URL where
   toGObject = GObject . unURL
@@ -23718,7 +23718,7 @@ foreign import javascript unsafe "window[\"URL\"]" gTypeURL :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.URLUtils".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils Mozilla URLUtils documentation>
-newtype URLUtils = URLUtils { unURLUtils :: JSRef }
+newtype URLUtils = URLUtils { unURLUtils :: JSVal }
 
 instance Eq (URLUtils) where
   (URLUtils a) == (URLUtils b) = js_eq a b
@@ -23732,12 +23732,12 @@ instance PFromJSVal URLUtils where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal URLUtils where
-  toJSRef = return . unURLUtils
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unURLUtils
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal URLUtils where
-  fromJSRef = return . fmap URLUtils . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap URLUtils . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject URLUtils where
   toGObject = GObject . unURLUtils
@@ -23756,7 +23756,7 @@ foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler Mozilla UserMessageHandler documentation>
-newtype UserMessageHandler = UserMessageHandler { unUserMessageHandler :: JSRef }
+newtype UserMessageHandler = UserMessageHandler { unUserMessageHandler :: JSVal }
 
 instance Eq (UserMessageHandler) where
   (UserMessageHandler a) == (UserMessageHandler b) = js_eq a b
@@ -23770,12 +23770,12 @@ instance PFromJSVal UserMessageHandler where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal UserMessageHandler where
-  toJSRef = return . unUserMessageHandler
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUserMessageHandler
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal UserMessageHandler where
-  fromJSRef = return . fmap UserMessageHandler . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap UserMessageHandler . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject UserMessageHandler where
   toGObject = GObject . unUserMessageHandler
@@ -23794,7 +23794,7 @@ foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessa
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandlersNamespace Mozilla UserMessageHandlersNamespace documentation>
-newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace { unUserMessageHandlersNamespace :: JSRef }
+newtype UserMessageHandlersNamespace = UserMessageHandlersNamespace { unUserMessageHandlersNamespace :: JSVal }
 
 instance Eq (UserMessageHandlersNamespace) where
   (UserMessageHandlersNamespace a) == (UserMessageHandlersNamespace b) = js_eq a b
@@ -23808,12 +23808,12 @@ instance PFromJSVal UserMessageHandlersNamespace where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal UserMessageHandlersNamespace where
-  toJSRef = return . unUserMessageHandlersNamespace
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unUserMessageHandlersNamespace
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal UserMessageHandlersNamespace where
-  fromJSRef = return . fmap UserMessageHandlersNamespace . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap UserMessageHandlersNamespace . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject UserMessageHandlersNamespace where
   toGObject = GObject . unUserMessageHandlersNamespace
@@ -23836,7 +23836,7 @@ foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTyp
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue Mozilla VTTCue documentation>
-newtype VTTCue = VTTCue { unVTTCue :: JSRef }
+newtype VTTCue = VTTCue { unVTTCue :: JSVal }
 
 instance Eq (VTTCue) where
   (VTTCue a) == (VTTCue b) = js_eq a b
@@ -23850,12 +23850,12 @@ instance PFromJSVal VTTCue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VTTCue where
-  toJSRef = return . unVTTCue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVTTCue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VTTCue where
-  fromJSRef = return . fmap VTTCue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VTTCue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsTextTrackCue VTTCue
 instance IsEventTarget VTTCue
@@ -23876,7 +23876,7 @@ foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion Mozilla VTTRegion documentation>
-newtype VTTRegion = VTTRegion { unVTTRegion :: JSRef }
+newtype VTTRegion = VTTRegion { unVTTRegion :: JSVal }
 
 instance Eq (VTTRegion) where
   (VTTRegion a) == (VTTRegion b) = js_eq a b
@@ -23890,12 +23890,12 @@ instance PFromJSVal VTTRegion where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VTTRegion where
-  toJSRef = return . unVTTRegion
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVTTRegion
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VTTRegion where
-  fromJSRef = return . fmap VTTRegion . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VTTRegion . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject VTTRegion where
   toGObject = GObject . unVTTRegion
@@ -23914,7 +23914,7 @@ foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList Mozilla VTTRegionList documentation>
-newtype VTTRegionList = VTTRegionList { unVTTRegionList :: JSRef }
+newtype VTTRegionList = VTTRegionList { unVTTRegionList :: JSVal }
 
 instance Eq (VTTRegionList) where
   (VTTRegionList a) == (VTTRegionList b) = js_eq a b
@@ -23928,12 +23928,12 @@ instance PFromJSVal VTTRegionList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VTTRegionList where
-  toJSRef = return . unVTTRegionList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVTTRegionList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VTTRegionList where
-  fromJSRef = return . fmap VTTRegionList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VTTRegionList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject VTTRegionList where
   toGObject = GObject . unVTTRegionList
@@ -23952,7 +23952,7 @@ foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList 
 -- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ValidityState Mozilla ValidityState documentation>
-newtype ValidityState = ValidityState { unValidityState :: JSRef }
+newtype ValidityState = ValidityState { unValidityState :: JSVal }
 
 instance Eq (ValidityState) where
   (ValidityState a) == (ValidityState b) = js_eq a b
@@ -23966,12 +23966,12 @@ instance PFromJSVal ValidityState where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal ValidityState where
-  toJSRef = return . unValidityState
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unValidityState
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal ValidityState where
-  fromJSRef = return . fmap ValidityState . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap ValidityState . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject ValidityState where
   toGObject = GObject . unValidityState
@@ -23992,7 +23992,7 @@ type IsValidityState o = ValidityStateClass o
 -- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality Mozilla VideoPlaybackQuality documentation>
-newtype VideoPlaybackQuality = VideoPlaybackQuality { unVideoPlaybackQuality :: JSRef }
+newtype VideoPlaybackQuality = VideoPlaybackQuality { unVideoPlaybackQuality :: JSVal }
 
 instance Eq (VideoPlaybackQuality) where
   (VideoPlaybackQuality a) == (VideoPlaybackQuality b) = js_eq a b
@@ -24006,12 +24006,12 @@ instance PFromJSVal VideoPlaybackQuality where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VideoPlaybackQuality where
-  toJSRef = return . unVideoPlaybackQuality
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVideoPlaybackQuality
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VideoPlaybackQuality where
-  fromJSRef = return . fmap VideoPlaybackQuality . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VideoPlaybackQuality . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject VideoPlaybackQuality where
   toGObject = GObject . unVideoPlaybackQuality
@@ -24034,7 +24034,7 @@ foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPl
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoStreamTrack Mozilla VideoStreamTrack documentation>
-newtype VideoStreamTrack = VideoStreamTrack { unVideoStreamTrack :: JSRef }
+newtype VideoStreamTrack = VideoStreamTrack { unVideoStreamTrack :: JSVal }
 
 instance Eq (VideoStreamTrack) where
   (VideoStreamTrack a) == (VideoStreamTrack b) = js_eq a b
@@ -24048,12 +24048,12 @@ instance PFromJSVal VideoStreamTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VideoStreamTrack where
-  toJSRef = return . unVideoStreamTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVideoStreamTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VideoStreamTrack where
-  fromJSRef = return . fmap VideoStreamTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VideoStreamTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsMediaStreamTrack VideoStreamTrack
 instance IsEventTarget VideoStreamTrack
@@ -24074,7 +24074,7 @@ foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStream
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack Mozilla VideoTrack documentation>
-newtype VideoTrack = VideoTrack { unVideoTrack :: JSRef }
+newtype VideoTrack = VideoTrack { unVideoTrack :: JSVal }
 
 instance Eq (VideoTrack) where
   (VideoTrack a) == (VideoTrack b) = js_eq a b
@@ -24088,12 +24088,12 @@ instance PFromJSVal VideoTrack where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VideoTrack where
-  toJSRef = return . unVideoTrack
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVideoTrack
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VideoTrack where
-  fromJSRef = return . fmap VideoTrack . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VideoTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject VideoTrack where
   toGObject = GObject . unVideoTrack
@@ -24119,7 +24119,7 @@ type IsVideoTrack o = VideoTrackClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList Mozilla VideoTrackList documentation>
-newtype VideoTrackList = VideoTrackList { unVideoTrackList :: JSRef }
+newtype VideoTrackList = VideoTrackList { unVideoTrackList :: JSVal }
 
 instance Eq (VideoTrackList) where
   (VideoTrackList a) == (VideoTrackList b) = js_eq a b
@@ -24133,12 +24133,12 @@ instance PFromJSVal VideoTrackList where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal VideoTrackList where
-  toJSRef = return . unVideoTrackList
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unVideoTrackList
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal VideoTrackList where
-  fromJSRef = return . fmap VideoTrackList . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap VideoTrackList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget VideoTrackList
 instance IsGObject VideoTrackList where
@@ -24166,7 +24166,7 @@ type IsVideoTrackList o = VideoTrackListClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode Mozilla WaveShaperNode documentation>
-newtype WaveShaperNode = WaveShaperNode { unWaveShaperNode :: JSRef }
+newtype WaveShaperNode = WaveShaperNode { unWaveShaperNode :: JSVal }
 
 instance Eq (WaveShaperNode) where
   (WaveShaperNode a) == (WaveShaperNode b) = js_eq a b
@@ -24180,12 +24180,12 @@ instance PFromJSVal WaveShaperNode where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WaveShaperNode where
-  toJSRef = return . unWaveShaperNode
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWaveShaperNode
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WaveShaperNode where
-  fromJSRef = return . fmap WaveShaperNode . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WaveShaperNode . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsAudioNode WaveShaperNode
 instance IsEventTarget WaveShaperNode
@@ -24210,7 +24210,7 @@ foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNod
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext Mozilla WebGL2RenderingContext documentation>
-newtype WebGL2RenderingContext = WebGL2RenderingContext { unWebGL2RenderingContext :: JSRef }
+newtype WebGL2RenderingContext = WebGL2RenderingContext { unWebGL2RenderingContext :: JSVal }
 
 instance Eq (WebGL2RenderingContext) where
   (WebGL2RenderingContext a) == (WebGL2RenderingContext b) = js_eq a b
@@ -24224,12 +24224,12 @@ instance PFromJSVal WebGL2RenderingContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGL2RenderingContext where
-  toJSRef = return . unWebGL2RenderingContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGL2RenderingContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGL2RenderingContext where
-  fromJSRef = return . fmap WebGL2RenderingContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGL2RenderingContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsWebGLRenderingContextBase WebGL2RenderingContext
 instance IsCanvasRenderingContext WebGL2RenderingContext
@@ -24250,7 +24250,7 @@ foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo Mozilla WebGLActiveInfo documentation>
-newtype WebGLActiveInfo = WebGLActiveInfo { unWebGLActiveInfo :: JSRef }
+newtype WebGLActiveInfo = WebGLActiveInfo { unWebGLActiveInfo :: JSVal }
 
 instance Eq (WebGLActiveInfo) where
   (WebGLActiveInfo a) == (WebGLActiveInfo b) = js_eq a b
@@ -24264,12 +24264,12 @@ instance PFromJSVal WebGLActiveInfo where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLActiveInfo where
-  toJSRef = return . unWebGLActiveInfo
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLActiveInfo
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLActiveInfo where
-  fromJSRef = return . fmap WebGLActiveInfo . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLActiveInfo . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLActiveInfo where
   toGObject = GObject . unWebGLActiveInfo
@@ -24288,7 +24288,7 @@ foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveI
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLBuffer Mozilla WebGLBuffer documentation>
-newtype WebGLBuffer = WebGLBuffer { unWebGLBuffer :: JSRef }
+newtype WebGLBuffer = WebGLBuffer { unWebGLBuffer :: JSVal }
 
 instance Eq (WebGLBuffer) where
   (WebGLBuffer a) == (WebGLBuffer b) = js_eq a b
@@ -24302,12 +24302,12 @@ instance PFromJSVal WebGLBuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLBuffer where
-  toJSRef = return . unWebGLBuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLBuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLBuffer where
-  fromJSRef = return . fmap WebGLBuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLBuffer where
   toGObject = GObject . unWebGLBuffer
@@ -24326,7 +24326,7 @@ foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer :: G
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureATC Mozilla WebGLCompressedTextureATC documentation>
-newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC { unWebGLCompressedTextureATC :: JSRef }
+newtype WebGLCompressedTextureATC = WebGLCompressedTextureATC { unWebGLCompressedTextureATC :: JSVal }
 
 instance Eq (WebGLCompressedTextureATC) where
   (WebGLCompressedTextureATC a) == (WebGLCompressedTextureATC b) = js_eq a b
@@ -24340,12 +24340,12 @@ instance PFromJSVal WebGLCompressedTextureATC where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLCompressedTextureATC where
-  toJSRef = return . unWebGLCompressedTextureATC
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLCompressedTextureATC
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLCompressedTextureATC where
-  fromJSRef = return . fmap WebGLCompressedTextureATC . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLCompressedTextureATC . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTextureATC where
   toGObject = GObject . unWebGLCompressedTextureATC
@@ -24364,7 +24364,7 @@ foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWe
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTexturePVRTC Mozilla WebGLCompressedTexturePVRTC documentation>
-newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC { unWebGLCompressedTexturePVRTC :: JSRef }
+newtype WebGLCompressedTexturePVRTC = WebGLCompressedTexturePVRTC { unWebGLCompressedTexturePVRTC :: JSVal }
 
 instance Eq (WebGLCompressedTexturePVRTC) where
   (WebGLCompressedTexturePVRTC a) == (WebGLCompressedTexturePVRTC b) = js_eq a b
@@ -24378,12 +24378,12 @@ instance PFromJSVal WebGLCompressedTexturePVRTC where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLCompressedTexturePVRTC where
-  toJSRef = return . unWebGLCompressedTexturePVRTC
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLCompressedTexturePVRTC
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLCompressedTexturePVRTC where
-  fromJSRef = return . fmap WebGLCompressedTexturePVRTC . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLCompressedTexturePVRTC . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTexturePVRTC where
   toGObject = GObject . unWebGLCompressedTexturePVRTC
@@ -24402,7 +24402,7 @@ foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gType
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureS3TC Mozilla WebGLCompressedTextureS3TC documentation>
-newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC { unWebGLCompressedTextureS3TC :: JSRef }
+newtype WebGLCompressedTextureS3TC = WebGLCompressedTextureS3TC { unWebGLCompressedTextureS3TC :: JSVal }
 
 instance Eq (WebGLCompressedTextureS3TC) where
   (WebGLCompressedTextureS3TC a) == (WebGLCompressedTextureS3TC b) = js_eq a b
@@ -24416,12 +24416,12 @@ instance PFromJSVal WebGLCompressedTextureS3TC where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLCompressedTextureS3TC where
-  toJSRef = return . unWebGLCompressedTextureS3TC
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLCompressedTextureS3TC
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLCompressedTextureS3TC where
-  fromJSRef = return . fmap WebGLCompressedTextureS3TC . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLCompressedTextureS3TC . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTextureS3TC where
   toGObject = GObject . unWebGLCompressedTextureS3TC
@@ -24440,7 +24440,7 @@ foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeW
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes Mozilla WebGLContextAttributes documentation>
-newtype WebGLContextAttributes = WebGLContextAttributes { unWebGLContextAttributes :: JSRef }
+newtype WebGLContextAttributes = WebGLContextAttributes { unWebGLContextAttributes :: JSVal }
 
 instance Eq (WebGLContextAttributes) where
   (WebGLContextAttributes a) == (WebGLContextAttributes b) = js_eq a b
@@ -24454,12 +24454,12 @@ instance PFromJSVal WebGLContextAttributes where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLContextAttributes where
-  toJSRef = return . unWebGLContextAttributes
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLContextAttributes
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLContextAttributes where
-  fromJSRef = return . fmap WebGLContextAttributes . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLContextAttributes . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLContextAttributes where
   toGObject = GObject . unWebGLContextAttributes
@@ -24481,7 +24481,7 @@ foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGL
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextEvent Mozilla WebGLContextEvent documentation>
-newtype WebGLContextEvent = WebGLContextEvent { unWebGLContextEvent :: JSRef }
+newtype WebGLContextEvent = WebGLContextEvent { unWebGLContextEvent :: JSVal }
 
 instance Eq (WebGLContextEvent) where
   (WebGLContextEvent a) == (WebGLContextEvent b) = js_eq a b
@@ -24495,12 +24495,12 @@ instance PFromJSVal WebGLContextEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLContextEvent where
-  toJSRef = return . unWebGLContextEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLContextEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLContextEvent where
-  fromJSRef = return . fmap WebGLContextEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLContextEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent WebGLContextEvent
 instance IsGObject WebGLContextEvent where
@@ -24520,7 +24520,7 @@ foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLConte
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugRendererInfo Mozilla WebGLDebugRendererInfo documentation>
-newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo { unWebGLDebugRendererInfo :: JSRef }
+newtype WebGLDebugRendererInfo = WebGLDebugRendererInfo { unWebGLDebugRendererInfo :: JSVal }
 
 instance Eq (WebGLDebugRendererInfo) where
   (WebGLDebugRendererInfo a) == (WebGLDebugRendererInfo b) = js_eq a b
@@ -24534,12 +24534,12 @@ instance PFromJSVal WebGLDebugRendererInfo where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLDebugRendererInfo where
-  toJSRef = return . unWebGLDebugRendererInfo
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLDebugRendererInfo
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLDebugRendererInfo where
-  fromJSRef = return . fmap WebGLDebugRendererInfo . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLDebugRendererInfo . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDebugRendererInfo where
   toGObject = GObject . unWebGLDebugRendererInfo
@@ -24558,7 +24558,7 @@ foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGL
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders Mozilla WebGLDebugShaders documentation>
-newtype WebGLDebugShaders = WebGLDebugShaders { unWebGLDebugShaders :: JSRef }
+newtype WebGLDebugShaders = WebGLDebugShaders { unWebGLDebugShaders :: JSVal }
 
 instance Eq (WebGLDebugShaders) where
   (WebGLDebugShaders a) == (WebGLDebugShaders b) = js_eq a b
@@ -24572,12 +24572,12 @@ instance PFromJSVal WebGLDebugShaders where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLDebugShaders where
-  toJSRef = return . unWebGLDebugShaders
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLDebugShaders
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLDebugShaders where
-  fromJSRef = return . fmap WebGLDebugShaders . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLDebugShaders . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDebugShaders where
   toGObject = GObject . unWebGLDebugShaders
@@ -24596,7 +24596,7 @@ foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebug
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDepthTexture Mozilla WebGLDepthTexture documentation>
-newtype WebGLDepthTexture = WebGLDepthTexture { unWebGLDepthTexture :: JSRef }
+newtype WebGLDepthTexture = WebGLDepthTexture { unWebGLDepthTexture :: JSVal }
 
 instance Eq (WebGLDepthTexture) where
   (WebGLDepthTexture a) == (WebGLDepthTexture b) = js_eq a b
@@ -24610,12 +24610,12 @@ instance PFromJSVal WebGLDepthTexture where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLDepthTexture where
-  toJSRef = return . unWebGLDepthTexture
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLDepthTexture
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLDepthTexture where
-  fromJSRef = return . fmap WebGLDepthTexture . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLDepthTexture . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDepthTexture where
   toGObject = GObject . unWebGLDepthTexture
@@ -24634,7 +24634,7 @@ foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepth
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers Mozilla WebGLDrawBuffers documentation>
-newtype WebGLDrawBuffers = WebGLDrawBuffers { unWebGLDrawBuffers :: JSRef }
+newtype WebGLDrawBuffers = WebGLDrawBuffers { unWebGLDrawBuffers :: JSVal }
 
 instance Eq (WebGLDrawBuffers) where
   (WebGLDrawBuffers a) == (WebGLDrawBuffers b) = js_eq a b
@@ -24648,12 +24648,12 @@ instance PFromJSVal WebGLDrawBuffers where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLDrawBuffers where
-  toJSRef = return . unWebGLDrawBuffers
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLDrawBuffers
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLDrawBuffers where
-  fromJSRef = return . fmap WebGLDrawBuffers . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLDrawBuffers . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDrawBuffers where
   toGObject = GObject . unWebGLDrawBuffers
@@ -24672,7 +24672,7 @@ foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBu
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLFramebuffer Mozilla WebGLFramebuffer documentation>
-newtype WebGLFramebuffer = WebGLFramebuffer { unWebGLFramebuffer :: JSRef }
+newtype WebGLFramebuffer = WebGLFramebuffer { unWebGLFramebuffer :: JSVal }
 
 instance Eq (WebGLFramebuffer) where
   (WebGLFramebuffer a) == (WebGLFramebuffer b) = js_eq a b
@@ -24686,12 +24686,12 @@ instance PFromJSVal WebGLFramebuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLFramebuffer where
-  toJSRef = return . unWebGLFramebuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLFramebuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLFramebuffer where
-  fromJSRef = return . fmap WebGLFramebuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLFramebuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLFramebuffer where
   toGObject = GObject . unWebGLFramebuffer
@@ -24710,7 +24710,7 @@ foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFrameb
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext Mozilla WebGLLoseContext documentation>
-newtype WebGLLoseContext = WebGLLoseContext { unWebGLLoseContext :: JSRef }
+newtype WebGLLoseContext = WebGLLoseContext { unWebGLLoseContext :: JSVal }
 
 instance Eq (WebGLLoseContext) where
   (WebGLLoseContext a) == (WebGLLoseContext b) = js_eq a b
@@ -24724,12 +24724,12 @@ instance PFromJSVal WebGLLoseContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLLoseContext where
-  toJSRef = return . unWebGLLoseContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLLoseContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLLoseContext where
-  fromJSRef = return . fmap WebGLLoseContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLLoseContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLLoseContext where
   toGObject = GObject . unWebGLLoseContext
@@ -24748,7 +24748,7 @@ foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseCo
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram Mozilla WebGLProgram documentation>
-newtype WebGLProgram = WebGLProgram { unWebGLProgram :: JSRef }
+newtype WebGLProgram = WebGLProgram { unWebGLProgram :: JSVal }
 
 instance Eq (WebGLProgram) where
   (WebGLProgram a) == (WebGLProgram b) = js_eq a b
@@ -24762,12 +24762,12 @@ instance PFromJSVal WebGLProgram where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLProgram where
-  toJSRef = return . unWebGLProgram
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLProgram
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLProgram where
-  fromJSRef = return . fmap WebGLProgram . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLProgram . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLProgram where
   toGObject = GObject . unWebGLProgram
@@ -24786,7 +24786,7 @@ foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram ::
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLQuery Mozilla WebGLQuery documentation>
-newtype WebGLQuery = WebGLQuery { unWebGLQuery :: JSRef }
+newtype WebGLQuery = WebGLQuery { unWebGLQuery :: JSVal }
 
 instance Eq (WebGLQuery) where
   (WebGLQuery a) == (WebGLQuery b) = js_eq a b
@@ -24800,12 +24800,12 @@ instance PFromJSVal WebGLQuery where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLQuery where
-  toJSRef = return . unWebGLQuery
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLQuery
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLQuery where
-  fromJSRef = return . fmap WebGLQuery . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLQuery . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLQuery where
   toGObject = GObject . unWebGLQuery
@@ -24824,7 +24824,7 @@ foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery :: GTy
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderbuffer Mozilla WebGLRenderbuffer documentation>
-newtype WebGLRenderbuffer = WebGLRenderbuffer { unWebGLRenderbuffer :: JSRef }
+newtype WebGLRenderbuffer = WebGLRenderbuffer { unWebGLRenderbuffer :: JSVal }
 
 instance Eq (WebGLRenderbuffer) where
   (WebGLRenderbuffer a) == (WebGLRenderbuffer b) = js_eq a b
@@ -24838,12 +24838,12 @@ instance PFromJSVal WebGLRenderbuffer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLRenderbuffer where
-  toJSRef = return . unWebGLRenderbuffer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLRenderbuffer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLRenderbuffer where
-  fromJSRef = return . fmap WebGLRenderbuffer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLRenderbuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLRenderbuffer where
   toGObject = GObject . unWebGLRenderbuffer
@@ -24866,7 +24866,7 @@ foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRende
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext Mozilla WebGLRenderingContext documentation>
-newtype WebGLRenderingContext = WebGLRenderingContext { unWebGLRenderingContext :: JSRef }
+newtype WebGLRenderingContext = WebGLRenderingContext { unWebGLRenderingContext :: JSVal }
 
 instance Eq (WebGLRenderingContext) where
   (WebGLRenderingContext a) == (WebGLRenderingContext b) = js_eq a b
@@ -24880,12 +24880,12 @@ instance PFromJSVal WebGLRenderingContext where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLRenderingContext where
-  toJSRef = return . unWebGLRenderingContext
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLRenderingContext
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLRenderingContext where
-  fromJSRef = return . fmap WebGLRenderingContext . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLRenderingContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsWebGLRenderingContextBase WebGLRenderingContext
 instance IsCanvasRenderingContext WebGLRenderingContext
@@ -24909,7 +24909,7 @@ foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLR
 --     * "GHCJS.DOM.CanvasRenderingContext"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase Mozilla WebGLRenderingContextBase documentation>
-newtype WebGLRenderingContextBase = WebGLRenderingContextBase { unWebGLRenderingContextBase :: JSRef }
+newtype WebGLRenderingContextBase = WebGLRenderingContextBase { unWebGLRenderingContextBase :: JSVal }
 
 instance Eq (WebGLRenderingContextBase) where
   (WebGLRenderingContextBase a) == (WebGLRenderingContextBase b) = js_eq a b
@@ -24923,12 +24923,12 @@ instance PFromJSVal WebGLRenderingContextBase where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLRenderingContextBase where
-  toJSRef = return . unWebGLRenderingContextBase
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLRenderingContextBase
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLRenderingContextBase where
-  fromJSRef = return . fmap WebGLRenderingContextBase . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLRenderingContextBase . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsCanvasRenderingContext o => IsWebGLRenderingContextBase o
 toWebGLRenderingContextBase :: IsWebGLRenderingContextBase o => o -> WebGLRenderingContextBase
@@ -24953,7 +24953,7 @@ foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWe
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSampler Mozilla WebGLSampler documentation>
-newtype WebGLSampler = WebGLSampler { unWebGLSampler :: JSRef }
+newtype WebGLSampler = WebGLSampler { unWebGLSampler :: JSVal }
 
 instance Eq (WebGLSampler) where
   (WebGLSampler a) == (WebGLSampler b) = js_eq a b
@@ -24967,12 +24967,12 @@ instance PFromJSVal WebGLSampler where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLSampler where
-  toJSRef = return . unWebGLSampler
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLSampler
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLSampler where
-  fromJSRef = return . fmap WebGLSampler . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLSampler . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLSampler where
   toGObject = GObject . unWebGLSampler
@@ -24991,7 +24991,7 @@ foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler ::
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader Mozilla WebGLShader documentation>
-newtype WebGLShader = WebGLShader { unWebGLShader :: JSRef }
+newtype WebGLShader = WebGLShader { unWebGLShader :: JSVal }
 
 instance Eq (WebGLShader) where
   (WebGLShader a) == (WebGLShader b) = js_eq a b
@@ -25005,12 +25005,12 @@ instance PFromJSVal WebGLShader where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLShader where
-  toJSRef = return . unWebGLShader
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLShader
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLShader where
-  fromJSRef = return . fmap WebGLShader . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLShader . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLShader where
   toGObject = GObject . unWebGLShader
@@ -25029,7 +25029,7 @@ foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader :: G
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat Mozilla WebGLShaderPrecisionFormat documentation>
-newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat { unWebGLShaderPrecisionFormat :: JSRef }
+newtype WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat { unWebGLShaderPrecisionFormat :: JSVal }
 
 instance Eq (WebGLShaderPrecisionFormat) where
   (WebGLShaderPrecisionFormat a) == (WebGLShaderPrecisionFormat b) = js_eq a b
@@ -25043,12 +25043,12 @@ instance PFromJSVal WebGLShaderPrecisionFormat where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLShaderPrecisionFormat where
-  toJSRef = return . unWebGLShaderPrecisionFormat
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLShaderPrecisionFormat
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLShaderPrecisionFormat where
-  fromJSRef = return . fmap WebGLShaderPrecisionFormat . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLShaderPrecisionFormat . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLShaderPrecisionFormat where
   toGObject = GObject . unWebGLShaderPrecisionFormat
@@ -25067,7 +25067,7 @@ foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeW
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSync Mozilla WebGLSync documentation>
-newtype WebGLSync = WebGLSync { unWebGLSync :: JSRef }
+newtype WebGLSync = WebGLSync { unWebGLSync :: JSVal }
 
 instance Eq (WebGLSync) where
   (WebGLSync a) == (WebGLSync b) = js_eq a b
@@ -25081,12 +25081,12 @@ instance PFromJSVal WebGLSync where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLSync where
-  toJSRef = return . unWebGLSync
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLSync
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLSync where
-  fromJSRef = return . fmap WebGLSync . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLSync . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLSync where
   toGObject = GObject . unWebGLSync
@@ -25105,7 +25105,7 @@ foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync :: GType
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture Mozilla WebGLTexture documentation>
-newtype WebGLTexture = WebGLTexture { unWebGLTexture :: JSRef }
+newtype WebGLTexture = WebGLTexture { unWebGLTexture :: JSVal }
 
 instance Eq (WebGLTexture) where
   (WebGLTexture a) == (WebGLTexture b) = js_eq a b
@@ -25119,12 +25119,12 @@ instance PFromJSVal WebGLTexture where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLTexture where
-  toJSRef = return . unWebGLTexture
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLTexture
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLTexture where
-  fromJSRef = return . fmap WebGLTexture . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLTexture . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLTexture where
   toGObject = GObject . unWebGLTexture
@@ -25143,7 +25143,7 @@ foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture ::
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTransformFeedback Mozilla WebGLTransformFeedback documentation>
-newtype WebGLTransformFeedback = WebGLTransformFeedback { unWebGLTransformFeedback :: JSRef }
+newtype WebGLTransformFeedback = WebGLTransformFeedback { unWebGLTransformFeedback :: JSVal }
 
 instance Eq (WebGLTransformFeedback) where
   (WebGLTransformFeedback a) == (WebGLTransformFeedback b) = js_eq a b
@@ -25157,12 +25157,12 @@ instance PFromJSVal WebGLTransformFeedback where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLTransformFeedback where
-  toJSRef = return . unWebGLTransformFeedback
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLTransformFeedback
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLTransformFeedback where
-  fromJSRef = return . fmap WebGLTransformFeedback . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLTransformFeedback . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLTransformFeedback where
   toGObject = GObject . unWebGLTransformFeedback
@@ -25181,7 +25181,7 @@ foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGL
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLUniformLocation Mozilla WebGLUniformLocation documentation>
-newtype WebGLUniformLocation = WebGLUniformLocation { unWebGLUniformLocation :: JSRef }
+newtype WebGLUniformLocation = WebGLUniformLocation { unWebGLUniformLocation :: JSVal }
 
 instance Eq (WebGLUniformLocation) where
   (WebGLUniformLocation a) == (WebGLUniformLocation b) = js_eq a b
@@ -25195,12 +25195,12 @@ instance PFromJSVal WebGLUniformLocation where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLUniformLocation where
-  toJSRef = return . unWebGLUniformLocation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLUniformLocation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLUniformLocation where
-  fromJSRef = return . fmap WebGLUniformLocation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLUniformLocation . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLUniformLocation where
   toGObject = GObject . unWebGLUniformLocation
@@ -25219,7 +25219,7 @@ foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUn
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject Mozilla WebGLVertexArrayObject documentation>
-newtype WebGLVertexArrayObject = WebGLVertexArrayObject { unWebGLVertexArrayObject :: JSRef }
+newtype WebGLVertexArrayObject = WebGLVertexArrayObject { unWebGLVertexArrayObject :: JSVal }
 
 instance Eq (WebGLVertexArrayObject) where
   (WebGLVertexArrayObject a) == (WebGLVertexArrayObject b) = js_eq a b
@@ -25233,12 +25233,12 @@ instance PFromJSVal WebGLVertexArrayObject where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLVertexArrayObject where
-  toJSRef = return . unWebGLVertexArrayObject
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLVertexArrayObject
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLVertexArrayObject where
-  fromJSRef = return . fmap WebGLVertexArrayObject . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLVertexArrayObject . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLVertexArrayObject where
   toGObject = GObject . unWebGLVertexArrayObject
@@ -25257,7 +25257,7 @@ foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGL
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObjectOES Mozilla WebGLVertexArrayObjectOES documentation>
-newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES { unWebGLVertexArrayObjectOES :: JSRef }
+newtype WebGLVertexArrayObjectOES = WebGLVertexArrayObjectOES { unWebGLVertexArrayObjectOES :: JSVal }
 
 instance Eq (WebGLVertexArrayObjectOES) where
   (WebGLVertexArrayObjectOES a) == (WebGLVertexArrayObjectOES b) = js_eq a b
@@ -25271,12 +25271,12 @@ instance PFromJSVal WebGLVertexArrayObjectOES where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebGLVertexArrayObjectOES where
-  toJSRef = return . unWebGLVertexArrayObjectOES
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebGLVertexArrayObjectOES
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebGLVertexArrayObjectOES where
-  fromJSRef = return . fmap WebGLVertexArrayObjectOES . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebGLVertexArrayObjectOES . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLVertexArrayObjectOES where
   toGObject = GObject . unWebGLVertexArrayObjectOES
@@ -25298,7 +25298,7 @@ foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWe
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitAnimationEvent Mozilla WebKitAnimationEvent documentation>
-newtype WebKitAnimationEvent = WebKitAnimationEvent { unWebKitAnimationEvent :: JSRef }
+newtype WebKitAnimationEvent = WebKitAnimationEvent { unWebKitAnimationEvent :: JSVal }
 
 instance Eq (WebKitAnimationEvent) where
   (WebKitAnimationEvent a) == (WebKitAnimationEvent b) = js_eq a b
@@ -25312,12 +25312,12 @@ instance PFromJSVal WebKitAnimationEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitAnimationEvent where
-  toJSRef = return . unWebKitAnimationEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitAnimationEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitAnimationEvent where
-  fromJSRef = return . fmap WebKitAnimationEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitAnimationEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent WebKitAnimationEvent
 instance IsGObject WebKitAnimationEvent where
@@ -25341,7 +25341,7 @@ foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitA
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSFilterValue Mozilla WebKitCSSFilterValue documentation>
-newtype WebKitCSSFilterValue = WebKitCSSFilterValue { unWebKitCSSFilterValue :: JSRef }
+newtype WebKitCSSFilterValue = WebKitCSSFilterValue { unWebKitCSSFilterValue :: JSVal }
 
 instance Eq (WebKitCSSFilterValue) where
   (WebKitCSSFilterValue a) == (WebKitCSSFilterValue b) = js_eq a b
@@ -25355,12 +25355,12 @@ instance PFromJSVal WebKitCSSFilterValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitCSSFilterValue where
-  toJSRef = return . unWebKitCSSFilterValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitCSSFilterValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitCSSFilterValue where
-  fromJSRef = return . fmap WebKitCSSFilterValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitCSSFilterValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSValueList WebKitCSSFilterValue
 instance IsCSSValue WebKitCSSFilterValue
@@ -25381,7 +25381,7 @@ foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitC
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation>
-newtype WebKitCSSMatrix = WebKitCSSMatrix { unWebKitCSSMatrix :: JSRef }
+newtype WebKitCSSMatrix = WebKitCSSMatrix { unWebKitCSSMatrix :: JSVal }
 
 instance Eq (WebKitCSSMatrix) where
   (WebKitCSSMatrix a) == (WebKitCSSMatrix b) = js_eq a b
@@ -25395,12 +25395,12 @@ instance PFromJSVal WebKitCSSMatrix where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitCSSMatrix where
-  toJSRef = return . unWebKitCSSMatrix
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitCSSMatrix
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitCSSMatrix where
-  fromJSRef = return . fmap WebKitCSSMatrix . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitCSSMatrix . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitCSSMatrix where
   toGObject = GObject . unWebKitCSSMatrix
@@ -25422,7 +25422,7 @@ foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMat
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSRegionRule Mozilla WebKitCSSRegionRule documentation>
-newtype WebKitCSSRegionRule = WebKitCSSRegionRule { unWebKitCSSRegionRule :: JSRef }
+newtype WebKitCSSRegionRule = WebKitCSSRegionRule { unWebKitCSSRegionRule :: JSVal }
 
 instance Eq (WebKitCSSRegionRule) where
   (WebKitCSSRegionRule a) == (WebKitCSSRegionRule b) = js_eq a b
@@ -25436,12 +25436,12 @@ instance PFromJSVal WebKitCSSRegionRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitCSSRegionRule where
-  toJSRef = return . unWebKitCSSRegionRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitCSSRegionRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitCSSRegionRule where
-  fromJSRef = return . fmap WebKitCSSRegionRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitCSSRegionRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule WebKitCSSRegionRule
 instance IsGObject WebKitCSSRegionRule where
@@ -25465,7 +25465,7 @@ foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCS
 --     * "GHCJS.DOM.CSSValue"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue Mozilla WebKitCSSTransformValue documentation>
-newtype WebKitCSSTransformValue = WebKitCSSTransformValue { unWebKitCSSTransformValue :: JSRef }
+newtype WebKitCSSTransformValue = WebKitCSSTransformValue { unWebKitCSSTransformValue :: JSVal }
 
 instance Eq (WebKitCSSTransformValue) where
   (WebKitCSSTransformValue a) == (WebKitCSSTransformValue b) = js_eq a b
@@ -25479,12 +25479,12 @@ instance PFromJSVal WebKitCSSTransformValue where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitCSSTransformValue where
-  toJSRef = return . unWebKitCSSTransformValue
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitCSSTransformValue
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitCSSTransformValue where
-  fromJSRef = return . fmap WebKitCSSTransformValue . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitCSSTransformValue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSValueList WebKitCSSTransformValue
 instance IsCSSValue WebKitCSSTransformValue
@@ -25508,7 +25508,7 @@ foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebK
 --     * "GHCJS.DOM.CSSRule"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSViewportRule Mozilla WebKitCSSViewportRule documentation>
-newtype WebKitCSSViewportRule = WebKitCSSViewportRule { unWebKitCSSViewportRule :: JSRef }
+newtype WebKitCSSViewportRule = WebKitCSSViewportRule { unWebKitCSSViewportRule :: JSVal }
 
 instance Eq (WebKitCSSViewportRule) where
   (WebKitCSSViewportRule a) == (WebKitCSSViewportRule b) = js_eq a b
@@ -25522,12 +25522,12 @@ instance PFromJSVal WebKitCSSViewportRule where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitCSSViewportRule where
-  toJSRef = return . unWebKitCSSViewportRule
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitCSSViewportRule
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitCSSViewportRule where
-  fromJSRef = return . fmap WebKitCSSViewportRule . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitCSSViewportRule . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsCSSRule WebKitCSSViewportRule
 instance IsGObject WebKitCSSViewportRule where
@@ -25550,7 +25550,7 @@ foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKit
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow Mozilla WebKitNamedFlow documentation>
-newtype WebKitNamedFlow = WebKitNamedFlow { unWebKitNamedFlow :: JSRef }
+newtype WebKitNamedFlow = WebKitNamedFlow { unWebKitNamedFlow :: JSVal }
 
 instance Eq (WebKitNamedFlow) where
 (WebKitNamedFlow a) == (WebKitNamedFlow b) = js_eq a b
@@ -25564,12 +25564,12 @@ instance PFromJSVal WebKitNamedFlow where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitNamedFlow where
-  toJSRef = return . unWebKitNamedFlow
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitNamedFlow
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitNamedFlow where
-  fromJSRef = return . fmap WebKitNamedFlow . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitNamedFlow . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget WebKitNamedFlow
 instance IsGObject WebKitNamedFlow where
@@ -25591,7 +25591,7 @@ type IsWebKitNamedFlow o = WebKitNamedFlowClass o
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamespace Mozilla WebKitNamespace documentation>
-newtype WebKitNamespace = WebKitNamespace { unWebKitNamespace :: JSRef }
+newtype WebKitNamespace = WebKitNamespace { unWebKitNamespace :: JSVal }
 
 instance Eq (WebKitNamespace) where
   (WebKitNamespace a) == (WebKitNamespace b) = js_eq a b
@@ -25605,12 +25605,12 @@ instance PFromJSVal WebKitNamespace where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitNamespace where
-  toJSRef = return . unWebKitNamespace
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitNamespace
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitNamespace where
-  fromJSRef = return . fmap WebKitNamespace . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitNamespace . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitNamespace where
   toGObject = GObject . unWebKitNamespace
@@ -25632,7 +25632,7 @@ foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamesp
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPlaybackTargetAvailabilityEvent Mozilla WebKitPlaybackTargetAvailabilityEvent documentation>
-newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailabilityEvent { unWebKitPlaybackTargetAvailabilityEvent :: JSRef }
+newtype WebKitPlaybackTargetAvailabilityEvent = WebKitPlaybackTargetAvailabilityEvent { unWebKitPlaybackTargetAvailabilityEvent :: JSVal }
 
 instance Eq (WebKitPlaybackTargetAvailabilityEvent) where
   (WebKitPlaybackTargetAvailabilityEvent a) == (WebKitPlaybackTargetAvailabilityEvent b) = js_eq a b
@@ -25646,12 +25646,12 @@ instance PFromJSVal WebKitPlaybackTargetAvailabilityEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitPlaybackTargetAvailabilityEvent where
-  toJSRef = return . unWebKitPlaybackTargetAvailabilityEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitPlaybackTargetAvailabilityEvent where
-  fromJSRef = return . fmap WebKitPlaybackTargetAvailabilityEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitPlaybackTargetAvailabilityEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent WebKitPlaybackTargetAvailabilityEvent
 instance IsGObject WebKitPlaybackTargetAvailabilityEvent where
@@ -25671,7 +25671,7 @@ foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPoint Mozilla WebKitPoint documentation>
-newtype WebKitPoint = WebKitPoint { unWebKitPoint :: JSRef }
+newtype WebKitPoint = WebKitPoint { unWebKitPoint :: JSVal }
 
 instance Eq (WebKitPoint) where
   (WebKitPoint a) == (WebKitPoint b) = js_eq a b
@@ -25685,12 +25685,12 @@ instance PFromJSVal WebKitPoint where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitPoint where
-  toJSRef = return . unWebKitPoint
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitPoint
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitPoint where
-  fromJSRef = return . fmap WebKitPoint . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitPoint . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitPoint where
   toGObject = GObject . unWebKitPoint
@@ -25714,7 +25714,7 @@ type IsWebKitPoint o = WebKitPointClass o
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent Mozilla WebKitTransitionEvent documentation>
-newtype WebKitTransitionEvent = WebKitTransitionEvent { unWebKitTransitionEvent :: JSRef }
+newtype WebKitTransitionEvent = WebKitTransitionEvent { unWebKitTransitionEvent :: JSVal }
 
 instance Eq (WebKitTransitionEvent) where
   (WebKitTransitionEvent a) == (WebKitTransitionEvent b) = js_eq a b
@@ -25728,12 +25728,12 @@ instance PFromJSVal WebKitTransitionEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebKitTransitionEvent where
-  toJSRef = return . unWebKitTransitionEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebKitTransitionEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebKitTransitionEvent where
-  fromJSRef = return . fmap WebKitTransitionEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebKitTransitionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEvent WebKitTransitionEvent
 instance IsGObject WebKitTransitionEvent where
@@ -25756,7 +25756,7 @@ foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKit
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation>
-newtype WebSocket = WebSocket { unWebSocket :: JSRef }
+newtype WebSocket = WebSocket { unWebSocket :: JSVal }
 
 instance Eq (WebSocket) where
   (WebSocket a) == (WebSocket b) = js_eq a b
@@ -25770,12 +25770,12 @@ instance PFromJSVal WebSocket where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WebSocket where
-  toJSRef = return . unWebSocket
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWebSocket
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WebSocket where
-  fromJSRef = return . fmap WebSocket . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WebSocket . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget WebSocket
 instance IsGObject WebSocket where
@@ -25800,7 +25800,7 @@ foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket :: GType
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent Mozilla WheelEvent documentation>
-newtype WheelEvent = WheelEvent { unWheelEvent :: JSRef }
+newtype WheelEvent = WheelEvent { unWheelEvent :: JSVal }
 
 instance Eq (WheelEvent) where
   (WheelEvent a) == (WheelEvent b) = js_eq a b
@@ -25814,12 +25814,12 @@ instance PFromJSVal WheelEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WheelEvent where
-  toJSRef = return . unWheelEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWheelEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WheelEvent where
-  fromJSRef = return . fmap WheelEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WheelEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsMouseEvent WheelEvent
 instance IsUIEvent WheelEvent
@@ -25848,7 +25848,7 @@ type IsWheelEvent o = WheelEventClass o
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Window Mozilla Window documentation>
-newtype Window = Window { unWindow :: JSRef }
+newtype Window = Window { unWindow :: JSVal }
 
 instance Eq (Window) where
   (Window a) == (Window b) = js_eq a b
@@ -25862,12 +25862,12 @@ instance PFromJSVal Window where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Window where
-  toJSRef = return . unWindow
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWindow
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Window where
-  fromJSRef = return . fmap Window . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Window . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget Window
 instance IsGObject Window where
@@ -25889,7 +25889,7 @@ type IsWindow o = WindowClass o
 -- | Functions for this inteface are in "GHCJS.DOM.WindowBase64".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64 Mozilla WindowBase64 documentation>
-newtype WindowBase64 = WindowBase64 { unWindowBase64 :: JSRef }
+newtype WindowBase64 = WindowBase64 { unWindowBase64 :: JSVal }
 
 instance Eq (WindowBase64) where
   (WindowBase64 a) == (WindowBase64 b) = js_eq a b
@@ -25903,12 +25903,12 @@ instance PFromJSVal WindowBase64 where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WindowBase64 where
-  toJSRef = return . unWindowBase64
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWindowBase64
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WindowBase64 where
-  fromJSRef = return . fmap WindowBase64 . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WindowBase64 . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WindowBase64 where
   toGObject = GObject . unWindowBase64
@@ -25927,7 +25927,7 @@ foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64 ::
 -- | Functions for this inteface are in "GHCJS.DOM.WindowTimers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers Mozilla WindowTimers documentation>
-newtype WindowTimers = WindowTimers { unWindowTimers :: JSRef }
+newtype WindowTimers = WindowTimers { unWindowTimers :: JSVal }
 
 instance Eq (WindowTimers) where
   (WindowTimers a) == (WindowTimers b) = js_eq a b
@@ -25941,12 +25941,12 @@ instance PFromJSVal WindowTimers where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WindowTimers where
-  toJSRef = return . unWindowTimers
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWindowTimers
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WindowTimers where
-  fromJSRef = return . fmap WindowTimers . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WindowTimers . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WindowTimers where
   toGObject = GObject . unWindowTimers
@@ -25968,7 +25968,7 @@ foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers ::
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Worker Mozilla Worker documentation>
-newtype Worker = Worker { unWorker :: JSRef }
+newtype Worker = Worker { unWorker :: JSVal }
 
 instance Eq (Worker) where
   (Worker a) == (Worker b) = js_eq a b
@@ -25982,12 +25982,12 @@ instance PFromJSVal Worker where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal Worker where
-  toJSRef = return . unWorker
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWorker
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal Worker where
-  fromJSRef = return . fmap Worker . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap Worker . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget Worker
 instance IsGObject Worker where
@@ -26010,7 +26010,7 @@ foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker :: GType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope Mozilla WorkerGlobalScope documentation>
-newtype WorkerGlobalScope = WorkerGlobalScope { unWorkerGlobalScope :: JSRef }
+newtype WorkerGlobalScope = WorkerGlobalScope { unWorkerGlobalScope :: JSVal }
 
 instance Eq (WorkerGlobalScope) where
   (WorkerGlobalScope a) == (WorkerGlobalScope b) = js_eq a b
@@ -26024,12 +26024,12 @@ instance PFromJSVal WorkerGlobalScope where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WorkerGlobalScope where
-  toJSRef = return . unWorkerGlobalScope
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWorkerGlobalScope
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WorkerGlobalScope where
-  fromJSRef = return . fmap WorkerGlobalScope . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WorkerGlobalScope . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 class IsEventTarget o => IsWorkerGlobalScope o
 toWorkerGlobalScope :: IsWorkerGlobalScope o => o -> WorkerGlobalScope
@@ -26054,7 +26054,7 @@ foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlob
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation Mozilla WorkerLocation documentation>
-newtype WorkerLocation = WorkerLocation { unWorkerLocation :: JSRef }
+newtype WorkerLocation = WorkerLocation { unWorkerLocation :: JSVal }
 
 instance Eq (WorkerLocation) where
   (WorkerLocation a) == (WorkerLocation b) = js_eq a b
@@ -26068,12 +26068,12 @@ instance PFromJSVal WorkerLocation where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WorkerLocation where
-  toJSRef = return . unWorkerLocation
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWorkerLocation
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WorkerLocation where
-  fromJSRef = return . fmap WorkerLocation . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WorkerLocation . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WorkerLocation where
   toGObject = GObject . unWorkerLocation
@@ -26092,7 +26092,7 @@ foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocatio
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator Mozilla WorkerNavigator documentation>
-newtype WorkerNavigator = WorkerNavigator { unWorkerNavigator :: JSRef }
+newtype WorkerNavigator = WorkerNavigator { unWorkerNavigator :: JSVal }
 
 instance Eq (WorkerNavigator) where
   (WorkerNavigator a) == (WorkerNavigator b) = js_eq a b
@@ -26106,12 +26106,12 @@ instance PFromJSVal WorkerNavigator where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal WorkerNavigator where
-  toJSRef = return . unWorkerNavigator
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unWorkerNavigator
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal WorkerNavigator where
-  fromJSRef = return . fmap WorkerNavigator . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap WorkerNavigator . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject WorkerNavigator where
   toGObject = GObject . unWorkerNavigator
@@ -26133,7 +26133,7 @@ foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNaviga
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest Mozilla XMLHttpRequest documentation>
-newtype XMLHttpRequest = XMLHttpRequest { unXMLHttpRequest :: JSRef }
+newtype XMLHttpRequest = XMLHttpRequest { unXMLHttpRequest :: JSVal }
 
 instance Eq (XMLHttpRequest) where
   (XMLHttpRequest a) == (XMLHttpRequest b) = js_eq a b
@@ -26147,12 +26147,12 @@ instance PFromJSVal XMLHttpRequest where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XMLHttpRequest where
-  toJSRef = return . unXMLHttpRequest
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXMLHttpRequest
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XMLHttpRequest where
-  fromJSRef = return . fmap XMLHttpRequest . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XMLHttpRequest . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget XMLHttpRequest
 instance IsGObject XMLHttpRequest where
@@ -26176,7 +26176,7 @@ foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpReques
 --     * "GHCJS.DOM.Event"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent Mozilla XMLHttpRequestProgressEvent documentation>
-newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent { unXMLHttpRequestProgressEvent :: JSRef }
+newtype XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent { unXMLHttpRequestProgressEvent :: JSVal }
 
 instance Eq (XMLHttpRequestProgressEvent) where
   (XMLHttpRequestProgressEvent a) == (XMLHttpRequestProgressEvent b) = js_eq a b
@@ -26190,12 +26190,12 @@ instance PFromJSVal XMLHttpRequestProgressEvent where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XMLHttpRequestProgressEvent where
-  toJSRef = return . unXMLHttpRequestProgressEvent
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXMLHttpRequestProgressEvent
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XMLHttpRequestProgressEvent where
-  fromJSRef = return . fmap XMLHttpRequestProgressEvent . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XMLHttpRequestProgressEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsProgressEvent XMLHttpRequestProgressEvent
 instance IsEvent XMLHttpRequestProgressEvent
@@ -26219,7 +26219,7 @@ foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gType
 --     * "GHCJS.DOM.EventTarget"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestUpload Mozilla XMLHttpRequestUpload documentation>
-newtype XMLHttpRequestUpload = XMLHttpRequestUpload { unXMLHttpRequestUpload :: JSRef }
+newtype XMLHttpRequestUpload = XMLHttpRequestUpload { unXMLHttpRequestUpload :: JSVal }
 
 instance Eq (XMLHttpRequestUpload) where
   (XMLHttpRequestUpload a) == (XMLHttpRequestUpload b) = js_eq a b
@@ -26233,12 +26233,12 @@ instance PFromJSVal XMLHttpRequestUpload where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XMLHttpRequestUpload where
-  toJSRef = return . unXMLHttpRequestUpload
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXMLHttpRequestUpload
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XMLHttpRequestUpload where
-  fromJSRef = return . fmap XMLHttpRequestUpload . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XMLHttpRequestUpload . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsEventTarget XMLHttpRequestUpload
 instance IsGObject XMLHttpRequestUpload where
@@ -26258,7 +26258,7 @@ foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttp
 -- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation>
-newtype XMLSerializer = XMLSerializer { unXMLSerializer :: JSRef }
+newtype XMLSerializer = XMLSerializer { unXMLSerializer :: JSVal }
 
 instance Eq (XMLSerializer) where
   (XMLSerializer a) == (XMLSerializer b) = js_eq a b
@@ -26272,12 +26272,12 @@ instance PFromJSVal XMLSerializer where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XMLSerializer where
-  toJSRef = return . unXMLSerializer
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXMLSerializer
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XMLSerializer where
-  fromJSRef = return . fmap XMLSerializer . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XMLSerializer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XMLSerializer where
   toGObject = GObject . unXMLSerializer
@@ -26296,7 +26296,7 @@ foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation>
-newtype XPathEvaluator = XPathEvaluator { unXPathEvaluator :: JSRef }
+newtype XPathEvaluator = XPathEvaluator { unXPathEvaluator :: JSVal }
 
 instance Eq (XPathEvaluator) where
   (XPathEvaluator a) == (XPathEvaluator b) = js_eq a b
@@ -26310,12 +26310,12 @@ instance PFromJSVal XPathEvaluator where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XPathEvaluator where
-  toJSRef = return . unXPathEvaluator
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXPathEvaluator
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XPathEvaluator where
-  fromJSRef = return . fmap XPathEvaluator . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XPathEvaluator . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathEvaluator where
   toGObject = GObject . unXPathEvaluator
@@ -26334,7 +26334,7 @@ foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluato
 -- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression Mozilla XPathExpression documentation>
-newtype XPathExpression = XPathExpression { unXPathExpression :: JSRef }
+newtype XPathExpression = XPathExpression { unXPathExpression :: JSVal }
 
 instance Eq (XPathExpression) where
   (XPathExpression a) == (XPathExpression b) = js_eq a b
@@ -26348,12 +26348,12 @@ instance PFromJSVal XPathExpression where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XPathExpression where
-  toJSRef = return . unXPathExpression
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXPathExpression
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XPathExpression where
-  fromJSRef = return . fmap XPathExpression . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XPathExpression . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathExpression where
   toGObject = GObject . unXPathExpression
@@ -26374,7 +26374,7 @@ type IsXPathExpression o = XPathExpressionClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver Mozilla XPathNSResolver documentation>
-newtype XPathNSResolver = XPathNSResolver { unXPathNSResolver :: JSRef }
+newtype XPathNSResolver = XPathNSResolver { unXPathNSResolver :: JSVal }
 
 instance Eq (XPathNSResolver) where
   (XPathNSResolver a) == (XPathNSResolver b) = js_eq a b
@@ -26388,12 +26388,12 @@ instance PFromJSVal XPathNSResolver where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XPathNSResolver where
-  toJSRef = return . unXPathNSResolver
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXPathNSResolver
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XPathNSResolver where
-  fromJSRef = return . fmap XPathNSResolver . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XPathNSResolver . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathNSResolver where
   toGObject = GObject . unXPathNSResolver
@@ -26414,7 +26414,7 @@ type IsXPathNSResolver o = XPathNSResolverClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult Mozilla XPathResult documentation>
-newtype XPathResult = XPathResult { unXPathResult :: JSRef }
+newtype XPathResult = XPathResult { unXPathResult :: JSVal }
 
 instance Eq (XPathResult) where
   (XPathResult a) == (XPathResult b) = js_eq a b
@@ -26428,12 +26428,12 @@ instance PFromJSVal XPathResult where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XPathResult where
-  toJSRef = return . unXPathResult
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXPathResult
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XPathResult where
-  fromJSRef = return . fmap XPathResult . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XPathResult . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathResult where
   toGObject = GObject . unXPathResult
@@ -26454,7 +26454,7 @@ type IsXPathResult o = XPathResultClass o
 -- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation>
-newtype XSLTProcessor = XSLTProcessor { unXSLTProcessor :: JSRef }
+newtype XSLTProcessor = XSLTProcessor { unXSLTProcessor :: JSVal }
 
 instance Eq (XSLTProcessor) where
   (XSLTProcessor a) == (XSLTProcessor b) = js_eq a b
@@ -26468,12 +26468,12 @@ instance PFromJSVal XSLTProcessor where
   {-# INLINE pFromJSVal #-}
 
 instance ToJSVal XSLTProcessor where
-  toJSRef = return . unXSLTProcessor
-  {-# INLINE toJSRef #-}
+  toJSVal = return . unXSLTProcessor
+  {-# INLINE toJSVal #-}
 
 instance FromJSVal XSLTProcessor where
-  fromJSRef = return . fmap XSLTProcessor . maybeJSNullOrUndefined
-  {-# INLINE fromJSRef #-}
+  fromJSVal = return . fmap XSLTProcessor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
 
 instance IsGObject XSLTProcessor where
   toGObject = GObject . unXSLTProcessor

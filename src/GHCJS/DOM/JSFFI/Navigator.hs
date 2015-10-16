@@ -11,7 +11,7 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 
 import Control.Monad.IO.Class (MonadIO(..))
 
-import GHCJS.Prim (JSRef(..))
+import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.NavigatorUserMediaError (throwUserMediaException)
@@ -25,8 +25,8 @@ foreign import javascript interruptible
 getUserMedia' :: MonadIO m => Navigator -> Maybe Dictionary -> m (Either NavigatorUserMediaError MediaStream)
 getUserMedia' self options = liftIO . IO $ \s# ->
       case js_getUserMedia self (maybeToNullable options) s# of
-          (# s2#, False, error #) -> (# s2#, Left  (NavigatorUserMediaError (JSRef error)) #)
-          (# s2#, True,  ms    #) -> (# s2#, Right (MediaStream             (JSRef ms  )) #)
+          (# s2#, False, error #) -> (# s2#, Left  (NavigatorUserMediaError (JSVal error)) #)
+          (# s2#, True,  ms    #) -> (# s2#, Right (MediaStream             (JSVal ms  )) #)
 
 getUserMedia :: MonadIO m => Navigator -> Maybe Dictionary -> m MediaStream
 getUserMedia self options = getUserMedia' self options >>= either throwUserMediaException return

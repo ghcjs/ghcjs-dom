@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaStreamTrackSourcesCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -30,7 +30,7 @@ newMediaStreamTrackSourcesCallback callback
       (MediaStreamTrackSourcesCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ sources ->
-              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+              fromJSValUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 newMediaStreamTrackSourcesCallbackSync ::
@@ -42,7 +42,7 @@ newMediaStreamTrackSourcesCallbackSync callback
       (MediaStreamTrackSourcesCallback <$>
          syncCallback1 ContinueAsync
            (\ sources ->
-              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+              fromJSValUnchecked sources >>= \ sources' -> callback sources'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackSourcesCallback Mozilla MediaStreamTrackSourcesCallback documentation> 
 newMediaStreamTrackSourcesCallbackAsync ::
@@ -54,4 +54,4 @@ newMediaStreamTrackSourcesCallbackAsync callback
       (MediaStreamTrackSourcesCallback <$>
          asyncCallback1
            (\ sources ->
-              fromJSRefUnchecked sources >>= \ sources' -> callback sources'))
+              fromJSValUnchecked sources >>= \ sources' -> callback sources'))

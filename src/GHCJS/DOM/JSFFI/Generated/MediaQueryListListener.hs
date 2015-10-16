@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaQueryListListener
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -26,7 +26,7 @@ newMediaQueryListListener callback
   = liftIO
       (MediaQueryListListener <$>
          syncCallback1 ThrowWouldBlock
-           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+           (\ list -> fromJSValUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
 newMediaQueryListListenerSync ::
@@ -36,7 +36,7 @@ newMediaQueryListListenerSync callback
   = liftIO
       (MediaQueryListListener <$>
          syncCallback1 ContinueAsync
-           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+           (\ list -> fromJSValUnchecked list >>= \ list' -> callback list'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryListListener Mozilla MediaQueryListListener documentation> 
 newMediaQueryListListenerAsync ::
@@ -46,4 +46,4 @@ newMediaQueryListListenerAsync callback
   = liftIO
       (MediaQueryListListener <$>
          asyncCallback1
-           (\ list -> fromJSRefUnchecked list >>= \ list' -> callback list'))
+           (\ list -> fromJSValUnchecked list >>= \ list' -> callback list'))

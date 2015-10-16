@@ -22,11 +22,11 @@ module GHCJS.DOM.JSFFI.Generated.Navigator
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -36,12 +36,12 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"getGamepads\"]()"
-        js_getGamepads :: Navigator -> IO JSRef
+        js_getGamepads :: Navigator -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getGamepads Mozilla Navigator.getGamepads documentation> 
 getGamepads :: (MonadIO m) => Navigator -> m [Maybe Gamepad]
 getGamepads self
-  = liftIO ((js_getGamepads (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getGamepads (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"webkitGetUserMedia\"]($2, $3,\n$4)" js_webkitGetUserMedia ::
@@ -110,13 +110,13 @@ unregisterProtocolHandler self scheme url
          (toJSString url))
  
 foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
-        js_vibratePattern :: Navigator -> JSRef -> IO Bool
+        js_vibratePattern :: Navigator -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
 vibratePattern :: (MonadIO m) => Navigator -> [Word] -> m Bool
 vibratePattern self pattern'
   = liftIO
-      (toJSRef pattern' >>=
+      (toJSVal pattern' >>=
          \ pattern'' -> js_vibratePattern (self) pattern'')
  
 foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"

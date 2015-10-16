@@ -8,11 +8,11 @@ module GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -37,20 +37,20 @@ copyText ::
 copyText self text = liftIO (js_copyText (self) (toJSString text))
  
 foreign import javascript unsafe "$1[\"inspect\"]($2, $3)"
-        js_inspect :: CommandLineAPIHost -> JSRef -> JSRef -> IO ()
+        js_inspect :: CommandLineAPIHost -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspect Mozilla CommandLineAPIHost.inspect documentation> 
 inspect ::
-        (MonadIO m) => CommandLineAPIHost -> JSRef -> JSRef -> m ()
+        (MonadIO m) => CommandLineAPIHost -> JSVal -> JSVal -> m ()
 inspect self objectId hints
   = liftIO (js_inspect (self) objectId hints)
  
 foreign import javascript unsafe "$1[\"inspectedObject\"]($2)"
-        js_inspectedObject :: CommandLineAPIHost -> Int -> IO JSRef
+        js_inspectedObject :: CommandLineAPIHost -> Int -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspectedObject Mozilla CommandLineAPIHost.inspectedObject documentation> 
 inspectedObject ::
-                (MonadIO m) => CommandLineAPIHost -> Int -> m JSRef
+                (MonadIO m) => CommandLineAPIHost -> Int -> m JSVal
 inspectedObject self num = liftIO (js_inspectedObject (self) num)
  
 foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
@@ -67,21 +67,21 @@ getEventListeners self node
          (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"databaseId\"]($2)"
-        js_databaseId :: CommandLineAPIHost -> JSRef -> IO JSString
+        js_databaseId :: CommandLineAPIHost -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.databaseId Mozilla CommandLineAPIHost.databaseId documentation> 
 databaseId ::
            (MonadIO m, FromJSString result) =>
-             CommandLineAPIHost -> JSRef -> m result
+             CommandLineAPIHost -> JSVal -> m result
 databaseId self database
   = liftIO (fromJSString <$> (js_databaseId (self) database))
  
 foreign import javascript unsafe "$1[\"storageId\"]($2)"
-        js_storageId :: CommandLineAPIHost -> JSRef -> IO JSString
+        js_storageId :: CommandLineAPIHost -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.storageId Mozilla CommandLineAPIHost.storageId documentation> 
 storageId ::
           (MonadIO m, FromJSString result) =>
-            CommandLineAPIHost -> JSRef -> m result
+            CommandLineAPIHost -> JSVal -> m result
 storageId self storage
   = liftIO (fromJSString <$> (js_storageId (self) storage))

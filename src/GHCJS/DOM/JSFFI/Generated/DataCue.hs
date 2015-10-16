@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.DataCue
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -29,12 +29,12 @@ newDataCue = liftIO (js_newDataCue)
  
 foreign import javascript unsafe
         "new window[\"WebKitDataCue\"]($1,\n$2, $3, $4)" js_newDataCue' ::
-        Double -> Double -> JSRef -> JSString -> IO DataCue
+        Double -> Double -> JSVal -> JSString -> IO DataCue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation> 
 newDataCue' ::
             (MonadIO m, ToJSString type') =>
-              Double -> Double -> JSRef -> type' -> m DataCue
+              Double -> Double -> JSVal -> type' -> m DataCue
 newDataCue' startTime endTime value type'
   = liftIO
       (js_newDataCue' startTime endTime value (toJSString type'))
@@ -57,17 +57,17 @@ getData :: (MonadIO m) => DataCue -> m (Maybe ArrayBuffer)
 getData self = liftIO (nullableToMaybe <$> (js_getData (self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: DataCue -> JSRef -> IO ()
+        :: DataCue -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.value Mozilla WebKitDataCue.value documentation> 
-setValue :: (MonadIO m) => DataCue -> JSRef -> m ()
+setValue :: (MonadIO m) => DataCue -> JSVal -> m ()
 setValue self val = liftIO (js_setValue (self) val)
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        DataCue -> IO JSRef
+        DataCue -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue.value Mozilla WebKitDataCue.value documentation> 
-getValue :: (MonadIO m) => DataCue -> m JSRef
+getValue :: (MonadIO m) => DataCue -> m JSVal
 getValue self = liftIO (js_getValue (self))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::

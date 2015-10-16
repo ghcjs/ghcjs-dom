@@ -70,11 +70,11 @@ module GHCJS.DOM.JSFFI.Generated.Window
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -167,12 +167,12 @@ open self url name options
  
 foreign import javascript unsafe
         "$1[\"showModalDialog\"]($2, $3,\n$4)" js_showModalDialog ::
-        Window -> JSString -> JSRef -> JSString -> IO JSRef
+        Window -> JSString -> JSVal -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.showModalDialog Mozilla Window.showModalDialog documentation> 
 showModalDialog ::
                 (MonadIO m, ToJSString url, ToJSString featureArgs) =>
-                  Window -> url -> JSRef -> featureArgs -> m JSRef
+                  Window -> url -> JSVal -> featureArgs -> m JSVal
 showModalDialog self url dialogArgs featureArgs
   = liftIO
       (js_showModalDialog (self) (toJSString url) dialogArgs

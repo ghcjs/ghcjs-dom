@@ -75,11 +75,11 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -187,21 +187,21 @@ createRadialGradient self x0 y0 r0 x1 y1 r1
          (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
  
 foreign import javascript unsafe "$1[\"setLineDash\"]($2)"
-        js_setLineDash :: CanvasRenderingContext2D -> JSRef -> IO ()
+        js_setLineDash :: CanvasRenderingContext2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.setLineDash Mozilla CanvasRenderingContext2D.setLineDash documentation> 
 setLineDash ::
             (MonadIO m) => CanvasRenderingContext2D -> [Float] -> m ()
 setLineDash self dash
-  = liftIO (toJSRef dash >>= \ dash' -> js_setLineDash (self) dash')
+  = liftIO (toJSVal dash >>= \ dash' -> js_setLineDash (self) dash')
  
 foreign import javascript unsafe "$1[\"getLineDash\"]()"
-        js_getLineDash :: CanvasRenderingContext2D -> IO JSRef
+        js_getLineDash :: CanvasRenderingContext2D -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getLineDash Mozilla CanvasRenderingContext2D.getLineDash documentation> 
 getLineDash :: (MonadIO m) => CanvasRenderingContext2D -> m [Float]
 getLineDash self
-  = liftIO ((js_getLineDash (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getLineDash (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"clearRect\"]($2, $3, $4, $5)" js_clearRect ::
@@ -327,7 +327,7 @@ arc self x y radius startAngle endAngle anticlockwise
       (js_arc (self) x y radius startAngle endAngle anticlockwise)
  
 foreign import javascript unsafe "$1[\"fill\"]($2, $3)" js_fillPath
-        :: CanvasRenderingContext2D -> Nullable Path2D -> JSRef -> IO ()
+        :: CanvasRenderingContext2D -> Nullable Path2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fill Mozilla CanvasRenderingContext2D.fill documentation> 
 fillPath ::
@@ -336,7 +336,7 @@ fillPath ::
              Maybe Path2D -> CanvasWindingRule -> m ()
 fillPath self path winding
   = liftIO
-      (js_fillPath (self) (maybeToNullable path) (pToJSRef winding))
+      (js_fillPath (self) (maybeToNullable path) (pToJSVal winding))
  
 foreign import javascript unsafe "$1[\"stroke\"]($2)" js_strokePath
         :: CanvasRenderingContext2D -> Nullable Path2D -> IO ()
@@ -348,7 +348,7 @@ strokePath self path
   = liftIO (js_strokePath (self) (maybeToNullable path))
  
 foreign import javascript unsafe "$1[\"clip\"]($2, $3)" js_clipPath
-        :: CanvasRenderingContext2D -> Nullable Path2D -> JSRef -> IO ()
+        :: CanvasRenderingContext2D -> Nullable Path2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.clip Mozilla CanvasRenderingContext2D.clip documentation> 
 clipPath ::
@@ -357,16 +357,16 @@ clipPath ::
              Maybe Path2D -> CanvasWindingRule -> m ()
 clipPath self path winding
   = liftIO
-      (js_clipPath (self) (maybeToNullable path) (pToJSRef winding))
+      (js_clipPath (self) (maybeToNullable path) (pToJSVal winding))
  
 foreign import javascript unsafe "$1[\"fill\"]($2)" js_fill ::
-        CanvasRenderingContext2D -> JSRef -> IO ()
+        CanvasRenderingContext2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fill Mozilla CanvasRenderingContext2D.fill documentation> 
 fill ::
      (MonadIO m) =>
        CanvasRenderingContext2D -> CanvasWindingRule -> m ()
-fill self winding = liftIO (js_fill (self) (pToJSRef winding))
+fill self winding = liftIO (js_fill (self) (pToJSVal winding))
  
 foreign import javascript unsafe "$1[\"stroke\"]()" js_stroke ::
         CanvasRenderingContext2D -> IO ()
@@ -376,19 +376,19 @@ stroke :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 stroke self = liftIO (js_stroke (self))
  
 foreign import javascript unsafe "$1[\"clip\"]($2)" js_clip ::
-        CanvasRenderingContext2D -> JSRef -> IO ()
+        CanvasRenderingContext2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.clip Mozilla CanvasRenderingContext2D.clip documentation> 
 clip ::
      (MonadIO m) =>
        CanvasRenderingContext2D -> CanvasWindingRule -> m ()
-clip self winding = liftIO (js_clip (self) (pToJSRef winding))
+clip self winding = liftIO (js_clip (self) (pToJSVal winding))
  
 foreign import javascript unsafe
         "($1[\"isPointInPath\"]($2, $3, $4,\n$5) ? 1 : 0)"
         js_isPointInPathPath ::
         CanvasRenderingContext2D ->
-          Nullable Path2D -> Float -> Float -> JSRef -> IO Bool
+          Nullable Path2D -> Float -> Float -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInPath Mozilla CanvasRenderingContext2D.isPointInPath documentation> 
 isPointInPathPath ::
@@ -398,7 +398,7 @@ isPointInPathPath ::
 isPointInPathPath self path x y winding
   = liftIO
       (js_isPointInPathPath (self) (maybeToNullable path) x y
-         (pToJSRef winding))
+         (pToJSVal winding))
  
 foreign import javascript unsafe
         "($1[\"isPointInStroke\"]($2, $3,\n$4) ? 1 : 0)"
@@ -416,7 +416,7 @@ isPointInStrokePath self path x y
  
 foreign import javascript unsafe
         "($1[\"isPointInPath\"]($2, $3,\n$4) ? 1 : 0)" js_isPointInPath ::
-        CanvasRenderingContext2D -> Float -> Float -> JSRef -> IO Bool
+        CanvasRenderingContext2D -> Float -> Float -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInPath Mozilla CanvasRenderingContext2D.isPointInPath documentation> 
 isPointInPath ::
@@ -424,7 +424,7 @@ isPointInPath ::
                 CanvasRenderingContext2D ->
                   Float -> Float -> CanvasWindingRule -> m Bool
 isPointInPath self x y winding
-  = liftIO (js_isPointInPath (self) x y (pToJSRef winding))
+  = liftIO (js_isPointInPath (self) x y (pToJSVal winding))
  
 foreign import javascript unsafe
         "($1[\"isPointInStroke\"]($2,\n$3) ? 1 : 0)" js_isPointInStroke ::

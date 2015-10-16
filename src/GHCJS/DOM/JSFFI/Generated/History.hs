@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.History
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -41,24 +41,24 @@ go :: (MonadIO m) => History -> Int -> m ()
 go self distance = liftIO (js_go (self) distance)
  
 foreign import javascript unsafe "$1[\"pushState\"]($2, $3, $4)"
-        js_pushState :: History -> JSRef -> JSString -> JSString -> IO ()
+        js_pushState :: History -> JSVal -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.pushState Mozilla History.pushState documentation> 
 pushState ::
           (MonadIO m, ToJSString title, ToJSString url) =>
-            History -> JSRef -> title -> url -> m ()
+            History -> JSVal -> title -> url -> m ()
 pushState self data' title url
   = liftIO
       (js_pushState (self) data' (toJSString title) (toJSString url))
  
 foreign import javascript unsafe "$1[\"replaceState\"]($2, $3, $4)"
         js_replaceState ::
-        History -> JSRef -> JSString -> JSString -> IO ()
+        History -> JSVal -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.replaceState Mozilla History.replaceState documentation> 
 replaceState ::
              (MonadIO m, ToJSString title, ToJSString url) =>
-               History -> JSRef -> title -> url -> m ()
+               History -> JSVal -> title -> url -> m ()
 replaceState self data' title url
   = liftIO
       (js_replaceState (self) data' (toJSString title) (toJSString url))

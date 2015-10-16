@@ -14,8 +14,8 @@ module GHCJS.DOM.JSFFI.XMLHttpRequest (
 import Control.Monad.IO.Class (MonadIO(..))
 import Control.Exception (Exception(..), throwIO)
 
-import GHCJS.Types (JSRef)
-import GHCJS.Marshal.Internal (PToJSRef(..))
+import GHCJS.Types (JSVal)
+import GHCJS.Marshal.Internal (PToJSVal(..))
 import GHCJS.Foreign (jsNull)
 import GHCJS.DOM.Types
 
@@ -31,7 +31,7 @@ throwXHRError 0 = return ()
 throwXHRError 1 = throwIO XHRAborted
 throwXHRError 2 = throwIO XHRError
 
-foreign import javascript interruptible "h$dom$sendXHR($1, $2, $c);" js_send :: XMLHttpRequest -> JSRef -> IO Int
+foreign import javascript interruptible "h$dom$sendXHR($1, $2, $c);" js_send :: XMLHttpRequest -> JSVal -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 send :: (MonadIO m) => XMLHttpRequest -> m ()
@@ -39,7 +39,7 @@ send self = liftIO $ js_send self jsNull >>= throwXHRError
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendString :: (MonadIO m, ToJSString str) => XMLHttpRequest -> str -> m ()
-sendString self str = liftIO $ js_send self (pToJSRef str) >>= throwXHRError
+sendString self str = liftIO $ js_send self (pToJSVal str) >>= throwXHRError
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendArrayBuffer :: (MonadIO m, IsArrayBufferView view) => XMLHttpRequest -> view -> m ()

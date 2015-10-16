@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -52,13 +52,13 @@ resume :: (MonadIO m) => SpeechSynthesis -> m ()
 resume self = liftIO (js_resume (self))
  
 foreign import javascript unsafe "$1[\"getVoices\"]()" js_getVoices
-        :: SpeechSynthesis -> IO JSRef
+        :: SpeechSynthesis -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.getVoices Mozilla SpeechSynthesis.getVoices documentation> 
 getVoices ::
           (MonadIO m) => SpeechSynthesis -> m [Maybe SpeechSynthesisVoice]
 getVoices self
-  = liftIO ((js_getVoices (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getVoices (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "($1[\"pending\"] ? 1 : 0)"
         js_getPending :: SpeechSynthesis -> IO Bool

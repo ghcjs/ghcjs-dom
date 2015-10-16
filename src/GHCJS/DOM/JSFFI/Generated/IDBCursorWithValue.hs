@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.IDBCursorWithValue
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -19,8 +19,8 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        IDBCursorWithValue -> IO JSRef
+        IDBCursorWithValue -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursorWithValue.value Mozilla IDBCursorWithValue.value documentation> 
-getValue :: (MonadIO m) => IDBCursorWithValue -> m JSRef
+getValue :: (MonadIO m) => IDBCursorWithValue -> m JSVal
 getValue self = liftIO (js_getValue (self))

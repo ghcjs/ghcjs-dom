@@ -15,13 +15,13 @@ import GHCJS.Foreign.Callback.Internal
 newtype EventName t e = EventName DOMString
 newtype SaferEventListener t e = SaferEventListener EventListener
 
-instance PToJSRef (SaferEventListener t e) where
-    pToJSRef (SaferEventListener l) = pToJSRef l
-    {-# INLINE pToJSRef #-}
+instance PToJSVal (SaferEventListener t e) where
+    pToJSVal (SaferEventListener l) = pToJSVal l
+    {-# INLINE pToJSVal #-}
 
-instance PFromJSRef (SaferEventListener t e) where
-    pFromJSRef = SaferEventListener . pFromJSRef
-    {-# INLINE pFromJSRef #-}
+instance PFromJSVal (SaferEventListener t e) where
+    pFromJSVal = SaferEventListener . pFromJSVal
+    {-# INLINE pFromJSVal #-}
 
 unsafeEventName :: DOMString -> EventName t e
 unsafeEventName = EventName

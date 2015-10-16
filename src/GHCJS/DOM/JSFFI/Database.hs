@@ -17,11 +17,11 @@ import Data.Maybe (fromJust, maybe)
 import Control.Monad.IO.Class (MonadIO(..))
 import Control.Exception (Exception, bracket)
 
-import GHCJS.Types (JSRef, JSString)
+import GHCJS.Types (JSVal, JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (OnBlocked(..))
-import GHCJS.Marshal (fromJSRef)
-import GHCJS.Marshal.Pure (pToJSRef)
+import GHCJS.Marshal (fromJSVal)
+import GHCJS.Marshal.Pure (pToJSVal)
 import GHCJS.Foreign.Callback (releaseCallback)
 import GHCJS.DOM.Types
 
@@ -43,7 +43,7 @@ changeVersion' self oldVersion newVersion Nothing = liftIO $ nullableToMaybe <$>
     js_changeVersion self (toJSString oldVersion) (toJSString newVersion) (Nullable jsNull)
 changeVersion' self oldVersion newVersion (Just callback) = liftIO $ nullableToMaybe <$>
     withSQLTransactionCallback callback
-        (js_changeVersion self (toJSString oldVersion) (toJSString newVersion) . Nullable . pToJSRef)
+        (js_changeVersion self (toJSString oldVersion) (toJSString newVersion) . Nullable . pToJSVal)
 
 changeVersion :: (MonadIO m, ToJSString oldVersion, ToJSString newVersion) =>
                  Database -> oldVersion -> newVersion -> Maybe (SQLTransaction -> IO ()) -> m ()
