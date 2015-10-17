@@ -171,11 +171,11 @@ module GHCJS.DOM.JSFFI.Generated.Internals
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -209,11 +209,11 @@ nodeNeedsStyleRecalc self node
          (maybeToNullable (fmap toNode node)))
  
 foreign import javascript unsafe "$1[\"description\"]($2)"
-        js_description :: Internals -> JSRef -> IO JSString
+        js_description :: Internals -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.description Mozilla Internals.description documentation> 
 description ::
-            (MonadIO m, FromJSString result) => Internals -> JSRef -> m result
+            (MonadIO m, FromJSString result) => Internals -> JSVal -> m result
 description self value
   = liftIO (fromJSString <$> (js_description (self) value))
  
@@ -604,7 +604,7 @@ selectColorInColorChooser self element colorValue
  
 foreign import javascript unsafe
         "$1[\"formControlStateOfPreviousHistoryItem\"]()"
-        js_formControlStateOfPreviousHistoryItem :: Internals -> IO JSRef
+        js_formControlStateOfPreviousHistoryItem :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.formControlStateOfPreviousHistoryItem Mozilla Internals.formControlStateOfPreviousHistoryItem documentation> 
 formControlStateOfPreviousHistoryItem ::
@@ -612,12 +612,12 @@ formControlStateOfPreviousHistoryItem ::
 formControlStateOfPreviousHistoryItem self
   = liftIO
       ((js_formControlStateOfPreviousHistoryItem (self)) >>=
-         fromJSRefUnchecked)
+         fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"setFormControlStateOfPreviousHistoryItem\"]($2)"
         js_setFormControlStateOfPreviousHistoryItem ::
-        Internals -> JSRef -> IO ()
+        Internals -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setFormControlStateOfPreviousHistoryItem Mozilla Internals.setFormControlStateOfPreviousHistoryItem documentation> 
 setFormControlStateOfPreviousHistoryItem ::
@@ -625,7 +625,7 @@ setFormControlStateOfPreviousHistoryItem ::
                                            Internals -> [values] -> m ()
 setFormControlStateOfPreviousHistoryItem self values
   = liftIO
-      (toJSRef values >>=
+      (toJSVal values >>=
          \ values' ->
            js_setFormControlStateOfPreviousHistoryItem (self) values')
  
@@ -989,18 +989,18 @@ lastSpellCheckProcessedSequence self
   = liftIO (js_lastSpellCheckProcessedSequence (self))
  
 foreign import javascript unsafe "$1[\"userPreferredLanguages\"]()"
-        js_userPreferredLanguages :: Internals -> IO JSRef
+        js_userPreferredLanguages :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.userPreferredLanguages Mozilla Internals.userPreferredLanguages documentation> 
 userPreferredLanguages ::
                        (MonadIO m, FromJSString result) => Internals -> m [result]
 userPreferredLanguages self
   = liftIO
-      ((js_userPreferredLanguages (self)) >>= fromJSRefUnchecked)
+      ((js_userPreferredLanguages (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"setUserPreferredLanguages\"]($2)"
-        js_setUserPreferredLanguages :: Internals -> JSRef -> IO ()
+        js_setUserPreferredLanguages :: Internals -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.setUserPreferredLanguages Mozilla Internals.setUserPreferredLanguages documentation> 
 setUserPreferredLanguages ::
@@ -1008,7 +1008,7 @@ setUserPreferredLanguages ::
                             Internals -> [languages] -> m ()
 setUserPreferredLanguages self languages
   = liftIO
-      (toJSRef languages >>=
+      (toJSVal languages >>=
          \ languages' -> js_setUserPreferredLanguages (self) languages')
  
 foreign import javascript unsafe "$1[\"wheelEventHandlerCount\"]()"
@@ -1065,11 +1065,11 @@ nodesFromRect self document x y topPadding rightPadding
             allowChildFrameContent))
  
 foreign import javascript unsafe "$1[\"parserMetaData\"]($2)"
-        js_parserMetaData :: Internals -> JSRef -> IO JSString
+        js_parserMetaData :: Internals -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.parserMetaData Mozilla Internals.parserMetaData documentation> 
 parserMetaData ::
-               (MonadIO m, FromJSString result) => Internals -> JSRef -> m result
+               (MonadIO m, FromJSString result) => Internals -> JSVal -> m result
 parserMetaData self func
   = liftIO (fromJSString <$> (js_parserMetaData (self) func))
  
@@ -1347,14 +1347,14 @@ numberOfLiveDocuments self
  
 foreign import javascript unsafe
         "$1[\"consoleMessageArgumentCounts\"]()"
-        js_consoleMessageArgumentCounts :: Internals -> IO JSRef
+        js_consoleMessageArgumentCounts :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.consoleMessageArgumentCounts Mozilla Internals.consoleMessageArgumentCounts documentation> 
 consoleMessageArgumentCounts ::
                              (MonadIO m, FromJSString result) => Internals -> m [result]
 consoleMessageArgumentCounts self
   = liftIO
-      ((js_consoleMessageArgumentCounts (self)) >>= fromJSRefUnchecked)
+      ((js_consoleMessageArgumentCounts (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"openDummyInspectorFrontend\"]($2)"
@@ -1425,22 +1425,22 @@ pageNumber self element pageWidth pageHeight
          pageHeight)
  
 foreign import javascript unsafe "$1[\"shortcutIconURLs\"]()"
-        js_shortcutIconURLs :: Internals -> IO JSRef
+        js_shortcutIconURLs :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shortcutIconURLs Mozilla Internals.shortcutIconURLs documentation> 
 shortcutIconURLs ::
                  (MonadIO m, FromJSString result) => Internals -> m [result]
 shortcutIconURLs self
-  = liftIO ((js_shortcutIconURLs (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_shortcutIconURLs (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"allIconURLs\"]()"
-        js_allIconURLs :: Internals -> IO JSRef
+        js_allIconURLs :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.allIconURLs Mozilla Internals.allIconURLs documentation> 
 allIconURLs ::
             (MonadIO m, FromJSString result) => Internals -> m [result]
 allIconURLs self
-  = liftIO ((js_allIconURLs (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_allIconURLs (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"numberOfPages\"]($2, $3)"
         js_numberOfPages :: Internals -> Double -> Double -> IO Int
@@ -1651,14 +1651,14 @@ memoryInfo self
   = liftIO (nullableToMaybe <$> (js_memoryInfo (self)))
  
 foreign import javascript unsafe "$1[\"getReferencedFilePaths\"]()"
-        js_getReferencedFilePaths :: Internals -> IO JSRef
+        js_getReferencedFilePaths :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.getReferencedFilePaths Mozilla Internals.getReferencedFilePaths documentation> 
 getReferencedFilePaths ::
                        (MonadIO m, FromJSString result) => Internals -> m [result]
 getReferencedFilePaths self
   = liftIO
-      ((js_getReferencedFilePaths (self)) >>= fromJSRefUnchecked)
+      ((js_getReferencedFilePaths (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"startTrackingRepaints\"]()"
         js_startTrackingRepaints :: Internals -> IO ()
@@ -1981,7 +1981,7 @@ initializeMockMediaSource self
 foreign import javascript unsafe
         "$1[\"bufferedSamplesForTrackID\"]($2,\n$3)"
         js_bufferedSamplesForTrackID ::
-        Internals -> Nullable SourceBuffer -> JSString -> IO JSRef
+        Internals -> Nullable SourceBuffer -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.bufferedSamplesForTrackID Mozilla Internals.bufferedSamplesForTrackID documentation> 
 bufferedSamplesForTrackID ::
@@ -1991,7 +1991,7 @@ bufferedSamplesForTrackID self buffer trackID
   = liftIO
       ((js_bufferedSamplesForTrackID (self) (maybeToNullable buffer)
           (toJSString trackID))
-         >>= fromJSRefUnchecked)
+         >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"beginMediaSessionInterruption\"]()"
@@ -2084,13 +2084,13 @@ elementIsBlockingDisplaySleep self element
  
 foreign import javascript unsafe
         "$1[\"installMockPageOverlay\"]($2)" js_installMockPageOverlay ::
-        Internals -> JSRef -> IO ()
+        Internals -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.installMockPageOverlay Mozilla Internals.installMockPageOverlay documentation> 
 installMockPageOverlay ::
                        (MonadIO m) => Internals -> PageOverlayType -> m ()
 installMockPageOverlay self type'
-  = liftIO (js_installMockPageOverlay (self) (pToJSRef type'))
+  = liftIO (js_installMockPageOverlay (self) (pToJSVal type'))
  
 foreign import javascript unsafe
         "$1[\"pageOverlayLayerTreeAsText\"]()"
@@ -2139,10 +2139,10 @@ getWorkerThreadCount :: (MonadIO m) => Internals -> m Word
 getWorkerThreadCount self = liftIO (js_getWorkerThreadCount (self))
  
 foreign import javascript unsafe "$1[\"consoleProfiles\"]"
-        js_getConsoleProfiles :: Internals -> IO JSRef
+        js_getConsoleProfiles :: Internals -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.consoleProfiles Mozilla Internals.consoleProfiles documentation> 
 getConsoleProfiles ::
                    (MonadIO m) => Internals -> m [Maybe ScriptProfile]
 getConsoleProfiles self
-  = liftIO ((js_getConsoleProfiles (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getConsoleProfiles (self)) >>= fromJSValUnchecked)

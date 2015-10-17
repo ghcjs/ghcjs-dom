@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.DOMTokenList
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -42,29 +42,29 @@ contains self token
   = liftIO (js_contains (toDOMTokenList self) (toJSString token))
  
 foreign import javascript unsafe "$1[\"add\"].apply($1, $2)" js_add
-        :: DOMTokenList -> JSRef -> IO ()
+        :: DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.add Mozilla DOMTokenList.add documentation> 
 add ::
     (MonadIO m, IsDOMTokenList self, ToJSString tokens,
-     ToJSRef tokens) =>
+     ToJSVal tokens) =>
       self -> [tokens] -> m ()
 add self tokens
   = liftIO
-      (toJSRef tokens >>=
+      (toJSVal tokens >>=
          \ tokens' -> js_add (toDOMTokenList self) tokens')
  
 foreign import javascript unsafe "$1[\"remove\"].apply($1, $2)"
-        js_remove :: DOMTokenList -> JSRef -> IO ()
+        js_remove :: DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.remove Mozilla DOMTokenList.remove documentation> 
 remove ::
        (MonadIO m, IsDOMTokenList self, ToJSString tokens,
-        ToJSRef tokens) =>
+        ToJSVal tokens) =>
          self -> [tokens] -> m ()
 remove self tokens
   = liftIO
-      (toJSRef tokens >>=
+      (toJSVal tokens >>=
          \ tokens' -> js_remove (toDOMTokenList self) tokens')
  
 foreign import javascript unsafe "($1[\"toggle\"]($2, $3) ? 1 : 0)"

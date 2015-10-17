@@ -11,11 +11,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaStream
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -44,7 +44,7 @@ newMediaStream' stream
  
 foreign import javascript unsafe
         "new window[\"webkitMediaStream\"]($1)" js_newMediaStream'' ::
-        JSRef -> IO MediaStream
+        JSVal -> IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
 newMediaStream'' ::
@@ -52,34 +52,34 @@ newMediaStream'' ::
                    [Maybe tracks] -> m MediaStream
 newMediaStream'' tracks
   = liftIO
-      (toJSRef tracks >>= \ tracks' -> js_newMediaStream'' tracks')
+      (toJSVal tracks >>= \ tracks' -> js_newMediaStream'' tracks')
  
 foreign import javascript unsafe "$1[\"getAudioTracks\"]()"
-        js_getAudioTracks :: MediaStream -> IO JSRef
+        js_getAudioTracks :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getAudioTracks Mozilla webkitMediaStream.getAudioTracks documentation> 
 getAudioTracks ::
                (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getAudioTracks self
-  = liftIO ((js_getAudioTracks (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getAudioTracks (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"getVideoTracks\"]()"
-        js_getVideoTracks :: MediaStream -> IO JSRef
+        js_getVideoTracks :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getVideoTracks Mozilla webkitMediaStream.getVideoTracks documentation> 
 getVideoTracks ::
                (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getVideoTracks self
-  = liftIO ((js_getVideoTracks (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getVideoTracks (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"getTracks\"]()" js_getTracks
-        :: MediaStream -> IO JSRef
+        :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTracks Mozilla webkitMediaStream.getTracks documentation> 
 getTracks ::
           (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getTracks self
-  = liftIO ((js_getTracks (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getTracks (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"addTrack\"]($2)" js_addTrack
         :: MediaStream -> Nullable MediaStreamTrack -> IO ()

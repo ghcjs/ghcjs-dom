@@ -8,11 +8,11 @@ module GHCJS.DOM.JSFFI.Generated.AllVideoCapabilities
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -22,24 +22,24 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"sourceType\"]"
-        js_getSourceType :: AllVideoCapabilities -> IO JSRef
+        js_getSourceType :: AllVideoCapabilities -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.sourceType Mozilla AllVideoCapabilities.sourceType documentation> 
 getSourceType ::
               (MonadIO m, FromJSString result) =>
                 AllVideoCapabilities -> m [result]
 getSourceType self
-  = liftIO ((js_getSourceType (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getSourceType (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"sourceId\"]" js_getSourceId
-        :: AllVideoCapabilities -> IO JSRef
+        :: AllVideoCapabilities -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.sourceId Mozilla AllVideoCapabilities.sourceId documentation> 
 getSourceId ::
             (MonadIO m, FromJSString result) =>
               AllVideoCapabilities -> m [result]
 getSourceId self
-  = liftIO ((js_getSourceId (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getSourceId (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         AllVideoCapabilities -> IO (Nullable CapabilityRange)
@@ -78,11 +78,11 @@ getAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getAspectRatio (self)))
  
 foreign import javascript unsafe "$1[\"facingMode\"]"
-        js_getFacingMode :: AllVideoCapabilities -> IO JSRef
+        js_getFacingMode :: AllVideoCapabilities -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.facingMode Mozilla AllVideoCapabilities.facingMode documentation> 
 getFacingMode ::
               (MonadIO m, FromJSString result) =>
                 AllVideoCapabilities -> m [result]
 getFacingMode self
-  = liftIO ((js_getFacingMode (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getFacingMode (self)) >>= fromJSValUnchecked)

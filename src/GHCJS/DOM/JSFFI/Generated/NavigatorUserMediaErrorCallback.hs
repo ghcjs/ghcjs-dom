@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaErrorCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -30,7 +30,7 @@ newNavigatorUserMediaErrorCallback callback
       (NavigatorUserMediaErrorCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ error ->
-              fromJSRefUnchecked error >>= \ error' -> callback error'))
+              fromJSValUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
 newNavigatorUserMediaErrorCallbackSync ::
@@ -42,7 +42,7 @@ newNavigatorUserMediaErrorCallbackSync callback
       (NavigatorUserMediaErrorCallback <$>
          syncCallback1 ContinueAsync
            (\ error ->
-              fromJSRefUnchecked error >>= \ error' -> callback error'))
+              fromJSValUnchecked error >>= \ error' -> callback error'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaErrorCallback Mozilla NavigatorUserMediaErrorCallback documentation> 
 newNavigatorUserMediaErrorCallbackAsync ::
@@ -54,4 +54,4 @@ newNavigatorUserMediaErrorCallbackAsync callback
       (NavigatorUserMediaErrorCallback <$>
          asyncCallback1
            (\ error ->
-              fromJSRefUnchecked error >>= \ error' -> callback error'))
+              fromJSValUnchecked error >>= \ error' -> callback error'))

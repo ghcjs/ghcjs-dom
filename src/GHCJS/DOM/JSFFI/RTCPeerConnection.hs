@@ -21,7 +21,7 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 
 import Control.Monad.IO.Class (MonadIO(..))
 
-import GHCJS.Prim (JSRef(..))
+import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.DOMError (throwDOMErrorException)
@@ -35,8 +35,8 @@ foreign import javascript interruptible
 createOffer' :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m (Either DOMError RTCSessionDescription)
 createOffer' self offerOptions = liftIO . IO $ \s# ->
     case js_createOffer self (maybeToNullable offerOptions) s# of
-        (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSRef error)) #)
-        (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSRef d    )) #)
+        (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSVal error)) #)
+        (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSVal d    )) #)
 
 createOffer :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m RTCSessionDescription
 createOffer self offerOptions = createOffer' self offerOptions >>= either throwDOMErrorException return
@@ -49,8 +49,8 @@ foreign import javascript interruptible
 createAnswer' :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m (Either DOMError RTCSessionDescription)
 createAnswer' self answerOptions = liftIO . IO $ \s# ->
     case js_createOffer self (maybeToNullable answerOptions) s# of
-        (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSRef error)) #)
-        (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSRef d    )) #)
+        (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSVal error)) #)
+        (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSVal d    )) #)
 
 createAnswer :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m RTCSessionDescription
 createAnswer self answerOptions = createAnswer' self answerOptions >>= either throwDOMErrorException return
@@ -99,8 +99,8 @@ foreign import javascript interruptible
 getStats' :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m (Either DOMError RTCStatsReport)
 getStats' self selector = liftIO . IO $ \s# ->
     case js_getStats self (maybeToNullable $ fmap toMediaStreamTrack selector) s# of
-        (# s2#, False, error #) -> (# s2#, Left  (DOMError       (JSRef error)) #)
-        (# s2#, True,  stats #) -> (# s2#, Right (RTCStatsReport (JSRef stats)) #)
+        (# s2#, False, error #) -> (# s2#, Left  (DOMError       (JSVal error)) #)
+        (# s2#, True,  stats #) -> (# s2#, Right (RTCStatsReport (JSVal stats)) #)
 
 getStats :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m RTCStatsReport
 getStats self selector = getStats' self selector >>= either throwDOMErrorException return

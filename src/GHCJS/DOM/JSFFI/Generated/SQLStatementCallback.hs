@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.SQLStatementCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -28,9 +28,9 @@ newSQLStatementCallback callback
       (SQLStatementCallback <$>
          syncCallback2 ThrowWouldBlock
            (\ transaction resultSet ->
-              fromJSRefUnchecked resultSet >>=
+              fromJSValUnchecked resultSet >>=
                 \ resultSet' ->
-                  fromJSRefUnchecked transaction >>=
+                  fromJSValUnchecked transaction >>=
                     \ transaction' -> callback transaction'
                     resultSet'))
 
@@ -44,9 +44,9 @@ newSQLStatementCallbackSync callback
       (SQLStatementCallback <$>
          syncCallback2 ContinueAsync
            (\ transaction resultSet ->
-              fromJSRefUnchecked resultSet >>=
+              fromJSValUnchecked resultSet >>=
                 \ resultSet' ->
-                  fromJSRefUnchecked transaction >>=
+                  fromJSValUnchecked transaction >>=
                     \ transaction' -> callback transaction'
                     resultSet'))
 
@@ -60,8 +60,8 @@ newSQLStatementCallbackAsync callback
       (SQLStatementCallback <$>
          asyncCallback2
            (\ transaction resultSet ->
-              fromJSRefUnchecked resultSet >>=
+              fromJSValUnchecked resultSet >>=
                 \ resultSet' ->
-                  fromJSRefUnchecked transaction >>=
+                  fromJSValUnchecked transaction >>=
                     \ transaction' -> callback transaction'
                     resultSet'))

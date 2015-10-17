@@ -230,11 +230,11 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -1108,12 +1108,12 @@ getAttribLocation self program name
  
 foreign import javascript unsafe
         "$1[\"getBufferParameter\"]($2, $3)" js_getBufferParameter ::
-        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSRef
+        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getBufferParameter Mozilla WebGLRenderingContextBase.getBufferParameter documentation> 
 getBufferParameter ::
                    (MonadIO m, IsWebGLRenderingContextBase self) =>
-                     self -> GLenum -> GLenum -> m JSRef
+                     self -> GLenum -> GLenum -> m JSVal
 getBufferParameter self target pname
   = liftIO
       (js_getBufferParameter (toWebGLRenderingContextBase self) target
@@ -1143,12 +1143,12 @@ getError self
  
 foreign import javascript unsafe "$1[\"getExtension\"]($2)"
         js_getExtension ::
-        WebGLRenderingContextBase -> JSString -> IO JSRef
+        WebGLRenderingContextBase -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getExtension Mozilla WebGLRenderingContextBase.getExtension documentation> 
 getExtension ::
              (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name) =>
-               self -> name -> m JSRef
+               self -> name -> m JSVal
 getExtension self name
   = liftIO
       (js_getExtension (toWebGLRenderingContextBase self)
@@ -1157,12 +1157,12 @@ getExtension self name
 foreign import javascript unsafe
         "$1[\"getFramebufferAttachmentParameter\"]($2,\n$3, $4)"
         js_getFramebufferAttachmentParameter ::
-        WebGLRenderingContextBase -> GLenum -> GLenum -> GLenum -> IO JSRef
+        WebGLRenderingContextBase -> GLenum -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getFramebufferAttachmentParameter Mozilla WebGLRenderingContextBase.getFramebufferAttachmentParameter documentation> 
 getFramebufferAttachmentParameter ::
                                   (MonadIO m, IsWebGLRenderingContextBase self) =>
-                                    self -> GLenum -> GLenum -> GLenum -> m JSRef
+                                    self -> GLenum -> GLenum -> GLenum -> m JSVal
 getFramebufferAttachmentParameter self target attachment pname
   = liftIO
       (js_getFramebufferAttachmentParameter
@@ -1172,24 +1172,24 @@ getFramebufferAttachmentParameter self target attachment pname
          pname)
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2)"
-        js_getParameter :: WebGLRenderingContextBase -> GLenum -> IO JSRef
+        js_getParameter :: WebGLRenderingContextBase -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getParameter Mozilla WebGLRenderingContextBase.getParameter documentation> 
 getParameter ::
              (MonadIO m, IsWebGLRenderingContextBase self) =>
-               self -> GLenum -> m JSRef
+               self -> GLenum -> m JSVal
 getParameter self pname
   = liftIO (js_getParameter (toWebGLRenderingContextBase self) pname)
  
 foreign import javascript unsafe
         "$1[\"getProgramParameter\"]($2,\n$3)" js_getProgramParameter ::
         WebGLRenderingContextBase ->
-          Nullable WebGLProgram -> GLenum -> IO JSRef
+          Nullable WebGLProgram -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramParameter Mozilla WebGLRenderingContextBase.getProgramParameter documentation> 
 getProgramParameter ::
                     (MonadIO m, IsWebGLRenderingContextBase self) =>
-                      self -> Maybe WebGLProgram -> GLenum -> m JSRef
+                      self -> Maybe WebGLProgram -> GLenum -> m JSVal
 getProgramParameter self program pname
   = liftIO
       (js_getProgramParameter (toWebGLRenderingContextBase self)
@@ -1215,12 +1215,12 @@ getProgramInfoLog self program
 foreign import javascript unsafe
         "$1[\"getRenderbufferParameter\"]($2,\n$3)"
         js_getRenderbufferParameter ::
-        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSRef
+        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getRenderbufferParameter Mozilla WebGLRenderingContextBase.getRenderbufferParameter documentation> 
 getRenderbufferParameter ::
                          (MonadIO m, IsWebGLRenderingContextBase self) =>
-                           self -> GLenum -> GLenum -> m JSRef
+                           self -> GLenum -> GLenum -> m JSVal
 getRenderbufferParameter self target pname
   = liftIO
       (js_getRenderbufferParameter (toWebGLRenderingContextBase self)
@@ -1230,12 +1230,12 @@ getRenderbufferParameter self target pname
 foreign import javascript unsafe
         "$1[\"getShaderParameter\"]($2, $3)" js_getShaderParameter ::
         WebGLRenderingContextBase ->
-          Nullable WebGLShader -> GLenum -> IO JSRef
+          Nullable WebGLShader -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderParameter Mozilla WebGLRenderingContextBase.getShaderParameter documentation> 
 getShaderParameter ::
                    (MonadIO m, IsWebGLRenderingContextBase self) =>
-                     self -> Maybe WebGLShader -> GLenum -> m JSRef
+                     self -> Maybe WebGLShader -> GLenum -> m JSVal
 getShaderParameter self shader pname
   = liftIO
       (js_getShaderParameter (toWebGLRenderingContextBase self)
@@ -1292,7 +1292,7 @@ getShaderSource self shader
             (maybeToNullable shader)))
  
 foreign import javascript unsafe "$1[\"getSupportedExtensions\"]()"
-        js_getSupportedExtensions :: WebGLRenderingContextBase -> IO JSRef
+        js_getSupportedExtensions :: WebGLRenderingContextBase -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getSupportedExtensions Mozilla WebGLRenderingContextBase.getSupportedExtensions documentation> 
 getSupportedExtensions ::
@@ -1302,16 +1302,16 @@ getSupportedExtensions ::
 getSupportedExtensions self
   = liftIO
       ((js_getSupportedExtensions (toWebGLRenderingContextBase self)) >>=
-         fromJSRefUnchecked)
+         fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"getTexParameter\"]($2, $3)"
         js_getTexParameter ::
-        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSRef
+        WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getTexParameter Mozilla WebGLRenderingContextBase.getTexParameter documentation> 
 getTexParameter ::
                 (MonadIO m, IsWebGLRenderingContextBase self) =>
-                  self -> GLenum -> GLenum -> m JSRef
+                  self -> GLenum -> GLenum -> m JSVal
 getTexParameter self target pname
   = liftIO
       (js_getTexParameter (toWebGLRenderingContextBase self) target
@@ -1320,12 +1320,12 @@ getTexParameter self target pname
 foreign import javascript unsafe "$1[\"getUniform\"]($2, $3)"
         js_getUniform ::
         WebGLRenderingContextBase ->
-          Nullable WebGLProgram -> Nullable WebGLUniformLocation -> IO JSRef
+          Nullable WebGLProgram -> Nullable WebGLUniformLocation -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniform Mozilla WebGLRenderingContextBase.getUniform documentation> 
 getUniform ::
            (MonadIO m, IsWebGLRenderingContextBase self) =>
-             self -> Maybe WebGLProgram -> Maybe WebGLUniformLocation -> m JSRef
+             self -> Maybe WebGLProgram -> Maybe WebGLUniformLocation -> m JSVal
 getUniform self program location
   = liftIO
       (js_getUniform (toWebGLRenderingContextBase self)
@@ -1352,12 +1352,12 @@ getUniformLocation self program name
  
 foreign import javascript unsafe "$1[\"getVertexAttrib\"]($2, $3)"
         js_getVertexAttrib ::
-        WebGLRenderingContextBase -> GLuint -> GLenum -> IO JSRef
+        WebGLRenderingContextBase -> GLuint -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getVertexAttrib Mozilla WebGLRenderingContextBase.getVertexAttrib documentation> 
 getVertexAttrib ::
                 (MonadIO m, IsWebGLRenderingContextBase self) =>
-                  self -> GLuint -> GLenum -> m JSRef
+                  self -> GLuint -> GLenum -> m JSVal
 getVertexAttrib self index pname
   = liftIO
       (js_getVertexAttrib (toWebGLRenderingContextBase self) index pname)

@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.AudioBufferCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -27,7 +27,7 @@ newAudioBufferCallback callback
       (AudioBufferCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ audioBuffer ->
-              fromJSRefUnchecked audioBuffer >>=
+              fromJSValUnchecked audioBuffer >>=
                 \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
@@ -39,7 +39,7 @@ newAudioBufferCallbackSync callback
       (AudioBufferCallback <$>
          syncCallback1 ContinueAsync
            (\ audioBuffer ->
-              fromJSRefUnchecked audioBuffer >>=
+              fromJSValUnchecked audioBuffer >>=
                 \ audioBuffer' -> callback audioBuffer'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferCallback Mozilla AudioBufferCallback documentation> 
@@ -51,5 +51,5 @@ newAudioBufferCallbackAsync callback
       (AudioBufferCallback <$>
          asyncCallback1
            (\ audioBuffer ->
-              fromJSRefUnchecked audioBuffer >>=
+              fromJSValUnchecked audioBuffer >>=
                 \ audioBuffer' -> callback audioBuffer'))

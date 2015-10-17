@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.MutationObserver
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -46,13 +46,13 @@ observe self target options
          (maybeToNullable (fmap toDictionary options)))
  
 foreign import javascript unsafe "$1[\"takeRecords\"]()"
-        js_takeRecords :: MutationObserver -> IO JSRef
+        js_takeRecords :: MutationObserver -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.takeRecords Mozilla MutationObserver.takeRecords documentation> 
 takeRecords ::
             (MonadIO m) => MutationObserver -> m [Maybe MutationRecord]
 takeRecords self
-  = liftIO ((js_takeRecords (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_takeRecords (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"disconnect\"]()"
         js_disconnect :: MutationObserver -> IO ()

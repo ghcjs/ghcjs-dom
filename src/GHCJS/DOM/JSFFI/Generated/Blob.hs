@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.Blob
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -27,15 +27,15 @@ newBlob :: (MonadIO m) => m Blob
 newBlob = liftIO (js_newBlob)
  
 foreign import javascript unsafe "new window[\"Blob\"]($1, $2)"
-        js_newBlob' :: JSRef -> Nullable BlobPropertyBag -> IO Blob
+        js_newBlob' :: JSVal -> Nullable BlobPropertyBag -> IO Blob
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation> 
 newBlob' ::
          (MonadIO m, IsBlobPropertyBag options) =>
-           [JSRef] -> Maybe options -> m Blob
+           [JSVal] -> Maybe options -> m Blob
 newBlob' blobParts options
   = liftIO
-      (toJSRef blobParts >>= \ blobParts' -> js_newBlob' blobParts'
+      (toJSVal blobParts >>= \ blobParts' -> js_newBlob' blobParts'
          (maybeToNullable (fmap toBlobPropertyBag options)))
  
 foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"

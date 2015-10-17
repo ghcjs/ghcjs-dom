@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Enums
-       (KeyType(..), PToJSRef, ToJSRef, PFromJSRef, FromJSRef,
+       (KeyType(..), PToJSVal, ToJSVal, PFromJSVal, FromJSVal,
         js_KeyTypeSecret, js_KeyTypePublic, js_KeyTypePrivate,
         KeyUsage(..), js_KeyUsageEncrypt, js_KeyUsageDecrypt,
         js_KeyUsageSign, js_KeyUsageVerify, js_KeyUsageDeriveKey,
@@ -46,11 +46,11 @@ module GHCJS.DOM.JSFFI.Generated.Enums
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -62,31 +62,31 @@ data KeyType = KeyTypeSecret
              | KeyTypePrivate
              deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef KeyType where
-        pToJSRef KeyTypeSecret = js_KeyTypeSecret
-        pToJSRef KeyTypePublic = js_KeyTypePublic
-        pToJSRef KeyTypePrivate = js_KeyTypePrivate
+instance PToJSVal KeyType where
+        pToJSVal KeyTypeSecret = js_KeyTypeSecret
+        pToJSVal KeyTypePublic = js_KeyTypePublic
+        pToJSVal KeyTypePrivate = js_KeyTypePrivate
  
-instance ToJSRef KeyType where
-        toJSRef = return . pToJSRef
+instance ToJSVal KeyType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef KeyType where
-        pFromJSRef x | x `js_eq` js_KeyTypeSecret = KeyTypeSecret
-        pFromJSRef x | x `js_eq` js_KeyTypePublic = KeyTypePublic
-        pFromJSRef x | x `js_eq` js_KeyTypePrivate = KeyTypePrivate
+instance PFromJSVal KeyType where
+        pFromJSVal x | x `js_eq` js_KeyTypeSecret = KeyTypeSecret
+        pFromJSVal x | x `js_eq` js_KeyTypePublic = KeyTypePublic
+        pFromJSVal x | x `js_eq` js_KeyTypePrivate = KeyTypePrivate
  
-instance FromJSRef KeyType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal KeyType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"secret\"" js_KeyTypeSecret ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"public\"" js_KeyTypePublic ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"private\"" js_KeyTypePrivate ::
-        JSRef
+        JSVal
  
 data KeyUsage = KeyUsageEncrypt
               | KeyUsageDecrypt
@@ -98,157 +98,157 @@ data KeyUsage = KeyUsageEncrypt
               | KeyUsageUnwrapKey
               deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef KeyUsage where
-        pToJSRef KeyUsageEncrypt = js_KeyUsageEncrypt
-        pToJSRef KeyUsageDecrypt = js_KeyUsageDecrypt
-        pToJSRef KeyUsageSign = js_KeyUsageSign
-        pToJSRef KeyUsageVerify = js_KeyUsageVerify
-        pToJSRef KeyUsageDeriveKey = js_KeyUsageDeriveKey
-        pToJSRef KeyUsageDeriveBits = js_KeyUsageDeriveBits
-        pToJSRef KeyUsageWrapKey = js_KeyUsageWrapKey
-        pToJSRef KeyUsageUnwrapKey = js_KeyUsageUnwrapKey
+instance PToJSVal KeyUsage where
+        pToJSVal KeyUsageEncrypt = js_KeyUsageEncrypt
+        pToJSVal KeyUsageDecrypt = js_KeyUsageDecrypt
+        pToJSVal KeyUsageSign = js_KeyUsageSign
+        pToJSVal KeyUsageVerify = js_KeyUsageVerify
+        pToJSVal KeyUsageDeriveKey = js_KeyUsageDeriveKey
+        pToJSVal KeyUsageDeriveBits = js_KeyUsageDeriveBits
+        pToJSVal KeyUsageWrapKey = js_KeyUsageWrapKey
+        pToJSVal KeyUsageUnwrapKey = js_KeyUsageUnwrapKey
  
-instance ToJSRef KeyUsage where
-        toJSRef = return . pToJSRef
+instance ToJSVal KeyUsage where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef KeyUsage where
-        pFromJSRef x | x `js_eq` js_KeyUsageEncrypt = KeyUsageEncrypt
-        pFromJSRef x | x `js_eq` js_KeyUsageDecrypt = KeyUsageDecrypt
-        pFromJSRef x | x `js_eq` js_KeyUsageSign = KeyUsageSign
-        pFromJSRef x | x `js_eq` js_KeyUsageVerify = KeyUsageVerify
-        pFromJSRef x | x `js_eq` js_KeyUsageDeriveKey = KeyUsageDeriveKey
-        pFromJSRef x | x `js_eq` js_KeyUsageDeriveBits = KeyUsageDeriveBits
-        pFromJSRef x | x `js_eq` js_KeyUsageWrapKey = KeyUsageWrapKey
-        pFromJSRef x | x `js_eq` js_KeyUsageUnwrapKey = KeyUsageUnwrapKey
+instance PFromJSVal KeyUsage where
+        pFromJSVal x | x `js_eq` js_KeyUsageEncrypt = KeyUsageEncrypt
+        pFromJSVal x | x `js_eq` js_KeyUsageDecrypt = KeyUsageDecrypt
+        pFromJSVal x | x `js_eq` js_KeyUsageSign = KeyUsageSign
+        pFromJSVal x | x `js_eq` js_KeyUsageVerify = KeyUsageVerify
+        pFromJSVal x | x `js_eq` js_KeyUsageDeriveKey = KeyUsageDeriveKey
+        pFromJSVal x | x `js_eq` js_KeyUsageDeriveBits = KeyUsageDeriveBits
+        pFromJSVal x | x `js_eq` js_KeyUsageWrapKey = KeyUsageWrapKey
+        pFromJSVal x | x `js_eq` js_KeyUsageUnwrapKey = KeyUsageUnwrapKey
  
-instance FromJSRef KeyUsage where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal KeyUsage where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"encrypt\"" js_KeyUsageEncrypt
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"decrypt\"" js_KeyUsageDecrypt
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"sign\"" js_KeyUsageSign ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"verify\"" js_KeyUsageVerify ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"deriveKey\""
-        js_KeyUsageDeriveKey :: JSRef
+        js_KeyUsageDeriveKey :: JSVal
  
 foreign import javascript unsafe "\"deriveBits\""
-        js_KeyUsageDeriveBits :: JSRef
+        js_KeyUsageDeriveBits :: JSVal
  
 foreign import javascript unsafe "\"wrapKey\"" js_KeyUsageWrapKey
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"unwrapKey\""
-        js_KeyUsageUnwrapKey :: JSRef
+        js_KeyUsageUnwrapKey :: JSVal
  
 data CanvasWindingRule = CanvasWindingRuleNonzero
                        | CanvasWindingRuleEvenodd
                        deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef CanvasWindingRule where
-        pToJSRef CanvasWindingRuleNonzero = js_CanvasWindingRuleNonzero
-        pToJSRef CanvasWindingRuleEvenodd = js_CanvasWindingRuleEvenodd
+instance PToJSVal CanvasWindingRule where
+        pToJSVal CanvasWindingRuleNonzero = js_CanvasWindingRuleNonzero
+        pToJSVal CanvasWindingRuleEvenodd = js_CanvasWindingRuleEvenodd
  
-instance ToJSRef CanvasWindingRule where
-        toJSRef = return . pToJSRef
+instance ToJSVal CanvasWindingRule where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef CanvasWindingRule where
-        pFromJSRef x
+instance PFromJSVal CanvasWindingRule where
+        pFromJSVal x
           | x `js_eq` js_CanvasWindingRuleNonzero = CanvasWindingRuleNonzero
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_CanvasWindingRuleEvenodd = CanvasWindingRuleEvenodd
  
-instance FromJSRef CanvasWindingRule where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal CanvasWindingRule where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"nonzero\""
-        js_CanvasWindingRuleNonzero :: JSRef
+        js_CanvasWindingRuleNonzero :: JSVal
  
 foreign import javascript unsafe "\"evenodd\""
-        js_CanvasWindingRuleEvenodd :: JSRef
+        js_CanvasWindingRuleEvenodd :: JSVal
  
 data VideoPresentationMode = VideoPresentationModeFullscreen
                            | VideoPresentationModeOptimized
                            | VideoPresentationModeInline
                            deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef VideoPresentationMode where
-        pToJSRef VideoPresentationModeFullscreen
+instance PToJSVal VideoPresentationMode where
+        pToJSVal VideoPresentationModeFullscreen
           = js_VideoPresentationModeFullscreen
-        pToJSRef VideoPresentationModeOptimized
+        pToJSVal VideoPresentationModeOptimized
           = js_VideoPresentationModeOptimized
-        pToJSRef VideoPresentationModeInline
+        pToJSVal VideoPresentationModeInline
           = js_VideoPresentationModeInline
  
-instance ToJSRef VideoPresentationMode where
-        toJSRef = return . pToJSRef
+instance ToJSVal VideoPresentationMode where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef VideoPresentationMode where
-        pFromJSRef x
+instance PFromJSVal VideoPresentationMode where
+        pFromJSVal x
           | x `js_eq` js_VideoPresentationModeFullscreen =
             VideoPresentationModeFullscreen
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_VideoPresentationModeOptimized =
             VideoPresentationModeOptimized
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_VideoPresentationModeInline =
             VideoPresentationModeInline
  
-instance FromJSRef VideoPresentationMode where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal VideoPresentationMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"fullscreen\""
-        js_VideoPresentationModeFullscreen :: JSRef
+        js_VideoPresentationModeFullscreen :: JSVal
  
 foreign import javascript unsafe "\"optimized\""
-        js_VideoPresentationModeOptimized :: JSRef
+        js_VideoPresentationModeOptimized :: JSVal
  
 foreign import javascript unsafe "\"inline\""
-        js_VideoPresentationModeInline :: JSRef
+        js_VideoPresentationModeInline :: JSVal
  
 data TextTrackMode = TextTrackModeDisabled
                    | TextTrackModeHidden
                    | TextTrackModeShowing
                    deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef TextTrackMode where
-        pToJSRef TextTrackModeDisabled = js_TextTrackModeDisabled
-        pToJSRef TextTrackModeHidden = js_TextTrackModeHidden
-        pToJSRef TextTrackModeShowing = js_TextTrackModeShowing
+instance PToJSVal TextTrackMode where
+        pToJSVal TextTrackModeDisabled = js_TextTrackModeDisabled
+        pToJSVal TextTrackModeHidden = js_TextTrackModeHidden
+        pToJSVal TextTrackModeShowing = js_TextTrackModeShowing
  
-instance ToJSRef TextTrackMode where
-        toJSRef = return . pToJSRef
+instance ToJSVal TextTrackMode where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef TextTrackMode where
-        pFromJSRef x
+instance PFromJSVal TextTrackMode where
+        pFromJSVal x
           | x `js_eq` js_TextTrackModeDisabled = TextTrackModeDisabled
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackModeHidden = TextTrackModeHidden
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackModeShowing = TextTrackModeShowing
  
-instance FromJSRef TextTrackMode where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal TextTrackMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"disabled\""
-        js_TextTrackModeDisabled :: JSRef
+        js_TextTrackModeDisabled :: JSVal
  
 foreign import javascript unsafe "\"hidden\""
-        js_TextTrackModeHidden :: JSRef
+        js_TextTrackModeHidden :: JSVal
  
 foreign import javascript unsafe "\"showing\""
-        js_TextTrackModeShowing :: JSRef
+        js_TextTrackModeShowing :: JSVal
  
 data TextTrackKind = TextTrackKindSubtitles
                    | TextTrackKindCaptions
@@ -257,195 +257,195 @@ data TextTrackKind = TextTrackKindSubtitles
                    | TextTrackKindMetadata
                    deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef TextTrackKind where
-        pToJSRef TextTrackKindSubtitles = js_TextTrackKindSubtitles
-        pToJSRef TextTrackKindCaptions = js_TextTrackKindCaptions
-        pToJSRef TextTrackKindDescriptions = js_TextTrackKindDescriptions
-        pToJSRef TextTrackKindChapters = js_TextTrackKindChapters
-        pToJSRef TextTrackKindMetadata = js_TextTrackKindMetadata
+instance PToJSVal TextTrackKind where
+        pToJSVal TextTrackKindSubtitles = js_TextTrackKindSubtitles
+        pToJSVal TextTrackKindCaptions = js_TextTrackKindCaptions
+        pToJSVal TextTrackKindDescriptions = js_TextTrackKindDescriptions
+        pToJSVal TextTrackKindChapters = js_TextTrackKindChapters
+        pToJSVal TextTrackKindMetadata = js_TextTrackKindMetadata
  
-instance ToJSRef TextTrackKind where
-        toJSRef = return . pToJSRef
+instance ToJSVal TextTrackKind where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef TextTrackKind where
-        pFromJSRef x
+instance PFromJSVal TextTrackKind where
+        pFromJSVal x
           | x `js_eq` js_TextTrackKindSubtitles = TextTrackKindSubtitles
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackKindCaptions = TextTrackKindCaptions
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackKindDescriptions =
             TextTrackKindDescriptions
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackKindChapters = TextTrackKindChapters
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_TextTrackKindMetadata = TextTrackKindMetadata
  
-instance FromJSRef TextTrackKind where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal TextTrackKind where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"subtitles\""
-        js_TextTrackKindSubtitles :: JSRef
+        js_TextTrackKindSubtitles :: JSVal
  
 foreign import javascript unsafe "\"captions\""
-        js_TextTrackKindCaptions :: JSRef
+        js_TextTrackKindCaptions :: JSVal
  
 foreign import javascript unsafe "\"descriptions\""
-        js_TextTrackKindDescriptions :: JSRef
+        js_TextTrackKindDescriptions :: JSVal
  
 foreign import javascript unsafe "\"chapters\""
-        js_TextTrackKindChapters :: JSRef
+        js_TextTrackKindChapters :: JSVal
  
 foreign import javascript unsafe "\"metadata\""
-        js_TextTrackKindMetadata :: JSRef
+        js_TextTrackKindMetadata :: JSVal
  
 data DeviceType = DeviceTypeNone
                 | DeviceTypeAirplay
                 | DeviceTypeTvout
                 deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef DeviceType where
-        pToJSRef DeviceTypeNone = js_DeviceTypeNone
-        pToJSRef DeviceTypeAirplay = js_DeviceTypeAirplay
-        pToJSRef DeviceTypeTvout = js_DeviceTypeTvout
+instance PToJSVal DeviceType where
+        pToJSVal DeviceTypeNone = js_DeviceTypeNone
+        pToJSVal DeviceTypeAirplay = js_DeviceTypeAirplay
+        pToJSVal DeviceTypeTvout = js_DeviceTypeTvout
  
-instance ToJSRef DeviceType where
-        toJSRef = return . pToJSRef
+instance ToJSVal DeviceType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef DeviceType where
-        pFromJSRef x | x `js_eq` js_DeviceTypeNone = DeviceTypeNone
-        pFromJSRef x | x `js_eq` js_DeviceTypeAirplay = DeviceTypeAirplay
-        pFromJSRef x | x `js_eq` js_DeviceTypeTvout = DeviceTypeTvout
+instance PFromJSVal DeviceType where
+        pFromJSVal x | x `js_eq` js_DeviceTypeNone = DeviceTypeNone
+        pFromJSVal x | x `js_eq` js_DeviceTypeAirplay = DeviceTypeAirplay
+        pFromJSVal x | x `js_eq` js_DeviceTypeTvout = DeviceTypeTvout
  
-instance FromJSRef DeviceType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal DeviceType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"none\"" js_DeviceTypeNone ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"airplay\"" js_DeviceTypeAirplay
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"tvout\"" js_DeviceTypeTvout ::
-        JSRef
+        JSVal
  
 data MediaUIPartID = MediaUIPartIDOptimizedFullscreenButton
                    | MediaUIPartIDOptimizedFullscreenPlaceholder
                    deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef MediaUIPartID where
-        pToJSRef MediaUIPartIDOptimizedFullscreenButton
+instance PToJSVal MediaUIPartID where
+        pToJSVal MediaUIPartIDOptimizedFullscreenButton
           = js_MediaUIPartIDOptimizedFullscreenButton
-        pToJSRef MediaUIPartIDOptimizedFullscreenPlaceholder
+        pToJSVal MediaUIPartIDOptimizedFullscreenPlaceholder
           = js_MediaUIPartIDOptimizedFullscreenPlaceholder
  
-instance ToJSRef MediaUIPartID where
-        toJSRef = return . pToJSRef
+instance ToJSVal MediaUIPartID where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef MediaUIPartID where
-        pFromJSRef x
+instance PFromJSVal MediaUIPartID where
+        pFromJSVal x
           | x `js_eq` js_MediaUIPartIDOptimizedFullscreenButton =
             MediaUIPartIDOptimizedFullscreenButton
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_MediaUIPartIDOptimizedFullscreenPlaceholder =
             MediaUIPartIDOptimizedFullscreenPlaceholder
  
-instance FromJSRef MediaUIPartID where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal MediaUIPartID where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"optimized-fullscreen-button\""
-        js_MediaUIPartIDOptimizedFullscreenButton :: JSRef
+        js_MediaUIPartIDOptimizedFullscreenButton :: JSVal
  
 foreign import javascript unsafe
         "\"optimized-fullscreen-placeholder\""
-        js_MediaUIPartIDOptimizedFullscreenPlaceholder :: JSRef
+        js_MediaUIPartIDOptimizedFullscreenPlaceholder :: JSVal
  
 data EndOfStreamError = EndOfStreamErrorNetwork
                       | EndOfStreamErrorDecode
                       deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef EndOfStreamError where
-        pToJSRef EndOfStreamErrorNetwork = js_EndOfStreamErrorNetwork
-        pToJSRef EndOfStreamErrorDecode = js_EndOfStreamErrorDecode
+instance PToJSVal EndOfStreamError where
+        pToJSVal EndOfStreamErrorNetwork = js_EndOfStreamErrorNetwork
+        pToJSVal EndOfStreamErrorDecode = js_EndOfStreamErrorDecode
  
-instance ToJSRef EndOfStreamError where
-        toJSRef = return . pToJSRef
+instance ToJSVal EndOfStreamError where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef EndOfStreamError where
-        pFromJSRef x
+instance PFromJSVal EndOfStreamError where
+        pFromJSVal x
           | x `js_eq` js_EndOfStreamErrorNetwork = EndOfStreamErrorNetwork
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_EndOfStreamErrorDecode = EndOfStreamErrorDecode
  
-instance FromJSRef EndOfStreamError where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal EndOfStreamError where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"network\""
-        js_EndOfStreamErrorNetwork :: JSRef
+        js_EndOfStreamErrorNetwork :: JSVal
  
 foreign import javascript unsafe "\"decode\""
-        js_EndOfStreamErrorDecode :: JSRef
+        js_EndOfStreamErrorDecode :: JSVal
  
 data AppendMode = AppendModeSegments
                 | AppendModeSequence
                 deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef AppendMode where
-        pToJSRef AppendModeSegments = js_AppendModeSegments
-        pToJSRef AppendModeSequence = js_AppendModeSequence
+instance PToJSVal AppendMode where
+        pToJSVal AppendModeSegments = js_AppendModeSegments
+        pToJSVal AppendModeSequence = js_AppendModeSequence
  
-instance ToJSRef AppendMode where
-        toJSRef = return . pToJSRef
+instance ToJSVal AppendMode where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef AppendMode where
-        pFromJSRef x | x `js_eq` js_AppendModeSegments = AppendModeSegments
-        pFromJSRef x | x `js_eq` js_AppendModeSequence = AppendModeSequence
+instance PFromJSVal AppendMode where
+        pFromJSVal x | x `js_eq` js_AppendModeSegments = AppendModeSegments
+        pFromJSVal x | x `js_eq` js_AppendModeSequence = AppendModeSequence
  
-instance FromJSRef AppendMode where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal AppendMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"segments\""
-        js_AppendModeSegments :: JSRef
+        js_AppendModeSegments :: JSVal
  
 foreign import javascript unsafe "\"sequence\""
-        js_AppendModeSequence :: JSRef
+        js_AppendModeSequence :: JSVal
  
 data SourceTypeEnum = SourceTypeEnumNone
                     | SourceTypeEnumCamera
                     | SourceTypeEnumMicrophone
                     deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef SourceTypeEnum where
-        pToJSRef SourceTypeEnumNone = js_SourceTypeEnumNone
-        pToJSRef SourceTypeEnumCamera = js_SourceTypeEnumCamera
-        pToJSRef SourceTypeEnumMicrophone = js_SourceTypeEnumMicrophone
+instance PToJSVal SourceTypeEnum where
+        pToJSVal SourceTypeEnumNone = js_SourceTypeEnumNone
+        pToJSVal SourceTypeEnumCamera = js_SourceTypeEnumCamera
+        pToJSVal SourceTypeEnumMicrophone = js_SourceTypeEnumMicrophone
  
-instance ToJSRef SourceTypeEnum where
-        toJSRef = return . pToJSRef
+instance ToJSVal SourceTypeEnum where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef SourceTypeEnum where
-        pFromJSRef x | x `js_eq` js_SourceTypeEnumNone = SourceTypeEnumNone
-        pFromJSRef x
+instance PFromJSVal SourceTypeEnum where
+        pFromJSVal x | x `js_eq` js_SourceTypeEnumNone = SourceTypeEnumNone
+        pFromJSVal x
           | x `js_eq` js_SourceTypeEnumCamera = SourceTypeEnumCamera
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_SourceTypeEnumMicrophone = SourceTypeEnumMicrophone
  
-instance FromJSRef SourceTypeEnum where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal SourceTypeEnum where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"none\"" js_SourceTypeEnumNone
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"camera\""
-        js_SourceTypeEnumCamera :: JSRef
+        js_SourceTypeEnumCamera :: JSVal
  
 foreign import javascript unsafe "\"microphone\""
-        js_SourceTypeEnumMicrophone :: JSRef
+        js_SourceTypeEnumMicrophone :: JSVal
  
 data VideoFacingModeEnum = VideoFacingModeEnumUser
                          | VideoFacingModeEnumEnvironment
@@ -453,149 +453,149 @@ data VideoFacingModeEnum = VideoFacingModeEnumUser
                          | VideoFacingModeEnumRight
                          deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef VideoFacingModeEnum where
-        pToJSRef VideoFacingModeEnumUser = js_VideoFacingModeEnumUser
-        pToJSRef VideoFacingModeEnumEnvironment
+instance PToJSVal VideoFacingModeEnum where
+        pToJSVal VideoFacingModeEnumUser = js_VideoFacingModeEnumUser
+        pToJSVal VideoFacingModeEnumEnvironment
           = js_VideoFacingModeEnumEnvironment
-        pToJSRef VideoFacingModeEnumLeft = js_VideoFacingModeEnumLeft
-        pToJSRef VideoFacingModeEnumRight = js_VideoFacingModeEnumRight
+        pToJSVal VideoFacingModeEnumLeft = js_VideoFacingModeEnumLeft
+        pToJSVal VideoFacingModeEnumRight = js_VideoFacingModeEnumRight
  
-instance ToJSRef VideoFacingModeEnum where
-        toJSRef = return . pToJSRef
+instance ToJSVal VideoFacingModeEnum where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef VideoFacingModeEnum where
-        pFromJSRef x
+instance PFromJSVal VideoFacingModeEnum where
+        pFromJSVal x
           | x `js_eq` js_VideoFacingModeEnumUser = VideoFacingModeEnumUser
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_VideoFacingModeEnumEnvironment =
             VideoFacingModeEnumEnvironment
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_VideoFacingModeEnumLeft = VideoFacingModeEnumLeft
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_VideoFacingModeEnumRight = VideoFacingModeEnumRight
  
-instance FromJSRef VideoFacingModeEnum where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal VideoFacingModeEnum where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"user\""
-        js_VideoFacingModeEnumUser :: JSRef
+        js_VideoFacingModeEnumUser :: JSVal
  
 foreign import javascript unsafe "\"environment\""
-        js_VideoFacingModeEnumEnvironment :: JSRef
+        js_VideoFacingModeEnumEnvironment :: JSVal
  
 foreign import javascript unsafe "\"left\""
-        js_VideoFacingModeEnumLeft :: JSRef
+        js_VideoFacingModeEnumLeft :: JSVal
  
 foreign import javascript unsafe "\"right\""
-        js_VideoFacingModeEnumRight :: JSRef
+        js_VideoFacingModeEnumRight :: JSVal
  
 data MediaStreamTrackState = MediaStreamTrackStateNew
                            | MediaStreamTrackStateLive
                            | MediaStreamTrackStateEnded
                            deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef MediaStreamTrackState where
-        pToJSRef MediaStreamTrackStateNew = js_MediaStreamTrackStateNew
-        pToJSRef MediaStreamTrackStateLive = js_MediaStreamTrackStateLive
-        pToJSRef MediaStreamTrackStateEnded = js_MediaStreamTrackStateEnded
+instance PToJSVal MediaStreamTrackState where
+        pToJSVal MediaStreamTrackStateNew = js_MediaStreamTrackStateNew
+        pToJSVal MediaStreamTrackStateLive = js_MediaStreamTrackStateLive
+        pToJSVal MediaStreamTrackStateEnded = js_MediaStreamTrackStateEnded
  
-instance ToJSRef MediaStreamTrackState where
-        toJSRef = return . pToJSRef
+instance ToJSVal MediaStreamTrackState where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef MediaStreamTrackState where
-        pFromJSRef x
+instance PFromJSVal MediaStreamTrackState where
+        pFromJSVal x
           | x `js_eq` js_MediaStreamTrackStateNew = MediaStreamTrackStateNew
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_MediaStreamTrackStateLive =
             MediaStreamTrackStateLive
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_MediaStreamTrackStateEnded =
             MediaStreamTrackStateEnded
  
-instance FromJSRef MediaStreamTrackState where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal MediaStreamTrackState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"new\""
-        js_MediaStreamTrackStateNew :: JSRef
+        js_MediaStreamTrackStateNew :: JSVal
  
 foreign import javascript unsafe "\"live\""
-        js_MediaStreamTrackStateLive :: JSRef
+        js_MediaStreamTrackStateLive :: JSVal
  
 foreign import javascript unsafe "\"ended\""
-        js_MediaStreamTrackStateEnded :: JSRef
+        js_MediaStreamTrackStateEnded :: JSVal
  
 data RTCIceTransportsEnum = RTCIceTransportsEnumNone
                           | RTCIceTransportsEnumRelay
                           | RTCIceTransportsEnumAll
                           deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef RTCIceTransportsEnum where
-        pToJSRef RTCIceTransportsEnumNone = js_RTCIceTransportsEnumNone
-        pToJSRef RTCIceTransportsEnumRelay = js_RTCIceTransportsEnumRelay
-        pToJSRef RTCIceTransportsEnumAll = js_RTCIceTransportsEnumAll
+instance PToJSVal RTCIceTransportsEnum where
+        pToJSVal RTCIceTransportsEnumNone = js_RTCIceTransportsEnumNone
+        pToJSVal RTCIceTransportsEnumRelay = js_RTCIceTransportsEnumRelay
+        pToJSVal RTCIceTransportsEnumAll = js_RTCIceTransportsEnumAll
  
-instance ToJSRef RTCIceTransportsEnum where
-        toJSRef = return . pToJSRef
+instance ToJSVal RTCIceTransportsEnum where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef RTCIceTransportsEnum where
-        pFromJSRef x
+instance PFromJSVal RTCIceTransportsEnum where
+        pFromJSVal x
           | x `js_eq` js_RTCIceTransportsEnumNone = RTCIceTransportsEnumNone
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_RTCIceTransportsEnumRelay =
             RTCIceTransportsEnumRelay
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_RTCIceTransportsEnumAll = RTCIceTransportsEnumAll
  
-instance FromJSRef RTCIceTransportsEnum where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal RTCIceTransportsEnum where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"none\""
-        js_RTCIceTransportsEnumNone :: JSRef
+        js_RTCIceTransportsEnumNone :: JSVal
  
 foreign import javascript unsafe "\"relay\""
-        js_RTCIceTransportsEnumRelay :: JSRef
+        js_RTCIceTransportsEnumRelay :: JSVal
  
 foreign import javascript unsafe "\"all\""
-        js_RTCIceTransportsEnumAll :: JSRef
+        js_RTCIceTransportsEnumAll :: JSVal
  
 data RTCIdentityOptionEnum = RTCIdentityOptionEnumYes
                            | RTCIdentityOptionEnumNo
                            | RTCIdentityOptionEnumIfconfigured
                            deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef RTCIdentityOptionEnum where
-        pToJSRef RTCIdentityOptionEnumYes = js_RTCIdentityOptionEnumYes
-        pToJSRef RTCIdentityOptionEnumNo = js_RTCIdentityOptionEnumNo
-        pToJSRef RTCIdentityOptionEnumIfconfigured
+instance PToJSVal RTCIdentityOptionEnum where
+        pToJSVal RTCIdentityOptionEnumYes = js_RTCIdentityOptionEnumYes
+        pToJSVal RTCIdentityOptionEnumNo = js_RTCIdentityOptionEnumNo
+        pToJSVal RTCIdentityOptionEnumIfconfigured
           = js_RTCIdentityOptionEnumIfconfigured
  
-instance ToJSRef RTCIdentityOptionEnum where
-        toJSRef = return . pToJSRef
+instance ToJSVal RTCIdentityOptionEnum where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef RTCIdentityOptionEnum where
-        pFromJSRef x
+instance PFromJSVal RTCIdentityOptionEnum where
+        pFromJSVal x
           | x `js_eq` js_RTCIdentityOptionEnumYes = RTCIdentityOptionEnumYes
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_RTCIdentityOptionEnumNo = RTCIdentityOptionEnumNo
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_RTCIdentityOptionEnumIfconfigured =
             RTCIdentityOptionEnumIfconfigured
  
-instance FromJSRef RTCIdentityOptionEnum where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal RTCIdentityOptionEnum where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"yes\""
-        js_RTCIdentityOptionEnumYes :: JSRef
+        js_RTCIdentityOptionEnumYes :: JSVal
  
 foreign import javascript unsafe "\"no\""
-        js_RTCIdentityOptionEnumNo :: JSRef
+        js_RTCIdentityOptionEnumNo :: JSVal
  
 foreign import javascript unsafe "\"ifconfigured\""
-        js_RTCIdentityOptionEnumIfconfigured :: JSRef
+        js_RTCIdentityOptionEnumIfconfigured :: JSVal
  
 data ReadableStreamStateType = ReadableStreamStateTypeReadable
                              | ReadableStreamStateTypeWaiting
@@ -603,106 +603,106 @@ data ReadableStreamStateType = ReadableStreamStateTypeReadable
                              | ReadableStreamStateTypeErrored
                              deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef ReadableStreamStateType where
-        pToJSRef ReadableStreamStateTypeReadable
+instance PToJSVal ReadableStreamStateType where
+        pToJSVal ReadableStreamStateTypeReadable
           = js_ReadableStreamStateTypeReadable
-        pToJSRef ReadableStreamStateTypeWaiting
+        pToJSVal ReadableStreamStateTypeWaiting
           = js_ReadableStreamStateTypeWaiting
-        pToJSRef ReadableStreamStateTypeClosed
+        pToJSVal ReadableStreamStateTypeClosed
           = js_ReadableStreamStateTypeClosed
-        pToJSRef ReadableStreamStateTypeErrored
+        pToJSVal ReadableStreamStateTypeErrored
           = js_ReadableStreamStateTypeErrored
  
-instance ToJSRef ReadableStreamStateType where
-        toJSRef = return . pToJSRef
+instance ToJSVal ReadableStreamStateType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef ReadableStreamStateType where
-        pFromJSRef x
+instance PFromJSVal ReadableStreamStateType where
+        pFromJSVal x
           | x `js_eq` js_ReadableStreamStateTypeReadable =
             ReadableStreamStateTypeReadable
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_ReadableStreamStateTypeWaiting =
             ReadableStreamStateTypeWaiting
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_ReadableStreamStateTypeClosed =
             ReadableStreamStateTypeClosed
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_ReadableStreamStateTypeErrored =
             ReadableStreamStateTypeErrored
  
-instance FromJSRef ReadableStreamStateType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal ReadableStreamStateType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"readable\""
-        js_ReadableStreamStateTypeReadable :: JSRef
+        js_ReadableStreamStateTypeReadable :: JSVal
  
 foreign import javascript unsafe "\"waiting\""
-        js_ReadableStreamStateTypeWaiting :: JSRef
+        js_ReadableStreamStateTypeWaiting :: JSVal
  
 foreign import javascript unsafe "\"closed\""
-        js_ReadableStreamStateTypeClosed :: JSRef
+        js_ReadableStreamStateTypeClosed :: JSVal
  
 foreign import javascript unsafe "\"errored\""
-        js_ReadableStreamStateTypeErrored :: JSRef
+        js_ReadableStreamStateTypeErrored :: JSVal
  
 data OverSampleType = OverSampleTypeNone
                     | OverSampleType2x
                     | OverSampleType4x
                     deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef OverSampleType where
-        pToJSRef OverSampleTypeNone = js_OverSampleTypeNone
-        pToJSRef OverSampleType2x = js_OverSampleType2x
-        pToJSRef OverSampleType4x = js_OverSampleType4x
+instance PToJSVal OverSampleType where
+        pToJSVal OverSampleTypeNone = js_OverSampleTypeNone
+        pToJSVal OverSampleType2x = js_OverSampleType2x
+        pToJSVal OverSampleType4x = js_OverSampleType4x
  
-instance ToJSRef OverSampleType where
-        toJSRef = return . pToJSRef
+instance ToJSVal OverSampleType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef OverSampleType where
-        pFromJSRef x | x `js_eq` js_OverSampleTypeNone = OverSampleTypeNone
-        pFromJSRef x | x `js_eq` js_OverSampleType2x = OverSampleType2x
-        pFromJSRef x | x `js_eq` js_OverSampleType4x = OverSampleType4x
+instance PFromJSVal OverSampleType where
+        pFromJSVal x | x `js_eq` js_OverSampleTypeNone = OverSampleTypeNone
+        pFromJSVal x | x `js_eq` js_OverSampleType2x = OverSampleType2x
+        pFromJSVal x | x `js_eq` js_OverSampleType4x = OverSampleType4x
  
-instance FromJSRef OverSampleType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal OverSampleType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"none\"" js_OverSampleTypeNone
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"2x\"" js_OverSampleType2x ::
-        JSRef
+        JSVal
  
 foreign import javascript unsafe "\"4x\"" js_OverSampleType4x ::
-        JSRef
+        JSVal
  
 data PageOverlayType = PageOverlayTypeView
                      | PageOverlayTypeDocument
                      deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef PageOverlayType where
-        pToJSRef PageOverlayTypeView = js_PageOverlayTypeView
-        pToJSRef PageOverlayTypeDocument = js_PageOverlayTypeDocument
+instance PToJSVal PageOverlayType where
+        pToJSVal PageOverlayTypeView = js_PageOverlayTypeView
+        pToJSVal PageOverlayTypeDocument = js_PageOverlayTypeDocument
  
-instance ToJSRef PageOverlayType where
-        toJSRef = return . pToJSRef
+instance ToJSVal PageOverlayType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef PageOverlayType where
-        pFromJSRef x
+instance PFromJSVal PageOverlayType where
+        pFromJSVal x
           | x `js_eq` js_PageOverlayTypeView = PageOverlayTypeView
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_PageOverlayTypeDocument = PageOverlayTypeDocument
  
-instance FromJSRef PageOverlayType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal PageOverlayType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"view\"" js_PageOverlayTypeView
-        :: JSRef
+        :: JSVal
  
 foreign import javascript unsafe "\"document\""
-        js_PageOverlayTypeDocument :: JSRef
+        js_PageOverlayTypeDocument :: JSVal
  
 data XMLHttpRequestResponseType = XMLHttpRequestResponseType
                                 | XMLHttpRequestResponseTypeArraybuffer
@@ -712,60 +712,60 @@ data XMLHttpRequestResponseType = XMLHttpRequestResponseType
                                 | XMLHttpRequestResponseTypeText
                                 deriving (Show, Read, Eq, Ord, Typeable)
  
-instance PToJSRef XMLHttpRequestResponseType where
-        pToJSRef XMLHttpRequestResponseType = js_XMLHttpRequestResponseType
-        pToJSRef XMLHttpRequestResponseTypeArraybuffer
+instance PToJSVal XMLHttpRequestResponseType where
+        pToJSVal XMLHttpRequestResponseType = js_XMLHttpRequestResponseType
+        pToJSVal XMLHttpRequestResponseTypeArraybuffer
           = js_XMLHttpRequestResponseTypeArraybuffer
-        pToJSRef XMLHttpRequestResponseTypeBlob
+        pToJSVal XMLHttpRequestResponseTypeBlob
           = js_XMLHttpRequestResponseTypeBlob
-        pToJSRef XMLHttpRequestResponseTypeDocument
+        pToJSVal XMLHttpRequestResponseTypeDocument
           = js_XMLHttpRequestResponseTypeDocument
-        pToJSRef XMLHttpRequestResponseTypeJson
+        pToJSVal XMLHttpRequestResponseTypeJson
           = js_XMLHttpRequestResponseTypeJson
-        pToJSRef XMLHttpRequestResponseTypeText
+        pToJSVal XMLHttpRequestResponseTypeText
           = js_XMLHttpRequestResponseTypeText
  
-instance ToJSRef XMLHttpRequestResponseType where
-        toJSRef = return . pToJSRef
+instance ToJSVal XMLHttpRequestResponseType where
+        toJSVal = return . pToJSVal
  
-instance PFromJSRef XMLHttpRequestResponseType where
-        pFromJSRef x
+instance PFromJSVal XMLHttpRequestResponseType where
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseType =
             XMLHttpRequestResponseType
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseTypeArraybuffer =
             XMLHttpRequestResponseTypeArraybuffer
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseTypeBlob =
             XMLHttpRequestResponseTypeBlob
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseTypeDocument =
             XMLHttpRequestResponseTypeDocument
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseTypeJson =
             XMLHttpRequestResponseTypeJson
-        pFromJSRef x
+        pFromJSVal x
           | x `js_eq` js_XMLHttpRequestResponseTypeText =
             XMLHttpRequestResponseTypeText
  
-instance FromJSRef XMLHttpRequestResponseType where
-        fromJSRefUnchecked = return . pFromJSRef
-        fromJSRef = return . pFromJSRef
+instance FromJSVal XMLHttpRequestResponseType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
  
 foreign import javascript unsafe "\"\""
-        js_XMLHttpRequestResponseType :: JSRef
+        js_XMLHttpRequestResponseType :: JSVal
  
 foreign import javascript unsafe "\"arraybuffer\""
-        js_XMLHttpRequestResponseTypeArraybuffer :: JSRef
+        js_XMLHttpRequestResponseTypeArraybuffer :: JSVal
  
 foreign import javascript unsafe "\"blob\""
-        js_XMLHttpRequestResponseTypeBlob :: JSRef
+        js_XMLHttpRequestResponseTypeBlob :: JSVal
  
 foreign import javascript unsafe "\"document\""
-        js_XMLHttpRequestResponseTypeDocument :: JSRef
+        js_XMLHttpRequestResponseTypeDocument :: JSVal
  
 foreign import javascript unsafe "\"json\""
-        js_XMLHttpRequestResponseTypeJson :: JSRef
+        js_XMLHttpRequestResponseTypeJson :: JSVal
  
 foreign import javascript unsafe "\"text\""
-        js_XMLHttpRequestResponseTypeText :: JSRef
+        js_XMLHttpRequestResponseTypeText :: JSVal

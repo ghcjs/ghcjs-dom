@@ -12,11 +12,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaStreamTrack
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -188,7 +188,7 @@ getRemote :: (MonadIO m, IsMediaStreamTrack self) => self -> m Bool
 getRemote self = liftIO (js_getRemote (toMediaStreamTrack self))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: MediaStreamTrack -> IO JSRef
+        js_getReadyState :: MediaStreamTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.readyState Mozilla MediaStreamTrack.readyState documentation> 
 getReadyState ::
@@ -197,7 +197,7 @@ getReadyState ::
 getReadyState self
   = liftIO
       ((js_getReadyState (toMediaStreamTrack self)) >>=
-         fromJSRefUnchecked)
+         fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.onstarted Mozilla MediaStreamTrack.onstarted documentation> 
 started ::

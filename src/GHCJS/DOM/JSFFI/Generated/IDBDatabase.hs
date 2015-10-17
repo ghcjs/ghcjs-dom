@@ -9,11 +9,11 @@ module GHCJS.DOM.JSFFI.Generated.IDBDatabase
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -61,7 +61,7 @@ transaction self storeName mode
  
 foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
         js_transaction' ::
-        IDBDatabase -> JSRef -> JSString -> IO (Nullable IDBTransaction)
+        IDBDatabase -> JSVal -> JSString -> IO (Nullable IDBTransaction)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 transaction' ::
@@ -70,7 +70,7 @@ transaction' ::
 transaction' self storeNames mode
   = liftIO
       (nullableToMaybe <$>
-         (toJSRef storeNames >>=
+         (toJSVal storeNames >>=
             \ storeNames' -> js_transaction' (self) storeNames'
             (toJSString mode)))
  

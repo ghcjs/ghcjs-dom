@@ -20,11 +20,11 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -159,22 +159,22 @@ addIceCandidate self candidate successCallback failureCallback
          (maybeToNullable failureCallback))
  
 foreign import javascript unsafe "$1[\"getLocalStreams\"]()"
-        js_getLocalStreams :: RTCPeerConnection -> IO JSRef
+        js_getLocalStreams :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getLocalStreams Mozilla webkitRTCPeerConnection.getLocalStreams documentation> 
 getLocalStreams ::
                 (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getLocalStreams self
-  = liftIO ((js_getLocalStreams (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getLocalStreams (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"getRemoteStreams\"]()"
-        js_getRemoteStreams :: RTCPeerConnection -> IO JSRef
+        js_getRemoteStreams :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getRemoteStreams Mozilla webkitRTCPeerConnection.getRemoteStreams documentation> 
 getRemoteStreams ::
                  (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getRemoteStreams self
-  = liftIO ((js_getRemoteStreams (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getRemoteStreams (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"getStreamById\"]($2)"
         js_getStreamById ::

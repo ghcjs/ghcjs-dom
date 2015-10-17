@@ -11,11 +11,11 @@ module GHCJS.DOM.JSFFI.Generated.IDBIndex
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -41,12 +41,12 @@ openCursorRange self range direction
  
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         js_openCursor ::
-        IDBIndex -> JSRef -> JSString -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> JSString -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
 openCursor ::
            (MonadIO m, ToJSString direction) =>
-             IDBIndex -> JSRef -> direction -> m (Maybe IDBRequest)
+             IDBIndex -> JSVal -> direction -> m (Maybe IDBRequest)
 openCursor self key direction
   = liftIO
       (nullableToMaybe <$>
@@ -69,12 +69,12 @@ openKeyCursorRange self range direction
  
 foreign import javascript unsafe "$1[\"openKeyCursor\"]($2, $3)"
         js_openKeyCursor ::
-        IDBIndex -> JSRef -> JSString -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> JSString -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
 openKeyCursor ::
               (MonadIO m, ToJSString direction) =>
-                IDBIndex -> JSRef -> direction -> m (Maybe IDBRequest)
+                IDBIndex -> JSVal -> direction -> m (Maybe IDBRequest)
 openKeyCursor self key direction
   = liftIO
       (nullableToMaybe <$>
@@ -92,10 +92,10 @@ getRange self key
       (nullableToMaybe <$> (js_getRange (self) (maybeToNullable key)))
  
 foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
-        IDBIndex -> JSRef -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-get :: (MonadIO m) => IDBIndex -> JSRef -> m (Maybe IDBRequest)
+get :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
 get self key = liftIO (nullableToMaybe <$> (js_get (self) key))
  
 foreign import javascript unsafe "$1[\"getKey\"]($2)"
@@ -111,10 +111,10 @@ getKeyRange self key
       (nullableToMaybe <$> (js_getKeyRange (self) (maybeToNullable key)))
  
 foreign import javascript unsafe "$1[\"getKey\"]($2)" js_getKey ::
-        IDBIndex -> JSRef -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKey :: (MonadIO m) => IDBIndex -> JSRef -> m (Maybe IDBRequest)
+getKey :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
 getKey self key
   = liftIO (nullableToMaybe <$> (js_getKey (self) key))
  
@@ -131,10 +131,10 @@ countRange self range
          (js_countRange (self) (maybeToNullable range)))
  
 foreign import javascript unsafe "$1[\"count\"]($2)" js_count ::
-        IDBIndex -> JSRef -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-count :: (MonadIO m) => IDBIndex -> JSRef -> m (Maybe IDBRequest)
+count :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
 count self key = liftIO (nullableToMaybe <$> (js_count (self) key))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::

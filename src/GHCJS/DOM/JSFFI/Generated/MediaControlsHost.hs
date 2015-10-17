@@ -26,11 +26,11 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -41,7 +41,7 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenu ::
-        MediaControlsHost -> Nullable TextTrackList -> IO JSRef
+        MediaControlsHost -> Nullable TextTrackList -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
 sortedTrackListForMenu ::
@@ -50,11 +50,11 @@ sortedTrackListForMenu ::
 sortedTrackListForMenu self trackList
   = liftIO
       ((js_sortedTrackListForMenu (self) (maybeToNullable trackList)) >>=
-         fromJSRefUnchecked)
+         fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenuAudio
-        :: MediaControlsHost -> Nullable AudioTrackList -> IO JSRef
+        :: MediaControlsHost -> Nullable AudioTrackList -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
 sortedTrackListForMenuAudio ::
@@ -64,7 +64,7 @@ sortedTrackListForMenuAudio self trackList
   = liftIO
       ((js_sortedTrackListForMenuAudio (self)
           (maybeToNullable trackList))
-         >>= fromJSRefUnchecked)
+         >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"displayNameForTrack\"]($2)"
         js_displayNameForTrack ::
@@ -137,7 +137,7 @@ enterFullscreenOptimized self
   = liftIO (js_enterFullscreenOptimized (self))
  
 foreign import javascript unsafe "$1[\"mediaUIImageData\"]($2)"
-        js_mediaUIImageData :: MediaControlsHost -> JSRef -> IO JSString
+        js_mediaUIImageData :: MediaControlsHost -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.mediaUIImageData Mozilla MediaControlsHost.mediaUIImageData documentation> 
 mediaUIImageData ::
@@ -145,7 +145,7 @@ mediaUIImageData ::
                    MediaControlsHost -> MediaUIPartID -> m result
 mediaUIImageData self partID
   = liftIO
-      (fromJSString <$> (js_mediaUIImageData (self) (pToJSRef partID)))
+      (fromJSString <$> (js_mediaUIImageData (self) (pToJSVal partID)))
  
 foreign import javascript unsafe "$1[\"captionMenuOffItem\"]"
         js_getCaptionMenuOffItem ::
@@ -228,13 +228,13 @@ getExternalDeviceDisplayName self
       (fromJSString <$> (js_getExternalDeviceDisplayName (self)))
  
 foreign import javascript unsafe "$1[\"externalDeviceType\"]"
-        js_getExternalDeviceType :: MediaControlsHost -> IO JSRef
+        js_getExternalDeviceType :: MediaControlsHost -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.externalDeviceType Mozilla MediaControlsHost.externalDeviceType documentation> 
 getExternalDeviceType ::
                       (MonadIO m) => MediaControlsHost -> m DeviceType
 getExternalDeviceType self
-  = liftIO ((js_getExternalDeviceType (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getExternalDeviceType (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
         "$1[\"controlsDependOnPageScaleFactor\"] = $2;"

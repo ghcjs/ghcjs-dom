@@ -216,11 +216,11 @@ module GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -281,12 +281,12 @@ getBufferSubData self target offset returnedData
 foreign import javascript unsafe
         "$1[\"getFramebufferAttachmentParameter\"]($2,\n$3, $4)"
         js_getFramebufferAttachmentParameter ::
-        WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> IO JSRef
+        WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getFramebufferAttachmentParameter Mozilla WebGL2RenderingContext.getFramebufferAttachmentParameter documentation> 
 getFramebufferAttachmentParameter ::
                                   (MonadIO m) =>
-                                    WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> m JSRef
+                                    WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> m JSVal
 getFramebufferAttachmentParameter self target attachment pname
   = liftIO
       (js_getFramebufferAttachmentParameter (self) target attachment
@@ -339,26 +339,26 @@ framebufferTextureLayer self target attachment texture level layer
 foreign import javascript unsafe
         "$1[\"getInternalformatParameter\"]($2,\n$3, $4)"
         js_getInternalformatParameter ::
-        WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> IO JSRef
+        WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getInternalformatParameter Mozilla WebGL2RenderingContext.getInternalformatParameter documentation> 
 getInternalformatParameter ::
                            (MonadIO m) =>
-                             WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> m JSRef
+                             WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> m JSVal
 getInternalformatParameter self target internalformat pname
   = liftIO
       (js_getInternalformatParameter (self) target internalformat pname)
  
 foreign import javascript unsafe
         "$1[\"invalidateFramebuffer\"]($2,\n$3)" js_invalidateFramebuffer
-        :: WebGL2RenderingContext -> GLenum -> JSRef -> IO ()
+        :: WebGL2RenderingContext -> GLenum -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.invalidateFramebuffer Mozilla WebGL2RenderingContext.invalidateFramebuffer documentation> 
 invalidateFramebuffer ::
                       (MonadIO m) => WebGL2RenderingContext -> GLenum -> [GLenum] -> m ()
 invalidateFramebuffer self target attachments
   = liftIO
-      (toJSRef attachments >>=
+      (toJSVal attachments >>=
          \ attachments' ->
            js_invalidateFramebuffer (self) target attachments')
  
@@ -366,7 +366,7 @@ foreign import javascript unsafe
         "$1[\"invalidateSubFramebuffer\"]($2,\n$3, $4, $5, $6, $7)"
         js_invalidateSubFramebuffer ::
         WebGL2RenderingContext ->
-          GLenum -> JSRef -> GLint -> GLint -> GLsizei -> GLsizei -> IO ()
+          GLenum -> JSVal -> GLint -> GLint -> GLsizei -> GLsizei -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.invalidateSubFramebuffer Mozilla WebGL2RenderingContext.invalidateSubFramebuffer documentation> 
 invalidateSubFramebuffer ::
@@ -375,7 +375,7 @@ invalidateSubFramebuffer ::
                              GLenum -> [GLenum] -> GLint -> GLint -> GLsizei -> GLsizei -> m ()
 invalidateSubFramebuffer self target attachments x y width height
   = liftIO
-      (toJSRef attachments >>=
+      (toJSVal attachments >>=
          \ attachments' ->
            js_invalidateSubFramebuffer (self) target attachments'
          x
@@ -1061,14 +1061,14 @@ drawRangeElements self mode start end count type' offset
          (fromIntegral offset))
  
 foreign import javascript unsafe "$1[\"drawBuffers\"]($2)"
-        js_drawBuffers :: WebGL2RenderingContext -> JSRef -> IO ()
+        js_drawBuffers :: WebGL2RenderingContext -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.drawBuffers Mozilla WebGL2RenderingContext.drawBuffers documentation> 
 drawBuffers ::
             (MonadIO m) => WebGL2RenderingContext -> [GLenum] -> m ()
 drawBuffers self buffers
   = liftIO
-      (toJSRef buffers >>= \ buffers' -> js_drawBuffers (self) buffers')
+      (toJSVal buffers >>= \ buffers' -> js_drawBuffers (self) buffers')
  
 foreign import javascript unsafe
         "$1[\"clearBufferiv\"]($2, $3, $4)" js_clearBufferiv ::
@@ -1187,12 +1187,12 @@ getQuery self target pname
  
 foreign import javascript unsafe
         "$1[\"getQueryParameter\"]($2, $3)" js_getQueryParameter ::
-        WebGL2RenderingContext -> Nullable WebGLQuery -> GLenum -> IO JSRef
+        WebGL2RenderingContext -> Nullable WebGLQuery -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getQueryParameter Mozilla WebGL2RenderingContext.getQueryParameter documentation> 
 getQueryParameter ::
                   (MonadIO m) =>
-                    WebGL2RenderingContext -> Maybe WebGLQuery -> GLenum -> m JSRef
+                    WebGL2RenderingContext -> Maybe WebGLQuery -> GLenum -> m JSVal
 getQueryParameter self query pname
   = liftIO
       (js_getQueryParameter (self) (maybeToNullable query) pname)
@@ -1270,12 +1270,12 @@ samplerParameterf self sampler pname param
 foreign import javascript unsafe
         "$1[\"getSamplerParameter\"]($2,\n$3)" js_getSamplerParameter ::
         WebGL2RenderingContext ->
-          Nullable WebGLSampler -> GLenum -> IO JSRef
+          Nullable WebGLSampler -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getSamplerParameter Mozilla WebGL2RenderingContext.getSamplerParameter documentation> 
 getSamplerParameter ::
                     (MonadIO m) =>
-                      WebGL2RenderingContext -> Maybe WebGLSampler -> GLenum -> m JSRef
+                      WebGL2RenderingContext -> Maybe WebGLSampler -> GLenum -> m JSVal
 getSamplerParameter self sampler pname
   = liftIO
       (js_getSamplerParameter (self) (maybeToNullable sampler) pname)
@@ -1345,12 +1345,12 @@ waitSync self sync flags timeout
  
 foreign import javascript unsafe "$1[\"getSyncParameter\"]($2, $3)"
         js_getSyncParameter ::
-        WebGL2RenderingContext -> Nullable WebGLSync -> GLenum -> IO JSRef
+        WebGL2RenderingContext -> Nullable WebGLSync -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getSyncParameter Mozilla WebGL2RenderingContext.getSyncParameter documentation> 
 getSyncParameter ::
                  (MonadIO m) =>
-                   WebGL2RenderingContext -> Maybe WebGLSync -> GLenum -> m JSRef
+                   WebGL2RenderingContext -> Maybe WebGLSync -> GLenum -> m JSVal
 getSyncParameter self sync pname
   = liftIO (js_getSyncParameter (self) (maybeToNullable sync) pname)
  
@@ -1426,7 +1426,7 @@ foreign import javascript unsafe
         "$1[\"transformFeedbackVaryings\"]($2,\n$3, $4)"
         js_transformFeedbackVaryings ::
         WebGL2RenderingContext ->
-          Nullable WebGLProgram -> JSRef -> GLenum -> IO ()
+          Nullable WebGLProgram -> JSVal -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.transformFeedbackVaryings Mozilla WebGL2RenderingContext.transformFeedbackVaryings documentation> 
 transformFeedbackVaryings ::
@@ -1435,7 +1435,7 @@ transformFeedbackVaryings ::
                               Maybe WebGLProgram -> [varyings] -> GLenum -> m ()
 transformFeedbackVaryings self program varyings bufferMode
   = liftIO
-      (toJSRef varyings >>=
+      (toJSVal varyings >>=
          \ varyings' ->
            js_transformFeedbackVaryings (self) (maybeToNullable program)
              varyings'
@@ -1512,19 +1512,19 @@ bindBufferRange self target index buffer offset size
  
 foreign import javascript unsafe
         "$1[\"getIndexedParameter\"]($2,\n$3)" js_getIndexedParameter ::
-        WebGL2RenderingContext -> GLenum -> GLuint -> IO JSRef
+        WebGL2RenderingContext -> GLenum -> GLuint -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getIndexedParameter Mozilla WebGL2RenderingContext.getIndexedParameter documentation> 
 getIndexedParameter ::
                     (MonadIO m) =>
-                      WebGL2RenderingContext -> GLenum -> GLuint -> m JSRef
+                      WebGL2RenderingContext -> GLenum -> GLuint -> m JSVal
 getIndexedParameter self target index
   = liftIO (js_getIndexedParameter (self) target index)
  
 foreign import javascript unsafe
         "$1[\"getUniformIndices\"]($2, $3)" js_getUniformIndices ::
         WebGL2RenderingContext ->
-          Nullable WebGLProgram -> JSRef -> IO (Nullable Uint32Array)
+          Nullable WebGLProgram -> JSVal -> IO (Nullable Uint32Array)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getUniformIndices Mozilla WebGL2RenderingContext.getUniformIndices documentation> 
 getUniformIndices ::
@@ -1534,7 +1534,7 @@ getUniformIndices ::
 getUniformIndices self program uniformNames
   = liftIO
       (nullableToMaybe <$>
-         (toJSRef uniformNames >>=
+         (toJSVal uniformNames >>=
             \ uniformNames' ->
               js_getUniformIndices (self) (maybeToNullable program)
                 uniformNames'))
@@ -1577,13 +1577,13 @@ foreign import javascript unsafe
         "$1[\"getActiveUniformBlockParameter\"]($2,\n$3, $4)"
         js_getActiveUniformBlockParameter ::
         WebGL2RenderingContext ->
-          Nullable WebGLProgram -> GLuint -> GLenum -> IO JSRef
+          Nullable WebGLProgram -> GLuint -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getActiveUniformBlockParameter Mozilla WebGL2RenderingContext.getActiveUniformBlockParameter documentation> 
 getActiveUniformBlockParameter ::
                                (MonadIO m) =>
                                  WebGL2RenderingContext ->
-                                   Maybe WebGLProgram -> GLuint -> GLenum -> m JSRef
+                                   Maybe WebGLProgram -> GLuint -> GLenum -> m JSVal
 getActiveUniformBlockParameter self program uniformBlockIndex pname
   = liftIO
       (js_getActiveUniformBlockParameter (self) (maybeToNullable program)
@@ -1594,12 +1594,12 @@ foreign import javascript unsafe
         "$1[\"getActiveUniformBlockName\"]($2,\n$3)"
         js_getActiveUniformBlockName ::
         WebGL2RenderingContext ->
-          Nullable WebGLProgram -> GLuint -> IO JSRef
+          Nullable WebGLProgram -> GLuint -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getActiveUniformBlockName Mozilla WebGL2RenderingContext.getActiveUniformBlockName documentation> 
 getActiveUniformBlockName ::
                           (MonadIO m) =>
-                            WebGL2RenderingContext -> Maybe WebGLProgram -> GLuint -> m JSRef
+                            WebGL2RenderingContext -> Maybe WebGLProgram -> GLuint -> m JSVal
 getActiveUniformBlockName self program uniformBlockIndex
   = liftIO
       (js_getActiveUniformBlockName (self) (maybeToNullable program)

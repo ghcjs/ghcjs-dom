@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.WaveShaperNode
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -38,18 +38,18 @@ getCurve :: (MonadIO m) => WaveShaperNode -> m (Maybe Float32Array)
 getCurve self = liftIO (nullableToMaybe <$> (js_getCurve (self)))
  
 foreign import javascript unsafe "$1[\"oversample\"] = $2;"
-        js_setOversample :: WaveShaperNode -> JSRef -> IO ()
+        js_setOversample :: WaveShaperNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 
 setOversample ::
               (MonadIO m) => WaveShaperNode -> OverSampleType -> m ()
 setOversample self val
-  = liftIO (js_setOversample (self) (pToJSRef val))
+  = liftIO (js_setOversample (self) (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"oversample\"]"
-        js_getOversample :: WaveShaperNode -> IO JSRef
+        js_getOversample :: WaveShaperNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 
 getOversample :: (MonadIO m) => WaveShaperNode -> m OverSampleType
 getOversample self
-  = liftIO ((js_getOversample (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getOversample (self)) >>= fromJSValUnchecked)

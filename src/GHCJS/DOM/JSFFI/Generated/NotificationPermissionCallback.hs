@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.NotificationPermissionCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -30,7 +30,7 @@ newNotificationPermissionCallback callback
       (NotificationPermissionCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ permission ->
-              fromJSRefUnchecked permission >>=
+              fromJSValUnchecked permission >>=
                 \ permission' -> callback permission'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NotificationPermissionCallback Mozilla NotificationPermissionCallback documentation> 
@@ -43,7 +43,7 @@ newNotificationPermissionCallbackSync callback
       (NotificationPermissionCallback <$>
          syncCallback1 ContinueAsync
            (\ permission ->
-              fromJSRefUnchecked permission >>=
+              fromJSValUnchecked permission >>=
                 \ permission' -> callback permission'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NotificationPermissionCallback Mozilla NotificationPermissionCallback documentation> 
@@ -56,5 +56,5 @@ newNotificationPermissionCallbackAsync callback
       (NotificationPermissionCallback <$>
          asyncCallback1
            (\ permission ->
-              fromJSRefUnchecked permission >>=
+              fromJSValUnchecked permission >>=
                 \ permission' -> callback permission'))

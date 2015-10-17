@@ -8,11 +8,11 @@ module GHCJS.DOM.JSFFI.Generated.MessageEvent
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -28,7 +28,7 @@ foreign import javascript unsafe
           JSString ->
             Bool ->
               Bool ->
-                JSRef ->
+                JSVal ->
                   JSString -> JSString -> Nullable Window -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.initMessageEvent Mozilla MessageEvent.initMessageEvent documentation> 
@@ -39,7 +39,7 @@ initMessageEvent ::
                      typeArg ->
                        Bool ->
                          Bool ->
-                           JSRef ->
+                           JSVal ->
                              originArg ->
                                lastEventIdArg -> Maybe Window -> Maybe messagePorts -> m ()
 initMessageEvent self typeArg canBubbleArg cancelableArg dataArg
@@ -60,7 +60,7 @@ foreign import javascript unsafe
           JSString ->
             Bool ->
               Bool ->
-                JSRef ->
+                JSVal ->
                   JSString -> JSString -> Nullable Window -> Nullable Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.webkitInitMessageEvent Mozilla MessageEvent.webkitInitMessageEvent documentation> 
@@ -71,7 +71,7 @@ webkitInitMessageEvent ::
                            typeArg ->
                              Bool ->
                                Bool ->
-                                 JSRef ->
+                                 JSVal ->
                                    originArg ->
                                      lastEventIdArg -> Maybe Window -> Maybe transferables -> m ()
 webkitInitMessageEvent self typeArg canBubbleArg cancelableArg
@@ -110,16 +110,16 @@ getSource :: (MonadIO m) => MessageEvent -> m (Maybe EventTarget)
 getSource self = liftIO (nullableToMaybe <$> (js_getSource (self)))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        MessageEvent -> IO JSRef
+        MessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.data Mozilla MessageEvent.data documentation> 
-getData :: (MonadIO m) => MessageEvent -> m JSRef
+getData :: (MonadIO m) => MessageEvent -> m JSVal
 getData self = liftIO (js_getData (self))
  
 foreign import javascript unsafe "$1[\"ports\"]" js_getPorts ::
-        MessageEvent -> IO JSRef
+        MessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.ports Mozilla MessageEvent.ports documentation> 
 getPorts :: (MonadIO m) => MessageEvent -> m [Maybe MessagePort]
 getPorts self
-  = liftIO ((js_getPorts (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getPorts (self)) >>= fromJSValUnchecked)

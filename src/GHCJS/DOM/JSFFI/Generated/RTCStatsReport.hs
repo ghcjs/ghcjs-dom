@@ -7,11 +7,11 @@ module GHCJS.DOM.JSFFI.Generated.RTCStatsReport
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -31,12 +31,12 @@ stat self name
   = liftIO (fromJSString <$> (js_stat (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"names\"]()" js_names ::
-        RTCStatsReport -> IO JSRef
+        RTCStatsReport -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.names Mozilla RTCStatsReport.names documentation> 
 names ::
       (MonadIO m, FromJSString result) => RTCStatsReport -> m [result]
-names self = liftIO ((js_names (self)) >>= fromJSRefUnchecked)
+names self = liftIO ((js_names (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"timestamp\"]"
         js_getTimestamp :: RTCStatsReport -> IO (Nullable Date)

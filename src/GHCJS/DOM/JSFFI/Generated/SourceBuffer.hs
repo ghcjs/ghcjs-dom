@@ -15,11 +15,11 @@ module GHCJS.DOM.JSFFI.Generated.SourceBuffer
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -68,18 +68,18 @@ remove :: (MonadIO m) => SourceBuffer -> Double -> Double -> m ()
 remove self start end = liftIO (js_remove (self) start end)
  
 foreign import javascript unsafe "$1[\"mode\"] = $2;" js_setMode ::
-        SourceBuffer -> JSRef -> IO ()
+        SourceBuffer -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.mode Mozilla SourceBuffer.mode documentation> 
 setMode :: (MonadIO m) => SourceBuffer -> AppendMode -> m ()
-setMode self val = liftIO (js_setMode (self) (pToJSRef val))
+setMode self val = liftIO (js_setMode (self) (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
-        SourceBuffer -> IO JSRef
+        SourceBuffer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.mode Mozilla SourceBuffer.mode documentation> 
 getMode :: (MonadIO m) => SourceBuffer -> m AppendMode
-getMode self = liftIO ((js_getMode (self)) >>= fromJSRefUnchecked)
+getMode self = liftIO ((js_getMode (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "($1[\"updating\"] ? 1 : 0)"
         js_getUpdating :: SourceBuffer -> IO Bool

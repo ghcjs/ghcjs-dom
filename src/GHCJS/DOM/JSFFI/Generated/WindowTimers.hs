@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.WindowTimers
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -20,10 +20,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"setTimeout\"]($2, $3)"
-        js_setTimeout :: WindowTimers -> JSRef -> Int -> IO Int
+        js_setTimeout :: WindowTimers -> JSVal -> Int -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.setTimeout Mozilla WindowTimers.setTimeout documentation> 
-setTimeout :: (MonadIO m) => WindowTimers -> JSRef -> Int -> m Int
+setTimeout :: (MonadIO m) => WindowTimers -> JSVal -> Int -> m Int
 setTimeout self handler timeout
   = liftIO (js_setTimeout (self) handler timeout)
  
@@ -35,10 +35,10 @@ clearTimeout :: (MonadIO m) => WindowTimers -> Int -> m ()
 clearTimeout self handle = liftIO (js_clearTimeout (self) handle)
  
 foreign import javascript unsafe "$1[\"setInterval\"]($2, $3)"
-        js_setInterval :: WindowTimers -> JSRef -> Int -> IO Int
+        js_setInterval :: WindowTimers -> JSVal -> Int -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers.setInterval Mozilla WindowTimers.setInterval documentation> 
-setInterval :: (MonadIO m) => WindowTimers -> JSRef -> Int -> m Int
+setInterval :: (MonadIO m) => WindowTimers -> JSVal -> Int -> m Int
 setInterval self handler timeout
   = liftIO (js_setInterval (self) handler timeout)
  

@@ -5,11 +5,11 @@ module GHCJS.DOM.JSFFI.Generated.PositionCallback
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -26,7 +26,7 @@ newPositionCallback callback
       (PositionCallback <$>
          syncCallback1 ThrowWouldBlock
            (\ position ->
-              fromJSRefUnchecked position >>= \ position' -> callback position'))
+              fromJSValUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
 newPositionCallbackSync ::
@@ -36,7 +36,7 @@ newPositionCallbackSync callback
       (PositionCallback <$>
          syncCallback1 ContinueAsync
            (\ position ->
-              fromJSRefUnchecked position >>= \ position' -> callback position'))
+              fromJSValUnchecked position >>= \ position' -> callback position'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionCallback Mozilla PositionCallback documentation> 
 newPositionCallbackAsync ::
@@ -46,4 +46,4 @@ newPositionCallbackAsync callback
       (PositionCallback <$>
          asyncCallback1
            (\ position ->
-              fromJSRefUnchecked position >>= \ position' -> callback position'))
+              fromJSValUnchecked position >>= \ position' -> callback position'))

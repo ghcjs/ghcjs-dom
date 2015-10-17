@@ -53,11 +53,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -846,7 +846,7 @@ setSrcObject self val
       (js_setSrcObject (toHTMLMediaElement self) (maybeToNullable val))
  
 foreign import javascript unsafe "$1[\"srcObject\"]"
-        js_getSrcObject :: HTMLMediaElement -> IO JSRef
+        js_getSrcObject :: HTMLMediaElement -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
 getSrcObject ::
@@ -855,4 +855,4 @@ getSrcObject ::
 getSrcObject self
   = liftIO
       ((js_getSrcObject (toHTMLMediaElement self)) >>=
-         fromJSRefUnchecked)
+         fromJSValUnchecked)

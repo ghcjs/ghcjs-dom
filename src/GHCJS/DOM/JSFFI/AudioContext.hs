@@ -9,9 +9,9 @@ module GHCJS.DOM.JSFFI.AudioContext (
 import Control.Exception (Exception(..), throwIO)
 import Control.Monad.IO.Class (MonadIO(..))
 
-import GHCJS.Types (JSRef)
+import GHCJS.Types (JSVal)
 import GHCJS.Foreign (jsNull)
-import GHCJS.Marshal (fromJSRef, fromJSRefUnchecked)
+import GHCJS.Marshal (fromJSVal, fromJSValUnchecked)
 import GHCJS.Foreign.Callback (releaseCallback)
 import GHCJS.DOM.Types
 

@@ -24,11 +24,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLVideoElement
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -70,23 +70,23 @@ webkitExitFullScreen self = liftIO (js_webkitExitFullScreen (self))
 foreign import javascript unsafe
         "($1[\"webkitSupportsPresentationMode\"]($2) ? 1 : 0)"
         js_webkitSupportsPresentationMode ::
-        HTMLVideoElement -> JSRef -> IO Bool
+        HTMLVideoElement -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSupportsPresentationMode Mozilla HTMLVideoElement.webkitSupportsPresentationMode documentation> 
 webkitSupportsPresentationMode ::
                                (MonadIO m) => HTMLVideoElement -> VideoPresentationMode -> m Bool
 webkitSupportsPresentationMode self mode
-  = liftIO (js_webkitSupportsPresentationMode (self) (pToJSRef mode))
+  = liftIO (js_webkitSupportsPresentationMode (self) (pToJSVal mode))
  
 foreign import javascript unsafe
         "$1[\"webkitSetPresentationMode\"]($2)"
-        js_webkitSetPresentationMode :: HTMLVideoElement -> JSRef -> IO ()
+        js_webkitSetPresentationMode :: HTMLVideoElement -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSetPresentationMode Mozilla HTMLVideoElement.webkitSetPresentationMode documentation> 
 webkitSetPresentationMode ::
                           (MonadIO m) => HTMLVideoElement -> VideoPresentationMode -> m ()
 webkitSetPresentationMode self mode
-  = liftIO (js_webkitSetPresentationMode (self) (pToJSRef mode))
+  = liftIO (js_webkitSetPresentationMode (self) (pToJSVal mode))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: HTMLVideoElement -> Word -> IO ()
@@ -207,14 +207,14 @@ getWebkitDroppedFrameCount self
   = liftIO (js_getWebkitDroppedFrameCount (self))
  
 foreign import javascript unsafe "$1[\"webkitPresentationMode\"]"
-        js_getWebkitPresentationMode :: HTMLVideoElement -> IO JSRef
+        js_getWebkitPresentationMode :: HTMLVideoElement -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitPresentationMode Mozilla HTMLVideoElement.webkitPresentationMode documentation> 
 getWebkitPresentationMode ::
                           (MonadIO m) => HTMLVideoElement -> m VideoPresentationMode
 getWebkitPresentationMode self
   = liftIO
-      ((js_getWebkitPresentationMode (self)) >>= fromJSRefUnchecked)
+      ((js_getWebkitPresentationMode (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.onwebkitpresentationmodechanged Mozilla HTMLVideoElement.onwebkitpresentationmodechanged documentation> 
 webKitPresentationModeChanged :: EventName HTMLVideoElement Event

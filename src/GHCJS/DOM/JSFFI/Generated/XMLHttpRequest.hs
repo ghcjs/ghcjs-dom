@@ -19,11 +19,11 @@ module GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -217,22 +217,22 @@ getResponseXML self
   = liftIO (nullableToMaybe <$> (js_getResponseXML (self)))
  
 foreign import javascript unsafe "$1[\"responseType\"] = $2;"
-        js_setResponseType :: XMLHttpRequest -> JSRef -> IO ()
+        js_setResponseType :: XMLHttpRequest -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
 setResponseType ::
                 (MonadIO m) => XMLHttpRequest -> XMLHttpRequestResponseType -> m ()
 setResponseType self val
-  = liftIO (js_setResponseType (self) (pToJSRef val))
+  = liftIO (js_setResponseType (self) (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"responseType\"]"
-        js_getResponseType :: XMLHttpRequest -> IO JSRef
+        js_getResponseType :: XMLHttpRequest -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
 getResponseType ::
                 (MonadIO m) => XMLHttpRequest -> m XMLHttpRequestResponseType
 getResponseType self
-  = liftIO ((js_getResponseType (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getResponseType (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"response\"]" js_getResponse
         :: XMLHttpRequest -> IO (Nullable GObject)

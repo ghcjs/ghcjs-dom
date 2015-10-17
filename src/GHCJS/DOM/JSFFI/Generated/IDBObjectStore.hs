@@ -12,11 +12,11 @@ module GHCJS.DOM.JSFFI.Generated.IDBObjectStore
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -26,22 +26,22 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"put\"]($2, $3)" js_put ::
-        IDBObjectStore -> JSRef -> JSRef -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
 put ::
     (MonadIO m) =>
-      IDBObjectStore -> JSRef -> JSRef -> m (Maybe IDBRequest)
+      IDBObjectStore -> JSVal -> JSVal -> m (Maybe IDBRequest)
 put self value key
   = liftIO (nullableToMaybe <$> (js_put (self) value key))
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
-        IDBObjectStore -> JSRef -> JSRef -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
 add ::
     (MonadIO m) =>
-      IDBObjectStore -> JSRef -> JSRef -> m (Maybe IDBRequest)
+      IDBObjectStore -> JSVal -> JSVal -> m (Maybe IDBRequest)
 add self value key
   = liftIO (nullableToMaybe <$> (js_add (self) value key))
  
@@ -59,11 +59,11 @@ deleteRange self keyRange
          (js_deleteRange (self) (maybeToNullable keyRange)))
  
 foreign import javascript unsafe "$1[\"delete\"]($2)" js_delete ::
-        IDBObjectStore -> JSRef -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
 delete ::
-       (MonadIO m) => IDBObjectStore -> JSRef -> m (Maybe IDBRequest)
+       (MonadIO m) => IDBObjectStore -> JSVal -> m (Maybe IDBRequest)
 delete self key
   = liftIO (nullableToMaybe <$> (js_delete (self) key))
  
@@ -79,11 +79,11 @@ getRange self key
       (nullableToMaybe <$> (js_getRange (self) (maybeToNullable key)))
  
 foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
-        IDBObjectStore -> JSRef -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
 get ::
-    (MonadIO m) => IDBObjectStore -> JSRef -> m (Maybe IDBRequest)
+    (MonadIO m) => IDBObjectStore -> JSVal -> m (Maybe IDBRequest)
 get self key = liftIO (nullableToMaybe <$> (js_get (self) key))
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
@@ -111,12 +111,12 @@ openCursorRange self range direction
  
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         js_openCursor ::
-        IDBObjectStore -> JSRef -> JSString -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> JSString -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
 openCursor ::
            (MonadIO m, ToJSString direction) =>
-             IDBObjectStore -> JSRef -> direction -> m (Maybe IDBRequest)
+             IDBObjectStore -> JSVal -> direction -> m (Maybe IDBRequest)
 openCursor self key direction
   = liftIO
       (nullableToMaybe <$>
@@ -125,7 +125,7 @@ openCursor self key direction
 foreign import javascript unsafe "$1[\"createIndex\"]($2, $3, $4)"
         js_createIndex' ::
         IDBObjectStore ->
-          JSString -> JSRef -> Nullable Dictionary -> IO (Nullable IDBIndex)
+          JSString -> JSVal -> Nullable Dictionary -> IO (Nullable IDBIndex)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
 createIndex' ::
@@ -136,7 +136,7 @@ createIndex' ::
 createIndex' self name keyPath options
   = liftIO
       (nullableToMaybe <$>
-         (toJSRef keyPath >>=
+         (toJSVal keyPath >>=
             \ keyPath' -> js_createIndex' (self) (toJSString name) keyPath'
             (maybeToNullable (fmap toDictionary options))))
  
@@ -191,11 +191,11 @@ countRange self range
          (js_countRange (self) (maybeToNullable range)))
  
 foreign import javascript unsafe "$1[\"count\"]($2)" js_count ::
-        IDBObjectStore -> JSRef -> IO (Nullable IDBRequest)
+        IDBObjectStore -> JSVal -> IO (Nullable IDBRequest)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
 count ::
-      (MonadIO m) => IDBObjectStore -> JSRef -> m (Maybe IDBRequest)
+      (MonadIO m) => IDBObjectStore -> JSVal -> m (Maybe IDBRequest)
 count self key = liftIO (nullableToMaybe <$> (js_count (self) key))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::

@@ -8,11 +8,11 @@ module GHCJS.DOM.JSFFI.Generated.ReadableStream
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -23,10 +23,10 @@ import GHCJS.DOM.Enums
  
 foreign import javascript unsafe
         "new window[\"ReadableStream\"]($1)" js_newReadableStream ::
-        JSRef -> IO ReadableStream
+        JSVal -> IO ReadableStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation> 
-newReadableStream :: (MonadIO m) => JSRef -> m ReadableStream
+newReadableStream :: (MonadIO m) => JSVal -> m ReadableStream
 newReadableStream properties
   = liftIO (js_newReadableStream properties)
  
@@ -49,34 +49,34 @@ cancel self reason
       (nullableToMaybe <$> (js_cancel (self) (toJSString reason)))
  
 foreign import javascript unsafe "$1[\"pipeTo\"]($2, $3)" js_pipeTo
-        :: ReadableStream -> JSRef -> JSRef -> IO (Nullable Promise)
+        :: ReadableStream -> JSVal -> JSVal -> IO (Nullable Promise)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
 pipeTo ::
        (MonadIO m) =>
-         ReadableStream -> JSRef -> JSRef -> m (Maybe Promise)
+         ReadableStream -> JSVal -> JSVal -> m (Maybe Promise)
 pipeTo self streams options
   = liftIO (nullableToMaybe <$> (js_pipeTo (self) streams options))
  
 foreign import javascript unsafe "$1[\"pipeThrough\"]($2, $3)"
         js_pipeThrough ::
-        ReadableStream -> JSRef -> JSRef -> IO (Nullable GObject)
+        ReadableStream -> JSVal -> JSVal -> IO (Nullable GObject)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
 pipeThrough ::
             (MonadIO m) =>
-              ReadableStream -> JSRef -> JSRef -> m (Maybe GObject)
+              ReadableStream -> JSVal -> JSVal -> m (Maybe GObject)
 pipeThrough self dest options
   = liftIO (nullableToMaybe <$> (js_pipeThrough (self) dest options))
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
-        ReadableStream -> IO JSRef
+        ReadableStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.state Mozilla ReadableStream.state documentation> 
 getState ::
          (MonadIO m) => ReadableStream -> m ReadableStreamStateType
 getState self
-  = liftIO ((js_getState (self)) >>= fromJSRefUnchecked)
+  = liftIO ((js_getState (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"closed\"]" js_getClosed ::
         ReadableStream -> IO (Nullable Promise)

@@ -13,11 +13,11 @@ module GHCJS.DOM.JSFFI.Generated.TextTrack
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -70,18 +70,18 @@ getId :: (MonadIO m, FromJSString result) => TextTrack -> m result
 getId self = liftIO (fromJSString <$> (js_getId (self)))
  
 foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
-        TextTrack -> JSRef -> IO ()
+        TextTrack -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
 setKind :: (MonadIO m) => TextTrack -> TextTrackKind -> m ()
-setKind self val = liftIO (js_setKind (self) (pToJSRef val))
+setKind self val = liftIO (js_setKind (self) (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
-        TextTrack -> IO JSRef
+        TextTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
 getKind :: (MonadIO m) => TextTrack -> m TextTrackKind
-getKind self = liftIO ((js_getKind (self)) >>= fromJSRefUnchecked)
+getKind self = liftIO ((js_getKind (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
         TextTrack -> IO JSString
@@ -121,18 +121,18 @@ getInBandMetadataTrackDispatchType self
       (fromJSString <$> (js_getInBandMetadataTrackDispatchType (self)))
  
 foreign import javascript unsafe "$1[\"mode\"] = $2;" js_setMode ::
-        TextTrack -> JSRef -> IO ()
+        TextTrack -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
 setMode :: (MonadIO m) => TextTrack -> TextTrackMode -> m ()
-setMode self val = liftIO (js_setMode (self) (pToJSRef val))
+setMode self val = liftIO (js_setMode (self) (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
-        TextTrack -> IO JSRef
+        TextTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
 getMode :: (MonadIO m) => TextTrack -> m TextTrackMode
-getMode self = liftIO ((js_getMode (self)) >>= fromJSRefUnchecked)
+getMode self = liftIO ((js_getMode (self)) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"cues\"]" js_getCues ::
         TextTrack -> IO (Nullable TextTrackCueList)

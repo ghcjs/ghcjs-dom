@@ -6,11 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.CapabilityRange
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
-import GHCJS.Types (JSRef(..), JSString)
+import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
-import GHCJS.Marshal (ToJSRef(..), FromJSRef(..))
-import GHCJS.Marshal.Pure (PToJSRef(..), PFromJSRef(..))
+import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
@@ -20,17 +20,17 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.Enums
  
 foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
-        CapabilityRange -> IO JSRef
+        CapabilityRange -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.max Mozilla CapabilityRange.max documentation> 
-getMax :: (MonadIO m) => CapabilityRange -> m JSRef
+getMax :: (MonadIO m) => CapabilityRange -> m JSVal
 getMax self = liftIO (js_getMax (self))
  
 foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
-        CapabilityRange -> IO JSRef
+        CapabilityRange -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange.min Mozilla CapabilityRange.min documentation> 
-getMin :: (MonadIO m) => CapabilityRange -> m JSRef
+getMin :: (MonadIO m) => CapabilityRange -> m JSVal
 getMin self = liftIO (js_getMin (self))
  
 foreign import javascript unsafe "($1[\"supported\"] ? 1 : 0)"
