@@ -16,7 +16,7 @@ module GHCJS.DOM (
 import qualified Data.Text as T
 import Data.Monoid ((<>))
 #if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
-import GHCJS.Types (JSRef(..))
+import GHCJS.Types (JSVal(..))
 import Control.Applicative ((<$>))
 #else
 import Graphics.UI.Gtk.WebKit.WebView
