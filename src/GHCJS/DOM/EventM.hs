@@ -101,7 +101,7 @@ on :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> EventM t e () -> IO 
 on target eventName callback = do
     l <- newListener callback
     addListener target eventName l False
-    return (removeListener target eventName l False)
+    return (removeListener target eventName l False >> releaseListener l)
 
 event :: EventM t e e
 event = ask
