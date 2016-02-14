@@ -96,12 +96,12 @@ foreign import javascript interruptible
     RTCPeerConnection -> Nullable MediaStreamTrack -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection#getStats Mozilla webkitRTCPeerConnection.getStats documentation>
-getStats' :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m (Either DOMError RTCStatsReport)
+getStats' :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m (Either DOMError RTCStatsResponse)
 getStats' self selector = liftIO . IO $ \s# ->
     case js_getStats self (maybeToNullable $ fmap toMediaStreamTrack selector) s# of
-        (# s2#, False, error #) -> (# s2#, Left  (DOMError       (JSVal error)) #)
-        (# s2#, True,  stats #) -> (# s2#, Right (RTCStatsReport (JSVal stats)) #)
+        (# s2#, False, error #) -> (# s2#, Left  (DOMError         (JSVal error)) #)
+        (# s2#, True,  stats #) -> (# s2#, Right (RTCStatsResponse (JSVal stats)) #)
 
-getStats :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m RTCStatsReport
+getStats :: (MonadIO m, IsMediaStreamTrack selector) => RTCPeerConnection -> Maybe selector -> m RTCStatsResponse
 getStats self selector = getStats' self selector >>= either throwDOMErrorException return
 
