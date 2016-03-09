@@ -74,6 +74,7 @@ import qualified GHCJS.DOM.MouseEvent as MouseEvent
 import           GHCJS.DOM.EventTarget
 import           GHCJS.DOM.EventTargetClosures
 import           Data.Word (Word)
+import           Data.Foldable (forM_)
 
 type EventM t e = ReaderT e IO
 
@@ -102,6 +103,16 @@ on target eventName callback = do
     l <- newListener callback
     addListener target eventName l False
     return (removeListener target eventName l False >> releaseListener l)
+
+onThese :: (IsEventTarget t, IsEvent e) => [(t, EventName t e)] -> EventM t e () -> IO (IO ())
+onThese targetsAndEventNames callback = do
+    l <- newListener callback
+    forM_ targetsAndEventNames $ \(target, eventName) ->
+        addListener target eventName l False
+    return (do
+        forM_ targetsAndEventNames (\(target, eventName) ->
+            removeListener target eventName l False)
+        releaseListener l)
 
 event :: EventM t e e
 event = ask
