@@ -1,5 +1,3 @@
-{-# LANGUAGE CPP #-}
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
        (EventName(..), SaferEventListener(..), unsafeEventName, eventListenerNew, eventListenerNewSync, eventListenerNewAsync, eventListenerRelease) where
@@ -37,10 +35,3 @@ eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (cal
 
 eventListenerRelease :: EventListener -> IO ()
 eventListenerRelease (EventListener ref) = releaseCallback (Callback ref)
-
-#else
-module GHCJS.DOM.EventTargetClosures (
-  module Graphics.UI.Gtk.WebKit.DOM.EventTargetClosures
-  ) where
-import Graphics.UI.Gtk.WebKit.DOM.EventTargetClosures
-#endif

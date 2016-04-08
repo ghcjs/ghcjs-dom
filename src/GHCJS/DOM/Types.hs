@@ -1,13 +1,10 @@
-{-# LANGUAGE CPP #-}
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances #-}
-#else
-{-# LANGUAGE ConstraintKinds #-}
-#endif
 module GHCJS.DOM.Types (
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+  -- * Monad
+    DOM, MonadDOM, liftDOM
+
   -- * Object
-    maybeJSNullOrUndefined, Nullable(..), nullableToMaybe, maybeToNullable, propagateGError, GType(..)
+  , maybeJSNullOrUndefined, Nullable(..), nullableToMaybe, maybeToNullable, propagateGError, GType(..)
   , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
   , js_eq
 
@@ -653,207 +650,11 @@ module GHCJS.DOM.Types (
   , XPathNSResolver(XPathNSResolver), unXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
   , XPathResult(XPathResult), unXPathResult, castToXPathResult, gTypeXPathResult
   , XSLTProcessor(XSLTProcessor), unXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
-#else
-    propagateGError, GType(..), DOMString(..), ToDOMString(..), FromDOMString(..)
-  , FocusEvent
-  , TouchEvent
-  , module Graphics.UI.Gtk.WebKit.Types
-  , IsGObject
-
-  , IsApplicationCache
-  , IsAttr
-#ifndef USE_OLD_WEBKIT
-  , IsAudioTrack
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsAudioTrackList
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsBarProp
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsBatteryManager
-#endif
-  , IsBlob
-  , IsCDATASection
-#ifndef USE_OLD_WEBKIT
-  , IsCSS
-#endif
-  , IsCSSRule
-  , IsCSSRuleList
-  , IsCSSStyleDeclaration
-  , IsCSSStyleSheet
-  , IsCSSValue
-  , IsCharacterData
-  , IsComment
-  , IsDOMImplementation
-#ifndef USE_OLD_WEBKIT
-  , IsDOMNamedFlowCollection
-#endif
-  , IsDOMSettableTokenList
-  , IsDOMStringList
-  , IsDOMTokenList
-  , IsDocument
-  , IsDocumentFragment
-  , IsDocumentType
-  , IsElement
-  , IsEntityReference
-  , IsEvent
-  , IsEventTarget
-  , IsFile
-  , IsFileList
-  , IsGeolocation
-  , IsHTMLAnchorElement
-  , IsHTMLAppletElement
-  , IsHTMLAreaElement
-  , IsHTMLAudioElement
-  , IsHTMLBRElement
-  , IsHTMLBaseElement
-  , IsHTMLBaseFontElement
-  , IsHTMLBodyElement
-  , IsHTMLButtonElement
-  , IsHTMLCanvasElement
-  , IsHTMLCollection
-  , IsHTMLDListElement
-  , IsHTMLDetailsElement
-  , IsHTMLDirectoryElement
-  , IsHTMLDivElement
-  , IsHTMLDocument
-  , IsHTMLElement
-  , IsHTMLEmbedElement
-  , IsHTMLFieldSetElement
-  , IsHTMLFontElement
-  , IsHTMLFormElement
-  , IsHTMLFrameElement
-  , IsHTMLFrameSetElement
-  , IsHTMLHRElement
-  , IsHTMLHeadElement
-  , IsHTMLHeadingElement
-  , IsHTMLHtmlElement
-  , IsHTMLIFrameElement
-  , IsHTMLImageElement
-  , IsHTMLInputElement
-  , IsHTMLKeygenElement
-  , IsHTMLLIElement
-  , IsHTMLLabelElement
-  , IsHTMLLegendElement
-  , IsHTMLLinkElement
-  , IsHTMLMapElement
-  , IsHTMLMarqueeElement
-  , IsHTMLMediaElement
-  , IsHTMLMenuElement
-  , IsHTMLMetaElement
-  , IsHTMLModElement
-  , IsHTMLOListElement
-  , IsHTMLObjectElement
-  , IsHTMLOptGroupElement
-  , IsHTMLOptionElement
-  , IsHTMLOptionsCollection
-  , IsHTMLParagraphElement
-  , IsHTMLParamElement
-  , IsHTMLPreElement
-  , IsHTMLQuoteElement
-  , IsHTMLScriptElement
-  , IsHTMLSelectElement
-  , IsHTMLStyleElement
-  , IsHTMLTableCaptionElement
-  , IsHTMLTableCellElement
-  , IsHTMLTableColElement
-  , IsHTMLTableElement
-  , IsHTMLTableRowElement
-  , IsHTMLTableSectionElement
-  , IsHTMLTextAreaElement
-  , IsHTMLTitleElement
-  , IsHTMLUListElement
-  , IsHTMLVideoElement
-  , IsHistory
-#ifndef USE_OLD_WEBKIT
-  , IsKeyboardEvent
-#endif
-  , IsLocation
-  , IsMediaError
-  , IsMediaList
-  , IsMediaQueryList
-  , IsMessagePort
-  , IsMimeType
-  , IsMimeTypeArray
-  , IsMouseEvent
-  , IsNamedNodeMap
-  , IsNavigator
-  , IsNode
-  , IsNodeFilter
-  , IsNodeIterator
-  , IsNodeList
-#ifndef USE_OLD_WEBKIT
-  , IsPerformance
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsPerformanceNavigation
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsPerformanceTiming
-#endif
-  , IsPlugin
-  , IsPluginArray
-  , IsProcessingInstruction
-  , IsRange
-  , IsScreen
-#ifndef USE_OLD_WEBKIT
-  , IsSecurityPolicy
-#endif
-  , IsSelection
-  , IsStorage
-#ifndef USE_OLD_WEBKIT
-  , IsStorageInfo
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsStorageQuota
-#endif
-  , IsStyleMedia
-  , IsStyleSheet
-  , IsStyleSheetList
-  , IsText
-#ifndef USE_OLD_WEBKIT
-  , IsTextTrack
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsTextTrackCue
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsTextTrackCueList
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsTextTrackList
-#endif
-  , IsTimeRanges
-#ifndef USE_OLD_WEBKIT
-  , IsTouch
-#endif
-  , IsTreeWalker
-  , IsUIEvent
-  , IsValidityState
-#ifndef USE_OLD_WEBKIT
-  , IsVideoTrack
-#endif
-#ifndef USE_OLD_WEBKIT
-  , IsVideoTrackList
-#endif
-  , IsWebKitNamedFlow
-  , IsWebKitPoint
-#ifndef USE_OLD_WEBKIT
-  , IsWheelEvent
-#endif
-  , IsWindow
-  , IsXPathExpression
-  , IsXPathNSResolver
-  , IsXPathResult
 -- AUTO GENERATION ENDS HERE
-#endif
   ) where
 
 import Control.Applicative ((<$>))
 import qualified Data.Text as T (Text)
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 import qualified Data.Text.Lazy as LT (Text)
 import Data.JSString (pack, unpack)
 import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
@@ -863,18 +664,15 @@ import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import GHCJS.Nullable (Nullable(..), nullableToMaybe, maybeToNullable)
 import GHCJS.Foreign.Callback.Internal (Callback(..))
 import Control.Monad.IO.Class (MonadIO(..))
-#else
-import Data.Maybe (isNothing)
-import Foreign.C (CString)
-import Graphics.UI.Gtk.WebKit.Types
-import System.Glib (propagateGError, GType(..))
-import System.Glib.UTFString
-       (readUTFString, GlibString(..))
-#endif
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
+type MonadDOM = MonadIO
+type DOM = IO
+
+liftDOM :: DOM a -> DOM a
+liftDOM = liftIO
+
 maybeJSNullOrUndefined :: JSVal -> Maybe JSVal
 maybeJSNullOrUndefined r | isNull r || isUndefined r = Nothing
 maybeJSNullOrUndefined r = Just r
@@ -886,13 +684,8 @@ newtype GType = GType JSVal
 foreign import javascript unsafe
   "$1===$2" js_eq :: JSVal -> JSVal -> Bool
 
-#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
     typeInstanceIsA' :: JSVal -> JSVal -> Bool
-#else
-typeInstanceIsA' :: JSVal -> JSVal -> Bool
-typeInstanceIsA' = error "typeInstanceIsA': only available in JavaScript"
-#endif
 
 typeInstanceIsA o (GType t) = typeInstanceIsA' o t
 
@@ -962,18 +755,13 @@ instance IsGObject GObject where
 castToGObject :: IsGObject obj => obj -> obj
 castToGObject = id
 
-#ifdef ghcjs_HOST_OS
 foreign import javascript unsafe "object" gTypeGObject :: GType
-#else
-gTypeGObject = error "gTypeGObject: only available in JavaScript"
-#endif
 
 foreign import javascript unsafe "$1[\"toString\"]()" js_objectToString :: GObject -> IO JSString
 
 objectToString :: (MonadIO m, IsGObject self, FromJSString result) => self -> m result
 objectToString self = liftIO (fromJSString <$> (js_objectToString (toGObject self)))
 
-#ifdef ghcjs_HOST_OS
 -- | Fastest string type to use when you just
 --   want to take a string from the DOM then
 --   give it back as is.
@@ -1007,26 +795,9 @@ instance FromJSString JSString
 
 type ToDOMString s = ToJSString s
 type FromDOMString s = FromJSString s
-#endif
-
-#else
-type IsGObject o = GObjectClass o
-
--- | Fastest string type to use when you just
---   want to take a string from the DOM then
---   give it back as is.
-type DOMString = T.Text
-
-type ToDOMString s = GlibString s
-type FromDOMString s = GlibString s
-
-type FocusEvent = UIEvent
-type TouchEvent = UIEvent
-#endif
 
 type IsDOMString s = (ToDOMString s, FromDOMString s)
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- Callbacks
 newtype AudioBufferCallback = AudioBufferCallback (Callback (JSVal -> IO ()))
 instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback (Callback r)) = r
@@ -1072,10 +843,8 @@ newtype StringCallback s = StringCallback (Callback (JSVal -> IO ()))
 instance PToJSVal (StringCallback s) where pToJSVal (StringCallback (Callback r)) = r
 newtype VoidCallback = VoidCallback (Callback (IO ()))
 instance PToJSVal VoidCallback where pToJSVal (VoidCallback (Callback r)) = r
-#endif
 
 -- Custom types
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype SerializedScriptValue = SerializedScriptValue { unSerializedScriptValue :: JSVal }
 
 instance Eq SerializedScriptValue where
@@ -1106,11 +875,7 @@ instance IsGObject SerializedScriptValue where
   toGObject = GObject . unSerializedScriptValue
   unsafeCastGObject = SerializedScriptValue . unGObject
 -- TODO add more IsSerializedScriptValue instances
-#else
--- TODO work out how we can support SerializedScriptValue in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype PositionOptions = PositionOptions { unPositionOptions :: JSVal }
 
 instance Eq PositionOptions where
@@ -1141,11 +906,7 @@ instance IsGObject PositionOptions where
   toGObject = GObject . unPositionOptions
   unsafeCastGObject = PositionOptions . unGObject
 -- TODO add more IsPositionOptions instances
-#else
--- TODO work out how we can support PositionOptions in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Dictionary = Dictionary { unDictionary :: JSVal }
 
 instance Eq Dictionary where
@@ -1176,11 +937,7 @@ instance IsGObject Dictionary where
   toGObject = GObject . unDictionary
   unsafeCastGObject = Dictionary . unGObject
 -- TODO add more IsDictionary instances
-#else
--- TODO work out how we can support Dictionary in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSVal }
 
 instance Eq BlobPropertyBag where
@@ -1211,11 +968,7 @@ instance IsGObject BlobPropertyBag where
   toGObject = GObject . unBlobPropertyBag
   unsafeCastGObject = BlobPropertyBag . unGObject
 -- TODO add more IsBlobPropertyBag instances
-#else
--- TODO work out how we can support BlobPropertyBag in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype MutationCallback = MutationCallback { unMutationCallback :: JSVal }
 
 instance Eq MutationCallback where
@@ -1246,11 +999,7 @@ instance IsGObject MutationCallback where
   toGObject = GObject . unMutationCallback
   unsafeCastGObject = MutationCallback . unGObject
 -- TODO add more IsMutationCallback instances
-#else
--- TODO work out how we can support MutationCallback in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Promise = Promise { unPromise :: JSVal }
 
 instance Eq Promise where
@@ -1286,11 +1035,7 @@ castToPromise :: IsGObject obj => obj -> Promise
 castToPromise = castTo gTypePromise "Promise"
 
 foreign import javascript unsafe "window[\"Promise\"]" gTypePromise :: GType
-#else
--- TODO work out how we can support Promise in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype ArrayBuffer = ArrayBuffer { unArrayBuffer :: JSVal }
 
 instance Eq ArrayBuffer where
@@ -1325,11 +1070,7 @@ castToArrayBuffer :: IsGObject obj => obj -> ArrayBuffer
 castToArrayBuffer = castTo gTypeArrayBuffer "ArrayBuffer"
 
 foreign import javascript unsafe "window[\"ArrayBuffer\"]" gTypeArrayBuffer :: GType
-#else
--- TODO work out how we can support ArrayBuffer in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Float32Array = Float32Array { unFloat32Array :: JSVal }
 
 instance Eq Float32Array where
@@ -1365,11 +1106,7 @@ castToFloat32Array :: IsGObject obj => obj -> Float32Array
 castToFloat32Array = castTo gTypeFloat32Array "Float32Array"
 
 foreign import javascript unsafe "window[\"Float32Array\"]" gTypeFloat32Array :: GType
-#else
--- TODO work out how we can support Float32Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Float64Array = Float64Array { unFloat64Array :: JSVal }
 
 instance Eq Float64Array where
@@ -1405,11 +1142,7 @@ castToFloat64Array :: IsGObject obj => obj -> Float64Array
 castToFloat64Array = castTo gTypeFloat64Array "Float64Array"
 
 foreign import javascript unsafe "window[\"Float64Array\"]" gTypeFloat64Array :: GType
-#else
--- TODO work out how we can support Float64Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Uint8Array = Uint8Array { unUint8Array :: JSVal }
 
 instance Eq Uint8Array where
@@ -1445,11 +1178,7 @@ castToUint8Array :: IsGObject obj => obj -> Uint8Array
 castToUint8Array = castTo gTypeUint8Array "Uint8Array"
 
 foreign import javascript unsafe "window[\"Uint8Array\"]" gTypeUint8Array :: GType
-#else
--- TODO work out how we can support Uint8Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSVal }
 
 instance Eq Uint8ClampedArray where
@@ -1485,11 +1214,7 @@ castToUint8ClampedArray :: IsGObject obj => obj -> Uint8ClampedArray
 castToUint8ClampedArray = castTo gTypeUint8ClampedArray "Uint8ClampedArray"
 
 foreign import javascript unsafe "window[\"Uint8ClampedArray\"]" gTypeUint8ClampedArray :: GType
-#else
--- TODO work out how we can support Uint8ClampedArray in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Uint16Array = Uint16Array { unUint16Array :: JSVal }
 
 instance Eq Uint16Array where
@@ -1525,11 +1250,7 @@ castToUint16Array :: IsGObject obj => obj -> Uint16Array
 castToUint16Array = castTo gTypeUint16Array "Uint16Array"
 
 foreign import javascript unsafe "window[\"Uint16Array\"]" gTypeUint16Array :: GType
-#else
--- TODO work out how we can support Uint16Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Uint32Array = Uint32Array { unUint32Array :: JSVal }
 
 instance Eq Uint32Array where
@@ -1565,11 +1286,7 @@ castToUint32Array :: IsGObject obj => obj -> Uint32Array
 castToUint32Array = castTo gTypeUint32Array "Uint32Array"
 
 foreign import javascript unsafe "window[\"Uint32Array\"]" gTypeUint32Array :: GType
-#else
--- TODO work out how we can support Uint32Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Int8Array = Int8Array { unInt8Array :: JSVal }
 
 instance Eq Int8Array where
@@ -1605,11 +1322,7 @@ castToInt8Array :: IsGObject obj => obj -> Int8Array
 castToInt8Array = castTo gTypeInt8Array "Int8Array"
 
 foreign import javascript unsafe "window[\"Int8Array\"]" gTypeInt8Array :: GType
-#else
--- TODO work out how we can support Int8Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Int16Array = Int16Array { unInt16Array :: JSVal }
 
 instance Eq Int16Array where
@@ -1645,11 +1358,7 @@ castToInt16Array :: IsGObject obj => obj -> Int16Array
 castToInt16Array = castTo gTypeInt16Array "Int16Array"
 
 foreign import javascript unsafe "window[\"Int16Array\"]" gTypeInt16Array :: GType
-#else
--- TODO work out how we can support Int16Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Int32Array = Int32Array { unInt32Array :: JSVal }
 
 instance Eq Int32Array where
@@ -1685,11 +1394,7 @@ castToInt32Array :: IsGObject obj => obj -> Int32Array
 castToInt32Array = castTo gTypeInt32Array "Int32Array"
 
 foreign import javascript unsafe "window[\"Int32Array\"]" gTypeInt32Array :: GType
-#else
--- TODO work out how we can support Int32Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype ObjectArray = ObjectArray { unObjectArray :: JSVal }
 
 instance Eq ObjectArray where
@@ -1720,11 +1425,7 @@ instance IsGObject ObjectArray where
   toGObject = GObject . unObjectArray
   unsafeCastGObject = ObjectArray . unGObject
 -- TODO add more IsObjectArray instances
-#else
--- TODO work out how we can support ObjectArray in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSVal }
 
 instance Eq ArrayBufferView where
@@ -1755,11 +1456,7 @@ instance IsGObject ArrayBufferView where
   toGObject = GObject . unArrayBufferView
   unsafeCastGObject = ArrayBufferView . unGObject
 -- TODO add more IsArrayBufferView instances
-#else
--- TODO work out how we can support ArrayBufferView in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Array = Array { unArray :: JSVal }
 
 instance Eq Array where
@@ -1795,11 +1492,7 @@ castToArray :: IsGObject obj => obj -> Array
 castToArray = castTo gTypeArray "Array"
 
 foreign import javascript unsafe "window[\"Array\"]" gTypeArray :: GType
-#else
--- TODO work out how we can support Array in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Date = Date { unDate :: JSVal }
 
 instance Eq Date where
@@ -1835,11 +1528,7 @@ castToDate :: IsGObject obj => obj -> Date
 castToDate = castTo gTypeDate "Date"
 
 foreign import javascript unsafe "window[\"Date\"]" gTypeDate :: GType
-#else
--- TODO work out how we can support Date in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Acceleration = Acceleration { unAcceleration :: JSVal }
 
 instance Eq Acceleration where
@@ -1870,11 +1559,7 @@ instance IsGObject Acceleration where
   toGObject = GObject . unAcceleration
   unsafeCastGObject = Acceleration . unGObject
 -- TODO add more IsAcceleration instances
-#else
--- TODO work out how we can support Acceleration in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype RotationRate = RotationRate { unRotationRate :: JSVal }
 
 instance Eq RotationRate where
@@ -1905,11 +1590,7 @@ instance IsGObject RotationRate where
   toGObject = GObject . unRotationRate
   unsafeCastGObject = RotationRate . unGObject
 -- TODO add more IsRotationRate instances
-#else
--- TODO work out how we can support RotationRate in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype Algorithm = Algorithm { unAlgorithm :: JSVal }
 
 instance Eq Algorithm where
@@ -1940,11 +1621,7 @@ instance IsGObject Algorithm where
   toGObject = GObject . unAlgorithm
   unsafeCastGObject = Algorithm . unGObject
 -- TODO add more IsAlgorithm instances
-#else
--- TODO work out how we can support Algorithm in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSVal }
 
 instance Eq CryptoOperationData where
@@ -1976,11 +1653,7 @@ instance IsGObject CryptoOperationData where
   unsafeCastGObject = CryptoOperationData . unGObject
 instance IsCryptoOperationData ArrayBuffer
 instance IsCryptoOperationData ArrayBufferView
-#else
--- TODO work out how we can support CryptoOperationData in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype CanvasStyle = CanvasStyle { unCanvasStyle :: JSVal }
 
 instance Eq CanvasStyle where
@@ -2012,11 +1685,7 @@ instance IsGObject CanvasStyle where
   unsafeCastGObject = CanvasStyle . unGObject
 instance IsCanvasStyle CanvasGradient
 instance IsCanvasStyle CanvasPattern
-#else
--- TODO work out how we can support CanvasStyle in native code
-#endif
 
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 newtype DOMException = DOMException { unDOMException :: JSVal }
 
 instance Eq DOMException where
@@ -2046,9 +1715,6 @@ instance IsDOMException DOMException
 instance IsGObject DOMException where
   toGObject = GObject . unDOMException
   unsafeCastGObject = DOMException . unGObject
-#else
--- TODO work out how we can support DOMException in native code
-#endif
 
 type GLenum = Word32
 type GLboolean = Bool
@@ -2069,7 +1735,6 @@ type GLclampf = Double
 
 -- AUTO GENERATION STARTS HERE
 -- The remainder of this file is generated from IDL files using domconv-webkit-jsffi
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ANGLEInstancedArrays".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ANGLEInstancedArrays Mozilla ANGLEInstancedArrays documentation>
@@ -2104,10 +1769,7 @@ castToANGLEInstancedArrays :: IsGObject obj => obj -> ANGLEInstancedArrays
 castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArrays"
 
 foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractView".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView Mozilla AbstractView documentation>
@@ -2142,10 +1804,7 @@ castToAbstractView :: IsGObject obj => obj -> AbstractView
 castToAbstractView = castTo gTypeAbstractView "AbstractView"
 
 foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AbstractWorker Mozilla AbstractWorker documentation>
@@ -2180,10 +1839,7 @@ castToAbstractWorker :: IsGObject obj => obj -> AbstractWorker
 castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
 
 foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AllAudioCapabilities".
 -- Base interface functions are in:
 --
@@ -2222,10 +1878,7 @@ castToAllAudioCapabilities :: IsGObject obj => obj -> AllAudioCapabilities
 castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilities"
 
 foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudioCapabilities :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AllVideoCapabilities".
 -- Base interface functions are in:
 --
@@ -2264,10 +1917,7 @@ castToAllVideoCapabilities :: IsGObject obj => obj -> AllVideoCapabilities
 castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilities"
 
 foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVideoCapabilities :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AnalyserNode".
 -- Base interface functions are in:
 --
@@ -2308,10 +1958,7 @@ castToAnalyserNode :: IsGObject obj => obj -> AnalyserNode
 castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
 
 foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationEvent".
 -- Base interface functions are in:
 --
@@ -2350,10 +1997,7 @@ castToAnimationEvent :: IsGObject obj => obj -> AnimationEvent
 castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
 
 foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ApplicationCache".
 -- Base interface functions are in:
 --
@@ -2392,12 +2036,7 @@ castToApplicationCache :: IsGObject obj => obj -> ApplicationCache
 castToApplicationCache = castTo gTypeApplicationCache "ApplicationCache"
 
 foreign import javascript unsafe "window[\"ApplicationCache\"]" gTypeApplicationCache :: GType
-#else
-type IsApplicationCache o = ApplicationCacheClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Attr".
 -- Base interface functions are in:
 --
@@ -2438,12 +2077,7 @@ castToAttr :: IsGObject obj => obj -> Attr
 castToAttr = castTo gTypeAttr "Attr"
 
 foreign import javascript unsafe "window[\"Attr\"]" gTypeAttr :: GType
-#else
-type IsAttr o = AttrClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer Mozilla AudioBuffer documentation>
@@ -2478,10 +2112,7 @@ castToAudioBuffer :: IsGObject obj => obj -> AudioBuffer
 castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
 
 foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBufferSourceNode".
 -- Base interface functions are in:
 --
@@ -2522,10 +2153,7 @@ castToAudioBufferSourceNode :: IsGObject obj => obj -> AudioBufferSourceNode
 castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSourceNode"
 
 foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioContext".
 -- Base interface functions are in:
 --
@@ -2569,10 +2197,7 @@ castToAudioContext :: IsGObject obj => obj -> AudioContext
 castToAudioContext = castTo gTypeAudioContext "AudioContext"
 
 foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioDestinationNode".
 -- Base interface functions are in:
 --
@@ -2613,10 +2238,7 @@ castToAudioDestinationNode :: IsGObject obj => obj -> AudioDestinationNode
 castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationNode"
 
 foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener Mozilla AudioListener documentation>
@@ -2651,10 +2273,7 @@ castToAudioListener :: IsGObject obj => obj -> AudioListener
 castToAudioListener = castTo gTypeAudioListener "AudioListener"
 
 foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioNode".
 -- Base interface functions are in:
 --
@@ -2698,10 +2317,7 @@ castToAudioNode :: IsGObject obj => obj -> AudioNode
 castToAudioNode = castTo gTypeAudioNode "AudioNode"
 
 foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam Mozilla AudioParam documentation>
@@ -2736,10 +2352,7 @@ castToAudioParam :: IsGObject obj => obj -> AudioParam
 castToAudioParam = castTo gTypeAudioParam "AudioParam"
 
 foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioProcessingEvent".
 -- Base interface functions are in:
 --
@@ -2778,10 +2391,7 @@ castToAudioProcessingEvent :: IsGObject obj => obj -> AudioProcessingEvent
 castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEvent"
 
 foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioStreamTrack".
 -- Base interface functions are in:
 --
@@ -2822,10 +2432,7 @@ castToAudioStreamTrack :: IsGObject obj => obj -> AudioStreamTrack
 castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
 
 foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStreamTrack :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack Mozilla AudioTrack documentation>
@@ -2860,14 +2467,7 @@ castToAudioTrack :: IsGObject obj => obj -> AudioTrack
 castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
 
 foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsAudioTrack o = AudioTrackClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrackList".
 -- Base interface functions are in:
 --
@@ -2906,14 +2506,7 @@ castToAudioTrackList :: IsGObject obj => obj -> AudioTrackList
 castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
 
 foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsAudioTrackList o = AudioTrackListClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.AutocompleteErrorEvent".
 -- Base interface functions are in:
 --
@@ -2952,10 +2545,7 @@ castToAutocompleteErrorEvent :: IsGObject obj => obj -> AutocompleteErrorEvent
 castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteErrorEvent"
 
 foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.BarProp".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/BarProp Mozilla BarProp documentation>
@@ -2990,14 +2580,7 @@ castToBarProp :: IsGObject obj => obj -> BarProp
 castToBarProp = castTo gTypeBarProp "BarProp"
 
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsBarProp o = BarPropClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.BatteryManager".
 -- Base interface functions are in:
 --
@@ -3036,14 +2619,7 @@ castToBatteryManager :: IsGObject obj => obj -> BatteryManager
 castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
 
 foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsBatteryManager o = BatteryManagerClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEvent".
 -- Base interface functions are in:
 --
@@ -3082,10 +2658,7 @@ castToBeforeLoadEvent :: IsGObject obj => obj -> BeforeLoadEvent
 castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
 
 foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeUnloadEvent".
 -- Base interface functions are in:
 --
@@ -3124,10 +2697,7 @@ castToBeforeUnloadEvent :: IsGObject obj => obj -> BeforeUnloadEvent
 castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
 
 foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.BiquadFilterNode".
 -- Base interface functions are in:
 --
@@ -3168,10 +2738,7 @@ castToBiquadFilterNode :: IsGObject obj => obj -> BiquadFilterNode
 castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
 
 foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Blob".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation>
@@ -3211,12 +2778,7 @@ castToBlob :: IsGObject obj => obj -> Blob
 castToBlob = castTo gTypeBlob "Blob"
 
 foreign import javascript unsafe "window[\"Blob\"]" gTypeBlob :: GType
-#else
-type IsBlob o = BlobClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CDATASection".
 -- Base interface functions are in:
 --
@@ -3261,12 +2823,7 @@ castToCDATASection :: IsGObject obj => obj -> CDATASection
 castToCDATASection = castTo gTypeCDATASection "CDATASection"
 
 foreign import javascript unsafe "window[\"CDATASection\"]" gTypeCDATASection :: GType
-#else
-type IsCDATASection o = CDATASectionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSS".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSS Mozilla CSS documentation>
@@ -3301,14 +2858,7 @@ castToCSS :: IsGObject obj => obj -> CSS
 castToCSS = castTo gTypeCSS "CSS"
 
 foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsCSS o = CSSClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSCharsetRule".
 -- Base interface functions are in:
 --
@@ -3347,10 +2897,7 @@ castToCSSCharsetRule :: IsGObject obj => obj -> CSSCharsetRule
 castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
 
 foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceLoadEvent".
 -- Base interface functions are in:
 --
@@ -3389,10 +2936,7 @@ castToCSSFontFaceLoadEvent :: IsGObject obj => obj -> CSSFontFaceLoadEvent
 castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEvent"
 
 foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceRule".
 -- Base interface functions are in:
 --
@@ -3431,10 +2975,7 @@ castToCSSFontFaceRule :: IsGObject obj => obj -> CSSFontFaceRule
 castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
 
 foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSImportRule".
 -- Base interface functions are in:
 --
@@ -3473,10 +3014,7 @@ castToCSSImportRule :: IsGObject obj => obj -> CSSImportRule
 castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
 
 foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframeRule".
 -- Base interface functions are in:
 --
@@ -3515,10 +3053,7 @@ castToCSSKeyframeRule :: IsGObject obj => obj -> CSSKeyframeRule
 castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframesRule".
 -- Base interface functions are in:
 --
@@ -3557,10 +3092,7 @@ castToCSSKeyframesRule :: IsGObject obj => obj -> CSSKeyframesRule
 castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSMediaRule".
 -- Base interface functions are in:
 --
@@ -3599,10 +3131,7 @@ castToCSSMediaRule :: IsGObject obj => obj -> CSSMediaRule
 castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
 
 foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPageRule".
 -- Base interface functions are in:
 --
@@ -3641,10 +3170,7 @@ castToCSSPageRule :: IsGObject obj => obj -> CSSPageRule
 castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
 
 foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPrimitiveValue".
 -- Base interface functions are in:
 --
@@ -3683,10 +3209,7 @@ castToCSSPrimitiveValue :: IsGObject obj => obj -> CSSPrimitiveValue
 castToCSSPrimitiveValue = castTo gTypeCSSPrimitiveValue "CSSPrimitiveValue"
 
 foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimitiveValue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule Mozilla CSSRule documentation>
@@ -3726,12 +3249,7 @@ castToCSSRule :: IsGObject obj => obj -> CSSRule
 castToCSSRule = castTo gTypeCSSRule "CSSRule"
 
 foreign import javascript unsafe "window[\"CSSRule\"]" gTypeCSSRule :: GType
-#else
-type IsCSSRule o = CSSRuleClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList Mozilla CSSRuleList documentation>
@@ -3766,12 +3284,7 @@ castToCSSRuleList :: IsGObject obj => obj -> CSSRuleList
 castToCSSRuleList = castTo gTypeCSSRuleList "CSSRuleList"
 
 foreign import javascript unsafe "window[\"CSSRuleList\"]" gTypeCSSRuleList :: GType
-#else
-type IsCSSRuleList o = CSSRuleListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration Mozilla CSSStyleDeclaration documentation>
@@ -3806,12 +3319,7 @@ castToCSSStyleDeclaration :: IsGObject obj => obj -> CSSStyleDeclaration
 castToCSSStyleDeclaration = castTo gTypeCSSStyleDeclaration "CSSStyleDeclaration"
 
 foreign import javascript unsafe "window[\"CSSStyleDeclaration\"]" gTypeCSSStyleDeclaration :: GType
-#else
-type IsCSSStyleDeclaration o = CSSStyleDeclarationClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleRule".
 -- Base interface functions are in:
 --
@@ -3850,10 +3358,7 @@ castToCSSStyleRule :: IsGObject obj => obj -> CSSStyleRule
 castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
 
 foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleSheet".
 -- Base interface functions are in:
 --
@@ -3892,12 +3397,7 @@ castToCSSStyleSheet :: IsGObject obj => obj -> CSSStyleSheet
 castToCSSStyleSheet = castTo gTypeCSSStyleSheet "CSSStyleSheet"
 
 foreign import javascript unsafe "window[\"CSSStyleSheet\"]" gTypeCSSStyleSheet :: GType
-#else
-type IsCSSStyleSheet o = CSSStyleSheetClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSSupportsRule".
 -- Base interface functions are in:
 --
@@ -3936,10 +3436,7 @@ castToCSSSupportsRule :: IsGObject obj => obj -> CSSSupportsRule
 castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
 
 foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSUnknownRule".
 -- Base interface functions are in:
 --
@@ -3978,10 +3475,7 @@ castToCSSUnknownRule :: IsGObject obj => obj -> CSSUnknownRule
 castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
 
 foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue Mozilla CSSValue documentation>
@@ -4021,12 +3515,7 @@ castToCSSValue :: IsGObject obj => obj -> CSSValue
 castToCSSValue = castTo gTypeCSSValue "CSSValue"
 
 foreign import javascript unsafe "window[\"CSSValue\"]" gTypeCSSValue :: GType
-#else
-type IsCSSValue o = CSSValueClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValueList".
 -- Base interface functions are in:
 --
@@ -4070,10 +3559,7 @@ castToCSSValueList :: IsGObject obj => obj -> CSSValueList
 castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
 
 foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient Mozilla CanvasGradient documentation>
@@ -4108,10 +3594,7 @@ castToCanvasGradient :: IsGObject obj => obj -> CanvasGradient
 castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
 
 foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern Mozilla CanvasPattern documentation>
@@ -4146,10 +3629,7 @@ castToCanvasPattern :: IsGObject obj => obj -> CanvasPattern
 castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
 
 foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasProxy Mozilla CanvasProxy documentation>
@@ -4184,10 +3664,7 @@ castToCanvasProxy :: IsGObject obj => obj -> CanvasProxy
 castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
 
 foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext Mozilla CanvasRenderingContext documentation>
@@ -4227,10 +3704,7 @@ castToCanvasRenderingContext :: IsGObject obj => obj -> CanvasRenderingContext
 castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderingContext"
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanvasRenderingContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext2D".
 -- Base interface functions are in:
 --
@@ -4269,10 +3743,7 @@ castToCanvasRenderingContext2D :: IsGObject obj => obj -> CanvasRenderingContext
 castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRenderingContext2D"
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CapabilityRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CapabilityRange Mozilla CapabilityRange documentation>
@@ -4307,10 +3778,7 @@ castToCapabilityRange :: IsGObject obj => obj -> CapabilityRange
 castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
 
 foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRange :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelMergerNode".
 -- Base interface functions are in:
 --
@@ -4351,10 +3819,7 @@ castToChannelMergerNode :: IsGObject obj => obj -> ChannelMergerNode
 castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
 
 foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelSplitterNode".
 -- Base interface functions are in:
 --
@@ -4395,10 +3860,7 @@ castToChannelSplitterNode :: IsGObject obj => obj -> ChannelSplitterNode
 castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode"
 
 foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CharacterData".
 -- Base interface functions are in:
 --
@@ -4444,12 +3906,7 @@ castToCharacterData :: IsGObject obj => obj -> CharacterData
 castToCharacterData = castTo gTypeCharacterData "CharacterData"
 
 foreign import javascript unsafe "window[\"CharacterData\"]" gTypeCharacterData :: GType
-#else
-type IsCharacterData o = CharacterDataClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode Mozilla ChildNode documentation>
@@ -4484,10 +3941,7 @@ castToChildNode :: IsGObject obj => obj -> ChildNode
 castToChildNode = castTo gTypeChildNode "ChildNode"
 
 foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect Mozilla ClientRect documentation>
@@ -4522,10 +3976,7 @@ castToClientRect :: IsGObject obj => obj -> ClientRect
 castToClientRect = castTo gTypeClientRect "ClientRect"
 
 foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList Mozilla ClientRectList documentation>
@@ -4560,10 +4011,7 @@ castToClientRectList :: IsGObject obj => obj -> ClientRectList
 castToClientRectList = castTo gTypeClientRectList "ClientRectList"
 
 foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CloseEvent".
 -- Base interface functions are in:
 --
@@ -4602,10 +4050,7 @@ castToCloseEvent :: IsGObject obj => obj -> CloseEvent
 castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
 
 foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost Mozilla CommandLineAPIHost documentation>
@@ -4640,10 +4085,7 @@ castToCommandLineAPIHost :: IsGObject obj => obj -> CommandLineAPIHost
 castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
 
 foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Comment".
 -- Base interface functions are in:
 --
@@ -4686,12 +4128,7 @@ castToComment :: IsGObject obj => obj -> Comment
 castToComment = castTo gTypeComment "Comment"
 
 foreign import javascript unsafe "window[\"Comment\"]" gTypeComment :: GType
-#else
-type IsComment o = CommentClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CompositionEvent".
 -- Base interface functions are in:
 --
@@ -4732,10 +4169,7 @@ castToCompositionEvent :: IsGObject obj => obj -> CompositionEvent
 castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
 
 foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ConvolverNode".
 -- Base interface functions are in:
 --
@@ -4776,10 +4210,7 @@ castToConvolverNode :: IsGObject obj => obj -> ConvolverNode
 castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
 
 foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates Mozilla Coordinates documentation>
@@ -4814,10 +4245,7 @@ castToCoordinates :: IsGObject obj => obj -> Coordinates
 castToCoordinates = castTo gTypeCoordinates "Coordinates"
 
 foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Counter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Counter Mozilla Counter documentation>
@@ -4852,10 +4280,7 @@ castToCounter :: IsGObject obj => obj -> Counter
 castToCounter = castTo gTypeCounter "Counter"
 
 foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Crypto Mozilla Crypto documentation>
@@ -4890,10 +4315,7 @@ castToCrypto :: IsGObject obj => obj -> Crypto
 castToCrypto = castTo gTypeCrypto "Crypto"
 
 foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey Mozilla CryptoKey documentation>
@@ -4928,10 +4350,7 @@ castToCryptoKey :: IsGObject obj => obj -> CryptoKey
 castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
 
 foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair Mozilla CryptoKeyPair documentation>
@@ -4966,10 +4385,7 @@ castToCryptoKeyPair :: IsGObject obj => obj -> CryptoKeyPair
 castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
 
 foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.CustomEvent".
 -- Base interface functions are in:
 --
@@ -5008,10 +4424,7 @@ castToCustomEvent :: IsGObject obj => obj -> CustomEvent
 castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
 
 foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMError Mozilla DOMError documentation>
@@ -5051,10 +4464,7 @@ castToDOMError :: IsGObject obj => obj -> DOMError
 castToDOMError = castTo gTypeDOMError "DOMError"
 
 foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation Mozilla DOMImplementation documentation>
@@ -5089,12 +4499,7 @@ castToDOMImplementation :: IsGObject obj => obj -> DOMImplementation
 castToDOMImplementation = castTo gTypeDOMImplementation "DOMImplementation"
 
 foreign import javascript unsafe "window[\"DOMImplementation\"]" gTypeDOMImplementation :: GType
-#else
-type IsDOMImplementation o = DOMImplementationClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection Mozilla WebKitNamedFlowCollection documentation>
@@ -5129,14 +4534,7 @@ castToDOMNamedFlowCollection :: IsGObject obj => obj -> DOMNamedFlowCollection
 castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
 
 foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsDOMNamedFlowCollection o = DOMNamedFlowCollectionClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation>
@@ -5171,10 +4569,7 @@ castToDOMParser :: IsGObject obj => obj -> DOMParser
 castToDOMParser = castTo gTypeDOMParser "DOMParser"
 
 foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMSettableTokenList".
 -- Base interface functions are in:
 --
@@ -5213,12 +4608,7 @@ castToDOMSettableTokenList :: IsGObject obj => obj -> DOMSettableTokenList
 castToDOMSettableTokenList = castTo gTypeDOMSettableTokenList "DOMSettableTokenList"
 
 foreign import javascript unsafe "window[\"DOMSettableTokenList\"]" gTypeDOMSettableTokenList :: GType
-#else
-type IsDOMSettableTokenList o = DOMSettableTokenListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList Mozilla DOMStringList documentation>
@@ -5253,12 +4643,7 @@ castToDOMStringList :: IsGObject obj => obj -> DOMStringList
 castToDOMStringList = castTo gTypeDOMStringList "DOMStringList"
 
 foreign import javascript unsafe "window[\"DOMStringList\"]" gTypeDOMStringList :: GType
-#else
-type IsDOMStringList o = DOMStringListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringMap Mozilla DOMStringMap documentation>
@@ -5293,10 +4678,7 @@ castToDOMStringMap :: IsGObject obj => obj -> DOMStringMap
 castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
 
 foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList Mozilla DOMTokenList documentation>
@@ -5336,12 +4718,7 @@ castToDOMTokenList :: IsGObject obj => obj -> DOMTokenList
 castToDOMTokenList = castTo gTypeDOMTokenList "DOMTokenList"
 
 foreign import javascript unsafe "window[\"DOMTokenList\"]" gTypeDOMTokenList :: GType
-#else
-type IsDOMTokenList o = DOMTokenListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DataCue".
 -- Base interface functions are in:
 --
@@ -5382,10 +4759,7 @@ castToDataCue :: IsGObject obj => obj -> DataCue
 castToDataCue = castTo gTypeDataCue "DataCue"
 
 foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer Mozilla DataTransfer documentation>
@@ -5420,10 +4794,7 @@ castToDataTransfer :: IsGObject obj => obj -> DataTransfer
 castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
 
 foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem Mozilla DataTransferItem documentation>
@@ -5458,10 +4829,7 @@ castToDataTransferItem :: IsGObject obj => obj -> DataTransferItem
 castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
 
 foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList Mozilla DataTransferItemList documentation>
@@ -5496,10 +4864,7 @@ castToDataTransferItemList :: IsGObject obj => obj -> DataTransferItemList
 castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemList"
 
 foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Database".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Database Mozilla Database documentation>
@@ -5534,10 +4899,7 @@ castToDatabase :: IsGObject obj => obj -> Database
 castToDatabase = castTo gTypeDatabase "Database"
 
 foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DedicatedWorkerGlobalScope".
 -- Base interface functions are in:
 --
@@ -5578,10 +4940,7 @@ castToDedicatedWorkerGlobalScope :: IsGObject obj => obj -> DedicatedWorkerGloba
 castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "DedicatedWorkerGlobalScope"
 
 foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DelayNode".
 -- Base interface functions are in:
 --
@@ -5622,10 +4981,7 @@ castToDelayNode :: IsGObject obj => obj -> DelayNode
 castToDelayNode = castTo gTypeDelayNode "DelayNode"
 
 foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceMotionEvent".
 -- Base interface functions are in:
 --
@@ -5664,10 +5020,7 @@ castToDeviceMotionEvent :: IsGObject obj => obj -> DeviceMotionEvent
 castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
 
 foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceOrientationEvent".
 -- Base interface functions are in:
 --
@@ -5706,10 +5059,7 @@ castToDeviceOrientationEvent :: IsGObject obj => obj -> DeviceOrientationEvent
 castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrientationEvent"
 
 foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceProximityEvent".
 -- Base interface functions are in:
 --
@@ -5748,10 +5098,7 @@ castToDeviceProximityEvent :: IsGObject obj => obj -> DeviceProximityEvent
 castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEvent"
 
 foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Document".
 -- Base interface functions are in:
 --
@@ -5797,12 +5144,7 @@ castToDocument :: IsGObject obj => obj -> Document
 castToDocument = castTo gTypeDocument "Document"
 
 foreign import javascript unsafe "window[\"Document\"]" gTypeDocument :: GType
-#else
-type IsDocument o = DocumentClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentFragment".
 -- Base interface functions are in:
 --
@@ -5843,12 +5185,7 @@ castToDocumentFragment :: IsGObject obj => obj -> DocumentFragment
 castToDocumentFragment = castTo gTypeDocumentFragment "DocumentFragment"
 
 foreign import javascript unsafe "window[\"DocumentFragment\"]" gTypeDocumentFragment :: GType
-#else
-type IsDocumentFragment o = DocumentFragmentClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentType".
 -- Base interface functions are in:
 --
@@ -5889,12 +5226,7 @@ castToDocumentType :: IsGObject obj => obj -> DocumentType
 castToDocumentType = castTo gTypeDocumentType "DocumentType"
 
 foreign import javascript unsafe "window[\"DocumentType\"]" gTypeDocumentType :: GType
-#else
-type IsDocumentType o = DocumentTypeClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.DynamicsCompressorNode".
 -- Base interface functions are in:
 --
@@ -5935,10 +5267,7 @@ castToDynamicsCompressorNode :: IsGObject obj => obj -> DynamicsCompressorNode
 castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompressorNode"
 
 foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTBlendMinMax Mozilla EXTBlendMinMax documentation>
@@ -5973,10 +5302,7 @@ castToEXTBlendMinMax :: IsGObject obj => obj -> EXTBlendMinMax
 castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
 
 foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTFragDepth Mozilla EXTFragDepth documentation>
@@ -6011,10 +5337,7 @@ castToEXTFragDepth :: IsGObject obj => obj -> EXTFragDepth
 castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
 
 foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTShaderTextureLOD Mozilla EXTShaderTextureLOD documentation>
@@ -6049,10 +5372,7 @@ castToEXTShaderTextureLOD :: IsGObject obj => obj -> EXTShaderTextureLOD
 castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD"
 
 foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTTextureFilterAnisotropic Mozilla EXTTextureFilterAnisotropic documentation>
@@ -6087,10 +5407,7 @@ castToEXTTextureFilterAnisotropic :: IsGObject obj => obj -> EXTTextureFilterAni
 castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXTTextureFilterAnisotropic"
 
 foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EXTsRGB Mozilla EXTsRGB documentation>
@@ -6125,10 +5442,7 @@ castToEXTsRGB :: IsGObject obj => obj -> EXTsRGB
 castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
 
 foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Element".
 -- Base interface functions are in:
 --
@@ -6174,12 +5488,7 @@ castToElement :: IsGObject obj => obj -> Element
 castToElement = castTo gTypeElement "Element"
 
 foreign import javascript unsafe "window[\"Element\"]" gTypeElement :: GType
-#else
-type IsElement o = ElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Entity".
 -- Base interface functions are in:
 --
@@ -6220,10 +5529,7 @@ castToEntity :: IsGObject obj => obj -> Entity
 castToEntity = castTo gTypeEntity "Entity"
 
 foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EntityReference".
 -- Base interface functions are in:
 --
@@ -6264,12 +5570,7 @@ castToEntityReference :: IsGObject obj => obj -> EntityReference
 castToEntityReference = castTo gTypeEntityReference "EntityReference"
 
 foreign import javascript unsafe "window[\"EntityReference\"]" gTypeEntityReference :: GType
-#else
-type IsEntityReference o = EntityReferenceClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ErrorEvent".
 -- Base interface functions are in:
 --
@@ -6308,10 +5609,7 @@ castToErrorEvent :: IsGObject obj => obj -> ErrorEvent
 castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
 
 foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Event".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Event Mozilla Event documentation>
@@ -6351,12 +5649,7 @@ castToEvent :: IsGObject obj => obj -> Event
 castToEvent = castTo gTypeEvent "Event"
 
 foreign import javascript unsafe "window[\"Event\"]" gTypeEvent :: GType
-#else
-type IsEvent o = EventClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EventListener".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventListener Mozilla EventListener documentation>
@@ -6391,10 +5684,7 @@ castToEventListener :: IsGObject obj => obj -> EventListener
 castToEventListener = castTo gTypeEventListener "EventListener"
 
 foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EventSource".
 -- Base interface functions are in:
 --
@@ -6433,10 +5723,7 @@ castToEventSource :: IsGObject obj => obj -> EventSource
 castToEventSource = castTo gTypeEventSource "EventSource"
 
 foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget Mozilla EventTarget documentation>
@@ -6476,12 +5763,7 @@ castToEventTarget :: IsGObject obj => obj -> EventTarget
 castToEventTarget = castTo gTypeEventTarget "EventTarget"
 
 foreign import javascript unsafe "window[\"EventTarget\"]" gTypeEventTarget :: GType
-#else
-type IsEventTarget o = EventTargetClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.File".
 -- Base interface functions are in:
 --
@@ -6520,12 +5802,7 @@ castToFile :: IsGObject obj => obj -> File
 castToFile = castTo gTypeFile "File"
 
 foreign import javascript unsafe "window[\"File\"]" gTypeFile :: GType
-#else
-type IsFile o = FileClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FileError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileError Mozilla FileError documentation>
@@ -6560,10 +5837,7 @@ castToFileError :: IsGObject obj => obj -> FileError
 castToFileError = castTo gTypeFileError "FileError"
 
 foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FileList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileList Mozilla FileList documentation>
@@ -6598,12 +5872,7 @@ castToFileList :: IsGObject obj => obj -> FileList
 castToFileList = castTo gTypeFileList "FileList"
 
 foreign import javascript unsafe "window[\"FileList\"]" gTypeFileList :: GType
-#else
-type IsFileList o = FileListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FileReader".
 -- Base interface functions are in:
 --
@@ -6642,10 +5911,7 @@ castToFileReader :: IsGObject obj => obj -> FileReader
 castToFileReader = castTo gTypeFileReader "FileReader"
 
 foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation>
@@ -6680,10 +5946,7 @@ castToFileReaderSync :: IsGObject obj => obj -> FileReaderSync
 castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
 
 foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FocusEvent".
 -- Base interface functions are in:
 --
@@ -6724,10 +5987,7 @@ castToFocusEvent :: IsGObject obj => obj -> FocusEvent
 castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
 
 foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FontLoader".
 -- Base interface functions are in:
 --
@@ -6766,10 +6026,7 @@ castToFontLoader :: IsGObject obj => obj -> FontLoader
 castToFontLoader = castTo gTypeFontLoader "FontLoader"
 
 foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.FormData".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
@@ -6804,10 +6061,7 @@ castToFormData :: IsGObject obj => obj -> FormData
 castToFormData = castTo gTypeFormData "FormData"
 
 foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.GainNode".
 -- Base interface functions are in:
 --
@@ -6848,10 +6102,7 @@ castToGainNode :: IsGObject obj => obj -> GainNode
 castToGainNode = castTo gTypeGainNode "GainNode"
 
 foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad Mozilla Gamepad documentation>
@@ -6886,10 +6137,7 @@ castToGamepad :: IsGObject obj => obj -> Gamepad
 castToGamepad = castTo gTypeGamepad "Gamepad"
 
 foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton Mozilla GamepadButton documentation>
@@ -6924,10 +6172,7 @@ castToGamepadButton :: IsGObject obj => obj -> GamepadButton
 castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
 
 foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadEvent".
 -- Base interface functions are in:
 --
@@ -6966,10 +6211,7 @@ castToGamepadEvent :: IsGObject obj => obj -> GamepadEvent
 castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
 
 foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation Mozilla Geolocation documentation>
@@ -7004,12 +6246,7 @@ castToGeolocation :: IsGObject obj => obj -> Geolocation
 castToGeolocation = castTo gTypeGeolocation "Geolocation"
 
 foreign import javascript unsafe "window[\"Geolocation\"]" gTypeGeolocation :: GType
-#else
-type IsGeolocation o = GeolocationClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition Mozilla Geoposition documentation>
@@ -7044,10 +6281,7 @@ castToGeoposition :: IsGObject obj => obj -> Geoposition
 castToGeoposition = castTo gTypeGeoposition "Geoposition"
 
 foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection Mozilla HTMLAllCollection documentation>
@@ -7082,10 +6316,7 @@ castToHTMLAllCollection :: IsGObject obj => obj -> HTMLAllCollection
 castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
 
 foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAnchorElement".
 -- Base interface functions are in:
 --
@@ -7130,12 +6361,7 @@ castToHTMLAnchorElement :: IsGObject obj => obj -> HTMLAnchorElement
 castToHTMLAnchorElement = castTo gTypeHTMLAnchorElement "HTMLAnchorElement"
 
 foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchorElement :: GType
-#else
-type IsHTMLAnchorElement o = HTMLAnchorElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAppletElement".
 -- Base interface functions are in:
 --
@@ -7180,12 +6406,7 @@ castToHTMLAppletElement :: IsGObject obj => obj -> HTMLAppletElement
 castToHTMLAppletElement = castTo gTypeHTMLAppletElement "HTMLAppletElement"
 
 foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLAppletElement :: GType
-#else
-type IsHTMLAppletElement o = HTMLAppletElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAreaElement".
 -- Base interface functions are in:
 --
@@ -7230,12 +6451,7 @@ castToHTMLAreaElement :: IsGObject obj => obj -> HTMLAreaElement
 castToHTMLAreaElement = castTo gTypeHTMLAreaElement "HTMLAreaElement"
 
 foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElement :: GType
-#else
-type IsHTMLAreaElement o = HTMLAreaElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAudioElement".
 -- Base interface functions are in:
 --
@@ -7282,12 +6498,7 @@ castToHTMLAudioElement :: IsGObject obj => obj -> HTMLAudioElement
 castToHTMLAudioElement = castTo gTypeHTMLAudioElement "HTMLAudioElement"
 
 foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioElement :: GType
-#else
-type IsHTMLAudioElement o = HTMLAudioElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBRElement".
 -- Base interface functions are in:
 --
@@ -7332,12 +6543,7 @@ castToHTMLBRElement :: IsGObject obj => obj -> HTMLBRElement
 castToHTMLBRElement = castTo gTypeHTMLBRElement "HTMLBRElement"
 
 foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement :: GType
-#else
-type IsHTMLBRElement o = HTMLBRElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseElement".
 -- Base interface functions are in:
 --
@@ -7382,12 +6588,7 @@ castToHTMLBaseElement :: IsGObject obj => obj -> HTMLBaseElement
 castToHTMLBaseElement = castTo gTypeHTMLBaseElement "HTMLBaseElement"
 
 foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElement :: GType
-#else
-type IsHTMLBaseElement o = HTMLBaseElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseFontElement".
 -- Base interface functions are in:
 --
@@ -7432,12 +6633,7 @@ castToHTMLBaseFontElement :: IsGObject obj => obj -> HTMLBaseFontElement
 castToHTMLBaseFontElement = castTo gTypeHTMLBaseFontElement "HTMLBaseFontElement"
 
 foreign import javascript unsafe "window[\"HTMLBaseFontElement\"]" gTypeHTMLBaseFontElement :: GType
-#else
-type IsHTMLBaseFontElement o = HTMLBaseFontElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBodyElement".
 -- Base interface functions are in:
 --
@@ -7482,12 +6678,7 @@ castToHTMLBodyElement :: IsGObject obj => obj -> HTMLBodyElement
 castToHTMLBodyElement = castTo gTypeHTMLBodyElement "HTMLBodyElement"
 
 foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElement :: GType
-#else
-type IsHTMLBodyElement o = HTMLBodyElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLButtonElement".
 -- Base interface functions are in:
 --
@@ -7532,12 +6723,7 @@ castToHTMLButtonElement :: IsGObject obj => obj -> HTMLButtonElement
 castToHTMLButtonElement = castTo gTypeHTMLButtonElement "HTMLButtonElement"
 
 foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButtonElement :: GType
-#else
-type IsHTMLButtonElement o = HTMLButtonElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCanvasElement".
 -- Base interface functions are in:
 --
@@ -7582,12 +6768,7 @@ castToHTMLCanvasElement :: IsGObject obj => obj -> HTMLCanvasElement
 castToHTMLCanvasElement = castTo gTypeHTMLCanvasElement "HTMLCanvasElement"
 
 foreign import javascript unsafe "window[\"HTMLCanvasElement\"]" gTypeHTMLCanvasElement :: GType
-#else
-type IsHTMLCanvasElement o = HTMLCanvasElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection Mozilla HTMLCollection documentation>
@@ -7627,12 +6808,7 @@ castToHTMLCollection :: IsGObject obj => obj -> HTMLCollection
 castToHTMLCollection = castTo gTypeHTMLCollection "HTMLCollection"
 
 foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollection :: GType
-#else
-type IsHTMLCollection o = HTMLCollectionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDListElement".
 -- Base interface functions are in:
 --
@@ -7677,12 +6853,7 @@ castToHTMLDListElement :: IsGObject obj => obj -> HTMLDListElement
 castToHTMLDListElement = castTo gTypeHTMLDListElement "HTMLDListElement"
 
 foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListElement :: GType
-#else
-type IsHTMLDListElement o = HTMLDListElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDataListElement".
 -- Base interface functions are in:
 --
@@ -7727,10 +6898,7 @@ castToHTMLDataListElement :: IsGObject obj => obj -> HTMLDataListElement
 castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement"
 
 foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDetailsElement".
 -- Base interface functions are in:
 --
@@ -7775,12 +6943,7 @@ castToHTMLDetailsElement :: IsGObject obj => obj -> HTMLDetailsElement
 castToHTMLDetailsElement = castTo gTypeHTMLDetailsElement "HTMLDetailsElement"
 
 foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetailsElement :: GType
-#else
-type IsHTMLDetailsElement o = HTMLDetailsElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDirectoryElement".
 -- Base interface functions are in:
 --
@@ -7825,12 +6988,7 @@ castToHTMLDirectoryElement :: IsGObject obj => obj -> HTMLDirectoryElement
 castToHTMLDirectoryElement = castTo gTypeHTMLDirectoryElement "HTMLDirectoryElement"
 
 foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDirectoryElement :: GType
-#else
-type IsHTMLDirectoryElement o = HTMLDirectoryElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDivElement".
 -- Base interface functions are in:
 --
@@ -7875,12 +7033,7 @@ castToHTMLDivElement :: IsGObject obj => obj -> HTMLDivElement
 castToHTMLDivElement = castTo gTypeHTMLDivElement "HTMLDivElement"
 
 foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElement :: GType
-#else
-type IsHTMLDivElement o = HTMLDivElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDocument".
 -- Base interface functions are in:
 --
@@ -7923,12 +7076,7 @@ castToHTMLDocument :: IsGObject obj => obj -> HTMLDocument
 castToHTMLDocument = castTo gTypeHTMLDocument "HTMLDocument"
 
 foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument :: GType
-#else
-type IsHTMLDocument o = HTMLDocumentClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLElement".
 -- Base interface functions are in:
 --
@@ -7976,12 +7124,7 @@ castToHTMLElement :: IsGObject obj => obj -> HTMLElement
 castToHTMLElement = castTo gTypeHTMLElement "HTMLElement"
 
 foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement :: GType
-#else
-type IsHTMLElement o = HTMLElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLEmbedElement".
 -- Base interface functions are in:
 --
@@ -8026,12 +7169,7 @@ castToHTMLEmbedElement :: IsGObject obj => obj -> HTMLEmbedElement
 castToHTMLEmbedElement = castTo gTypeHTMLEmbedElement "HTMLEmbedElement"
 
 foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedElement :: GType
-#else
-type IsHTMLEmbedElement o = HTMLEmbedElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFieldSetElement".
 -- Base interface functions are in:
 --
@@ -8076,12 +7214,7 @@ castToHTMLFieldSetElement :: IsGObject obj => obj -> HTMLFieldSetElement
 castToHTMLFieldSetElement = castTo gTypeHTMLFieldSetElement "HTMLFieldSetElement"
 
 foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFieldSetElement :: GType
-#else
-type IsHTMLFieldSetElement o = HTMLFieldSetElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFontElement".
 -- Base interface functions are in:
 --
@@ -8126,12 +7259,7 @@ castToHTMLFontElement :: IsGObject obj => obj -> HTMLFontElement
 castToHTMLFontElement = castTo gTypeHTMLFontElement "HTMLFontElement"
 
 foreign import javascript unsafe "window[\"HTMLFontElement\"]" gTypeHTMLFontElement :: GType
-#else
-type IsHTMLFontElement o = HTMLFontElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormControlsCollection".
 -- Base interface functions are in:
 --
@@ -8170,10 +7298,7 @@ castToHTMLFormControlsCollection :: IsGObject obj => obj -> HTMLFormControlsColl
 castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLFormControlsCollection"
 
 foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormElement".
 -- Base interface functions are in:
 --
@@ -8218,12 +7343,7 @@ castToHTMLFormElement :: IsGObject obj => obj -> HTMLFormElement
 castToHTMLFormElement = castTo gTypeHTMLFormElement "HTMLFormElement"
 
 foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElement :: GType
-#else
-type IsHTMLFormElement o = HTMLFormElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameElement".
 -- Base interface functions are in:
 --
@@ -8268,12 +7388,7 @@ castToHTMLFrameElement :: IsGObject obj => obj -> HTMLFrameElement
 castToHTMLFrameElement = castTo gTypeHTMLFrameElement "HTMLFrameElement"
 
 foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameElement :: GType
-#else
-type IsHTMLFrameElement o = HTMLFrameElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameSetElement".
 -- Base interface functions are in:
 --
@@ -8318,12 +7433,7 @@ castToHTMLFrameSetElement :: IsGObject obj => obj -> HTMLFrameSetElement
 castToHTMLFrameSetElement = castTo gTypeHTMLFrameSetElement "HTMLFrameSetElement"
 
 foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFrameSetElement :: GType
-#else
-type IsHTMLFrameSetElement o = HTMLFrameSetElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHRElement".
 -- Base interface functions are in:
 --
@@ -8368,12 +7478,7 @@ castToHTMLHRElement :: IsGObject obj => obj -> HTMLHRElement
 castToHTMLHRElement = castTo gTypeHTMLHRElement "HTMLHRElement"
 
 foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement :: GType
-#else
-type IsHTMLHRElement o = HTMLHRElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadElement".
 -- Base interface functions are in:
 --
@@ -8418,12 +7523,7 @@ castToHTMLHeadElement :: IsGObject obj => obj -> HTMLHeadElement
 castToHTMLHeadElement = castTo gTypeHTMLHeadElement "HTMLHeadElement"
 
 foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElement :: GType
-#else
-type IsHTMLHeadElement o = HTMLHeadElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadingElement".
 -- Base interface functions are in:
 --
@@ -8468,12 +7568,7 @@ castToHTMLHeadingElement :: IsGObject obj => obj -> HTMLHeadingElement
 castToHTMLHeadingElement = castTo gTypeHTMLHeadingElement "HTMLHeadingElement"
 
 foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadingElement :: GType
-#else
-type IsHTMLHeadingElement o = HTMLHeadingElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHtmlElement".
 -- Base interface functions are in:
 --
@@ -8518,12 +7613,7 @@ castToHTMLHtmlElement :: IsGObject obj => obj -> HTMLHtmlElement
 castToHTMLHtmlElement = castTo gTypeHTMLHtmlElement "HTMLHtmlElement"
 
 foreign import javascript unsafe "window[\"HTMLHtmlElement\"]" gTypeHTMLHtmlElement :: GType
-#else
-type IsHTMLHtmlElement o = HTMLHtmlElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLIFrameElement".
 -- Base interface functions are in:
 --
@@ -8568,12 +7658,7 @@ castToHTMLIFrameElement :: IsGObject obj => obj -> HTMLIFrameElement
 castToHTMLIFrameElement = castTo gTypeHTMLIFrameElement "HTMLIFrameElement"
 
 foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrameElement :: GType
-#else
-type IsHTMLIFrameElement o = HTMLIFrameElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLImageElement".
 -- Base interface functions are in:
 --
@@ -8618,12 +7703,7 @@ castToHTMLImageElement :: IsGObject obj => obj -> HTMLImageElement
 castToHTMLImageElement = castTo gTypeHTMLImageElement "HTMLImageElement"
 
 foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageElement :: GType
-#else
-type IsHTMLImageElement o = HTMLImageElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLInputElement".
 -- Base interface functions are in:
 --
@@ -8668,12 +7748,7 @@ castToHTMLInputElement :: IsGObject obj => obj -> HTMLInputElement
 castToHTMLInputElement = castTo gTypeHTMLInputElement "HTMLInputElement"
 
 foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputElement :: GType
-#else
-type IsHTMLInputElement o = HTMLInputElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLKeygenElement".
 -- Base interface functions are in:
 --
@@ -8718,12 +7793,7 @@ castToHTMLKeygenElement :: IsGObject obj => obj -> HTMLKeygenElement
 castToHTMLKeygenElement = castTo gTypeHTMLKeygenElement "HTMLKeygenElement"
 
 foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygenElement :: GType
-#else
-type IsHTMLKeygenElement o = HTMLKeygenElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLIElement".
 -- Base interface functions are in:
 --
@@ -8768,12 +7838,7 @@ castToHTMLLIElement :: IsGObject obj => obj -> HTMLLIElement
 castToHTMLLIElement = castTo gTypeHTMLLIElement "HTMLLIElement"
 
 foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement :: GType
-#else
-type IsHTMLLIElement o = HTMLLIElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLabelElement".
 -- Base interface functions are in:
 --
@@ -8818,12 +7883,7 @@ castToHTMLLabelElement :: IsGObject obj => obj -> HTMLLabelElement
 castToHTMLLabelElement = castTo gTypeHTMLLabelElement "HTMLLabelElement"
 
 foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelElement :: GType
-#else
-type IsHTMLLabelElement o = HTMLLabelElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLegendElement".
 -- Base interface functions are in:
 --
@@ -8868,12 +7928,7 @@ castToHTMLLegendElement :: IsGObject obj => obj -> HTMLLegendElement
 castToHTMLLegendElement = castTo gTypeHTMLLegendElement "HTMLLegendElement"
 
 foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegendElement :: GType
-#else
-type IsHTMLLegendElement o = HTMLLegendElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLinkElement".
 -- Base interface functions are in:
 --
@@ -8918,12 +7973,7 @@ castToHTMLLinkElement :: IsGObject obj => obj -> HTMLLinkElement
 castToHTMLLinkElement = castTo gTypeHTMLLinkElement "HTMLLinkElement"
 
 foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElement :: GType
-#else
-type IsHTMLLinkElement o = HTMLLinkElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMapElement".
 -- Base interface functions are in:
 --
@@ -8968,12 +8018,7 @@ castToHTMLMapElement :: IsGObject obj => obj -> HTMLMapElement
 castToHTMLMapElement = castTo gTypeHTMLMapElement "HTMLMapElement"
 
 foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElement :: GType
-#else
-type IsHTMLMapElement o = HTMLMapElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMarqueeElement".
 -- Base interface functions are in:
 --
@@ -9018,12 +8063,7 @@ castToHTMLMarqueeElement :: IsGObject obj => obj -> HTMLMarqueeElement
 castToHTMLMarqueeElement = castTo gTypeHTMLMarqueeElement "HTMLMarqueeElement"
 
 foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqueeElement :: GType
-#else
-type IsHTMLMarqueeElement o = HTMLMarqueeElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMediaElement".
 -- Base interface functions are in:
 --
@@ -9073,12 +8113,7 @@ castToHTMLMediaElement :: IsGObject obj => obj -> HTMLMediaElement
 castToHTMLMediaElement = castTo gTypeHTMLMediaElement "HTMLMediaElement"
 
 foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaElement :: GType
-#else
-type IsHTMLMediaElement o = HTMLMediaElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMenuElement".
 -- Base interface functions are in:
 --
@@ -9123,12 +8158,7 @@ castToHTMLMenuElement :: IsGObject obj => obj -> HTMLMenuElement
 castToHTMLMenuElement = castTo gTypeHTMLMenuElement "HTMLMenuElement"
 
 foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElement :: GType
-#else
-type IsHTMLMenuElement o = HTMLMenuElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMetaElement".
 -- Base interface functions are in:
 --
@@ -9173,12 +8203,7 @@ castToHTMLMetaElement :: IsGObject obj => obj -> HTMLMetaElement
 castToHTMLMetaElement = castTo gTypeHTMLMetaElement "HTMLMetaElement"
 
 foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElement :: GType
-#else
-type IsHTMLMetaElement o = HTMLMetaElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMeterElement".
 -- Base interface functions are in:
 --
@@ -9223,10 +8248,7 @@ castToHTMLMeterElement :: IsGObject obj => obj -> HTMLMeterElement
 castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
 
 foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLModElement".
 -- Base interface functions are in:
 --
@@ -9271,12 +8293,7 @@ castToHTMLModElement :: IsGObject obj => obj -> HTMLModElement
 castToHTMLModElement = castTo gTypeHTMLModElement "HTMLModElement"
 
 foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElement :: GType
-#else
-type IsHTMLModElement o = HTMLModElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOListElement".
 -- Base interface functions are in:
 --
@@ -9321,12 +8338,7 @@ castToHTMLOListElement :: IsGObject obj => obj -> HTMLOListElement
 castToHTMLOListElement = castTo gTypeHTMLOListElement "HTMLOListElement"
 
 foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListElement :: GType
-#else
-type IsHTMLOListElement o = HTMLOListElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLObjectElement".
 -- Base interface functions are in:
 --
@@ -9371,12 +8383,7 @@ castToHTMLObjectElement :: IsGObject obj => obj -> HTMLObjectElement
 castToHTMLObjectElement = castTo gTypeHTMLObjectElement "HTMLObjectElement"
 
 foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObjectElement :: GType
-#else
-type IsHTMLObjectElement o = HTMLObjectElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptGroupElement".
 -- Base interface functions are in:
 --
@@ -9421,12 +8428,7 @@ castToHTMLOptGroupElement :: IsGObject obj => obj -> HTMLOptGroupElement
 castToHTMLOptGroupElement = castTo gTypeHTMLOptGroupElement "HTMLOptGroupElement"
 
 foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptGroupElement :: GType
-#else
-type IsHTMLOptGroupElement o = HTMLOptGroupElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionElement".
 -- Base interface functions are in:
 --
@@ -9471,12 +8473,7 @@ castToHTMLOptionElement :: IsGObject obj => obj -> HTMLOptionElement
 castToHTMLOptionElement = castTo gTypeHTMLOptionElement "HTMLOptionElement"
 
 foreign import javascript unsafe "window[\"HTMLOptionElement\"]" gTypeHTMLOptionElement :: GType
-#else
-type IsHTMLOptionElement o = HTMLOptionElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionsCollection".
 -- Base interface functions are in:
 --
@@ -9515,12 +8512,7 @@ castToHTMLOptionsCollection :: IsGObject obj => obj -> HTMLOptionsCollection
 castToHTMLOptionsCollection = castTo gTypeHTMLOptionsCollection "HTMLOptionsCollection"
 
 foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOptionsCollection :: GType
-#else
-type IsHTMLOptionsCollection o = HTMLOptionsCollectionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOutputElement".
 -- Base interface functions are in:
 --
@@ -9565,10 +8557,7 @@ castToHTMLOutputElement :: IsGObject obj => obj -> HTMLOutputElement
 castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
 
 foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParagraphElement".
 -- Base interface functions are in:
 --
@@ -9613,12 +8602,7 @@ castToHTMLParagraphElement :: IsGObject obj => obj -> HTMLParagraphElement
 castToHTMLParagraphElement = castTo gTypeHTMLParagraphElement "HTMLParagraphElement"
 
 foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLParagraphElement :: GType
-#else
-type IsHTMLParagraphElement o = HTMLParagraphElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParamElement".
 -- Base interface functions are in:
 --
@@ -9663,12 +8647,7 @@ castToHTMLParamElement :: IsGObject obj => obj -> HTMLParamElement
 castToHTMLParamElement = castTo gTypeHTMLParamElement "HTMLParamElement"
 
 foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamElement :: GType
-#else
-type IsHTMLParamElement o = HTMLParamElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLPreElement".
 -- Base interface functions are in:
 --
@@ -9713,12 +8692,7 @@ castToHTMLPreElement :: IsGObject obj => obj -> HTMLPreElement
 castToHTMLPreElement = castTo gTypeHTMLPreElement "HTMLPreElement"
 
 foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElement :: GType
-#else
-type IsHTMLPreElement o = HTMLPreElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLProgressElement".
 -- Base interface functions are in:
 --
@@ -9763,10 +8737,7 @@ castToHTMLProgressElement :: IsGObject obj => obj -> HTMLProgressElement
 castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement"
 
 foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLQuoteElement".
 -- Base interface functions are in:
 --
@@ -9811,12 +8782,7 @@ castToHTMLQuoteElement :: IsGObject obj => obj -> HTMLQuoteElement
 castToHTMLQuoteElement = castTo gTypeHTMLQuoteElement "HTMLQuoteElement"
 
 foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteElement :: GType
-#else
-type IsHTMLQuoteElement o = HTMLQuoteElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLScriptElement".
 -- Base interface functions are in:
 --
@@ -9861,12 +8827,7 @@ castToHTMLScriptElement :: IsGObject obj => obj -> HTMLScriptElement
 castToHTMLScriptElement = castTo gTypeHTMLScriptElement "HTMLScriptElement"
 
 foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScriptElement :: GType
-#else
-type IsHTMLScriptElement o = HTMLScriptElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSelectElement".
 -- Base interface functions are in:
 --
@@ -9911,12 +8872,7 @@ castToHTMLSelectElement :: IsGObject obj => obj -> HTMLSelectElement
 castToHTMLSelectElement = castTo gTypeHTMLSelectElement "HTMLSelectElement"
 
 foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelectElement :: GType
-#else
-type IsHTMLSelectElement o = HTMLSelectElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSourceElement".
 -- Base interface functions are in:
 --
@@ -9961,10 +8917,7 @@ castToHTMLSourceElement :: IsGObject obj => obj -> HTMLSourceElement
 castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
 
 foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSpanElement".
 -- Base interface functions are in:
 --
@@ -10009,10 +8962,7 @@ castToHTMLSpanElement :: IsGObject obj => obj -> HTMLSpanElement
 castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
 
 foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLStyleElement".
 -- Base interface functions are in:
 --
@@ -10057,12 +9007,7 @@ castToHTMLStyleElement :: IsGObject obj => obj -> HTMLStyleElement
 castToHTMLStyleElement = castTo gTypeHTMLStyleElement "HTMLStyleElement"
 
 foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleElement :: GType
-#else
-type IsHTMLStyleElement o = HTMLStyleElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCaptionElement".
 -- Base interface functions are in:
 --
@@ -10107,12 +9052,7 @@ castToHTMLTableCaptionElement :: IsGObject obj => obj -> HTMLTableCaptionElement
 castToHTMLTableCaptionElement = castTo gTypeHTMLTableCaptionElement "HTMLTableCaptionElement"
 
 foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTMLTableCaptionElement :: GType
-#else
-type IsHTMLTableCaptionElement o = HTMLTableCaptionElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCellElement".
 -- Base interface functions are in:
 --
@@ -10157,12 +9097,7 @@ castToHTMLTableCellElement :: IsGObject obj => obj -> HTMLTableCellElement
 castToHTMLTableCellElement = castTo gTypeHTMLTableCellElement "HTMLTableCellElement"
 
 foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTableCellElement :: GType
-#else
-type IsHTMLTableCellElement o = HTMLTableCellElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableColElement".
 -- Base interface functions are in:
 --
@@ -10207,12 +9142,7 @@ castToHTMLTableColElement :: IsGObject obj => obj -> HTMLTableColElement
 castToHTMLTableColElement = castTo gTypeHTMLTableColElement "HTMLTableColElement"
 
 foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTableColElement :: GType
-#else
-type IsHTMLTableColElement o = HTMLTableColElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableElement".
 -- Base interface functions are in:
 --
@@ -10257,12 +9187,7 @@ castToHTMLTableElement :: IsGObject obj => obj -> HTMLTableElement
 castToHTMLTableElement = castTo gTypeHTMLTableElement "HTMLTableElement"
 
 foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableElement :: GType
-#else
-type IsHTMLTableElement o = HTMLTableElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableRowElement".
 -- Base interface functions are in:
 --
@@ -10307,12 +9232,7 @@ castToHTMLTableRowElement :: IsGObject obj => obj -> HTMLTableRowElement
 castToHTMLTableRowElement = castTo gTypeHTMLTableRowElement "HTMLTableRowElement"
 
 foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTableRowElement :: GType
-#else
-type IsHTMLTableRowElement o = HTMLTableRowElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableSectionElement".
 -- Base interface functions are in:
 --
@@ -10357,12 +9277,7 @@ castToHTMLTableSectionElement :: IsGObject obj => obj -> HTMLTableSectionElement
 castToHTMLTableSectionElement = castTo gTypeHTMLTableSectionElement "HTMLTableSectionElement"
 
 foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTMLTableSectionElement :: GType
-#else
-type IsHTMLTableSectionElement o = HTMLTableSectionElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTemplateElement".
 -- Base interface functions are in:
 --
@@ -10407,10 +9322,7 @@ castToHTMLTemplateElement :: IsGObject obj => obj -> HTMLTemplateElement
 castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement"
 
 foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTextAreaElement".
 -- Base interface functions are in:
 --
@@ -10455,12 +9367,7 @@ castToHTMLTextAreaElement :: IsGObject obj => obj -> HTMLTextAreaElement
 castToHTMLTextAreaElement = castTo gTypeHTMLTextAreaElement "HTMLTextAreaElement"
 
 foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLTextAreaElement :: GType
-#else
-type IsHTMLTextAreaElement o = HTMLTextAreaElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTitleElement".
 -- Base interface functions are in:
 --
@@ -10505,12 +9412,7 @@ castToHTMLTitleElement :: IsGObject obj => obj -> HTMLTitleElement
 castToHTMLTitleElement = castTo gTypeHTMLTitleElement "HTMLTitleElement"
 
 foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleElement :: GType
-#else
-type IsHTMLTitleElement o = HTMLTitleElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTrackElement".
 -- Base interface functions are in:
 --
@@ -10555,10 +9457,7 @@ castToHTMLTrackElement :: IsGObject obj => obj -> HTMLTrackElement
 castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
 
 foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUListElement".
 -- Base interface functions are in:
 --
@@ -10603,12 +9502,7 @@ castToHTMLUListElement :: IsGObject obj => obj -> HTMLUListElement
 castToHTMLUListElement = castTo gTypeHTMLUListElement "HTMLUListElement"
 
 foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListElement :: GType
-#else
-type IsHTMLUListElement o = HTMLUListElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUnknownElement".
 -- Base interface functions are in:
 --
@@ -10653,10 +9547,7 @@ castToHTMLUnknownElement :: IsGObject obj => obj -> HTMLUnknownElement
 castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
 
 foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLVideoElement".
 -- Base interface functions are in:
 --
@@ -10703,12 +9594,7 @@ castToHTMLVideoElement :: IsGObject obj => obj -> HTMLVideoElement
 castToHTMLVideoElement = castTo gTypeHTMLVideoElement "HTMLVideoElement"
 
 foreign import javascript unsafe "window[\"HTMLVideoElement\"]" gTypeHTMLVideoElement :: GType
-#else
-type IsHTMLVideoElement o = HTMLVideoElementClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.HashChangeEvent".
 -- Base interface functions are in:
 --
@@ -10747,10 +9633,7 @@ castToHashChangeEvent :: IsGObject obj => obj -> HashChangeEvent
 castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
 
 foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.History".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/History Mozilla History documentation>
@@ -10785,12 +9668,7 @@ castToHistory :: IsGObject obj => obj -> History
 castToHistory = castTo gTypeHistory "History"
 
 foreign import javascript unsafe "window[\"History\"]" gTypeHistory :: GType
-#else
-type IsHistory o = HistoryClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBAny".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBAny Mozilla IDBAny documentation>
@@ -10825,10 +9703,7 @@ castToIDBAny :: IsGObject obj => obj -> IDBAny
 castToIDBAny = castTo gTypeIDBAny "IDBAny"
 
 foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor Mozilla IDBCursor documentation>
@@ -10868,10 +9743,7 @@ castToIDBCursor :: IsGObject obj => obj -> IDBCursor
 castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
 
 foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursorWithValue".
 -- Base interface functions are in:
 --
@@ -10910,10 +9782,7 @@ castToIDBCursorWithValue :: IsGObject obj => obj -> IDBCursorWithValue
 castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
 
 foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBDatabase".
 -- Base interface functions are in:
 --
@@ -10952,10 +9821,7 @@ castToIDBDatabase :: IsGObject obj => obj -> IDBDatabase
 castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
 
 foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory Mozilla IDBFactory documentation>
@@ -10990,10 +9856,7 @@ castToIDBFactory :: IsGObject obj => obj -> IDBFactory
 castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
 
 foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex Mozilla IDBIndex documentation>
@@ -11028,10 +9891,7 @@ castToIDBIndex :: IsGObject obj => obj -> IDBIndex
 castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
 
 foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange Mozilla IDBKeyRange documentation>
@@ -11066,10 +9926,7 @@ castToIDBKeyRange :: IsGObject obj => obj -> IDBKeyRange
 castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
 
 foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore Mozilla IDBObjectStore documentation>
@@ -11104,10 +9961,7 @@ castToIDBObjectStore :: IsGObject obj => obj -> IDBObjectStore
 castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
 
 foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBOpenDBRequest".
 -- Base interface functions are in:
 --
@@ -11148,10 +10002,7 @@ castToIDBOpenDBRequest :: IsGObject obj => obj -> IDBOpenDBRequest
 castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
 
 foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBRequest".
 -- Base interface functions are in:
 --
@@ -11195,10 +10046,7 @@ castToIDBRequest :: IsGObject obj => obj -> IDBRequest
 castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
 
 foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBTransaction".
 -- Base interface functions are in:
 --
@@ -11237,10 +10085,7 @@ castToIDBTransaction :: IsGObject obj => obj -> IDBTransaction
 castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
 
 foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.IDBVersionChangeEvent".
 -- Base interface functions are in:
 --
@@ -11279,10 +10124,7 @@ castToIDBVersionChangeEvent :: IsGObject obj => obj -> IDBVersionChangeEvent
 castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChangeEvent"
 
 foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ImageData".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation>
@@ -11317,10 +10159,7 @@ castToImageData :: IsGObject obj => obj -> ImageData
 castToImageData = castTo gTypeImageData "ImageData"
 
 foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost Mozilla InspectorFrontendHost documentation>
@@ -11355,10 +10194,7 @@ castToInspectorFrontendHost :: IsGObject obj => obj -> InspectorFrontendHost
 castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFrontendHost"
 
 foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.InternalSettings".
 -- Base interface functions are in:
 --
@@ -11395,10 +10231,7 @@ castToInternalSettings :: IsGObject obj => obj -> InternalSettings
 castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
 
 foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSettings :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Internals".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Internals Mozilla Internals documentation>
@@ -11433,10 +10266,7 @@ castToInternals :: IsGObject obj => obj -> Internals
 castToInternals = castTo gTypeInternals "Internals"
 
 foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.KeyboardEvent".
 -- Base interface functions are in:
 --
@@ -11477,14 +10307,7 @@ castToKeyboardEvent :: IsGObject obj => obj -> KeyboardEvent
 castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
 
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsKeyboardEvent o = KeyboardEventClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Location".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Location Mozilla Location documentation>
@@ -11519,12 +10342,7 @@ castToLocation :: IsGObject obj => obj -> Location
 castToLocation = castTo gTypeLocation "Location"
 
 foreign import javascript unsafe "window[\"Location\"]" gTypeLocation :: GType
-#else
-type IsLocation o = LocationClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MallocStatistics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MallocStatistics Mozilla MallocStatistics documentation>
@@ -11559,10 +10377,7 @@ castToMallocStatistics :: IsGObject obj => obj -> MallocStatistics
 castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
 
 foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStatistics :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaController".
 -- Base interface functions are in:
 --
@@ -11601,10 +10416,7 @@ castToMediaController :: IsGObject obj => obj -> MediaController
 castToMediaController = castTo gTypeMediaController "MediaController"
 
 foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost Mozilla MediaControlsHost documentation>
@@ -11639,10 +10451,7 @@ castToMediaControlsHost :: IsGObject obj => obj -> MediaControlsHost
 castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
 
 foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaElementAudioSourceNode".
 -- Base interface functions are in:
 --
@@ -11683,10 +10492,7 @@ castToMediaElementAudioSourceNode :: IsGObject obj => obj -> MediaElementAudioSo
 castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "MediaElementAudioSourceNode"
 
 foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaError Mozilla MediaError documentation>
@@ -11721,12 +10527,7 @@ castToMediaError :: IsGObject obj => obj -> MediaError
 castToMediaError = castTo gTypeMediaError "MediaError"
 
 foreign import javascript unsafe "window[\"MediaError\"]" gTypeMediaError :: GType
-#else
-type IsMediaError o = MediaErrorClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError Mozilla WebKitMediaKeyError documentation>
@@ -11761,10 +10562,7 @@ castToMediaKeyError :: IsGObject obj => obj -> MediaKeyError
 castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKeyError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyEvent".
 -- Base interface functions are in:
 --
@@ -11803,10 +10601,7 @@ castToMediaKeyEvent :: IsGObject obj => obj -> MediaKeyEvent
 castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
 
 foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyMessageEvent".
 -- Base interface functions are in:
 --
@@ -11845,10 +10640,7 @@ castToMediaKeyMessageEvent :: IsGObject obj => obj -> MediaKeyMessageEvent
 castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEvent"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyNeededEvent".
 -- Base interface functions are in:
 --
@@ -11887,10 +10679,7 @@ castToMediaKeyNeededEvent :: IsGObject obj => obj -> MediaKeyNeededEvent
 castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent"
 
 foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKeyNeededEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySession".
 -- Base interface functions are in:
 --
@@ -11929,10 +10718,7 @@ castToMediaKeySession :: IsGObject obj => obj -> MediaKeySession
 castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation>
@@ -11967,10 +10753,7 @@ castToMediaKeys :: IsGObject obj => obj -> MediaKeys
 castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaList Mozilla MediaList documentation>
@@ -12005,12 +10788,7 @@ castToMediaList :: IsGObject obj => obj -> MediaList
 castToMediaList = castTo gTypeMediaList "MediaList"
 
 foreign import javascript unsafe "window[\"MediaList\"]" gTypeMediaList :: GType
-#else
-type IsMediaList o = MediaListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList Mozilla MediaQueryList documentation>
@@ -12045,12 +10823,7 @@ castToMediaQueryList :: IsGObject obj => obj -> MediaQueryList
 castToMediaQueryList = castTo gTypeMediaQueryList "MediaQueryList"
 
 foreign import javascript unsafe "window[\"MediaQueryList\"]" gTypeMediaQueryList :: GType
-#else
-type IsMediaQueryList o = MediaQueryListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSource".
 -- Base interface functions are in:
 --
@@ -12089,10 +10862,7 @@ castToMediaSource :: IsGObject obj => obj -> MediaSource
 castToMediaSource = castTo gTypeMediaSource "MediaSource"
 
 foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSourceStates".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates Mozilla MediaSourceStates documentation>
@@ -12127,10 +10897,7 @@ castToMediaSourceStates :: IsGObject obj => obj -> MediaSourceStates
 castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
 
 foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourceStates :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStream".
 -- Base interface functions are in:
 --
@@ -12169,10 +10936,7 @@ castToMediaStream :: IsGObject obj => obj -> MediaStream
 castToMediaStream = castTo gTypeMediaStream "MediaStream"
 
 foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioDestinationNode".
 -- Base interface functions are in:
 --
@@ -12213,10 +10977,7 @@ castToMediaStreamAudioDestinationNode :: IsGObject obj => obj -> MediaStreamAudi
 castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationNode "MediaStreamAudioDestinationNode"
 
 foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioSourceNode".
 -- Base interface functions are in:
 --
@@ -12257,10 +11018,7 @@ castToMediaStreamAudioSourceNode :: IsGObject obj => obj -> MediaStreamAudioSour
 castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "MediaStreamAudioSourceNode"
 
 foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamCapabilities".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamCapabilities Mozilla MediaStreamCapabilities documentation>
@@ -12300,10 +11058,7 @@ castToMediaStreamCapabilities :: IsGObject obj => obj -> MediaStreamCapabilities
 castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStreamCapabilities"
 
 foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMediaStreamCapabilities :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamEvent".
 -- Base interface functions are in:
 --
@@ -12342,10 +11097,7 @@ castToMediaStreamEvent :: IsGObject obj => obj -> MediaStreamEvent
 castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
 
 foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrack".
 -- Base interface functions are in:
 --
@@ -12389,10 +11141,7 @@ castToMediaStreamTrack :: IsGObject obj => obj -> MediaStreamTrack
 castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
 
 foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackEvent".
 -- Base interface functions are in:
 --
@@ -12431,10 +11180,7 @@ castToMediaStreamTrackEvent :: IsGObject obj => obj -> MediaStreamTrackEvent
 castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrackEvent"
 
 foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraint Mozilla MediaTrackConstraint documentation>
@@ -12469,10 +11215,7 @@ castToMediaTrackConstraint :: IsGObject obj => obj -> MediaTrackConstraint
 castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstraint"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTrackConstraint :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraintSet Mozilla MediaTrackConstraintSet documentation>
@@ -12507,10 +11250,7 @@ castToMediaTrackConstraintSet :: IsGObject obj => obj -> MediaTrackConstraintSet
 castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackConstraintSet"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints Mozilla MediaTrackConstraints documentation>
@@ -12545,10 +11285,7 @@ castToMediaTrackConstraints :: IsGObject obj => obj -> MediaTrackConstraints
 castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConstraints"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MemoryInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MemoryInfo Mozilla MemoryInfo documentation>
@@ -12583,10 +11320,7 @@ castToMemoryInfo :: IsGObject obj => obj -> MemoryInfo
 castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
 
 foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel Mozilla MessageChannel documentation>
@@ -12621,10 +11355,7 @@ castToMessageChannel :: IsGObject obj => obj -> MessageChannel
 castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
 
 foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MessageEvent".
 -- Base interface functions are in:
 --
@@ -12663,10 +11394,7 @@ castToMessageEvent :: IsGObject obj => obj -> MessageEvent
 castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
 
 foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MessagePort".
 -- Base interface functions are in:
 --
@@ -12705,12 +11433,7 @@ castToMessagePort :: IsGObject obj => obj -> MessagePort
 castToMessagePort = castTo gTypeMessagePort "MessagePort"
 
 foreign import javascript unsafe "window[\"MessagePort\"]" gTypeMessagePort :: GType
-#else
-type IsMessagePort o = MessagePortClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MimeType".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MimeType Mozilla MimeType documentation>
@@ -12745,12 +11468,7 @@ castToMimeType :: IsGObject obj => obj -> MimeType
 castToMimeType = castTo gTypeMimeType "MimeType"
 
 foreign import javascript unsafe "window[\"MimeType\"]" gTypeMimeType :: GType
-#else
-type IsMimeType o = MimeTypeClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MimeTypeArray".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray Mozilla MimeTypeArray documentation>
@@ -12785,12 +11503,7 @@ castToMimeTypeArray :: IsGObject obj => obj -> MimeTypeArray
 castToMimeTypeArray = castTo gTypeMimeTypeArray "MimeTypeArray"
 
 foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeMimeTypeArray :: GType
-#else
-type IsMimeTypeArray o = MimeTypeArrayClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MouseEvent".
 -- Base interface functions are in:
 --
@@ -12836,12 +11549,7 @@ castToMouseEvent :: IsGObject obj => obj -> MouseEvent
 castToMouseEvent = castTo gTypeMouseEvent "MouseEvent"
 
 foreign import javascript unsafe "window[\"MouseEvent\"]" gTypeMouseEvent :: GType
-#else
-type IsMouseEvent o = MouseEventClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MutationEvent".
 -- Base interface functions are in:
 --
@@ -12880,10 +11588,7 @@ castToMutationEvent :: IsGObject obj => obj -> MutationEvent
 castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
 
 foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation>
@@ -12918,10 +11623,7 @@ castToMutationObserver :: IsGObject obj => obj -> MutationObserver
 castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
 
 foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord Mozilla MutationRecord documentation>
@@ -12956,10 +11658,7 @@ castToMutationRecord :: IsGObject obj => obj -> MutationRecord
 castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
 
 foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap Mozilla NamedNodeMap documentation>
@@ -12994,12 +11693,7 @@ castToNamedNodeMap :: IsGObject obj => obj -> NamedNodeMap
 castToNamedNodeMap = castTo gTypeNamedNodeMap "NamedNodeMap"
 
 foreign import javascript unsafe "window[\"NamedNodeMap\"]" gTypeNamedNodeMap :: GType
-#else
-type IsNamedNodeMap o = NamedNodeMapClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Navigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Navigator Mozilla Navigator documentation>
@@ -13034,12 +11728,7 @@ castToNavigator :: IsGObject obj => obj -> Navigator
 castToNavigator = castTo gTypeNavigator "Navigator"
 
 foreign import javascript unsafe "window[\"Navigator\"]" gTypeNavigator :: GType
-#else
-type IsNavigator o = NavigatorClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaError".
 -- Base interface functions are in:
 --
@@ -13078,10 +11767,7 @@ castToNavigatorUserMediaError :: IsGObject obj => obj -> NavigatorUserMediaError
 castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUserMediaError"
 
 foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Node".
 -- Base interface functions are in:
 --
@@ -13125,12 +11811,7 @@ castToNode :: IsGObject obj => obj -> Node
 castToNode = castTo gTypeNode "Node"
 
 foreign import javascript unsafe "window[\"Node\"]" gTypeNode :: GType
-#else
-type IsNode o = NodeClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NodeFilter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation>
@@ -13165,12 +11846,7 @@ castToNodeFilter :: IsGObject obj => obj -> NodeFilter
 castToNodeFilter = castTo gTypeNodeFilter "NodeFilter"
 
 foreign import javascript unsafe "window[\"NodeFilter\"]" gTypeNodeFilter :: GType
-#else
-type IsNodeFilter o = NodeFilterClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator Mozilla NodeIterator documentation>
@@ -13205,12 +11881,7 @@ castToNodeIterator :: IsGObject obj => obj -> NodeIterator
 castToNodeIterator = castTo gTypeNodeIterator "NodeIterator"
 
 foreign import javascript unsafe "window[\"NodeIterator\"]" gTypeNodeIterator :: GType
-#else
-type IsNodeIterator o = NodeIteratorClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NodeList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NodeList Mozilla NodeList documentation>
@@ -13250,12 +11921,7 @@ castToNodeList :: IsGObject obj => obj -> NodeList
 castToNodeList = castTo gTypeNodeList "NodeList"
 
 foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList :: GType
-#else
-type IsNodeList o = NodeListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Notification".
 -- Base interface functions are in:
 --
@@ -13294,10 +11960,7 @@ castToNotification :: IsGObject obj => obj -> Notification
 castToNotification = castTo gTypeNotification "Notification"
 
 foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter Mozilla NotificationCenter documentation>
@@ -13332,10 +11995,7 @@ castToNotificationCenter :: IsGObject obj => obj -> NotificationCenter
 castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
 
 foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESElementIndexUint Mozilla OESElementIndexUint documentation>
@@ -13370,10 +12030,7 @@ castToOESElementIndexUint :: IsGObject obj => obj -> OESElementIndexUint
 castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint"
 
 foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESStandardDerivatives Mozilla OESStandardDerivatives documentation>
@@ -13408,10 +12065,7 @@ castToOESStandardDerivatives :: IsGObject obj => obj -> OESStandardDerivatives
 castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDerivatives"
 
 foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloat Mozilla OESTextureFloat documentation>
@@ -13446,10 +12100,7 @@ castToOESTextureFloat :: IsGObject obj => obj -> OESTextureFloat
 castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
 
 foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureFloatLinear Mozilla OESTextureFloatLinear documentation>
@@ -13484,10 +12135,7 @@ castToOESTextureFloatLinear :: IsGObject obj => obj -> OESTextureFloatLinear
 castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloatLinear"
 
 foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloat Mozilla OESTextureHalfFloat documentation>
@@ -13522,10 +12170,7 @@ castToOESTextureHalfFloat :: IsGObject obj => obj -> OESTextureHalfFloat
 castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat"
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESTextureHalfFloatLinear Mozilla OESTextureHalfFloatLinear documentation>
@@ -13560,10 +12205,7 @@ castToOESTextureHalfFloatLinear :: IsGObject obj => obj -> OESTextureHalfFloatLi
 castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESTextureHalfFloatLinear"
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject Mozilla OESVertexArrayObject documentation>
@@ -13598,10 +12240,7 @@ castToOESVertexArrayObject :: IsGObject obj => obj -> OESVertexArrayObject
 castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObject"
 
 foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioCompletionEvent".
 -- Base interface functions are in:
 --
@@ -13640,10 +12279,7 @@ castToOfflineAudioCompletionEvent :: IsGObject obj => obj -> OfflineAudioComplet
 castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "OfflineAudioCompletionEvent"
 
 foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioContext".
 -- Base interface functions are in:
 --
@@ -13684,10 +12320,7 @@ castToOfflineAudioContext :: IsGObject obj => obj -> OfflineAudioContext
 castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext"
 
 foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineAudioContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OscillatorNode".
 -- Base interface functions are in:
 --
@@ -13728,10 +12361,7 @@ castToOscillatorNode :: IsGObject obj => obj -> OscillatorNode
 castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
 
 foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.OverflowEvent".
 -- Base interface functions are in:
 --
@@ -13770,10 +12400,7 @@ castToOverflowEvent :: IsGObject obj => obj -> OverflowEvent
 castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
 
 foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PageTransitionEvent".
 -- Base interface functions are in:
 --
@@ -13812,10 +12439,7 @@ castToPageTransitionEvent :: IsGObject obj => obj -> PageTransitionEvent
 castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent"
 
 foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PannerNode".
 -- Base interface functions are in:
 --
@@ -13856,10 +12480,7 @@ castToPannerNode :: IsGObject obj => obj -> PannerNode
 castToPannerNode = castTo gTypePannerNode "PannerNode"
 
 foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Path2D".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation>
@@ -13894,10 +12515,7 @@ castToPath2D :: IsGObject obj => obj -> Path2D
 castToPath2D = castTo gTypePath2D "Path2D"
 
 foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Performance".
 -- Base interface functions are in:
 --
@@ -13936,14 +12554,7 @@ castToPerformance :: IsGObject obj => obj -> Performance
 castToPerformance = castTo gTypePerformance "Performance"
 
 foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsPerformance o = PerformanceClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry Mozilla PerformanceEntry documentation>
@@ -13983,10 +12594,7 @@ castToPerformanceEntry :: IsGObject obj => obj -> PerformanceEntry
 castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
 
 foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntryList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntryList Mozilla PerformanceEntryList documentation>
@@ -14021,10 +12629,7 @@ castToPerformanceEntryList :: IsGObject obj => obj -> PerformanceEntryList
 castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryList"
 
 foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerformanceEntryList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMark".
 -- Base interface functions are in:
 --
@@ -14063,10 +12668,7 @@ castToPerformanceMark :: IsGObject obj => obj -> PerformanceMark
 castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
 
 foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMeasure".
 -- Base interface functions are in:
 --
@@ -14105,10 +12707,7 @@ castToPerformanceMeasure :: IsGObject obj => obj -> PerformanceMeasure
 castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
 
 foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation Mozilla PerformanceNavigation documentation>
@@ -14143,14 +12742,7 @@ castToPerformanceNavigation :: IsGObject obj => obj -> PerformanceNavigation
 castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavigation"
 
 foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsPerformanceNavigation o = PerformanceNavigationClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceResourceTiming".
 -- Base interface functions are in:
 --
@@ -14189,10 +12781,7 @@ castToPerformanceResourceTiming :: IsGObject obj => obj -> PerformanceResourceTi
 castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "PerformanceResourceTiming"
 
 foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming Mozilla PerformanceTiming documentation>
@@ -14227,14 +12816,7 @@ castToPerformanceTiming :: IsGObject obj => obj -> PerformanceTiming
 castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
 
 foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsPerformanceTiming o = PerformanceTimingClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PeriodicWave Mozilla PeriodicWave documentation>
@@ -14269,10 +12851,7 @@ castToPeriodicWave :: IsGObject obj => obj -> PeriodicWave
 castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
 
 foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Plugin".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Plugin Mozilla Plugin documentation>
@@ -14307,12 +12886,7 @@ castToPlugin :: IsGObject obj => obj -> Plugin
 castToPlugin = castTo gTypePlugin "Plugin"
 
 foreign import javascript unsafe "window[\"Plugin\"]" gTypePlugin :: GType
-#else
-type IsPlugin o = PluginClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PluginArray".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray Mozilla PluginArray documentation>
@@ -14347,12 +12921,7 @@ castToPluginArray :: IsGObject obj => obj -> PluginArray
 castToPluginArray = castTo gTypePluginArray "PluginArray"
 
 foreign import javascript unsafe "window[\"PluginArray\"]" gTypePluginArray :: GType
-#else
-type IsPluginArray o = PluginArrayClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PopStateEvent".
 -- Base interface functions are in:
 --
@@ -14391,10 +12960,7 @@ castToPopStateEvent :: IsGObject obj => obj -> PopStateEvent
 castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
 
 foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.PositionError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/PositionError Mozilla PositionError documentation>
@@ -14429,10 +12995,7 @@ castToPositionError :: IsGObject obj => obj -> PositionError
 castToPositionError = castTo gTypePositionError "PositionError"
 
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ProcessingInstruction".
 -- Base interface functions are in:
 --
@@ -14475,12 +13038,7 @@ castToProcessingInstruction :: IsGObject obj => obj -> ProcessingInstruction
 castToProcessingInstruction = castTo gTypeProcessingInstruction "ProcessingInstruction"
 
 foreign import javascript unsafe "window[\"ProcessingInstruction\"]" gTypeProcessingInstruction :: GType
-#else
-type IsProcessingInstruction o = ProcessingInstructionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ProgressEvent".
 -- Base interface functions are in:
 --
@@ -14524,10 +13082,7 @@ castToProgressEvent :: IsGObject obj => obj -> ProgressEvent
 castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
 
 foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement Mozilla QuickTimePluginReplacement documentation>
@@ -14562,10 +13117,7 @@ castToQuickTimePluginReplacement :: IsGObject obj => obj -> QuickTimePluginRepla
 castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "QuickTimePluginReplacement"
 
 foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RGBColor Mozilla RGBColor documentation>
@@ -14600,10 +13152,7 @@ castToRGBColor :: IsGObject obj => obj -> RGBColor
 castToRGBColor = castTo gTypeRGBColor "RGBColor"
 
 foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCConfiguration Mozilla RTCConfiguration documentation>
@@ -14638,10 +13187,7 @@ castToRTCConfiguration :: IsGObject obj => obj -> RTCConfiguration
 castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
 
 foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFSender".
 -- Base interface functions are in:
 --
@@ -14680,10 +13226,7 @@ castToRTCDTMFSender :: IsGObject obj => obj -> RTCDTMFSender
 castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
 
 foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFToneChangeEvent".
 -- Base interface functions are in:
 --
@@ -14722,10 +13265,7 @@ castToRTCDTMFToneChangeEvent :: IsGObject obj => obj -> RTCDTMFToneChangeEvent
 castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneChangeEvent"
 
 foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannel".
 -- Base interface functions are in:
 --
@@ -14764,10 +13304,7 @@ castToRTCDataChannel :: IsGObject obj => obj -> RTCDataChannel
 castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
 
 foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEvent".
 -- Base interface functions are in:
 --
@@ -14806,10 +13343,7 @@ castToRTCDataChannelEvent :: IsGObject obj => obj -> RTCDataChannelEvent
 castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent"
 
 foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate Mozilla RTCIceCandidate documentation>
@@ -14844,10 +13378,7 @@ castToRTCIceCandidate :: IsGObject obj => obj -> RTCIceCandidate
 castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
 
 foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidateEvent".
 -- Base interface functions are in:
 --
@@ -14886,10 +13417,7 @@ castToRTCIceCandidateEvent :: IsGObject obj => obj -> RTCIceCandidateEvent
 castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEvent"
 
 foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceServer Mozilla RTCIceServer documentation>
@@ -14924,10 +13452,7 @@ castToRTCIceServer :: IsGObject obj => obj -> RTCIceServer
 castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
 
 foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnection".
 -- Base interface functions are in:
 --
@@ -14966,10 +13491,7 @@ castToRTCPeerConnection :: IsGObject obj => obj -> RTCPeerConnection
 castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
 
 foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription Mozilla RTCSessionDescription documentation>
@@ -15004,10 +13526,7 @@ castToRTCSessionDescription :: IsGObject obj => obj -> RTCSessionDescription
 castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescription"
 
 foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport Mozilla RTCStatsReport documentation>
@@ -15042,10 +13561,7 @@ castToRTCStatsReport :: IsGObject obj => obj -> RTCStatsReport
 castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
 
 foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsResponse".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsResponse Mozilla RTCStatsResponse documentation>
@@ -15080,10 +13596,7 @@ castToRTCStatsResponse :: IsGObject obj => obj -> RTCStatsResponse
 castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
 
 foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsResponse :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.RadioNodeList".
 -- Base interface functions are in:
 --
@@ -15122,10 +13635,7 @@ castToRadioNodeList :: IsGObject obj => obj -> RadioNodeList
 castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
 
 foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Range".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Range Mozilla Range documentation>
@@ -15160,12 +13670,7 @@ castToRange :: IsGObject obj => obj -> Range
 castToRange = castTo gTypeRange "Range"
 
 foreign import javascript unsafe "window[\"Range\"]" gTypeRange :: GType
-#else
-type IsRange o = RangeClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation>
@@ -15200,10 +13705,7 @@ castToReadableStream :: IsGObject obj => obj -> ReadableStream
 castToReadableStream = castTo gTypeReadableStream "ReadableStream"
 
 foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Rect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Rect Mozilla Rect documentation>
@@ -15238,10 +13740,7 @@ castToRect :: IsGObject obj => obj -> Rect
 castToRect = castTo gTypeRect "Rect"
 
 foreign import javascript unsafe "window[\"Rect\"]" gTypeRect :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLError".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLError Mozilla SQLError documentation>
@@ -15276,10 +13775,7 @@ castToSQLError :: IsGObject obj => obj -> SQLError
 castToSQLError = castTo gTypeSQLError "SQLError"
 
 foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet Mozilla SQLResultSet documentation>
@@ -15314,10 +13810,7 @@ castToSQLResultSet :: IsGObject obj => obj -> SQLResultSet
 castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
 
 foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList Mozilla SQLResultSetRowList documentation>
@@ -15352,10 +13845,7 @@ castToSQLResultSetRowList :: IsGObject obj => obj -> SQLResultSetRowList
 castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList"
 
 foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransaction Mozilla SQLTransaction documentation>
@@ -15390,10 +13880,7 @@ castToSQLTransaction :: IsGObject obj => obj -> SQLTransaction
 castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
 
 foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAElement".
 -- Base interface functions are in:
 --
@@ -15440,10 +13927,7 @@ castToSVGAElement :: IsGObject obj => obj -> SVGAElement
 castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
 
 foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphDefElement".
 -- Base interface functions are in:
 --
@@ -15488,10 +13972,7 @@ castToSVGAltGlyphDefElement :: IsGObject obj => obj -> SVGAltGlyphDefElement
 castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphElement".
 -- Base interface functions are in:
 --
@@ -15542,10 +14023,7 @@ castToSVGAltGlyphElement :: IsGObject obj => obj -> SVGAltGlyphElement
 castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphItemElement".
 -- Base interface functions are in:
 --
@@ -15590,10 +14068,7 @@ castToSVGAltGlyphItemElement :: IsGObject obj => obj -> SVGAltGlyphItemElement
 castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphItemElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle Mozilla SVGAngle documentation>
@@ -15628,10 +14103,7 @@ castToSVGAngle :: IsGObject obj => obj -> SVGAngle
 castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
 
 foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateColorElement".
 -- Base interface functions are in:
 --
@@ -15678,10 +14150,7 @@ castToSVGAnimateColorElement :: IsGObject obj => obj -> SVGAnimateColorElement
 castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateColorElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateElement".
 -- Base interface functions are in:
 --
@@ -15728,10 +14197,7 @@ castToSVGAnimateElement :: IsGObject obj => obj -> SVGAnimateElement
 castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateMotionElement".
 -- Base interface functions are in:
 --
@@ -15778,10 +14244,7 @@ castToSVGAnimateMotionElement :: IsGObject obj => obj -> SVGAnimateMotionElement
 castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateMotionElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateTransformElement".
 -- Base interface functions are in:
 --
@@ -15828,10 +14291,7 @@ castToSVGAnimateTransformElement :: IsGObject obj => obj -> SVGAnimateTransformE
 castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAnimateTransformElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedAngle Mozilla SVGAnimatedAngle documentation>
@@ -15866,10 +14326,7 @@ castToSVGAnimatedAngle :: IsGObject obj => obj -> SVGAnimatedAngle
 castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
 
 foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean Mozilla SVGAnimatedBoolean documentation>
@@ -15904,10 +14361,7 @@ castToSVGAnimatedBoolean :: IsGObject obj => obj -> SVGAnimatedBoolean
 castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
 
 foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration Mozilla SVGAnimatedEnumeration documentation>
@@ -15942,10 +14396,7 @@ castToSVGAnimatedEnumeration :: IsGObject obj => obj -> SVGAnimatedEnumeration
 castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEnumeration"
 
 foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedInteger Mozilla SVGAnimatedInteger documentation>
@@ -15980,10 +14431,7 @@ castToSVGAnimatedInteger :: IsGObject obj => obj -> SVGAnimatedInteger
 castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
 
 foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength Mozilla SVGAnimatedLength documentation>
@@ -16018,10 +14466,7 @@ castToSVGAnimatedLength :: IsGObject obj => obj -> SVGAnimatedLength
 castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
 
 foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLengthList Mozilla SVGAnimatedLengthList documentation>
@@ -16056,10 +14501,7 @@ castToSVGAnimatedLengthList :: IsGObject obj => obj -> SVGAnimatedLengthList
 castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLengthList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber Mozilla SVGAnimatedNumber documentation>
@@ -16094,10 +14536,7 @@ castToSVGAnimatedNumber :: IsGObject obj => obj -> SVGAnimatedNumber
 castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList Mozilla SVGAnimatedNumberList documentation>
@@ -16132,10 +14571,7 @@ castToSVGAnimatedNumberList :: IsGObject obj => obj -> SVGAnimatedNumberList
 castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumberList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedPreserveAspectRatio Mozilla SVGAnimatedPreserveAspectRatio documentation>
@@ -16170,10 +14606,7 @@ castToSVGAnimatedPreserveAspectRatio :: IsGObject obj => obj -> SVGAnimatedPrese
 castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRatio "SVGAnimatedPreserveAspectRatio"
 
 foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedRect Mozilla SVGAnimatedRect documentation>
@@ -16208,10 +14641,7 @@ castToSVGAnimatedRect :: IsGObject obj => obj -> SVGAnimatedRect
 castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
 
 foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedString Mozilla SVGAnimatedString documentation>
@@ -16246,10 +14676,7 @@ castToSVGAnimatedString :: IsGObject obj => obj -> SVGAnimatedString
 castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
 
 foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList Mozilla SVGAnimatedTransformList documentation>
@@ -16284,10 +14711,7 @@ castToSVGAnimatedTransformList :: IsGObject obj => obj -> SVGAnimatedTransformLi
 castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimatedTransformList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimationElement".
 -- Base interface functions are in:
 --
@@ -16337,10 +14761,7 @@ castToSVGAnimationElement :: IsGObject obj => obj -> SVGAnimationElement
 castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement"
 
 foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCircleElement".
 -- Base interface functions are in:
 --
@@ -16387,10 +14808,7 @@ castToSVGCircleElement :: IsGObject obj => obj -> SVGCircleElement
 castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
 
 foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGClipPathElement".
 -- Base interface functions are in:
 --
@@ -16437,10 +14855,7 @@ castToSVGClipPathElement :: IsGObject obj => obj -> SVGClipPathElement
 castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
 
 foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGColor".
 -- Base interface functions are in:
 --
@@ -16484,10 +14899,7 @@ castToSVGColor :: IsGObject obj => obj -> SVGColor
 castToSVGColor = castTo gTypeSVGColor "SVGColor"
 
 foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGComponentTransferFunctionElement".
 -- Base interface functions are in:
 --
@@ -16537,10 +14949,7 @@ castToSVGComponentTransferFunctionElement :: IsGObject obj => obj -> SVGComponen
 castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunctionElement "SVGComponentTransferFunctionElement"
 
 foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCursorElement".
 -- Base interface functions are in:
 --
@@ -16585,10 +14994,7 @@ castToSVGCursorElement :: IsGObject obj => obj -> SVGCursorElement
 castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
 
 foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDefsElement".
 -- Base interface functions are in:
 --
@@ -16635,10 +15041,7 @@ castToSVGDefsElement :: IsGObject obj => obj -> SVGDefsElement
 castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
 
 foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDescElement".
 -- Base interface functions are in:
 --
@@ -16683,10 +15086,7 @@ castToSVGDescElement :: IsGObject obj => obj -> SVGDescElement
 castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
 
 foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDocument".
 -- Base interface functions are in:
 --
@@ -16729,10 +15129,7 @@ castToSVGDocument :: IsGObject obj => obj -> SVGDocument
 castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
 
 foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGElement".
 -- Base interface functions are in:
 --
@@ -16780,10 +15177,7 @@ castToSVGElement :: IsGObject obj => obj -> SVGElement
 castToSVGElement = castTo gTypeSVGElement "SVGElement"
 
 foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGEllipseElement".
 -- Base interface functions are in:
 --
@@ -16830,10 +15224,7 @@ castToSVGEllipseElement :: IsGObject obj => obj -> SVGEllipseElement
 castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
 
 foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired Mozilla SVGExternalResourcesRequired documentation>
@@ -16868,10 +15259,7 @@ castToSVGExternalResourcesRequired :: IsGObject obj => obj -> SVGExternalResourc
 castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "SVGExternalResourcesRequired"
 
 foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEBlendElement".
 -- Base interface functions are in:
 --
@@ -16916,10 +15304,7 @@ castToSVGFEBlendElement :: IsGObject obj => obj -> SVGFEBlendElement
 castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
 
 foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEColorMatrixElement".
 -- Base interface functions are in:
 --
@@ -16964,10 +15349,7 @@ castToSVGFEColorMatrixElement :: IsGObject obj => obj -> SVGFEColorMatrixElement
 castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorMatrixElement"
 
 foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEComponentTransferElement".
 -- Base interface functions are in:
 --
@@ -17012,10 +15394,7 @@ castToSVGFEComponentTransferElement :: IsGObject obj => obj -> SVGFEComponentTra
 castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement "SVGFEComponentTransferElement"
 
 foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFECompositeElement".
 -- Base interface functions are in:
 --
@@ -17060,10 +15439,7 @@ castToSVGFECompositeElement :: IsGObject obj => obj -> SVGFECompositeElement
 castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeElement"
 
 foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEConvolveMatrixElement".
 -- Base interface functions are in:
 --
@@ -17108,10 +15484,7 @@ castToSVGFEConvolveMatrixElement :: IsGObject obj => obj -> SVGFEConvolveMatrixE
 castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFEConvolveMatrixElement"
 
 foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDiffuseLightingElement".
 -- Base interface functions are in:
 --
@@ -17156,10 +15529,7 @@ castToSVGFEDiffuseLightingElement :: IsGObject obj => obj -> SVGFEDiffuseLightin
 castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVGFEDiffuseLightingElement"
 
 foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDisplacementMapElement".
 -- Base interface functions are in:
 --
@@ -17204,10 +15574,7 @@ castToSVGFEDisplacementMapElement :: IsGObject obj => obj -> SVGFEDisplacementMa
 castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVGFEDisplacementMapElement"
 
 foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDistantLightElement".
 -- Base interface functions are in:
 --
@@ -17252,10 +15619,7 @@ castToSVGFEDistantLightElement :: IsGObject obj => obj -> SVGFEDistantLightEleme
 castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDistantLightElement"
 
 foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDropShadowElement".
 -- Base interface functions are in:
 --
@@ -17300,10 +15664,7 @@ castToSVGFEDropShadowElement :: IsGObject obj => obj -> SVGFEDropShadowElement
 castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShadowElement"
 
 foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFloodElement".
 -- Base interface functions are in:
 --
@@ -17348,10 +15709,7 @@ castToSVGFEFloodElement :: IsGObject obj => obj -> SVGFEFloodElement
 castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
 
 foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncAElement".
 -- Base interface functions are in:
 --
@@ -17398,10 +15756,7 @@ castToSVGFEFuncAElement :: IsGObject obj => obj -> SVGFEFuncAElement
 castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncBElement".
 -- Base interface functions are in:
 --
@@ -17448,10 +15803,7 @@ castToSVGFEFuncBElement :: IsGObject obj => obj -> SVGFEFuncBElement
 castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncGElement".
 -- Base interface functions are in:
 --
@@ -17498,10 +15850,7 @@ castToSVGFEFuncGElement :: IsGObject obj => obj -> SVGFEFuncGElement
 castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncRElement".
 -- Base interface functions are in:
 --
@@ -17548,10 +15897,7 @@ castToSVGFEFuncRElement :: IsGObject obj => obj -> SVGFEFuncRElement
 castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEGaussianBlurElement".
 -- Base interface functions are in:
 --
@@ -17596,10 +15942,7 @@ castToSVGFEGaussianBlurElement :: IsGObject obj => obj -> SVGFEGaussianBlurEleme
 castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaussianBlurElement"
 
 foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEImageElement".
 -- Base interface functions are in:
 --
@@ -17644,10 +15987,7 @@ castToSVGFEImageElement :: IsGObject obj => obj -> SVGFEImageElement
 castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
 
 foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeElement".
 -- Base interface functions are in:
 --
@@ -17692,10 +16032,7 @@ castToSVGFEMergeElement :: IsGObject obj => obj -> SVGFEMergeElement
 castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
 
 foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeNodeElement".
 -- Base interface functions are in:
 --
@@ -17740,10 +16077,7 @@ castToSVGFEMergeNodeElement :: IsGObject obj => obj -> SVGFEMergeNodeElement
 castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeElement"
 
 foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMorphologyElement".
 -- Base interface functions are in:
 --
@@ -17788,10 +16122,7 @@ castToSVGFEMorphologyElement :: IsGObject obj => obj -> SVGFEMorphologyElement
 castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorphologyElement"
 
 foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEOffsetElement".
 -- Base interface functions are in:
 --
@@ -17836,10 +16167,7 @@ castToSVGFEOffsetElement :: IsGObject obj => obj -> SVGFEOffsetElement
 castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
 
 foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEPointLightElement".
 -- Base interface functions are in:
 --
@@ -17884,10 +16212,7 @@ castToSVGFEPointLightElement :: IsGObject obj => obj -> SVGFEPointLightElement
 castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLightElement"
 
 foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpecularLightingElement".
 -- Base interface functions are in:
 --
@@ -17932,10 +16257,7 @@ castToSVGFESpecularLightingElement :: IsGObject obj => obj -> SVGFESpecularLight
 castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "SVGFESpecularLightingElement"
 
 foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpotLightElement".
 -- Base interface functions are in:
 --
@@ -17980,10 +16302,7 @@ castToSVGFESpotLightElement :: IsGObject obj => obj -> SVGFESpotLightElement
 castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightElement"
 
 foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETileElement".
 -- Base interface functions are in:
 --
@@ -18028,10 +16347,7 @@ castToSVGFETileElement :: IsGObject obj => obj -> SVGFETileElement
 castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
 
 foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETurbulenceElement".
 -- Base interface functions are in:
 --
@@ -18076,10 +16392,7 @@ castToSVGFETurbulenceElement :: IsGObject obj => obj -> SVGFETurbulenceElement
 castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulenceElement"
 
 foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterElement".
 -- Base interface functions are in:
 --
@@ -18124,10 +16437,7 @@ castToSVGFilterElement :: IsGObject obj => obj -> SVGFilterElement
 castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
 
 foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes Mozilla SVGFilterPrimitiveStandardAttributes documentation>
@@ -18162,10 +16472,7 @@ castToSVGFilterPrimitiveStandardAttributes :: IsGObject obj => obj -> SVGFilterP
 castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStandardAttributes "SVGFilterPrimitiveStandardAttributes"
 
 foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox Mozilla SVGFitToViewBox documentation>
@@ -18200,10 +16507,7 @@ castToSVGFitToViewBox :: IsGObject obj => obj -> SVGFitToViewBox
 castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
 
 foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontElement".
 -- Base interface functions are in:
 --
@@ -18248,10 +16552,7 @@ castToSVGFontElement :: IsGObject obj => obj -> SVGFontElement
 castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
 
 foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceElement".
 -- Base interface functions are in:
 --
@@ -18296,10 +16597,7 @@ castToSVGFontFaceElement :: IsGObject obj => obj -> SVGFontFaceElement
 castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceFormatElement".
 -- Base interface functions are in:
 --
@@ -18344,10 +16642,7 @@ castToSVGFontFaceFormatElement :: IsGObject obj => obj -> SVGFontFaceFormatEleme
 castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFaceFormatElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceNameElement".
 -- Base interface functions are in:
 --
@@ -18392,10 +16687,7 @@ castToSVGFontFaceNameElement :: IsGObject obj => obj -> SVGFontFaceNameElement
 castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNameElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceSrcElement".
 -- Base interface functions are in:
 --
@@ -18440,10 +16732,7 @@ castToSVGFontFaceSrcElement :: IsGObject obj => obj -> SVGFontFaceSrcElement
 castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceUriElement".
 -- Base interface functions are in:
 --
@@ -18488,10 +16777,7 @@ castToSVGFontFaceUriElement :: IsGObject obj => obj -> SVGFontFaceUriElement
 castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGForeignObjectElement".
 -- Base interface functions are in:
 --
@@ -18538,10 +16824,7 @@ castToSVGForeignObjectElement :: IsGObject obj => obj -> SVGForeignObjectElement
 castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignObjectElement"
 
 foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGElement".
 -- Base interface functions are in:
 --
@@ -18588,10 +16871,7 @@ castToSVGGElement :: IsGObject obj => obj -> SVGGElement
 castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
 
 foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphElement".
 -- Base interface functions are in:
 --
@@ -18636,10 +16916,7 @@ castToSVGGlyphElement :: IsGObject obj => obj -> SVGGlyphElement
 castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphRefElement".
 -- Base interface functions are in:
 --
@@ -18684,10 +16961,7 @@ castToSVGGlyphRefElement :: IsGObject obj => obj -> SVGGlyphRefElement
 castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGradientElement".
 -- Base interface functions are in:
 --
@@ -18737,10 +17011,7 @@ castToSVGGradientElement :: IsGObject obj => obj -> SVGGradientElement
 castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
 
 foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGraphicsElement".
 -- Base interface functions are in:
 --
@@ -18790,10 +17061,7 @@ castToSVGGraphicsElement :: IsGObject obj => obj -> SVGGraphicsElement
 castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
 
 foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGHKernElement".
 -- Base interface functions are in:
 --
@@ -18838,10 +17106,7 @@ castToSVGHKernElement :: IsGObject obj => obj -> SVGHKernElement
 castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
 
 foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGImageElement".
 -- Base interface functions are in:
 --
@@ -18888,10 +17153,7 @@ castToSVGImageElement :: IsGObject obj => obj -> SVGImageElement
 castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
 
 foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength Mozilla SVGLength documentation>
@@ -18926,10 +17188,7 @@ castToSVGLength :: IsGObject obj => obj -> SVGLength
 castToSVGLength = castTo gTypeSVGLength "SVGLength"
 
 foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList Mozilla SVGLengthList documentation>
@@ -18964,10 +17223,7 @@ castToSVGLengthList :: IsGObject obj => obj -> SVGLengthList
 castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
 
 foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLineElement".
 -- Base interface functions are in:
 --
@@ -19014,10 +17270,7 @@ castToSVGLineElement :: IsGObject obj => obj -> SVGLineElement
 castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
 
 foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLinearGradientElement".
 -- Base interface functions are in:
 --
@@ -19064,10 +17317,7 @@ castToSVGLinearGradientElement :: IsGObject obj => obj -> SVGLinearGradientEleme
 castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinearGradientElement"
 
 foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMPathElement".
 -- Base interface functions are in:
 --
@@ -19112,10 +17362,7 @@ castToSVGMPathElement :: IsGObject obj => obj -> SVGMPathElement
 castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
 
 foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMarkerElement".
 -- Base interface functions are in:
 --
@@ -19160,10 +17407,7 @@ castToSVGMarkerElement :: IsGObject obj => obj -> SVGMarkerElement
 castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
 
 foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMaskElement".
 -- Base interface functions are in:
 --
@@ -19208,10 +17452,7 @@ castToSVGMaskElement :: IsGObject obj => obj -> SVGMaskElement
 castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
 
 foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix Mozilla SVGMatrix documentation>
@@ -19246,10 +17487,7 @@ castToSVGMatrix :: IsGObject obj => obj -> SVGMatrix
 castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
 
 foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMetadataElement".
 -- Base interface functions are in:
 --
@@ -19294,10 +17532,7 @@ castToSVGMetadataElement :: IsGObject obj => obj -> SVGMetadataElement
 castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
 
 foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMissingGlyphElement".
 -- Base interface functions are in:
 --
@@ -19342,10 +17577,7 @@ castToSVGMissingGlyphElement :: IsGObject obj => obj -> SVGMissingGlyphElement
 castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber Mozilla SVGNumber documentation>
@@ -19380,10 +17612,7 @@ castToSVGNumber :: IsGObject obj => obj -> SVGNumber
 castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
 
 foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList Mozilla SVGNumberList documentation>
@@ -19418,10 +17647,7 @@ castToSVGNumberList :: IsGObject obj => obj -> SVGNumberList
 castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
 
 foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPaint".
 -- Base interface functions are in:
 --
@@ -19462,10 +17688,7 @@ castToSVGPaint :: IsGObject obj => obj -> SVGPaint
 castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
 
 foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathElement".
 -- Base interface functions are in:
 --
@@ -19512,10 +17735,7 @@ castToSVGPathElement :: IsGObject obj => obj -> SVGPathElement
 castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
 
 foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg Mozilla SVGPathSeg documentation>
@@ -19555,10 +17775,7 @@ castToSVGPathSeg :: IsGObject obj => obj -> SVGPathSeg
 castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
 
 foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcAbs".
 -- Base interface functions are in:
 --
@@ -19597,10 +17814,7 @@ castToSVGPathSegArcAbs :: IsGObject obj => obj -> SVGPathSegArcAbs
 castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcRel".
 -- Base interface functions are in:
 --
@@ -19639,10 +17853,7 @@ castToSVGPathSegArcRel :: IsGObject obj => obj -> SVGPathSegArcRel
 castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegClosePath".
 -- Base interface functions are in:
 --
@@ -19681,10 +17892,7 @@ castToSVGPathSegClosePath :: IsGObject obj => obj -> SVGPathSegClosePath
 castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath"
 
 foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicAbs".
 -- Base interface functions are in:
 --
@@ -19723,10 +17931,7 @@ castToSVGPathSegCurvetoCubicAbs :: IsGObject obj => obj -> SVGPathSegCurvetoCubi
 castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPathSegCurvetoCubicAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicRel".
 -- Base interface functions are in:
 --
@@ -19765,10 +17970,7 @@ castToSVGPathSegCurvetoCubicRel :: IsGObject obj => obj -> SVGPathSegCurvetoCubi
 castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPathSegCurvetoCubicRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs".
 -- Base interface functions are in:
 --
@@ -19807,10 +18009,7 @@ castToSVGPathSegCurvetoCubicSmoothAbs :: IsGObject obj => obj -> SVGPathSegCurve
 castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmoothAbs "SVGPathSegCurvetoCubicSmoothAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel".
 -- Base interface functions are in:
 --
@@ -19849,10 +18048,7 @@ castToSVGPathSegCurvetoCubicSmoothRel :: IsGObject obj => obj -> SVGPathSegCurve
 castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmoothRel "SVGPathSegCurvetoCubicSmoothRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs".
 -- Base interface functions are in:
 --
@@ -19891,10 +18087,7 @@ castToSVGPathSegCurvetoQuadraticAbs :: IsGObject obj => obj -> SVGPathSegCurveto
 castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs "SVGPathSegCurvetoQuadraticAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticRel".
 -- Base interface functions are in:
 --
@@ -19933,10 +18126,7 @@ castToSVGPathSegCurvetoQuadraticRel :: IsGObject obj => obj -> SVGPathSegCurveto
 castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel "SVGPathSegCurvetoQuadraticRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs".
 -- Base interface functions are in:
 --
@@ -19975,10 +18165,7 @@ castToSVGPathSegCurvetoQuadraticSmoothAbs :: IsGObject obj => obj -> SVGPathSegC
 castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadraticSmoothAbs "SVGPathSegCurvetoQuadraticSmoothAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel".
 -- Base interface functions are in:
 --
@@ -20017,10 +18204,7 @@ castToSVGPathSegCurvetoQuadraticSmoothRel :: IsGObject obj => obj -> SVGPathSegC
 castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadraticSmoothRel "SVGPathSegCurvetoQuadraticSmoothRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoAbs".
 -- Base interface functions are in:
 --
@@ -20059,10 +18243,7 @@ castToSVGPathSegLinetoAbs :: IsGObject obj => obj -> SVGPathSegLinetoAbs
 castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalAbs".
 -- Base interface functions are in:
 --
@@ -20101,10 +18282,7 @@ castToSVGPathSegLinetoHorizontalAbs :: IsGObject obj => obj -> SVGPathSegLinetoH
 castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs "SVGPathSegLinetoHorizontalAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalRel".
 -- Base interface functions are in:
 --
@@ -20143,10 +18321,7 @@ castToSVGPathSegLinetoHorizontalRel :: IsGObject obj => obj -> SVGPathSegLinetoH
 castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel "SVGPathSegLinetoHorizontalRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoRel".
 -- Base interface functions are in:
 --
@@ -20185,10 +18360,7 @@ castToSVGPathSegLinetoRel :: IsGObject obj => obj -> SVGPathSegLinetoRel
 castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalAbs".
 -- Base interface functions are in:
 --
@@ -20227,10 +18399,7 @@ castToSVGPathSegLinetoVerticalAbs :: IsGObject obj => obj -> SVGPathSegLinetoVer
 castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVGPathSegLinetoVerticalAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalRel".
 -- Base interface functions are in:
 --
@@ -20269,10 +18438,7 @@ castToSVGPathSegLinetoVerticalRel :: IsGObject obj => obj -> SVGPathSegLinetoVer
 castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVGPathSegLinetoVerticalRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList Mozilla SVGPathSegList documentation>
@@ -20307,10 +18473,7 @@ castToSVGPathSegList :: IsGObject obj => obj -> SVGPathSegList
 castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
 
 foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoAbs".
 -- Base interface functions are in:
 --
@@ -20349,10 +18512,7 @@ castToSVGPathSegMovetoAbs :: IsGObject obj => obj -> SVGPathSegMovetoAbs
 castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoRel".
 -- Base interface functions are in:
 --
@@ -20391,10 +18551,7 @@ castToSVGPathSegMovetoRel :: IsGObject obj => obj -> SVGPathSegMovetoRel
 castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPatternElement".
 -- Base interface functions are in:
 --
@@ -20439,10 +18596,7 @@ castToSVGPatternElement :: IsGObject obj => obj -> SVGPatternElement
 castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
 
 foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint Mozilla SVGPoint documentation>
@@ -20477,10 +18631,7 @@ castToSVGPoint :: IsGObject obj => obj -> SVGPoint
 castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
 
 foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList Mozilla SVGPointList documentation>
@@ -20515,10 +18666,7 @@ castToSVGPointList :: IsGObject obj => obj -> SVGPointList
 castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
 
 foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolygonElement".
 -- Base interface functions are in:
 --
@@ -20565,10 +18713,7 @@ castToSVGPolygonElement :: IsGObject obj => obj -> SVGPolygonElement
 castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
 
 foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolylineElement".
 -- Base interface functions are in:
 --
@@ -20615,10 +18760,7 @@ castToSVGPolylineElement :: IsGObject obj => obj -> SVGPolylineElement
 castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
 
 foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio Mozilla SVGPreserveAspectRatio documentation>
@@ -20653,10 +18795,7 @@ castToSVGPreserveAspectRatio :: IsGObject obj => obj -> SVGPreserveAspectRatio
 castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAspectRatio"
 
 foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRadialGradientElement".
 -- Base interface functions are in:
 --
@@ -20703,10 +18842,7 @@ castToSVGRadialGradientElement :: IsGObject obj => obj -> SVGRadialGradientEleme
 castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadialGradientElement"
 
 foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect Mozilla SVGRect documentation>
@@ -20741,10 +18877,7 @@ castToSVGRect :: IsGObject obj => obj -> SVGRect
 castToSVGRect = castTo gTypeSVGRect "SVGRect"
 
 foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRectElement".
 -- Base interface functions are in:
 --
@@ -20791,10 +18924,7 @@ castToSVGRectElement :: IsGObject obj => obj -> SVGRectElement
 castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
 
 foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGRenderingIntent Mozilla SVGRenderingIntent documentation>
@@ -20829,10 +18959,7 @@ castToSVGRenderingIntent :: IsGObject obj => obj -> SVGRenderingIntent
 castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
 
 foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSVGElement".
 -- Base interface functions are in:
 --
@@ -20879,10 +19006,7 @@ castToSVGSVGElement :: IsGObject obj => obj -> SVGSVGElement
 castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
 
 foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGScriptElement".
 -- Base interface functions are in:
 --
@@ -20927,10 +19051,7 @@ castToSVGScriptElement :: IsGObject obj => obj -> SVGScriptElement
 castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
 
 foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSetElement".
 -- Base interface functions are in:
 --
@@ -20977,10 +19098,7 @@ castToSVGSetElement :: IsGObject obj => obj -> SVGSetElement
 castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
 
 foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStopElement".
 -- Base interface functions are in:
 --
@@ -21025,10 +19143,7 @@ castToSVGStopElement :: IsGObject obj => obj -> SVGStopElement
 castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
 
 foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList Mozilla SVGStringList documentation>
@@ -21063,10 +19178,7 @@ castToSVGStringList :: IsGObject obj => obj -> SVGStringList
 castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
 
 foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStyleElement".
 -- Base interface functions are in:
 --
@@ -21111,10 +19223,7 @@ castToSVGStyleElement :: IsGObject obj => obj -> SVGStyleElement
 castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
 
 foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSwitchElement".
 -- Base interface functions are in:
 --
@@ -21161,10 +19270,7 @@ castToSVGSwitchElement :: IsGObject obj => obj -> SVGSwitchElement
 castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
 
 foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSymbolElement".
 -- Base interface functions are in:
 --
@@ -21209,10 +19315,7 @@ castToSVGSymbolElement :: IsGObject obj => obj -> SVGSymbolElement
 castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
 
 foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTRefElement".
 -- Base interface functions are in:
 --
@@ -21263,10 +19366,7 @@ castToSVGTRefElement :: IsGObject obj => obj -> SVGTRefElement
 castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
 
 foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTSpanElement".
 -- Base interface functions are in:
 --
@@ -21317,10 +19417,7 @@ castToSVGTSpanElement :: IsGObject obj => obj -> SVGTSpanElement
 castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
 
 foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests Mozilla SVGTests documentation>
@@ -21355,10 +19452,7 @@ castToSVGTests :: IsGObject obj => obj -> SVGTests
 castToSVGTests = castTo gTypeSVGTests "SVGTests"
 
 foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextContentElement".
 -- Base interface functions are in:
 --
@@ -21410,10 +19504,7 @@ castToSVGTextContentElement :: IsGObject obj => obj -> SVGTextContentElement
 castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentElement"
 
 foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextElement".
 -- Base interface functions are in:
 --
@@ -21464,10 +19555,7 @@ castToSVGTextElement :: IsGObject obj => obj -> SVGTextElement
 castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
 
 foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPathElement".
 -- Base interface functions are in:
 --
@@ -21516,10 +19604,7 @@ castToSVGTextPathElement :: IsGObject obj => obj -> SVGTextPathElement
 castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
 
 foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPositioningElement".
 -- Base interface functions are in:
 --
@@ -21573,10 +19658,7 @@ castToSVGTextPositioningElement :: IsGObject obj => obj -> SVGTextPositioningEle
 castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGTextPositioningElement"
 
 foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTitleElement".
 -- Base interface functions are in:
 --
@@ -21621,10 +19703,7 @@ castToSVGTitleElement :: IsGObject obj => obj -> SVGTitleElement
 castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
 
 foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform Mozilla SVGTransform documentation>
@@ -21659,10 +19738,7 @@ castToSVGTransform :: IsGObject obj => obj -> SVGTransform
 castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
 
 foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList Mozilla SVGTransformList documentation>
@@ -21697,10 +19773,7 @@ castToSVGTransformList :: IsGObject obj => obj -> SVGTransformList
 castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
 
 foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGURIReference Mozilla SVGURIReference documentation>
@@ -21735,10 +19808,7 @@ castToSVGURIReference :: IsGObject obj => obj -> SVGURIReference
 castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
 
 foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGUnitTypes Mozilla SVGUnitTypes documentation>
@@ -21773,10 +19843,7 @@ castToSVGUnitTypes :: IsGObject obj => obj -> SVGUnitTypes
 castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
 
 foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUseElement".
 -- Base interface functions are in:
 --
@@ -21823,10 +19890,7 @@ castToSVGUseElement :: IsGObject obj => obj -> SVGUseElement
 castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
 
 foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGVKernElement".
 -- Base interface functions are in:
 --
@@ -21871,10 +19935,7 @@ castToSVGVKernElement :: IsGObject obj => obj -> SVGVKernElement
 castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
 
 foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewElement".
 -- Base interface functions are in:
 --
@@ -21919,10 +19980,7 @@ castToSVGViewElement :: IsGObject obj => obj -> SVGViewElement
 castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
 
 foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec Mozilla SVGViewSpec documentation>
@@ -21957,10 +20015,7 @@ castToSVGViewSpec :: IsGObject obj => obj -> SVGViewSpec
 castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
 
 foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan Mozilla SVGZoomAndPan documentation>
@@ -21995,10 +20050,7 @@ castToSVGZoomAndPan :: IsGObject obj => obj -> SVGZoomAndPan
 castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
 
 foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomEvent".
 -- Base interface functions are in:
 --
@@ -22039,10 +20091,7 @@ castToSVGZoomEvent :: IsGObject obj => obj -> SVGZoomEvent
 castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
 
 foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Screen".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Screen Mozilla Screen documentation>
@@ -22077,12 +20126,7 @@ castToScreen :: IsGObject obj => obj -> Screen
 castToScreen = castTo gTypeScreen "Screen"
 
 foreign import javascript unsafe "window[\"Screen\"]" gTypeScreen :: GType
-#else
-type IsScreen o = ScreenClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProcessorNode".
 -- Base interface functions are in:
 --
@@ -22123,10 +20167,7 @@ castToScriptProcessorNode :: IsGObject obj => obj -> ScriptProcessorNode
 castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode"
 
 foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfile".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfile Mozilla ScriptProfile documentation>
@@ -22161,10 +20202,7 @@ castToScriptProfile :: IsGObject obj => obj -> ScriptProfile
 castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
 
 foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfileNode".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode Mozilla ScriptProfileNode documentation>
@@ -22199,10 +20237,7 @@ castToScriptProfileNode :: IsGObject obj => obj -> ScriptProfileNode
 castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
 
 foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProfileNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicy".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy Mozilla SecurityPolicy documentation>
@@ -22237,14 +20272,7 @@ castToSecurityPolicy :: IsGObject obj => obj -> SecurityPolicy
 castToSecurityPolicy = castTo gTypeSecurityPolicy "SecurityPolicy"
 
 foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeSecurityPolicy :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsSecurityPolicy o = SecurityPolicyClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEvent".
 -- Base interface functions are in:
 --
@@ -22283,10 +20311,7 @@ castToSecurityPolicyViolationEvent :: IsGObject obj => obj -> SecurityPolicyViol
 castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "SecurityPolicyViolationEvent"
 
 foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Selection".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Selection Mozilla Selection documentation>
@@ -22321,12 +20346,7 @@ castToSelection :: IsGObject obj => obj -> Selection
 castToSelection = castTo gTypeSelection "Selection"
 
 foreign import javascript unsafe "window[\"Selection\"]" gTypeSelection :: GType
-#else
-type IsSelection o = SelectionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBuffer".
 -- Base interface functions are in:
 --
@@ -22365,10 +20385,7 @@ castToSourceBuffer :: IsGObject obj => obj -> SourceBuffer
 castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
 
 foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBufferList".
 -- Base interface functions are in:
 --
@@ -22407,10 +20424,7 @@ castToSourceBufferList :: IsGObject obj => obj -> SourceBufferList
 castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
 
 foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SourceInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SourceInfo Mozilla SourceInfo documentation>
@@ -22445,10 +20459,7 @@ castToSourceInfo :: IsGObject obj => obj -> SourceInfo
 castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
 
 foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis Mozilla SpeechSynthesis documentation>
@@ -22483,10 +20494,7 @@ castToSpeechSynthesis :: IsGObject obj => obj -> SpeechSynthesis
 castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
 
 foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisEvent".
 -- Base interface functions are in:
 --
@@ -22525,10 +20533,7 @@ castToSpeechSynthesisEvent :: IsGObject obj => obj -> SpeechSynthesisEvent
 castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEvent"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisUtterance".
 -- Base interface functions are in:
 --
@@ -22567,10 +20572,7 @@ castToSpeechSynthesisUtterance :: IsGObject obj => obj -> SpeechSynthesisUtteran
 castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSynthesisUtterance"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice Mozilla SpeechSynthesisVoice documentation>
@@ -22605,10 +20607,7 @@ castToSpeechSynthesisVoice :: IsGObject obj => obj -> SpeechSynthesisVoice
 castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVoice"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Storage".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Storage Mozilla Storage documentation>
@@ -22643,12 +20642,7 @@ castToStorage :: IsGObject obj => obj -> Storage
 castToStorage = castTo gTypeStorage "Storage"
 
 foreign import javascript unsafe "window[\"Storage\"]" gTypeStorage :: GType
-#else
-type IsStorage o = StorageClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StorageEvent".
 -- Base interface functions are in:
 --
@@ -22687,10 +20681,7 @@ castToStorageEvent :: IsGObject obj => obj -> StorageEvent
 castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
 
 foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo Mozilla StorageInfo documentation>
@@ -22725,14 +20716,7 @@ castToStorageInfo :: IsGObject obj => obj -> StorageInfo
 castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
 
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsStorageInfo o = StorageInfoClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StorageQuota Mozilla StorageQuota documentation>
@@ -22767,14 +20751,7 @@ castToStorageQuota :: IsGObject obj => obj -> StorageQuota
 castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
 
 foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsStorageQuota o = StorageQuotaClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia Mozilla StyleMedia documentation>
@@ -22809,12 +20786,7 @@ castToStyleMedia :: IsGObject obj => obj -> StyleMedia
 castToStyleMedia = castTo gTypeStyleMedia "StyleMedia"
 
 foreign import javascript unsafe "window[\"StyleMedia\"]" gTypeStyleMedia :: GType
-#else
-type IsStyleMedia o = StyleMediaClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet Mozilla StyleSheet documentation>
@@ -22854,12 +20826,7 @@ castToStyleSheet :: IsGObject obj => obj -> StyleSheet
 castToStyleSheet = castTo gTypeStyleSheet "StyleSheet"
 
 foreign import javascript unsafe "window[\"StyleSheet\"]" gTypeStyleSheet :: GType
-#else
-type IsStyleSheet o = StyleSheetClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList Mozilla StyleSheetList documentation>
@@ -22894,12 +20861,7 @@ castToStyleSheetList :: IsGObject obj => obj -> StyleSheetList
 castToStyleSheetList = castTo gTypeStyleSheetList "StyleSheetList"
 
 foreign import javascript unsafe "window[\"StyleSheetList\"]" gTypeStyleSheetList :: GType
-#else
-type IsStyleSheetList o = StyleSheetListClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto Mozilla WebKitSubtleCrypto documentation>
@@ -22934,10 +20896,7 @@ castToSubtleCrypto :: IsGObject obj => obj -> SubtleCrypto
 castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
 
 foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Text".
 -- Base interface functions are in:
 --
@@ -22985,12 +20944,7 @@ castToText :: IsGObject obj => obj -> Text
 castToText = castTo gTypeText "Text"
 
 foreign import javascript unsafe "window[\"Text\"]" gTypeText :: GType
-#else
-type IsText o = TextClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextEvent".
 -- Base interface functions are in:
 --
@@ -23031,10 +20985,7 @@ castToTextEvent :: IsGObject obj => obj -> TextEvent
 castToTextEvent = castTo gTypeTextEvent "TextEvent"
 
 foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextMetrics Mozilla TextMetrics documentation>
@@ -23069,10 +21020,7 @@ castToTextMetrics :: IsGObject obj => obj -> TextMetrics
 castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
 
 foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrack".
 -- Base interface functions are in:
 --
@@ -23111,14 +21059,7 @@ castToTextTrack :: IsGObject obj => obj -> TextTrack
 castToTextTrack = castTo gTypeTextTrack "TextTrack"
 
 foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsTextTrack o = TextTrackClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCue".
 -- Base interface functions are in:
 --
@@ -23162,14 +21103,7 @@ castToTextTrackCue :: IsGObject obj => obj -> TextTrackCue
 castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
 
 foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsTextTrackCue o = TextTrackCueClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCueList Mozilla TextTrackCueList documentation>
@@ -23204,14 +21138,7 @@ castToTextTrackCueList :: IsGObject obj => obj -> TextTrackCueList
 castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
 
 foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsTextTrackCueList o = TextTrackCueListClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackList".
 -- Base interface functions are in:
 --
@@ -23250,14 +21177,7 @@ castToTextTrackList :: IsGObject obj => obj -> TextTrackList
 castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
 
 foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsTextTrackList o = TextTrackListClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges Mozilla TimeRanges documentation>
@@ -23292,12 +21212,7 @@ castToTimeRanges :: IsGObject obj => obj -> TimeRanges
 castToTimeRanges = castTo gTypeTimeRanges "TimeRanges"
 
 foreign import javascript unsafe "window[\"TimeRanges\"]" gTypeTimeRanges :: GType
-#else
-type IsTimeRanges o = TimeRangesClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Touch".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Touch Mozilla Touch documentation>
@@ -23332,14 +21247,7 @@ castToTouch :: IsGObject obj => obj -> Touch
 castToTouch = castTo gTypeTouch "Touch"
 
 foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsTouch o = TouchClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TouchEvent".
 -- Base interface functions are in:
 --
@@ -23380,10 +21288,7 @@ castToTouchEvent :: IsGObject obj => obj -> TouchEvent
 castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
 
 foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TouchList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TouchList Mozilla TouchList documentation>
@@ -23418,10 +21323,7 @@ castToTouchList :: IsGObject obj => obj -> TouchList
 castToTouchList = castTo gTypeTouchList "TouchList"
 
 foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TrackEvent".
 -- Base interface functions are in:
 --
@@ -23460,10 +21362,7 @@ castToTrackEvent :: IsGObject obj => obj -> TrackEvent
 castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
 
 foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TransitionEvent".
 -- Base interface functions are in:
 --
@@ -23502,10 +21401,7 @@ castToTransitionEvent :: IsGObject obj => obj -> TransitionEvent
 castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
 
 foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker Mozilla TreeWalker documentation>
@@ -23540,12 +21436,7 @@ castToTreeWalker :: IsGObject obj => obj -> TreeWalker
 castToTreeWalker = castTo gTypeTreeWalker "TreeWalker"
 
 foreign import javascript unsafe "window[\"TreeWalker\"]" gTypeTreeWalker :: GType
-#else
-type IsTreeWalker o = TreeWalkerClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.TypeConversions".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/TypeConversions Mozilla TypeConversions documentation>
@@ -23580,10 +21471,7 @@ castToTypeConversions :: IsGObject obj => obj -> TypeConversions
 castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
 
 foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversions :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.UIEvent".
 -- Base interface functions are in:
 --
@@ -23627,12 +21515,7 @@ castToUIEvent :: IsGObject obj => obj -> UIEvent
 castToUIEvent = castTo gTypeUIEvent "UIEvent"
 
 foreign import javascript unsafe "window[\"UIEvent\"]" gTypeUIEvent :: GType
-#else
-type IsUIEvent o = UIEventClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.UIRequestEvent".
 -- Base interface functions are in:
 --
@@ -23673,10 +21556,7 @@ castToUIRequestEvent :: IsGObject obj => obj -> UIRequestEvent
 castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
 
 foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.URL".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation>
@@ -23711,10 +21591,7 @@ castToURL :: IsGObject obj => obj -> URL
 castToURL = castTo gTypeURL "URL"
 
 foreign import javascript unsafe "window[\"URL\"]" gTypeURL :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.URLUtils".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils Mozilla URLUtils documentation>
@@ -23749,10 +21626,7 @@ castToURLUtils :: IsGObject obj => obj -> URLUtils
 castToURLUtils = castTo gTypeURLUtils "URLUtils"
 
 foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandler Mozilla UserMessageHandler documentation>
@@ -23787,10 +21661,7 @@ castToUserMessageHandler :: IsGObject obj => obj -> UserMessageHandler
 castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
 
 foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/UserMessageHandlersNamespace Mozilla UserMessageHandlersNamespace documentation>
@@ -23825,10 +21696,7 @@ castToUserMessageHandlersNamespace :: IsGObject obj => obj -> UserMessageHandler
 castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "UserMessageHandlersNamespace"
 
 foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VTTCue".
 -- Base interface functions are in:
 --
@@ -23869,10 +21737,7 @@ castToVTTCue :: IsGObject obj => obj -> VTTCue
 castToVTTCue = castTo gTypeVTTCue "VTTCue"
 
 foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion Mozilla VTTRegion documentation>
@@ -23907,10 +21772,7 @@ castToVTTRegion :: IsGObject obj => obj -> VTTRegion
 castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
 
 foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList Mozilla VTTRegionList documentation>
@@ -23945,10 +21807,7 @@ castToVTTRegionList :: IsGObject obj => obj -> VTTRegionList
 castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
 
 foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ValidityState Mozilla ValidityState documentation>
@@ -23983,12 +21842,7 @@ castToValidityState :: IsGObject obj => obj -> ValidityState
 castToValidityState = castTo gTypeValidityState "ValidityState"
 
 foreign import javascript unsafe "window[\"ValidityState\"]" gTypeValidityState :: GType
-#else
-type IsValidityState o = ValidityStateClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality Mozilla VideoPlaybackQuality documentation>
@@ -24023,10 +21877,7 @@ castToVideoPlaybackQuality :: IsGObject obj => obj -> VideoPlaybackQuality
 castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQuality"
 
 foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VideoStreamTrack".
 -- Base interface functions are in:
 --
@@ -24067,10 +21918,7 @@ castToVideoStreamTrack :: IsGObject obj => obj -> VideoStreamTrack
 castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
 
 foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStreamTrack :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack Mozilla VideoTrack documentation>
@@ -24105,14 +21953,7 @@ castToVideoTrack :: IsGObject obj => obj -> VideoTrack
 castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
 
 foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsVideoTrack o = VideoTrackClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrackList".
 -- Base interface functions are in:
 --
@@ -24151,14 +21992,7 @@ castToVideoTrackList :: IsGObject obj => obj -> VideoTrackList
 castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
 
 foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsVideoTrackList o = VideoTrackListClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WaveShaperNode".
 -- Base interface functions are in:
 --
@@ -24199,10 +22033,7 @@ castToWaveShaperNode :: IsGObject obj => obj -> WaveShaperNode
 castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
 
 foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGL2RenderingContext".
 -- Base interface functions are in:
 --
@@ -24243,10 +22074,7 @@ castToWebGL2RenderingContext :: IsGObject obj => obj -> WebGL2RenderingContext
 castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2RenderingContext"
 
 foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLActiveInfo Mozilla WebGLActiveInfo documentation>
@@ -24281,10 +22109,7 @@ castToWebGLActiveInfo :: IsGObject obj => obj -> WebGLActiveInfo
 castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
 
 foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLBuffer Mozilla WebGLBuffer documentation>
@@ -24319,10 +22144,7 @@ castToWebGLBuffer :: IsGObject obj => obj -> WebGLBuffer
 castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
 
 foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureATC Mozilla WebGLCompressedTextureATC documentation>
@@ -24357,10 +22179,7 @@ castToWebGLCompressedTextureATC :: IsGObject obj => obj -> WebGLCompressedTextur
 castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCompressedTextureATC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTexturePVRTC Mozilla WebGLCompressedTexturePVRTC documentation>
@@ -24395,10 +22214,7 @@ castToWebGLCompressedTexturePVRTC :: IsGObject obj => obj -> WebGLCompressedText
 castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "WebGLCompressedTexturePVRTC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLCompressedTextureS3TC Mozilla WebGLCompressedTextureS3TC documentation>
@@ -24433,10 +22249,7 @@ castToWebGLCompressedTextureS3TC :: IsGObject obj => obj -> WebGLCompressedTextu
 castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGLCompressedTextureS3TC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLContextAttributes Mozilla WebGLContextAttributes documentation>
@@ -24471,10 +22284,7 @@ castToWebGLContextAttributes :: IsGObject obj => obj -> WebGLContextAttributes
 castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextAttributes"
 
 foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextEvent".
 -- Base interface functions are in:
 --
@@ -24513,10 +22323,7 @@ castToWebGLContextEvent :: IsGObject obj => obj -> WebGLContextEvent
 castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
 
 foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugRendererInfo Mozilla WebGLDebugRendererInfo documentation>
@@ -24551,10 +22358,7 @@ castToWebGLDebugRendererInfo :: IsGObject obj => obj -> WebGLDebugRendererInfo
 castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRendererInfo"
 
 foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDebugShaders Mozilla WebGLDebugShaders documentation>
@@ -24589,10 +22393,7 @@ castToWebGLDebugShaders :: IsGObject obj => obj -> WebGLDebugShaders
 castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
 
 foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDepthTexture Mozilla WebGLDepthTexture documentation>
@@ -24627,10 +22428,7 @@ castToWebGLDepthTexture :: IsGObject obj => obj -> WebGLDepthTexture
 castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
 
 foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers Mozilla WebGLDrawBuffers documentation>
@@ -24665,10 +22463,7 @@ castToWebGLDrawBuffers :: IsGObject obj => obj -> WebGLDrawBuffers
 castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
 
 foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLFramebuffer Mozilla WebGLFramebuffer documentation>
@@ -24703,10 +22498,7 @@ castToWebGLFramebuffer :: IsGObject obj => obj -> WebGLFramebuffer
 castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
 
 foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext Mozilla WebGLLoseContext documentation>
@@ -24741,10 +22533,7 @@ castToWebGLLoseContext :: IsGObject obj => obj -> WebGLLoseContext
 castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
 
 foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram Mozilla WebGLProgram documentation>
@@ -24779,10 +22568,7 @@ castToWebGLProgram :: IsGObject obj => obj -> WebGLProgram
 castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
 
 foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLQuery Mozilla WebGLQuery documentation>
@@ -24817,10 +22603,7 @@ castToWebGLQuery :: IsGObject obj => obj -> WebGLQuery
 castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
 
 foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderbuffer Mozilla WebGLRenderbuffer documentation>
@@ -24855,10 +22638,7 @@ castToWebGLRenderbuffer :: IsGObject obj => obj -> WebGLRenderbuffer
 castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
 
 foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContext".
 -- Base interface functions are in:
 --
@@ -24899,10 +22679,7 @@ castToWebGLRenderingContext :: IsGObject obj => obj -> WebGLRenderingContext
 castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingContext"
 
 foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContextBase".
 -- Base interface functions are in:
 --
@@ -24946,10 +22723,7 @@ castToWebGLRenderingContextBase :: IsGObject obj => obj -> WebGLRenderingContext
 castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRenderingContextBase"
 
 foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSampler Mozilla WebGLSampler documentation>
@@ -24984,10 +22758,7 @@ castToWebGLSampler :: IsGObject obj => obj -> WebGLSampler
 castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
 
 foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader Mozilla WebGLShader documentation>
@@ -25022,10 +22793,7 @@ castToWebGLShader :: IsGObject obj => obj -> WebGLShader
 castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
 
 foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat Mozilla WebGLShaderPrecisionFormat documentation>
@@ -25060,10 +22828,7 @@ castToWebGLShaderPrecisionFormat :: IsGObject obj => obj -> WebGLShaderPrecision
 castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGLShaderPrecisionFormat"
 
 foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLSync Mozilla WebGLSync documentation>
@@ -25098,10 +22863,7 @@ castToWebGLSync :: IsGObject obj => obj -> WebGLSync
 castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
 
 foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture Mozilla WebGLTexture documentation>
@@ -25136,10 +22898,7 @@ castToWebGLTexture :: IsGObject obj => obj -> WebGLTexture
 castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
 
 foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLTransformFeedback Mozilla WebGLTransformFeedback documentation>
@@ -25174,10 +22933,7 @@ castToWebGLTransformFeedback :: IsGObject obj => obj -> WebGLTransformFeedback
 castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransformFeedback"
 
 foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLUniformLocation Mozilla WebGLUniformLocation documentation>
@@ -25212,10 +22968,7 @@ castToWebGLUniformLocation :: IsGObject obj => obj -> WebGLUniformLocation
 castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocation"
 
 foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObject Mozilla WebGLVertexArrayObject documentation>
@@ -25250,10 +23003,7 @@ castToWebGLVertexArrayObject :: IsGObject obj => obj -> WebGLVertexArrayObject
 castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexArrayObject"
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebGLVertexArrayObjectOES Mozilla WebGLVertexArrayObjectOES documentation>
@@ -25288,10 +23038,7 @@ castToWebGLVertexArrayObjectOES :: IsGObject obj => obj -> WebGLVertexArrayObjec
 castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVertexArrayObjectOES"
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEvent".
 -- Base interface functions are in:
 --
@@ -25330,10 +23077,7 @@ castToWebKitAnimationEvent :: IsGObject obj => obj -> WebKitAnimationEvent
 castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEvent"
 
 foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSFilterValue".
 -- Base interface functions are in:
 --
@@ -25374,10 +23118,7 @@ castToWebKitCSSFilterValue :: IsGObject obj => obj -> WebKitCSSFilterValue
 castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterValue"
 
 foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitCSSFilterValue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation>
@@ -25412,10 +23153,7 @@ castToWebKitCSSMatrix :: IsGObject obj => obj -> WebKitCSSMatrix
 castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
 
 foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSRegionRule".
 -- Base interface functions are in:
 --
@@ -25454,10 +23192,7 @@ castToWebKitCSSRegionRule :: IsGObject obj => obj -> WebKitCSSRegionRule
 castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule"
 
 foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSTransformValue".
 -- Base interface functions are in:
 --
@@ -25498,10 +23233,7 @@ castToWebKitCSSTransformValue :: IsGObject obj => obj -> WebKitCSSTransformValue
 castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTransformValue"
 
 foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebKitCSSTransformValue :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSViewportRule".
 -- Base interface functions are in:
 --
@@ -25540,10 +23272,7 @@ castToWebKitCSSViewportRule :: IsGObject obj => obj -> WebKitCSSViewportRule
 castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewportRule"
 
 foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamedFlow".
 -- Base interface functions are in:
 --
@@ -25582,12 +23311,7 @@ castToWebKitNamedFlow :: IsGObject obj => obj -> WebKitNamedFlow
 castToWebKitNamedFlow = castTo gTypeWebKitNamedFlow "WebKitNamedFlow"
 
 foreign import javascript unsafe "window[\"WebKitNamedFlow\"]" gTypeWebKitNamedFlow :: GType
-#else
-type IsWebKitNamedFlow o = WebKitNamedFlowClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamespace Mozilla WebKitNamespace documentation>
@@ -25622,10 +23346,7 @@ castToWebKitNamespace :: IsGObject obj => obj -> WebKitNamespace
 castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
 
 foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent".
 -- Base interface functions are in:
 --
@@ -25664,10 +23385,7 @@ castToWebKitPlaybackTargetAvailabilityEvent :: IsGObject obj => obj -> WebKitPla
 castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAvailabilityEvent "WebKitPlaybackTargetAvailabilityEvent"
 
 foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPoint Mozilla WebKitPoint documentation>
@@ -25702,12 +23420,7 @@ castToWebKitPoint :: IsGObject obj => obj -> WebKitPoint
 castToWebKitPoint = castTo gTypeWebKitPoint "WebKitPoint"
 
 foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint :: GType
-#else
-type IsWebKitPoint o = WebKitPointClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitTransitionEvent".
 -- Base interface functions are in:
 --
@@ -25746,10 +23459,7 @@ castToWebKitTransitionEvent :: IsGObject obj => obj -> WebKitTransitionEvent
 castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitionEvent"
 
 foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WebSocket".
 -- Base interface functions are in:
 --
@@ -25788,10 +23498,7 @@ castToWebSocket :: IsGObject obj => obj -> WebSocket
 castToWebSocket = castTo gTypeWebSocket "WebSocket"
 
 foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WheelEvent".
 -- Base interface functions are in:
 --
@@ -25834,14 +23541,7 @@ castToWheelEvent :: IsGObject obj => obj -> WheelEvent
 castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
 
 foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent :: GType
-#else
-#ifndef USE_OLD_WEBKIT
-type IsWheelEvent o = WheelEventClass o
-#endif
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Window".
 -- Base interface functions are in:
 --
@@ -25880,12 +23580,7 @@ castToWindow :: IsGObject obj => obj -> Window
 castToWindow = castTo gTypeWindow "Window"
 
 foreign import javascript unsafe "window[\"Window\"]" gTypeWindow :: GType
-#else
-type IsWindow o = WindowClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WindowBase64".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64 Mozilla WindowBase64 documentation>
@@ -25920,10 +23615,7 @@ castToWindowBase64 :: IsGObject obj => obj -> WindowBase64
 castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
 
 foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64 :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WindowTimers".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers Mozilla WindowTimers documentation>
@@ -25958,10 +23650,7 @@ castToWindowTimers :: IsGObject obj => obj -> WindowTimers
 castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
 
 foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.Worker".
 -- Base interface functions are in:
 --
@@ -26000,10 +23689,7 @@ castToWorker :: IsGObject obj => obj -> Worker
 castToWorker = castTo gTypeWorker "Worker"
 
 foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerGlobalScope".
 -- Base interface functions are in:
 --
@@ -26047,10 +23733,7 @@ castToWorkerGlobalScope :: IsGObject obj => obj -> WorkerGlobalScope
 castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
 
 foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation Mozilla WorkerLocation documentation>
@@ -26085,10 +23768,7 @@ castToWorkerLocation :: IsGObject obj => obj -> WorkerLocation
 castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
 
 foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator Mozilla WorkerNavigator documentation>
@@ -26123,10 +23803,7 @@ castToWorkerNavigator :: IsGObject obj => obj -> WorkerNavigator
 castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
 
 foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequest".
 -- Base interface functions are in:
 --
@@ -26165,10 +23842,7 @@ castToXMLHttpRequest :: IsGObject obj => obj -> XMLHttpRequest
 castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
 
 foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestProgressEvent".
 -- Base interface functions are in:
 --
@@ -26209,10 +23883,7 @@ castToXMLHttpRequestProgressEvent :: IsGObject obj => obj -> XMLHttpRequestProgr
 castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XMLHttpRequestProgressEvent"
 
 foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestUpload".
 -- Base interface functions are in:
 --
@@ -26251,10 +23922,7 @@ castToXMLHttpRequestUpload :: IsGObject obj => obj -> XMLHttpRequestUpload
 castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpload"
 
 foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation>
@@ -26289,10 +23957,7 @@ castToXMLSerializer :: IsGObject obj => obj -> XMLSerializer
 castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
 
 foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation>
@@ -26327,10 +23992,7 @@ castToXPathEvaluator :: IsGObject obj => obj -> XPathEvaluator
 castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
 
 foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator :: GType
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathExpression Mozilla XPathExpression documentation>
@@ -26365,12 +24027,7 @@ castToXPathExpression :: IsGObject obj => obj -> XPathExpression
 castToXPathExpression = castTo gTypeXPathExpression "XPathExpression"
 
 foreign import javascript unsafe "window[\"XPathExpression\"]" gTypeXPathExpression :: GType
-#else
-type IsXPathExpression o = XPathExpressionClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver Mozilla XPathNSResolver documentation>
@@ -26405,12 +24062,7 @@ castToXPathNSResolver :: IsGObject obj => obj -> XPathNSResolver
 castToXPathNSResolver = castTo gTypeXPathNSResolver "XPathNSResolver"
 
 foreign import javascript unsafe "window[\"XPathNSResolver\"]" gTypeXPathNSResolver :: GType
-#else
-type IsXPathNSResolver o = XPathNSResolverClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult Mozilla XPathResult documentation>
@@ -26445,12 +24097,7 @@ castToXPathResult :: IsGObject obj => obj -> XPathResult
 castToXPathResult = castTo gTypeXPathResult "XPathResult"
 
 foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult :: GType
-#else
-type IsXPathResult o = XPathResultClass o
-#endif
 
-
-#if (defined(ghcjs_HOST_OS) && defined(USE_JAVASCRIPTFFI)) || !defined(USE_WEBKIT)
 -- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation>
@@ -26485,6 +24132,4 @@ castToXSLTProcessor :: IsGObject obj => obj -> XSLTProcessor
 castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"
 
 foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor :: GType
-#endif
-
 

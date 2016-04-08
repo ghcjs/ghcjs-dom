@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.2.3.1
+version: 0.3.0.0
 cabal-version: >=1.10
 build-type: Simple
 license: MIT
@@ -28,10 +28,6 @@ flag old-webkit
     description: If you have an old version of WebKitGTK+ this will get ghcjs-dom
                  to build, leaving out functions that are new or have changed.
                  This option is mainly here to get the travis builds to work.
-    default: False
-
-flag jsc
-    description: Use WebKitGtk JavaScriptCore
     default: False
 
 flag gtk3
@@ -155,7 +151,6 @@ library
           GHCJS.DOM.EventM
           GHCJS.DOM.EventSource
           GHCJS.DOM.EventTarget
-          GHCJS.DOM.EventTargetClosures
           GHCJS.DOM.File
           GHCJS.DOM.FileError
           GHCJS.DOM.FileList
@@ -563,9 +558,12 @@ library
           GHCJS.DOM.XSLTProcessor
 
     if impl(ghcjs) && flag(jsffi)
+        hs-source-dirs: src, common
         cpp-options: -DUSE_JAVASCRIPTFFI
         build-depends: ghcjs-base >=0.2.0.0 && <0.3, ghcjs-prim, ghc-prim
         exposed-modules:
+          GHCJS.DOM.EventTargetClosures
+
           GHCJS.DOM.JSFFI.AudioContext
           GHCJS.DOM.JSFFI.Database
           GHCJS.DOM.JSFFI.DOMError
@@ -1093,21 +1091,25 @@ library
           GHCJS.DOM.JSFFI.Generated.XPathNSResolver
           GHCJS.DOM.JSFFI.Generated.XPathResult
           GHCJS.DOM.JSFFI.Generated.XSLTProcessor
-
-    if !impl(ghcjs) || flag(webkit)
-        cpp-options: -DUSE_WEBKIT
-        build-depends: glib >=0.13.0.0 && <0.14,
-                       transformers >=0.3.0.0 && <0.5
-        if flag(gtk3)
-            build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
+    else
+        if !flag(webkit)
+            hs-source-dirs: jsaddle
+            cpp-options: -DUSE_JSADDLE
+            build-depends: jsaddle-dom >=0.1.0.0 && <0.2
         else
-            build-depends: gtk >=0.13.0.0 && <0.14, webkit >=0.14.0.0 && <0.15
-        c-sources:      cbits/ghcjs_stubs.c
+            hs-source-dirs: webkit, common
+            cpp-options: -DUSE_WEBKIT
+            build-depends: glib >=0.13.0.0 && <0.14,
+                           transformers >=0.3.0.0 && <0.5
+            if flag(gtk3)
+                build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
+            else
+                build-depends: gtk >=0.13.0.0 && <0.14, webkit >=0.14.0.0 && <0.15
+            c-sources:      cbits/ghcjs_stubs.c
 
-    if flag(old-webkit)
-        cpp-options: -DUSE_OLD_WEBKIT
+        if flag(old-webkit)
+            cpp-options: -DUSE_OLD_WEBKIT
 
-    hs-source-dirs: src
     exposed: True
     buildable: True
     js-sources: jsbits/xhr.js
