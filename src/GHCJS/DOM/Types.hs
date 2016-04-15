@@ -1,7 +1,7 @@
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances #-}
 module GHCJS.DOM.Types (
   -- * Monad
-    DOM, MonadDOM, liftDOM
+    DOM, DOMContext, MonadDOM, liftDOM, askDOM, runDOM
 
   -- * Object
   , maybeJSNullOrUndefined, Nullable(..), nullableToMaybe, maybeToNullable, propagateGError, GType(..)
@@ -667,8 +667,16 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
 
-type MonadDOM = MonadIO
 type DOM = IO
+type DOMContext = ()
+
+askDOM :: MonadDOM m => m DOMContext
+askDOM = return ()
+
+runDOM :: DOM a -> DOMContext -> IO a
+runDOM = const
+
+type MonadDOM = MonadIO
 
 liftDOM :: DOM a -> DOM a
 liftDOM = liftIO
@@ -693,12 +701,12 @@ typeInstanceIsA o (GType t) = typeInstanceIsA' o t
 -- forced if the object is used afterwards
 --
 castTo :: (IsGObject obj, IsGObject obj') => GType -> String
-                                                -> (obj -> obj')
+                                                -> obj -> IO obj'
 castTo gtype objTypeName obj =
   case toGObject obj of
     gobj@(GObject objRef)
       | typeInstanceIsA objRef gtype
-                  -> unsafeCastGObject gobj
+                  -> return $ unsafeCastGObject gobj
       | otherwise -> error $ "Cannot cast object to " ++ objTypeName
 
 -- | Determine if this is an instance of a particular type
@@ -752,8 +760,8 @@ instance IsGObject GObject where
   unsafeCastGObject = id
   {-# INLINE unsafeCastGObject #-}
 
-castToGObject :: IsGObject obj => obj -> obj
-castToGObject = id
+castToGObject :: IsGObject obj => obj -> IO obj
+castToGObject = return
 
 foreign import javascript unsafe "object" gTypeGObject :: GType
 
@@ -1031,7 +1039,7 @@ instance IsGObject Promise where
   unsafeCastGObject = Promise . unGObject
 -- TODO add more IsPromise instances
 
-castToPromise :: IsGObject obj => obj -> Promise
+castToPromise :: IsGObject obj => obj -> IO Promise
 castToPromise = castTo gTypePromise "Promise"
 
 foreign import javascript unsafe "window[\"Promise\"]" gTypePromise :: GType
@@ -1066,7 +1074,7 @@ instance IsGObject ArrayBuffer where
   toGObject = GObject . unArrayBuffer
   unsafeCastGObject = ArrayBuffer . unGObject
 
-castToArrayBuffer :: IsGObject obj => obj -> ArrayBuffer
+castToArrayBuffer :: IsGObject obj => obj -> IO ArrayBuffer
 castToArrayBuffer = castTo gTypeArrayBuffer "ArrayBuffer"
 
 foreign import javascript unsafe "window[\"ArrayBuffer\"]" gTypeArrayBuffer :: GType
@@ -1102,7 +1110,7 @@ instance IsGObject Float32Array where
   unsafeCastGObject = Float32Array . unGObject
 -- TODO add more IsFloat32Array instances
 
-castToFloat32Array :: IsGObject obj => obj -> Float32Array
+castToFloat32Array :: IsGObject obj => obj -> IO Float32Array
 castToFloat32Array = castTo gTypeFloat32Array "Float32Array"
 
 foreign import javascript unsafe "window[\"Float32Array\"]" gTypeFloat32Array :: GType
@@ -1138,7 +1146,7 @@ instance IsGObject Float64Array where
   unsafeCastGObject = Float64Array . unGObject
 -- TODO add more IsFloat64Array instances
 
-castToFloat64Array :: IsGObject obj => obj -> Float64Array
+castToFloat64Array :: IsGObject obj => obj -> IO Float64Array
 castToFloat64Array = castTo gTypeFloat64Array "Float64Array"
 
 foreign import javascript unsafe "window[\"Float64Array\"]" gTypeFloat64Array :: GType
@@ -1174,7 +1182,7 @@ instance IsGObject Uint8Array where
   unsafeCastGObject = Uint8Array . unGObject
 -- TODO add more IsUint8Array instances
 
-castToUint8Array :: IsGObject obj => obj -> Uint8Array
+castToUint8Array :: IsGObject obj => obj -> IO Uint8Array
 castToUint8Array = castTo gTypeUint8Array "Uint8Array"
 
 foreign import javascript unsafe "window[\"Uint8Array\"]" gTypeUint8Array :: GType
@@ -1210,7 +1218,7 @@ instance IsGObject Uint8ClampedArray where
   unsafeCastGObject = Uint8ClampedArray . unGObject
 -- TODO add more IsUint8ClampedArray instances
 
-castToUint8ClampedArray :: IsGObject obj => obj -> Uint8ClampedArray
+castToUint8ClampedArray :: IsGObject obj => obj -> IO Uint8ClampedArray
 castToUint8ClampedArray = castTo gTypeUint8ClampedArray "Uint8ClampedArray"
 
 foreign import javascript unsafe "window[\"Uint8ClampedArray\"]" gTypeUint8ClampedArray :: GType
@@ -1246,7 +1254,7 @@ instance IsGObject Uint16Array where
   unsafeCastGObject = Uint16Array . unGObject
 -- TODO add more IsUint16Array instances
 
-castToUint16Array :: IsGObject obj => obj -> Uint16Array
+castToUint16Array :: IsGObject obj => obj -> IO Uint16Array
 castToUint16Array = castTo gTypeUint16Array "Uint16Array"
 
 foreign import javascript unsafe "window[\"Uint16Array\"]" gTypeUint16Array :: GType
@@ -1282,7 +1290,7 @@ instance IsGObject Uint32Array where
   unsafeCastGObject = Uint32Array . unGObject
 -- TODO add more IsUint32Array instances
 
-castToUint32Array :: IsGObject obj => obj -> Uint32Array
+castToUint32Array :: IsGObject obj => obj -> IO Uint32Array
 castToUint32Array = castTo gTypeUint32Array "Uint32Array"
 
 foreign import javascript unsafe "window[\"Uint32Array\"]" gTypeUint32Array :: GType
@@ -1318,7 +1326,7 @@ instance IsGObject Int8Array where
   unsafeCastGObject = Int8Array . unGObject
 -- TODO add more IsInt8Array instances
 
-castToInt8Array :: IsGObject obj => obj -> Int8Array
+castToInt8Array :: IsGObject obj => obj -> IO Int8Array
 castToInt8Array = castTo gTypeInt8Array "Int8Array"
 
 foreign import javascript unsafe "window[\"Int8Array\"]" gTypeInt8Array :: GType
@@ -1354,7 +1362,7 @@ instance IsGObject Int16Array where
   unsafeCastGObject = Int16Array . unGObject
 -- TODO add more IsInt16Array instances
 
-castToInt16Array :: IsGObject obj => obj -> Int16Array
+castToInt16Array :: IsGObject obj => obj -> IO Int16Array
 castToInt16Array = castTo gTypeInt16Array "Int16Array"
 
 foreign import javascript unsafe "window[\"Int16Array\"]" gTypeInt16Array :: GType
@@ -1390,7 +1398,7 @@ instance IsGObject Int32Array where
   unsafeCastGObject = Int32Array . unGObject
 -- TODO add more IsInt32Array instances
 
-castToInt32Array :: IsGObject obj => obj -> Int32Array
+castToInt32Array :: IsGObject obj => obj -> IO Int32Array
 castToInt32Array = castTo gTypeInt32Array "Int32Array"
 
 foreign import javascript unsafe "window[\"Int32Array\"]" gTypeInt32Array :: GType
@@ -1488,7 +1496,7 @@ instance IsGObject Array where
   unsafeCastGObject = Array . unGObject
 -- TODO add more IsArray instances
 
-castToArray :: IsGObject obj => obj -> Array
+castToArray :: IsGObject obj => obj -> IO Array
 castToArray = castTo gTypeArray "Array"
 
 foreign import javascript unsafe "window[\"Array\"]" gTypeArray :: GType
@@ -1524,7 +1532,7 @@ instance IsGObject Date where
   unsafeCastGObject = Date . unGObject
 -- TODO add more IsDate instances
 
-castToDate :: IsGObject obj => obj -> Date
+castToDate :: IsGObject obj => obj -> IO Date
 castToDate = castTo gTypeDate "Date"
 
 foreign import javascript unsafe "window[\"Date\"]" gTypeDate :: GType
@@ -1765,7 +1773,7 @@ instance IsGObject ANGLEInstancedArrays where
   unsafeCastGObject = ANGLEInstancedArrays . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToANGLEInstancedArrays :: IsGObject obj => obj -> ANGLEInstancedArrays
+castToANGLEInstancedArrays :: IsGObject obj => obj -> IO ANGLEInstancedArrays
 castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArrays"
 
 foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays :: GType
@@ -1800,7 +1808,7 @@ instance IsGObject AbstractView where
   unsafeCastGObject = AbstractView . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAbstractView :: IsGObject obj => obj -> AbstractView
+castToAbstractView :: IsGObject obj => obj -> IO AbstractView
 castToAbstractView = castTo gTypeAbstractView "AbstractView"
 
 foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView :: GType
@@ -1835,7 +1843,7 @@ instance IsGObject AbstractWorker where
   unsafeCastGObject = AbstractWorker . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAbstractWorker :: IsGObject obj => obj -> AbstractWorker
+castToAbstractWorker :: IsGObject obj => obj -> IO AbstractWorker
 castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
 
 foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker :: GType
@@ -1874,7 +1882,7 @@ instance IsGObject AllAudioCapabilities where
   unsafeCastGObject = AllAudioCapabilities . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAllAudioCapabilities :: IsGObject obj => obj -> AllAudioCapabilities
+castToAllAudioCapabilities :: IsGObject obj => obj -> IO AllAudioCapabilities
 castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilities"
 
 foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudioCapabilities :: GType
@@ -1913,7 +1921,7 @@ instance IsGObject AllVideoCapabilities where
   unsafeCastGObject = AllVideoCapabilities . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAllVideoCapabilities :: IsGObject obj => obj -> AllVideoCapabilities
+castToAllVideoCapabilities :: IsGObject obj => obj -> IO AllVideoCapabilities
 castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilities"
 
 foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVideoCapabilities :: GType
@@ -1954,7 +1962,7 @@ instance IsGObject AnalyserNode where
   unsafeCastGObject = AnalyserNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAnalyserNode :: IsGObject obj => obj -> AnalyserNode
+castToAnalyserNode :: IsGObject obj => obj -> IO AnalyserNode
 castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
 
 foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode :: GType
@@ -1993,7 +2001,7 @@ instance IsGObject AnimationEvent where
   unsafeCastGObject = AnimationEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAnimationEvent :: IsGObject obj => obj -> AnimationEvent
+castToAnimationEvent :: IsGObject obj => obj -> IO AnimationEvent
 castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
 
 foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent :: GType
@@ -2032,7 +2040,7 @@ instance IsGObject ApplicationCache where
   unsafeCastGObject = ApplicationCache . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToApplicationCache :: IsGObject obj => obj -> ApplicationCache
+castToApplicationCache :: IsGObject obj => obj -> IO ApplicationCache
 castToApplicationCache = castTo gTypeApplicationCache "ApplicationCache"
 
 foreign import javascript unsafe "window[\"ApplicationCache\"]" gTypeApplicationCache :: GType
@@ -2073,7 +2081,7 @@ instance IsGObject Attr where
   unsafeCastGObject = Attr . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAttr :: IsGObject obj => obj -> Attr
+castToAttr :: IsGObject obj => obj -> IO Attr
 castToAttr = castTo gTypeAttr "Attr"
 
 foreign import javascript unsafe "window[\"Attr\"]" gTypeAttr :: GType
@@ -2108,7 +2116,7 @@ instance IsGObject AudioBuffer where
   unsafeCastGObject = AudioBuffer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioBuffer :: IsGObject obj => obj -> AudioBuffer
+castToAudioBuffer :: IsGObject obj => obj -> IO AudioBuffer
 castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
 
 foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer :: GType
@@ -2149,7 +2157,7 @@ instance IsGObject AudioBufferSourceNode where
   unsafeCastGObject = AudioBufferSourceNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioBufferSourceNode :: IsGObject obj => obj -> AudioBufferSourceNode
+castToAudioBufferSourceNode :: IsGObject obj => obj -> IO AudioBufferSourceNode
 castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSourceNode"
 
 foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode :: GType
@@ -2193,7 +2201,7 @@ instance IsGObject AudioContext where
   unsafeCastGObject = AudioContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioContext :: IsGObject obj => obj -> AudioContext
+castToAudioContext :: IsGObject obj => obj -> IO AudioContext
 castToAudioContext = castTo gTypeAudioContext "AudioContext"
 
 foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext :: GType
@@ -2234,7 +2242,7 @@ instance IsGObject AudioDestinationNode where
   unsafeCastGObject = AudioDestinationNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioDestinationNode :: IsGObject obj => obj -> AudioDestinationNode
+castToAudioDestinationNode :: IsGObject obj => obj -> IO AudioDestinationNode
 castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationNode"
 
 foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode :: GType
@@ -2269,7 +2277,7 @@ instance IsGObject AudioListener where
   unsafeCastGObject = AudioListener . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioListener :: IsGObject obj => obj -> AudioListener
+castToAudioListener :: IsGObject obj => obj -> IO AudioListener
 castToAudioListener = castTo gTypeAudioListener "AudioListener"
 
 foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener :: GType
@@ -2313,7 +2321,7 @@ instance IsGObject AudioNode where
   unsafeCastGObject = AudioNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioNode :: IsGObject obj => obj -> AudioNode
+castToAudioNode :: IsGObject obj => obj -> IO AudioNode
 castToAudioNode = castTo gTypeAudioNode "AudioNode"
 
 foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode :: GType
@@ -2348,7 +2356,7 @@ instance IsGObject AudioParam where
   unsafeCastGObject = AudioParam . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioParam :: IsGObject obj => obj -> AudioParam
+castToAudioParam :: IsGObject obj => obj -> IO AudioParam
 castToAudioParam = castTo gTypeAudioParam "AudioParam"
 
 foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam :: GType
@@ -2387,7 +2395,7 @@ instance IsGObject AudioProcessingEvent where
   unsafeCastGObject = AudioProcessingEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioProcessingEvent :: IsGObject obj => obj -> AudioProcessingEvent
+castToAudioProcessingEvent :: IsGObject obj => obj -> IO AudioProcessingEvent
 castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEvent"
 
 foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent :: GType
@@ -2428,7 +2436,7 @@ instance IsGObject AudioStreamTrack where
   unsafeCastGObject = AudioStreamTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioStreamTrack :: IsGObject obj => obj -> AudioStreamTrack
+castToAudioStreamTrack :: IsGObject obj => obj -> IO AudioStreamTrack
 castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
 
 foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStreamTrack :: GType
@@ -2463,7 +2471,7 @@ instance IsGObject AudioTrack where
   unsafeCastGObject = AudioTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioTrack :: IsGObject obj => obj -> AudioTrack
+castToAudioTrack :: IsGObject obj => obj -> IO AudioTrack
 castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
 
 foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack :: GType
@@ -2502,7 +2510,7 @@ instance IsGObject AudioTrackList where
   unsafeCastGObject = AudioTrackList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAudioTrackList :: IsGObject obj => obj -> AudioTrackList
+castToAudioTrackList :: IsGObject obj => obj -> IO AudioTrackList
 castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
 
 foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList :: GType
@@ -2541,7 +2549,7 @@ instance IsGObject AutocompleteErrorEvent where
   unsafeCastGObject = AutocompleteErrorEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToAutocompleteErrorEvent :: IsGObject obj => obj -> AutocompleteErrorEvent
+castToAutocompleteErrorEvent :: IsGObject obj => obj -> IO AutocompleteErrorEvent
 castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteErrorEvent"
 
 foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent :: GType
@@ -2576,7 +2584,7 @@ instance IsGObject BarProp where
   unsafeCastGObject = BarProp . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBarProp :: IsGObject obj => obj -> BarProp
+castToBarProp :: IsGObject obj => obj -> IO BarProp
 castToBarProp = castTo gTypeBarProp "BarProp"
 
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp :: GType
@@ -2615,7 +2623,7 @@ instance IsGObject BatteryManager where
   unsafeCastGObject = BatteryManager . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBatteryManager :: IsGObject obj => obj -> BatteryManager
+castToBatteryManager :: IsGObject obj => obj -> IO BatteryManager
 castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
 
 foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager :: GType
@@ -2654,7 +2662,7 @@ instance IsGObject BeforeLoadEvent where
   unsafeCastGObject = BeforeLoadEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBeforeLoadEvent :: IsGObject obj => obj -> BeforeLoadEvent
+castToBeforeLoadEvent :: IsGObject obj => obj -> IO BeforeLoadEvent
 castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
 
 foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent :: GType
@@ -2693,7 +2701,7 @@ instance IsGObject BeforeUnloadEvent where
   unsafeCastGObject = BeforeUnloadEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBeforeUnloadEvent :: IsGObject obj => obj -> BeforeUnloadEvent
+castToBeforeUnloadEvent :: IsGObject obj => obj -> IO BeforeUnloadEvent
 castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
 
 foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent :: GType
@@ -2734,7 +2742,7 @@ instance IsGObject BiquadFilterNode where
   unsafeCastGObject = BiquadFilterNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBiquadFilterNode :: IsGObject obj => obj -> BiquadFilterNode
+castToBiquadFilterNode :: IsGObject obj => obj -> IO BiquadFilterNode
 castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
 
 foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode :: GType
@@ -2774,7 +2782,7 @@ instance IsGObject Blob where
   unsafeCastGObject = Blob . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToBlob :: IsGObject obj => obj -> Blob
+castToBlob :: IsGObject obj => obj -> IO Blob
 castToBlob = castTo gTypeBlob "Blob"
 
 foreign import javascript unsafe "window[\"Blob\"]" gTypeBlob :: GType
@@ -2819,7 +2827,7 @@ instance IsGObject CDATASection where
   unsafeCastGObject = CDATASection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCDATASection :: IsGObject obj => obj -> CDATASection
+castToCDATASection :: IsGObject obj => obj -> IO CDATASection
 castToCDATASection = castTo gTypeCDATASection "CDATASection"
 
 foreign import javascript unsafe "window[\"CDATASection\"]" gTypeCDATASection :: GType
@@ -2854,7 +2862,7 @@ instance IsGObject CSS where
   unsafeCastGObject = CSS . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSS :: IsGObject obj => obj -> CSS
+castToCSS :: IsGObject obj => obj -> IO CSS
 castToCSS = castTo gTypeCSS "CSS"
 
 foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS :: GType
@@ -2893,7 +2901,7 @@ instance IsGObject CSSCharsetRule where
   unsafeCastGObject = CSSCharsetRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSCharsetRule :: IsGObject obj => obj -> CSSCharsetRule
+castToCSSCharsetRule :: IsGObject obj => obj -> IO CSSCharsetRule
 castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
 
 foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRule :: GType
@@ -2932,7 +2940,7 @@ instance IsGObject CSSFontFaceLoadEvent where
   unsafeCastGObject = CSSFontFaceLoadEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSFontFaceLoadEvent :: IsGObject obj => obj -> CSSFontFaceLoadEvent
+castToCSSFontFaceLoadEvent :: IsGObject obj => obj -> IO CSSFontFaceLoadEvent
 castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEvent"
 
 foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent :: GType
@@ -2971,7 +2979,7 @@ instance IsGObject CSSFontFaceRule where
   unsafeCastGObject = CSSFontFaceRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSFontFaceRule :: IsGObject obj => obj -> CSSFontFaceRule
+castToCSSFontFaceRule :: IsGObject obj => obj -> IO CSSFontFaceRule
 castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
 
 foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule :: GType
@@ -3010,7 +3018,7 @@ instance IsGObject CSSImportRule where
   unsafeCastGObject = CSSImportRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSImportRule :: IsGObject obj => obj -> CSSImportRule
+castToCSSImportRule :: IsGObject obj => obj -> IO CSSImportRule
 castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
 
 foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule :: GType
@@ -3049,7 +3057,7 @@ instance IsGObject CSSKeyframeRule where
   unsafeCastGObject = CSSKeyframeRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSKeyframeRule :: IsGObject obj => obj -> CSSKeyframeRule
+castToCSSKeyframeRule :: IsGObject obj => obj -> IO CSSKeyframeRule
 castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule :: GType
@@ -3088,7 +3096,7 @@ instance IsGObject CSSKeyframesRule where
   unsafeCastGObject = CSSKeyframesRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSKeyframesRule :: IsGObject obj => obj -> CSSKeyframesRule
+castToCSSKeyframesRule :: IsGObject obj => obj -> IO CSSKeyframesRule
 castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
 
 foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule :: GType
@@ -3127,7 +3135,7 @@ instance IsGObject CSSMediaRule where
   unsafeCastGObject = CSSMediaRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSMediaRule :: IsGObject obj => obj -> CSSMediaRule
+castToCSSMediaRule :: IsGObject obj => obj -> IO CSSMediaRule
 castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
 
 foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule :: GType
@@ -3166,7 +3174,7 @@ instance IsGObject CSSPageRule where
   unsafeCastGObject = CSSPageRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSPageRule :: IsGObject obj => obj -> CSSPageRule
+castToCSSPageRule :: IsGObject obj => obj -> IO CSSPageRule
 castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
 
 foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule :: GType
@@ -3205,7 +3213,7 @@ instance IsGObject CSSPrimitiveValue where
   unsafeCastGObject = CSSPrimitiveValue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSPrimitiveValue :: IsGObject obj => obj -> CSSPrimitiveValue
+castToCSSPrimitiveValue :: IsGObject obj => obj -> IO CSSPrimitiveValue
 castToCSSPrimitiveValue = castTo gTypeCSSPrimitiveValue "CSSPrimitiveValue"
 
 foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimitiveValue :: GType
@@ -3245,7 +3253,7 @@ instance IsGObject CSSRule where
   unsafeCastGObject = CSSRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSRule :: IsGObject obj => obj -> CSSRule
+castToCSSRule :: IsGObject obj => obj -> IO CSSRule
 castToCSSRule = castTo gTypeCSSRule "CSSRule"
 
 foreign import javascript unsafe "window[\"CSSRule\"]" gTypeCSSRule :: GType
@@ -3280,7 +3288,7 @@ instance IsGObject CSSRuleList where
   unsafeCastGObject = CSSRuleList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSRuleList :: IsGObject obj => obj -> CSSRuleList
+castToCSSRuleList :: IsGObject obj => obj -> IO CSSRuleList
 castToCSSRuleList = castTo gTypeCSSRuleList "CSSRuleList"
 
 foreign import javascript unsafe "window[\"CSSRuleList\"]" gTypeCSSRuleList :: GType
@@ -3315,7 +3323,7 @@ instance IsGObject CSSStyleDeclaration where
   unsafeCastGObject = CSSStyleDeclaration . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSStyleDeclaration :: IsGObject obj => obj -> CSSStyleDeclaration
+castToCSSStyleDeclaration :: IsGObject obj => obj -> IO CSSStyleDeclaration
 castToCSSStyleDeclaration = castTo gTypeCSSStyleDeclaration "CSSStyleDeclaration"
 
 foreign import javascript unsafe "window[\"CSSStyleDeclaration\"]" gTypeCSSStyleDeclaration :: GType
@@ -3354,7 +3362,7 @@ instance IsGObject CSSStyleRule where
   unsafeCastGObject = CSSStyleRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSStyleRule :: IsGObject obj => obj -> CSSStyleRule
+castToCSSStyleRule :: IsGObject obj => obj -> IO CSSStyleRule
 castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
 
 foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule :: GType
@@ -3393,7 +3401,7 @@ instance IsGObject CSSStyleSheet where
   unsafeCastGObject = CSSStyleSheet . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSStyleSheet :: IsGObject obj => obj -> CSSStyleSheet
+castToCSSStyleSheet :: IsGObject obj => obj -> IO CSSStyleSheet
 castToCSSStyleSheet = castTo gTypeCSSStyleSheet "CSSStyleSheet"
 
 foreign import javascript unsafe "window[\"CSSStyleSheet\"]" gTypeCSSStyleSheet :: GType
@@ -3432,7 +3440,7 @@ instance IsGObject CSSSupportsRule where
   unsafeCastGObject = CSSSupportsRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSSupportsRule :: IsGObject obj => obj -> CSSSupportsRule
+castToCSSSupportsRule :: IsGObject obj => obj -> IO CSSSupportsRule
 castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
 
 foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule :: GType
@@ -3471,7 +3479,7 @@ instance IsGObject CSSUnknownRule where
   unsafeCastGObject = CSSUnknownRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSUnknownRule :: IsGObject obj => obj -> CSSUnknownRule
+castToCSSUnknownRule :: IsGObject obj => obj -> IO CSSUnknownRule
 castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
 
 foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule :: GType
@@ -3511,7 +3519,7 @@ instance IsGObject CSSValue where
   unsafeCastGObject = CSSValue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSValue :: IsGObject obj => obj -> CSSValue
+castToCSSValue :: IsGObject obj => obj -> IO CSSValue
 castToCSSValue = castTo gTypeCSSValue "CSSValue"
 
 foreign import javascript unsafe "window[\"CSSValue\"]" gTypeCSSValue :: GType
@@ -3555,7 +3563,7 @@ instance IsGObject CSSValueList where
   unsafeCastGObject = CSSValueList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCSSValueList :: IsGObject obj => obj -> CSSValueList
+castToCSSValueList :: IsGObject obj => obj -> IO CSSValueList
 castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
 
 foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList :: GType
@@ -3590,7 +3598,7 @@ instance IsGObject CanvasGradient where
   unsafeCastGObject = CanvasGradient . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCanvasGradient :: IsGObject obj => obj -> CanvasGradient
+castToCanvasGradient :: IsGObject obj => obj -> IO CanvasGradient
 castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
 
 foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient :: GType
@@ -3625,7 +3633,7 @@ instance IsGObject CanvasPattern where
   unsafeCastGObject = CanvasPattern . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCanvasPattern :: IsGObject obj => obj -> CanvasPattern
+castToCanvasPattern :: IsGObject obj => obj -> IO CanvasPattern
 castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
 
 foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern :: GType
@@ -3660,7 +3668,7 @@ instance IsGObject CanvasProxy where
   unsafeCastGObject = CanvasProxy . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCanvasProxy :: IsGObject obj => obj -> CanvasProxy
+castToCanvasProxy :: IsGObject obj => obj -> IO CanvasProxy
 castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
 
 foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy :: GType
@@ -3700,7 +3708,7 @@ instance IsGObject CanvasRenderingContext where
   unsafeCastGObject = CanvasRenderingContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCanvasRenderingContext :: IsGObject obj => obj -> CanvasRenderingContext
+castToCanvasRenderingContext :: IsGObject obj => obj -> IO CanvasRenderingContext
 castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderingContext"
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanvasRenderingContext :: GType
@@ -3739,7 +3747,7 @@ instance IsGObject CanvasRenderingContext2D where
   unsafeCastGObject = CanvasRenderingContext2D . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCanvasRenderingContext2D :: IsGObject obj => obj -> CanvasRenderingContext2D
+castToCanvasRenderingContext2D :: IsGObject obj => obj -> IO CanvasRenderingContext2D
 castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRenderingContext2D"
 
 foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D :: GType
@@ -3774,7 +3782,7 @@ instance IsGObject CapabilityRange where
   unsafeCastGObject = CapabilityRange . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCapabilityRange :: IsGObject obj => obj -> CapabilityRange
+castToCapabilityRange :: IsGObject obj => obj -> IO CapabilityRange
 castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
 
 foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRange :: GType
@@ -3815,7 +3823,7 @@ instance IsGObject ChannelMergerNode where
   unsafeCastGObject = ChannelMergerNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToChannelMergerNode :: IsGObject obj => obj -> ChannelMergerNode
+castToChannelMergerNode :: IsGObject obj => obj -> IO ChannelMergerNode
 castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
 
 foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode :: GType
@@ -3856,7 +3864,7 @@ instance IsGObject ChannelSplitterNode where
   unsafeCastGObject = ChannelSplitterNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToChannelSplitterNode :: IsGObject obj => obj -> ChannelSplitterNode
+castToChannelSplitterNode :: IsGObject obj => obj -> IO ChannelSplitterNode
 castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode"
 
 foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode :: GType
@@ -3902,7 +3910,7 @@ instance IsGObject CharacterData where
   unsafeCastGObject = CharacterData . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCharacterData :: IsGObject obj => obj -> CharacterData
+castToCharacterData :: IsGObject obj => obj -> IO CharacterData
 castToCharacterData = castTo gTypeCharacterData "CharacterData"
 
 foreign import javascript unsafe "window[\"CharacterData\"]" gTypeCharacterData :: GType
@@ -3937,7 +3945,7 @@ instance IsGObject ChildNode where
   unsafeCastGObject = ChildNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToChildNode :: IsGObject obj => obj -> ChildNode
+castToChildNode :: IsGObject obj => obj -> IO ChildNode
 castToChildNode = castTo gTypeChildNode "ChildNode"
 
 foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
@@ -3972,7 +3980,7 @@ instance IsGObject ClientRect where
   unsafeCastGObject = ClientRect . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToClientRect :: IsGObject obj => obj -> ClientRect
+castToClientRect :: IsGObject obj => obj -> IO ClientRect
 castToClientRect = castTo gTypeClientRect "ClientRect"
 
 foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect :: GType
@@ -4007,7 +4015,7 @@ instance IsGObject ClientRectList where
   unsafeCastGObject = ClientRectList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToClientRectList :: IsGObject obj => obj -> ClientRectList
+castToClientRectList :: IsGObject obj => obj -> IO ClientRectList
 castToClientRectList = castTo gTypeClientRectList "ClientRectList"
 
 foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList :: GType
@@ -4046,7 +4054,7 @@ instance IsGObject CloseEvent where
   unsafeCastGObject = CloseEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCloseEvent :: IsGObject obj => obj -> CloseEvent
+castToCloseEvent :: IsGObject obj => obj -> IO CloseEvent
 castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
 
 foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent :: GType
@@ -4081,7 +4089,7 @@ instance IsGObject CommandLineAPIHost where
   unsafeCastGObject = CommandLineAPIHost . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCommandLineAPIHost :: IsGObject obj => obj -> CommandLineAPIHost
+castToCommandLineAPIHost :: IsGObject obj => obj -> IO CommandLineAPIHost
 castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
 
 foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost :: GType
@@ -4124,7 +4132,7 @@ instance IsGObject Comment where
   unsafeCastGObject = Comment . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToComment :: IsGObject obj => obj -> Comment
+castToComment :: IsGObject obj => obj -> IO Comment
 castToComment = castTo gTypeComment "Comment"
 
 foreign import javascript unsafe "window[\"Comment\"]" gTypeComment :: GType
@@ -4165,7 +4173,7 @@ instance IsGObject CompositionEvent where
   unsafeCastGObject = CompositionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCompositionEvent :: IsGObject obj => obj -> CompositionEvent
+castToCompositionEvent :: IsGObject obj => obj -> IO CompositionEvent
 castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
 
 foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent :: GType
@@ -4206,7 +4214,7 @@ instance IsGObject ConvolverNode where
   unsafeCastGObject = ConvolverNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToConvolverNode :: IsGObject obj => obj -> ConvolverNode
+castToConvolverNode :: IsGObject obj => obj -> IO ConvolverNode
 castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
 
 foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode :: GType
@@ -4241,7 +4249,7 @@ instance IsGObject Coordinates where
   unsafeCastGObject = Coordinates . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCoordinates :: IsGObject obj => obj -> Coordinates
+castToCoordinates :: IsGObject obj => obj -> IO Coordinates
 castToCoordinates = castTo gTypeCoordinates "Coordinates"
 
 foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates :: GType
@@ -4276,7 +4284,7 @@ instance IsGObject Counter where
   unsafeCastGObject = Counter . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCounter :: IsGObject obj => obj -> Counter
+castToCounter :: IsGObject obj => obj -> IO Counter
 castToCounter = castTo gTypeCounter "Counter"
 
 foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
@@ -4311,7 +4319,7 @@ instance IsGObject Crypto where
   unsafeCastGObject = Crypto . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCrypto :: IsGObject obj => obj -> Crypto
+castToCrypto :: IsGObject obj => obj -> IO Crypto
 castToCrypto = castTo gTypeCrypto "Crypto"
 
 foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto :: GType
@@ -4346,7 +4354,7 @@ instance IsGObject CryptoKey where
   unsafeCastGObject = CryptoKey . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCryptoKey :: IsGObject obj => obj -> CryptoKey
+castToCryptoKey :: IsGObject obj => obj -> IO CryptoKey
 castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
 
 foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey :: GType
@@ -4381,7 +4389,7 @@ instance IsGObject CryptoKeyPair where
   unsafeCastGObject = CryptoKeyPair . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCryptoKeyPair :: IsGObject obj => obj -> CryptoKeyPair
+castToCryptoKeyPair :: IsGObject obj => obj -> IO CryptoKeyPair
 castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
 
 foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair :: GType
@@ -4420,7 +4428,7 @@ instance IsGObject CustomEvent where
   unsafeCastGObject = CustomEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToCustomEvent :: IsGObject obj => obj -> CustomEvent
+castToCustomEvent :: IsGObject obj => obj -> IO CustomEvent
 castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
 
 foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent :: GType
@@ -4460,7 +4468,7 @@ instance IsGObject DOMError where
   unsafeCastGObject = DOMError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMError :: IsGObject obj => obj -> DOMError
+castToDOMError :: IsGObject obj => obj -> IO DOMError
 castToDOMError = castTo gTypeDOMError "DOMError"
 
 foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError :: GType
@@ -4495,7 +4503,7 @@ instance IsGObject DOMImplementation where
   unsafeCastGObject = DOMImplementation . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMImplementation :: IsGObject obj => obj -> DOMImplementation
+castToDOMImplementation :: IsGObject obj => obj -> IO DOMImplementation
 castToDOMImplementation = castTo gTypeDOMImplementation "DOMImplementation"
 
 foreign import javascript unsafe "window[\"DOMImplementation\"]" gTypeDOMImplementation :: GType
@@ -4530,7 +4538,7 @@ instance IsGObject DOMNamedFlowCollection where
   unsafeCastGObject = DOMNamedFlowCollection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMNamedFlowCollection :: IsGObject obj => obj -> DOMNamedFlowCollection
+castToDOMNamedFlowCollection :: IsGObject obj => obj -> IO DOMNamedFlowCollection
 castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
 
 foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection :: GType
@@ -4565,7 +4573,7 @@ instance IsGObject DOMParser where
   unsafeCastGObject = DOMParser . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMParser :: IsGObject obj => obj -> DOMParser
+castToDOMParser :: IsGObject obj => obj -> IO DOMParser
 castToDOMParser = castTo gTypeDOMParser "DOMParser"
 
 foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser :: GType
@@ -4604,7 +4612,7 @@ instance IsGObject DOMSettableTokenList where
   unsafeCastGObject = DOMSettableTokenList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMSettableTokenList :: IsGObject obj => obj -> DOMSettableTokenList
+castToDOMSettableTokenList :: IsGObject obj => obj -> IO DOMSettableTokenList
 castToDOMSettableTokenList = castTo gTypeDOMSettableTokenList "DOMSettableTokenList"
 
 foreign import javascript unsafe "window[\"DOMSettableTokenList\"]" gTypeDOMSettableTokenList :: GType
@@ -4639,7 +4647,7 @@ instance IsGObject DOMStringList where
   unsafeCastGObject = DOMStringList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMStringList :: IsGObject obj => obj -> DOMStringList
+castToDOMStringList :: IsGObject obj => obj -> IO DOMStringList
 castToDOMStringList = castTo gTypeDOMStringList "DOMStringList"
 
 foreign import javascript unsafe "window[\"DOMStringList\"]" gTypeDOMStringList :: GType
@@ -4674,7 +4682,7 @@ instance IsGObject DOMStringMap where
   unsafeCastGObject = DOMStringMap . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMStringMap :: IsGObject obj => obj -> DOMStringMap
+castToDOMStringMap :: IsGObject obj => obj -> IO DOMStringMap
 castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
 
 foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap :: GType
@@ -4714,7 +4722,7 @@ instance IsGObject DOMTokenList where
   unsafeCastGObject = DOMTokenList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDOMTokenList :: IsGObject obj => obj -> DOMTokenList
+castToDOMTokenList :: IsGObject obj => obj -> IO DOMTokenList
 castToDOMTokenList = castTo gTypeDOMTokenList "DOMTokenList"
 
 foreign import javascript unsafe "window[\"DOMTokenList\"]" gTypeDOMTokenList :: GType
@@ -4755,7 +4763,7 @@ instance IsGObject DataCue where
   unsafeCastGObject = DataCue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDataCue :: IsGObject obj => obj -> DataCue
+castToDataCue :: IsGObject obj => obj -> IO DataCue
 castToDataCue = castTo gTypeDataCue "DataCue"
 
 foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue :: GType
@@ -4790,7 +4798,7 @@ instance IsGObject DataTransfer where
   unsafeCastGObject = DataTransfer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDataTransfer :: IsGObject obj => obj -> DataTransfer
+castToDataTransfer :: IsGObject obj => obj -> IO DataTransfer
 castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
 
 foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer :: GType
@@ -4825,7 +4833,7 @@ instance IsGObject DataTransferItem where
   unsafeCastGObject = DataTransferItem . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDataTransferItem :: IsGObject obj => obj -> DataTransferItem
+castToDataTransferItem :: IsGObject obj => obj -> IO DataTransferItem
 castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
 
 foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem :: GType
@@ -4860,7 +4868,7 @@ instance IsGObject DataTransferItemList where
   unsafeCastGObject = DataTransferItemList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDataTransferItemList :: IsGObject obj => obj -> DataTransferItemList
+castToDataTransferItemList :: IsGObject obj => obj -> IO DataTransferItemList
 castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemList"
 
 foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList :: GType
@@ -4895,7 +4903,7 @@ instance IsGObject Database where
   unsafeCastGObject = Database . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDatabase :: IsGObject obj => obj -> Database
+castToDatabase :: IsGObject obj => obj -> IO Database
 castToDatabase = castTo gTypeDatabase "Database"
 
 foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase :: GType
@@ -4936,7 +4944,7 @@ instance IsGObject DedicatedWorkerGlobalScope where
   unsafeCastGObject = DedicatedWorkerGlobalScope . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDedicatedWorkerGlobalScope :: IsGObject obj => obj -> DedicatedWorkerGlobalScope
+castToDedicatedWorkerGlobalScope :: IsGObject obj => obj -> IO DedicatedWorkerGlobalScope
 castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "DedicatedWorkerGlobalScope"
 
 foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope :: GType
@@ -4977,7 +4985,7 @@ instance IsGObject DelayNode where
   unsafeCastGObject = DelayNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDelayNode :: IsGObject obj => obj -> DelayNode
+castToDelayNode :: IsGObject obj => obj -> IO DelayNode
 castToDelayNode = castTo gTypeDelayNode "DelayNode"
 
 foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode :: GType
@@ -5016,7 +5024,7 @@ instance IsGObject DeviceMotionEvent where
   unsafeCastGObject = DeviceMotionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDeviceMotionEvent :: IsGObject obj => obj -> DeviceMotionEvent
+castToDeviceMotionEvent :: IsGObject obj => obj -> IO DeviceMotionEvent
 castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
 
 foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent :: GType
@@ -5055,7 +5063,7 @@ instance IsGObject DeviceOrientationEvent where
   unsafeCastGObject = DeviceOrientationEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDeviceOrientationEvent :: IsGObject obj => obj -> DeviceOrientationEvent
+castToDeviceOrientationEvent :: IsGObject obj => obj -> IO DeviceOrientationEvent
 castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrientationEvent"
 
 foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent :: GType
@@ -5094,7 +5102,7 @@ instance IsGObject DeviceProximityEvent where
   unsafeCastGObject = DeviceProximityEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDeviceProximityEvent :: IsGObject obj => obj -> DeviceProximityEvent
+castToDeviceProximityEvent :: IsGObject obj => obj -> IO DeviceProximityEvent
 castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEvent"
 
 foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent :: GType
@@ -5140,7 +5148,7 @@ instance IsGObject Document where
   unsafeCastGObject = Document . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDocument :: IsGObject obj => obj -> Document
+castToDocument :: IsGObject obj => obj -> IO Document
 castToDocument = castTo gTypeDocument "Document"
 
 foreign import javascript unsafe "window[\"Document\"]" gTypeDocument :: GType
@@ -5181,7 +5189,7 @@ instance IsGObject DocumentFragment where
   unsafeCastGObject = DocumentFragment . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDocumentFragment :: IsGObject obj => obj -> DocumentFragment
+castToDocumentFragment :: IsGObject obj => obj -> IO DocumentFragment
 castToDocumentFragment = castTo gTypeDocumentFragment "DocumentFragment"
 
 foreign import javascript unsafe "window[\"DocumentFragment\"]" gTypeDocumentFragment :: GType
@@ -5222,7 +5230,7 @@ instance IsGObject DocumentType where
   unsafeCastGObject = DocumentType . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDocumentType :: IsGObject obj => obj -> DocumentType
+castToDocumentType :: IsGObject obj => obj -> IO DocumentType
 castToDocumentType = castTo gTypeDocumentType "DocumentType"
 
 foreign import javascript unsafe "window[\"DocumentType\"]" gTypeDocumentType :: GType
@@ -5263,7 +5271,7 @@ instance IsGObject DynamicsCompressorNode where
   unsafeCastGObject = DynamicsCompressorNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToDynamicsCompressorNode :: IsGObject obj => obj -> DynamicsCompressorNode
+castToDynamicsCompressorNode :: IsGObject obj => obj -> IO DynamicsCompressorNode
 castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompressorNode"
 
 foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode :: GType
@@ -5298,7 +5306,7 @@ instance IsGObject EXTBlendMinMax where
   unsafeCastGObject = EXTBlendMinMax . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEXTBlendMinMax :: IsGObject obj => obj -> EXTBlendMinMax
+castToEXTBlendMinMax :: IsGObject obj => obj -> IO EXTBlendMinMax
 castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
 
 foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax :: GType
@@ -5333,7 +5341,7 @@ instance IsGObject EXTFragDepth where
   unsafeCastGObject = EXTFragDepth . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEXTFragDepth :: IsGObject obj => obj -> EXTFragDepth
+castToEXTFragDepth :: IsGObject obj => obj -> IO EXTFragDepth
 castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
 
 foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth :: GType
@@ -5368,7 +5376,7 @@ instance IsGObject EXTShaderTextureLOD where
   unsafeCastGObject = EXTShaderTextureLOD . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEXTShaderTextureLOD :: IsGObject obj => obj -> EXTShaderTextureLOD
+castToEXTShaderTextureLOD :: IsGObject obj => obj -> IO EXTShaderTextureLOD
 castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD"
 
 foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD :: GType
@@ -5403,7 +5411,7 @@ instance IsGObject EXTTextureFilterAnisotropic where
   unsafeCastGObject = EXTTextureFilterAnisotropic . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEXTTextureFilterAnisotropic :: IsGObject obj => obj -> EXTTextureFilterAnisotropic
+castToEXTTextureFilterAnisotropic :: IsGObject obj => obj -> IO EXTTextureFilterAnisotropic
 castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXTTextureFilterAnisotropic"
 
 foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic :: GType
@@ -5438,7 +5446,7 @@ instance IsGObject EXTsRGB where
   unsafeCastGObject = EXTsRGB . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEXTsRGB :: IsGObject obj => obj -> EXTsRGB
+castToEXTsRGB :: IsGObject obj => obj -> IO EXTsRGB
 castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
 
 foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
@@ -5484,7 +5492,7 @@ instance IsGObject Element where
   unsafeCastGObject = Element . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToElement :: IsGObject obj => obj -> Element
+castToElement :: IsGObject obj => obj -> IO Element
 castToElement = castTo gTypeElement "Element"
 
 foreign import javascript unsafe "window[\"Element\"]" gTypeElement :: GType
@@ -5525,7 +5533,7 @@ instance IsGObject Entity where
   unsafeCastGObject = Entity . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEntity :: IsGObject obj => obj -> Entity
+castToEntity :: IsGObject obj => obj -> IO Entity
 castToEntity = castTo gTypeEntity "Entity"
 
 foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity :: GType
@@ -5566,7 +5574,7 @@ instance IsGObject EntityReference where
   unsafeCastGObject = EntityReference . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEntityReference :: IsGObject obj => obj -> EntityReference
+castToEntityReference :: IsGObject obj => obj -> IO EntityReference
 castToEntityReference = castTo gTypeEntityReference "EntityReference"
 
 foreign import javascript unsafe "window[\"EntityReference\"]" gTypeEntityReference :: GType
@@ -5605,7 +5613,7 @@ instance IsGObject ErrorEvent where
   unsafeCastGObject = ErrorEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToErrorEvent :: IsGObject obj => obj -> ErrorEvent
+castToErrorEvent :: IsGObject obj => obj -> IO ErrorEvent
 castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
 
 foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent :: GType
@@ -5645,7 +5653,7 @@ instance IsGObject Event where
   unsafeCastGObject = Event . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEvent :: IsGObject obj => obj -> Event
+castToEvent :: IsGObject obj => obj -> IO Event
 castToEvent = castTo gTypeEvent "Event"
 
 foreign import javascript unsafe "window[\"Event\"]" gTypeEvent :: GType
@@ -5680,7 +5688,7 @@ instance IsGObject EventListener where
   unsafeCastGObject = EventListener . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEventListener :: IsGObject obj => obj -> EventListener
+castToEventListener :: IsGObject obj => obj -> IO EventListener
 castToEventListener = castTo gTypeEventListener "EventListener"
 
 foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener :: GType
@@ -5719,7 +5727,7 @@ instance IsGObject EventSource where
   unsafeCastGObject = EventSource . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEventSource :: IsGObject obj => obj -> EventSource
+castToEventSource :: IsGObject obj => obj -> IO EventSource
 castToEventSource = castTo gTypeEventSource "EventSource"
 
 foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource :: GType
@@ -5759,7 +5767,7 @@ instance IsGObject EventTarget where
   unsafeCastGObject = EventTarget . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToEventTarget :: IsGObject obj => obj -> EventTarget
+castToEventTarget :: IsGObject obj => obj -> IO EventTarget
 castToEventTarget = castTo gTypeEventTarget "EventTarget"
 
 foreign import javascript unsafe "window[\"EventTarget\"]" gTypeEventTarget :: GType
@@ -5798,7 +5806,7 @@ instance IsGObject File where
   unsafeCastGObject = File . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFile :: IsGObject obj => obj -> File
+castToFile :: IsGObject obj => obj -> IO File
 castToFile = castTo gTypeFile "File"
 
 foreign import javascript unsafe "window[\"File\"]" gTypeFile :: GType
@@ -5833,7 +5841,7 @@ instance IsGObject FileError where
   unsafeCastGObject = FileError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFileError :: IsGObject obj => obj -> FileError
+castToFileError :: IsGObject obj => obj -> IO FileError
 castToFileError = castTo gTypeFileError "FileError"
 
 foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError :: GType
@@ -5868,7 +5876,7 @@ instance IsGObject FileList where
   unsafeCastGObject = FileList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFileList :: IsGObject obj => obj -> FileList
+castToFileList :: IsGObject obj => obj -> IO FileList
 castToFileList = castTo gTypeFileList "FileList"
 
 foreign import javascript unsafe "window[\"FileList\"]" gTypeFileList :: GType
@@ -5907,7 +5915,7 @@ instance IsGObject FileReader where
   unsafeCastGObject = FileReader . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFileReader :: IsGObject obj => obj -> FileReader
+castToFileReader :: IsGObject obj => obj -> IO FileReader
 castToFileReader = castTo gTypeFileReader "FileReader"
 
 foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader :: GType
@@ -5942,7 +5950,7 @@ instance IsGObject FileReaderSync where
   unsafeCastGObject = FileReaderSync . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFileReaderSync :: IsGObject obj => obj -> FileReaderSync
+castToFileReaderSync :: IsGObject obj => obj -> IO FileReaderSync
 castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
 
 foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync :: GType
@@ -5983,7 +5991,7 @@ instance IsGObject FocusEvent where
   unsafeCastGObject = FocusEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFocusEvent :: IsGObject obj => obj -> FocusEvent
+castToFocusEvent :: IsGObject obj => obj -> IO FocusEvent
 castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
 
 foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent :: GType
@@ -6022,7 +6030,7 @@ instance IsGObject FontLoader where
   unsafeCastGObject = FontLoader . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFontLoader :: IsGObject obj => obj -> FontLoader
+castToFontLoader :: IsGObject obj => obj -> IO FontLoader
 castToFontLoader = castTo gTypeFontLoader "FontLoader"
 
 foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader :: GType
@@ -6057,7 +6065,7 @@ instance IsGObject FormData where
   unsafeCastGObject = FormData . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToFormData :: IsGObject obj => obj -> FormData
+castToFormData :: IsGObject obj => obj -> IO FormData
 castToFormData = castTo gTypeFormData "FormData"
 
 foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData :: GType
@@ -6098,7 +6106,7 @@ instance IsGObject GainNode where
   unsafeCastGObject = GainNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGainNode :: IsGObject obj => obj -> GainNode
+castToGainNode :: IsGObject obj => obj -> IO GainNode
 castToGainNode = castTo gTypeGainNode "GainNode"
 
 foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode :: GType
@@ -6133,7 +6141,7 @@ instance IsGObject Gamepad where
   unsafeCastGObject = Gamepad . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGamepad :: IsGObject obj => obj -> Gamepad
+castToGamepad :: IsGObject obj => obj -> IO Gamepad
 castToGamepad = castTo gTypeGamepad "Gamepad"
 
 foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad :: GType
@@ -6168,7 +6176,7 @@ instance IsGObject GamepadButton where
   unsafeCastGObject = GamepadButton . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGamepadButton :: IsGObject obj => obj -> GamepadButton
+castToGamepadButton :: IsGObject obj => obj -> IO GamepadButton
 castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
 
 foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton :: GType
@@ -6207,7 +6215,7 @@ instance IsGObject GamepadEvent where
   unsafeCastGObject = GamepadEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGamepadEvent :: IsGObject obj => obj -> GamepadEvent
+castToGamepadEvent :: IsGObject obj => obj -> IO GamepadEvent
 castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
 
 foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent :: GType
@@ -6242,7 +6250,7 @@ instance IsGObject Geolocation where
   unsafeCastGObject = Geolocation . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGeolocation :: IsGObject obj => obj -> Geolocation
+castToGeolocation :: IsGObject obj => obj -> IO Geolocation
 castToGeolocation = castTo gTypeGeolocation "Geolocation"
 
 foreign import javascript unsafe "window[\"Geolocation\"]" gTypeGeolocation :: GType
@@ -6277,7 +6285,7 @@ instance IsGObject Geoposition where
   unsafeCastGObject = Geoposition . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToGeoposition :: IsGObject obj => obj -> Geoposition
+castToGeoposition :: IsGObject obj => obj -> IO Geoposition
 castToGeoposition = castTo gTypeGeoposition "Geoposition"
 
 foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition :: GType
@@ -6312,7 +6320,7 @@ instance IsGObject HTMLAllCollection where
   unsafeCastGObject = HTMLAllCollection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLAllCollection :: IsGObject obj => obj -> HTMLAllCollection
+castToHTMLAllCollection :: IsGObject obj => obj -> IO HTMLAllCollection
 castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
 
 foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection :: GType
@@ -6357,7 +6365,7 @@ instance IsGObject HTMLAnchorElement where
   unsafeCastGObject = HTMLAnchorElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLAnchorElement :: IsGObject obj => obj -> HTMLAnchorElement
+castToHTMLAnchorElement :: IsGObject obj => obj -> IO HTMLAnchorElement
 castToHTMLAnchorElement = castTo gTypeHTMLAnchorElement "HTMLAnchorElement"
 
 foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchorElement :: GType
@@ -6402,7 +6410,7 @@ instance IsGObject HTMLAppletElement where
   unsafeCastGObject = HTMLAppletElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLAppletElement :: IsGObject obj => obj -> HTMLAppletElement
+castToHTMLAppletElement :: IsGObject obj => obj -> IO HTMLAppletElement
 castToHTMLAppletElement = castTo gTypeHTMLAppletElement "HTMLAppletElement"
 
 foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLAppletElement :: GType
@@ -6447,7 +6455,7 @@ instance IsGObject HTMLAreaElement where
   unsafeCastGObject = HTMLAreaElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLAreaElement :: IsGObject obj => obj -> HTMLAreaElement
+castToHTMLAreaElement :: IsGObject obj => obj -> IO HTMLAreaElement
 castToHTMLAreaElement = castTo gTypeHTMLAreaElement "HTMLAreaElement"
 
 foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElement :: GType
@@ -6494,7 +6502,7 @@ instance IsGObject HTMLAudioElement where
   unsafeCastGObject = HTMLAudioElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLAudioElement :: IsGObject obj => obj -> HTMLAudioElement
+castToHTMLAudioElement :: IsGObject obj => obj -> IO HTMLAudioElement
 castToHTMLAudioElement = castTo gTypeHTMLAudioElement "HTMLAudioElement"
 
 foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioElement :: GType
@@ -6539,7 +6547,7 @@ instance IsGObject HTMLBRElement where
   unsafeCastGObject = HTMLBRElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLBRElement :: IsGObject obj => obj -> HTMLBRElement
+castToHTMLBRElement :: IsGObject obj => obj -> IO HTMLBRElement
 castToHTMLBRElement = castTo gTypeHTMLBRElement "HTMLBRElement"
 
 foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement :: GType
@@ -6584,7 +6592,7 @@ instance IsGObject HTMLBaseElement where
   unsafeCastGObject = HTMLBaseElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLBaseElement :: IsGObject obj => obj -> HTMLBaseElement
+castToHTMLBaseElement :: IsGObject obj => obj -> IO HTMLBaseElement
 castToHTMLBaseElement = castTo gTypeHTMLBaseElement "HTMLBaseElement"
 
 foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElement :: GType
@@ -6629,7 +6637,7 @@ instance IsGObject HTMLBaseFontElement where
   unsafeCastGObject = HTMLBaseFontElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLBaseFontElement :: IsGObject obj => obj -> HTMLBaseFontElement
+castToHTMLBaseFontElement :: IsGObject obj => obj -> IO HTMLBaseFontElement
 castToHTMLBaseFontElement = castTo gTypeHTMLBaseFontElement "HTMLBaseFontElement"
 
 foreign import javascript unsafe "window[\"HTMLBaseFontElement\"]" gTypeHTMLBaseFontElement :: GType
@@ -6674,7 +6682,7 @@ instance IsGObject HTMLBodyElement where
   unsafeCastGObject = HTMLBodyElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLBodyElement :: IsGObject obj => obj -> HTMLBodyElement
+castToHTMLBodyElement :: IsGObject obj => obj -> IO HTMLBodyElement
 castToHTMLBodyElement = castTo gTypeHTMLBodyElement "HTMLBodyElement"
 
 foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElement :: GType
@@ -6719,7 +6727,7 @@ instance IsGObject HTMLButtonElement where
   unsafeCastGObject = HTMLButtonElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLButtonElement :: IsGObject obj => obj -> HTMLButtonElement
+castToHTMLButtonElement :: IsGObject obj => obj -> IO HTMLButtonElement
 castToHTMLButtonElement = castTo gTypeHTMLButtonElement "HTMLButtonElement"
 
 foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButtonElement :: GType
@@ -6764,7 +6772,7 @@ instance IsGObject HTMLCanvasElement where
   unsafeCastGObject = HTMLCanvasElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLCanvasElement :: IsGObject obj => obj -> HTMLCanvasElement
+castToHTMLCanvasElement :: IsGObject obj => obj -> IO HTMLCanvasElement
 castToHTMLCanvasElement = castTo gTypeHTMLCanvasElement "HTMLCanvasElement"
 
 foreign import javascript unsafe "window[\"HTMLCanvasElement\"]" gTypeHTMLCanvasElement :: GType
@@ -6804,7 +6812,7 @@ instance IsGObject HTMLCollection where
   unsafeCastGObject = HTMLCollection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLCollection :: IsGObject obj => obj -> HTMLCollection
+castToHTMLCollection :: IsGObject obj => obj -> IO HTMLCollection
 castToHTMLCollection = castTo gTypeHTMLCollection "HTMLCollection"
 
 foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollection :: GType
@@ -6849,7 +6857,7 @@ instance IsGObject HTMLDListElement where
   unsafeCastGObject = HTMLDListElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDListElement :: IsGObject obj => obj -> HTMLDListElement
+castToHTMLDListElement :: IsGObject obj => obj -> IO HTMLDListElement
 castToHTMLDListElement = castTo gTypeHTMLDListElement "HTMLDListElement"
 
 foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListElement :: GType
@@ -6894,7 +6902,7 @@ instance IsGObject HTMLDataListElement where
   unsafeCastGObject = HTMLDataListElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDataListElement :: IsGObject obj => obj -> HTMLDataListElement
+castToHTMLDataListElement :: IsGObject obj => obj -> IO HTMLDataListElement
 castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement"
 
 foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement :: GType
@@ -6939,7 +6947,7 @@ instance IsGObject HTMLDetailsElement where
   unsafeCastGObject = HTMLDetailsElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDetailsElement :: IsGObject obj => obj -> HTMLDetailsElement
+castToHTMLDetailsElement :: IsGObject obj => obj -> IO HTMLDetailsElement
 castToHTMLDetailsElement = castTo gTypeHTMLDetailsElement "HTMLDetailsElement"
 
 foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetailsElement :: GType
@@ -6984,7 +6992,7 @@ instance IsGObject HTMLDirectoryElement where
   unsafeCastGObject = HTMLDirectoryElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDirectoryElement :: IsGObject obj => obj -> HTMLDirectoryElement
+castToHTMLDirectoryElement :: IsGObject obj => obj -> IO HTMLDirectoryElement
 castToHTMLDirectoryElement = castTo gTypeHTMLDirectoryElement "HTMLDirectoryElement"
 
 foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDirectoryElement :: GType
@@ -7029,7 +7037,7 @@ instance IsGObject HTMLDivElement where
   unsafeCastGObject = HTMLDivElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDivElement :: IsGObject obj => obj -> HTMLDivElement
+castToHTMLDivElement :: IsGObject obj => obj -> IO HTMLDivElement
 castToHTMLDivElement = castTo gTypeHTMLDivElement "HTMLDivElement"
 
 foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElement :: GType
@@ -7072,7 +7080,7 @@ instance IsGObject HTMLDocument where
   unsafeCastGObject = HTMLDocument . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLDocument :: IsGObject obj => obj -> HTMLDocument
+castToHTMLDocument :: IsGObject obj => obj -> IO HTMLDocument
 castToHTMLDocument = castTo gTypeHTMLDocument "HTMLDocument"
 
 foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument :: GType
@@ -7120,7 +7128,7 @@ instance IsGObject HTMLElement where
   unsafeCastGObject = HTMLElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLElement :: IsGObject obj => obj -> HTMLElement
+castToHTMLElement :: IsGObject obj => obj -> IO HTMLElement
 castToHTMLElement = castTo gTypeHTMLElement "HTMLElement"
 
 foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement :: GType
@@ -7165,7 +7173,7 @@ instance IsGObject HTMLEmbedElement where
   unsafeCastGObject = HTMLEmbedElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLEmbedElement :: IsGObject obj => obj -> HTMLEmbedElement
+castToHTMLEmbedElement :: IsGObject obj => obj -> IO HTMLEmbedElement
 castToHTMLEmbedElement = castTo gTypeHTMLEmbedElement "HTMLEmbedElement"
 
 foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedElement :: GType
@@ -7210,7 +7218,7 @@ instance IsGObject HTMLFieldSetElement where
   unsafeCastGObject = HTMLFieldSetElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFieldSetElement :: IsGObject obj => obj -> HTMLFieldSetElement
+castToHTMLFieldSetElement :: IsGObject obj => obj -> IO HTMLFieldSetElement
 castToHTMLFieldSetElement = castTo gTypeHTMLFieldSetElement "HTMLFieldSetElement"
 
 foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFieldSetElement :: GType
@@ -7255,7 +7263,7 @@ instance IsGObject HTMLFontElement where
   unsafeCastGObject = HTMLFontElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFontElement :: IsGObject obj => obj -> HTMLFontElement
+castToHTMLFontElement :: IsGObject obj => obj -> IO HTMLFontElement
 castToHTMLFontElement = castTo gTypeHTMLFontElement "HTMLFontElement"
 
 foreign import javascript unsafe "window[\"HTMLFontElement\"]" gTypeHTMLFontElement :: GType
@@ -7294,7 +7302,7 @@ instance IsGObject HTMLFormControlsCollection where
   unsafeCastGObject = HTMLFormControlsCollection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFormControlsCollection :: IsGObject obj => obj -> HTMLFormControlsCollection
+castToHTMLFormControlsCollection :: IsGObject obj => obj -> IO HTMLFormControlsCollection
 castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLFormControlsCollection"
 
 foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection :: GType
@@ -7339,7 +7347,7 @@ instance IsGObject HTMLFormElement where
   unsafeCastGObject = HTMLFormElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFormElement :: IsGObject obj => obj -> HTMLFormElement
+castToHTMLFormElement :: IsGObject obj => obj -> IO HTMLFormElement
 castToHTMLFormElement = castTo gTypeHTMLFormElement "HTMLFormElement"
 
 foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElement :: GType
@@ -7384,7 +7392,7 @@ instance IsGObject HTMLFrameElement where
   unsafeCastGObject = HTMLFrameElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFrameElement :: IsGObject obj => obj -> HTMLFrameElement
+castToHTMLFrameElement :: IsGObject obj => obj -> IO HTMLFrameElement
 castToHTMLFrameElement = castTo gTypeHTMLFrameElement "HTMLFrameElement"
 
 foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameElement :: GType
@@ -7429,7 +7437,7 @@ instance IsGObject HTMLFrameSetElement where
   unsafeCastGObject = HTMLFrameSetElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLFrameSetElement :: IsGObject obj => obj -> HTMLFrameSetElement
+castToHTMLFrameSetElement :: IsGObject obj => obj -> IO HTMLFrameSetElement
 castToHTMLFrameSetElement = castTo gTypeHTMLFrameSetElement "HTMLFrameSetElement"
 
 foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFrameSetElement :: GType
@@ -7474,7 +7482,7 @@ instance IsGObject HTMLHRElement where
   unsafeCastGObject = HTMLHRElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLHRElement :: IsGObject obj => obj -> HTMLHRElement
+castToHTMLHRElement :: IsGObject obj => obj -> IO HTMLHRElement
 castToHTMLHRElement = castTo gTypeHTMLHRElement "HTMLHRElement"
 
 foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement :: GType
@@ -7519,7 +7527,7 @@ instance IsGObject HTMLHeadElement where
   unsafeCastGObject = HTMLHeadElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLHeadElement :: IsGObject obj => obj -> HTMLHeadElement
+castToHTMLHeadElement :: IsGObject obj => obj -> IO HTMLHeadElement
 castToHTMLHeadElement = castTo gTypeHTMLHeadElement "HTMLHeadElement"
 
 foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElement :: GType
@@ -7564,7 +7572,7 @@ instance IsGObject HTMLHeadingElement where
   unsafeCastGObject = HTMLHeadingElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLHeadingElement :: IsGObject obj => obj -> HTMLHeadingElement
+castToHTMLHeadingElement :: IsGObject obj => obj -> IO HTMLHeadingElement
 castToHTMLHeadingElement = castTo gTypeHTMLHeadingElement "HTMLHeadingElement"
 
 foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadingElement :: GType
@@ -7609,7 +7617,7 @@ instance IsGObject HTMLHtmlElement where
   unsafeCastGObject = HTMLHtmlElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLHtmlElement :: IsGObject obj => obj -> HTMLHtmlElement
+castToHTMLHtmlElement :: IsGObject obj => obj -> IO HTMLHtmlElement
 castToHTMLHtmlElement = castTo gTypeHTMLHtmlElement "HTMLHtmlElement"
 
 foreign import javascript unsafe "window[\"HTMLHtmlElement\"]" gTypeHTMLHtmlElement :: GType
@@ -7654,7 +7662,7 @@ instance IsGObject HTMLIFrameElement where
   unsafeCastGObject = HTMLIFrameElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLIFrameElement :: IsGObject obj => obj -> HTMLIFrameElement
+castToHTMLIFrameElement :: IsGObject obj => obj -> IO HTMLIFrameElement
 castToHTMLIFrameElement = castTo gTypeHTMLIFrameElement "HTMLIFrameElement"
 
 foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrameElement :: GType
@@ -7699,7 +7707,7 @@ instance IsGObject HTMLImageElement where
   unsafeCastGObject = HTMLImageElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLImageElement :: IsGObject obj => obj -> HTMLImageElement
+castToHTMLImageElement :: IsGObject obj => obj -> IO HTMLImageElement
 castToHTMLImageElement = castTo gTypeHTMLImageElement "HTMLImageElement"
 
 foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageElement :: GType
@@ -7744,7 +7752,7 @@ instance IsGObject HTMLInputElement where
   unsafeCastGObject = HTMLInputElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLInputElement :: IsGObject obj => obj -> HTMLInputElement
+castToHTMLInputElement :: IsGObject obj => obj -> IO HTMLInputElement
 castToHTMLInputElement = castTo gTypeHTMLInputElement "HTMLInputElement"
 
 foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputElement :: GType
@@ -7789,7 +7797,7 @@ instance IsGObject HTMLKeygenElement where
   unsafeCastGObject = HTMLKeygenElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLKeygenElement :: IsGObject obj => obj -> HTMLKeygenElement
+castToHTMLKeygenElement :: IsGObject obj => obj -> IO HTMLKeygenElement
 castToHTMLKeygenElement = castTo gTypeHTMLKeygenElement "HTMLKeygenElement"
 
 foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygenElement :: GType
@@ -7834,7 +7842,7 @@ instance IsGObject HTMLLIElement where
   unsafeCastGObject = HTMLLIElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLLIElement :: IsGObject obj => obj -> HTMLLIElement
+castToHTMLLIElement :: IsGObject obj => obj -> IO HTMLLIElement
 castToHTMLLIElement = castTo gTypeHTMLLIElement "HTMLLIElement"
 
 foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement :: GType
@@ -7879,7 +7887,7 @@ instance IsGObject HTMLLabelElement where
   unsafeCastGObject = HTMLLabelElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLLabelElement :: IsGObject obj => obj -> HTMLLabelElement
+castToHTMLLabelElement :: IsGObject obj => obj -> IO HTMLLabelElement
 castToHTMLLabelElement = castTo gTypeHTMLLabelElement "HTMLLabelElement"
 
 foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelElement :: GType
@@ -7924,7 +7932,7 @@ instance IsGObject HTMLLegendElement where
   unsafeCastGObject = HTMLLegendElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLLegendElement :: IsGObject obj => obj -> HTMLLegendElement
+castToHTMLLegendElement :: IsGObject obj => obj -> IO HTMLLegendElement
 castToHTMLLegendElement = castTo gTypeHTMLLegendElement "HTMLLegendElement"
 
 foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegendElement :: GType
@@ -7969,7 +7977,7 @@ instance IsGObject HTMLLinkElement where
   unsafeCastGObject = HTMLLinkElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLLinkElement :: IsGObject obj => obj -> HTMLLinkElement
+castToHTMLLinkElement :: IsGObject obj => obj -> IO HTMLLinkElement
 castToHTMLLinkElement = castTo gTypeHTMLLinkElement "HTMLLinkElement"
 
 foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElement :: GType
@@ -8014,7 +8022,7 @@ instance IsGObject HTMLMapElement where
   unsafeCastGObject = HTMLMapElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMapElement :: IsGObject obj => obj -> HTMLMapElement
+castToHTMLMapElement :: IsGObject obj => obj -> IO HTMLMapElement
 castToHTMLMapElement = castTo gTypeHTMLMapElement "HTMLMapElement"
 
 foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElement :: GType
@@ -8059,7 +8067,7 @@ instance IsGObject HTMLMarqueeElement where
   unsafeCastGObject = HTMLMarqueeElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMarqueeElement :: IsGObject obj => obj -> HTMLMarqueeElement
+castToHTMLMarqueeElement :: IsGObject obj => obj -> IO HTMLMarqueeElement
 castToHTMLMarqueeElement = castTo gTypeHTMLMarqueeElement "HTMLMarqueeElement"
 
 foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqueeElement :: GType
@@ -8109,7 +8117,7 @@ instance IsGObject HTMLMediaElement where
   unsafeCastGObject = HTMLMediaElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMediaElement :: IsGObject obj => obj -> HTMLMediaElement
+castToHTMLMediaElement :: IsGObject obj => obj -> IO HTMLMediaElement
 castToHTMLMediaElement = castTo gTypeHTMLMediaElement "HTMLMediaElement"
 
 foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaElement :: GType
@@ -8154,7 +8162,7 @@ instance IsGObject HTMLMenuElement where
   unsafeCastGObject = HTMLMenuElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMenuElement :: IsGObject obj => obj -> HTMLMenuElement
+castToHTMLMenuElement :: IsGObject obj => obj -> IO HTMLMenuElement
 castToHTMLMenuElement = castTo gTypeHTMLMenuElement "HTMLMenuElement"
 
 foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElement :: GType
@@ -8199,7 +8207,7 @@ instance IsGObject HTMLMetaElement where
   unsafeCastGObject = HTMLMetaElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMetaElement :: IsGObject obj => obj -> HTMLMetaElement
+castToHTMLMetaElement :: IsGObject obj => obj -> IO HTMLMetaElement
 castToHTMLMetaElement = castTo gTypeHTMLMetaElement "HTMLMetaElement"
 
 foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElement :: GType
@@ -8244,7 +8252,7 @@ instance IsGObject HTMLMeterElement where
   unsafeCastGObject = HTMLMeterElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLMeterElement :: IsGObject obj => obj -> HTMLMeterElement
+castToHTMLMeterElement :: IsGObject obj => obj -> IO HTMLMeterElement
 castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
 
 foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement :: GType
@@ -8289,7 +8297,7 @@ instance IsGObject HTMLModElement where
   unsafeCastGObject = HTMLModElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLModElement :: IsGObject obj => obj -> HTMLModElement
+castToHTMLModElement :: IsGObject obj => obj -> IO HTMLModElement
 castToHTMLModElement = castTo gTypeHTMLModElement "HTMLModElement"
 
 foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElement :: GType
@@ -8334,7 +8342,7 @@ instance IsGObject HTMLOListElement where
   unsafeCastGObject = HTMLOListElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLOListElement :: IsGObject obj => obj -> HTMLOListElement
+castToHTMLOListElement :: IsGObject obj => obj -> IO HTMLOListElement
 castToHTMLOListElement = castTo gTypeHTMLOListElement "HTMLOListElement"
 
 foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListElement :: GType
@@ -8379,7 +8387,7 @@ instance IsGObject HTMLObjectElement where
   unsafeCastGObject = HTMLObjectElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLObjectElement :: IsGObject obj => obj -> HTMLObjectElement
+castToHTMLObjectElement :: IsGObject obj => obj -> IO HTMLObjectElement
 castToHTMLObjectElement = castTo gTypeHTMLObjectElement "HTMLObjectElement"
 
 foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObjectElement :: GType
@@ -8424,7 +8432,7 @@ instance IsGObject HTMLOptGroupElement where
   unsafeCastGObject = HTMLOptGroupElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLOptGroupElement :: IsGObject obj => obj -> HTMLOptGroupElement
+castToHTMLOptGroupElement :: IsGObject obj => obj -> IO HTMLOptGroupElement
 castToHTMLOptGroupElement = castTo gTypeHTMLOptGroupElement "HTMLOptGroupElement"
 
 foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptGroupElement :: GType
@@ -8469,7 +8477,7 @@ instance IsGObject HTMLOptionElement where
   unsafeCastGObject = HTMLOptionElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLOptionElement :: IsGObject obj => obj -> HTMLOptionElement
+castToHTMLOptionElement :: IsGObject obj => obj -> IO HTMLOptionElement
 castToHTMLOptionElement = castTo gTypeHTMLOptionElement "HTMLOptionElement"
 
 foreign import javascript unsafe "window[\"HTMLOptionElement\"]" gTypeHTMLOptionElement :: GType
@@ -8508,7 +8516,7 @@ instance IsGObject HTMLOptionsCollection where
   unsafeCastGObject = HTMLOptionsCollection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLOptionsCollection :: IsGObject obj => obj -> HTMLOptionsCollection
+castToHTMLOptionsCollection :: IsGObject obj => obj -> IO HTMLOptionsCollection
 castToHTMLOptionsCollection = castTo gTypeHTMLOptionsCollection "HTMLOptionsCollection"
 
 foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOptionsCollection :: GType
@@ -8553,7 +8561,7 @@ instance IsGObject HTMLOutputElement where
   unsafeCastGObject = HTMLOutputElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLOutputElement :: IsGObject obj => obj -> HTMLOutputElement
+castToHTMLOutputElement :: IsGObject obj => obj -> IO HTMLOutputElement
 castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
 
 foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement :: GType
@@ -8598,7 +8606,7 @@ instance IsGObject HTMLParagraphElement where
   unsafeCastGObject = HTMLParagraphElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLParagraphElement :: IsGObject obj => obj -> HTMLParagraphElement
+castToHTMLParagraphElement :: IsGObject obj => obj -> IO HTMLParagraphElement
 castToHTMLParagraphElement = castTo gTypeHTMLParagraphElement "HTMLParagraphElement"
 
 foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLParagraphElement :: GType
@@ -8643,7 +8651,7 @@ instance IsGObject HTMLParamElement where
   unsafeCastGObject = HTMLParamElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLParamElement :: IsGObject obj => obj -> HTMLParamElement
+castToHTMLParamElement :: IsGObject obj => obj -> IO HTMLParamElement
 castToHTMLParamElement = castTo gTypeHTMLParamElement "HTMLParamElement"
 
 foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamElement :: GType
@@ -8688,7 +8696,7 @@ instance IsGObject HTMLPreElement where
   unsafeCastGObject = HTMLPreElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLPreElement :: IsGObject obj => obj -> HTMLPreElement
+castToHTMLPreElement :: IsGObject obj => obj -> IO HTMLPreElement
 castToHTMLPreElement = castTo gTypeHTMLPreElement "HTMLPreElement"
 
 foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElement :: GType
@@ -8733,7 +8741,7 @@ instance IsGObject HTMLProgressElement where
   unsafeCastGObject = HTMLProgressElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLProgressElement :: IsGObject obj => obj -> HTMLProgressElement
+castToHTMLProgressElement :: IsGObject obj => obj -> IO HTMLProgressElement
 castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement"
 
 foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement :: GType
@@ -8778,7 +8786,7 @@ instance IsGObject HTMLQuoteElement where
   unsafeCastGObject = HTMLQuoteElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLQuoteElement :: IsGObject obj => obj -> HTMLQuoteElement
+castToHTMLQuoteElement :: IsGObject obj => obj -> IO HTMLQuoteElement
 castToHTMLQuoteElement = castTo gTypeHTMLQuoteElement "HTMLQuoteElement"
 
 foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteElement :: GType
@@ -8823,7 +8831,7 @@ instance IsGObject HTMLScriptElement where
   unsafeCastGObject = HTMLScriptElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLScriptElement :: IsGObject obj => obj -> HTMLScriptElement
+castToHTMLScriptElement :: IsGObject obj => obj -> IO HTMLScriptElement
 castToHTMLScriptElement = castTo gTypeHTMLScriptElement "HTMLScriptElement"
 
 foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScriptElement :: GType
@@ -8868,7 +8876,7 @@ instance IsGObject HTMLSelectElement where
   unsafeCastGObject = HTMLSelectElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLSelectElement :: IsGObject obj => obj -> HTMLSelectElement
+castToHTMLSelectElement :: IsGObject obj => obj -> IO HTMLSelectElement
 castToHTMLSelectElement = castTo gTypeHTMLSelectElement "HTMLSelectElement"
 
 foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelectElement :: GType
@@ -8913,7 +8921,7 @@ instance IsGObject HTMLSourceElement where
   unsafeCastGObject = HTMLSourceElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLSourceElement :: IsGObject obj => obj -> HTMLSourceElement
+castToHTMLSourceElement :: IsGObject obj => obj -> IO HTMLSourceElement
 castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
 
 foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement :: GType
@@ -8958,7 +8966,7 @@ instance IsGObject HTMLSpanElement where
   unsafeCastGObject = HTMLSpanElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLSpanElement :: IsGObject obj => obj -> HTMLSpanElement
+castToHTMLSpanElement :: IsGObject obj => obj -> IO HTMLSpanElement
 castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
 
 foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement :: GType
@@ -9003,7 +9011,7 @@ instance IsGObject HTMLStyleElement where
   unsafeCastGObject = HTMLStyleElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLStyleElement :: IsGObject obj => obj -> HTMLStyleElement
+castToHTMLStyleElement :: IsGObject obj => obj -> IO HTMLStyleElement
 castToHTMLStyleElement = castTo gTypeHTMLStyleElement "HTMLStyleElement"
 
 foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleElement :: GType
@@ -9048,7 +9056,7 @@ instance IsGObject HTMLTableCaptionElement where
   unsafeCastGObject = HTMLTableCaptionElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableCaptionElement :: IsGObject obj => obj -> HTMLTableCaptionElement
+castToHTMLTableCaptionElement :: IsGObject obj => obj -> IO HTMLTableCaptionElement
 castToHTMLTableCaptionElement = castTo gTypeHTMLTableCaptionElement "HTMLTableCaptionElement"
 
 foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTMLTableCaptionElement :: GType
@@ -9093,7 +9101,7 @@ instance IsGObject HTMLTableCellElement where
   unsafeCastGObject = HTMLTableCellElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableCellElement :: IsGObject obj => obj -> HTMLTableCellElement
+castToHTMLTableCellElement :: IsGObject obj => obj -> IO HTMLTableCellElement
 castToHTMLTableCellElement = castTo gTypeHTMLTableCellElement "HTMLTableCellElement"
 
 foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTableCellElement :: GType
@@ -9138,7 +9146,7 @@ instance IsGObject HTMLTableColElement where
   unsafeCastGObject = HTMLTableColElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableColElement :: IsGObject obj => obj -> HTMLTableColElement
+castToHTMLTableColElement :: IsGObject obj => obj -> IO HTMLTableColElement
 castToHTMLTableColElement = castTo gTypeHTMLTableColElement "HTMLTableColElement"
 
 foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTableColElement :: GType
@@ -9183,7 +9191,7 @@ instance IsGObject HTMLTableElement where
   unsafeCastGObject = HTMLTableElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableElement :: IsGObject obj => obj -> HTMLTableElement
+castToHTMLTableElement :: IsGObject obj => obj -> IO HTMLTableElement
 castToHTMLTableElement = castTo gTypeHTMLTableElement "HTMLTableElement"
 
 foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableElement :: GType
@@ -9228,7 +9236,7 @@ instance IsGObject HTMLTableRowElement where
   unsafeCastGObject = HTMLTableRowElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableRowElement :: IsGObject obj => obj -> HTMLTableRowElement
+castToHTMLTableRowElement :: IsGObject obj => obj -> IO HTMLTableRowElement
 castToHTMLTableRowElement = castTo gTypeHTMLTableRowElement "HTMLTableRowElement"
 
 foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTableRowElement :: GType
@@ -9273,7 +9281,7 @@ instance IsGObject HTMLTableSectionElement where
   unsafeCastGObject = HTMLTableSectionElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTableSectionElement :: IsGObject obj => obj -> HTMLTableSectionElement
+castToHTMLTableSectionElement :: IsGObject obj => obj -> IO HTMLTableSectionElement
 castToHTMLTableSectionElement = castTo gTypeHTMLTableSectionElement "HTMLTableSectionElement"
 
 foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTMLTableSectionElement :: GType
@@ -9318,7 +9326,7 @@ instance IsGObject HTMLTemplateElement where
   unsafeCastGObject = HTMLTemplateElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTemplateElement :: IsGObject obj => obj -> HTMLTemplateElement
+castToHTMLTemplateElement :: IsGObject obj => obj -> IO HTMLTemplateElement
 castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement"
 
 foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement :: GType
@@ -9363,7 +9371,7 @@ instance IsGObject HTMLTextAreaElement where
   unsafeCastGObject = HTMLTextAreaElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTextAreaElement :: IsGObject obj => obj -> HTMLTextAreaElement
+castToHTMLTextAreaElement :: IsGObject obj => obj -> IO HTMLTextAreaElement
 castToHTMLTextAreaElement = castTo gTypeHTMLTextAreaElement "HTMLTextAreaElement"
 
 foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLTextAreaElement :: GType
@@ -9408,7 +9416,7 @@ instance IsGObject HTMLTitleElement where
   unsafeCastGObject = HTMLTitleElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTitleElement :: IsGObject obj => obj -> HTMLTitleElement
+castToHTMLTitleElement :: IsGObject obj => obj -> IO HTMLTitleElement
 castToHTMLTitleElement = castTo gTypeHTMLTitleElement "HTMLTitleElement"
 
 foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleElement :: GType
@@ -9453,7 +9461,7 @@ instance IsGObject HTMLTrackElement where
   unsafeCastGObject = HTMLTrackElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLTrackElement :: IsGObject obj => obj -> HTMLTrackElement
+castToHTMLTrackElement :: IsGObject obj => obj -> IO HTMLTrackElement
 castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
 
 foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement :: GType
@@ -9498,7 +9506,7 @@ instance IsGObject HTMLUListElement where
   unsafeCastGObject = HTMLUListElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLUListElement :: IsGObject obj => obj -> HTMLUListElement
+castToHTMLUListElement :: IsGObject obj => obj -> IO HTMLUListElement
 castToHTMLUListElement = castTo gTypeHTMLUListElement "HTMLUListElement"
 
 foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListElement :: GType
@@ -9543,7 +9551,7 @@ instance IsGObject HTMLUnknownElement where
   unsafeCastGObject = HTMLUnknownElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLUnknownElement :: IsGObject obj => obj -> HTMLUnknownElement
+castToHTMLUnknownElement :: IsGObject obj => obj -> IO HTMLUnknownElement
 castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
 
 foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement :: GType
@@ -9590,7 +9598,7 @@ instance IsGObject HTMLVideoElement where
   unsafeCastGObject = HTMLVideoElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHTMLVideoElement :: IsGObject obj => obj -> HTMLVideoElement
+castToHTMLVideoElement :: IsGObject obj => obj -> IO HTMLVideoElement
 castToHTMLVideoElement = castTo gTypeHTMLVideoElement "HTMLVideoElement"
 
 foreign import javascript unsafe "window[\"HTMLVideoElement\"]" gTypeHTMLVideoElement :: GType
@@ -9629,7 +9637,7 @@ instance IsGObject HashChangeEvent where
   unsafeCastGObject = HashChangeEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHashChangeEvent :: IsGObject obj => obj -> HashChangeEvent
+castToHashChangeEvent :: IsGObject obj => obj -> IO HashChangeEvent
 castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
 
 foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent :: GType
@@ -9664,7 +9672,7 @@ instance IsGObject History where
   unsafeCastGObject = History . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToHistory :: IsGObject obj => obj -> History
+castToHistory :: IsGObject obj => obj -> IO History
 castToHistory = castTo gTypeHistory "History"
 
 foreign import javascript unsafe "window[\"History\"]" gTypeHistory :: GType
@@ -9699,7 +9707,7 @@ instance IsGObject IDBAny where
   unsafeCastGObject = IDBAny . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBAny :: IsGObject obj => obj -> IDBAny
+castToIDBAny :: IsGObject obj => obj -> IO IDBAny
 castToIDBAny = castTo gTypeIDBAny "IDBAny"
 
 foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny :: GType
@@ -9739,7 +9747,7 @@ instance IsGObject IDBCursor where
   unsafeCastGObject = IDBCursor . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBCursor :: IsGObject obj => obj -> IDBCursor
+castToIDBCursor :: IsGObject obj => obj -> IO IDBCursor
 castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
 
 foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor :: GType
@@ -9778,7 +9786,7 @@ instance IsGObject IDBCursorWithValue where
   unsafeCastGObject = IDBCursorWithValue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBCursorWithValue :: IsGObject obj => obj -> IDBCursorWithValue
+castToIDBCursorWithValue :: IsGObject obj => obj -> IO IDBCursorWithValue
 castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
 
 foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue :: GType
@@ -9817,7 +9825,7 @@ instance IsGObject IDBDatabase where
   unsafeCastGObject = IDBDatabase . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBDatabase :: IsGObject obj => obj -> IDBDatabase
+castToIDBDatabase :: IsGObject obj => obj -> IO IDBDatabase
 castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
 
 foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase :: GType
@@ -9852,7 +9860,7 @@ instance IsGObject IDBFactory where
   unsafeCastGObject = IDBFactory . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBFactory :: IsGObject obj => obj -> IDBFactory
+castToIDBFactory :: IsGObject obj => obj -> IO IDBFactory
 castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
 
 foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory :: GType
@@ -9887,7 +9895,7 @@ instance IsGObject IDBIndex where
   unsafeCastGObject = IDBIndex . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBIndex :: IsGObject obj => obj -> IDBIndex
+castToIDBIndex :: IsGObject obj => obj -> IO IDBIndex
 castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
 
 foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex :: GType
@@ -9922,7 +9930,7 @@ instance IsGObject IDBKeyRange where
   unsafeCastGObject = IDBKeyRange . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBKeyRange :: IsGObject obj => obj -> IDBKeyRange
+castToIDBKeyRange :: IsGObject obj => obj -> IO IDBKeyRange
 castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
 
 foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange :: GType
@@ -9957,7 +9965,7 @@ instance IsGObject IDBObjectStore where
   unsafeCastGObject = IDBObjectStore . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBObjectStore :: IsGObject obj => obj -> IDBObjectStore
+castToIDBObjectStore :: IsGObject obj => obj -> IO IDBObjectStore
 castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
 
 foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore :: GType
@@ -9998,7 +10006,7 @@ instance IsGObject IDBOpenDBRequest where
   unsafeCastGObject = IDBOpenDBRequest . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBOpenDBRequest :: IsGObject obj => obj -> IDBOpenDBRequest
+castToIDBOpenDBRequest :: IsGObject obj => obj -> IO IDBOpenDBRequest
 castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
 
 foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest :: GType
@@ -10042,7 +10050,7 @@ instance IsGObject IDBRequest where
   unsafeCastGObject = IDBRequest . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBRequest :: IsGObject obj => obj -> IDBRequest
+castToIDBRequest :: IsGObject obj => obj -> IO IDBRequest
 castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
 
 foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest :: GType
@@ -10081,7 +10089,7 @@ instance IsGObject IDBTransaction where
   unsafeCastGObject = IDBTransaction . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBTransaction :: IsGObject obj => obj -> IDBTransaction
+castToIDBTransaction :: IsGObject obj => obj -> IO IDBTransaction
 castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
 
 foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction :: GType
@@ -10120,7 +10128,7 @@ instance IsGObject IDBVersionChangeEvent where
   unsafeCastGObject = IDBVersionChangeEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToIDBVersionChangeEvent :: IsGObject obj => obj -> IDBVersionChangeEvent
+castToIDBVersionChangeEvent :: IsGObject obj => obj -> IO IDBVersionChangeEvent
 castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChangeEvent"
 
 foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent :: GType
@@ -10155,7 +10163,7 @@ instance IsGObject ImageData where
   unsafeCastGObject = ImageData . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToImageData :: IsGObject obj => obj -> ImageData
+castToImageData :: IsGObject obj => obj -> IO ImageData
 castToImageData = castTo gTypeImageData "ImageData"
 
 foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData :: GType
@@ -10190,7 +10198,7 @@ instance IsGObject InspectorFrontendHost where
   unsafeCastGObject = InspectorFrontendHost . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToInspectorFrontendHost :: IsGObject obj => obj -> InspectorFrontendHost
+castToInspectorFrontendHost :: IsGObject obj => obj -> IO InspectorFrontendHost
 castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFrontendHost"
 
 foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost :: GType
@@ -10227,7 +10235,7 @@ instance IsGObject InternalSettings where
   unsafeCastGObject = InternalSettings . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToInternalSettings :: IsGObject obj => obj -> InternalSettings
+castToInternalSettings :: IsGObject obj => obj -> IO InternalSettings
 castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
 
 foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSettings :: GType
@@ -10262,7 +10270,7 @@ instance IsGObject Internals where
   unsafeCastGObject = Internals . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToInternals :: IsGObject obj => obj -> Internals
+castToInternals :: IsGObject obj => obj -> IO Internals
 castToInternals = castTo gTypeInternals "Internals"
 
 foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals :: GType
@@ -10303,7 +10311,7 @@ instance IsGObject KeyboardEvent where
   unsafeCastGObject = KeyboardEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToKeyboardEvent :: IsGObject obj => obj -> KeyboardEvent
+castToKeyboardEvent :: IsGObject obj => obj -> IO KeyboardEvent
 castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
 
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent :: GType
@@ -10338,7 +10346,7 @@ instance IsGObject Location where
   unsafeCastGObject = Location . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToLocation :: IsGObject obj => obj -> Location
+castToLocation :: IsGObject obj => obj -> IO Location
 castToLocation = castTo gTypeLocation "Location"
 
 foreign import javascript unsafe "window[\"Location\"]" gTypeLocation :: GType
@@ -10373,7 +10381,7 @@ instance IsGObject MallocStatistics where
   unsafeCastGObject = MallocStatistics . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMallocStatistics :: IsGObject obj => obj -> MallocStatistics
+castToMallocStatistics :: IsGObject obj => obj -> IO MallocStatistics
 castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
 
 foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStatistics :: GType
@@ -10412,7 +10420,7 @@ instance IsGObject MediaController where
   unsafeCastGObject = MediaController . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaController :: IsGObject obj => obj -> MediaController
+castToMediaController :: IsGObject obj => obj -> IO MediaController
 castToMediaController = castTo gTypeMediaController "MediaController"
 
 foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController :: GType
@@ -10447,7 +10455,7 @@ instance IsGObject MediaControlsHost where
   unsafeCastGObject = MediaControlsHost . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaControlsHost :: IsGObject obj => obj -> MediaControlsHost
+castToMediaControlsHost :: IsGObject obj => obj -> IO MediaControlsHost
 castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
 
 foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost :: GType
@@ -10488,7 +10496,7 @@ instance IsGObject MediaElementAudioSourceNode where
   unsafeCastGObject = MediaElementAudioSourceNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaElementAudioSourceNode :: IsGObject obj => obj -> MediaElementAudioSourceNode
+castToMediaElementAudioSourceNode :: IsGObject obj => obj -> IO MediaElementAudioSourceNode
 castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "MediaElementAudioSourceNode"
 
 foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode :: GType
@@ -10523,7 +10531,7 @@ instance IsGObject MediaError where
   unsafeCastGObject = MediaError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaError :: IsGObject obj => obj -> MediaError
+castToMediaError :: IsGObject obj => obj -> IO MediaError
 castToMediaError = castTo gTypeMediaError "MediaError"
 
 foreign import javascript unsafe "window[\"MediaError\"]" gTypeMediaError :: GType
@@ -10558,7 +10566,7 @@ instance IsGObject MediaKeyError where
   unsafeCastGObject = MediaKeyError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeyError :: IsGObject obj => obj -> MediaKeyError
+castToMediaKeyError :: IsGObject obj => obj -> IO MediaKeyError
 castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKeyError :: GType
@@ -10597,7 +10605,7 @@ instance IsGObject MediaKeyEvent where
   unsafeCastGObject = MediaKeyEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeyEvent :: IsGObject obj => obj -> MediaKeyEvent
+castToMediaKeyEvent :: IsGObject obj => obj -> IO MediaKeyEvent
 castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
 
 foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent :: GType
@@ -10636,7 +10644,7 @@ instance IsGObject MediaKeyMessageEvent where
   unsafeCastGObject = MediaKeyMessageEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeyMessageEvent :: IsGObject obj => obj -> MediaKeyMessageEvent
+castToMediaKeyMessageEvent :: IsGObject obj => obj -> IO MediaKeyMessageEvent
 castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEvent"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent :: GType
@@ -10675,7 +10683,7 @@ instance IsGObject MediaKeyNeededEvent where
   unsafeCastGObject = MediaKeyNeededEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeyNeededEvent :: IsGObject obj => obj -> MediaKeyNeededEvent
+castToMediaKeyNeededEvent :: IsGObject obj => obj -> IO MediaKeyNeededEvent
 castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent"
 
 foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKeyNeededEvent :: GType
@@ -10714,7 +10722,7 @@ instance IsGObject MediaKeySession where
   unsafeCastGObject = MediaKeySession . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeySession :: IsGObject obj => obj -> MediaKeySession
+castToMediaKeySession :: IsGObject obj => obj -> IO MediaKeySession
 castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession :: GType
@@ -10749,7 +10757,7 @@ instance IsGObject MediaKeys where
   unsafeCastGObject = MediaKeys . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaKeys :: IsGObject obj => obj -> MediaKeys
+castToMediaKeys :: IsGObject obj => obj -> IO MediaKeys
 castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
 
 foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys :: GType
@@ -10784,7 +10792,7 @@ instance IsGObject MediaList where
   unsafeCastGObject = MediaList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaList :: IsGObject obj => obj -> MediaList
+castToMediaList :: IsGObject obj => obj -> IO MediaList
 castToMediaList = castTo gTypeMediaList "MediaList"
 
 foreign import javascript unsafe "window[\"MediaList\"]" gTypeMediaList :: GType
@@ -10819,7 +10827,7 @@ instance IsGObject MediaQueryList where
   unsafeCastGObject = MediaQueryList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaQueryList :: IsGObject obj => obj -> MediaQueryList
+castToMediaQueryList :: IsGObject obj => obj -> IO MediaQueryList
 castToMediaQueryList = castTo gTypeMediaQueryList "MediaQueryList"
 
 foreign import javascript unsafe "window[\"MediaQueryList\"]" gTypeMediaQueryList :: GType
@@ -10858,7 +10866,7 @@ instance IsGObject MediaSource where
   unsafeCastGObject = MediaSource . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaSource :: IsGObject obj => obj -> MediaSource
+castToMediaSource :: IsGObject obj => obj -> IO MediaSource
 castToMediaSource = castTo gTypeMediaSource "MediaSource"
 
 foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource :: GType
@@ -10893,7 +10901,7 @@ instance IsGObject MediaSourceStates where
   unsafeCastGObject = MediaSourceStates . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaSourceStates :: IsGObject obj => obj -> MediaSourceStates
+castToMediaSourceStates :: IsGObject obj => obj -> IO MediaSourceStates
 castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
 
 foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourceStates :: GType
@@ -10932,7 +10940,7 @@ instance IsGObject MediaStream where
   unsafeCastGObject = MediaStream . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStream :: IsGObject obj => obj -> MediaStream
+castToMediaStream :: IsGObject obj => obj -> IO MediaStream
 castToMediaStream = castTo gTypeMediaStream "MediaStream"
 
 foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream :: GType
@@ -10973,7 +10981,7 @@ instance IsGObject MediaStreamAudioDestinationNode where
   unsafeCastGObject = MediaStreamAudioDestinationNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamAudioDestinationNode :: IsGObject obj => obj -> MediaStreamAudioDestinationNode
+castToMediaStreamAudioDestinationNode :: IsGObject obj => obj -> IO MediaStreamAudioDestinationNode
 castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationNode "MediaStreamAudioDestinationNode"
 
 foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode :: GType
@@ -11014,7 +11022,7 @@ instance IsGObject MediaStreamAudioSourceNode where
   unsafeCastGObject = MediaStreamAudioSourceNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamAudioSourceNode :: IsGObject obj => obj -> MediaStreamAudioSourceNode
+castToMediaStreamAudioSourceNode :: IsGObject obj => obj -> IO MediaStreamAudioSourceNode
 castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "MediaStreamAudioSourceNode"
 
 foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode :: GType
@@ -11054,7 +11062,7 @@ instance IsGObject MediaStreamCapabilities where
   unsafeCastGObject = MediaStreamCapabilities . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamCapabilities :: IsGObject obj => obj -> MediaStreamCapabilities
+castToMediaStreamCapabilities :: IsGObject obj => obj -> IO MediaStreamCapabilities
 castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStreamCapabilities"
 
 foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMediaStreamCapabilities :: GType
@@ -11093,7 +11101,7 @@ instance IsGObject MediaStreamEvent where
   unsafeCastGObject = MediaStreamEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamEvent :: IsGObject obj => obj -> MediaStreamEvent
+castToMediaStreamEvent :: IsGObject obj => obj -> IO MediaStreamEvent
 castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
 
 foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent :: GType
@@ -11137,7 +11145,7 @@ instance IsGObject MediaStreamTrack where
   unsafeCastGObject = MediaStreamTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamTrack :: IsGObject obj => obj -> MediaStreamTrack
+castToMediaStreamTrack :: IsGObject obj => obj -> IO MediaStreamTrack
 castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
 
 foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack :: GType
@@ -11176,7 +11184,7 @@ instance IsGObject MediaStreamTrackEvent where
   unsafeCastGObject = MediaStreamTrackEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaStreamTrackEvent :: IsGObject obj => obj -> MediaStreamTrackEvent
+castToMediaStreamTrackEvent :: IsGObject obj => obj -> IO MediaStreamTrackEvent
 castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrackEvent"
 
 foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent :: GType
@@ -11211,7 +11219,7 @@ instance IsGObject MediaTrackConstraint where
   unsafeCastGObject = MediaTrackConstraint . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaTrackConstraint :: IsGObject obj => obj -> MediaTrackConstraint
+castToMediaTrackConstraint :: IsGObject obj => obj -> IO MediaTrackConstraint
 castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstraint"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTrackConstraint :: GType
@@ -11246,7 +11254,7 @@ instance IsGObject MediaTrackConstraintSet where
   unsafeCastGObject = MediaTrackConstraintSet . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaTrackConstraintSet :: IsGObject obj => obj -> MediaTrackConstraintSet
+castToMediaTrackConstraintSet :: IsGObject obj => obj -> IO MediaTrackConstraintSet
 castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackConstraintSet"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet :: GType
@@ -11281,7 +11289,7 @@ instance IsGObject MediaTrackConstraints where
   unsafeCastGObject = MediaTrackConstraints . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMediaTrackConstraints :: IsGObject obj => obj -> MediaTrackConstraints
+castToMediaTrackConstraints :: IsGObject obj => obj -> IO MediaTrackConstraints
 castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConstraints"
 
 foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints :: GType
@@ -11316,7 +11324,7 @@ instance IsGObject MemoryInfo where
   unsafeCastGObject = MemoryInfo . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMemoryInfo :: IsGObject obj => obj -> MemoryInfo
+castToMemoryInfo :: IsGObject obj => obj -> IO MemoryInfo
 castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
 
 foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo :: GType
@@ -11351,7 +11359,7 @@ instance IsGObject MessageChannel where
   unsafeCastGObject = MessageChannel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMessageChannel :: IsGObject obj => obj -> MessageChannel
+castToMessageChannel :: IsGObject obj => obj -> IO MessageChannel
 castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
 
 foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel :: GType
@@ -11390,7 +11398,7 @@ instance IsGObject MessageEvent where
   unsafeCastGObject = MessageEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMessageEvent :: IsGObject obj => obj -> MessageEvent
+castToMessageEvent :: IsGObject obj => obj -> IO MessageEvent
 castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
 
 foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent :: GType
@@ -11429,7 +11437,7 @@ instance IsGObject MessagePort where
   unsafeCastGObject = MessagePort . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMessagePort :: IsGObject obj => obj -> MessagePort
+castToMessagePort :: IsGObject obj => obj -> IO MessagePort
 castToMessagePort = castTo gTypeMessagePort "MessagePort"
 
 foreign import javascript unsafe "window[\"MessagePort\"]" gTypeMessagePort :: GType
@@ -11464,7 +11472,7 @@ instance IsGObject MimeType where
   unsafeCastGObject = MimeType . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMimeType :: IsGObject obj => obj -> MimeType
+castToMimeType :: IsGObject obj => obj -> IO MimeType
 castToMimeType = castTo gTypeMimeType "MimeType"
 
 foreign import javascript unsafe "window[\"MimeType\"]" gTypeMimeType :: GType
@@ -11499,7 +11507,7 @@ instance IsGObject MimeTypeArray where
   unsafeCastGObject = MimeTypeArray . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMimeTypeArray :: IsGObject obj => obj -> MimeTypeArray
+castToMimeTypeArray :: IsGObject obj => obj -> IO MimeTypeArray
 castToMimeTypeArray = castTo gTypeMimeTypeArray "MimeTypeArray"
 
 foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeMimeTypeArray :: GType
@@ -11545,7 +11553,7 @@ instance IsGObject MouseEvent where
   unsafeCastGObject = MouseEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMouseEvent :: IsGObject obj => obj -> MouseEvent
+castToMouseEvent :: IsGObject obj => obj -> IO MouseEvent
 castToMouseEvent = castTo gTypeMouseEvent "MouseEvent"
 
 foreign import javascript unsafe "window[\"MouseEvent\"]" gTypeMouseEvent :: GType
@@ -11584,7 +11592,7 @@ instance IsGObject MutationEvent where
   unsafeCastGObject = MutationEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMutationEvent :: IsGObject obj => obj -> MutationEvent
+castToMutationEvent :: IsGObject obj => obj -> IO MutationEvent
 castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
 
 foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent :: GType
@@ -11619,7 +11627,7 @@ instance IsGObject MutationObserver where
   unsafeCastGObject = MutationObserver . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMutationObserver :: IsGObject obj => obj -> MutationObserver
+castToMutationObserver :: IsGObject obj => obj -> IO MutationObserver
 castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
 
 foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver :: GType
@@ -11654,7 +11662,7 @@ instance IsGObject MutationRecord where
   unsafeCastGObject = MutationRecord . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToMutationRecord :: IsGObject obj => obj -> MutationRecord
+castToMutationRecord :: IsGObject obj => obj -> IO MutationRecord
 castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
 
 foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord :: GType
@@ -11689,7 +11697,7 @@ instance IsGObject NamedNodeMap where
   unsafeCastGObject = NamedNodeMap . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNamedNodeMap :: IsGObject obj => obj -> NamedNodeMap
+castToNamedNodeMap :: IsGObject obj => obj -> IO NamedNodeMap
 castToNamedNodeMap = castTo gTypeNamedNodeMap "NamedNodeMap"
 
 foreign import javascript unsafe "window[\"NamedNodeMap\"]" gTypeNamedNodeMap :: GType
@@ -11724,7 +11732,7 @@ instance IsGObject Navigator where
   unsafeCastGObject = Navigator . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNavigator :: IsGObject obj => obj -> Navigator
+castToNavigator :: IsGObject obj => obj -> IO Navigator
 castToNavigator = castTo gTypeNavigator "Navigator"
 
 foreign import javascript unsafe "window[\"Navigator\"]" gTypeNavigator :: GType
@@ -11763,7 +11771,7 @@ instance IsGObject NavigatorUserMediaError where
   unsafeCastGObject = NavigatorUserMediaError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNavigatorUserMediaError :: IsGObject obj => obj -> NavigatorUserMediaError
+castToNavigatorUserMediaError :: IsGObject obj => obj -> IO NavigatorUserMediaError
 castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUserMediaError"
 
 foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError :: GType
@@ -11807,7 +11815,7 @@ instance IsGObject Node where
   unsafeCastGObject = Node . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNode :: IsGObject obj => obj -> Node
+castToNode :: IsGObject obj => obj -> IO Node
 castToNode = castTo gTypeNode "Node"
 
 foreign import javascript unsafe "window[\"Node\"]" gTypeNode :: GType
@@ -11842,7 +11850,7 @@ instance IsGObject NodeFilter where
   unsafeCastGObject = NodeFilter . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNodeFilter :: IsGObject obj => obj -> NodeFilter
+castToNodeFilter :: IsGObject obj => obj -> IO NodeFilter
 castToNodeFilter = castTo gTypeNodeFilter "NodeFilter"
 
 foreign import javascript unsafe "window[\"NodeFilter\"]" gTypeNodeFilter :: GType
@@ -11877,7 +11885,7 @@ instance IsGObject NodeIterator where
   unsafeCastGObject = NodeIterator . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNodeIterator :: IsGObject obj => obj -> NodeIterator
+castToNodeIterator :: IsGObject obj => obj -> IO NodeIterator
 castToNodeIterator = castTo gTypeNodeIterator "NodeIterator"
 
 foreign import javascript unsafe "window[\"NodeIterator\"]" gTypeNodeIterator :: GType
@@ -11917,7 +11925,7 @@ instance IsGObject NodeList where
   unsafeCastGObject = NodeList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNodeList :: IsGObject obj => obj -> NodeList
+castToNodeList :: IsGObject obj => obj -> IO NodeList
 castToNodeList = castTo gTypeNodeList "NodeList"
 
 foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList :: GType
@@ -11956,7 +11964,7 @@ instance IsGObject Notification where
   unsafeCastGObject = Notification . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNotification :: IsGObject obj => obj -> Notification
+castToNotification :: IsGObject obj => obj -> IO Notification
 castToNotification = castTo gTypeNotification "Notification"
 
 foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification :: GType
@@ -11991,7 +11999,7 @@ instance IsGObject NotificationCenter where
   unsafeCastGObject = NotificationCenter . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToNotificationCenter :: IsGObject obj => obj -> NotificationCenter
+castToNotificationCenter :: IsGObject obj => obj -> IO NotificationCenter
 castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
 
 foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter :: GType
@@ -12026,7 +12034,7 @@ instance IsGObject OESElementIndexUint where
   unsafeCastGObject = OESElementIndexUint . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESElementIndexUint :: IsGObject obj => obj -> OESElementIndexUint
+castToOESElementIndexUint :: IsGObject obj => obj -> IO OESElementIndexUint
 castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint"
 
 foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint :: GType
@@ -12061,7 +12069,7 @@ instance IsGObject OESStandardDerivatives where
   unsafeCastGObject = OESStandardDerivatives . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESStandardDerivatives :: IsGObject obj => obj -> OESStandardDerivatives
+castToOESStandardDerivatives :: IsGObject obj => obj -> IO OESStandardDerivatives
 castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDerivatives"
 
 foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives :: GType
@@ -12096,7 +12104,7 @@ instance IsGObject OESTextureFloat where
   unsafeCastGObject = OESTextureFloat . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESTextureFloat :: IsGObject obj => obj -> OESTextureFloat
+castToOESTextureFloat :: IsGObject obj => obj -> IO OESTextureFloat
 castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
 
 foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat :: GType
@@ -12131,7 +12139,7 @@ instance IsGObject OESTextureFloatLinear where
   unsafeCastGObject = OESTextureFloatLinear . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESTextureFloatLinear :: IsGObject obj => obj -> OESTextureFloatLinear
+castToOESTextureFloatLinear :: IsGObject obj => obj -> IO OESTextureFloatLinear
 castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloatLinear"
 
 foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear :: GType
@@ -12166,7 +12174,7 @@ instance IsGObject OESTextureHalfFloat where
   unsafeCastGObject = OESTextureHalfFloat . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESTextureHalfFloat :: IsGObject obj => obj -> OESTextureHalfFloat
+castToOESTextureHalfFloat :: IsGObject obj => obj -> IO OESTextureHalfFloat
 castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat"
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat :: GType
@@ -12201,7 +12209,7 @@ instance IsGObject OESTextureHalfFloatLinear where
   unsafeCastGObject = OESTextureHalfFloatLinear . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESTextureHalfFloatLinear :: IsGObject obj => obj -> OESTextureHalfFloatLinear
+castToOESTextureHalfFloatLinear :: IsGObject obj => obj -> IO OESTextureHalfFloatLinear
 castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESTextureHalfFloatLinear"
 
 foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear :: GType
@@ -12236,7 +12244,7 @@ instance IsGObject OESVertexArrayObject where
   unsafeCastGObject = OESVertexArrayObject . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOESVertexArrayObject :: IsGObject obj => obj -> OESVertexArrayObject
+castToOESVertexArrayObject :: IsGObject obj => obj -> IO OESVertexArrayObject
 castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObject"
 
 foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject :: GType
@@ -12275,7 +12283,7 @@ instance IsGObject OfflineAudioCompletionEvent where
   unsafeCastGObject = OfflineAudioCompletionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOfflineAudioCompletionEvent :: IsGObject obj => obj -> OfflineAudioCompletionEvent
+castToOfflineAudioCompletionEvent :: IsGObject obj => obj -> IO OfflineAudioCompletionEvent
 castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "OfflineAudioCompletionEvent"
 
 foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent :: GType
@@ -12316,7 +12324,7 @@ instance IsGObject OfflineAudioContext where
   unsafeCastGObject = OfflineAudioContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOfflineAudioContext :: IsGObject obj => obj -> OfflineAudioContext
+castToOfflineAudioContext :: IsGObject obj => obj -> IO OfflineAudioContext
 castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext"
 
 foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineAudioContext :: GType
@@ -12357,7 +12365,7 @@ instance IsGObject OscillatorNode where
   unsafeCastGObject = OscillatorNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOscillatorNode :: IsGObject obj => obj -> OscillatorNode
+castToOscillatorNode :: IsGObject obj => obj -> IO OscillatorNode
 castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
 
 foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode :: GType
@@ -12396,7 +12404,7 @@ instance IsGObject OverflowEvent where
   unsafeCastGObject = OverflowEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToOverflowEvent :: IsGObject obj => obj -> OverflowEvent
+castToOverflowEvent :: IsGObject obj => obj -> IO OverflowEvent
 castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
 
 foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent :: GType
@@ -12435,7 +12443,7 @@ instance IsGObject PageTransitionEvent where
   unsafeCastGObject = PageTransitionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPageTransitionEvent :: IsGObject obj => obj -> PageTransitionEvent
+castToPageTransitionEvent :: IsGObject obj => obj -> IO PageTransitionEvent
 castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent"
 
 foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent :: GType
@@ -12476,7 +12484,7 @@ instance IsGObject PannerNode where
   unsafeCastGObject = PannerNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPannerNode :: IsGObject obj => obj -> PannerNode
+castToPannerNode :: IsGObject obj => obj -> IO PannerNode
 castToPannerNode = castTo gTypePannerNode "PannerNode"
 
 foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode :: GType
@@ -12511,7 +12519,7 @@ instance IsGObject Path2D where
   unsafeCastGObject = Path2D . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPath2D :: IsGObject obj => obj -> Path2D
+castToPath2D :: IsGObject obj => obj -> IO Path2D
 castToPath2D = castTo gTypePath2D "Path2D"
 
 foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
@@ -12550,7 +12558,7 @@ instance IsGObject Performance where
   unsafeCastGObject = Performance . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformance :: IsGObject obj => obj -> Performance
+castToPerformance :: IsGObject obj => obj -> IO Performance
 castToPerformance = castTo gTypePerformance "Performance"
 
 foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance :: GType
@@ -12590,7 +12598,7 @@ instance IsGObject PerformanceEntry where
   unsafeCastGObject = PerformanceEntry . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceEntry :: IsGObject obj => obj -> PerformanceEntry
+castToPerformanceEntry :: IsGObject obj => obj -> IO PerformanceEntry
 castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
 
 foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry :: GType
@@ -12625,7 +12633,7 @@ instance IsGObject PerformanceEntryList where
   unsafeCastGObject = PerformanceEntryList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceEntryList :: IsGObject obj => obj -> PerformanceEntryList
+castToPerformanceEntryList :: IsGObject obj => obj -> IO PerformanceEntryList
 castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryList"
 
 foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerformanceEntryList :: GType
@@ -12664,7 +12672,7 @@ instance IsGObject PerformanceMark where
   unsafeCastGObject = PerformanceMark . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceMark :: IsGObject obj => obj -> PerformanceMark
+castToPerformanceMark :: IsGObject obj => obj -> IO PerformanceMark
 castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
 
 foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark :: GType
@@ -12703,7 +12711,7 @@ instance IsGObject PerformanceMeasure where
   unsafeCastGObject = PerformanceMeasure . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceMeasure :: IsGObject obj => obj -> PerformanceMeasure
+castToPerformanceMeasure :: IsGObject obj => obj -> IO PerformanceMeasure
 castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
 
 foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure :: GType
@@ -12738,7 +12746,7 @@ instance IsGObject PerformanceNavigation where
   unsafeCastGObject = PerformanceNavigation . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceNavigation :: IsGObject obj => obj -> PerformanceNavigation
+castToPerformanceNavigation :: IsGObject obj => obj -> IO PerformanceNavigation
 castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavigation"
 
 foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation :: GType
@@ -12777,7 +12785,7 @@ instance IsGObject PerformanceResourceTiming where
   unsafeCastGObject = PerformanceResourceTiming . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceResourceTiming :: IsGObject obj => obj -> PerformanceResourceTiming
+castToPerformanceResourceTiming :: IsGObject obj => obj -> IO PerformanceResourceTiming
 castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "PerformanceResourceTiming"
 
 foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming :: GType
@@ -12812,7 +12820,7 @@ instance IsGObject PerformanceTiming where
   unsafeCastGObject = PerformanceTiming . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPerformanceTiming :: IsGObject obj => obj -> PerformanceTiming
+castToPerformanceTiming :: IsGObject obj => obj -> IO PerformanceTiming
 castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
 
 foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming :: GType
@@ -12847,7 +12855,7 @@ instance IsGObject PeriodicWave where
   unsafeCastGObject = PeriodicWave . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPeriodicWave :: IsGObject obj => obj -> PeriodicWave
+castToPeriodicWave :: IsGObject obj => obj -> IO PeriodicWave
 castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
 
 foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave :: GType
@@ -12882,7 +12890,7 @@ instance IsGObject Plugin where
   unsafeCastGObject = Plugin . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPlugin :: IsGObject obj => obj -> Plugin
+castToPlugin :: IsGObject obj => obj -> IO Plugin
 castToPlugin = castTo gTypePlugin "Plugin"
 
 foreign import javascript unsafe "window[\"Plugin\"]" gTypePlugin :: GType
@@ -12917,7 +12925,7 @@ instance IsGObject PluginArray where
   unsafeCastGObject = PluginArray . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPluginArray :: IsGObject obj => obj -> PluginArray
+castToPluginArray :: IsGObject obj => obj -> IO PluginArray
 castToPluginArray = castTo gTypePluginArray "PluginArray"
 
 foreign import javascript unsafe "window[\"PluginArray\"]" gTypePluginArray :: GType
@@ -12956,7 +12964,7 @@ instance IsGObject PopStateEvent where
   unsafeCastGObject = PopStateEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPopStateEvent :: IsGObject obj => obj -> PopStateEvent
+castToPopStateEvent :: IsGObject obj => obj -> IO PopStateEvent
 castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
 
 foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent :: GType
@@ -12991,7 +12999,7 @@ instance IsGObject PositionError where
   unsafeCastGObject = PositionError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToPositionError :: IsGObject obj => obj -> PositionError
+castToPositionError :: IsGObject obj => obj -> IO PositionError
 castToPositionError = castTo gTypePositionError "PositionError"
 
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError :: GType
@@ -13034,7 +13042,7 @@ instance IsGObject ProcessingInstruction where
   unsafeCastGObject = ProcessingInstruction . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToProcessingInstruction :: IsGObject obj => obj -> ProcessingInstruction
+castToProcessingInstruction :: IsGObject obj => obj -> IO ProcessingInstruction
 castToProcessingInstruction = castTo gTypeProcessingInstruction "ProcessingInstruction"
 
 foreign import javascript unsafe "window[\"ProcessingInstruction\"]" gTypeProcessingInstruction :: GType
@@ -13078,7 +13086,7 @@ instance IsGObject ProgressEvent where
   unsafeCastGObject = ProgressEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToProgressEvent :: IsGObject obj => obj -> ProgressEvent
+castToProgressEvent :: IsGObject obj => obj -> IO ProgressEvent
 castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
 
 foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent :: GType
@@ -13113,7 +13121,7 @@ instance IsGObject QuickTimePluginReplacement where
   unsafeCastGObject = QuickTimePluginReplacement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToQuickTimePluginReplacement :: IsGObject obj => obj -> QuickTimePluginReplacement
+castToQuickTimePluginReplacement :: IsGObject obj => obj -> IO QuickTimePluginReplacement
 castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "QuickTimePluginReplacement"
 
 foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement :: GType
@@ -13148,7 +13156,7 @@ instance IsGObject RGBColor where
   unsafeCastGObject = RGBColor . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRGBColor :: IsGObject obj => obj -> RGBColor
+castToRGBColor :: IsGObject obj => obj -> IO RGBColor
 castToRGBColor = castTo gTypeRGBColor "RGBColor"
 
 foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor :: GType
@@ -13183,7 +13191,7 @@ instance IsGObject RTCConfiguration where
   unsafeCastGObject = RTCConfiguration . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCConfiguration :: IsGObject obj => obj -> RTCConfiguration
+castToRTCConfiguration :: IsGObject obj => obj -> IO RTCConfiguration
 castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
 
 foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration :: GType
@@ -13222,7 +13230,7 @@ instance IsGObject RTCDTMFSender where
   unsafeCastGObject = RTCDTMFSender . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCDTMFSender :: IsGObject obj => obj -> RTCDTMFSender
+castToRTCDTMFSender :: IsGObject obj => obj -> IO RTCDTMFSender
 castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
 
 foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender :: GType
@@ -13261,7 +13269,7 @@ instance IsGObject RTCDTMFToneChangeEvent where
   unsafeCastGObject = RTCDTMFToneChangeEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCDTMFToneChangeEvent :: IsGObject obj => obj -> RTCDTMFToneChangeEvent
+castToRTCDTMFToneChangeEvent :: IsGObject obj => obj -> IO RTCDTMFToneChangeEvent
 castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneChangeEvent"
 
 foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent :: GType
@@ -13300,7 +13308,7 @@ instance IsGObject RTCDataChannel where
   unsafeCastGObject = RTCDataChannel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCDataChannel :: IsGObject obj => obj -> RTCDataChannel
+castToRTCDataChannel :: IsGObject obj => obj -> IO RTCDataChannel
 castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
 
 foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel :: GType
@@ -13339,7 +13347,7 @@ instance IsGObject RTCDataChannelEvent where
   unsafeCastGObject = RTCDataChannelEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCDataChannelEvent :: IsGObject obj => obj -> RTCDataChannelEvent
+castToRTCDataChannelEvent :: IsGObject obj => obj -> IO RTCDataChannelEvent
 castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent"
 
 foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent :: GType
@@ -13374,7 +13382,7 @@ instance IsGObject RTCIceCandidate where
   unsafeCastGObject = RTCIceCandidate . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCIceCandidate :: IsGObject obj => obj -> RTCIceCandidate
+castToRTCIceCandidate :: IsGObject obj => obj -> IO RTCIceCandidate
 castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
 
 foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate :: GType
@@ -13413,7 +13421,7 @@ instance IsGObject RTCIceCandidateEvent where
   unsafeCastGObject = RTCIceCandidateEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCIceCandidateEvent :: IsGObject obj => obj -> RTCIceCandidateEvent
+castToRTCIceCandidateEvent :: IsGObject obj => obj -> IO RTCIceCandidateEvent
 castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEvent"
 
 foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent :: GType
@@ -13448,7 +13456,7 @@ instance IsGObject RTCIceServer where
   unsafeCastGObject = RTCIceServer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCIceServer :: IsGObject obj => obj -> RTCIceServer
+castToRTCIceServer :: IsGObject obj => obj -> IO RTCIceServer
 castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
 
 foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer :: GType
@@ -13487,7 +13495,7 @@ instance IsGObject RTCPeerConnection where
   unsafeCastGObject = RTCPeerConnection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCPeerConnection :: IsGObject obj => obj -> RTCPeerConnection
+castToRTCPeerConnection :: IsGObject obj => obj -> IO RTCPeerConnection
 castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
 
 foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection :: GType
@@ -13522,7 +13530,7 @@ instance IsGObject RTCSessionDescription where
   unsafeCastGObject = RTCSessionDescription . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCSessionDescription :: IsGObject obj => obj -> RTCSessionDescription
+castToRTCSessionDescription :: IsGObject obj => obj -> IO RTCSessionDescription
 castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescription"
 
 foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription :: GType
@@ -13557,7 +13565,7 @@ instance IsGObject RTCStatsReport where
   unsafeCastGObject = RTCStatsReport . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCStatsReport :: IsGObject obj => obj -> RTCStatsReport
+castToRTCStatsReport :: IsGObject obj => obj -> IO RTCStatsReport
 castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
 
 foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport :: GType
@@ -13592,7 +13600,7 @@ instance IsGObject RTCStatsResponse where
   unsafeCastGObject = RTCStatsResponse . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRTCStatsResponse :: IsGObject obj => obj -> RTCStatsResponse
+castToRTCStatsResponse :: IsGObject obj => obj -> IO RTCStatsResponse
 castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
 
 foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsResponse :: GType
@@ -13631,7 +13639,7 @@ instance IsGObject RadioNodeList where
   unsafeCastGObject = RadioNodeList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRadioNodeList :: IsGObject obj => obj -> RadioNodeList
+castToRadioNodeList :: IsGObject obj => obj -> IO RadioNodeList
 castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
 
 foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList :: GType
@@ -13666,7 +13674,7 @@ instance IsGObject Range where
   unsafeCastGObject = Range . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRange :: IsGObject obj => obj -> Range
+castToRange :: IsGObject obj => obj -> IO Range
 castToRange = castTo gTypeRange "Range"
 
 foreign import javascript unsafe "window[\"Range\"]" gTypeRange :: GType
@@ -13701,7 +13709,7 @@ instance IsGObject ReadableStream where
   unsafeCastGObject = ReadableStream . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToReadableStream :: IsGObject obj => obj -> ReadableStream
+castToReadableStream :: IsGObject obj => obj -> IO ReadableStream
 castToReadableStream = castTo gTypeReadableStream "ReadableStream"
 
 foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream :: GType
@@ -13736,7 +13744,7 @@ instance IsGObject Rect where
   unsafeCastGObject = Rect . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToRect :: IsGObject obj => obj -> Rect
+castToRect :: IsGObject obj => obj -> IO Rect
 castToRect = castTo gTypeRect "Rect"
 
 foreign import javascript unsafe "window[\"Rect\"]" gTypeRect :: GType
@@ -13771,7 +13779,7 @@ instance IsGObject SQLError where
   unsafeCastGObject = SQLError . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSQLError :: IsGObject obj => obj -> SQLError
+castToSQLError :: IsGObject obj => obj -> IO SQLError
 castToSQLError = castTo gTypeSQLError "SQLError"
 
 foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError :: GType
@@ -13806,7 +13814,7 @@ instance IsGObject SQLResultSet where
   unsafeCastGObject = SQLResultSet . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSQLResultSet :: IsGObject obj => obj -> SQLResultSet
+castToSQLResultSet :: IsGObject obj => obj -> IO SQLResultSet
 castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
 
 foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet :: GType
@@ -13841,7 +13849,7 @@ instance IsGObject SQLResultSetRowList where
   unsafeCastGObject = SQLResultSetRowList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSQLResultSetRowList :: IsGObject obj => obj -> SQLResultSetRowList
+castToSQLResultSetRowList :: IsGObject obj => obj -> IO SQLResultSetRowList
 castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList"
 
 foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList :: GType
@@ -13876,7 +13884,7 @@ instance IsGObject SQLTransaction where
   unsafeCastGObject = SQLTransaction . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSQLTransaction :: IsGObject obj => obj -> SQLTransaction
+castToSQLTransaction :: IsGObject obj => obj -> IO SQLTransaction
 castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
 
 foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction :: GType
@@ -13923,7 +13931,7 @@ instance IsGObject SVGAElement where
   unsafeCastGObject = SVGAElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAElement :: IsGObject obj => obj -> SVGAElement
+castToSVGAElement :: IsGObject obj => obj -> IO SVGAElement
 castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
 
 foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: GType
@@ -13968,7 +13976,7 @@ instance IsGObject SVGAltGlyphDefElement where
   unsafeCastGObject = SVGAltGlyphDefElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAltGlyphDefElement :: IsGObject obj => obj -> SVGAltGlyphDefElement
+castToSVGAltGlyphDefElement :: IsGObject obj => obj -> IO SVGAltGlyphDefElement
 castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement :: GType
@@ -14019,7 +14027,7 @@ instance IsGObject SVGAltGlyphElement where
   unsafeCastGObject = SVGAltGlyphElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAltGlyphElement :: IsGObject obj => obj -> SVGAltGlyphElement
+castToSVGAltGlyphElement :: IsGObject obj => obj -> IO SVGAltGlyphElement
 castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement :: GType
@@ -14064,7 +14072,7 @@ instance IsGObject SVGAltGlyphItemElement where
   unsafeCastGObject = SVGAltGlyphItemElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAltGlyphItemElement :: IsGObject obj => obj -> SVGAltGlyphItemElement
+castToSVGAltGlyphItemElement :: IsGObject obj => obj -> IO SVGAltGlyphItemElement
 castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphItemElement"
 
 foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement :: GType
@@ -14099,7 +14107,7 @@ instance IsGObject SVGAngle where
   unsafeCastGObject = SVGAngle . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAngle :: IsGObject obj => obj -> SVGAngle
+castToSVGAngle :: IsGObject obj => obj -> IO SVGAngle
 castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
 
 foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
@@ -14146,7 +14154,7 @@ instance IsGObject SVGAnimateColorElement where
   unsafeCastGObject = SVGAnimateColorElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimateColorElement :: IsGObject obj => obj -> SVGAnimateColorElement
+castToSVGAnimateColorElement :: IsGObject obj => obj -> IO SVGAnimateColorElement
 castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateColorElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement :: GType
@@ -14193,7 +14201,7 @@ instance IsGObject SVGAnimateElement where
   unsafeCastGObject = SVGAnimateElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimateElement :: IsGObject obj => obj -> SVGAnimateElement
+castToSVGAnimateElement :: IsGObject obj => obj -> IO SVGAnimateElement
 castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement :: GType
@@ -14240,7 +14248,7 @@ instance IsGObject SVGAnimateMotionElement where
   unsafeCastGObject = SVGAnimateMotionElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimateMotionElement :: IsGObject obj => obj -> SVGAnimateMotionElement
+castToSVGAnimateMotionElement :: IsGObject obj => obj -> IO SVGAnimateMotionElement
 castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateMotionElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement :: GType
@@ -14287,7 +14295,7 @@ instance IsGObject SVGAnimateTransformElement where
   unsafeCastGObject = SVGAnimateTransformElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimateTransformElement :: IsGObject obj => obj -> SVGAnimateTransformElement
+castToSVGAnimateTransformElement :: IsGObject obj => obj -> IO SVGAnimateTransformElement
 castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAnimateTransformElement"
 
 foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement :: GType
@@ -14322,7 +14330,7 @@ instance IsGObject SVGAnimatedAngle where
   unsafeCastGObject = SVGAnimatedAngle . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedAngle :: IsGObject obj => obj -> SVGAnimatedAngle
+castToSVGAnimatedAngle :: IsGObject obj => obj -> IO SVGAnimatedAngle
 castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
 
 foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle :: GType
@@ -14357,7 +14365,7 @@ instance IsGObject SVGAnimatedBoolean where
   unsafeCastGObject = SVGAnimatedBoolean . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedBoolean :: IsGObject obj => obj -> SVGAnimatedBoolean
+castToSVGAnimatedBoolean :: IsGObject obj => obj -> IO SVGAnimatedBoolean
 castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
 
 foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean :: GType
@@ -14392,7 +14400,7 @@ instance IsGObject SVGAnimatedEnumeration where
   unsafeCastGObject = SVGAnimatedEnumeration . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedEnumeration :: IsGObject obj => obj -> SVGAnimatedEnumeration
+castToSVGAnimatedEnumeration :: IsGObject obj => obj -> IO SVGAnimatedEnumeration
 castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEnumeration"
 
 foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration :: GType
@@ -14427,7 +14435,7 @@ instance IsGObject SVGAnimatedInteger where
   unsafeCastGObject = SVGAnimatedInteger . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedInteger :: IsGObject obj => obj -> SVGAnimatedInteger
+castToSVGAnimatedInteger :: IsGObject obj => obj -> IO SVGAnimatedInteger
 castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
 
 foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger :: GType
@@ -14462,7 +14470,7 @@ instance IsGObject SVGAnimatedLength where
   unsafeCastGObject = SVGAnimatedLength . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedLength :: IsGObject obj => obj -> SVGAnimatedLength
+castToSVGAnimatedLength :: IsGObject obj => obj -> IO SVGAnimatedLength
 castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
 
 foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength :: GType
@@ -14497,7 +14505,7 @@ instance IsGObject SVGAnimatedLengthList where
   unsafeCastGObject = SVGAnimatedLengthList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedLengthList :: IsGObject obj => obj -> SVGAnimatedLengthList
+castToSVGAnimatedLengthList :: IsGObject obj => obj -> IO SVGAnimatedLengthList
 castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLengthList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList :: GType
@@ -14532,7 +14540,7 @@ instance IsGObject SVGAnimatedNumber where
   unsafeCastGObject = SVGAnimatedNumber . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedNumber :: IsGObject obj => obj -> SVGAnimatedNumber
+castToSVGAnimatedNumber :: IsGObject obj => obj -> IO SVGAnimatedNumber
 castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber :: GType
@@ -14567,7 +14575,7 @@ instance IsGObject SVGAnimatedNumberList where
   unsafeCastGObject = SVGAnimatedNumberList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedNumberList :: IsGObject obj => obj -> SVGAnimatedNumberList
+castToSVGAnimatedNumberList :: IsGObject obj => obj -> IO SVGAnimatedNumberList
 castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumberList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList :: GType
@@ -14602,7 +14610,7 @@ instance IsGObject SVGAnimatedPreserveAspectRatio where
   unsafeCastGObject = SVGAnimatedPreserveAspectRatio . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedPreserveAspectRatio :: IsGObject obj => obj -> SVGAnimatedPreserveAspectRatio
+castToSVGAnimatedPreserveAspectRatio :: IsGObject obj => obj -> IO SVGAnimatedPreserveAspectRatio
 castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRatio "SVGAnimatedPreserveAspectRatio"
 
 foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio :: GType
@@ -14637,7 +14645,7 @@ instance IsGObject SVGAnimatedRect where
   unsafeCastGObject = SVGAnimatedRect . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedRect :: IsGObject obj => obj -> SVGAnimatedRect
+castToSVGAnimatedRect :: IsGObject obj => obj -> IO SVGAnimatedRect
 castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
 
 foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect :: GType
@@ -14672,7 +14680,7 @@ instance IsGObject SVGAnimatedString where
   unsafeCastGObject = SVGAnimatedString . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedString :: IsGObject obj => obj -> SVGAnimatedString
+castToSVGAnimatedString :: IsGObject obj => obj -> IO SVGAnimatedString
 castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
 
 foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString :: GType
@@ -14707,7 +14715,7 @@ instance IsGObject SVGAnimatedTransformList where
   unsafeCastGObject = SVGAnimatedTransformList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimatedTransformList :: IsGObject obj => obj -> SVGAnimatedTransformList
+castToSVGAnimatedTransformList :: IsGObject obj => obj -> IO SVGAnimatedTransformList
 castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimatedTransformList"
 
 foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList :: GType
@@ -14757,7 +14765,7 @@ instance IsGObject SVGAnimationElement where
   unsafeCastGObject = SVGAnimationElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGAnimationElement :: IsGObject obj => obj -> SVGAnimationElement
+castToSVGAnimationElement :: IsGObject obj => obj -> IO SVGAnimationElement
 castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement"
 
 foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement :: GType
@@ -14804,7 +14812,7 @@ instance IsGObject SVGCircleElement where
   unsafeCastGObject = SVGCircleElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGCircleElement :: IsGObject obj => obj -> SVGCircleElement
+castToSVGCircleElement :: IsGObject obj => obj -> IO SVGCircleElement
 castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
 
 foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement :: GType
@@ -14851,7 +14859,7 @@ instance IsGObject SVGClipPathElement where
   unsafeCastGObject = SVGClipPathElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGClipPathElement :: IsGObject obj => obj -> SVGClipPathElement
+castToSVGClipPathElement :: IsGObject obj => obj -> IO SVGClipPathElement
 castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
 
 foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement :: GType
@@ -14895,7 +14903,7 @@ instance IsGObject SVGColor where
   unsafeCastGObject = SVGColor . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGColor :: IsGObject obj => obj -> SVGColor
+castToSVGColor :: IsGObject obj => obj -> IO SVGColor
 castToSVGColor = castTo gTypeSVGColor "SVGColor"
 
 foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor :: GType
@@ -14945,7 +14953,7 @@ instance IsGObject SVGComponentTransferFunctionElement where
   unsafeCastGObject = SVGComponentTransferFunctionElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGComponentTransferFunctionElement :: IsGObject obj => obj -> SVGComponentTransferFunctionElement
+castToSVGComponentTransferFunctionElement :: IsGObject obj => obj -> IO SVGComponentTransferFunctionElement
 castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunctionElement "SVGComponentTransferFunctionElement"
 
 foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement :: GType
@@ -14990,7 +14998,7 @@ instance IsGObject SVGCursorElement where
   unsafeCastGObject = SVGCursorElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGCursorElement :: IsGObject obj => obj -> SVGCursorElement
+castToSVGCursorElement :: IsGObject obj => obj -> IO SVGCursorElement
 castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
 
 foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement :: GType
@@ -15037,7 +15045,7 @@ instance IsGObject SVGDefsElement where
   unsafeCastGObject = SVGDefsElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGDefsElement :: IsGObject obj => obj -> SVGDefsElement
+castToSVGDefsElement :: IsGObject obj => obj -> IO SVGDefsElement
 castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
 
 foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement :: GType
@@ -15082,7 +15090,7 @@ instance IsGObject SVGDescElement where
   unsafeCastGObject = SVGDescElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGDescElement :: IsGObject obj => obj -> SVGDescElement
+castToSVGDescElement :: IsGObject obj => obj -> IO SVGDescElement
 castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
 
 foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement :: GType
@@ -15125,7 +15133,7 @@ instance IsGObject SVGDocument where
   unsafeCastGObject = SVGDocument . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGDocument :: IsGObject obj => obj -> SVGDocument
+castToSVGDocument :: IsGObject obj => obj -> IO SVGDocument
 castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
 
 foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument :: GType
@@ -15173,7 +15181,7 @@ instance IsGObject SVGElement where
   unsafeCastGObject = SVGElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGElement :: IsGObject obj => obj -> SVGElement
+castToSVGElement :: IsGObject obj => obj -> IO SVGElement
 castToSVGElement = castTo gTypeSVGElement "SVGElement"
 
 foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GType
@@ -15220,7 +15228,7 @@ instance IsGObject SVGEllipseElement where
   unsafeCastGObject = SVGEllipseElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGEllipseElement :: IsGObject obj => obj -> SVGEllipseElement
+castToSVGEllipseElement :: IsGObject obj => obj -> IO SVGEllipseElement
 castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
 
 foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement :: GType
@@ -15255,7 +15263,7 @@ instance IsGObject SVGExternalResourcesRequired where
   unsafeCastGObject = SVGExternalResourcesRequired . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGExternalResourcesRequired :: IsGObject obj => obj -> SVGExternalResourcesRequired
+castToSVGExternalResourcesRequired :: IsGObject obj => obj -> IO SVGExternalResourcesRequired
 castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "SVGExternalResourcesRequired"
 
 foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired :: GType
@@ -15300,7 +15308,7 @@ instance IsGObject SVGFEBlendElement where
   unsafeCastGObject = SVGFEBlendElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEBlendElement :: IsGObject obj => obj -> SVGFEBlendElement
+castToSVGFEBlendElement :: IsGObject obj => obj -> IO SVGFEBlendElement
 castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
 
 foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement :: GType
@@ -15345,7 +15353,7 @@ instance IsGObject SVGFEColorMatrixElement where
   unsafeCastGObject = SVGFEColorMatrixElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEColorMatrixElement :: IsGObject obj => obj -> SVGFEColorMatrixElement
+castToSVGFEColorMatrixElement :: IsGObject obj => obj -> IO SVGFEColorMatrixElement
 castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorMatrixElement"
 
 foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement :: GType
@@ -15390,7 +15398,7 @@ instance IsGObject SVGFEComponentTransferElement where
   unsafeCastGObject = SVGFEComponentTransferElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEComponentTransferElement :: IsGObject obj => obj -> SVGFEComponentTransferElement
+castToSVGFEComponentTransferElement :: IsGObject obj => obj -> IO SVGFEComponentTransferElement
 castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement "SVGFEComponentTransferElement"
 
 foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement :: GType
@@ -15435,7 +15443,7 @@ instance IsGObject SVGFECompositeElement where
   unsafeCastGObject = SVGFECompositeElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFECompositeElement :: IsGObject obj => obj -> SVGFECompositeElement
+castToSVGFECompositeElement :: IsGObject obj => obj -> IO SVGFECompositeElement
 castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeElement"
 
 foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement :: GType
@@ -15480,7 +15488,7 @@ instance IsGObject SVGFEConvolveMatrixElement where
   unsafeCastGObject = SVGFEConvolveMatrixElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEConvolveMatrixElement :: IsGObject obj => obj -> SVGFEConvolveMatrixElement
+castToSVGFEConvolveMatrixElement :: IsGObject obj => obj -> IO SVGFEConvolveMatrixElement
 castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFEConvolveMatrixElement"
 
 foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement :: GType
@@ -15525,7 +15533,7 @@ instance IsGObject SVGFEDiffuseLightingElement where
   unsafeCastGObject = SVGFEDiffuseLightingElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEDiffuseLightingElement :: IsGObject obj => obj -> SVGFEDiffuseLightingElement
+castToSVGFEDiffuseLightingElement :: IsGObject obj => obj -> IO SVGFEDiffuseLightingElement
 castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVGFEDiffuseLightingElement"
 
 foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement :: GType
@@ -15570,7 +15578,7 @@ instance IsGObject SVGFEDisplacementMapElement where
   unsafeCastGObject = SVGFEDisplacementMapElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEDisplacementMapElement :: IsGObject obj => obj -> SVGFEDisplacementMapElement
+castToSVGFEDisplacementMapElement :: IsGObject obj => obj -> IO SVGFEDisplacementMapElement
 castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVGFEDisplacementMapElement"
 
 foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement :: GType
@@ -15615,7 +15623,7 @@ instance IsGObject SVGFEDistantLightElement where
   unsafeCastGObject = SVGFEDistantLightElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEDistantLightElement :: IsGObject obj => obj -> SVGFEDistantLightElement
+castToSVGFEDistantLightElement :: IsGObject obj => obj -> IO SVGFEDistantLightElement
 castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDistantLightElement"
 
 foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement :: GType
@@ -15660,7 +15668,7 @@ instance IsGObject SVGFEDropShadowElement where
   unsafeCastGObject = SVGFEDropShadowElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEDropShadowElement :: IsGObject obj => obj -> SVGFEDropShadowElement
+castToSVGFEDropShadowElement :: IsGObject obj => obj -> IO SVGFEDropShadowElement
 castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShadowElement"
 
 foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement :: GType
@@ -15705,7 +15713,7 @@ instance IsGObject SVGFEFloodElement where
   unsafeCastGObject = SVGFEFloodElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEFloodElement :: IsGObject obj => obj -> SVGFEFloodElement
+castToSVGFEFloodElement :: IsGObject obj => obj -> IO SVGFEFloodElement
 castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
 
 foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement :: GType
@@ -15752,7 +15760,7 @@ instance IsGObject SVGFEFuncAElement where
   unsafeCastGObject = SVGFEFuncAElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEFuncAElement :: IsGObject obj => obj -> SVGFEFuncAElement
+castToSVGFEFuncAElement :: IsGObject obj => obj -> IO SVGFEFuncAElement
 castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement :: GType
@@ -15799,7 +15807,7 @@ instance IsGObject SVGFEFuncBElement where
   unsafeCastGObject = SVGFEFuncBElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEFuncBElement :: IsGObject obj => obj -> SVGFEFuncBElement
+castToSVGFEFuncBElement :: IsGObject obj => obj -> IO SVGFEFuncBElement
 castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement :: GType
@@ -15846,7 +15854,7 @@ instance IsGObject SVGFEFuncGElement where
   unsafeCastGObject = SVGFEFuncGElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEFuncGElement :: IsGObject obj => obj -> SVGFEFuncGElement
+castToSVGFEFuncGElement :: IsGObject obj => obj -> IO SVGFEFuncGElement
 castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement :: GType
@@ -15893,7 +15901,7 @@ instance IsGObject SVGFEFuncRElement where
   unsafeCastGObject = SVGFEFuncRElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEFuncRElement :: IsGObject obj => obj -> SVGFEFuncRElement
+castToSVGFEFuncRElement :: IsGObject obj => obj -> IO SVGFEFuncRElement
 castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
 
 foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement :: GType
@@ -15938,7 +15946,7 @@ instance IsGObject SVGFEGaussianBlurElement where
   unsafeCastGObject = SVGFEGaussianBlurElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEGaussianBlurElement :: IsGObject obj => obj -> SVGFEGaussianBlurElement
+castToSVGFEGaussianBlurElement :: IsGObject obj => obj -> IO SVGFEGaussianBlurElement
 castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaussianBlurElement"
 
 foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement :: GType
@@ -15983,7 +15991,7 @@ instance IsGObject SVGFEImageElement where
   unsafeCastGObject = SVGFEImageElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEImageElement :: IsGObject obj => obj -> SVGFEImageElement
+castToSVGFEImageElement :: IsGObject obj => obj -> IO SVGFEImageElement
 castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
 
 foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement :: GType
@@ -16028,7 +16036,7 @@ instance IsGObject SVGFEMergeElement where
   unsafeCastGObject = SVGFEMergeElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEMergeElement :: IsGObject obj => obj -> SVGFEMergeElement
+castToSVGFEMergeElement :: IsGObject obj => obj -> IO SVGFEMergeElement
 castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
 
 foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement :: GType
@@ -16073,7 +16081,7 @@ instance IsGObject SVGFEMergeNodeElement where
   unsafeCastGObject = SVGFEMergeNodeElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEMergeNodeElement :: IsGObject obj => obj -> SVGFEMergeNodeElement
+castToSVGFEMergeNodeElement :: IsGObject obj => obj -> IO SVGFEMergeNodeElement
 castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeElement"
 
 foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement :: GType
@@ -16118,7 +16126,7 @@ instance IsGObject SVGFEMorphologyElement where
   unsafeCastGObject = SVGFEMorphologyElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEMorphologyElement :: IsGObject obj => obj -> SVGFEMorphologyElement
+castToSVGFEMorphologyElement :: IsGObject obj => obj -> IO SVGFEMorphologyElement
 castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorphologyElement"
 
 foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement :: GType
@@ -16163,7 +16171,7 @@ instance IsGObject SVGFEOffsetElement where
   unsafeCastGObject = SVGFEOffsetElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEOffsetElement :: IsGObject obj => obj -> SVGFEOffsetElement
+castToSVGFEOffsetElement :: IsGObject obj => obj -> IO SVGFEOffsetElement
 castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
 
 foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement :: GType
@@ -16208,7 +16216,7 @@ instance IsGObject SVGFEPointLightElement where
   unsafeCastGObject = SVGFEPointLightElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFEPointLightElement :: IsGObject obj => obj -> SVGFEPointLightElement
+castToSVGFEPointLightElement :: IsGObject obj => obj -> IO SVGFEPointLightElement
 castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLightElement"
 
 foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement :: GType
@@ -16253,7 +16261,7 @@ instance IsGObject SVGFESpecularLightingElement where
   unsafeCastGObject = SVGFESpecularLightingElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFESpecularLightingElement :: IsGObject obj => obj -> SVGFESpecularLightingElement
+castToSVGFESpecularLightingElement :: IsGObject obj => obj -> IO SVGFESpecularLightingElement
 castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "SVGFESpecularLightingElement"
 
 foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement :: GType
@@ -16298,7 +16306,7 @@ instance IsGObject SVGFESpotLightElement where
   unsafeCastGObject = SVGFESpotLightElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFESpotLightElement :: IsGObject obj => obj -> SVGFESpotLightElement
+castToSVGFESpotLightElement :: IsGObject obj => obj -> IO SVGFESpotLightElement
 castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightElement"
 
 foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement :: GType
@@ -16343,7 +16351,7 @@ instance IsGObject SVGFETileElement where
   unsafeCastGObject = SVGFETileElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFETileElement :: IsGObject obj => obj -> SVGFETileElement
+castToSVGFETileElement :: IsGObject obj => obj -> IO SVGFETileElement
 castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
 
 foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement :: GType
@@ -16388,7 +16396,7 @@ instance IsGObject SVGFETurbulenceElement where
   unsafeCastGObject = SVGFETurbulenceElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFETurbulenceElement :: IsGObject obj => obj -> SVGFETurbulenceElement
+castToSVGFETurbulenceElement :: IsGObject obj => obj -> IO SVGFETurbulenceElement
 castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulenceElement"
 
 foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement :: GType
@@ -16433,7 +16441,7 @@ instance IsGObject SVGFilterElement where
   unsafeCastGObject = SVGFilterElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFilterElement :: IsGObject obj => obj -> SVGFilterElement
+castToSVGFilterElement :: IsGObject obj => obj -> IO SVGFilterElement
 castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
 
 foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement :: GType
@@ -16468,7 +16476,7 @@ instance IsGObject SVGFilterPrimitiveStandardAttributes where
   unsafeCastGObject = SVGFilterPrimitiveStandardAttributes . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFilterPrimitiveStandardAttributes :: IsGObject obj => obj -> SVGFilterPrimitiveStandardAttributes
+castToSVGFilterPrimitiveStandardAttributes :: IsGObject obj => obj -> IO SVGFilterPrimitiveStandardAttributes
 castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStandardAttributes "SVGFilterPrimitiveStandardAttributes"
 
 foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes :: GType
@@ -16503,7 +16511,7 @@ instance IsGObject SVGFitToViewBox where
   unsafeCastGObject = SVGFitToViewBox . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFitToViewBox :: IsGObject obj => obj -> SVGFitToViewBox
+castToSVGFitToViewBox :: IsGObject obj => obj -> IO SVGFitToViewBox
 castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
 
 foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox :: GType
@@ -16548,7 +16556,7 @@ instance IsGObject SVGFontElement where
   unsafeCastGObject = SVGFontElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontElement :: IsGObject obj => obj -> SVGFontElement
+castToSVGFontElement :: IsGObject obj => obj -> IO SVGFontElement
 castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
 
 foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement :: GType
@@ -16593,7 +16601,7 @@ instance IsGObject SVGFontFaceElement where
   unsafeCastGObject = SVGFontFaceElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontFaceElement :: IsGObject obj => obj -> SVGFontFaceElement
+castToSVGFontFaceElement :: IsGObject obj => obj -> IO SVGFontFaceElement
 castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement :: GType
@@ -16638,7 +16646,7 @@ instance IsGObject SVGFontFaceFormatElement where
   unsafeCastGObject = SVGFontFaceFormatElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontFaceFormatElement :: IsGObject obj => obj -> SVGFontFaceFormatElement
+castToSVGFontFaceFormatElement :: IsGObject obj => obj -> IO SVGFontFaceFormatElement
 castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFaceFormatElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement :: GType
@@ -16683,7 +16691,7 @@ instance IsGObject SVGFontFaceNameElement where
   unsafeCastGObject = SVGFontFaceNameElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontFaceNameElement :: IsGObject obj => obj -> SVGFontFaceNameElement
+castToSVGFontFaceNameElement :: IsGObject obj => obj -> IO SVGFontFaceNameElement
 castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNameElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement :: GType
@@ -16728,7 +16736,7 @@ instance IsGObject SVGFontFaceSrcElement where
   unsafeCastGObject = SVGFontFaceSrcElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontFaceSrcElement :: IsGObject obj => obj -> SVGFontFaceSrcElement
+castToSVGFontFaceSrcElement :: IsGObject obj => obj -> IO SVGFontFaceSrcElement
 castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement :: GType
@@ -16773,7 +16781,7 @@ instance IsGObject SVGFontFaceUriElement where
   unsafeCastGObject = SVGFontFaceUriElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGFontFaceUriElement :: IsGObject obj => obj -> SVGFontFaceUriElement
+castToSVGFontFaceUriElement :: IsGObject obj => obj -> IO SVGFontFaceUriElement
 castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriElement"
 
 foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement :: GType
@@ -16820,7 +16828,7 @@ instance IsGObject SVGForeignObjectElement where
   unsafeCastGObject = SVGForeignObjectElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGForeignObjectElement :: IsGObject obj => obj -> SVGForeignObjectElement
+castToSVGForeignObjectElement :: IsGObject obj => obj -> IO SVGForeignObjectElement
 castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignObjectElement"
 
 foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement :: GType
@@ -16867,7 +16875,7 @@ instance IsGObject SVGGElement where
   unsafeCastGObject = SVGGElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGGElement :: IsGObject obj => obj -> SVGGElement
+castToSVGGElement :: IsGObject obj => obj -> IO SVGGElement
 castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
 
 foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: GType
@@ -16912,7 +16920,7 @@ instance IsGObject SVGGlyphElement where
   unsafeCastGObject = SVGGlyphElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGGlyphElement :: IsGObject obj => obj -> SVGGlyphElement
+castToSVGGlyphElement :: IsGObject obj => obj -> IO SVGGlyphElement
 castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement :: GType
@@ -16957,7 +16965,7 @@ instance IsGObject SVGGlyphRefElement where
   unsafeCastGObject = SVGGlyphRefElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGGlyphRefElement :: IsGObject obj => obj -> SVGGlyphRefElement
+castToSVGGlyphRefElement :: IsGObject obj => obj -> IO SVGGlyphRefElement
 castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
 
 foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement :: GType
@@ -17007,7 +17015,7 @@ instance IsGObject SVGGradientElement where
   unsafeCastGObject = SVGGradientElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGGradientElement :: IsGObject obj => obj -> SVGGradientElement
+castToSVGGradientElement :: IsGObject obj => obj -> IO SVGGradientElement
 castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
 
 foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement :: GType
@@ -17057,7 +17065,7 @@ instance IsGObject SVGGraphicsElement where
   unsafeCastGObject = SVGGraphicsElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGGraphicsElement :: IsGObject obj => obj -> SVGGraphicsElement
+castToSVGGraphicsElement :: IsGObject obj => obj -> IO SVGGraphicsElement
 castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
 
 foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement :: GType
@@ -17102,7 +17110,7 @@ instance IsGObject SVGHKernElement where
   unsafeCastGObject = SVGHKernElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGHKernElement :: IsGObject obj => obj -> SVGHKernElement
+castToSVGHKernElement :: IsGObject obj => obj -> IO SVGHKernElement
 castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
 
 foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement :: GType
@@ -17149,7 +17157,7 @@ instance IsGObject SVGImageElement where
   unsafeCastGObject = SVGImageElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGImageElement :: IsGObject obj => obj -> SVGImageElement
+castToSVGImageElement :: IsGObject obj => obj -> IO SVGImageElement
 castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
 
 foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement :: GType
@@ -17184,7 +17192,7 @@ instance IsGObject SVGLength where
   unsafeCastGObject = SVGLength . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGLength :: IsGObject obj => obj -> SVGLength
+castToSVGLength :: IsGObject obj => obj -> IO SVGLength
 castToSVGLength = castTo gTypeSVGLength "SVGLength"
 
 foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength :: GType
@@ -17219,7 +17227,7 @@ instance IsGObject SVGLengthList where
   unsafeCastGObject = SVGLengthList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGLengthList :: IsGObject obj => obj -> SVGLengthList
+castToSVGLengthList :: IsGObject obj => obj -> IO SVGLengthList
 castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
 
 foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList :: GType
@@ -17266,7 +17274,7 @@ instance IsGObject SVGLineElement where
   unsafeCastGObject = SVGLineElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGLineElement :: IsGObject obj => obj -> SVGLineElement
+castToSVGLineElement :: IsGObject obj => obj -> IO SVGLineElement
 castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
 
 foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement :: GType
@@ -17313,7 +17321,7 @@ instance IsGObject SVGLinearGradientElement where
   unsafeCastGObject = SVGLinearGradientElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGLinearGradientElement :: IsGObject obj => obj -> SVGLinearGradientElement
+castToSVGLinearGradientElement :: IsGObject obj => obj -> IO SVGLinearGradientElement
 castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinearGradientElement"
 
 foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement :: GType
@@ -17358,7 +17366,7 @@ instance IsGObject SVGMPathElement where
   unsafeCastGObject = SVGMPathElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMPathElement :: IsGObject obj => obj -> SVGMPathElement
+castToSVGMPathElement :: IsGObject obj => obj -> IO SVGMPathElement
 castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
 
 foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement :: GType
@@ -17403,7 +17411,7 @@ instance IsGObject SVGMarkerElement where
   unsafeCastGObject = SVGMarkerElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMarkerElement :: IsGObject obj => obj -> SVGMarkerElement
+castToSVGMarkerElement :: IsGObject obj => obj -> IO SVGMarkerElement
 castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
 
 foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement :: GType
@@ -17448,7 +17456,7 @@ instance IsGObject SVGMaskElement where
   unsafeCastGObject = SVGMaskElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMaskElement :: IsGObject obj => obj -> SVGMaskElement
+castToSVGMaskElement :: IsGObject obj => obj -> IO SVGMaskElement
 castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
 
 foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement :: GType
@@ -17483,7 +17491,7 @@ instance IsGObject SVGMatrix where
   unsafeCastGObject = SVGMatrix . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMatrix :: IsGObject obj => obj -> SVGMatrix
+castToSVGMatrix :: IsGObject obj => obj -> IO SVGMatrix
 castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
 
 foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
@@ -17528,7 +17536,7 @@ instance IsGObject SVGMetadataElement where
   unsafeCastGObject = SVGMetadataElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMetadataElement :: IsGObject obj => obj -> SVGMetadataElement
+castToSVGMetadataElement :: IsGObject obj => obj -> IO SVGMetadataElement
 castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
 
 foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement :: GType
@@ -17573,7 +17581,7 @@ instance IsGObject SVGMissingGlyphElement where
   unsafeCastGObject = SVGMissingGlyphElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGMissingGlyphElement :: IsGObject obj => obj -> SVGMissingGlyphElement
+castToSVGMissingGlyphElement :: IsGObject obj => obj -> IO SVGMissingGlyphElement
 castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGlyphElement"
 
 foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement :: GType
@@ -17608,7 +17616,7 @@ instance IsGObject SVGNumber where
   unsafeCastGObject = SVGNumber . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGNumber :: IsGObject obj => obj -> SVGNumber
+castToSVGNumber :: IsGObject obj => obj -> IO SVGNumber
 castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
 
 foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber :: GType
@@ -17643,7 +17651,7 @@ instance IsGObject SVGNumberList where
   unsafeCastGObject = SVGNumberList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGNumberList :: IsGObject obj => obj -> SVGNumberList
+castToSVGNumberList :: IsGObject obj => obj -> IO SVGNumberList
 castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
 
 foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList :: GType
@@ -17684,7 +17692,7 @@ instance IsGObject SVGPaint where
   unsafeCastGObject = SVGPaint . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPaint :: IsGObject obj => obj -> SVGPaint
+castToSVGPaint :: IsGObject obj => obj -> IO SVGPaint
 castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
 
 foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint :: GType
@@ -17731,7 +17739,7 @@ instance IsGObject SVGPathElement where
   unsafeCastGObject = SVGPathElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathElement :: IsGObject obj => obj -> SVGPathElement
+castToSVGPathElement :: IsGObject obj => obj -> IO SVGPathElement
 castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
 
 foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement :: GType
@@ -17771,7 +17779,7 @@ instance IsGObject SVGPathSeg where
   unsafeCastGObject = SVGPathSeg . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSeg :: IsGObject obj => obj -> SVGPathSeg
+castToSVGPathSeg :: IsGObject obj => obj -> IO SVGPathSeg
 castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
 
 foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg :: GType
@@ -17810,7 +17818,7 @@ instance IsGObject SVGPathSegArcAbs where
   unsafeCastGObject = SVGPathSegArcAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegArcAbs :: IsGObject obj => obj -> SVGPathSegArcAbs
+castToSVGPathSegArcAbs :: IsGObject obj => obj -> IO SVGPathSegArcAbs
 castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs :: GType
@@ -17849,7 +17857,7 @@ instance IsGObject SVGPathSegArcRel where
   unsafeCastGObject = SVGPathSegArcRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegArcRel :: IsGObject obj => obj -> SVGPathSegArcRel
+castToSVGPathSegArcRel :: IsGObject obj => obj -> IO SVGPathSegArcRel
 castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel :: GType
@@ -17888,7 +17896,7 @@ instance IsGObject SVGPathSegClosePath where
   unsafeCastGObject = SVGPathSegClosePath . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegClosePath :: IsGObject obj => obj -> SVGPathSegClosePath
+castToSVGPathSegClosePath :: IsGObject obj => obj -> IO SVGPathSegClosePath
 castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath"
 
 foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath :: GType
@@ -17927,7 +17935,7 @@ instance IsGObject SVGPathSegCurvetoCubicAbs where
   unsafeCastGObject = SVGPathSegCurvetoCubicAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoCubicAbs :: IsGObject obj => obj -> SVGPathSegCurvetoCubicAbs
+castToSVGPathSegCurvetoCubicAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicAbs
 castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPathSegCurvetoCubicAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs :: GType
@@ -17966,7 +17974,7 @@ instance IsGObject SVGPathSegCurvetoCubicRel where
   unsafeCastGObject = SVGPathSegCurvetoCubicRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoCubicRel :: IsGObject obj => obj -> SVGPathSegCurvetoCubicRel
+castToSVGPathSegCurvetoCubicRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicRel
 castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPathSegCurvetoCubicRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel :: GType
@@ -18005,7 +18013,7 @@ instance IsGObject SVGPathSegCurvetoCubicSmoothAbs where
   unsafeCastGObject = SVGPathSegCurvetoCubicSmoothAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoCubicSmoothAbs :: IsGObject obj => obj -> SVGPathSegCurvetoCubicSmoothAbs
+castToSVGPathSegCurvetoCubicSmoothAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicSmoothAbs
 castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmoothAbs "SVGPathSegCurvetoCubicSmoothAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs :: GType
@@ -18044,7 +18052,7 @@ instance IsGObject SVGPathSegCurvetoCubicSmoothRel where
   unsafeCastGObject = SVGPathSegCurvetoCubicSmoothRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoCubicSmoothRel :: IsGObject obj => obj -> SVGPathSegCurvetoCubicSmoothRel
+castToSVGPathSegCurvetoCubicSmoothRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicSmoothRel
 castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmoothRel "SVGPathSegCurvetoCubicSmoothRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel :: GType
@@ -18083,7 +18091,7 @@ instance IsGObject SVGPathSegCurvetoQuadraticAbs where
   unsafeCastGObject = SVGPathSegCurvetoQuadraticAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoQuadraticAbs :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticAbs
+castToSVGPathSegCurvetoQuadraticAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticAbs
 castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs "SVGPathSegCurvetoQuadraticAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs :: GType
@@ -18122,7 +18130,7 @@ instance IsGObject SVGPathSegCurvetoQuadraticRel where
   unsafeCastGObject = SVGPathSegCurvetoQuadraticRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoQuadraticRel :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticRel
+castToSVGPathSegCurvetoQuadraticRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticRel
 castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel "SVGPathSegCurvetoQuadraticRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel :: GType
@@ -18161,7 +18169,7 @@ instance IsGObject SVGPathSegCurvetoQuadraticSmoothAbs where
   unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoQuadraticSmoothAbs :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticSmoothAbs
+castToSVGPathSegCurvetoQuadraticSmoothAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticSmoothAbs
 castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadraticSmoothAbs "SVGPathSegCurvetoQuadraticSmoothAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs :: GType
@@ -18200,7 +18208,7 @@ instance IsGObject SVGPathSegCurvetoQuadraticSmoothRel where
   unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegCurvetoQuadraticSmoothRel :: IsGObject obj => obj -> SVGPathSegCurvetoQuadraticSmoothRel
+castToSVGPathSegCurvetoQuadraticSmoothRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticSmoothRel
 castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadraticSmoothRel "SVGPathSegCurvetoQuadraticSmoothRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel :: GType
@@ -18239,7 +18247,7 @@ instance IsGObject SVGPathSegLinetoAbs where
   unsafeCastGObject = SVGPathSegLinetoAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoAbs :: IsGObject obj => obj -> SVGPathSegLinetoAbs
+castToSVGPathSegLinetoAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoAbs
 castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs :: GType
@@ -18278,7 +18286,7 @@ instance IsGObject SVGPathSegLinetoHorizontalAbs where
   unsafeCastGObject = SVGPathSegLinetoHorizontalAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoHorizontalAbs :: IsGObject obj => obj -> SVGPathSegLinetoHorizontalAbs
+castToSVGPathSegLinetoHorizontalAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoHorizontalAbs
 castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs "SVGPathSegLinetoHorizontalAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs :: GType
@@ -18317,7 +18325,7 @@ instance IsGObject SVGPathSegLinetoHorizontalRel where
   unsafeCastGObject = SVGPathSegLinetoHorizontalRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoHorizontalRel :: IsGObject obj => obj -> SVGPathSegLinetoHorizontalRel
+castToSVGPathSegLinetoHorizontalRel :: IsGObject obj => obj -> IO SVGPathSegLinetoHorizontalRel
 castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel "SVGPathSegLinetoHorizontalRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel :: GType
@@ -18356,7 +18364,7 @@ instance IsGObject SVGPathSegLinetoRel where
   unsafeCastGObject = SVGPathSegLinetoRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoRel :: IsGObject obj => obj -> SVGPathSegLinetoRel
+castToSVGPathSegLinetoRel :: IsGObject obj => obj -> IO SVGPathSegLinetoRel
 castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel :: GType
@@ -18395,7 +18403,7 @@ instance IsGObject SVGPathSegLinetoVerticalAbs where
   unsafeCastGObject = SVGPathSegLinetoVerticalAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoVerticalAbs :: IsGObject obj => obj -> SVGPathSegLinetoVerticalAbs
+castToSVGPathSegLinetoVerticalAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoVerticalAbs
 castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVGPathSegLinetoVerticalAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs :: GType
@@ -18434,7 +18442,7 @@ instance IsGObject SVGPathSegLinetoVerticalRel where
   unsafeCastGObject = SVGPathSegLinetoVerticalRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegLinetoVerticalRel :: IsGObject obj => obj -> SVGPathSegLinetoVerticalRel
+castToSVGPathSegLinetoVerticalRel :: IsGObject obj => obj -> IO SVGPathSegLinetoVerticalRel
 castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVGPathSegLinetoVerticalRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel :: GType
@@ -18469,7 +18477,7 @@ instance IsGObject SVGPathSegList where
   unsafeCastGObject = SVGPathSegList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegList :: IsGObject obj => obj -> SVGPathSegList
+castToSVGPathSegList :: IsGObject obj => obj -> IO SVGPathSegList
 castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
 
 foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList :: GType
@@ -18508,7 +18516,7 @@ instance IsGObject SVGPathSegMovetoAbs where
   unsafeCastGObject = SVGPathSegMovetoAbs . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegMovetoAbs :: IsGObject obj => obj -> SVGPathSegMovetoAbs
+castToSVGPathSegMovetoAbs :: IsGObject obj => obj -> IO SVGPathSegMovetoAbs
 castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs"
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs :: GType
@@ -18547,7 +18555,7 @@ instance IsGObject SVGPathSegMovetoRel where
   unsafeCastGObject = SVGPathSegMovetoRel . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPathSegMovetoRel :: IsGObject obj => obj -> SVGPathSegMovetoRel
+castToSVGPathSegMovetoRel :: IsGObject obj => obj -> IO SVGPathSegMovetoRel
 castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel"
 
 foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel :: GType
@@ -18592,7 +18600,7 @@ instance IsGObject SVGPatternElement where
   unsafeCastGObject = SVGPatternElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPatternElement :: IsGObject obj => obj -> SVGPatternElement
+castToSVGPatternElement :: IsGObject obj => obj -> IO SVGPatternElement
 castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
 
 foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement :: GType
@@ -18627,7 +18635,7 @@ instance IsGObject SVGPoint where
   unsafeCastGObject = SVGPoint . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPoint :: IsGObject obj => obj -> SVGPoint
+castToSVGPoint :: IsGObject obj => obj -> IO SVGPoint
 castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
 
 foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint :: GType
@@ -18662,7 +18670,7 @@ instance IsGObject SVGPointList where
   unsafeCastGObject = SVGPointList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPointList :: IsGObject obj => obj -> SVGPointList
+castToSVGPointList :: IsGObject obj => obj -> IO SVGPointList
 castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
 
 foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList :: GType
@@ -18709,7 +18717,7 @@ instance IsGObject SVGPolygonElement where
   unsafeCastGObject = SVGPolygonElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPolygonElement :: IsGObject obj => obj -> SVGPolygonElement
+castToSVGPolygonElement :: IsGObject obj => obj -> IO SVGPolygonElement
 castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
 
 foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement :: GType
@@ -18756,7 +18764,7 @@ instance IsGObject SVGPolylineElement where
   unsafeCastGObject = SVGPolylineElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPolylineElement :: IsGObject obj => obj -> SVGPolylineElement
+castToSVGPolylineElement :: IsGObject obj => obj -> IO SVGPolylineElement
 castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
 
 foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement :: GType
@@ -18791,7 +18799,7 @@ instance IsGObject SVGPreserveAspectRatio where
   unsafeCastGObject = SVGPreserveAspectRatio . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGPreserveAspectRatio :: IsGObject obj => obj -> SVGPreserveAspectRatio
+castToSVGPreserveAspectRatio :: IsGObject obj => obj -> IO SVGPreserveAspectRatio
 castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAspectRatio"
 
 foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio :: GType
@@ -18838,7 +18846,7 @@ instance IsGObject SVGRadialGradientElement where
   unsafeCastGObject = SVGRadialGradientElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGRadialGradientElement :: IsGObject obj => obj -> SVGRadialGradientElement
+castToSVGRadialGradientElement :: IsGObject obj => obj -> IO SVGRadialGradientElement
 castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadialGradientElement"
 
 foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement :: GType
@@ -18873,7 +18881,7 @@ instance IsGObject SVGRect where
   unsafeCastGObject = SVGRect . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGRect :: IsGObject obj => obj -> SVGRect
+castToSVGRect :: IsGObject obj => obj -> IO SVGRect
 castToSVGRect = castTo gTypeSVGRect "SVGRect"
 
 foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
@@ -18920,7 +18928,7 @@ instance IsGObject SVGRectElement where
   unsafeCastGObject = SVGRectElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGRectElement :: IsGObject obj => obj -> SVGRectElement
+castToSVGRectElement :: IsGObject obj => obj -> IO SVGRectElement
 castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
 
 foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement :: GType
@@ -18955,7 +18963,7 @@ instance IsGObject SVGRenderingIntent where
   unsafeCastGObject = SVGRenderingIntent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGRenderingIntent :: IsGObject obj => obj -> SVGRenderingIntent
+castToSVGRenderingIntent :: IsGObject obj => obj -> IO SVGRenderingIntent
 castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
 
 foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent :: GType
@@ -19002,7 +19010,7 @@ instance IsGObject SVGSVGElement where
   unsafeCastGObject = SVGSVGElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGSVGElement :: IsGObject obj => obj -> SVGSVGElement
+castToSVGSVGElement :: IsGObject obj => obj -> IO SVGSVGElement
 castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
 
 foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement :: GType
@@ -19047,7 +19055,7 @@ instance IsGObject SVGScriptElement where
   unsafeCastGObject = SVGScriptElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGScriptElement :: IsGObject obj => obj -> SVGScriptElement
+castToSVGScriptElement :: IsGObject obj => obj -> IO SVGScriptElement
 castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
 
 foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement :: GType
@@ -19094,7 +19102,7 @@ instance IsGObject SVGSetElement where
   unsafeCastGObject = SVGSetElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGSetElement :: IsGObject obj => obj -> SVGSetElement
+castToSVGSetElement :: IsGObject obj => obj -> IO SVGSetElement
 castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
 
 foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement :: GType
@@ -19139,7 +19147,7 @@ instance IsGObject SVGStopElement where
   unsafeCastGObject = SVGStopElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGStopElement :: IsGObject obj => obj -> SVGStopElement
+castToSVGStopElement :: IsGObject obj => obj -> IO SVGStopElement
 castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
 
 foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement :: GType
@@ -19174,7 +19182,7 @@ instance IsGObject SVGStringList where
   unsafeCastGObject = SVGStringList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGStringList :: IsGObject obj => obj -> SVGStringList
+castToSVGStringList :: IsGObject obj => obj -> IO SVGStringList
 castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
 
 foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList :: GType
@@ -19219,7 +19227,7 @@ instance IsGObject SVGStyleElement where
   unsafeCastGObject = SVGStyleElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGStyleElement :: IsGObject obj => obj -> SVGStyleElement
+castToSVGStyleElement :: IsGObject obj => obj -> IO SVGStyleElement
 castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
 
 foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement :: GType
@@ -19266,7 +19274,7 @@ instance IsGObject SVGSwitchElement where
   unsafeCastGObject = SVGSwitchElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGSwitchElement :: IsGObject obj => obj -> SVGSwitchElement
+castToSVGSwitchElement :: IsGObject obj => obj -> IO SVGSwitchElement
 castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
 
 foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement :: GType
@@ -19311,7 +19319,7 @@ instance IsGObject SVGSymbolElement where
   unsafeCastGObject = SVGSymbolElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGSymbolElement :: IsGObject obj => obj -> SVGSymbolElement
+castToSVGSymbolElement :: IsGObject obj => obj -> IO SVGSymbolElement
 castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
 
 foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement :: GType
@@ -19362,7 +19370,7 @@ instance IsGObject SVGTRefElement where
   unsafeCastGObject = SVGTRefElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTRefElement :: IsGObject obj => obj -> SVGTRefElement
+castToSVGTRefElement :: IsGObject obj => obj -> IO SVGTRefElement
 castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
 
 foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement :: GType
@@ -19413,7 +19421,7 @@ instance IsGObject SVGTSpanElement where
   unsafeCastGObject = SVGTSpanElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTSpanElement :: IsGObject obj => obj -> SVGTSpanElement
+castToSVGTSpanElement :: IsGObject obj => obj -> IO SVGTSpanElement
 castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
 
 foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement :: GType
@@ -19448,7 +19456,7 @@ instance IsGObject SVGTests where
   unsafeCastGObject = SVGTests . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTests :: IsGObject obj => obj -> SVGTests
+castToSVGTests :: IsGObject obj => obj -> IO SVGTests
 castToSVGTests = castTo gTypeSVGTests "SVGTests"
 
 foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
@@ -19500,7 +19508,7 @@ instance IsGObject SVGTextContentElement where
   unsafeCastGObject = SVGTextContentElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTextContentElement :: IsGObject obj => obj -> SVGTextContentElement
+castToSVGTextContentElement :: IsGObject obj => obj -> IO SVGTextContentElement
 castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentElement"
 
 foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement :: GType
@@ -19551,7 +19559,7 @@ instance IsGObject SVGTextElement where
   unsafeCastGObject = SVGTextElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTextElement :: IsGObject obj => obj -> SVGTextElement
+castToSVGTextElement :: IsGObject obj => obj -> IO SVGTextElement
 castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
 
 foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement :: GType
@@ -19600,7 +19608,7 @@ instance IsGObject SVGTextPathElement where
   unsafeCastGObject = SVGTextPathElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTextPathElement :: IsGObject obj => obj -> SVGTextPathElement
+castToSVGTextPathElement :: IsGObject obj => obj -> IO SVGTextPathElement
 castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
 
 foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement :: GType
@@ -19654,7 +19662,7 @@ instance IsGObject SVGTextPositioningElement where
   unsafeCastGObject = SVGTextPositioningElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTextPositioningElement :: IsGObject obj => obj -> SVGTextPositioningElement
+castToSVGTextPositioningElement :: IsGObject obj => obj -> IO SVGTextPositioningElement
 castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGTextPositioningElement"
 
 foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement :: GType
@@ -19699,7 +19707,7 @@ instance IsGObject SVGTitleElement where
   unsafeCastGObject = SVGTitleElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTitleElement :: IsGObject obj => obj -> SVGTitleElement
+castToSVGTitleElement :: IsGObject obj => obj -> IO SVGTitleElement
 castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
 
 foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement :: GType
@@ -19734,7 +19742,7 @@ instance IsGObject SVGTransform where
   unsafeCastGObject = SVGTransform . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTransform :: IsGObject obj => obj -> SVGTransform
+castToSVGTransform :: IsGObject obj => obj -> IO SVGTransform
 castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
 
 foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform :: GType
@@ -19769,7 +19777,7 @@ instance IsGObject SVGTransformList where
   unsafeCastGObject = SVGTransformList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGTransformList :: IsGObject obj => obj -> SVGTransformList
+castToSVGTransformList :: IsGObject obj => obj -> IO SVGTransformList
 castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
 
 foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList :: GType
@@ -19804,7 +19812,7 @@ instance IsGObject SVGURIReference where
   unsafeCastGObject = SVGURIReference . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGURIReference :: IsGObject obj => obj -> SVGURIReference
+castToSVGURIReference :: IsGObject obj => obj -> IO SVGURIReference
 castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
 
 foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference :: GType
@@ -19839,7 +19847,7 @@ instance IsGObject SVGUnitTypes where
   unsafeCastGObject = SVGUnitTypes . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGUnitTypes :: IsGObject obj => obj -> SVGUnitTypes
+castToSVGUnitTypes :: IsGObject obj => obj -> IO SVGUnitTypes
 castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
 
 foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes :: GType
@@ -19886,7 +19894,7 @@ instance IsGObject SVGUseElement where
   unsafeCastGObject = SVGUseElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGUseElement :: IsGObject obj => obj -> SVGUseElement
+castToSVGUseElement :: IsGObject obj => obj -> IO SVGUseElement
 castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
 
 foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement :: GType
@@ -19931,7 +19939,7 @@ instance IsGObject SVGVKernElement where
   unsafeCastGObject = SVGVKernElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGVKernElement :: IsGObject obj => obj -> SVGVKernElement
+castToSVGVKernElement :: IsGObject obj => obj -> IO SVGVKernElement
 castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
 
 foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement :: GType
@@ -19976,7 +19984,7 @@ instance IsGObject SVGViewElement where
   unsafeCastGObject = SVGViewElement . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGViewElement :: IsGObject obj => obj -> SVGViewElement
+castToSVGViewElement :: IsGObject obj => obj -> IO SVGViewElement
 castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
 
 foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement :: GType
@@ -20011,7 +20019,7 @@ instance IsGObject SVGViewSpec where
   unsafeCastGObject = SVGViewSpec . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGViewSpec :: IsGObject obj => obj -> SVGViewSpec
+castToSVGViewSpec :: IsGObject obj => obj -> IO SVGViewSpec
 castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
 
 foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec :: GType
@@ -20046,7 +20054,7 @@ instance IsGObject SVGZoomAndPan where
   unsafeCastGObject = SVGZoomAndPan . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGZoomAndPan :: IsGObject obj => obj -> SVGZoomAndPan
+castToSVGZoomAndPan :: IsGObject obj => obj -> IO SVGZoomAndPan
 castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
 
 foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan :: GType
@@ -20087,7 +20095,7 @@ instance IsGObject SVGZoomEvent where
   unsafeCastGObject = SVGZoomEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSVGZoomEvent :: IsGObject obj => obj -> SVGZoomEvent
+castToSVGZoomEvent :: IsGObject obj => obj -> IO SVGZoomEvent
 castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
 
 foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent :: GType
@@ -20122,7 +20130,7 @@ instance IsGObject Screen where
   unsafeCastGObject = Screen . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToScreen :: IsGObject obj => obj -> Screen
+castToScreen :: IsGObject obj => obj -> IO Screen
 castToScreen = castTo gTypeScreen "Screen"
 
 foreign import javascript unsafe "window[\"Screen\"]" gTypeScreen :: GType
@@ -20163,7 +20171,7 @@ instance IsGObject ScriptProcessorNode where
   unsafeCastGObject = ScriptProcessorNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToScriptProcessorNode :: IsGObject obj => obj -> ScriptProcessorNode
+castToScriptProcessorNode :: IsGObject obj => obj -> IO ScriptProcessorNode
 castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode"
 
 foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode :: GType
@@ -20198,7 +20206,7 @@ instance IsGObject ScriptProfile where
   unsafeCastGObject = ScriptProfile . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToScriptProfile :: IsGObject obj => obj -> ScriptProfile
+castToScriptProfile :: IsGObject obj => obj -> IO ScriptProfile
 castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
 
 foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile :: GType
@@ -20233,7 +20241,7 @@ instance IsGObject ScriptProfileNode where
   unsafeCastGObject = ScriptProfileNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToScriptProfileNode :: IsGObject obj => obj -> ScriptProfileNode
+castToScriptProfileNode :: IsGObject obj => obj -> IO ScriptProfileNode
 castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
 
 foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProfileNode :: GType
@@ -20268,7 +20276,7 @@ instance IsGObject SecurityPolicy where
   unsafeCastGObject = SecurityPolicy . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSecurityPolicy :: IsGObject obj => obj -> SecurityPolicy
+castToSecurityPolicy :: IsGObject obj => obj -> IO SecurityPolicy
 castToSecurityPolicy = castTo gTypeSecurityPolicy "SecurityPolicy"
 
 foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeSecurityPolicy :: GType
@@ -20307,7 +20315,7 @@ instance IsGObject SecurityPolicyViolationEvent where
   unsafeCastGObject = SecurityPolicyViolationEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSecurityPolicyViolationEvent :: IsGObject obj => obj -> SecurityPolicyViolationEvent
+castToSecurityPolicyViolationEvent :: IsGObject obj => obj -> IO SecurityPolicyViolationEvent
 castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "SecurityPolicyViolationEvent"
 
 foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent :: GType
@@ -20342,7 +20350,7 @@ instance IsGObject Selection where
   unsafeCastGObject = Selection . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSelection :: IsGObject obj => obj -> Selection
+castToSelection :: IsGObject obj => obj -> IO Selection
 castToSelection = castTo gTypeSelection "Selection"
 
 foreign import javascript unsafe "window[\"Selection\"]" gTypeSelection :: GType
@@ -20381,7 +20389,7 @@ instance IsGObject SourceBuffer where
   unsafeCastGObject = SourceBuffer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSourceBuffer :: IsGObject obj => obj -> SourceBuffer
+castToSourceBuffer :: IsGObject obj => obj -> IO SourceBuffer
 castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
 
 foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer :: GType
@@ -20420,7 +20428,7 @@ instance IsGObject SourceBufferList where
   unsafeCastGObject = SourceBufferList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSourceBufferList :: IsGObject obj => obj -> SourceBufferList
+castToSourceBufferList :: IsGObject obj => obj -> IO SourceBufferList
 castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
 
 foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList :: GType
@@ -20455,7 +20463,7 @@ instance IsGObject SourceInfo where
   unsafeCastGObject = SourceInfo . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSourceInfo :: IsGObject obj => obj -> SourceInfo
+castToSourceInfo :: IsGObject obj => obj -> IO SourceInfo
 castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
 
 foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo :: GType
@@ -20490,7 +20498,7 @@ instance IsGObject SpeechSynthesis where
   unsafeCastGObject = SpeechSynthesis . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSpeechSynthesis :: IsGObject obj => obj -> SpeechSynthesis
+castToSpeechSynthesis :: IsGObject obj => obj -> IO SpeechSynthesis
 castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
 
 foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis :: GType
@@ -20529,7 +20537,7 @@ instance IsGObject SpeechSynthesisEvent where
   unsafeCastGObject = SpeechSynthesisEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSpeechSynthesisEvent :: IsGObject obj => obj -> SpeechSynthesisEvent
+castToSpeechSynthesisEvent :: IsGObject obj => obj -> IO SpeechSynthesisEvent
 castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEvent"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent :: GType
@@ -20568,7 +20576,7 @@ instance IsGObject SpeechSynthesisUtterance where
   unsafeCastGObject = SpeechSynthesisUtterance . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSpeechSynthesisUtterance :: IsGObject obj => obj -> SpeechSynthesisUtterance
+castToSpeechSynthesisUtterance :: IsGObject obj => obj -> IO SpeechSynthesisUtterance
 castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSynthesisUtterance"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance :: GType
@@ -20603,7 +20611,7 @@ instance IsGObject SpeechSynthesisVoice where
   unsafeCastGObject = SpeechSynthesisVoice . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSpeechSynthesisVoice :: IsGObject obj => obj -> SpeechSynthesisVoice
+castToSpeechSynthesisVoice :: IsGObject obj => obj -> IO SpeechSynthesisVoice
 castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVoice"
 
 foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice :: GType
@@ -20638,7 +20646,7 @@ instance IsGObject Storage where
   unsafeCastGObject = Storage . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStorage :: IsGObject obj => obj -> Storage
+castToStorage :: IsGObject obj => obj -> IO Storage
 castToStorage = castTo gTypeStorage "Storage"
 
 foreign import javascript unsafe "window[\"Storage\"]" gTypeStorage :: GType
@@ -20677,7 +20685,7 @@ instance IsGObject StorageEvent where
   unsafeCastGObject = StorageEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStorageEvent :: IsGObject obj => obj -> StorageEvent
+castToStorageEvent :: IsGObject obj => obj -> IO StorageEvent
 castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
 
 foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent :: GType
@@ -20712,7 +20720,7 @@ instance IsGObject StorageInfo where
   unsafeCastGObject = StorageInfo . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStorageInfo :: IsGObject obj => obj -> StorageInfo
+castToStorageInfo :: IsGObject obj => obj -> IO StorageInfo
 castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
 
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo :: GType
@@ -20747,7 +20755,7 @@ instance IsGObject StorageQuota where
   unsafeCastGObject = StorageQuota . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStorageQuota :: IsGObject obj => obj -> StorageQuota
+castToStorageQuota :: IsGObject obj => obj -> IO StorageQuota
 castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
 
 foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota :: GType
@@ -20782,7 +20790,7 @@ instance IsGObject StyleMedia where
   unsafeCastGObject = StyleMedia . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStyleMedia :: IsGObject obj => obj -> StyleMedia
+castToStyleMedia :: IsGObject obj => obj -> IO StyleMedia
 castToStyleMedia = castTo gTypeStyleMedia "StyleMedia"
 
 foreign import javascript unsafe "window[\"StyleMedia\"]" gTypeStyleMedia :: GType
@@ -20822,7 +20830,7 @@ instance IsGObject StyleSheet where
   unsafeCastGObject = StyleSheet . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStyleSheet :: IsGObject obj => obj -> StyleSheet
+castToStyleSheet :: IsGObject obj => obj -> IO StyleSheet
 castToStyleSheet = castTo gTypeStyleSheet "StyleSheet"
 
 foreign import javascript unsafe "window[\"StyleSheet\"]" gTypeStyleSheet :: GType
@@ -20857,7 +20865,7 @@ instance IsGObject StyleSheetList where
   unsafeCastGObject = StyleSheetList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToStyleSheetList :: IsGObject obj => obj -> StyleSheetList
+castToStyleSheetList :: IsGObject obj => obj -> IO StyleSheetList
 castToStyleSheetList = castTo gTypeStyleSheetList "StyleSheetList"
 
 foreign import javascript unsafe "window[\"StyleSheetList\"]" gTypeStyleSheetList :: GType
@@ -20892,7 +20900,7 @@ instance IsGObject SubtleCrypto where
   unsafeCastGObject = SubtleCrypto . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToSubtleCrypto :: IsGObject obj => obj -> SubtleCrypto
+castToSubtleCrypto :: IsGObject obj => obj -> IO SubtleCrypto
 castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
 
 foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto :: GType
@@ -20940,7 +20948,7 @@ instance IsGObject Text where
   unsafeCastGObject = Text . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToText :: IsGObject obj => obj -> Text
+castToText :: IsGObject obj => obj -> IO Text
 castToText = castTo gTypeText "Text"
 
 foreign import javascript unsafe "window[\"Text\"]" gTypeText :: GType
@@ -20981,7 +20989,7 @@ instance IsGObject TextEvent where
   unsafeCastGObject = TextEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextEvent :: IsGObject obj => obj -> TextEvent
+castToTextEvent :: IsGObject obj => obj -> IO TextEvent
 castToTextEvent = castTo gTypeTextEvent "TextEvent"
 
 foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent :: GType
@@ -21016,7 +21024,7 @@ instance IsGObject TextMetrics where
   unsafeCastGObject = TextMetrics . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextMetrics :: IsGObject obj => obj -> TextMetrics
+castToTextMetrics :: IsGObject obj => obj -> IO TextMetrics
 castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
 
 foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics :: GType
@@ -21055,7 +21063,7 @@ instance IsGObject TextTrack where
   unsafeCastGObject = TextTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextTrack :: IsGObject obj => obj -> TextTrack
+castToTextTrack :: IsGObject obj => obj -> IO TextTrack
 castToTextTrack = castTo gTypeTextTrack "TextTrack"
 
 foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack :: GType
@@ -21099,7 +21107,7 @@ instance IsGObject TextTrackCue where
   unsafeCastGObject = TextTrackCue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextTrackCue :: IsGObject obj => obj -> TextTrackCue
+castToTextTrackCue :: IsGObject obj => obj -> IO TextTrackCue
 castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
 
 foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue :: GType
@@ -21134,7 +21142,7 @@ instance IsGObject TextTrackCueList where
   unsafeCastGObject = TextTrackCueList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextTrackCueList :: IsGObject obj => obj -> TextTrackCueList
+castToTextTrackCueList :: IsGObject obj => obj -> IO TextTrackCueList
 castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
 
 foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList :: GType
@@ -21173,7 +21181,7 @@ instance IsGObject TextTrackList where
   unsafeCastGObject = TextTrackList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTextTrackList :: IsGObject obj => obj -> TextTrackList
+castToTextTrackList :: IsGObject obj => obj -> IO TextTrackList
 castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
 
 foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList :: GType
@@ -21208,7 +21216,7 @@ instance IsGObject TimeRanges where
   unsafeCastGObject = TimeRanges . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTimeRanges :: IsGObject obj => obj -> TimeRanges
+castToTimeRanges :: IsGObject obj => obj -> IO TimeRanges
 castToTimeRanges = castTo gTypeTimeRanges "TimeRanges"
 
 foreign import javascript unsafe "window[\"TimeRanges\"]" gTypeTimeRanges :: GType
@@ -21243,7 +21251,7 @@ instance IsGObject Touch where
   unsafeCastGObject = Touch . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTouch :: IsGObject obj => obj -> Touch
+castToTouch :: IsGObject obj => obj -> IO Touch
 castToTouch = castTo gTypeTouch "Touch"
 
 foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch :: GType
@@ -21284,7 +21292,7 @@ instance IsGObject TouchEvent where
   unsafeCastGObject = TouchEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTouchEvent :: IsGObject obj => obj -> TouchEvent
+castToTouchEvent :: IsGObject obj => obj -> IO TouchEvent
 castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
 
 foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent :: GType
@@ -21319,7 +21327,7 @@ instance IsGObject TouchList where
   unsafeCastGObject = TouchList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTouchList :: IsGObject obj => obj -> TouchList
+castToTouchList :: IsGObject obj => obj -> IO TouchList
 castToTouchList = castTo gTypeTouchList "TouchList"
 
 foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList :: GType
@@ -21358,7 +21366,7 @@ instance IsGObject TrackEvent where
   unsafeCastGObject = TrackEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTrackEvent :: IsGObject obj => obj -> TrackEvent
+castToTrackEvent :: IsGObject obj => obj -> IO TrackEvent
 castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
 
 foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent :: GType
@@ -21397,7 +21405,7 @@ instance IsGObject TransitionEvent where
   unsafeCastGObject = TransitionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTransitionEvent :: IsGObject obj => obj -> TransitionEvent
+castToTransitionEvent :: IsGObject obj => obj -> IO TransitionEvent
 castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
 
 foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent :: GType
@@ -21432,7 +21440,7 @@ instance IsGObject TreeWalker where
   unsafeCastGObject = TreeWalker . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTreeWalker :: IsGObject obj => obj -> TreeWalker
+castToTreeWalker :: IsGObject obj => obj -> IO TreeWalker
 castToTreeWalker = castTo gTypeTreeWalker "TreeWalker"
 
 foreign import javascript unsafe "window[\"TreeWalker\"]" gTypeTreeWalker :: GType
@@ -21467,7 +21475,7 @@ instance IsGObject TypeConversions where
   unsafeCastGObject = TypeConversions . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToTypeConversions :: IsGObject obj => obj -> TypeConversions
+castToTypeConversions :: IsGObject obj => obj -> IO TypeConversions
 castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
 
 foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversions :: GType
@@ -21511,7 +21519,7 @@ instance IsGObject UIEvent where
   unsafeCastGObject = UIEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToUIEvent :: IsGObject obj => obj -> UIEvent
+castToUIEvent :: IsGObject obj => obj -> IO UIEvent
 castToUIEvent = castTo gTypeUIEvent "UIEvent"
 
 foreign import javascript unsafe "window[\"UIEvent\"]" gTypeUIEvent :: GType
@@ -21552,7 +21560,7 @@ instance IsGObject UIRequestEvent where
   unsafeCastGObject = UIRequestEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToUIRequestEvent :: IsGObject obj => obj -> UIRequestEvent
+castToUIRequestEvent :: IsGObject obj => obj -> IO UIRequestEvent
 castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
 
 foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEvent :: GType
@@ -21587,7 +21595,7 @@ instance IsGObject URL where
   unsafeCastGObject = URL . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToURL :: IsGObject obj => obj -> URL
+castToURL :: IsGObject obj => obj -> IO URL
 castToURL = castTo gTypeURL "URL"
 
 foreign import javascript unsafe "window[\"URL\"]" gTypeURL :: GType
@@ -21622,7 +21630,7 @@ instance IsGObject URLUtils where
   unsafeCastGObject = URLUtils . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToURLUtils :: IsGObject obj => obj -> URLUtils
+castToURLUtils :: IsGObject obj => obj -> IO URLUtils
 castToURLUtils = castTo gTypeURLUtils "URLUtils"
 
 foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils :: GType
@@ -21657,7 +21665,7 @@ instance IsGObject UserMessageHandler where
   unsafeCastGObject = UserMessageHandler . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToUserMessageHandler :: IsGObject obj => obj -> UserMessageHandler
+castToUserMessageHandler :: IsGObject obj => obj -> IO UserMessageHandler
 castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
 
 foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler :: GType
@@ -21692,7 +21700,7 @@ instance IsGObject UserMessageHandlersNamespace where
   unsafeCastGObject = UserMessageHandlersNamespace . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToUserMessageHandlersNamespace :: IsGObject obj => obj -> UserMessageHandlersNamespace
+castToUserMessageHandlersNamespace :: IsGObject obj => obj -> IO UserMessageHandlersNamespace
 castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "UserMessageHandlersNamespace"
 
 foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace :: GType
@@ -21733,7 +21741,7 @@ instance IsGObject VTTCue where
   unsafeCastGObject = VTTCue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVTTCue :: IsGObject obj => obj -> VTTCue
+castToVTTCue :: IsGObject obj => obj -> IO VTTCue
 castToVTTCue = castTo gTypeVTTCue "VTTCue"
 
 foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue :: GType
@@ -21768,7 +21776,7 @@ instance IsGObject VTTRegion where
   unsafeCastGObject = VTTRegion . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVTTRegion :: IsGObject obj => obj -> VTTRegion
+castToVTTRegion :: IsGObject obj => obj -> IO VTTRegion
 castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
 
 foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion :: GType
@@ -21803,7 +21811,7 @@ instance IsGObject VTTRegionList where
   unsafeCastGObject = VTTRegionList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVTTRegionList :: IsGObject obj => obj -> VTTRegionList
+castToVTTRegionList :: IsGObject obj => obj -> IO VTTRegionList
 castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
 
 foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList :: GType
@@ -21838,7 +21846,7 @@ instance IsGObject ValidityState where
   unsafeCastGObject = ValidityState . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToValidityState :: IsGObject obj => obj -> ValidityState
+castToValidityState :: IsGObject obj => obj -> IO ValidityState
 castToValidityState = castTo gTypeValidityState "ValidityState"
 
 foreign import javascript unsafe "window[\"ValidityState\"]" gTypeValidityState :: GType
@@ -21873,7 +21881,7 @@ instance IsGObject VideoPlaybackQuality where
   unsafeCastGObject = VideoPlaybackQuality . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVideoPlaybackQuality :: IsGObject obj => obj -> VideoPlaybackQuality
+castToVideoPlaybackQuality :: IsGObject obj => obj -> IO VideoPlaybackQuality
 castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQuality"
 
 foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality :: GType
@@ -21914,7 +21922,7 @@ instance IsGObject VideoStreamTrack where
   unsafeCastGObject = VideoStreamTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVideoStreamTrack :: IsGObject obj => obj -> VideoStreamTrack
+castToVideoStreamTrack :: IsGObject obj => obj -> IO VideoStreamTrack
 castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
 
 foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStreamTrack :: GType
@@ -21949,7 +21957,7 @@ instance IsGObject VideoTrack where
   unsafeCastGObject = VideoTrack . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVideoTrack :: IsGObject obj => obj -> VideoTrack
+castToVideoTrack :: IsGObject obj => obj -> IO VideoTrack
 castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
 
 foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack :: GType
@@ -21988,7 +21996,7 @@ instance IsGObject VideoTrackList where
   unsafeCastGObject = VideoTrackList . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToVideoTrackList :: IsGObject obj => obj -> VideoTrackList
+castToVideoTrackList :: IsGObject obj => obj -> IO VideoTrackList
 castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
 
 foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList :: GType
@@ -22029,7 +22037,7 @@ instance IsGObject WaveShaperNode where
   unsafeCastGObject = WaveShaperNode . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWaveShaperNode :: IsGObject obj => obj -> WaveShaperNode
+castToWaveShaperNode :: IsGObject obj => obj -> IO WaveShaperNode
 castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
 
 foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode :: GType
@@ -22070,7 +22078,7 @@ instance IsGObject WebGL2RenderingContext where
   unsafeCastGObject = WebGL2RenderingContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGL2RenderingContext :: IsGObject obj => obj -> WebGL2RenderingContext
+castToWebGL2RenderingContext :: IsGObject obj => obj -> IO WebGL2RenderingContext
 castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2RenderingContext"
 
 foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext :: GType
@@ -22105,7 +22113,7 @@ instance IsGObject WebGLActiveInfo where
   unsafeCastGObject = WebGLActiveInfo . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLActiveInfo :: IsGObject obj => obj -> WebGLActiveInfo
+castToWebGLActiveInfo :: IsGObject obj => obj -> IO WebGLActiveInfo
 castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
 
 foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo :: GType
@@ -22140,7 +22148,7 @@ instance IsGObject WebGLBuffer where
   unsafeCastGObject = WebGLBuffer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLBuffer :: IsGObject obj => obj -> WebGLBuffer
+castToWebGLBuffer :: IsGObject obj => obj -> IO WebGLBuffer
 castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
 
 foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer :: GType
@@ -22175,7 +22183,7 @@ instance IsGObject WebGLCompressedTextureATC where
   unsafeCastGObject = WebGLCompressedTextureATC . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLCompressedTextureATC :: IsGObject obj => obj -> WebGLCompressedTextureATC
+castToWebGLCompressedTextureATC :: IsGObject obj => obj -> IO WebGLCompressedTextureATC
 castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCompressedTextureATC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC :: GType
@@ -22210,7 +22218,7 @@ instance IsGObject WebGLCompressedTexturePVRTC where
   unsafeCastGObject = WebGLCompressedTexturePVRTC . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLCompressedTexturePVRTC :: IsGObject obj => obj -> WebGLCompressedTexturePVRTC
+castToWebGLCompressedTexturePVRTC :: IsGObject obj => obj -> IO WebGLCompressedTexturePVRTC
 castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "WebGLCompressedTexturePVRTC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC :: GType
@@ -22245,7 +22253,7 @@ instance IsGObject WebGLCompressedTextureS3TC where
   unsafeCastGObject = WebGLCompressedTextureS3TC . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLCompressedTextureS3TC :: IsGObject obj => obj -> WebGLCompressedTextureS3TC
+castToWebGLCompressedTextureS3TC :: IsGObject obj => obj -> IO WebGLCompressedTextureS3TC
 castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGLCompressedTextureS3TC"
 
 foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC :: GType
@@ -22280,7 +22288,7 @@ instance IsGObject WebGLContextAttributes where
   unsafeCastGObject = WebGLContextAttributes . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLContextAttributes :: IsGObject obj => obj -> WebGLContextAttributes
+castToWebGLContextAttributes :: IsGObject obj => obj -> IO WebGLContextAttributes
 castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextAttributes"
 
 foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes :: GType
@@ -22319,7 +22327,7 @@ instance IsGObject WebGLContextEvent where
   unsafeCastGObject = WebGLContextEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLContextEvent :: IsGObject obj => obj -> WebGLContextEvent
+castToWebGLContextEvent :: IsGObject obj => obj -> IO WebGLContextEvent
 castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
 
 foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent :: GType
@@ -22354,7 +22362,7 @@ instance IsGObject WebGLDebugRendererInfo where
   unsafeCastGObject = WebGLDebugRendererInfo . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLDebugRendererInfo :: IsGObject obj => obj -> WebGLDebugRendererInfo
+castToWebGLDebugRendererInfo :: IsGObject obj => obj -> IO WebGLDebugRendererInfo
 castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRendererInfo"
 
 foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo :: GType
@@ -22389,7 +22397,7 @@ instance IsGObject WebGLDebugShaders where
   unsafeCastGObject = WebGLDebugShaders . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLDebugShaders :: IsGObject obj => obj -> WebGLDebugShaders
+castToWebGLDebugShaders :: IsGObject obj => obj -> IO WebGLDebugShaders
 castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
 
 foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders :: GType
@@ -22424,7 +22432,7 @@ instance IsGObject WebGLDepthTexture where
   unsafeCastGObject = WebGLDepthTexture . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLDepthTexture :: IsGObject obj => obj -> WebGLDepthTexture
+castToWebGLDepthTexture :: IsGObject obj => obj -> IO WebGLDepthTexture
 castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
 
 foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture :: GType
@@ -22459,7 +22467,7 @@ instance IsGObject WebGLDrawBuffers where
   unsafeCastGObject = WebGLDrawBuffers . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLDrawBuffers :: IsGObject obj => obj -> WebGLDrawBuffers
+castToWebGLDrawBuffers :: IsGObject obj => obj -> IO WebGLDrawBuffers
 castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
 
 foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers :: GType
@@ -22494,7 +22502,7 @@ instance IsGObject WebGLFramebuffer where
   unsafeCastGObject = WebGLFramebuffer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLFramebuffer :: IsGObject obj => obj -> WebGLFramebuffer
+castToWebGLFramebuffer :: IsGObject obj => obj -> IO WebGLFramebuffer
 castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
 
 foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer :: GType
@@ -22529,7 +22537,7 @@ instance IsGObject WebGLLoseContext where
   unsafeCastGObject = WebGLLoseContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLLoseContext :: IsGObject obj => obj -> WebGLLoseContext
+castToWebGLLoseContext :: IsGObject obj => obj -> IO WebGLLoseContext
 castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
 
 foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext :: GType
@@ -22564,7 +22572,7 @@ instance IsGObject WebGLProgram where
   unsafeCastGObject = WebGLProgram . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLProgram :: IsGObject obj => obj -> WebGLProgram
+castToWebGLProgram :: IsGObject obj => obj -> IO WebGLProgram
 castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
 
 foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram :: GType
@@ -22599,7 +22607,7 @@ instance IsGObject WebGLQuery where
   unsafeCastGObject = WebGLQuery . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLQuery :: IsGObject obj => obj -> WebGLQuery
+castToWebGLQuery :: IsGObject obj => obj -> IO WebGLQuery
 castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
 
 foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery :: GType
@@ -22634,7 +22642,7 @@ instance IsGObject WebGLRenderbuffer where
   unsafeCastGObject = WebGLRenderbuffer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLRenderbuffer :: IsGObject obj => obj -> WebGLRenderbuffer
+castToWebGLRenderbuffer :: IsGObject obj => obj -> IO WebGLRenderbuffer
 castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
 
 foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer :: GType
@@ -22675,7 +22683,7 @@ instance IsGObject WebGLRenderingContext where
   unsafeCastGObject = WebGLRenderingContext . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLRenderingContext :: IsGObject obj => obj -> WebGLRenderingContext
+castToWebGLRenderingContext :: IsGObject obj => obj -> IO WebGLRenderingContext
 castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingContext"
 
 foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext :: GType
@@ -22719,7 +22727,7 @@ instance IsGObject WebGLRenderingContextBase where
   unsafeCastGObject = WebGLRenderingContextBase . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLRenderingContextBase :: IsGObject obj => obj -> WebGLRenderingContextBase
+castToWebGLRenderingContextBase :: IsGObject obj => obj -> IO WebGLRenderingContextBase
 castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRenderingContextBase"
 
 foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase :: GType
@@ -22754,7 +22762,7 @@ instance IsGObject WebGLSampler where
   unsafeCastGObject = WebGLSampler . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLSampler :: IsGObject obj => obj -> WebGLSampler
+castToWebGLSampler :: IsGObject obj => obj -> IO WebGLSampler
 castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
 
 foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler :: GType
@@ -22789,7 +22797,7 @@ instance IsGObject WebGLShader where
   unsafeCastGObject = WebGLShader . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLShader :: IsGObject obj => obj -> WebGLShader
+castToWebGLShader :: IsGObject obj => obj -> IO WebGLShader
 castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
 
 foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader :: GType
@@ -22824,7 +22832,7 @@ instance IsGObject WebGLShaderPrecisionFormat where
   unsafeCastGObject = WebGLShaderPrecisionFormat . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLShaderPrecisionFormat :: IsGObject obj => obj -> WebGLShaderPrecisionFormat
+castToWebGLShaderPrecisionFormat :: IsGObject obj => obj -> IO WebGLShaderPrecisionFormat
 castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGLShaderPrecisionFormat"
 
 foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat :: GType
@@ -22859,7 +22867,7 @@ instance IsGObject WebGLSync where
   unsafeCastGObject = WebGLSync . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLSync :: IsGObject obj => obj -> WebGLSync
+castToWebGLSync :: IsGObject obj => obj -> IO WebGLSync
 castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
 
 foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync :: GType
@@ -22894,7 +22902,7 @@ instance IsGObject WebGLTexture where
   unsafeCastGObject = WebGLTexture . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLTexture :: IsGObject obj => obj -> WebGLTexture
+castToWebGLTexture :: IsGObject obj => obj -> IO WebGLTexture
 castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
 
 foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture :: GType
@@ -22929,7 +22937,7 @@ instance IsGObject WebGLTransformFeedback where
   unsafeCastGObject = WebGLTransformFeedback . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLTransformFeedback :: IsGObject obj => obj -> WebGLTransformFeedback
+castToWebGLTransformFeedback :: IsGObject obj => obj -> IO WebGLTransformFeedback
 castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransformFeedback"
 
 foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback :: GType
@@ -22964,7 +22972,7 @@ instance IsGObject WebGLUniformLocation where
   unsafeCastGObject = WebGLUniformLocation . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLUniformLocation :: IsGObject obj => obj -> WebGLUniformLocation
+castToWebGLUniformLocation :: IsGObject obj => obj -> IO WebGLUniformLocation
 castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocation"
 
 foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation :: GType
@@ -22999,7 +23007,7 @@ instance IsGObject WebGLVertexArrayObject where
   unsafeCastGObject = WebGLVertexArrayObject . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLVertexArrayObject :: IsGObject obj => obj -> WebGLVertexArrayObject
+castToWebGLVertexArrayObject :: IsGObject obj => obj -> IO WebGLVertexArrayObject
 castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexArrayObject"
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject :: GType
@@ -23034,7 +23042,7 @@ instance IsGObject WebGLVertexArrayObjectOES where
   unsafeCastGObject = WebGLVertexArrayObjectOES . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebGLVertexArrayObjectOES :: IsGObject obj => obj -> WebGLVertexArrayObjectOES
+castToWebGLVertexArrayObjectOES :: IsGObject obj => obj -> IO WebGLVertexArrayObjectOES
 castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVertexArrayObjectOES"
 
 foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES :: GType
@@ -23073,7 +23081,7 @@ instance IsGObject WebKitAnimationEvent where
   unsafeCastGObject = WebKitAnimationEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitAnimationEvent :: IsGObject obj => obj -> WebKitAnimationEvent
+castToWebKitAnimationEvent :: IsGObject obj => obj -> IO WebKitAnimationEvent
 castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEvent"
 
 foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent :: GType
@@ -23114,7 +23122,7 @@ instance IsGObject WebKitCSSFilterValue where
   unsafeCastGObject = WebKitCSSFilterValue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitCSSFilterValue :: IsGObject obj => obj -> WebKitCSSFilterValue
+castToWebKitCSSFilterValue :: IsGObject obj => obj -> IO WebKitCSSFilterValue
 castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterValue"
 
 foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitCSSFilterValue :: GType
@@ -23149,7 +23157,7 @@ instance IsGObject WebKitCSSMatrix where
   unsafeCastGObject = WebKitCSSMatrix . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitCSSMatrix :: IsGObject obj => obj -> WebKitCSSMatrix
+castToWebKitCSSMatrix :: IsGObject obj => obj -> IO WebKitCSSMatrix
 castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
 
 foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix :: GType
@@ -23188,7 +23196,7 @@ instance IsGObject WebKitCSSRegionRule where
   unsafeCastGObject = WebKitCSSRegionRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitCSSRegionRule :: IsGObject obj => obj -> WebKitCSSRegionRule
+castToWebKitCSSRegionRule :: IsGObject obj => obj -> IO WebKitCSSRegionRule
 castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule"
 
 foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule :: GType
@@ -23229,7 +23237,7 @@ instance IsGObject WebKitCSSTransformValue where
   unsafeCastGObject = WebKitCSSTransformValue . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitCSSTransformValue :: IsGObject obj => obj -> WebKitCSSTransformValue
+castToWebKitCSSTransformValue :: IsGObject obj => obj -> IO WebKitCSSTransformValue
 castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTransformValue"
 
 foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebKitCSSTransformValue :: GType
@@ -23268,7 +23276,7 @@ instance IsGObject WebKitCSSViewportRule where
   unsafeCastGObject = WebKitCSSViewportRule . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitCSSViewportRule :: IsGObject obj => obj -> WebKitCSSViewportRule
+castToWebKitCSSViewportRule :: IsGObject obj => obj -> IO WebKitCSSViewportRule
 castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewportRule"
 
 foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule :: GType
@@ -23307,7 +23315,7 @@ instance IsGObject WebKitNamedFlow where
   unsafeCastGObject = WebKitNamedFlow . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitNamedFlow :: IsGObject obj => obj -> WebKitNamedFlow
+castToWebKitNamedFlow :: IsGObject obj => obj -> IO WebKitNamedFlow
 castToWebKitNamedFlow = castTo gTypeWebKitNamedFlow "WebKitNamedFlow"
 
 foreign import javascript unsafe "window[\"WebKitNamedFlow\"]" gTypeWebKitNamedFlow :: GType
@@ -23342,7 +23350,7 @@ instance IsGObject WebKitNamespace where
   unsafeCastGObject = WebKitNamespace . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitNamespace :: IsGObject obj => obj -> WebKitNamespace
+castToWebKitNamespace :: IsGObject obj => obj -> IO WebKitNamespace
 castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
 
 foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace :: GType
@@ -23381,7 +23389,7 @@ instance IsGObject WebKitPlaybackTargetAvailabilityEvent where
   unsafeCastGObject = WebKitPlaybackTargetAvailabilityEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitPlaybackTargetAvailabilityEvent :: IsGObject obj => obj -> WebKitPlaybackTargetAvailabilityEvent
+castToWebKitPlaybackTargetAvailabilityEvent :: IsGObject obj => obj -> IO WebKitPlaybackTargetAvailabilityEvent
 castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAvailabilityEvent "WebKitPlaybackTargetAvailabilityEvent"
 
 foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent :: GType
@@ -23416,7 +23424,7 @@ instance IsGObject WebKitPoint where
   unsafeCastGObject = WebKitPoint . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitPoint :: IsGObject obj => obj -> WebKitPoint
+castToWebKitPoint :: IsGObject obj => obj -> IO WebKitPoint
 castToWebKitPoint = castTo gTypeWebKitPoint "WebKitPoint"
 
 foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint :: GType
@@ -23455,7 +23463,7 @@ instance IsGObject WebKitTransitionEvent where
   unsafeCastGObject = WebKitTransitionEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebKitTransitionEvent :: IsGObject obj => obj -> WebKitTransitionEvent
+castToWebKitTransitionEvent :: IsGObject obj => obj -> IO WebKitTransitionEvent
 castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitionEvent"
 
 foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent :: GType
@@ -23494,7 +23502,7 @@ instance IsGObject WebSocket where
   unsafeCastGObject = WebSocket . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWebSocket :: IsGObject obj => obj -> WebSocket
+castToWebSocket :: IsGObject obj => obj -> IO WebSocket
 castToWebSocket = castTo gTypeWebSocket "WebSocket"
 
 foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket :: GType
@@ -23537,7 +23545,7 @@ instance IsGObject WheelEvent where
   unsafeCastGObject = WheelEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWheelEvent :: IsGObject obj => obj -> WheelEvent
+castToWheelEvent :: IsGObject obj => obj -> IO WheelEvent
 castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
 
 foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent :: GType
@@ -23576,7 +23584,7 @@ instance IsGObject Window where
   unsafeCastGObject = Window . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWindow :: IsGObject obj => obj -> Window
+castToWindow :: IsGObject obj => obj -> IO Window
 castToWindow = castTo gTypeWindow "Window"
 
 foreign import javascript unsafe "window[\"Window\"]" gTypeWindow :: GType
@@ -23611,7 +23619,7 @@ instance IsGObject WindowBase64 where
   unsafeCastGObject = WindowBase64 . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWindowBase64 :: IsGObject obj => obj -> WindowBase64
+castToWindowBase64 :: IsGObject obj => obj -> IO WindowBase64
 castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
 
 foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64 :: GType
@@ -23646,7 +23654,7 @@ instance IsGObject WindowTimers where
   unsafeCastGObject = WindowTimers . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWindowTimers :: IsGObject obj => obj -> WindowTimers
+castToWindowTimers :: IsGObject obj => obj -> IO WindowTimers
 castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
 
 foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers :: GType
@@ -23685,7 +23693,7 @@ instance IsGObject Worker where
   unsafeCastGObject = Worker . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWorker :: IsGObject obj => obj -> Worker
+castToWorker :: IsGObject obj => obj -> IO Worker
 castToWorker = castTo gTypeWorker "Worker"
 
 foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker :: GType
@@ -23729,7 +23737,7 @@ instance IsGObject WorkerGlobalScope where
   unsafeCastGObject = WorkerGlobalScope . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWorkerGlobalScope :: IsGObject obj => obj -> WorkerGlobalScope
+castToWorkerGlobalScope :: IsGObject obj => obj -> IO WorkerGlobalScope
 castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
 
 foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope :: GType
@@ -23764,7 +23772,7 @@ instance IsGObject WorkerLocation where
   unsafeCastGObject = WorkerLocation . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWorkerLocation :: IsGObject obj => obj -> WorkerLocation
+castToWorkerLocation :: IsGObject obj => obj -> IO WorkerLocation
 castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
 
 foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation :: GType
@@ -23799,7 +23807,7 @@ instance IsGObject WorkerNavigator where
   unsafeCastGObject = WorkerNavigator . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToWorkerNavigator :: IsGObject obj => obj -> WorkerNavigator
+castToWorkerNavigator :: IsGObject obj => obj -> IO WorkerNavigator
 castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
 
 foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator :: GType
@@ -23838,7 +23846,7 @@ instance IsGObject XMLHttpRequest where
   unsafeCastGObject = XMLHttpRequest . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXMLHttpRequest :: IsGObject obj => obj -> XMLHttpRequest
+castToXMLHttpRequest :: IsGObject obj => obj -> IO XMLHttpRequest
 castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
 
 foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest :: GType
@@ -23879,7 +23887,7 @@ instance IsGObject XMLHttpRequestProgressEvent where
   unsafeCastGObject = XMLHttpRequestProgressEvent . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXMLHttpRequestProgressEvent :: IsGObject obj => obj -> XMLHttpRequestProgressEvent
+castToXMLHttpRequestProgressEvent :: IsGObject obj => obj -> IO XMLHttpRequestProgressEvent
 castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XMLHttpRequestProgressEvent"
 
 foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent :: GType
@@ -23918,7 +23926,7 @@ instance IsGObject XMLHttpRequestUpload where
   unsafeCastGObject = XMLHttpRequestUpload . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXMLHttpRequestUpload :: IsGObject obj => obj -> XMLHttpRequestUpload
+castToXMLHttpRequestUpload :: IsGObject obj => obj -> IO XMLHttpRequestUpload
 castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpload"
 
 foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload :: GType
@@ -23953,7 +23961,7 @@ instance IsGObject XMLSerializer where
   unsafeCastGObject = XMLSerializer . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXMLSerializer :: IsGObject obj => obj -> XMLSerializer
+castToXMLSerializer :: IsGObject obj => obj -> IO XMLSerializer
 castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
 
 foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer :: GType
@@ -23988,7 +23996,7 @@ instance IsGObject XPathEvaluator where
   unsafeCastGObject = XPathEvaluator . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXPathEvaluator :: IsGObject obj => obj -> XPathEvaluator
+castToXPathEvaluator :: IsGObject obj => obj -> IO XPathEvaluator
 castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
 
 foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator :: GType
@@ -24023,7 +24031,7 @@ instance IsGObject XPathExpression where
   unsafeCastGObject = XPathExpression . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXPathExpression :: IsGObject obj => obj -> XPathExpression
+castToXPathExpression :: IsGObject obj => obj -> IO XPathExpression
 castToXPathExpression = castTo gTypeXPathExpression "XPathExpression"
 
 foreign import javascript unsafe "window[\"XPathExpression\"]" gTypeXPathExpression :: GType
@@ -24058,7 +24066,7 @@ instance IsGObject XPathNSResolver where
   unsafeCastGObject = XPathNSResolver . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXPathNSResolver :: IsGObject obj => obj -> XPathNSResolver
+castToXPathNSResolver :: IsGObject obj => obj -> IO XPathNSResolver
 castToXPathNSResolver = castTo gTypeXPathNSResolver "XPathNSResolver"
 
 foreign import javascript unsafe "window[\"XPathNSResolver\"]" gTypeXPathNSResolver :: GType
@@ -24093,7 +24101,7 @@ instance IsGObject XPathResult where
   unsafeCastGObject = XPathResult . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXPathResult :: IsGObject obj => obj -> XPathResult
+castToXPathResult :: IsGObject obj => obj -> IO XPathResult
 castToXPathResult = castTo gTypeXPathResult "XPathResult"
 
 foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult :: GType
@@ -24128,7 +24136,7 @@ instance IsGObject XSLTProcessor where
   unsafeCastGObject = XSLTProcessor . unGObject
   {-# INLINE unsafeCastGObject #-}
 
-castToXSLTProcessor :: IsGObject obj => obj -> XSLTProcessor
+castToXSLTProcessor :: IsGObject obj => obj -> IO XSLTProcessor
 castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"
 
 foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor :: GType
