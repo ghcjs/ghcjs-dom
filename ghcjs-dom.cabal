@@ -40,7 +40,7 @@ flag gtk3
 
 library
     build-depends: base <5,
-                   transformers >=0.2 && <0.5,
+                   transformers >=0.2 && <0.6,
                    text >= 0.11.0.6 && < 1.3
 
     default-language: Haskell2010
@@ -1097,7 +1097,7 @@ library
     if !impl(ghcjs) || flag(webkit)
         cpp-options: -DUSE_WEBKIT
         build-depends: glib >=0.13.0.0 && <0.14,
-                       transformers >=0.3.0.0 && <0.5
+                       transformers >=0.3.0.0 && <0.6
         if flag(gtk3)
             build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
         else
