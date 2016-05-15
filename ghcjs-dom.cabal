@@ -568,6 +568,7 @@ library
           GHCJS.DOM.JSFFI.Database
           GHCJS.DOM.JSFFI.DOMError
           GHCJS.DOM.JSFFI.Geolocation
+          GHCJS.DOM.JSFFI.FormData
           GHCJS.DOM.JSFFI.MediaStreamTrack
           GHCJS.DOM.JSFFI.Navigator
           GHCJS.DOM.JSFFI.NavigatorUserMediaError
