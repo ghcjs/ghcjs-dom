@@ -1100,7 +1100,7 @@ library
             hs-source-dirs: webkit, common
             cpp-options: -DUSE_WEBKIT
             build-depends: glib >=0.13.0.0 && <0.14,
-                           transformers >=0.3.0.0 && <0.5
+                           transformers >=0.3.0.0 && <0.6
             if flag(gtk3)
                 build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
             else
