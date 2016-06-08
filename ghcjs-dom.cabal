@@ -1,6 +1,6 @@
 name: ghcjs-dom
 version: 0.3.1.0
-cabal-version: >=1.10
+cabal-version: >=1.22
 build-type: Simple
 license: MIT
 license-file: LICENSE
