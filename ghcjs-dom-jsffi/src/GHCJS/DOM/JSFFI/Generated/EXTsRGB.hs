@@ -18,7 +18,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SRGB_EXT = 35904
 pattern SRGB_ALPHA_EXT = 35906
 pattern SRGB8_ALPHA8_EXT = 35907

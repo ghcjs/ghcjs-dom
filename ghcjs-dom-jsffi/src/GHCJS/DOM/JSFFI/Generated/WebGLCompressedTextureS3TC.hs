@@ -19,7 +19,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern COMPRESSED_RGB_S3TC_DXT1_EXT = 33776
 pattern COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777
 pattern COMPRESSED_RGBA_S3TC_DXT3_EXT = 33778

@@ -18,7 +18,7 @@ import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)" js_initUIEvent ::

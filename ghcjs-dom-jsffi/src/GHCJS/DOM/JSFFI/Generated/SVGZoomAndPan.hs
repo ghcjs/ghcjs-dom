@@ -18,7 +18,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SVG_ZOOMANDPAN_UNKNOWN = 0
 pattern SVG_ZOOMANDPAN_DISABLE = 1
 pattern SVG_ZOOMANDPAN_MAGNIFY = 2

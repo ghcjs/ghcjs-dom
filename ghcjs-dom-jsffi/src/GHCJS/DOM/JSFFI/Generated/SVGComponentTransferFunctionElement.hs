@@ -28,7 +28,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN = 0
 pattern SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY = 1
 pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE = 2

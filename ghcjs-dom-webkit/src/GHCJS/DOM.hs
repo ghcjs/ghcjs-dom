@@ -41,8 +41,8 @@ import Control.Monad.IO.Class (liftIO)
 #endif
 
 import GHCJS.DOM.Types
-import GHCJS.DOM.Window (getNavigator, getDocument)
-import GHCJS.DOM.Navigator (getUserAgent)
+import Graphics.UI.Gtk.WebKit.DOM.Window (getNavigator, getDocument)
+import Graphics.UI.Gtk.WebKit.DOM.Navigator (getUserAgent)
 import Foreign (ForeignPtr, nullPtr, Ptr)
 import Control.Monad (unless, forever, liftM)
 import Control.Concurrent

@@ -1,3 +1,4 @@
 /dist/
 *.lkshf
 /.stack-work/
+/dist-newstyle/

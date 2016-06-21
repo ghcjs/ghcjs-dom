@@ -19,7 +19,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern COMPRESSED_RGB_ATC_WEBGL = 35986
 pattern COMPRESSED_RGBA_ATC_EXPLICIT_ALPHA_WEBGL = 35987
 pattern COMPRESSED_RGBA_ATC_INTERPOLATED_ALPHA_WEBGL = 34798

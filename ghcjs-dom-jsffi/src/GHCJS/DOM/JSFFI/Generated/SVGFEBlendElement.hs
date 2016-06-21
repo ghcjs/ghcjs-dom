@@ -19,7 +19,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SVG_FEBLEND_MODE_UNKNOWN = 0
 pattern SVG_FEBLEND_MODE_NORMAL = 1
 pattern SVG_FEBLEND_MODE_MULTIPLY = 2

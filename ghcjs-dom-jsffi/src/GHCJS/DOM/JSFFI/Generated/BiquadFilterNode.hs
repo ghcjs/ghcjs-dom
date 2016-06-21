@@ -21,7 +21,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
         "$1[\"getFrequencyResponse\"]($2,\n$3, $4)" js_getFrequencyResponse

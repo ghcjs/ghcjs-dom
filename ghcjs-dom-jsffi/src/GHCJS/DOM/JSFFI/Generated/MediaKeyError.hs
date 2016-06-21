@@ -19,7 +19,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern MEDIA_KEYERR_UNKNOWN = 1
 pattern MEDIA_KEYERR_CLIENT = 2
 pattern MEDIA_KEYERR_SERVICE = 3

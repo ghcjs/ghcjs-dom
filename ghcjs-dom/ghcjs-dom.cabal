@@ -15,6 +15,7 @@ category: Web
 Source-Repository head
   type:         git
   location:     https://github.com/ghcjs/ghcjs-dom
+  subdir:       ghcjs-dom
 
 flag jsffi
     description: Use JavaScriptFFI extension for GHCJS JavaScript output
@@ -24,16 +25,6 @@ flag webkit
     description: Use WebKitGtk DOM functions
     default: False
 
-flag old-webkit
-    description: If you have an old version of WebKitGTK+ this will get ghcjs-dom
-                 to build, leaving out functions that are new or have changed.
-                 This option is mainly here to get the travis builds to work.
-    default: False
-
-flag gtk3
-    description: Use GTK3 rather than GTK2 (only matters when using webkit)
-    default: True
-
 library
     build-depends: base <5,
                    transformers >=0.2 && <0.6,
@@ -41,1597 +32,530 @@ library
 
     default-language: Haskell2010
 
-    -- Decide if we need to build modules or just reexport them
-    if (impl(ghcjs) && flag(jsffi)) || flag(webkit) || impl(ghc < 7.10)
-        exposed-modules:
-          GHCJS.DOM
-          GHCJS.DOM.ANGLEInstancedArrays
-          GHCJS.DOM.AbstractView
-          GHCJS.DOM.AbstractWorker
-          GHCJS.DOM.AllAudioCapabilities
-          GHCJS.DOM.AllVideoCapabilities
-          GHCJS.DOM.AnalyserNode
-          GHCJS.DOM.AnimationEvent
-          GHCJS.DOM.Attr
-          GHCJS.DOM.AudioBuffer
-          GHCJS.DOM.AudioBufferCallback
-          GHCJS.DOM.AudioBufferSourceNode
-          GHCJS.DOM.AudioContext
-          GHCJS.DOM.AudioDestinationNode
-          GHCJS.DOM.AudioListener
-          GHCJS.DOM.AudioNode
-          GHCJS.DOM.AudioParam
-          GHCJS.DOM.AudioProcessingEvent
-          GHCJS.DOM.AudioStreamTrack
-          GHCJS.DOM.AudioTrack
-          GHCJS.DOM.AudioTrackList
-          GHCJS.DOM.AutocompleteErrorEvent
-          GHCJS.DOM.BarProp
-          GHCJS.DOM.BatteryManager
-          GHCJS.DOM.BeforeLoadEvent
-          GHCJS.DOM.BeforeUnloadEvent
-          GHCJS.DOM.BiquadFilterNode
-          GHCJS.DOM.Blob
-          GHCJS.DOM.CSSCharsetRule
-          GHCJS.DOM.CSSFontFaceLoadEvent
-          GHCJS.DOM.CSSFontFaceRule
-          GHCJS.DOM.CSSImportRule
-          GHCJS.DOM.CSSKeyframeRule
-          GHCJS.DOM.CSSKeyframesRule
-          GHCJS.DOM.CSSMediaRule
-          GHCJS.DOM.CSSPageRule
-          GHCJS.DOM.CSSPrimitiveValue
-          GHCJS.DOM.CSSRule
-          GHCJS.DOM.CSSRuleList
-          GHCJS.DOM.CSSStyleDeclaration
-          GHCJS.DOM.CSSStyleRule
-          GHCJS.DOM.CSSStyleSheet
-          GHCJS.DOM.CSSSupportsRule
-          GHCJS.DOM.CSSValue
-          GHCJS.DOM.CSSValueList
-          GHCJS.DOM.CanvasGradient
-          GHCJS.DOM.CanvasRenderingContext
-          GHCJS.DOM.CanvasRenderingContext2D
-          GHCJS.DOM.CapabilityRange
-          GHCJS.DOM.CharacterData
-          GHCJS.DOM.ChildNode
-          GHCJS.DOM.ClientRect
-          GHCJS.DOM.ClientRectList
-          GHCJS.DOM.CloseEvent
-          GHCJS.DOM.CommandLineAPIHost
-          GHCJS.DOM.Comment
-          GHCJS.DOM.CompositionEvent
-          GHCJS.DOM.ConvolverNode
-          GHCJS.DOM.Coordinates
-          GHCJS.DOM.Counter
-          GHCJS.DOM.Crypto
-          GHCJS.DOM.CryptoKey
-          GHCJS.DOM.CryptoKeyPair
-          GHCJS.DOM.CustomEvent
-          GHCJS.DOM.ApplicationCache
-          GHCJS.DOM.DOMError
-          GHCJS.DOM.FormData
-          GHCJS.DOM.DOMImplementation
-          GHCJS.DOM.MimeType
-          GHCJS.DOM.MimeTypeArray
-          GHCJS.DOM.DOMNamedFlowCollection
-          GHCJS.DOM.DOMParser
-          GHCJS.DOM.Path2D
-          GHCJS.DOM.Plugin
-          GHCJS.DOM.PluginArray
-          GHCJS.DOM.SecurityPolicy
-          GHCJS.DOM.Selection
-          GHCJS.DOM.DOMSettableTokenList
-          GHCJS.DOM.DOMStringList
-          GHCJS.DOM.DOMTokenList
-          GHCJS.DOM.URL
-          GHCJS.DOM.Window
-          GHCJS.DOM.CSS
-          GHCJS.DOM.DataCue
-          GHCJS.DOM.DataTransfer
-          GHCJS.DOM.DataTransferItem
-          GHCJS.DOM.DataTransferItemList
-          GHCJS.DOM.Database
-          GHCJS.DOM.DatabaseCallback
-          GHCJS.DOM.DedicatedWorkerGlobalScope
-          GHCJS.DOM.DelayNode
-          GHCJS.DOM.DeviceMotionEvent
-          GHCJS.DOM.DeviceOrientationEvent
-          GHCJS.DOM.DeviceProximityEvent
-          GHCJS.DOM.Document
-          GHCJS.DOM.DocumentFragment
-          GHCJS.DOM.DocumentType
-          GHCJS.DOM.DynamicsCompressorNode
-          GHCJS.DOM.EXTBlendMinMax
-          GHCJS.DOM.EXTsRGB
-          GHCJS.DOM.EXTTextureFilterAnisotropic
-          GHCJS.DOM.Element
-          GHCJS.DOM.Entity
-          GHCJS.DOM.Enums
-          GHCJS.DOM.ErrorEvent
-          GHCJS.DOM.Event
-          GHCJS.DOM.EventListener
-          GHCJS.DOM.EventM
-          GHCJS.DOM.EventSource
-          GHCJS.DOM.EventTarget
-          GHCJS.DOM.File
-          GHCJS.DOM.FileError
-          GHCJS.DOM.FileList
-          GHCJS.DOM.FileReader
-          GHCJS.DOM.FileReaderSync
-          GHCJS.DOM.FocusEvent
-          GHCJS.DOM.FontLoader
-          GHCJS.DOM.GainNode
-          GHCJS.DOM.Gamepad
-          GHCJS.DOM.GamepadButton
-          GHCJS.DOM.GamepadEvent
-          GHCJS.DOM.Geolocation
-          GHCJS.DOM.Geoposition
-          GHCJS.DOM.HTMLAllCollection
-          GHCJS.DOM.HTMLAnchorElement
-          GHCJS.DOM.HTMLAppletElement
-          GHCJS.DOM.HTMLAreaElement
-          GHCJS.DOM.HTMLBRElement
-          GHCJS.DOM.HTMLBaseElement
-          GHCJS.DOM.HTMLBaseFontElement
-          GHCJS.DOM.HTMLBodyElement
-          GHCJS.DOM.HTMLButtonElement
-          GHCJS.DOM.HTMLCanvasElement
-          GHCJS.DOM.HTMLCollection
-          GHCJS.DOM.HTMLDListElement
-          GHCJS.DOM.HTMLDataListElement
-          GHCJS.DOM.HTMLDetailsElement
-          GHCJS.DOM.HTMLDirectoryElement
-          GHCJS.DOM.HTMLDivElement
-          GHCJS.DOM.HTMLDocument
-          GHCJS.DOM.HTMLElement
-          GHCJS.DOM.HTMLEmbedElement
-          GHCJS.DOM.HTMLFieldSetElement
-          GHCJS.DOM.HTMLFontElement
-          GHCJS.DOM.HTMLFormControlsCollection
-          GHCJS.DOM.HTMLFormElement
-          GHCJS.DOM.HTMLFrameElement
-          GHCJS.DOM.HTMLFrameSetElement
-          GHCJS.DOM.HTMLHRElement
-          GHCJS.DOM.HTMLHeadElement
-          GHCJS.DOM.HTMLHeadingElement
-          GHCJS.DOM.HTMLHtmlElement
-          GHCJS.DOM.HTMLIFrameElement
-          GHCJS.DOM.HTMLImageElement
-          GHCJS.DOM.HTMLInputElement
-          GHCJS.DOM.HTMLKeygenElement
-          GHCJS.DOM.HTMLLIElement
-          GHCJS.DOM.HTMLLabelElement
-          GHCJS.DOM.HTMLLegendElement
-          GHCJS.DOM.HTMLLinkElement
-          GHCJS.DOM.HTMLMapElement
-          GHCJS.DOM.HTMLMarqueeElement
-          GHCJS.DOM.HTMLMediaElement
-          GHCJS.DOM.HTMLMenuElement
-          GHCJS.DOM.HTMLMetaElement
-          GHCJS.DOM.HTMLMeterElement
-          GHCJS.DOM.HTMLModElement
-          GHCJS.DOM.HTMLOListElement
-          GHCJS.DOM.HTMLObjectElement
-          GHCJS.DOM.HTMLOptGroupElement
-          GHCJS.DOM.HTMLOptionElement
-          GHCJS.DOM.HTMLOptionsCollection
-          GHCJS.DOM.HTMLOutputElement
-          GHCJS.DOM.HTMLParagraphElement
-          GHCJS.DOM.HTMLParamElement
-          GHCJS.DOM.HTMLPreElement
-          GHCJS.DOM.HTMLProgressElement
-          GHCJS.DOM.HTMLQuoteElement
-          GHCJS.DOM.HTMLScriptElement
-          GHCJS.DOM.HTMLSelectElement
-          GHCJS.DOM.HTMLSourceElement
-          GHCJS.DOM.HTMLStyleElement
-          GHCJS.DOM.HTMLTableCaptionElement
-          GHCJS.DOM.HTMLTableCellElement
-          GHCJS.DOM.HTMLTableColElement
-          GHCJS.DOM.HTMLTableElement
-          GHCJS.DOM.HTMLTableRowElement
-          GHCJS.DOM.HTMLTableSectionElement
-          GHCJS.DOM.HTMLTemplateElement
-          GHCJS.DOM.HTMLTextAreaElement
-          GHCJS.DOM.HTMLTitleElement
-          GHCJS.DOM.HTMLTrackElement
-          GHCJS.DOM.HTMLUListElement
-          GHCJS.DOM.HTMLVideoElement
-          GHCJS.DOM.HashChangeEvent
-          GHCJS.DOM.History
-          GHCJS.DOM.IDBCursor
-          GHCJS.DOM.IDBCursorWithValue
-          GHCJS.DOM.IDBDatabase
-          GHCJS.DOM.IDBFactory
-          GHCJS.DOM.IDBIndex
-          GHCJS.DOM.IDBKeyRange
-          GHCJS.DOM.IDBObjectStore
-          GHCJS.DOM.IDBOpenDBRequest
-          GHCJS.DOM.IDBRequest
-          GHCJS.DOM.IDBTransaction
-          GHCJS.DOM.IDBVersionChangeEvent
-          GHCJS.DOM.ImageData
-          GHCJS.DOM.InspectorFrontendHost
-          GHCJS.DOM.InternalSettings
-          GHCJS.DOM.Internals
-          GHCJS.DOM.KeyboardEvent
-          GHCJS.DOM.Location
-          GHCJS.DOM.MallocStatistics
-          GHCJS.DOM.MediaController
-          GHCJS.DOM.MediaControlsHost
-          GHCJS.DOM.MediaElementAudioSourceNode
-          GHCJS.DOM.MediaError
-          GHCJS.DOM.MediaKeyError
-          GHCJS.DOM.MediaKeyEvent
-          GHCJS.DOM.MediaKeyMessageEvent
-          GHCJS.DOM.MediaKeyNeededEvent
-          GHCJS.DOM.MediaKeySession
-          GHCJS.DOM.MediaKeys
-          GHCJS.DOM.MediaList
-          GHCJS.DOM.MediaQueryList
-          GHCJS.DOM.MediaQueryListListener
-          GHCJS.DOM.MediaSource
-          GHCJS.DOM.MediaSourceStates
-          GHCJS.DOM.MediaStream
-          GHCJS.DOM.MediaStreamAudioDestinationNode
-          GHCJS.DOM.MediaStreamAudioSourceNode
-          GHCJS.DOM.MediaStreamEvent
-          GHCJS.DOM.MediaStreamTrack
-          GHCJS.DOM.MediaStreamTrackEvent
-          GHCJS.DOM.MediaStreamTrackSourcesCallback
-          GHCJS.DOM.MediaTrackConstraints
-          GHCJS.DOM.MemoryInfo
-          GHCJS.DOM.MessageChannel
-          GHCJS.DOM.MessageEvent
-          GHCJS.DOM.MessagePort
-          GHCJS.DOM.MouseEvent
-          GHCJS.DOM.MutationEvent
-          GHCJS.DOM.MutationObserver
-          GHCJS.DOM.MutationRecord
-          GHCJS.DOM.NamedNodeMap
-          GHCJS.DOM.Navigator
-          GHCJS.DOM.NavigatorUserMediaError
-          GHCJS.DOM.NavigatorUserMediaErrorCallback
-          GHCJS.DOM.NavigatorUserMediaSuccessCallback
-          GHCJS.DOM.Node
-          GHCJS.DOM.NodeFilter
-          GHCJS.DOM.NodeIterator
-          GHCJS.DOM.NodeList
-          GHCJS.DOM.Notification
-          GHCJS.DOM.NotificationCenter
-          GHCJS.DOM.NotificationPermissionCallback
-          GHCJS.DOM.OESStandardDerivatives
-          GHCJS.DOM.OESTextureHalfFloat
-          GHCJS.DOM.OESVertexArrayObject
-          GHCJS.DOM.OfflineAudioCompletionEvent
-          GHCJS.DOM.OfflineAudioContext
-          GHCJS.DOM.OscillatorNode
-          GHCJS.DOM.OverflowEvent
-          GHCJS.DOM.PageTransitionEvent
-          GHCJS.DOM.PannerNode
-          GHCJS.DOM.Performance
-          GHCJS.DOM.PerformanceEntry
-          GHCJS.DOM.PerformanceEntryList
-          GHCJS.DOM.PerformanceNavigation
-          GHCJS.DOM.PerformanceResourceTiming
-          GHCJS.DOM.PerformanceTiming
-          GHCJS.DOM.PopStateEvent
-          GHCJS.DOM.PositionCallback
-          GHCJS.DOM.PositionError
-          GHCJS.DOM.PositionErrorCallback
-          GHCJS.DOM.ProcessingInstruction
-          GHCJS.DOM.ProgressEvent
-          GHCJS.DOM.QuickTimePluginReplacement
-          GHCJS.DOM.RGBColor
-          GHCJS.DOM.RTCConfiguration
-          GHCJS.DOM.RTCDTMFSender
-          GHCJS.DOM.RTCDTMFToneChangeEvent
-          GHCJS.DOM.RTCDataChannel
-          GHCJS.DOM.RTCDataChannelEvent
-          GHCJS.DOM.RTCIceCandidate
-          GHCJS.DOM.RTCIceCandidateEvent
-          GHCJS.DOM.RTCIceServer
-          GHCJS.DOM.RTCPeerConnection
-          GHCJS.DOM.RTCPeerConnectionErrorCallback
-          GHCJS.DOM.RTCSessionDescription
-          GHCJS.DOM.RTCSessionDescriptionCallback
-          GHCJS.DOM.RTCStatsCallback
-          GHCJS.DOM.RTCStatsReport
-          GHCJS.DOM.RTCStatsResponse
-          GHCJS.DOM.RadioNodeList
-          GHCJS.DOM.Range
-          GHCJS.DOM.ReadableStream
-          GHCJS.DOM.Rect
-          GHCJS.DOM.RequestAnimationFrameCallback
-          GHCJS.DOM.SQLError
-          GHCJS.DOM.SQLResultSet
-          GHCJS.DOM.SQLResultSetRowList
-          GHCJS.DOM.SQLStatementCallback
-          GHCJS.DOM.SQLStatementErrorCallback
-          GHCJS.DOM.SQLTransaction
-          GHCJS.DOM.SQLTransactionCallback
-          GHCJS.DOM.SQLTransactionErrorCallback
-          GHCJS.DOM.SVGAElement
-          GHCJS.DOM.SVGAltGlyphElement
-          GHCJS.DOM.SVGAngle
-          GHCJS.DOM.SVGAnimatedAngle
-          GHCJS.DOM.SVGAnimatedBoolean
-          GHCJS.DOM.SVGAnimatedEnumeration
-          GHCJS.DOM.SVGAnimatedInteger
-          GHCJS.DOM.SVGAnimatedLength
-          GHCJS.DOM.SVGAnimatedLengthList
-          GHCJS.DOM.SVGAnimatedNumber
-          GHCJS.DOM.SVGAnimatedNumberList
-          GHCJS.DOM.SVGAnimatedPreserveAspectRatio
-          GHCJS.DOM.SVGAnimatedRect
-          GHCJS.DOM.SVGAnimatedString
-          GHCJS.DOM.SVGAnimatedTransformList
-          GHCJS.DOM.SVGAnimationElement
-          GHCJS.DOM.SVGCircleElement
-          GHCJS.DOM.SVGClipPathElement
-          GHCJS.DOM.SVGColor
-          GHCJS.DOM.SVGComponentTransferFunctionElement
-          GHCJS.DOM.SVGCursorElement
-          GHCJS.DOM.SVGDocument
-          GHCJS.DOM.SVGElement
-          GHCJS.DOM.SVGEllipseElement
-          GHCJS.DOM.SVGExternalResourcesRequired
-          GHCJS.DOM.SVGFEBlendElement
-          GHCJS.DOM.SVGFEColorMatrixElement
-          GHCJS.DOM.SVGFEComponentTransferElement
-          GHCJS.DOM.SVGFECompositeElement
-          GHCJS.DOM.SVGFEConvolveMatrixElement
-          GHCJS.DOM.SVGFEDiffuseLightingElement
-          GHCJS.DOM.SVGFEDisplacementMapElement
-          GHCJS.DOM.SVGFEDistantLightElement
-          GHCJS.DOM.SVGFEDropShadowElement
-          GHCJS.DOM.SVGFEGaussianBlurElement
-          GHCJS.DOM.SVGFEImageElement
-          GHCJS.DOM.SVGFEMergeNodeElement
-          GHCJS.DOM.SVGFEMorphologyElement
-          GHCJS.DOM.SVGFEOffsetElement
-          GHCJS.DOM.SVGFEPointLightElement
-          GHCJS.DOM.SVGFESpecularLightingElement
-          GHCJS.DOM.SVGFESpotLightElement
-          GHCJS.DOM.SVGFETileElement
-          GHCJS.DOM.SVGFETurbulenceElement
-          GHCJS.DOM.SVGFilterElement
-          GHCJS.DOM.SVGFilterPrimitiveStandardAttributes
-          GHCJS.DOM.SVGFitToViewBox
-          GHCJS.DOM.SVGForeignObjectElement
-          GHCJS.DOM.SVGGlyphRefElement
-          GHCJS.DOM.SVGGradientElement
-          GHCJS.DOM.SVGGraphicsElement
-          GHCJS.DOM.SVGImageElement
-          GHCJS.DOM.SVGLength
-          GHCJS.DOM.SVGLengthList
-          GHCJS.DOM.SVGLineElement
-          GHCJS.DOM.SVGLinearGradientElement
-          GHCJS.DOM.SVGMarkerElement
-          GHCJS.DOM.SVGMaskElement
-          GHCJS.DOM.SVGMatrix
-          GHCJS.DOM.SVGNumber
-          GHCJS.DOM.SVGNumberList
-          GHCJS.DOM.SVGPaint
-          GHCJS.DOM.SVGPathElement
-          GHCJS.DOM.SVGPathSeg
-          GHCJS.DOM.SVGPathSegArcAbs
-          GHCJS.DOM.SVGPathSegArcRel
-          GHCJS.DOM.SVGPathSegCurvetoCubicAbs
-          GHCJS.DOM.SVGPathSegCurvetoCubicRel
-          GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs
-          GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel
-          GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs
-          GHCJS.DOM.SVGPathSegCurvetoQuadraticRel
-          GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
-          GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel
-          GHCJS.DOM.SVGPathSegLinetoAbs
-          GHCJS.DOM.SVGPathSegLinetoHorizontalAbs
-          GHCJS.DOM.SVGPathSegLinetoHorizontalRel
-          GHCJS.DOM.SVGPathSegLinetoRel
-          GHCJS.DOM.SVGPathSegLinetoVerticalAbs
-          GHCJS.DOM.SVGPathSegLinetoVerticalRel
-          GHCJS.DOM.SVGPathSegList
-          GHCJS.DOM.SVGPathSegMovetoAbs
-          GHCJS.DOM.SVGPathSegMovetoRel
-          GHCJS.DOM.SVGPatternElement
-          GHCJS.DOM.SVGPoint
-          GHCJS.DOM.SVGPointList
-          GHCJS.DOM.SVGPolygonElement
-          GHCJS.DOM.SVGPolylineElement
-          GHCJS.DOM.SVGPreserveAspectRatio
-          GHCJS.DOM.SVGRadialGradientElement
-          GHCJS.DOM.SVGRect
-          GHCJS.DOM.SVGRectElement
-          GHCJS.DOM.SVGRenderingIntent
-          GHCJS.DOM.SVGScriptElement
-          GHCJS.DOM.SVGSVGElement
-          GHCJS.DOM.SVGStopElement
-          GHCJS.DOM.SVGStringList
-          GHCJS.DOM.SVGStyleElement
-          GHCJS.DOM.SVGTests
-          GHCJS.DOM.SVGTextContentElement
-          GHCJS.DOM.SVGTextPathElement
-          GHCJS.DOM.SVGTextPositioningElement
-          GHCJS.DOM.SVGTransform
-          GHCJS.DOM.SVGTransformList
-          GHCJS.DOM.SVGURIReference
-          GHCJS.DOM.SVGUnitTypes
-          GHCJS.DOM.SVGUseElement
-          GHCJS.DOM.SVGViewElement
-          GHCJS.DOM.SVGViewSpec
-          GHCJS.DOM.SVGZoomAndPan
-          GHCJS.DOM.SVGZoomEvent
-          GHCJS.DOM.Screen
-          GHCJS.DOM.ScriptProcessorNode
-          GHCJS.DOM.ScriptProfile
-          GHCJS.DOM.ScriptProfileNode
-          GHCJS.DOM.SecurityPolicyViolationEvent
-          GHCJS.DOM.SourceBuffer
-          GHCJS.DOM.SourceBufferList
-          GHCJS.DOM.SourceInfo
-          GHCJS.DOM.SpeechSynthesis
-          GHCJS.DOM.SpeechSynthesisEvent
-          GHCJS.DOM.SpeechSynthesisUtterance
-          GHCJS.DOM.SpeechSynthesisVoice
-          GHCJS.DOM.Storage
-          GHCJS.DOM.StorageErrorCallback
-          GHCJS.DOM.StorageEvent
-          GHCJS.DOM.StorageInfo
-          GHCJS.DOM.StorageQuota
-          GHCJS.DOM.StorageQuotaCallback
-          GHCJS.DOM.StorageUsageCallback
-          GHCJS.DOM.StringCallback
-          GHCJS.DOM.StyleMedia
-          GHCJS.DOM.StyleSheet
-          GHCJS.DOM.StyleSheetList
-          GHCJS.DOM.SubtleCrypto
-          GHCJS.DOM.Text
-          GHCJS.DOM.TextEvent
-          GHCJS.DOM.TextMetrics
-          GHCJS.DOM.TextTrack
-          GHCJS.DOM.TextTrackCue
-          GHCJS.DOM.TextTrackCueList
-          GHCJS.DOM.TextTrackList
-          GHCJS.DOM.TimeRanges
-          GHCJS.DOM.Touch
-          GHCJS.DOM.TouchEvent
-          GHCJS.DOM.TouchList
-          GHCJS.DOM.TrackEvent
-          GHCJS.DOM.TransitionEvent
-          GHCJS.DOM.TreeWalker
-          GHCJS.DOM.TypeConversions
-          GHCJS.DOM.Types
-          GHCJS.DOM.UIEvent
-          GHCJS.DOM.UIRequestEvent
-          GHCJS.DOM.URLUtils
-          GHCJS.DOM.UserMessageHandler
-          GHCJS.DOM.VTTCue
-          GHCJS.DOM.VTTRegion
-          GHCJS.DOM.VTTRegionList
-          GHCJS.DOM.ValidityState
-          GHCJS.DOM.VideoPlaybackQuality
-          GHCJS.DOM.VideoStreamTrack
-          GHCJS.DOM.VideoTrack
-          GHCJS.DOM.VideoTrackList
-          GHCJS.DOM.VoidCallback
-          GHCJS.DOM.WaveShaperNode
-          GHCJS.DOM.WebGL2RenderingContext
-          GHCJS.DOM.WebGLActiveInfo
-          GHCJS.DOM.WebGLCompressedTextureATC
-          GHCJS.DOM.WebGLCompressedTexturePVRTC
-          GHCJS.DOM.WebGLCompressedTextureS3TC
-          GHCJS.DOM.WebGLContextAttributes
-          GHCJS.DOM.WebGLContextEvent
-          GHCJS.DOM.WebGLDebugRendererInfo
-          GHCJS.DOM.WebGLDebugShaders
-          GHCJS.DOM.WebGLDepthTexture
-          GHCJS.DOM.WebGLDrawBuffers
-          GHCJS.DOM.WebGLLoseContext
-          GHCJS.DOM.WebGLRenderingContextBase
-          GHCJS.DOM.WebGLShaderPrecisionFormat
-          GHCJS.DOM.WebKitAnimationEvent
-          GHCJS.DOM.WebKitCSSFilterValue
-          GHCJS.DOM.WebKitCSSMatrix
-          GHCJS.DOM.WebKitCSSRegionRule
-          GHCJS.DOM.WebKitCSSTransformValue
-          GHCJS.DOM.WebKitCSSViewportRule
-          GHCJS.DOM.WebKitNamedFlow
-          GHCJS.DOM.WebKitNamespace
-          GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent
-          GHCJS.DOM.WebKitPoint
-          GHCJS.DOM.WebKitTransitionEvent
-          GHCJS.DOM.WebSocket
-          GHCJS.DOM.WheelEvent
-          GHCJS.DOM.WindowBase64
-          GHCJS.DOM.WindowTimers
-          GHCJS.DOM.Worker
-          GHCJS.DOM.WorkerGlobalScope
-          GHCJS.DOM.WorkerLocation
-          GHCJS.DOM.WorkerNavigator
-          GHCJS.DOM.XMLHttpRequest
-          GHCJS.DOM.XMLHttpRequestProgressEvent
-          GHCJS.DOM.XMLHttpRequestUpload
-          GHCJS.DOM.XMLSerializer
-          GHCJS.DOM.XPathEvaluator
-          GHCJS.DOM.XPathExpression
-          GHCJS.DOM.XPathNSResolver
-          GHCJS.DOM.XPathResult
-          GHCJS.DOM.XSLTProcessor
-    else
-        reexported-modules:
-            JSDOM as GHCJS.DOM
-          , JSDOM.ANGLEInstancedArrays as GHCJS.DOM.ANGLEInstancedArrays
-          , JSDOM.AbstractView as GHCJS.DOM.AbstractView
-          , JSDOM.AbstractWorker as GHCJS.DOM.AbstractWorker
-          , JSDOM.AllAudioCapabilities as GHCJS.DOM.AllAudioCapabilities
-          , JSDOM.AllVideoCapabilities as GHCJS.DOM.AllVideoCapabilities
-          , JSDOM.AnalyserNode as GHCJS.DOM.AnalyserNode
-          , JSDOM.AnimationEvent as GHCJS.DOM.AnimationEvent
-          , JSDOM.Attr as GHCJS.DOM.Attr
-          , JSDOM.AudioBuffer as GHCJS.DOM.AudioBuffer
-          , JSDOM.AudioBufferCallback as GHCJS.DOM.AudioBufferCallback
-          , JSDOM.AudioBufferSourceNode as GHCJS.DOM.AudioBufferSourceNode
-          , JSDOM.AudioContext as GHCJS.DOM.AudioContext
-          , JSDOM.AudioDestinationNode as GHCJS.DOM.AudioDestinationNode
-          , JSDOM.AudioListener as GHCJS.DOM.AudioListener
-          , JSDOM.AudioNode as GHCJS.DOM.AudioNode
-          , JSDOM.AudioParam as GHCJS.DOM.AudioParam
-          , JSDOM.AudioProcessingEvent as GHCJS.DOM.AudioProcessingEvent
-          , JSDOM.AudioStreamTrack as GHCJS.DOM.AudioStreamTrack
-          , JSDOM.AudioTrack as GHCJS.DOM.AudioTrack
-          , JSDOM.AudioTrackList as GHCJS.DOM.AudioTrackList
-          , JSDOM.AutocompleteErrorEvent as GHCJS.DOM.AutocompleteErrorEvent
-          , JSDOM.BarProp as GHCJS.DOM.BarProp
-          , JSDOM.BatteryManager as GHCJS.DOM.BatteryManager
-          , JSDOM.BeforeLoadEvent as GHCJS.DOM.BeforeLoadEvent
-          , JSDOM.BeforeUnloadEvent as GHCJS.DOM.BeforeUnloadEvent
-          , JSDOM.BiquadFilterNode as GHCJS.DOM.BiquadFilterNode
-          , JSDOM.Blob as GHCJS.DOM.Blob
-          , JSDOM.CSSCharsetRule as GHCJS.DOM.CSSCharsetRule
-          , JSDOM.CSSFontFaceLoadEvent as GHCJS.DOM.CSSFontFaceLoadEvent
-          , JSDOM.CSSFontFaceRule as GHCJS.DOM.CSSFontFaceRule
-          , JSDOM.CSSImportRule as GHCJS.DOM.CSSImportRule
-          , JSDOM.CSSKeyframeRule as GHCJS.DOM.CSSKeyframeRule
-          , JSDOM.CSSKeyframesRule as GHCJS.DOM.CSSKeyframesRule
-          , JSDOM.CSSMediaRule as GHCJS.DOM.CSSMediaRule
-          , JSDOM.CSSPageRule as GHCJS.DOM.CSSPageRule
-          , JSDOM.CSSPrimitiveValue as GHCJS.DOM.CSSPrimitiveValue
-          , JSDOM.CSSRule as GHCJS.DOM.CSSRule
-          , JSDOM.CSSRuleList as GHCJS.DOM.CSSRuleList
-          , JSDOM.CSSStyleDeclaration as GHCJS.DOM.CSSStyleDeclaration
-          , JSDOM.CSSStyleRule as GHCJS.DOM.CSSStyleRule
-          , JSDOM.CSSStyleSheet as GHCJS.DOM.CSSStyleSheet
-          , JSDOM.CSSSupportsRule as GHCJS.DOM.CSSSupportsRule
-          , JSDOM.CSSValue as GHCJS.DOM.CSSValue
-          , JSDOM.CSSValueList as GHCJS.DOM.CSSValueList
-          , JSDOM.CanvasGradient as GHCJS.DOM.CanvasGradient
-          , JSDOM.CanvasRenderingContext as GHCJS.DOM.CanvasRenderingContext
-          , JSDOM.CanvasRenderingContext2D as GHCJS.DOM.CanvasRenderingContext2D
-          , JSDOM.CapabilityRange as GHCJS.DOM.CapabilityRange
-          , JSDOM.CharacterData as GHCJS.DOM.CharacterData
-          , JSDOM.ChildNode as GHCJS.DOM.ChildNode
-          , JSDOM.ClientRect as GHCJS.DOM.ClientRect
-          , JSDOM.ClientRectList as GHCJS.DOM.ClientRectList
-          , JSDOM.CloseEvent as GHCJS.DOM.CloseEvent
-          , JSDOM.CommandLineAPIHost as GHCJS.DOM.CommandLineAPIHost
-          , JSDOM.Comment as GHCJS.DOM.Comment
-          , JSDOM.CompositionEvent as GHCJS.DOM.CompositionEvent
-          , JSDOM.ConvolverNode as GHCJS.DOM.ConvolverNode
-          , JSDOM.Coordinates as GHCJS.DOM.Coordinates
-          , JSDOM.Counter as GHCJS.DOM.Counter
-          , JSDOM.Crypto as GHCJS.DOM.Crypto
-          , JSDOM.CryptoKey as GHCJS.DOM.CryptoKey
-          , JSDOM.CryptoKeyPair as GHCJS.DOM.CryptoKeyPair
-          , JSDOM.CustomEvent as GHCJS.DOM.CustomEvent
-          , JSDOM.ApplicationCache as GHCJS.DOM.ApplicationCache
-          , JSDOM.DOMError as GHCJS.DOM.DOMError
-          , JSDOM.FormData as GHCJS.DOM.FormData
-          , JSDOM.DOMImplementation as GHCJS.DOM.DOMImplementation
-          , JSDOM.MimeType as GHCJS.DOM.MimeType
-          , JSDOM.MimeTypeArray as GHCJS.DOM.MimeTypeArray
-          , JSDOM.DOMNamedFlowCollection as GHCJS.DOM.DOMNamedFlowCollection
-          , JSDOM.DOMParser as GHCJS.DOM.DOMParser
-          , JSDOM.Path2D as GHCJS.DOM.Path2D
-          , JSDOM.Plugin as GHCJS.DOM.Plugin
-          , JSDOM.PluginArray as GHCJS.DOM.PluginArray
-          , JSDOM.SecurityPolicy as GHCJS.DOM.SecurityPolicy
-          , JSDOM.Selection as GHCJS.DOM.Selection
-          , JSDOM.DOMSettableTokenList as GHCJS.DOM.DOMSettableTokenList
-          , JSDOM.DOMStringList as GHCJS.DOM.DOMStringList
-          , JSDOM.DOMTokenList as GHCJS.DOM.DOMTokenList
-          , JSDOM.URL as GHCJS.DOM.URL
-          , JSDOM.Window as GHCJS.DOM.Window
-          , JSDOM.CSS as GHCJS.DOM.CSS
-          , JSDOM.DataCue as GHCJS.DOM.DataCue
-          , JSDOM.DataTransfer as GHCJS.DOM.DataTransfer
-          , JSDOM.DataTransferItem as GHCJS.DOM.DataTransferItem
-          , JSDOM.DataTransferItemList as GHCJS.DOM.DataTransferItemList
-          , JSDOM.Database as GHCJS.DOM.Database
-          , JSDOM.DatabaseCallback as GHCJS.DOM.DatabaseCallback
-          , JSDOM.DedicatedWorkerGlobalScope as GHCJS.DOM.DedicatedWorkerGlobalScope
-          , JSDOM.DelayNode as GHCJS.DOM.DelayNode
-          , JSDOM.DeviceMotionEvent as GHCJS.DOM.DeviceMotionEvent
-          , JSDOM.DeviceOrientationEvent as GHCJS.DOM.DeviceOrientationEvent
-          , JSDOM.DeviceProximityEvent as GHCJS.DOM.DeviceProximityEvent
-          , JSDOM.Document as GHCJS.DOM.Document
-          , JSDOM.DocumentFragment as GHCJS.DOM.DocumentFragment
-          , JSDOM.DocumentType as GHCJS.DOM.DocumentType
-          , JSDOM.DynamicsCompressorNode as GHCJS.DOM.DynamicsCompressorNode
-          , JSDOM.EXTBlendMinMax as GHCJS.DOM.EXTBlendMinMax
-          , JSDOM.EXTsRGB as GHCJS.DOM.EXTsRGB
-          , JSDOM.EXTTextureFilterAnisotropic as GHCJS.DOM.EXTTextureFilterAnisotropic
-          , JSDOM.Element as GHCJS.DOM.Element
-          , JSDOM.Entity as GHCJS.DOM.Entity
-          , JSDOM.Enums as GHCJS.DOM.Enums
-          , JSDOM.ErrorEvent as GHCJS.DOM.ErrorEvent
-          , JSDOM.Event as GHCJS.DOM.Event
-          , JSDOM.EventListener as GHCJS.DOM.EventListener
-          , JSDOM.EventM as GHCJS.DOM.EventM
-          , JSDOM.EventSource as GHCJS.DOM.EventSource
-          , JSDOM.EventTarget as GHCJS.DOM.EventTarget
-          , JSDOM.File as GHCJS.DOM.File
-          , JSDOM.FileError as GHCJS.DOM.FileError
-          , JSDOM.FileList as GHCJS.DOM.FileList
-          , JSDOM.FileReader as GHCJS.DOM.FileReader
-          , JSDOM.FileReaderSync as GHCJS.DOM.FileReaderSync
-          , JSDOM.FocusEvent as GHCJS.DOM.FocusEvent
-          , JSDOM.FontLoader as GHCJS.DOM.FontLoader
-          , JSDOM.GainNode as GHCJS.DOM.GainNode
-          , JSDOM.Gamepad as GHCJS.DOM.Gamepad
-          , JSDOM.GamepadButton as GHCJS.DOM.GamepadButton
-          , JSDOM.GamepadEvent as GHCJS.DOM.GamepadEvent
-          , JSDOM.Geolocation as GHCJS.DOM.Geolocation
-          , JSDOM.Geoposition as GHCJS.DOM.Geoposition
-          , JSDOM.HTMLAllCollection as GHCJS.DOM.HTMLAllCollection
-          , JSDOM.HTMLAnchorElement as GHCJS.DOM.HTMLAnchorElement
-          , JSDOM.HTMLAppletElement as GHCJS.DOM.HTMLAppletElement
-          , JSDOM.HTMLAreaElement as GHCJS.DOM.HTMLAreaElement
-          , JSDOM.HTMLBRElement as GHCJS.DOM.HTMLBRElement
-          , JSDOM.HTMLBaseElement as GHCJS.DOM.HTMLBaseElement
-          , JSDOM.HTMLBaseFontElement as GHCJS.DOM.HTMLBaseFontElement
-          , JSDOM.HTMLBodyElement as GHCJS.DOM.HTMLBodyElement
-          , JSDOM.HTMLButtonElement as GHCJS.DOM.HTMLButtonElement
-          , JSDOM.HTMLCanvasElement as GHCJS.DOM.HTMLCanvasElement
-          , JSDOM.HTMLCollection as GHCJS.DOM.HTMLCollection
-          , JSDOM.HTMLDListElement as GHCJS.DOM.HTMLDListElement
-          , JSDOM.HTMLDataListElement as GHCJS.DOM.HTMLDataListElement
-          , JSDOM.HTMLDetailsElement as GHCJS.DOM.HTMLDetailsElement
-          , JSDOM.HTMLDirectoryElement as GHCJS.DOM.HTMLDirectoryElement
-          , JSDOM.HTMLDivElement as GHCJS.DOM.HTMLDivElement
-          , JSDOM.HTMLDocument as GHCJS.DOM.HTMLDocument
-          , JSDOM.HTMLElement as GHCJS.DOM.HTMLElement
-          , JSDOM.HTMLEmbedElement as GHCJS.DOM.HTMLEmbedElement
-          , JSDOM.HTMLFieldSetElement as GHCJS.DOM.HTMLFieldSetElement
-          , JSDOM.HTMLFontElement as GHCJS.DOM.HTMLFontElement
-          , JSDOM.HTMLFormControlsCollection as GHCJS.DOM.HTMLFormControlsCollection
-          , JSDOM.HTMLFormElement as GHCJS.DOM.HTMLFormElement
-          , JSDOM.HTMLFrameElement as GHCJS.DOM.HTMLFrameElement
-          , JSDOM.HTMLFrameSetElement as GHCJS.DOM.HTMLFrameSetElement
-          , JSDOM.HTMLHRElement as GHCJS.DOM.HTMLHRElement
-          , JSDOM.HTMLHeadElement as GHCJS.DOM.HTMLHeadElement
-          , JSDOM.HTMLHeadingElement as GHCJS.DOM.HTMLHeadingElement
-          , JSDOM.HTMLHtmlElement as GHCJS.DOM.HTMLHtmlElement
-          , JSDOM.HTMLIFrameElement as GHCJS.DOM.HTMLIFrameElement
-          , JSDOM.HTMLImageElement as GHCJS.DOM.HTMLImageElement
-          , JSDOM.HTMLInputElement as GHCJS.DOM.HTMLInputElement
-          , JSDOM.HTMLKeygenElement as GHCJS.DOM.HTMLKeygenElement
-          , JSDOM.HTMLLIElement as GHCJS.DOM.HTMLLIElement
-          , JSDOM.HTMLLabelElement as GHCJS.DOM.HTMLLabelElement
-          , JSDOM.HTMLLegendElement as GHCJS.DOM.HTMLLegendElement
-          , JSDOM.HTMLLinkElement as GHCJS.DOM.HTMLLinkElement
-          , JSDOM.HTMLMapElement as GHCJS.DOM.HTMLMapElement
-          , JSDOM.HTMLMarqueeElement as GHCJS.DOM.HTMLMarqueeElement
-          , JSDOM.HTMLMediaElement as GHCJS.DOM.HTMLMediaElement
-          , JSDOM.HTMLMenuElement as GHCJS.DOM.HTMLMenuElement
-          , JSDOM.HTMLMetaElement as GHCJS.DOM.HTMLMetaElement
-          , JSDOM.HTMLMeterElement as GHCJS.DOM.HTMLMeterElement
-          , JSDOM.HTMLModElement as GHCJS.DOM.HTMLModElement
-          , JSDOM.HTMLOListElement as GHCJS.DOM.HTMLOListElement
-          , JSDOM.HTMLObjectElement as GHCJS.DOM.HTMLObjectElement
-          , JSDOM.HTMLOptGroupElement as GHCJS.DOM.HTMLOptGroupElement
-          , JSDOM.HTMLOptionElement as GHCJS.DOM.HTMLOptionElement
-          , JSDOM.HTMLOptionsCollection as GHCJS.DOM.HTMLOptionsCollection
-          , JSDOM.HTMLOutputElement as GHCJS.DOM.HTMLOutputElement
-          , JSDOM.HTMLParagraphElement as GHCJS.DOM.HTMLParagraphElement
-          , JSDOM.HTMLParamElement as GHCJS.DOM.HTMLParamElement
-          , JSDOM.HTMLPreElement as GHCJS.DOM.HTMLPreElement
-          , JSDOM.HTMLProgressElement as GHCJS.DOM.HTMLProgressElement
-          , JSDOM.HTMLQuoteElement as GHCJS.DOM.HTMLQuoteElement
-          , JSDOM.HTMLScriptElement as GHCJS.DOM.HTMLScriptElement
-          , JSDOM.HTMLSelectElement as GHCJS.DOM.HTMLSelectElement
-          , JSDOM.HTMLSourceElement as GHCJS.DOM.HTMLSourceElement
-          , JSDOM.HTMLStyleElement as GHCJS.DOM.HTMLStyleElement
-          , JSDOM.HTMLTableCaptionElement as GHCJS.DOM.HTMLTableCaptionElement
-          , JSDOM.HTMLTableCellElement as GHCJS.DOM.HTMLTableCellElement
-          , JSDOM.HTMLTableColElement as GHCJS.DOM.HTMLTableColElement
-          , JSDOM.HTMLTableElement as GHCJS.DOM.HTMLTableElement
-          , JSDOM.HTMLTableRowElement as GHCJS.DOM.HTMLTableRowElement
-          , JSDOM.HTMLTableSectionElement as GHCJS.DOM.HTMLTableSectionElement
-          , JSDOM.HTMLTemplateElement as GHCJS.DOM.HTMLTemplateElement
-          , JSDOM.HTMLTextAreaElement as GHCJS.DOM.HTMLTextAreaElement
-          , JSDOM.HTMLTitleElement as GHCJS.DOM.HTMLTitleElement
-          , JSDOM.HTMLTrackElement as GHCJS.DOM.HTMLTrackElement
-          , JSDOM.HTMLUListElement as GHCJS.DOM.HTMLUListElement
-          , JSDOM.HTMLVideoElement as GHCJS.DOM.HTMLVideoElement
-          , JSDOM.HashChangeEvent as GHCJS.DOM.HashChangeEvent
-          , JSDOM.History as GHCJS.DOM.History
-          , JSDOM.IDBCursor as GHCJS.DOM.IDBCursor
-          , JSDOM.IDBCursorWithValue as GHCJS.DOM.IDBCursorWithValue
-          , JSDOM.IDBDatabase as GHCJS.DOM.IDBDatabase
-          , JSDOM.IDBFactory as GHCJS.DOM.IDBFactory
-          , JSDOM.IDBIndex as GHCJS.DOM.IDBIndex
-          , JSDOM.IDBKeyRange as GHCJS.DOM.IDBKeyRange
-          , JSDOM.IDBObjectStore as GHCJS.DOM.IDBObjectStore
-          , JSDOM.IDBOpenDBRequest as GHCJS.DOM.IDBOpenDBRequest
-          , JSDOM.IDBRequest as GHCJS.DOM.IDBRequest
-          , JSDOM.IDBTransaction as GHCJS.DOM.IDBTransaction
-          , JSDOM.IDBVersionChangeEvent as GHCJS.DOM.IDBVersionChangeEvent
-          , JSDOM.ImageData as GHCJS.DOM.ImageData
-          , JSDOM.InspectorFrontendHost as GHCJS.DOM.InspectorFrontendHost
-          , JSDOM.InternalSettings as GHCJS.DOM.InternalSettings
-          , JSDOM.Internals as GHCJS.DOM.Internals
-          , JSDOM.KeyboardEvent as GHCJS.DOM.KeyboardEvent
-          , JSDOM.Location as GHCJS.DOM.Location
-          , JSDOM.MallocStatistics as GHCJS.DOM.MallocStatistics
-          , JSDOM.MediaController as GHCJS.DOM.MediaController
-          , JSDOM.MediaControlsHost as GHCJS.DOM.MediaControlsHost
-          , JSDOM.MediaElementAudioSourceNode as GHCJS.DOM.MediaElementAudioSourceNode
-          , JSDOM.MediaError as GHCJS.DOM.MediaError
-          , JSDOM.MediaKeyError as GHCJS.DOM.MediaKeyError
-          , JSDOM.MediaKeyEvent as GHCJS.DOM.MediaKeyEvent
-          , JSDOM.MediaKeyMessageEvent as GHCJS.DOM.MediaKeyMessageEvent
-          , JSDOM.MediaKeyNeededEvent as GHCJS.DOM.MediaKeyNeededEvent
-          , JSDOM.MediaKeySession as GHCJS.DOM.MediaKeySession
-          , JSDOM.MediaKeys as GHCJS.DOM.MediaKeys
-          , JSDOM.MediaList as GHCJS.DOM.MediaList
-          , JSDOM.MediaQueryList as GHCJS.DOM.MediaQueryList
-          , JSDOM.MediaQueryListListener as GHCJS.DOM.MediaQueryListListener
-          , JSDOM.MediaSource as GHCJS.DOM.MediaSource
-          , JSDOM.MediaSourceStates as GHCJS.DOM.MediaSourceStates
-          , JSDOM.MediaStream as GHCJS.DOM.MediaStream
-          , JSDOM.MediaStreamAudioDestinationNode as GHCJS.DOM.MediaStreamAudioDestinationNode
-          , JSDOM.MediaStreamAudioSourceNode as GHCJS.DOM.MediaStreamAudioSourceNode
-          , JSDOM.MediaStreamEvent as GHCJS.DOM.MediaStreamEvent
-          , JSDOM.MediaStreamTrack as GHCJS.DOM.MediaStreamTrack
-          , JSDOM.MediaStreamTrackEvent as GHCJS.DOM.MediaStreamTrackEvent
-          , JSDOM.MediaStreamTrackSourcesCallback as GHCJS.DOM.MediaStreamTrackSourcesCallback
-          , JSDOM.MediaTrackConstraints as GHCJS.DOM.MediaTrackConstraints
-          , JSDOM.MemoryInfo as GHCJS.DOM.MemoryInfo
-          , JSDOM.MessageChannel as GHCJS.DOM.MessageChannel
-          , JSDOM.MessageEvent as GHCJS.DOM.MessageEvent
-          , JSDOM.MessagePort as GHCJS.DOM.MessagePort
-          , JSDOM.MouseEvent as GHCJS.DOM.MouseEvent
-          , JSDOM.MutationEvent as GHCJS.DOM.MutationEvent
-          , JSDOM.MutationObserver as GHCJS.DOM.MutationObserver
-          , JSDOM.MutationRecord as GHCJS.DOM.MutationRecord
-          , JSDOM.NamedNodeMap as GHCJS.DOM.NamedNodeMap
-          , JSDOM.Navigator as GHCJS.DOM.Navigator
-          , JSDOM.NavigatorUserMediaError as GHCJS.DOM.NavigatorUserMediaError
-          , JSDOM.NavigatorUserMediaErrorCallback as GHCJS.DOM.NavigatorUserMediaErrorCallback
-          , JSDOM.NavigatorUserMediaSuccessCallback as GHCJS.DOM.NavigatorUserMediaSuccessCallback
-          , JSDOM.Node as GHCJS.DOM.Node
-          , JSDOM.NodeFilter as GHCJS.DOM.NodeFilter
-          , JSDOM.NodeIterator as GHCJS.DOM.NodeIterator
-          , JSDOM.NodeList as GHCJS.DOM.NodeList
-          , JSDOM.Notification as GHCJS.DOM.Notification
-          , JSDOM.NotificationCenter as GHCJS.DOM.NotificationCenter
-          , JSDOM.NotificationPermissionCallback as GHCJS.DOM.NotificationPermissionCallback
-          , JSDOM.OESStandardDerivatives as GHCJS.DOM.OESStandardDerivatives
-          , JSDOM.OESTextureHalfFloat as GHCJS.DOM.OESTextureHalfFloat
-          , JSDOM.OESVertexArrayObject as GHCJS.DOM.OESVertexArrayObject
-          , JSDOM.OfflineAudioCompletionEvent as GHCJS.DOM.OfflineAudioCompletionEvent
-          , JSDOM.OfflineAudioContext as GHCJS.DOM.OfflineAudioContext
-          , JSDOM.OscillatorNode as GHCJS.DOM.OscillatorNode
-          , JSDOM.OverflowEvent as GHCJS.DOM.OverflowEvent
-          , JSDOM.PageTransitionEvent as GHCJS.DOM.PageTransitionEvent
-          , JSDOM.PannerNode as GHCJS.DOM.PannerNode
-          , JSDOM.Performance as GHCJS.DOM.Performance
-          , JSDOM.PerformanceEntry as GHCJS.DOM.PerformanceEntry
-          , JSDOM.PerformanceEntryList as GHCJS.DOM.PerformanceEntryList
-          , JSDOM.PerformanceNavigation as GHCJS.DOM.PerformanceNavigation
-          , JSDOM.PerformanceResourceTiming as GHCJS.DOM.PerformanceResourceTiming
-          , JSDOM.PerformanceTiming as GHCJS.DOM.PerformanceTiming
-          , JSDOM.PopStateEvent as GHCJS.DOM.PopStateEvent
-          , JSDOM.PositionCallback as GHCJS.DOM.PositionCallback
-          , JSDOM.PositionError as GHCJS.DOM.PositionError
-          , JSDOM.PositionErrorCallback as GHCJS.DOM.PositionErrorCallback
-          , JSDOM.ProcessingInstruction as GHCJS.DOM.ProcessingInstruction
-          , JSDOM.ProgressEvent as GHCJS.DOM.ProgressEvent
-          , JSDOM.QuickTimePluginReplacement as GHCJS.DOM.QuickTimePluginReplacement
-          , JSDOM.RGBColor as GHCJS.DOM.RGBColor
-          , JSDOM.RTCConfiguration as GHCJS.DOM.RTCConfiguration
-          , JSDOM.RTCDTMFSender as GHCJS.DOM.RTCDTMFSender
-          , JSDOM.RTCDTMFToneChangeEvent as GHCJS.DOM.RTCDTMFToneChangeEvent
-          , JSDOM.RTCDataChannel as GHCJS.DOM.RTCDataChannel
-          , JSDOM.RTCDataChannelEvent as GHCJS.DOM.RTCDataChannelEvent
-          , JSDOM.RTCIceCandidate as GHCJS.DOM.RTCIceCandidate
-          , JSDOM.RTCIceCandidateEvent as GHCJS.DOM.RTCIceCandidateEvent
-          , JSDOM.RTCIceServer as GHCJS.DOM.RTCIceServer
-          , JSDOM.RTCPeerConnection as GHCJS.DOM.RTCPeerConnection
-          , JSDOM.RTCPeerConnectionErrorCallback as GHCJS.DOM.RTCPeerConnectionErrorCallback
-          , JSDOM.RTCSessionDescription as GHCJS.DOM.RTCSessionDescription
-          , JSDOM.RTCSessionDescriptionCallback as GHCJS.DOM.RTCSessionDescriptionCallback
-          , JSDOM.RTCStatsCallback as GHCJS.DOM.RTCStatsCallback
-          , JSDOM.RTCStatsReport as GHCJS.DOM.RTCStatsReport
-          , JSDOM.RTCStatsResponse as GHCJS.DOM.RTCStatsResponse
-          , JSDOM.RadioNodeList as GHCJS.DOM.RadioNodeList
-          , JSDOM.Range as GHCJS.DOM.Range
-          , JSDOM.ReadableStream as GHCJS.DOM.ReadableStream
-          , JSDOM.Rect as GHCJS.DOM.Rect
-          , JSDOM.RequestAnimationFrameCallback as GHCJS.DOM.RequestAnimationFrameCallback
-          , JSDOM.SQLError as GHCJS.DOM.SQLError
-          , JSDOM.SQLResultSet as GHCJS.DOM.SQLResultSet
-          , JSDOM.SQLResultSetRowList as GHCJS.DOM.SQLResultSetRowList
-          , JSDOM.SQLStatementCallback as GHCJS.DOM.SQLStatementCallback
-          , JSDOM.SQLStatementErrorCallback as GHCJS.DOM.SQLStatementErrorCallback
-          , JSDOM.SQLTransaction as GHCJS.DOM.SQLTransaction
-          , JSDOM.SQLTransactionCallback as GHCJS.DOM.SQLTransactionCallback
-          , JSDOM.SQLTransactionErrorCallback as GHCJS.DOM.SQLTransactionErrorCallback
-          , JSDOM.SVGAElement as GHCJS.DOM.SVGAElement
-          , JSDOM.SVGAltGlyphElement as GHCJS.DOM.SVGAltGlyphElement
-          , JSDOM.SVGAngle as GHCJS.DOM.SVGAngle
-          , JSDOM.SVGAnimatedAngle as GHCJS.DOM.SVGAnimatedAngle
-          , JSDOM.SVGAnimatedBoolean as GHCJS.DOM.SVGAnimatedBoolean
-          , JSDOM.SVGAnimatedEnumeration as GHCJS.DOM.SVGAnimatedEnumeration
-          , JSDOM.SVGAnimatedInteger as GHCJS.DOM.SVGAnimatedInteger
-          , JSDOM.SVGAnimatedLength as GHCJS.DOM.SVGAnimatedLength
-          , JSDOM.SVGAnimatedLengthList as GHCJS.DOM.SVGAnimatedLengthList
-          , JSDOM.SVGAnimatedNumber as GHCJS.DOM.SVGAnimatedNumber
-          , JSDOM.SVGAnimatedNumberList as GHCJS.DOM.SVGAnimatedNumberList
-          , JSDOM.SVGAnimatedPreserveAspectRatio as GHCJS.DOM.SVGAnimatedPreserveAspectRatio
-          , JSDOM.SVGAnimatedRect as GHCJS.DOM.SVGAnimatedRect
-          , JSDOM.SVGAnimatedString as GHCJS.DOM.SVGAnimatedString
-          , JSDOM.SVGAnimatedTransformList as GHCJS.DOM.SVGAnimatedTransformList
-          , JSDOM.SVGAnimationElement as GHCJS.DOM.SVGAnimationElement
-          , JSDOM.SVGCircleElement as GHCJS.DOM.SVGCircleElement
-          , JSDOM.SVGClipPathElement as GHCJS.DOM.SVGClipPathElement
-          , JSDOM.SVGColor as GHCJS.DOM.SVGColor
-          , JSDOM.SVGComponentTransferFunctionElement as GHCJS.DOM.SVGComponentTransferFunctionElement
-          , JSDOM.SVGCursorElement as GHCJS.DOM.SVGCursorElement
-          , JSDOM.SVGDocument as GHCJS.DOM.SVGDocument
-          , JSDOM.SVGElement as GHCJS.DOM.SVGElement
-          , JSDOM.SVGEllipseElement as GHCJS.DOM.SVGEllipseElement
-          , JSDOM.SVGExternalResourcesRequired as GHCJS.DOM.SVGExternalResourcesRequired
-          , JSDOM.SVGFEBlendElement as GHCJS.DOM.SVGFEBlendElement
-          , JSDOM.SVGFEColorMatrixElement as GHCJS.DOM.SVGFEColorMatrixElement
-          , JSDOM.SVGFEComponentTransferElement as GHCJS.DOM.SVGFEComponentTransferElement
-          , JSDOM.SVGFECompositeElement as GHCJS.DOM.SVGFECompositeElement
-          , JSDOM.SVGFEConvolveMatrixElement as GHCJS.DOM.SVGFEConvolveMatrixElement
-          , JSDOM.SVGFEDiffuseLightingElement as GHCJS.DOM.SVGFEDiffuseLightingElement
-          , JSDOM.SVGFEDisplacementMapElement as GHCJS.DOM.SVGFEDisplacementMapElement
-          , JSDOM.SVGFEDistantLightElement as GHCJS.DOM.SVGFEDistantLightElement
-          , JSDOM.SVGFEDropShadowElement as GHCJS.DOM.SVGFEDropShadowElement
-          , JSDOM.SVGFEGaussianBlurElement as GHCJS.DOM.SVGFEGaussianBlurElement
-          , JSDOM.SVGFEImageElement as GHCJS.DOM.SVGFEImageElement
-          , JSDOM.SVGFEMergeNodeElement as GHCJS.DOM.SVGFEMergeNodeElement
-          , JSDOM.SVGFEMorphologyElement as GHCJS.DOM.SVGFEMorphologyElement
-          , JSDOM.SVGFEOffsetElement as GHCJS.DOM.SVGFEOffsetElement
-          , JSDOM.SVGFEPointLightElement as GHCJS.DOM.SVGFEPointLightElement
-          , JSDOM.SVGFESpecularLightingElement as GHCJS.DOM.SVGFESpecularLightingElement
-          , JSDOM.SVGFESpotLightElement as GHCJS.DOM.SVGFESpotLightElement
-          , JSDOM.SVGFETileElement as GHCJS.DOM.SVGFETileElement
-          , JSDOM.SVGFETurbulenceElement as GHCJS.DOM.SVGFETurbulenceElement
-          , JSDOM.SVGFilterElement as GHCJS.DOM.SVGFilterElement
-          , JSDOM.SVGFilterPrimitiveStandardAttributes as GHCJS.DOM.SVGFilterPrimitiveStandardAttributes
-          , JSDOM.SVGFitToViewBox as GHCJS.DOM.SVGFitToViewBox
-          , JSDOM.SVGForeignObjectElement as GHCJS.DOM.SVGForeignObjectElement
-          , JSDOM.SVGGlyphRefElement as GHCJS.DOM.SVGGlyphRefElement
-          , JSDOM.SVGGradientElement as GHCJS.DOM.SVGGradientElement
-          , JSDOM.SVGGraphicsElement as GHCJS.DOM.SVGGraphicsElement
-          , JSDOM.SVGImageElement as GHCJS.DOM.SVGImageElement
-          , JSDOM.SVGLength as GHCJS.DOM.SVGLength
-          , JSDOM.SVGLengthList as GHCJS.DOM.SVGLengthList
-          , JSDOM.SVGLineElement as GHCJS.DOM.SVGLineElement
-          , JSDOM.SVGLinearGradientElement as GHCJS.DOM.SVGLinearGradientElement
-          , JSDOM.SVGMarkerElement as GHCJS.DOM.SVGMarkerElement
-          , JSDOM.SVGMaskElement as GHCJS.DOM.SVGMaskElement
-          , JSDOM.SVGMatrix as GHCJS.DOM.SVGMatrix
-          , JSDOM.SVGNumber as GHCJS.DOM.SVGNumber
-          , JSDOM.SVGNumberList as GHCJS.DOM.SVGNumberList
-          , JSDOM.SVGPaint as GHCJS.DOM.SVGPaint
-          , JSDOM.SVGPathElement as GHCJS.DOM.SVGPathElement
-          , JSDOM.SVGPathSeg as GHCJS.DOM.SVGPathSeg
-          , JSDOM.SVGPathSegArcAbs as GHCJS.DOM.SVGPathSegArcAbs
-          , JSDOM.SVGPathSegArcRel as GHCJS.DOM.SVGPathSegArcRel
-          , JSDOM.SVGPathSegCurvetoCubicAbs as GHCJS.DOM.SVGPathSegCurvetoCubicAbs
-          , JSDOM.SVGPathSegCurvetoCubicRel as GHCJS.DOM.SVGPathSegCurvetoCubicRel
-          , JSDOM.SVGPathSegCurvetoCubicSmoothAbs as GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs
-          , JSDOM.SVGPathSegCurvetoCubicSmoothRel as GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel
-          , JSDOM.SVGPathSegCurvetoQuadraticAbs as GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs
-          , JSDOM.SVGPathSegCurvetoQuadraticRel as GHCJS.DOM.SVGPathSegCurvetoQuadraticRel
-          , JSDOM.SVGPathSegCurvetoQuadraticSmoothAbs as GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
-          , JSDOM.SVGPathSegCurvetoQuadraticSmoothRel as GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel
-          , JSDOM.SVGPathSegLinetoAbs as GHCJS.DOM.SVGPathSegLinetoAbs
-          , JSDOM.SVGPathSegLinetoHorizontalAbs as GHCJS.DOM.SVGPathSegLinetoHorizontalAbs
-          , JSDOM.SVGPathSegLinetoHorizontalRel as GHCJS.DOM.SVGPathSegLinetoHorizontalRel
-          , JSDOM.SVGPathSegLinetoRel as GHCJS.DOM.SVGPathSegLinetoRel
-          , JSDOM.SVGPathSegLinetoVerticalAbs as GHCJS.DOM.SVGPathSegLinetoVerticalAbs
-          , JSDOM.SVGPathSegLinetoVerticalRel as GHCJS.DOM.SVGPathSegLinetoVerticalRel
-          , JSDOM.SVGPathSegList as GHCJS.DOM.SVGPathSegList
-          , JSDOM.SVGPathSegMovetoAbs as GHCJS.DOM.SVGPathSegMovetoAbs
-          , JSDOM.SVGPathSegMovetoRel as GHCJS.DOM.SVGPathSegMovetoRel
-          , JSDOM.SVGPatternElement as GHCJS.DOM.SVGPatternElement
-          , JSDOM.SVGPoint as GHCJS.DOM.SVGPoint
-          , JSDOM.SVGPointList as GHCJS.DOM.SVGPointList
-          , JSDOM.SVGPolygonElement as GHCJS.DOM.SVGPolygonElement
-          , JSDOM.SVGPolylineElement as GHCJS.DOM.SVGPolylineElement
-          , JSDOM.SVGPreserveAspectRatio as GHCJS.DOM.SVGPreserveAspectRatio
-          , JSDOM.SVGRadialGradientElement as GHCJS.DOM.SVGRadialGradientElement
-          , JSDOM.SVGRect as GHCJS.DOM.SVGRect
-          , JSDOM.SVGRectElement as GHCJS.DOM.SVGRectElement
-          , JSDOM.SVGRenderingIntent as GHCJS.DOM.SVGRenderingIntent
-          , JSDOM.SVGScriptElement as GHCJS.DOM.SVGScriptElement
-          , JSDOM.SVGSVGElement as GHCJS.DOM.SVGSVGElement
-          , JSDOM.SVGStopElement as GHCJS.DOM.SVGStopElement
-          , JSDOM.SVGStringList as GHCJS.DOM.SVGStringList
-          , JSDOM.SVGStyleElement as GHCJS.DOM.SVGStyleElement
-          , JSDOM.SVGTests as GHCJS.DOM.SVGTests
-          , JSDOM.SVGTextContentElement as GHCJS.DOM.SVGTextContentElement
-          , JSDOM.SVGTextPathElement as GHCJS.DOM.SVGTextPathElement
-          , JSDOM.SVGTextPositioningElement as GHCJS.DOM.SVGTextPositioningElement
-          , JSDOM.SVGTransform as GHCJS.DOM.SVGTransform
-          , JSDOM.SVGTransformList as GHCJS.DOM.SVGTransformList
-          , JSDOM.SVGURIReference as GHCJS.DOM.SVGURIReference
-          , JSDOM.SVGUnitTypes as GHCJS.DOM.SVGUnitTypes
-          , JSDOM.SVGUseElement as GHCJS.DOM.SVGUseElement
-          , JSDOM.SVGViewElement as GHCJS.DOM.SVGViewElement
-          , JSDOM.SVGViewSpec as GHCJS.DOM.SVGViewSpec
-          , JSDOM.SVGZoomAndPan as GHCJS.DOM.SVGZoomAndPan
-          , JSDOM.SVGZoomEvent as GHCJS.DOM.SVGZoomEvent
-          , JSDOM.Screen as GHCJS.DOM.Screen
-          , JSDOM.ScriptProcessorNode as GHCJS.DOM.ScriptProcessorNode
-          , JSDOM.ScriptProfile as GHCJS.DOM.ScriptProfile
-          , JSDOM.ScriptProfileNode as GHCJS.DOM.ScriptProfileNode
-          , JSDOM.SecurityPolicyViolationEvent as GHCJS.DOM.SecurityPolicyViolationEvent
-          , JSDOM.SourceBuffer as GHCJS.DOM.SourceBuffer
-          , JSDOM.SourceBufferList as GHCJS.DOM.SourceBufferList
-          , JSDOM.SourceInfo as GHCJS.DOM.SourceInfo
-          , JSDOM.SpeechSynthesis as GHCJS.DOM.SpeechSynthesis
-          , JSDOM.SpeechSynthesisEvent as GHCJS.DOM.SpeechSynthesisEvent
-          , JSDOM.SpeechSynthesisUtterance as GHCJS.DOM.SpeechSynthesisUtterance
-          , JSDOM.SpeechSynthesisVoice as GHCJS.DOM.SpeechSynthesisVoice
-          , JSDOM.Storage as GHCJS.DOM.Storage
-          , JSDOM.StorageErrorCallback as GHCJS.DOM.StorageErrorCallback
-          , JSDOM.StorageEvent as GHCJS.DOM.StorageEvent
-          , JSDOM.StorageInfo as GHCJS.DOM.StorageInfo
-          , JSDOM.StorageQuota as GHCJS.DOM.StorageQuota
-          , JSDOM.StorageQuotaCallback as GHCJS.DOM.StorageQuotaCallback
-          , JSDOM.StorageUsageCallback as GHCJS.DOM.StorageUsageCallback
-          , JSDOM.StringCallback as GHCJS.DOM.StringCallback
-          , JSDOM.StyleMedia as GHCJS.DOM.StyleMedia
-          , JSDOM.StyleSheet as GHCJS.DOM.StyleSheet
-          , JSDOM.StyleSheetList as GHCJS.DOM.StyleSheetList
-          , JSDOM.SubtleCrypto as GHCJS.DOM.SubtleCrypto
-          , JSDOM.Text as GHCJS.DOM.Text
-          , JSDOM.TextEvent as GHCJS.DOM.TextEvent
-          , JSDOM.TextMetrics as GHCJS.DOM.TextMetrics
-          , JSDOM.TextTrack as GHCJS.DOM.TextTrack
-          , JSDOM.TextTrackCue as GHCJS.DOM.TextTrackCue
-          , JSDOM.TextTrackCueList as GHCJS.DOM.TextTrackCueList
-          , JSDOM.TextTrackList as GHCJS.DOM.TextTrackList
-          , JSDOM.TimeRanges as GHCJS.DOM.TimeRanges
-          , JSDOM.Touch as GHCJS.DOM.Touch
-          , JSDOM.TouchEvent as GHCJS.DOM.TouchEvent
-          , JSDOM.TouchList as GHCJS.DOM.TouchList
-          , JSDOM.TrackEvent as GHCJS.DOM.TrackEvent
-          , JSDOM.TransitionEvent as GHCJS.DOM.TransitionEvent
-          , JSDOM.TreeWalker as GHCJS.DOM.TreeWalker
-          , JSDOM.TypeConversions as GHCJS.DOM.TypeConversions
-          , JSDOM.Types as GHCJS.DOM.Types
-          , JSDOM.UIEvent as GHCJS.DOM.UIEvent
-          , JSDOM.UIRequestEvent as GHCJS.DOM.UIRequestEvent
-          , JSDOM.URLUtils as GHCJS.DOM.URLUtils
-          , JSDOM.UserMessageHandler as GHCJS.DOM.UserMessageHandler
-          , JSDOM.VTTCue as GHCJS.DOM.VTTCue
-          , JSDOM.VTTRegion as GHCJS.DOM.VTTRegion
-          , JSDOM.VTTRegionList as GHCJS.DOM.VTTRegionList
-          , JSDOM.ValidityState as GHCJS.DOM.ValidityState
-          , JSDOM.VideoPlaybackQuality as GHCJS.DOM.VideoPlaybackQuality
-          , JSDOM.VideoStreamTrack as GHCJS.DOM.VideoStreamTrack
-          , JSDOM.VideoTrack as GHCJS.DOM.VideoTrack
-          , JSDOM.VideoTrackList as GHCJS.DOM.VideoTrackList
-          , JSDOM.VoidCallback as GHCJS.DOM.VoidCallback
-          , JSDOM.WaveShaperNode as GHCJS.DOM.WaveShaperNode
-          , JSDOM.WebGL2RenderingContext as GHCJS.DOM.WebGL2RenderingContext
-          , JSDOM.WebGLActiveInfo as GHCJS.DOM.WebGLActiveInfo
-          , JSDOM.WebGLCompressedTextureATC as GHCJS.DOM.WebGLCompressedTextureATC
-          , JSDOM.WebGLCompressedTexturePVRTC as GHCJS.DOM.WebGLCompressedTexturePVRTC
-          , JSDOM.WebGLCompressedTextureS3TC as GHCJS.DOM.WebGLCompressedTextureS3TC
-          , JSDOM.WebGLContextAttributes as GHCJS.DOM.WebGLContextAttributes
-          , JSDOM.WebGLContextEvent as GHCJS.DOM.WebGLContextEvent
-          , JSDOM.WebGLDebugRendererInfo as GHCJS.DOM.WebGLDebugRendererInfo
-          , JSDOM.WebGLDebugShaders as GHCJS.DOM.WebGLDebugShaders
-          , JSDOM.WebGLDepthTexture as GHCJS.DOM.WebGLDepthTexture
-          , JSDOM.WebGLDrawBuffers as GHCJS.DOM.WebGLDrawBuffers
-          , JSDOM.WebGLLoseContext as GHCJS.DOM.WebGLLoseContext
-          , JSDOM.WebGLRenderingContextBase as GHCJS.DOM.WebGLRenderingContextBase
-          , JSDOM.WebGLShaderPrecisionFormat as GHCJS.DOM.WebGLShaderPrecisionFormat
-          , JSDOM.WebKitAnimationEvent as GHCJS.DOM.WebKitAnimationEvent
-          , JSDOM.WebKitCSSFilterValue as GHCJS.DOM.WebKitCSSFilterValue
-          , JSDOM.WebKitCSSMatrix as GHCJS.DOM.WebKitCSSMatrix
-          , JSDOM.WebKitCSSRegionRule as GHCJS.DOM.WebKitCSSRegionRule
-          , JSDOM.WebKitCSSTransformValue as GHCJS.DOM.WebKitCSSTransformValue
-          , JSDOM.WebKitCSSViewportRule as GHCJS.DOM.WebKitCSSViewportRule
-          , JSDOM.WebKitNamedFlow as GHCJS.DOM.WebKitNamedFlow
-          , JSDOM.WebKitNamespace as GHCJS.DOM.WebKitNamespace
-          , JSDOM.WebKitPlaybackTargetAvailabilityEvent as GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent
-          , JSDOM.WebKitPoint as GHCJS.DOM.WebKitPoint
-          , JSDOM.WebKitTransitionEvent as GHCJS.DOM.WebKitTransitionEvent
-          , JSDOM.WebSocket as GHCJS.DOM.WebSocket
-          , JSDOM.WheelEvent as GHCJS.DOM.WheelEvent
-          , JSDOM.WindowBase64 as GHCJS.DOM.WindowBase64
-          , JSDOM.WindowTimers as GHCJS.DOM.WindowTimers
-          , JSDOM.Worker as GHCJS.DOM.Worker
-          , JSDOM.WorkerGlobalScope as GHCJS.DOM.WorkerGlobalScope
-          , JSDOM.WorkerLocation as GHCJS.DOM.WorkerLocation
-          , JSDOM.WorkerNavigator as GHCJS.DOM.WorkerNavigator
-          , JSDOM.XMLHttpRequest as GHCJS.DOM.XMLHttpRequest
-          , JSDOM.XMLHttpRequestProgressEvent as GHCJS.DOM.XMLHttpRequestProgressEvent
-          , JSDOM.XMLHttpRequestUpload as GHCJS.DOM.XMLHttpRequestUpload
-          , JSDOM.XMLSerializer as GHCJS.DOM.XMLSerializer
-          , JSDOM.XPathEvaluator as GHCJS.DOM.XPathEvaluator
-          , JSDOM.XPathExpression as GHCJS.DOM.XPathExpression
-          , JSDOM.XPathNSResolver as GHCJS.DOM.XPathNSResolver
-          , JSDOM.XPathResult as GHCJS.DOM.XPathResult
-          , JSDOM.XSLTProcessor as GHCJS.DOM.XSLTProcessor
-
-    if impl(ghcjs) && flag(jsffi)
-        hs-source-dirs: src, common
-        cpp-options: -DUSE_JAVASCRIPTFFI
-        build-depends: ghcjs-base >=0.2.0.0 && <0.3, ghcjs-prim, ghc-prim
-        exposed-modules:
-          GHCJS.DOM.EventTargetClosures
-
-          GHCJS.DOM.JSFFI.AudioContext
-          GHCJS.DOM.JSFFI.Database
-          GHCJS.DOM.JSFFI.DOMError
-          GHCJS.DOM.JSFFI.Geolocation
-          GHCJS.DOM.JSFFI.FormData
-          GHCJS.DOM.JSFFI.MediaStreamTrack
-          GHCJS.DOM.JSFFI.Navigator
-          GHCJS.DOM.JSFFI.NavigatorUserMediaError
-          GHCJS.DOM.JSFFI.PositionError
-          GHCJS.DOM.JSFFI.RTCPeerConnection
-          GHCJS.DOM.JSFFI.RTCPeerConnectionError
-          GHCJS.DOM.JSFFI.SQLError
-          GHCJS.DOM.JSFFI.SQLTransaction
-          GHCJS.DOM.JSFFI.Window
-          GHCJS.DOM.JSFFI.XMLHttpRequest
-
-          GHCJS.DOM.JSFFI.Generated.ANGLEInstancedArrays
-          GHCJS.DOM.JSFFI.Generated.AbstractView
-          GHCJS.DOM.JSFFI.Generated.AbstractWorker
-          GHCJS.DOM.JSFFI.Generated.AllAudioCapabilities
-          GHCJS.DOM.JSFFI.Generated.AllVideoCapabilities
-          GHCJS.DOM.JSFFI.Generated.AnalyserNode
-          GHCJS.DOM.JSFFI.Generated.AnimationEvent
-          GHCJS.DOM.JSFFI.Generated.Attr
-          GHCJS.DOM.JSFFI.Generated.AudioBuffer
-          GHCJS.DOM.JSFFI.Generated.AudioBufferCallback
-          GHCJS.DOM.JSFFI.Generated.AudioBufferSourceNode
-          GHCJS.DOM.JSFFI.Generated.AudioContext
-          GHCJS.DOM.JSFFI.Generated.AudioDestinationNode
-          GHCJS.DOM.JSFFI.Generated.AudioListener
-          GHCJS.DOM.JSFFI.Generated.AudioNode
-          GHCJS.DOM.JSFFI.Generated.AudioParam
-          GHCJS.DOM.JSFFI.Generated.AudioProcessingEvent
-          GHCJS.DOM.JSFFI.Generated.AudioStreamTrack
-          GHCJS.DOM.JSFFI.Generated.AudioTrack
-          GHCJS.DOM.JSFFI.Generated.AudioTrackList
-          GHCJS.DOM.JSFFI.Generated.AutocompleteErrorEvent
-          GHCJS.DOM.JSFFI.Generated.BarProp
-          GHCJS.DOM.JSFFI.Generated.BatteryManager
-          GHCJS.DOM.JSFFI.Generated.BeforeLoadEvent
-          GHCJS.DOM.JSFFI.Generated.BeforeUnloadEvent
-          GHCJS.DOM.JSFFI.Generated.BiquadFilterNode
-          GHCJS.DOM.JSFFI.Generated.Blob
-          GHCJS.DOM.JSFFI.Generated.CSSCharsetRule
-          GHCJS.DOM.JSFFI.Generated.CSSFontFaceLoadEvent
-          GHCJS.DOM.JSFFI.Generated.CSSFontFaceRule
-          GHCJS.DOM.JSFFI.Generated.CSSImportRule
-          GHCJS.DOM.JSFFI.Generated.CSSKeyframeRule
-          GHCJS.DOM.JSFFI.Generated.CSSKeyframesRule
-          GHCJS.DOM.JSFFI.Generated.CSSMediaRule
-          GHCJS.DOM.JSFFI.Generated.CSSPageRule
-          GHCJS.DOM.JSFFI.Generated.CSSPrimitiveValue
-          GHCJS.DOM.JSFFI.Generated.CSSRule
-          GHCJS.DOM.JSFFI.Generated.CSSRuleList
-          GHCJS.DOM.JSFFI.Generated.CSSStyleDeclaration
-          GHCJS.DOM.JSFFI.Generated.CSSStyleRule
-          GHCJS.DOM.JSFFI.Generated.CSSStyleSheet
-          GHCJS.DOM.JSFFI.Generated.CSSSupportsRule
-          GHCJS.DOM.JSFFI.Generated.CSSValue
-          GHCJS.DOM.JSFFI.Generated.CSSValueList
-          GHCJS.DOM.JSFFI.Generated.CanvasGradient
-          GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext
-          GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
-          GHCJS.DOM.JSFFI.Generated.CapabilityRange
-          GHCJS.DOM.JSFFI.Generated.CharacterData
-          GHCJS.DOM.JSFFI.Generated.ChildNode
-          GHCJS.DOM.JSFFI.Generated.ClientRect
-          GHCJS.DOM.JSFFI.Generated.ClientRectList
-          GHCJS.DOM.JSFFI.Generated.CloseEvent
-          GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
-          GHCJS.DOM.JSFFI.Generated.Comment
-          GHCJS.DOM.JSFFI.Generated.CompositionEvent
-          GHCJS.DOM.JSFFI.Generated.ConvolverNode
-          GHCJS.DOM.JSFFI.Generated.Coordinates
-          GHCJS.DOM.JSFFI.Generated.Counter
-          GHCJS.DOM.JSFFI.Generated.Crypto
-          GHCJS.DOM.JSFFI.Generated.CryptoKey
-          GHCJS.DOM.JSFFI.Generated.CryptoKeyPair
-          GHCJS.DOM.JSFFI.Generated.CustomEvent
-          GHCJS.DOM.JSFFI.Generated.ApplicationCache
-          GHCJS.DOM.JSFFI.Generated.DOMError
-          GHCJS.DOM.JSFFI.Generated.FormData
-          GHCJS.DOM.JSFFI.Generated.DOMImplementation
-          GHCJS.DOM.JSFFI.Generated.MimeType
-          GHCJS.DOM.JSFFI.Generated.MimeTypeArray
-          GHCJS.DOM.JSFFI.Generated.DOMNamedFlowCollection
-          GHCJS.DOM.JSFFI.Generated.DOMParser
-          GHCJS.DOM.JSFFI.Generated.Path2D
-          GHCJS.DOM.JSFFI.Generated.Plugin
-          GHCJS.DOM.JSFFI.Generated.PluginArray
-          GHCJS.DOM.JSFFI.Generated.SecurityPolicy
-          GHCJS.DOM.JSFFI.Generated.Selection
-          GHCJS.DOM.JSFFI.Generated.DOMSettableTokenList
-          GHCJS.DOM.JSFFI.Generated.DOMStringList
-          GHCJS.DOM.JSFFI.Generated.DOMTokenList
-          GHCJS.DOM.JSFFI.Generated.URL
-          GHCJS.DOM.JSFFI.Generated.Window
-          GHCJS.DOM.JSFFI.Generated.CSS
-          GHCJS.DOM.JSFFI.Generated.DataCue
-          GHCJS.DOM.JSFFI.Generated.DataTransfer
-          GHCJS.DOM.JSFFI.Generated.DataTransferItem
-          GHCJS.DOM.JSFFI.Generated.DataTransferItemList
-          GHCJS.DOM.JSFFI.Generated.Database
-          GHCJS.DOM.JSFFI.Generated.DatabaseCallback
-          GHCJS.DOM.JSFFI.Generated.DedicatedWorkerGlobalScope
-          GHCJS.DOM.JSFFI.Generated.DelayNode
-          GHCJS.DOM.JSFFI.Generated.DeviceMotionEvent
-          GHCJS.DOM.JSFFI.Generated.DeviceOrientationEvent
-          GHCJS.DOM.JSFFI.Generated.DeviceProximityEvent
-          GHCJS.DOM.JSFFI.Generated.Document
-          GHCJS.DOM.JSFFI.Generated.DocumentFragment
-          GHCJS.DOM.JSFFI.Generated.DocumentType
-          GHCJS.DOM.JSFFI.Generated.DynamicsCompressorNode
-          GHCJS.DOM.JSFFI.Generated.EXTBlendMinMax
-          GHCJS.DOM.JSFFI.Generated.EXTsRGB
-          GHCJS.DOM.JSFFI.Generated.EXTTextureFilterAnisotropic
-          GHCJS.DOM.JSFFI.Generated.Element
-          GHCJS.DOM.JSFFI.Generated.Entity
-          GHCJS.DOM.JSFFI.Generated.Enums
-          GHCJS.DOM.JSFFI.Generated.ErrorEvent
-          GHCJS.DOM.JSFFI.Generated.Event
-          GHCJS.DOM.JSFFI.Generated.EventListener
-          GHCJS.DOM.JSFFI.Generated.EventSource
-          GHCJS.DOM.JSFFI.Generated.EventTarget
-          GHCJS.DOM.JSFFI.Generated.File
-          GHCJS.DOM.JSFFI.Generated.FileError
-          GHCJS.DOM.JSFFI.Generated.FileList
-          GHCJS.DOM.JSFFI.Generated.FileReader
-          GHCJS.DOM.JSFFI.Generated.FileReaderSync
-          GHCJS.DOM.JSFFI.Generated.FocusEvent
-          GHCJS.DOM.JSFFI.Generated.FontLoader
-          GHCJS.DOM.JSFFI.Generated.GainNode
-          GHCJS.DOM.JSFFI.Generated.Gamepad
-          GHCJS.DOM.JSFFI.Generated.GamepadButton
-          GHCJS.DOM.JSFFI.Generated.GamepadEvent
-          GHCJS.DOM.JSFFI.Generated.Geolocation
-          GHCJS.DOM.JSFFI.Generated.Geoposition
-          GHCJS.DOM.JSFFI.Generated.HTMLAllCollection
-          GHCJS.DOM.JSFFI.Generated.HTMLAnchorElement
-          GHCJS.DOM.JSFFI.Generated.HTMLAppletElement
-          GHCJS.DOM.JSFFI.Generated.HTMLAreaElement
-          GHCJS.DOM.JSFFI.Generated.HTMLBRElement
-          GHCJS.DOM.JSFFI.Generated.HTMLBaseElement
-          GHCJS.DOM.JSFFI.Generated.HTMLBaseFontElement
-          GHCJS.DOM.JSFFI.Generated.HTMLBodyElement
-          GHCJS.DOM.JSFFI.Generated.HTMLButtonElement
-          GHCJS.DOM.JSFFI.Generated.HTMLCanvasElement
-          GHCJS.DOM.JSFFI.Generated.HTMLCollection
-          GHCJS.DOM.JSFFI.Generated.HTMLDListElement
-          GHCJS.DOM.JSFFI.Generated.HTMLDataListElement
-          GHCJS.DOM.JSFFI.Generated.HTMLDetailsElement
-          GHCJS.DOM.JSFFI.Generated.HTMLDirectoryElement
-          GHCJS.DOM.JSFFI.Generated.HTMLDivElement
-          GHCJS.DOM.JSFFI.Generated.HTMLDocument
-          GHCJS.DOM.JSFFI.Generated.HTMLElement
-          GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
-          GHCJS.DOM.JSFFI.Generated.HTMLFieldSetElement
-          GHCJS.DOM.JSFFI.Generated.HTMLFontElement
-          GHCJS.DOM.JSFFI.Generated.HTMLFormControlsCollection
-          GHCJS.DOM.JSFFI.Generated.HTMLFormElement
-          GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
-          GHCJS.DOM.JSFFI.Generated.HTMLFrameSetElement
-          GHCJS.DOM.JSFFI.Generated.HTMLHRElement
-          GHCJS.DOM.JSFFI.Generated.HTMLHeadElement
-          GHCJS.DOM.JSFFI.Generated.HTMLHeadingElement
-          GHCJS.DOM.JSFFI.Generated.HTMLHtmlElement
-          GHCJS.DOM.JSFFI.Generated.HTMLIFrameElement
-          GHCJS.DOM.JSFFI.Generated.HTMLImageElement
-          GHCJS.DOM.JSFFI.Generated.HTMLInputElement
-          GHCJS.DOM.JSFFI.Generated.HTMLKeygenElement
-          GHCJS.DOM.JSFFI.Generated.HTMLLIElement
-          GHCJS.DOM.JSFFI.Generated.HTMLLabelElement
-          GHCJS.DOM.JSFFI.Generated.HTMLLegendElement
-          GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMapElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMarqueeElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMenuElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMetaElement
-          GHCJS.DOM.JSFFI.Generated.HTMLMeterElement
-          GHCJS.DOM.JSFFI.Generated.HTMLModElement
-          GHCJS.DOM.JSFFI.Generated.HTMLOListElement
-          GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
-          GHCJS.DOM.JSFFI.Generated.HTMLOptGroupElement
-          GHCJS.DOM.JSFFI.Generated.HTMLOptionElement
-          GHCJS.DOM.JSFFI.Generated.HTMLOptionsCollection
-          GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
-          GHCJS.DOM.JSFFI.Generated.HTMLParagraphElement
-          GHCJS.DOM.JSFFI.Generated.HTMLParamElement
-          GHCJS.DOM.JSFFI.Generated.HTMLPreElement
-          GHCJS.DOM.JSFFI.Generated.HTMLProgressElement
-          GHCJS.DOM.JSFFI.Generated.HTMLQuoteElement
-          GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
-          GHCJS.DOM.JSFFI.Generated.HTMLSelectElement
-          GHCJS.DOM.JSFFI.Generated.HTMLSourceElement
-          GHCJS.DOM.JSFFI.Generated.HTMLStyleElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableCaptionElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableCellElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableColElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableRowElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTableSectionElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTemplateElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTitleElement
-          GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
-          GHCJS.DOM.JSFFI.Generated.HTMLUListElement
-          GHCJS.DOM.JSFFI.Generated.HTMLVideoElement
-          GHCJS.DOM.JSFFI.Generated.HashChangeEvent
-          GHCJS.DOM.JSFFI.Generated.History
-          GHCJS.DOM.JSFFI.Generated.IDBCursor
-          GHCJS.DOM.JSFFI.Generated.IDBCursorWithValue
-          GHCJS.DOM.JSFFI.Generated.IDBDatabase
-          GHCJS.DOM.JSFFI.Generated.IDBFactory
-          GHCJS.DOM.JSFFI.Generated.IDBIndex
-          GHCJS.DOM.JSFFI.Generated.IDBKeyRange
-          GHCJS.DOM.JSFFI.Generated.IDBObjectStore
-          GHCJS.DOM.JSFFI.Generated.IDBOpenDBRequest
-          GHCJS.DOM.JSFFI.Generated.IDBRequest
-          GHCJS.DOM.JSFFI.Generated.IDBTransaction
-          GHCJS.DOM.JSFFI.Generated.IDBVersionChangeEvent
-          GHCJS.DOM.JSFFI.Generated.ImageData
-          GHCJS.DOM.JSFFI.Generated.InspectorFrontendHost
-          GHCJS.DOM.JSFFI.Generated.InternalSettings
-          GHCJS.DOM.JSFFI.Generated.Internals
-          GHCJS.DOM.JSFFI.Generated.KeyboardEvent
-          GHCJS.DOM.JSFFI.Generated.Location
-          GHCJS.DOM.JSFFI.Generated.MallocStatistics
-          GHCJS.DOM.JSFFI.Generated.MediaController
-          GHCJS.DOM.JSFFI.Generated.MediaControlsHost
-          GHCJS.DOM.JSFFI.Generated.MediaElementAudioSourceNode
-          GHCJS.DOM.JSFFI.Generated.MediaError
-          GHCJS.DOM.JSFFI.Generated.MediaKeyError
-          GHCJS.DOM.JSFFI.Generated.MediaKeyEvent
-          GHCJS.DOM.JSFFI.Generated.MediaKeyMessageEvent
-          GHCJS.DOM.JSFFI.Generated.MediaKeyNeededEvent
-          GHCJS.DOM.JSFFI.Generated.MediaKeySession
-          GHCJS.DOM.JSFFI.Generated.MediaKeys
-          GHCJS.DOM.JSFFI.Generated.MediaList
-          GHCJS.DOM.JSFFI.Generated.MediaQueryList
-          GHCJS.DOM.JSFFI.Generated.MediaQueryListListener
-          GHCJS.DOM.JSFFI.Generated.MediaSource
-          GHCJS.DOM.JSFFI.Generated.MediaSourceStates
-          GHCJS.DOM.JSFFI.Generated.MediaStream
-          GHCJS.DOM.JSFFI.Generated.MediaStreamAudioDestinationNode
-          GHCJS.DOM.JSFFI.Generated.MediaStreamAudioSourceNode
-          GHCJS.DOM.JSFFI.Generated.MediaStreamEvent
-          GHCJS.DOM.JSFFI.Generated.MediaStreamTrack
-          GHCJS.DOM.JSFFI.Generated.MediaStreamTrackEvent
-          GHCJS.DOM.JSFFI.Generated.MediaStreamTrackSourcesCallback
-          GHCJS.DOM.JSFFI.Generated.MediaTrackConstraints
-          GHCJS.DOM.JSFFI.Generated.MemoryInfo
-          GHCJS.DOM.JSFFI.Generated.MessageChannel
-          GHCJS.DOM.JSFFI.Generated.MessageEvent
-          GHCJS.DOM.JSFFI.Generated.MessagePort
-          GHCJS.DOM.JSFFI.Generated.MouseEvent
-          GHCJS.DOM.JSFFI.Generated.MutationEvent
-          GHCJS.DOM.JSFFI.Generated.MutationObserver
-          GHCJS.DOM.JSFFI.Generated.MutationRecord
-          GHCJS.DOM.JSFFI.Generated.NamedNodeMap
-          GHCJS.DOM.JSFFI.Generated.Navigator
-          GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaError
-          GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaErrorCallback
-          GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaSuccessCallback
-          GHCJS.DOM.JSFFI.Generated.Node
-          GHCJS.DOM.JSFFI.Generated.NodeFilter
-          GHCJS.DOM.JSFFI.Generated.NodeIterator
-          GHCJS.DOM.JSFFI.Generated.NodeList
-          GHCJS.DOM.JSFFI.Generated.Notification
-          GHCJS.DOM.JSFFI.Generated.NotificationCenter
-          GHCJS.DOM.JSFFI.Generated.NotificationPermissionCallback
-          GHCJS.DOM.JSFFI.Generated.OESStandardDerivatives
-          GHCJS.DOM.JSFFI.Generated.OESTextureHalfFloat
-          GHCJS.DOM.JSFFI.Generated.OESVertexArrayObject
-          GHCJS.DOM.JSFFI.Generated.OfflineAudioCompletionEvent
-          GHCJS.DOM.JSFFI.Generated.OfflineAudioContext
-          GHCJS.DOM.JSFFI.Generated.OscillatorNode
-          GHCJS.DOM.JSFFI.Generated.OverflowEvent
-          GHCJS.DOM.JSFFI.Generated.PageTransitionEvent
-          GHCJS.DOM.JSFFI.Generated.PannerNode
-          GHCJS.DOM.JSFFI.Generated.Performance
-          GHCJS.DOM.JSFFI.Generated.PerformanceEntry
-          GHCJS.DOM.JSFFI.Generated.PerformanceEntryList
-          GHCJS.DOM.JSFFI.Generated.PerformanceNavigation
-          GHCJS.DOM.JSFFI.Generated.PerformanceResourceTiming
-          GHCJS.DOM.JSFFI.Generated.PerformanceTiming
-          GHCJS.DOM.JSFFI.Generated.PopStateEvent
-          GHCJS.DOM.JSFFI.Generated.PositionCallback
-          GHCJS.DOM.JSFFI.Generated.PositionError
-          GHCJS.DOM.JSFFI.Generated.PositionErrorCallback
-          GHCJS.DOM.JSFFI.Generated.ProcessingInstruction
-          GHCJS.DOM.JSFFI.Generated.ProgressEvent
-          GHCJS.DOM.JSFFI.Generated.QuickTimePluginReplacement
-          GHCJS.DOM.JSFFI.Generated.RGBColor
-          GHCJS.DOM.JSFFI.Generated.RTCConfiguration
-          GHCJS.DOM.JSFFI.Generated.RTCDTMFSender
-          GHCJS.DOM.JSFFI.Generated.RTCDTMFToneChangeEvent
-          GHCJS.DOM.JSFFI.Generated.RTCDataChannel
-          GHCJS.DOM.JSFFI.Generated.RTCDataChannelEvent
-          GHCJS.DOM.JSFFI.Generated.RTCIceCandidate
-          GHCJS.DOM.JSFFI.Generated.RTCIceCandidateEvent
-          GHCJS.DOM.JSFFI.Generated.RTCIceServer
-          GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
-          GHCJS.DOM.JSFFI.Generated.RTCPeerConnectionErrorCallback
-          GHCJS.DOM.JSFFI.Generated.RTCSessionDescription
-          GHCJS.DOM.JSFFI.Generated.RTCSessionDescriptionCallback
-          GHCJS.DOM.JSFFI.Generated.RTCStatsCallback
-          GHCJS.DOM.JSFFI.Generated.RTCStatsReport
-          GHCJS.DOM.JSFFI.Generated.RTCStatsResponse
-          GHCJS.DOM.JSFFI.Generated.RadioNodeList
-          GHCJS.DOM.JSFFI.Generated.Range
-          GHCJS.DOM.JSFFI.Generated.ReadableStream
-          GHCJS.DOM.JSFFI.Generated.Rect
-          GHCJS.DOM.JSFFI.Generated.RequestAnimationFrameCallback
-          GHCJS.DOM.JSFFI.Generated.SQLError
-          GHCJS.DOM.JSFFI.Generated.SQLResultSet
-          GHCJS.DOM.JSFFI.Generated.SQLResultSetRowList
-          GHCJS.DOM.JSFFI.Generated.SQLStatementCallback
-          GHCJS.DOM.JSFFI.Generated.SQLStatementErrorCallback
-          GHCJS.DOM.JSFFI.Generated.SQLTransaction
-          GHCJS.DOM.JSFFI.Generated.SQLTransactionCallback
-          GHCJS.DOM.JSFFI.Generated.SQLTransactionErrorCallback
-          GHCJS.DOM.JSFFI.Generated.SVGAElement
-          GHCJS.DOM.JSFFI.Generated.SVGAltGlyphElement
-          GHCJS.DOM.JSFFI.Generated.SVGAngle
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedAngle
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedBoolean
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedEnumeration
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedInteger
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedLength
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedLengthList
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedNumber
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedNumberList
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedPreserveAspectRatio
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedRect
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedString
-          GHCJS.DOM.JSFFI.Generated.SVGAnimatedTransformList
-          GHCJS.DOM.JSFFI.Generated.SVGAnimationElement
-          GHCJS.DOM.JSFFI.Generated.SVGCircleElement
-          GHCJS.DOM.JSFFI.Generated.SVGClipPathElement
-          GHCJS.DOM.JSFFI.Generated.SVGColor
-          GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
-          GHCJS.DOM.JSFFI.Generated.SVGCursorElement
-          GHCJS.DOM.JSFFI.Generated.SVGDocument
-          GHCJS.DOM.JSFFI.Generated.SVGElement
-          GHCJS.DOM.JSFFI.Generated.SVGEllipseElement
-          GHCJS.DOM.JSFFI.Generated.SVGExternalResourcesRequired
-          GHCJS.DOM.JSFFI.Generated.SVGFEBlendElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEColorMatrixElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEComponentTransferElement
-          GHCJS.DOM.JSFFI.Generated.SVGFECompositeElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEConvolveMatrixElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEDiffuseLightingElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEDisplacementMapElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEDistantLightElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEDropShadowElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEGaussianBlurElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEImageElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEMergeNodeElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEMorphologyElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEOffsetElement
-          GHCJS.DOM.JSFFI.Generated.SVGFEPointLightElement
-          GHCJS.DOM.JSFFI.Generated.SVGFESpecularLightingElement
-          GHCJS.DOM.JSFFI.Generated.SVGFESpotLightElement
-          GHCJS.DOM.JSFFI.Generated.SVGFETileElement
-          GHCJS.DOM.JSFFI.Generated.SVGFETurbulenceElement
-          GHCJS.DOM.JSFFI.Generated.SVGFilterElement
-          GHCJS.DOM.JSFFI.Generated.SVGFilterPrimitiveStandardAttributes
-          GHCJS.DOM.JSFFI.Generated.SVGFitToViewBox
-          GHCJS.DOM.JSFFI.Generated.SVGForeignObjectElement
-          GHCJS.DOM.JSFFI.Generated.SVGGlyphRefElement
-          GHCJS.DOM.JSFFI.Generated.SVGGradientElement
-          GHCJS.DOM.JSFFI.Generated.SVGGraphicsElement
-          GHCJS.DOM.JSFFI.Generated.SVGImageElement
-          GHCJS.DOM.JSFFI.Generated.SVGLength
-          GHCJS.DOM.JSFFI.Generated.SVGLengthList
-          GHCJS.DOM.JSFFI.Generated.SVGLineElement
-          GHCJS.DOM.JSFFI.Generated.SVGLinearGradientElement
-          GHCJS.DOM.JSFFI.Generated.SVGMarkerElement
-          GHCJS.DOM.JSFFI.Generated.SVGMaskElement
-          GHCJS.DOM.JSFFI.Generated.SVGMatrix
-          GHCJS.DOM.JSFFI.Generated.SVGNumber
-          GHCJS.DOM.JSFFI.Generated.SVGNumberList
-          GHCJS.DOM.JSFFI.Generated.SVGPaint
-          GHCJS.DOM.JSFFI.Generated.SVGPathElement
-          GHCJS.DOM.JSFFI.Generated.SVGPathSeg
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegArcAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegArcRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicSmoothAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicSmoothRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticSmoothAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticSmoothRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoHorizontalAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoHorizontalRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoVerticalAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoVerticalRel
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegList
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegMovetoAbs
-          GHCJS.DOM.JSFFI.Generated.SVGPathSegMovetoRel
-          GHCJS.DOM.JSFFI.Generated.SVGPatternElement
-          GHCJS.DOM.JSFFI.Generated.SVGPoint
-          GHCJS.DOM.JSFFI.Generated.SVGPointList
-          GHCJS.DOM.JSFFI.Generated.SVGPolygonElement
-          GHCJS.DOM.JSFFI.Generated.SVGPolylineElement
-          GHCJS.DOM.JSFFI.Generated.SVGPreserveAspectRatio
-          GHCJS.DOM.JSFFI.Generated.SVGRadialGradientElement
-          GHCJS.DOM.JSFFI.Generated.SVGRect
-          GHCJS.DOM.JSFFI.Generated.SVGRectElement
-          GHCJS.DOM.JSFFI.Generated.SVGRenderingIntent
-          GHCJS.DOM.JSFFI.Generated.SVGScriptElement
-          GHCJS.DOM.JSFFI.Generated.SVGSVGElement
-          GHCJS.DOM.JSFFI.Generated.SVGStopElement
-          GHCJS.DOM.JSFFI.Generated.SVGStringList
-          GHCJS.DOM.JSFFI.Generated.SVGStyleElement
-          GHCJS.DOM.JSFFI.Generated.SVGTests
-          GHCJS.DOM.JSFFI.Generated.SVGTextContentElement
-          GHCJS.DOM.JSFFI.Generated.SVGTextPathElement
-          GHCJS.DOM.JSFFI.Generated.SVGTextPositioningElement
-          GHCJS.DOM.JSFFI.Generated.SVGTransform
-          GHCJS.DOM.JSFFI.Generated.SVGTransformList
-          GHCJS.DOM.JSFFI.Generated.SVGURIReference
-          GHCJS.DOM.JSFFI.Generated.SVGUnitTypes
-          GHCJS.DOM.JSFFI.Generated.SVGUseElement
-          GHCJS.DOM.JSFFI.Generated.SVGViewElement
-          GHCJS.DOM.JSFFI.Generated.SVGViewSpec
-          GHCJS.DOM.JSFFI.Generated.SVGZoomAndPan
-          GHCJS.DOM.JSFFI.Generated.SVGZoomEvent
-          GHCJS.DOM.JSFFI.Generated.Screen
-          GHCJS.DOM.JSFFI.Generated.ScriptProcessorNode
-          GHCJS.DOM.JSFFI.Generated.ScriptProfile
-          GHCJS.DOM.JSFFI.Generated.ScriptProfileNode
-          GHCJS.DOM.JSFFI.Generated.SecurityPolicyViolationEvent
-          GHCJS.DOM.JSFFI.Generated.SourceBuffer
-          GHCJS.DOM.JSFFI.Generated.SourceBufferList
-          GHCJS.DOM.JSFFI.Generated.SourceInfo
-          GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
-          GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent
-          GHCJS.DOM.JSFFI.Generated.SpeechSynthesisUtterance
-          GHCJS.DOM.JSFFI.Generated.SpeechSynthesisVoice
-          GHCJS.DOM.JSFFI.Generated.Storage
-          GHCJS.DOM.JSFFI.Generated.StorageErrorCallback
-          GHCJS.DOM.JSFFI.Generated.StorageEvent
-          GHCJS.DOM.JSFFI.Generated.StorageInfo
-          GHCJS.DOM.JSFFI.Generated.StorageQuota
-          GHCJS.DOM.JSFFI.Generated.StorageQuotaCallback
-          GHCJS.DOM.JSFFI.Generated.StorageUsageCallback
-          GHCJS.DOM.JSFFI.Generated.StringCallback
-          GHCJS.DOM.JSFFI.Generated.StyleMedia
-          GHCJS.DOM.JSFFI.Generated.StyleSheet
-          GHCJS.DOM.JSFFI.Generated.StyleSheetList
-          GHCJS.DOM.JSFFI.Generated.SubtleCrypto
-          GHCJS.DOM.JSFFI.Generated.Text
-          GHCJS.DOM.JSFFI.Generated.TextEvent
-          GHCJS.DOM.JSFFI.Generated.TextMetrics
-          GHCJS.DOM.JSFFI.Generated.TextTrack
-          GHCJS.DOM.JSFFI.Generated.TextTrackCue
-          GHCJS.DOM.JSFFI.Generated.TextTrackCueList
-          GHCJS.DOM.JSFFI.Generated.TextTrackList
-          GHCJS.DOM.JSFFI.Generated.TimeRanges
-          GHCJS.DOM.JSFFI.Generated.Touch
-          GHCJS.DOM.JSFFI.Generated.TouchEvent
-          GHCJS.DOM.JSFFI.Generated.TouchList
-          GHCJS.DOM.JSFFI.Generated.TrackEvent
-          GHCJS.DOM.JSFFI.Generated.TransitionEvent
-          GHCJS.DOM.JSFFI.Generated.TreeWalker
-          GHCJS.DOM.JSFFI.Generated.TypeConversions
-          GHCJS.DOM.JSFFI.Generated.UIEvent
-          GHCJS.DOM.JSFFI.Generated.UIRequestEvent
-          GHCJS.DOM.JSFFI.Generated.URLUtils
-          GHCJS.DOM.JSFFI.Generated.UserMessageHandler
-          GHCJS.DOM.JSFFI.Generated.VTTCue
-          GHCJS.DOM.JSFFI.Generated.VTTRegion
-          GHCJS.DOM.JSFFI.Generated.VTTRegionList
-          GHCJS.DOM.JSFFI.Generated.ValidityState
-          GHCJS.DOM.JSFFI.Generated.VideoPlaybackQuality
-          GHCJS.DOM.JSFFI.Generated.VideoStreamTrack
-          GHCJS.DOM.JSFFI.Generated.VideoTrack
-          GHCJS.DOM.JSFFI.Generated.VideoTrackList
-          GHCJS.DOM.JSFFI.Generated.VoidCallback
-          GHCJS.DOM.JSFFI.Generated.WaveShaperNode
-          GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
-          GHCJS.DOM.JSFFI.Generated.WebGLActiveInfo
-          GHCJS.DOM.JSFFI.Generated.WebGLCompressedTextureATC
-          GHCJS.DOM.JSFFI.Generated.WebGLCompressedTexturePVRTC
-          GHCJS.DOM.JSFFI.Generated.WebGLCompressedTextureS3TC
-          GHCJS.DOM.JSFFI.Generated.WebGLContextAttributes
-          GHCJS.DOM.JSFFI.Generated.WebGLContextEvent
-          GHCJS.DOM.JSFFI.Generated.WebGLDebugRendererInfo
-          GHCJS.DOM.JSFFI.Generated.WebGLDebugShaders
-          GHCJS.DOM.JSFFI.Generated.WebGLDepthTexture
-          GHCJS.DOM.JSFFI.Generated.WebGLDrawBuffers
-          GHCJS.DOM.JSFFI.Generated.WebGLLoseContext
-          GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
-          GHCJS.DOM.JSFFI.Generated.WebGLShaderPrecisionFormat
-          GHCJS.DOM.JSFFI.Generated.WebKitAnimationEvent
-          GHCJS.DOM.JSFFI.Generated.WebKitCSSFilterValue
-          GHCJS.DOM.JSFFI.Generated.WebKitCSSMatrix
-          GHCJS.DOM.JSFFI.Generated.WebKitCSSRegionRule
-          GHCJS.DOM.JSFFI.Generated.WebKitCSSTransformValue
-          GHCJS.DOM.JSFFI.Generated.WebKitCSSViewportRule
-          GHCJS.DOM.JSFFI.Generated.WebKitNamedFlow
-          GHCJS.DOM.JSFFI.Generated.WebKitNamespace
-          GHCJS.DOM.JSFFI.Generated.WebKitPlaybackTargetAvailabilityEvent
-          GHCJS.DOM.JSFFI.Generated.WebKitPoint
-          GHCJS.DOM.JSFFI.Generated.WebKitTransitionEvent
-          GHCJS.DOM.JSFFI.Generated.WebSocket
-          GHCJS.DOM.JSFFI.Generated.WheelEvent
-          GHCJS.DOM.JSFFI.Generated.WindowBase64
-          GHCJS.DOM.JSFFI.Generated.WindowTimers
-          GHCJS.DOM.JSFFI.Generated.Worker
-          GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
-          GHCJS.DOM.JSFFI.Generated.WorkerLocation
-          GHCJS.DOM.JSFFI.Generated.WorkerNavigator
-          GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
-          GHCJS.DOM.JSFFI.Generated.XMLHttpRequestProgressEvent
-          GHCJS.DOM.JSFFI.Generated.XMLHttpRequestUpload
-          GHCJS.DOM.JSFFI.Generated.XMLSerializer
-          GHCJS.DOM.JSFFI.Generated.XPathEvaluator
-          GHCJS.DOM.JSFFI.Generated.XPathExpression
-          GHCJS.DOM.JSFFI.Generated.XPathNSResolver
-          GHCJS.DOM.JSFFI.Generated.XPathResult
-          GHCJS.DOM.JSFFI.Generated.XSLTProcessor
-    else
-        if !flag(webkit)
-            hs-source-dirs: jsaddle
-            cpp-options: -DUSE_JSADDLE
-            build-depends: jsaddle-dom >=0.2.0.0 && <0.3
-        else
-            hs-source-dirs: webkit, common
-            cpp-options: -DUSE_WEBKIT
-            build-depends: glib >=0.13.0.0 && <0.14,
-                           transformers >=0.3.0.0 && <0.6
-            if flag(gtk3)
-                build-depends: gtk3 >=0.13.0.0 && <0.15, webkitgtk3 >=0.14.0.0 && <0.15
-            else
-                build-depends: gtk >=0.13.0.0 && <0.14, webkit >=0.14.0.0 && <0.15
-            c-sources:      cbits/ghcjs_stubs.c
-
-        if flag(old-webkit)
-            cpp-options: -DUSE_OLD_WEBKIT
-
     exposed: True
     buildable: True
-    js-sources: jsbits/xhr.js
 
+    if (impl(ghcjs) && flag(jsffi))
+        build-depends: ghcjs-dom-jsffi ==0.3.1.0
+    else
+        if flag(webkit)
+            build-depends: ghcjs-dom-webkit ==0.3.1.0
+        else
+            build-depends: ghcjs-dom-jsaddle ==0.3.1.0
+
+    reexported-modules:
+            GHCJS.DOM
+          , GHCJS.DOM.ANGLEInstancedArrays
+          , GHCJS.DOM.AbstractView
+          , GHCJS.DOM.AbstractWorker
+          , GHCJS.DOM.AllAudioCapabilities
+          , GHCJS.DOM.AllVideoCapabilities
+          , GHCJS.DOM.AnalyserNode
+          , GHCJS.DOM.AnimationEvent
+          , GHCJS.DOM.Attr
+          , GHCJS.DOM.AudioBuffer
+          , GHCJS.DOM.AudioBufferCallback
+          , GHCJS.DOM.AudioBufferSourceNode
+          , GHCJS.DOM.AudioContext
+          , GHCJS.DOM.AudioDestinationNode
+          , GHCJS.DOM.AudioListener
+          , GHCJS.DOM.AudioNode
+          , GHCJS.DOM.AudioParam
+          , GHCJS.DOM.AudioProcessingEvent
+          , GHCJS.DOM.AudioStreamTrack
+          , GHCJS.DOM.AudioTrack
+          , GHCJS.DOM.AudioTrackList
+          , GHCJS.DOM.AutocompleteErrorEvent
+          , GHCJS.DOM.BarProp
+          , GHCJS.DOM.BatteryManager
+          , GHCJS.DOM.BeforeLoadEvent
+          , GHCJS.DOM.BeforeUnloadEvent
+          , GHCJS.DOM.BiquadFilterNode
+          , GHCJS.DOM.Blob
+          , GHCJS.DOM.CSSCharsetRule
+          , GHCJS.DOM.CSSFontFaceLoadEvent
+          , GHCJS.DOM.CSSFontFaceRule
+          , GHCJS.DOM.CSSImportRule
+          , GHCJS.DOM.CSSKeyframeRule
+          , GHCJS.DOM.CSSKeyframesRule
+          , GHCJS.DOM.CSSMediaRule
+          , GHCJS.DOM.CSSPageRule
+          , GHCJS.DOM.CSSPrimitiveValue
+          , GHCJS.DOM.CSSRule
+          , GHCJS.DOM.CSSRuleList
+          , GHCJS.DOM.CSSStyleDeclaration
+          , GHCJS.DOM.CSSStyleRule
+          , GHCJS.DOM.CSSStyleSheet
+          , GHCJS.DOM.CSSSupportsRule
+          , GHCJS.DOM.CSSValue
+          , GHCJS.DOM.CSSValueList
+          , GHCJS.DOM.CanvasGradient
+          , GHCJS.DOM.CanvasRenderingContext
+          , GHCJS.DOM.CanvasRenderingContext2D
+          , GHCJS.DOM.CapabilityRange
+          , GHCJS.DOM.CharacterData
+          , GHCJS.DOM.ChildNode
+          , GHCJS.DOM.ClientRect
+          , GHCJS.DOM.ClientRectList
+          , GHCJS.DOM.CloseEvent
+          , GHCJS.DOM.CommandLineAPIHost
+          , GHCJS.DOM.Comment
+          , GHCJS.DOM.CompositionEvent
+          , GHCJS.DOM.ConvolverNode
+          , GHCJS.DOM.Coordinates
+          , GHCJS.DOM.Counter
+          , GHCJS.DOM.Crypto
+          , GHCJS.DOM.CryptoKey
+          , GHCJS.DOM.CryptoKeyPair
+          , GHCJS.DOM.CustomEvent
+          , GHCJS.DOM.ApplicationCache
+          , GHCJS.DOM.DOMError
+          , GHCJS.DOM.FormData
+          , GHCJS.DOM.DOMImplementation
+          , GHCJS.DOM.MimeType
+          , GHCJS.DOM.MimeTypeArray
+          , GHCJS.DOM.DOMNamedFlowCollection
+          , GHCJS.DOM.DOMParser
+          , GHCJS.DOM.Path2D
+          , GHCJS.DOM.Plugin
+          , GHCJS.DOM.PluginArray
+          , GHCJS.DOM.SecurityPolicy
+          , GHCJS.DOM.Selection
+          , GHCJS.DOM.DOMSettableTokenList
+          , GHCJS.DOM.DOMStringList
+          , GHCJS.DOM.DOMTokenList
+          , GHCJS.DOM.URL
+          , GHCJS.DOM.Window
+          , GHCJS.DOM.CSS
+          , GHCJS.DOM.DataCue
+          , GHCJS.DOM.DataTransfer
+          , GHCJS.DOM.DataTransferItem
+          , GHCJS.DOM.DataTransferItemList
+          , GHCJS.DOM.Database
+          , GHCJS.DOM.DatabaseCallback
+          , GHCJS.DOM.DedicatedWorkerGlobalScope
+          , GHCJS.DOM.DelayNode
+          , GHCJS.DOM.DeviceMotionEvent
+          , GHCJS.DOM.DeviceOrientationEvent
+          , GHCJS.DOM.DeviceProximityEvent
+          , GHCJS.DOM.Document
+          , GHCJS.DOM.DocumentFragment
+          , GHCJS.DOM.DocumentType
+          , GHCJS.DOM.DynamicsCompressorNode
+          , GHCJS.DOM.EXTBlendMinMax
+          , GHCJS.DOM.EXTsRGB
+          , GHCJS.DOM.EXTTextureFilterAnisotropic
+          , GHCJS.DOM.Element
+          , GHCJS.DOM.Entity
+          , GHCJS.DOM.Enums
+          , GHCJS.DOM.ErrorEvent
+          , GHCJS.DOM.Event
+          , GHCJS.DOM.EventListener
+          , GHCJS.DOM.EventM
+          , GHCJS.DOM.EventSource
+          , GHCJS.DOM.EventTarget
+          , GHCJS.DOM.File
+          , GHCJS.DOM.FileError
+          , GHCJS.DOM.FileList
+          , GHCJS.DOM.FileReader
+          , GHCJS.DOM.FileReaderSync
+          , GHCJS.DOM.FocusEvent
+          , GHCJS.DOM.FontLoader
+          , GHCJS.DOM.GainNode
+          , GHCJS.DOM.Gamepad
+          , GHCJS.DOM.GamepadButton
+          , GHCJS.DOM.GamepadEvent
+          , GHCJS.DOM.Geolocation
+          , GHCJS.DOM.Geoposition
+          , GHCJS.DOM.HTMLAllCollection
+          , GHCJS.DOM.HTMLAnchorElement
+          , GHCJS.DOM.HTMLAppletElement
+          , GHCJS.DOM.HTMLAreaElement
+          , GHCJS.DOM.HTMLBRElement
+          , GHCJS.DOM.HTMLBaseElement
+          , GHCJS.DOM.HTMLBaseFontElement
+          , GHCJS.DOM.HTMLBodyElement
+          , GHCJS.DOM.HTMLButtonElement
+          , GHCJS.DOM.HTMLCanvasElement
+          , GHCJS.DOM.HTMLCollection
+          , GHCJS.DOM.HTMLDListElement
+          , GHCJS.DOM.HTMLDataListElement
+          , GHCJS.DOM.HTMLDetailsElement
+          , GHCJS.DOM.HTMLDirectoryElement
+          , GHCJS.DOM.HTMLDivElement
+          , GHCJS.DOM.HTMLDocument
+          , GHCJS.DOM.HTMLElement
+          , GHCJS.DOM.HTMLEmbedElement
+          , GHCJS.DOM.HTMLFieldSetElement
+          , GHCJS.DOM.HTMLFontElement
+          , GHCJS.DOM.HTMLFormControlsCollection
+          , GHCJS.DOM.HTMLFormElement
+          , GHCJS.DOM.HTMLFrameElement
+          , GHCJS.DOM.HTMLFrameSetElement
+          , GHCJS.DOM.HTMLHRElement
+          , GHCJS.DOM.HTMLHeadElement
+          , GHCJS.DOM.HTMLHeadingElement
+          , GHCJS.DOM.HTMLHtmlElement
+          , GHCJS.DOM.HTMLIFrameElement
+          , GHCJS.DOM.HTMLImageElement
+          , GHCJS.DOM.HTMLInputElement
+          , GHCJS.DOM.HTMLKeygenElement
+          , GHCJS.DOM.HTMLLIElement
+          , GHCJS.DOM.HTMLLabelElement
+          , GHCJS.DOM.HTMLLegendElement
+          , GHCJS.DOM.HTMLLinkElement
+          , GHCJS.DOM.HTMLMapElement
+          , GHCJS.DOM.HTMLMarqueeElement
+          , GHCJS.DOM.HTMLMediaElement
+          , GHCJS.DOM.HTMLMenuElement
+          , GHCJS.DOM.HTMLMetaElement
+          , GHCJS.DOM.HTMLMeterElement
+          , GHCJS.DOM.HTMLModElement
+          , GHCJS.DOM.HTMLOListElement
+          , GHCJS.DOM.HTMLObjectElement
+          , GHCJS.DOM.HTMLOptGroupElement
+          , GHCJS.DOM.HTMLOptionElement
+          , GHCJS.DOM.HTMLOptionsCollection
+          , GHCJS.DOM.HTMLOutputElement
+          , GHCJS.DOM.HTMLParagraphElement
+          , GHCJS.DOM.HTMLParamElement
+          , GHCJS.DOM.HTMLPreElement
+          , GHCJS.DOM.HTMLProgressElement
+          , GHCJS.DOM.HTMLQuoteElement
+          , GHCJS.DOM.HTMLScriptElement
+          , GHCJS.DOM.HTMLSelectElement
+          , GHCJS.DOM.HTMLSourceElement
+          , GHCJS.DOM.HTMLStyleElement
+          , GHCJS.DOM.HTMLTableCaptionElement
+          , GHCJS.DOM.HTMLTableCellElement
+          , GHCJS.DOM.HTMLTableColElement
+          , GHCJS.DOM.HTMLTableElement
+          , GHCJS.DOM.HTMLTableRowElement
+          , GHCJS.DOM.HTMLTableSectionElement
+          , GHCJS.DOM.HTMLTemplateElement
+          , GHCJS.DOM.HTMLTextAreaElement
+          , GHCJS.DOM.HTMLTitleElement
+          , GHCJS.DOM.HTMLTrackElement
+          , GHCJS.DOM.HTMLUListElement
+          , GHCJS.DOM.HTMLVideoElement
+          , GHCJS.DOM.HashChangeEvent
+          , GHCJS.DOM.History
+          , GHCJS.DOM.IDBCursor
+          , GHCJS.DOM.IDBCursorWithValue
+          , GHCJS.DOM.IDBDatabase
+          , GHCJS.DOM.IDBFactory
+          , GHCJS.DOM.IDBIndex
+          , GHCJS.DOM.IDBKeyRange
+          , GHCJS.DOM.IDBObjectStore
+          , GHCJS.DOM.IDBOpenDBRequest
+          , GHCJS.DOM.IDBRequest
+          , GHCJS.DOM.IDBTransaction
+          , GHCJS.DOM.IDBVersionChangeEvent
+          , GHCJS.DOM.ImageData
+          , GHCJS.DOM.InspectorFrontendHost
+          , GHCJS.DOM.InternalSettings
+          , GHCJS.DOM.Internals
+          , GHCJS.DOM.KeyboardEvent
+          , GHCJS.DOM.Location
+          , GHCJS.DOM.MallocStatistics
+          , GHCJS.DOM.MediaController
+          , GHCJS.DOM.MediaControlsHost
+          , GHCJS.DOM.MediaElementAudioSourceNode
+          , GHCJS.DOM.MediaError
+          , GHCJS.DOM.MediaKeyError
+          , GHCJS.DOM.MediaKeyEvent
+          , GHCJS.DOM.MediaKeyMessageEvent
+          , GHCJS.DOM.MediaKeyNeededEvent
+          , GHCJS.DOM.MediaKeySession
+          , GHCJS.DOM.MediaKeys
+          , GHCJS.DOM.MediaList
+          , GHCJS.DOM.MediaQueryList
+          , GHCJS.DOM.MediaQueryListListener
+          , GHCJS.DOM.MediaSource
+          , GHCJS.DOM.MediaSourceStates
+          , GHCJS.DOM.MediaStream
+          , GHCJS.DOM.MediaStreamAudioDestinationNode
+          , GHCJS.DOM.MediaStreamAudioSourceNode
+          , GHCJS.DOM.MediaStreamEvent
+          , GHCJS.DOM.MediaStreamTrack
+          , GHCJS.DOM.MediaStreamTrackEvent
+          , GHCJS.DOM.MediaStreamTrackSourcesCallback
+          , GHCJS.DOM.MediaTrackConstraints
+          , GHCJS.DOM.MemoryInfo
+          , GHCJS.DOM.MessageChannel
+          , GHCJS.DOM.MessageEvent
+          , GHCJS.DOM.MessagePort
+          , GHCJS.DOM.MouseEvent
+          , GHCJS.DOM.MutationEvent
+          , GHCJS.DOM.MutationObserver
+          , GHCJS.DOM.MutationRecord
+          , GHCJS.DOM.NamedNodeMap
+          , GHCJS.DOM.Navigator
+          , GHCJS.DOM.NavigatorUserMediaError
+          , GHCJS.DOM.NavigatorUserMediaErrorCallback
+          , GHCJS.DOM.NavigatorUserMediaSuccessCallback
+          , GHCJS.DOM.Node
+          , GHCJS.DOM.NodeFilter
+          , GHCJS.DOM.NodeIterator
+          , GHCJS.DOM.NodeList
+          , GHCJS.DOM.Notification
+          , GHCJS.DOM.NotificationCenter
+          , GHCJS.DOM.NotificationPermissionCallback
+          , GHCJS.DOM.OESStandardDerivatives
+          , GHCJS.DOM.OESTextureHalfFloat
+          , GHCJS.DOM.OESVertexArrayObject
+          , GHCJS.DOM.OfflineAudioCompletionEvent
+          , GHCJS.DOM.OfflineAudioContext
+          , GHCJS.DOM.OscillatorNode
+          , GHCJS.DOM.OverflowEvent
+          , GHCJS.DOM.PageTransitionEvent
+          , GHCJS.DOM.PannerNode
+          , GHCJS.DOM.Performance
+          , GHCJS.DOM.PerformanceEntry
+          , GHCJS.DOM.PerformanceEntryList
+          , GHCJS.DOM.PerformanceNavigation
+          , GHCJS.DOM.PerformanceResourceTiming
+          , GHCJS.DOM.PerformanceTiming
+          , GHCJS.DOM.PopStateEvent
+          , GHCJS.DOM.PositionCallback
+          , GHCJS.DOM.PositionError
+          , GHCJS.DOM.PositionErrorCallback
+          , GHCJS.DOM.ProcessingInstruction
+          , GHCJS.DOM.ProgressEvent
+          , GHCJS.DOM.QuickTimePluginReplacement
+          , GHCJS.DOM.RGBColor
+          , GHCJS.DOM.RTCConfiguration
+          , GHCJS.DOM.RTCDTMFSender
+          , GHCJS.DOM.RTCDTMFToneChangeEvent
+          , GHCJS.DOM.RTCDataChannel
+          , GHCJS.DOM.RTCDataChannelEvent
+          , GHCJS.DOM.RTCIceCandidate
+          , GHCJS.DOM.RTCIceCandidateEvent
+          , GHCJS.DOM.RTCIceServer
+          , GHCJS.DOM.RTCPeerConnection
+          , GHCJS.DOM.RTCPeerConnectionErrorCallback
+          , GHCJS.DOM.RTCSessionDescription
+          , GHCJS.DOM.RTCSessionDescriptionCallback
+          , GHCJS.DOM.RTCStatsCallback
+          , GHCJS.DOM.RTCStatsReport
+          , GHCJS.DOM.RTCStatsResponse
+          , GHCJS.DOM.RadioNodeList
+          , GHCJS.DOM.Range
+          , GHCJS.DOM.ReadableStream
+          , GHCJS.DOM.Rect
+          , GHCJS.DOM.RequestAnimationFrameCallback
+          , GHCJS.DOM.SQLError
+          , GHCJS.DOM.SQLResultSet
+          , GHCJS.DOM.SQLResultSetRowList
+          , GHCJS.DOM.SQLStatementCallback
+          , GHCJS.DOM.SQLStatementErrorCallback
+          , GHCJS.DOM.SQLTransaction
+          , GHCJS.DOM.SQLTransactionCallback
+          , GHCJS.DOM.SQLTransactionErrorCallback
+          , GHCJS.DOM.SVGAElement
+          , GHCJS.DOM.SVGAltGlyphElement
+          , GHCJS.DOM.SVGAngle
+          , GHCJS.DOM.SVGAnimatedAngle
+          , GHCJS.DOM.SVGAnimatedBoolean
+          , GHCJS.DOM.SVGAnimatedEnumeration
+          , GHCJS.DOM.SVGAnimatedInteger
+          , GHCJS.DOM.SVGAnimatedLength
+          , GHCJS.DOM.SVGAnimatedLengthList
+          , GHCJS.DOM.SVGAnimatedNumber
+          , GHCJS.DOM.SVGAnimatedNumberList
+          , GHCJS.DOM.SVGAnimatedPreserveAspectRatio
+          , GHCJS.DOM.SVGAnimatedRect
+          , GHCJS.DOM.SVGAnimatedString
+          , GHCJS.DOM.SVGAnimatedTransformList
+          , GHCJS.DOM.SVGAnimationElement
+          , GHCJS.DOM.SVGCircleElement
+          , GHCJS.DOM.SVGClipPathElement
+          , GHCJS.DOM.SVGColor
+          , GHCJS.DOM.SVGComponentTransferFunctionElement
+          , GHCJS.DOM.SVGCursorElement
+          , GHCJS.DOM.SVGDocument
+          , GHCJS.DOM.SVGElement
+          , GHCJS.DOM.SVGEllipseElement
+          , GHCJS.DOM.SVGExternalResourcesRequired
+          , GHCJS.DOM.SVGFEBlendElement
+          , GHCJS.DOM.SVGFEColorMatrixElement
+          , GHCJS.DOM.SVGFEComponentTransferElement
+          , GHCJS.DOM.SVGFECompositeElement
+          , GHCJS.DOM.SVGFEConvolveMatrixElement
+          , GHCJS.DOM.SVGFEDiffuseLightingElement
+          , GHCJS.DOM.SVGFEDisplacementMapElement
+          , GHCJS.DOM.SVGFEDistantLightElement
+          , GHCJS.DOM.SVGFEDropShadowElement
+          , GHCJS.DOM.SVGFEGaussianBlurElement
+          , GHCJS.DOM.SVGFEImageElement
+          , GHCJS.DOM.SVGFEMergeNodeElement
+          , GHCJS.DOM.SVGFEMorphologyElement
+          , GHCJS.DOM.SVGFEOffsetElement
+          , GHCJS.DOM.SVGFEPointLightElement
+          , GHCJS.DOM.SVGFESpecularLightingElement
+          , GHCJS.DOM.SVGFESpotLightElement
+          , GHCJS.DOM.SVGFETileElement
+          , GHCJS.DOM.SVGFETurbulenceElement
+          , GHCJS.DOM.SVGFilterElement
+          , GHCJS.DOM.SVGFilterPrimitiveStandardAttributes
+          , GHCJS.DOM.SVGFitToViewBox
+          , GHCJS.DOM.SVGForeignObjectElement
+          , GHCJS.DOM.SVGGlyphRefElement
+          , GHCJS.DOM.SVGGradientElement
+          , GHCJS.DOM.SVGGraphicsElement
+          , GHCJS.DOM.SVGImageElement
+          , GHCJS.DOM.SVGLength
+          , GHCJS.DOM.SVGLengthList
+          , GHCJS.DOM.SVGLineElement
+          , GHCJS.DOM.SVGLinearGradientElement
+          , GHCJS.DOM.SVGMarkerElement
+          , GHCJS.DOM.SVGMaskElement
+          , GHCJS.DOM.SVGMatrix
+          , GHCJS.DOM.SVGNumber
+          , GHCJS.DOM.SVGNumberList
+          , GHCJS.DOM.SVGPaint
+          , GHCJS.DOM.SVGPathElement
+          , GHCJS.DOM.SVGPathSeg
+          , GHCJS.DOM.SVGPathSegArcAbs
+          , GHCJS.DOM.SVGPathSegArcRel
+          , GHCJS.DOM.SVGPathSegCurvetoCubicAbs
+          , GHCJS.DOM.SVGPathSegCurvetoCubicRel
+          , GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs
+          , GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel
+          , GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs
+          , GHCJS.DOM.SVGPathSegCurvetoQuadraticRel
+          , GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs
+          , GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel
+          , GHCJS.DOM.SVGPathSegLinetoAbs
+          , GHCJS.DOM.SVGPathSegLinetoHorizontalAbs
+          , GHCJS.DOM.SVGPathSegLinetoHorizontalRel
+          , GHCJS.DOM.SVGPathSegLinetoRel
+          , GHCJS.DOM.SVGPathSegLinetoVerticalAbs
+          , GHCJS.DOM.SVGPathSegLinetoVerticalRel
+          , GHCJS.DOM.SVGPathSegList
+          , GHCJS.DOM.SVGPathSegMovetoAbs
+          , GHCJS.DOM.SVGPathSegMovetoRel
+          , GHCJS.DOM.SVGPatternElement
+          , GHCJS.DOM.SVGPoint
+          , GHCJS.DOM.SVGPointList
+          , GHCJS.DOM.SVGPolygonElement
+          , GHCJS.DOM.SVGPolylineElement
+          , GHCJS.DOM.SVGPreserveAspectRatio
+          , GHCJS.DOM.SVGRadialGradientElement
+          , GHCJS.DOM.SVGRect
+          , GHCJS.DOM.SVGRectElement
+          , GHCJS.DOM.SVGRenderingIntent
+          , GHCJS.DOM.SVGScriptElement
+          , GHCJS.DOM.SVGSVGElement
+          , GHCJS.DOM.SVGStopElement
+          , GHCJS.DOM.SVGStringList
+          , GHCJS.DOM.SVGStyleElement
+          , GHCJS.DOM.SVGTests
+          , GHCJS.DOM.SVGTextContentElement
+          , GHCJS.DOM.SVGTextPathElement
+          , GHCJS.DOM.SVGTextPositioningElement
+          , GHCJS.DOM.SVGTransform
+          , GHCJS.DOM.SVGTransformList
+          , GHCJS.DOM.SVGURIReference
+          , GHCJS.DOM.SVGUnitTypes
+          , GHCJS.DOM.SVGUseElement
+          , GHCJS.DOM.SVGViewElement
+          , GHCJS.DOM.SVGViewSpec
+          , GHCJS.DOM.SVGZoomAndPan
+          , GHCJS.DOM.SVGZoomEvent
+          , GHCJS.DOM.Screen
+          , GHCJS.DOM.ScriptProcessorNode
+          , GHCJS.DOM.ScriptProfile
+          , GHCJS.DOM.ScriptProfileNode
+          , GHCJS.DOM.SecurityPolicyViolationEvent
+          , GHCJS.DOM.SourceBuffer
+          , GHCJS.DOM.SourceBufferList
+          , GHCJS.DOM.SourceInfo
+          , GHCJS.DOM.SpeechSynthesis
+          , GHCJS.DOM.SpeechSynthesisEvent
+          , GHCJS.DOM.SpeechSynthesisUtterance
+          , GHCJS.DOM.SpeechSynthesisVoice
+          , GHCJS.DOM.Storage
+          , GHCJS.DOM.StorageErrorCallback
+          , GHCJS.DOM.StorageEvent
+          , GHCJS.DOM.StorageInfo
+          , GHCJS.DOM.StorageQuota
+          , GHCJS.DOM.StorageQuotaCallback
+          , GHCJS.DOM.StorageUsageCallback
+          , GHCJS.DOM.StringCallback
+          , GHCJS.DOM.StyleMedia
+          , GHCJS.DOM.StyleSheet
+          , GHCJS.DOM.StyleSheetList
+          , GHCJS.DOM.SubtleCrypto
+          , GHCJS.DOM.Text
+          , GHCJS.DOM.TextEvent
+          , GHCJS.DOM.TextMetrics
+          , GHCJS.DOM.TextTrack
+          , GHCJS.DOM.TextTrackCue
+          , GHCJS.DOM.TextTrackCueList
+          , GHCJS.DOM.TextTrackList
+          , GHCJS.DOM.TimeRanges
+          , GHCJS.DOM.Touch
+          , GHCJS.DOM.TouchEvent
+          , GHCJS.DOM.TouchList
+          , GHCJS.DOM.TrackEvent
+          , GHCJS.DOM.TransitionEvent
+          , GHCJS.DOM.TreeWalker
+          , GHCJS.DOM.TypeConversions
+          , GHCJS.DOM.Types
+          , GHCJS.DOM.UIEvent
+          , GHCJS.DOM.UIRequestEvent
+          , GHCJS.DOM.URLUtils
+          , GHCJS.DOM.UserMessageHandler
+          , GHCJS.DOM.VTTCue
+          , GHCJS.DOM.VTTRegion
+          , GHCJS.DOM.VTTRegionList
+          , GHCJS.DOM.ValidityState
+          , GHCJS.DOM.VideoPlaybackQuality
+          , GHCJS.DOM.VideoStreamTrack
+          , GHCJS.DOM.VideoTrack
+          , GHCJS.DOM.VideoTrackList
+          , GHCJS.DOM.VoidCallback
+          , GHCJS.DOM.WaveShaperNode
+          , GHCJS.DOM.WebGL2RenderingContext
+          , GHCJS.DOM.WebGLActiveInfo
+          , GHCJS.DOM.WebGLCompressedTextureATC
+          , GHCJS.DOM.WebGLCompressedTexturePVRTC
+          , GHCJS.DOM.WebGLCompressedTextureS3TC
+          , GHCJS.DOM.WebGLContextAttributes
+          , GHCJS.DOM.WebGLContextEvent
+          , GHCJS.DOM.WebGLDebugRendererInfo
+          , GHCJS.DOM.WebGLDebugShaders
+          , GHCJS.DOM.WebGLDepthTexture
+          , GHCJS.DOM.WebGLDrawBuffers
+          , GHCJS.DOM.WebGLLoseContext
+          , GHCJS.DOM.WebGLRenderingContextBase
+          , GHCJS.DOM.WebGLShaderPrecisionFormat
+          , GHCJS.DOM.WebKitAnimationEvent
+          , GHCJS.DOM.WebKitCSSFilterValue
+          , GHCJS.DOM.WebKitCSSMatrix
+          , GHCJS.DOM.WebKitCSSRegionRule
+          , GHCJS.DOM.WebKitCSSTransformValue
+          , GHCJS.DOM.WebKitCSSViewportRule
+          , GHCJS.DOM.WebKitNamedFlow
+          , GHCJS.DOM.WebKitNamespace
+          , GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent
+          , GHCJS.DOM.WebKitPoint
+          , GHCJS.DOM.WebKitTransitionEvent
+          , GHCJS.DOM.WebSocket
+          , GHCJS.DOM.WheelEvent
+          , GHCJS.DOM.WindowBase64
+          , GHCJS.DOM.WindowTimers
+          , GHCJS.DOM.Worker
+          , GHCJS.DOM.WorkerGlobalScope
+          , GHCJS.DOM.WorkerLocation
+          , GHCJS.DOM.WorkerNavigator
+          , GHCJS.DOM.XMLHttpRequest
+          , GHCJS.DOM.XMLHttpRequestProgressEvent
+          , GHCJS.DOM.XMLHttpRequestUpload
+          , GHCJS.DOM.XMLSerializer
+          , GHCJS.DOM.XPathEvaluator
+          , GHCJS.DOM.XPathExpression
+          , GHCJS.DOM.XPathNSResolver
+          , GHCJS.DOM.XPathResult
+          , GHCJS.DOM.XSLTProcessor

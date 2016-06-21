@@ -19,7 +19,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern CSS_INHERIT = 0
 pattern CSS_PRIMITIVE_VALUE = 1
 pattern CSS_VALUE_LIST = 2

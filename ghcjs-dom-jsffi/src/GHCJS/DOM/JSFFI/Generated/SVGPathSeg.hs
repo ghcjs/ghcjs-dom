@@ -32,7 +32,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern PATHSEG_UNKNOWN = 0
 pattern PATHSEG_CLOSEPATH = 1
 pattern PATHSEG_MOVETO_ABS = 2

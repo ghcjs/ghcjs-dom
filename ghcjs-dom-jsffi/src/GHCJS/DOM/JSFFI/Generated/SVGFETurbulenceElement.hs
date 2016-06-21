@@ -24,7 +24,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SVG_TURBULENCE_TYPE_UNKNOWN = 0
 pattern SVG_TURBULENCE_TYPE_FRACTALNOISE = 1
 pattern SVG_TURBULENCE_TYPE_TURBULENCE = 2

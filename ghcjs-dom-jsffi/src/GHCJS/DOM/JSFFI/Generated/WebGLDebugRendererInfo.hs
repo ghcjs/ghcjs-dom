@@ -17,6 +17,6 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern UNMASKED_VENDOR_WEBGL = 37445
 pattern UNMASKED_RENDERER_WEBGL = 37446

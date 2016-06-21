@@ -17,7 +17,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern PERMISSION_DENIED = 1
 pattern POSITION_UNAVAILABLE = 2
 pattern TIMEOUT = 3

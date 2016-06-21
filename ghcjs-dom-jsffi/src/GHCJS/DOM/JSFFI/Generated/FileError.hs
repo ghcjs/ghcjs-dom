@@ -21,7 +21,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern NOT_FOUND_ERR = 1
 pattern SECURITY_ERR = 2
 pattern ABORT_ERR = 3

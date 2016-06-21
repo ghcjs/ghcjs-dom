@@ -20,7 +20,7 @@ import Data.Word (Word, Word64)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
-import GHCJS.DOM.Enums
+import GHCJS.DOM.JSFFI.Generated.Enums
 pattern RENDERING_INTENT_UNKNOWN = 0
 pattern RENDERING_INTENT_AUTO = 1
 pattern RENDERING_INTENT_PERCEPTUAL = 2
