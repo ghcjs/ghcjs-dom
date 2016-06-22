@@ -169,7 +169,7 @@ error :: EventName RTCDataChannel UIEvent
 error = unsafeEventName (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onclose Mozilla RTCDataChannel.onclose documentation> 
-closeEvent :: EventName RTCDataChannel Event
+closeEvent :: EventName RTCDataChannel CloseEvent
 closeEvent = unsafeEventName (toJSString "close")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.onmessage Mozilla RTCDataChannel.onmessage documentation> 

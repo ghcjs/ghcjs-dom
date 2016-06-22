@@ -138,7 +138,7 @@ error :: EventName WebSocket UIEvent
 error = unsafeEventName (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onclose Mozilla WebSocket.onclose documentation> 
-closeEvent :: EventName WebSocket Event
+closeEvent :: EventName WebSocket CloseEvent
 closeEvent = unsafeEventName (toJSString "close")
  
 foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol

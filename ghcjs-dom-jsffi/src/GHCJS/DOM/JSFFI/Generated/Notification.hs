@@ -34,7 +34,7 @@ error :: EventName Notification UIEvent
 error = unsafeEventName (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onclose Mozilla Notification.onclose documentation> 
-close :: EventName Notification Event
+close :: EventName Notification CloseEvent
 close = unsafeEventName (toJSString "close")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onclick Mozilla Notification.onclick documentation> 
