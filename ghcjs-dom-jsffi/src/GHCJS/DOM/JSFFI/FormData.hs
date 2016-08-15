@@ -1,6 +1,9 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.FormData (
     module Generated
+  , js_newFormData0
+  , js_newFormData1
+  , newFormData
   , js_append
   , js_append3
   , append
@@ -10,10 +13,22 @@ module GHCJS.DOM.JSFFI.FormData (
 import Control.Monad.IO.Class (MonadIO(..))
 
 import GHCJS.Types (JSVal, JSString)
-import GHCJS.Marshal.Internal (PToJSVal(..))
+import GHCJS.Marshal.Pure (PToJSVal(..))
 import GHCJS.DOM.Types
 
-import GHCJS.DOM.JSFFI.Generated.FormData as Generated hiding (js_append, append)
+import GHCJS.DOM.JSFFI.Generated.FormData as Generated hiding (js_append, append, newFormData)
+
+
+foreign import javascript unsafe "new window[\"FormData\"]()"
+        js_newFormData0 :: IO FormData
+
+foreign import javascript unsafe "new window[\"FormData\"]($1)"
+        js_newFormData1 :: HTMLFormElement -> IO FormData
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation>
+newFormData :: (MonadIO m) => Maybe HTMLFormElement -> m FormData
+newFormData = liftIO . maybe js_newFormData0 js_newFormData1
+
 
 foreign import javascript unsafe "$1[\"append\"]($2, $3)"
         js_append :: FormData -> JSString -> JSVal -> IO ()
