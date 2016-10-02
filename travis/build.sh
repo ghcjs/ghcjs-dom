@@ -2,10 +2,13 @@
 
 echo $PATH
 export LC_ALL=C.UTF-8
+GHCVER=`ghc --numeric-version`
 
 if [[ -d .cabal && -d .ghc ]]; then
     cp -a .cabal .ghc /root
 fi
+
+npm install ws
 
 cabal update
 
