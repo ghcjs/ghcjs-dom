@@ -12,7 +12,7 @@ cabal update
 # Detect if the cache is warmed up.  If so build both versions.
 if ghc-pkg --package-db /root/.cabal/store/ghc-`ghc --numeric-version`/package.db list | grep jsaddle-dom; then
     cabal new-build
-    cabal new-build -fwebkit
+    # cabal new-build -fwebkit disabled for now
     all_done=true
 else
     # Just build jsaddle-dom
