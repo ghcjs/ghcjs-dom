@@ -4,19 +4,16 @@ module GHCJS.DOM (
   currentWindow
 , currentDocument
 , run
-, postGUISync
-, postGUIAsync
+, syncPoint
+, syncAfter
+, catch
+, bracket
 ) where
 
 import Control.Applicative ((<$>))
+import Control.Exception (catch, bracket)
 
 import GHCJS.DOM.Types
-
-postGUIAsync :: IO () -> IO ()
-postGUIAsync = id
-
-postGUISync :: IO a -> IO a
-postGUISync = id
 
 foreign import javascript unsafe "$r = window"
   ghcjs_currentWindow :: IO (Nullable Window)
@@ -30,3 +27,9 @@ currentDocument = nullableToMaybe <$> ghcjs_currentDocument
 
 run :: Int -> IO () -> IO ()
 run _ = id
+
+syncPoint :: IO ()
+syncPoint = return ()
+
+syncAfter :: IO () -> IO ()
+syncAfter = id
