@@ -6,12 +6,16 @@ module GHCJS.DOM (
 , run
 , syncPoint
 , syncAfter
+, waitForAnimationFrame
+, nextAnimationFrame
 , catch
 , bracket
 ) where
 
 import Control.Applicative ((<$>))
 import Control.Exception (catch, bracket)
+
+import JavaScript.Web.AnimationFrame (waitForAnimationFrame)
 
 import GHCJS.DOM.Types
 
@@ -33,3 +37,6 @@ syncPoint = return ()
 
 syncAfter :: IO () -> IO ()
 syncAfter = id
+
+nextAnimationFrame :: (Double -> JSM a) -> JSM a
+nextAnimationFrame f = waitForAnimationFrame >>= f

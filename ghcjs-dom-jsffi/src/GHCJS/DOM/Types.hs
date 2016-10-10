@@ -1,16 +1,28 @@
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances #-}
 module GHCJS.DOM.Types (
-  -- * Monad
-    DOM, DOMContext, MonadDOM, liftDOM, askDOM, runDOM
+  -- * JavaScript Context and Monad
+    JSContextRef(..), JSM, askJSM, runJSM, MonadJSM(..), liftJSM
+
+  -- * DOM Context and Monad
+  , DOMContext(..), DOM, askDOM, runDOM, MonadDOM(..), liftDOM
+
+  -- * JavaScript Value
+  , JSVal(..), ToJSVal(..), FromJSVal(..)
+
+  -- * JavaScript String
+  , JSString(..), ToJSString(..), FromJSString(..)
+  , toJSString, fromJSString, toMaybeJSString, fromMaybeJSString
+
+  -- * Nullable
+  , Nullable(..), nullableToMaybe, maybeToNullable
+
+  -- * DOM String
+  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString
 
   -- * Object
-  , maybeJSNullOrUndefined, Nullable(..), nullableToMaybe, maybeToNullable, propagateGError, GType(..)
+  , maybeJSNullOrUndefined, GType(..)
   , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
   , js_eq
-
-  -- * DOMString
-  , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString, ToJSString(..), FromJSString(..)
-  , toJSString, fromJSString, toMaybeJSString, fromMaybeJSString
 
   -- * Callbacks
   , AudioBufferCallback(..)
@@ -667,19 +679,59 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
 
-type DOM = IO
+-- | Identifies a JavaScript execution context.
+--   When using GHCJS this is just '()' since their is only one context.
+--   When using GHC it includes the functions JSaddle needs to communicate
+--   with the JavaScript context.
+type JSContextRef = ()
+
+-- | This is the same as 'JSContextRef' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
 type DOMContext = ()
 
+-- | The 'JSM' monad keeps track of the JavaScript execution context.
+--
+--   When using GHCJS it is `IO`.
+--
+--   Given a 'JSM' function and a 'JSContextRef' you can run the
+--   function like this...
+--
+-- > runJSM jsmFunction javaScriptContext
+type JSM = IO
+
+-- | This is the same as 'JSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
+type DOM = IO
+
+-- | The 'MonadJSM' is to 'JSM' what 'MonadIO' is to 'IO'.
+--   When using GHCJS it is 'MonadIO'.
+type MonadJSM = MonadIO
+
+-- | This is the same as 'MonadJSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
+type MonadDOM = MonadIO
+
+-- | The 'liftJSM' is to 'JSM' what 'liftIO' is to 'IO'.
+--   When using GHCJS it is 'liftIO'.
+liftJSM :: MonadJSM m => JSM a -> m a
+liftJSM = liftIO
+
+-- | This is the same as 'liftJSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
+liftDOM :: DOM a -> DOM a
+liftDOM = liftIO
+
+-- | Gets the JavaScript context from the monad
+askJSM :: MonadJSM m => m JSContextRef
+askJSM = return ()
+
+-- | This is the same as 'askJSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
 askDOM :: MonadDOM m => m DOMContext
 askDOM = return ()
 
-runDOM :: DOM a -> DOMContext -> IO a
-runDOM = const
+-- | Runs a 'JSM' JavaScript function in a given JavaScript context.
+runJSM :: MonadIO m => JSM a -> JSContextRef -> m a
+runJSM f = liftIO . const f
 
-type MonadDOM = MonadIO
-
-liftDOM :: DOM a -> DOM a
-liftDOM = liftIO
+-- | This is the same as 'runJSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
+runDOM :: MonadIO m => DOM a -> DOMContext -> m a
+runDOM f = liftIO . const f
 
 maybeJSNullOrUndefined :: JSVal -> Maybe JSVal
 maybeJSNullOrUndefined r | isNull r || isUndefined r = Nothing
@@ -803,7 +855,6 @@ instance FromJSString JSString
 
 type ToDOMString s = ToJSString s
 type FromDOMString s = FromJSString s
-
 type IsDOMString s = (ToDOMString s, FromDOMString s)
 
 -- Callbacks
