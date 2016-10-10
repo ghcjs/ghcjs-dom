@@ -1,7 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Crypto
-       (js_getRandomValues, getRandomValues, js_getWebkitSubtle,
-        getWebkitSubtle, Crypto, castToCrypto, gTypeCrypto)
+       (js_getRandomValues, getRandomValues, getRandomValues_,
+        getRandomValuesUnchecked, js_getWebkitSubtle, getWebkitSubtle,
+        getWebkitSubtleUnchecked, Crypto, castToCrypto, gTypeCrypto)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -10,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -31,6 +34,26 @@ getRandomValues self array
       (nullableToMaybe <$>
          (js_getRandomValues (self)
             (maybeToNullable (fmap toArrayBufferView array))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.getRandomValues Mozilla Crypto.getRandomValues documentation> 
+getRandomValues_ ::
+                 (MonadIO m, IsArrayBufferView array) =>
+                   Crypto -> Maybe array -> m ()
+getRandomValues_ self array
+  = liftIO
+      (void
+         (js_getRandomValues (self)
+            (maybeToNullable (fmap toArrayBufferView array))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.getRandomValues Mozilla Crypto.getRandomValues documentation> 
+getRandomValuesUnchecked ::
+                         (MonadIO m, IsArrayBufferView array) =>
+                           Crypto -> Maybe array -> m ArrayBufferView
+getRandomValuesUnchecked self array
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getRandomValues (self)
+            (maybeToNullable (fmap toArrayBufferView array))))
  
 foreign import javascript unsafe "$1[\"webkitSubtle\"]"
         js_getWebkitSubtle :: Crypto -> IO (Nullable SubtleCrypto)
@@ -39,3 +62,9 @@ foreign import javascript unsafe "$1[\"webkitSubtle\"]"
 getWebkitSubtle :: (MonadIO m) => Crypto -> m (Maybe SubtleCrypto)
 getWebkitSubtle self
   = liftIO (nullableToMaybe <$> (js_getWebkitSubtle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 
+getWebkitSubtleUnchecked :: (MonadIO m) => Crypto -> m SubtleCrypto
+getWebkitSubtleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getWebkitSubtle (self)))

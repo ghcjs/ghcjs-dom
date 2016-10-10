@@ -1,9 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ScriptProfileNode
-       (js_children, children, js_getId, getId, js_getFunctionName,
-        getFunctionName, js_getUrl, getUrl, js_getLineNumber,
-        getLineNumber, js_getColumnNumber, getColumnNumber,
-        ScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode)
+       (js_children, children, children_, js_getId, getId,
+        js_getFunctionName, getFunctionName, js_getUrl, getUrl,
+        js_getLineNumber, getLineNumber, js_getColumnNumber,
+        getColumnNumber, ScriptProfileNode, castToScriptProfileNode,
+        gTypeScriptProfileNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +31,10 @@ children ::
          (MonadIO m) => ScriptProfileNode -> m [Maybe ScriptProfileNode]
 children self
   = liftIO ((js_children (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ScriptProfileNode.children Mozilla ScriptProfileNode.children documentation> 
+children_ :: (MonadIO m) => ScriptProfileNode -> m ()
+children_ self = liftIO (void (js_children (self)))
  
 foreign import javascript unsafe "$1[\"id\"]" js_getId ::
         ScriptProfileNode -> IO Word

@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.FontLoader
-       (js_checkFont, checkFont, js_loadFont, loadFont,
+       (js_checkFont, checkFont, checkFont_, js_loadFont, loadFont,
         js_notifyWhenFontsReady, notifyWhenFontsReady, loading,
         loadingDone, loadStart, load, error, js_getLoading, getLoading,
         FontLoader, castToFontLoader, gTypeFontLoader)
@@ -12,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,6 +32,14 @@ checkFont ::
             FontLoader -> font -> text -> m Bool
 checkFont self font text
   = liftIO (js_checkFont (self) (toJSString font) (toJSString text))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FontLoader.checkFont Mozilla FontLoader.checkFont documentation> 
+checkFont_ ::
+           (MonadIO m, ToJSString font, ToJSString text) =>
+             FontLoader -> font -> text -> m ()
+checkFont_ self font text
+  = liftIO
+      (void (js_checkFont (self) (toJSString font) (toJSString text)))
  
 foreign import javascript unsafe "$1[\"loadFont\"]($2)" js_loadFont
         :: FontLoader -> Nullable Dictionary -> IO ()

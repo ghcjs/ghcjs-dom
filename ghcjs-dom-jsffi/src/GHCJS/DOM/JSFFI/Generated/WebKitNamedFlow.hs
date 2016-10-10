@@ -1,7 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitNamedFlow
-       (js_getRegionsByContent, getRegionsByContent, js_getRegions,
-        getRegions, js_getContent, getContent, js_getName, getName,
+       (js_getRegionsByContent, getRegionsByContent, getRegionsByContent_,
+        getRegionsByContentUnchecked, js_getRegions, getRegions,
+        getRegions_, getRegionsUnchecked, js_getContent, getContent,
+        getContent_, getContentUnchecked, js_getName, getName,
         js_getOverset, getOverset, js_getFirstEmptyRegionIndex,
         getFirstEmptyRegionIndex, WebKitNamedFlow, castToWebKitNamedFlow,
         gTypeWebKitNamedFlow)
@@ -13,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,6 +38,26 @@ getRegionsByContent self contentNode
       (nullableToMaybe <$>
          (js_getRegionsByContent (self)
             (maybeToNullable (fmap toNode contentNode))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegionsByContent Mozilla WebKitNamedFlow.getRegionsByContent documentation> 
+getRegionsByContent_ ::
+                     (MonadIO m, IsNode contentNode) =>
+                       WebKitNamedFlow -> Maybe contentNode -> m ()
+getRegionsByContent_ self contentNode
+  = liftIO
+      (void
+         (js_getRegionsByContent (self)
+            (maybeToNullable (fmap toNode contentNode))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegionsByContent Mozilla WebKitNamedFlow.getRegionsByContent documentation> 
+getRegionsByContentUnchecked ::
+                             (MonadIO m, IsNode contentNode) =>
+                               WebKitNamedFlow -> Maybe contentNode -> m NodeList
+getRegionsByContentUnchecked self contentNode
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getRegionsByContent (self)
+            (maybeToNullable (fmap toNode contentNode))))
  
 foreign import javascript unsafe "$1[\"getRegions\"]()"
         js_getRegions :: WebKitNamedFlow -> IO (Nullable NodeList)
@@ -42,6 +66,15 @@ foreign import javascript unsafe "$1[\"getRegions\"]()"
 getRegions :: (MonadIO m) => WebKitNamedFlow -> m (Maybe NodeList)
 getRegions self
   = liftIO (nullableToMaybe <$> (js_getRegions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegions Mozilla WebKitNamedFlow.getRegions documentation> 
+getRegions_ :: (MonadIO m) => WebKitNamedFlow -> m ()
+getRegions_ self = liftIO (void (js_getRegions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegions Mozilla WebKitNamedFlow.getRegions documentation> 
+getRegionsUnchecked :: (MonadIO m) => WebKitNamedFlow -> m NodeList
+getRegionsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRegions (self)))
  
 foreign import javascript unsafe "$1[\"getContent\"]()"
         js_getContent :: WebKitNamedFlow -> IO (Nullable NodeList)
@@ -50,6 +83,15 @@ foreign import javascript unsafe "$1[\"getContent\"]()"
 getContent :: (MonadIO m) => WebKitNamedFlow -> m (Maybe NodeList)
 getContent self
   = liftIO (nullableToMaybe <$> (js_getContent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
+getContent_ :: (MonadIO m) => WebKitNamedFlow -> m ()
+getContent_ self = liftIO (void (js_getContent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
+getContentUnchecked :: (MonadIO m) => WebKitNamedFlow -> m NodeList
+getContentUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getContent (self)))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         WebKitNamedFlow -> IO JSString

@@ -1,10 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.TouchEvent
        (js_initTouchEvent, initTouchEvent, js_getTouches, getTouches,
-        js_getTargetTouches, getTargetTouches, js_getChangedTouches,
-        getChangedTouches, js_getCtrlKey, getCtrlKey, js_getShiftKey,
-        getShiftKey, js_getAltKey, getAltKey, js_getMetaKey, getMetaKey,
-        TouchEvent, castToTouchEvent, gTypeTouchEvent)
+        getTouchesUnchecked, js_getTargetTouches, getTargetTouches,
+        getTargetTouchesUnchecked, js_getChangedTouches, getChangedTouches,
+        getChangedTouchesUnchecked, js_getCtrlKey, getCtrlKey,
+        js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
+        js_getMetaKey, getMetaKey, TouchEvent, castToTouchEvent,
+        gTypeTouchEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -66,6 +70,11 @@ foreign import javascript unsafe "$1[\"touches\"]" js_getTouches ::
 getTouches :: (MonadIO m) => TouchEvent -> m (Maybe TouchList)
 getTouches self
   = liftIO (nullableToMaybe <$> (js_getTouches (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.touches Mozilla TouchEvent.touches documentation> 
+getTouchesUnchecked :: (MonadIO m) => TouchEvent -> m TouchList
+getTouchesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTouches (self)))
  
 foreign import javascript unsafe "$1[\"targetTouches\"]"
         js_getTargetTouches :: TouchEvent -> IO (Nullable TouchList)
@@ -75,6 +84,13 @@ getTargetTouches ::
                  (MonadIO m) => TouchEvent -> m (Maybe TouchList)
 getTargetTouches self
   = liftIO (nullableToMaybe <$> (js_getTargetTouches (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.targetTouches Mozilla TouchEvent.targetTouches documentation> 
+getTargetTouchesUnchecked ::
+                          (MonadIO m) => TouchEvent -> m TouchList
+getTargetTouchesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getTargetTouches (self)))
  
 foreign import javascript unsafe "$1[\"changedTouches\"]"
         js_getChangedTouches :: TouchEvent -> IO (Nullable TouchList)
@@ -84,6 +100,13 @@ getChangedTouches ::
                   (MonadIO m) => TouchEvent -> m (Maybe TouchList)
 getChangedTouches self
   = liftIO (nullableToMaybe <$> (js_getChangedTouches (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.changedTouches Mozilla TouchEvent.changedTouches documentation> 
+getChangedTouchesUnchecked ::
+                           (MonadIO m) => TouchEvent -> m TouchList
+getChangedTouchesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getChangedTouches (self)))
  
 foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
         js_getCtrlKey :: TouchEvent -> IO Bool

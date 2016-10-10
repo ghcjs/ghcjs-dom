@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGExternalResourcesRequired
        (js_getExternalResourcesRequired, getExternalResourcesRequired,
+        getExternalResourcesRequiredUnchecked,
         SVGExternalResourcesRequired, castToSVGExternalResourcesRequired,
         gTypeSVGExternalResourcesRequired)
        where
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,3 +33,12 @@ getExternalResourcesRequired ::
 getExternalResourcesRequired self
   = liftIO
       (nullableToMaybe <$> (js_getExternalResourcesRequired (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGExternalResourcesRequired.externalResourcesRequired Mozilla SVGExternalResourcesRequired.externalResourcesRequired documentation> 
+getExternalResourcesRequiredUnchecked ::
+                                      (MonadIO m) =>
+                                        SVGExternalResourcesRequired -> m SVGAnimatedBoolean
+getExternalResourcesRequiredUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getExternalResourcesRequired (self)))

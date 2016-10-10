@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGViewSpec
-       (js_getTransform, getTransform, js_getViewTarget, getViewTarget,
+       (js_getTransform, getTransform, getTransformUnchecked,
+        js_getViewTarget, getViewTarget, getViewTargetUnchecked,
         js_getViewBoxString, getViewBoxString,
         js_getPreserveAspectRatioString, getPreserveAspectRatioString,
         js_getTransformString, getTransformString, js_getViewTargetString,
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -31,6 +34,12 @@ getTransform ::
              (MonadIO m) => SVGViewSpec -> m (Maybe SVGTransformList)
 getTransform self
   = liftIO (nullableToMaybe <$> (js_getTransform (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transform Mozilla SVGViewSpec.transform documentation> 
+getTransformUnchecked ::
+                      (MonadIO m) => SVGViewSpec -> m SVGTransformList
+getTransformUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTransform (self)))
  
 foreign import javascript unsafe "$1[\"viewTarget\"]"
         js_getViewTarget :: SVGViewSpec -> IO (Nullable SVGElement)
@@ -39,6 +48,12 @@ foreign import javascript unsafe "$1[\"viewTarget\"]"
 getViewTarget :: (MonadIO m) => SVGViewSpec -> m (Maybe SVGElement)
 getViewTarget self
   = liftIO (nullableToMaybe <$> (js_getViewTarget (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTarget Mozilla SVGViewSpec.viewTarget documentation> 
+getViewTargetUnchecked ::
+                       (MonadIO m) => SVGViewSpec -> m SVGElement
+getViewTargetUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getViewTarget (self)))
  
 foreign import javascript unsafe "$1[\"viewBoxString\"]"
         js_getViewBoxString :: SVGViewSpec -> IO JSString

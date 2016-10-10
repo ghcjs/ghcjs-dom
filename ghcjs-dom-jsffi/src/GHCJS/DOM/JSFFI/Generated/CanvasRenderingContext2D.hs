@@ -3,18 +3,23 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
        (js_save, save, js_restore, restore, js_scale, scale, js_rotate,
         rotate, js_translate, translate, js_transform, transform,
         js_setTransform, setTransform, js_createLinearGradient,
-        createLinearGradient, js_createRadialGradient,
-        createRadialGradient, js_setLineDash, setLineDash, js_getLineDash,
-        getLineDash, js_clearRect, clearRect, js_fillRect, fillRect,
-        js_beginPath, beginPath, js_closePath, closePath, js_moveTo,
-        moveTo, js_lineTo, lineTo, js_quadraticCurveTo, quadraticCurveTo,
-        js_bezierCurveTo, bezierCurveTo, js_arcTo, arcTo, js_rect, rect,
-        js_arc, arc, js_fillPath, fillPath, js_strokePath, strokePath,
-        js_clipPath, clipPath, js_fill, fill, js_stroke, stroke, js_clip,
-        clip, js_isPointInPathPath, isPointInPathPath,
-        js_isPointInStrokePath, isPointInStrokePath, js_isPointInPath,
-        isPointInPath, js_isPointInStroke, isPointInStroke, js_measureText,
-        measureText, js_setAlpha, setAlpha, js_setCompositeOperation,
+        createLinearGradient, createLinearGradient_,
+        createLinearGradientUnchecked, js_createRadialGradient,
+        createRadialGradient, createRadialGradient_,
+        createRadialGradientUnchecked, js_setLineDash, setLineDash,
+        js_getLineDash, getLineDash, getLineDash_, js_clearRect, clearRect,
+        js_fillRect, fillRect, js_beginPath, beginPath, js_closePath,
+        closePath, js_moveTo, moveTo, js_lineTo, lineTo,
+        js_quadraticCurveTo, quadraticCurveTo, js_bezierCurveTo,
+        bezierCurveTo, js_arcTo, arcTo, js_rect, rect, js_arc, arc,
+        js_fillPath, fillPath, js_strokePath, strokePath, js_clipPath,
+        clipPath, js_fill, fill, js_stroke, stroke, js_clip, clip,
+        js_isPointInPathPath, isPointInPathPath, isPointInPathPath_,
+        js_isPointInStrokePath, isPointInStrokePath, isPointInStrokePath_,
+        js_isPointInPath, isPointInPath, isPointInPath_,
+        js_isPointInStroke, isPointInStroke, isPointInStroke_,
+        js_measureText, measureText, measureText_, measureTextUnchecked,
+        js_setAlpha, setAlpha, js_setCompositeOperation,
         setCompositeOperation, js_setLineWidthFunction,
         setLineWidthFunction, js_setLineCapFunction, setLineCapFunction,
         js_setLineJoinFunction, setLineJoinFunction,
@@ -39,35 +44,43 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         js_putImageDataDirty, putImageDataDirty, js_webkitPutImageDataHD,
         webkitPutImageDataHD, js_webkitPutImageDataHDDirty,
         webkitPutImageDataHDDirty, js_createPatternFromCanvas,
-        createPatternFromCanvas, js_createPattern, createPattern,
-        js_createImageData, createImageData, js_createImageDataSize,
-        createImageDataSize, js_getImageData, getImageData,
-        js_webkitGetImageDataHD, webkitGetImageDataHD,
-        js_drawFocusIfNeeded, drawFocusIfNeeded, js_drawFocusIfNeededPath,
-        drawFocusIfNeededPath, js_setGlobalAlpha, setGlobalAlpha,
-        js_getGlobalAlpha, getGlobalAlpha, js_setGlobalCompositeOperation,
+        createPatternFromCanvas, createPatternFromCanvas_,
+        createPatternFromCanvasUnchecked, js_createPattern, createPattern,
+        createPattern_, createPatternUnchecked, js_createImageData,
+        createImageData, createImageData_, createImageDataUnchecked,
+        js_createImageDataSize, createImageDataSize, createImageDataSize_,
+        createImageDataSizeUnchecked, js_getImageData, getImageData,
+        getImageData_, getImageDataUnchecked, js_webkitGetImageDataHD,
+        webkitGetImageDataHD, webkitGetImageDataHD_,
+        webkitGetImageDataHDUnchecked, js_drawFocusIfNeeded,
+        drawFocusIfNeeded, js_drawFocusIfNeededPath, drawFocusIfNeededPath,
+        js_setGlobalAlpha, setGlobalAlpha, js_getGlobalAlpha,
+        getGlobalAlpha, js_setGlobalCompositeOperation,
         setGlobalCompositeOperation, js_getGlobalCompositeOperation,
-        getGlobalCompositeOperation, js_setLineWidth, setLineWidth,
-        js_getLineWidth, getLineWidth, js_setLineCap, setLineCap,
-        js_getLineCap, getLineCap, js_setLineJoin, setLineJoin,
-        js_getLineJoin, getLineJoin, js_setMiterLimit, setMiterLimit,
+        getGlobalCompositeOperation, getGlobalCompositeOperationUnchecked,
+        js_setLineWidth, setLineWidth, js_getLineWidth, getLineWidth,
+        js_setLineCap, setLineCap, js_getLineCap, getLineCap,
+        getLineCapUnchecked, js_setLineJoin, setLineJoin, js_getLineJoin,
+        getLineJoin, getLineJoinUnchecked, js_setMiterLimit, setMiterLimit,
         js_getMiterLimit, getMiterLimit, js_setShadowOffsetX,
         setShadowOffsetX, js_getShadowOffsetX, getShadowOffsetX,
         js_setShadowOffsetY, setShadowOffsetY, js_getShadowOffsetY,
         getShadowOffsetY, js_setShadowBlur, setShadowBlur,
         js_getShadowBlur, getShadowBlur, js_setShadowColor, setShadowColor,
-        js_getShadowColor, getShadowColor, js_setLineDashOffset,
-        setLineDashOffset, js_getLineDashOffset, getLineDashOffset,
-        js_setWebkitLineDash, setWebkitLineDash, js_getWebkitLineDash,
-        getWebkitLineDash, js_setWebkitLineDashOffset,
+        js_getShadowColor, getShadowColor, getShadowColorUnchecked,
+        js_setLineDashOffset, setLineDashOffset, js_getLineDashOffset,
+        getLineDashOffset, js_setWebkitLineDash, setWebkitLineDash,
+        js_getWebkitLineDash, getWebkitLineDash,
+        getWebkitLineDashUnchecked, js_setWebkitLineDashOffset,
         setWebkitLineDashOffset, js_getWebkitLineDashOffset,
         getWebkitLineDashOffset, js_setFont, setFont, js_getFont, getFont,
         js_setTextAlign, setTextAlign, js_getTextAlign, getTextAlign,
         js_setTextBaseline, setTextBaseline, js_getTextBaseline,
         getTextBaseline, js_setDirection, setDirection, js_getDirection,
         getDirection, js_setStrokeStyle, setStrokeStyle, js_getStrokeStyle,
-        getStrokeStyle, js_setFillStyle, setFillStyle, js_getFillStyle,
-        getFillStyle, js_getWebkitBackingStorePixelRatio,
+        getStrokeStyle, getStrokeStyleUnchecked, js_setFillStyle,
+        setFillStyle, js_getFillStyle, getFillStyle, getFillStyleUnchecked,
+        js_getWebkitBackingStorePixelRatio,
         getWebkitBackingStorePixelRatio, js_setWebkitImageSmoothingEnabled,
         setWebkitImageSmoothingEnabled, js_getWebkitImageSmoothingEnabled,
         getWebkitImageSmoothingEnabled, CanvasRenderingContext2D,
@@ -80,9 +93,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -165,6 +180,24 @@ createLinearGradient ::
 createLinearGradient self x0 y0 x1 y1
   = liftIO
       (nullableToMaybe <$> (js_createLinearGradient (self) x0 y0 x1 y1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createLinearGradient Mozilla CanvasRenderingContext2D.createLinearGradient documentation> 
+createLinearGradient_ ::
+                      (MonadIO m) =>
+                        CanvasRenderingContext2D ->
+                          Float -> Float -> Float -> Float -> m ()
+createLinearGradient_ self x0 y0 x1 y1
+  = liftIO (void (js_createLinearGradient (self) x0 y0 x1 y1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createLinearGradient Mozilla CanvasRenderingContext2D.createLinearGradient documentation> 
+createLinearGradientUnchecked ::
+                              (MonadIO m) =>
+                                CanvasRenderingContext2D ->
+                                  Float -> Float -> Float -> Float -> m CanvasGradient
+createLinearGradientUnchecked self x0 y0 x1 y1
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createLinearGradient (self) x0 y0 x1 y1))
  
 foreign import javascript unsafe
         "$1[\"createRadialGradient\"]($2,\n$3, $4, $5, $6, $7)"
@@ -185,6 +218,25 @@ createRadialGradient self x0 y0 r0 x1 y1 r1
   = liftIO
       (nullableToMaybe <$>
          (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createRadialGradient Mozilla CanvasRenderingContext2D.createRadialGradient documentation> 
+createRadialGradient_ ::
+                      (MonadIO m) =>
+                        CanvasRenderingContext2D ->
+                          Float -> Float -> Float -> Float -> Float -> Float -> m ()
+createRadialGradient_ self x0 y0 r0 x1 y1 r1
+  = liftIO (void (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createRadialGradient Mozilla CanvasRenderingContext2D.createRadialGradient documentation> 
+createRadialGradientUnchecked ::
+                              (MonadIO m) =>
+                                CanvasRenderingContext2D ->
+                                  Float ->
+                                    Float -> Float -> Float -> Float -> Float -> m CanvasGradient
+createRadialGradientUnchecked self x0 y0 r0 x1 y1 r1
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
  
 foreign import javascript unsafe "$1[\"setLineDash\"]($2)"
         js_setLineDash :: CanvasRenderingContext2D -> JSVal -> IO ()
@@ -202,6 +254,10 @@ foreign import javascript unsafe "$1[\"getLineDash\"]()"
 getLineDash :: (MonadIO m) => CanvasRenderingContext2D -> m [Float]
 getLineDash self
   = liftIO ((js_getLineDash (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getLineDash Mozilla CanvasRenderingContext2D.getLineDash documentation> 
+getLineDash_ :: (MonadIO m) => CanvasRenderingContext2D -> m ()
+getLineDash_ self = liftIO (void (js_getLineDash (self)))
  
 foreign import javascript unsafe
         "$1[\"clearRect\"]($2, $3, $4, $5)" js_clearRect ::
@@ -399,6 +455,17 @@ isPointInPathPath self path x y winding
   = liftIO
       (js_isPointInPathPath (self) (maybeToNullable path) x y
          (pToJSVal winding))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInPath Mozilla CanvasRenderingContext2D.isPointInPath documentation> 
+isPointInPathPath_ ::
+                   (MonadIO m) =>
+                     CanvasRenderingContext2D ->
+                       Maybe Path2D -> Float -> Float -> CanvasWindingRule -> m ()
+isPointInPathPath_ self path x y winding
+  = liftIO
+      (void
+         (js_isPointInPathPath (self) (maybeToNullable path) x y
+            (pToJSVal winding)))
  
 foreign import javascript unsafe
         "($1[\"isPointInStroke\"]($2, $3,\n$4) ? 1 : 0)"
@@ -413,6 +480,14 @@ isPointInStrokePath ::
                         Maybe Path2D -> Float -> Float -> m Bool
 isPointInStrokePath self path x y
   = liftIO (js_isPointInStrokePath (self) (maybeToNullable path) x y)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInStroke Mozilla CanvasRenderingContext2D.isPointInStroke documentation> 
+isPointInStrokePath_ ::
+                     (MonadIO m) =>
+                       CanvasRenderingContext2D -> Maybe Path2D -> Float -> Float -> m ()
+isPointInStrokePath_ self path x y
+  = liftIO
+      (void (js_isPointInStrokePath (self) (maybeToNullable path) x y))
  
 foreign import javascript unsafe
         "($1[\"isPointInPath\"]($2, $3,\n$4) ? 1 : 0)" js_isPointInPath ::
@@ -425,6 +500,14 @@ isPointInPath ::
                   Float -> Float -> CanvasWindingRule -> m Bool
 isPointInPath self x y winding
   = liftIO (js_isPointInPath (self) x y (pToJSVal winding))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInPath Mozilla CanvasRenderingContext2D.isPointInPath documentation> 
+isPointInPath_ ::
+               (MonadIO m) =>
+                 CanvasRenderingContext2D ->
+                   Float -> Float -> CanvasWindingRule -> m ()
+isPointInPath_ self x y winding
+  = liftIO (void (js_isPointInPath (self) x y (pToJSVal winding)))
  
 foreign import javascript unsafe
         "($1[\"isPointInStroke\"]($2,\n$3) ? 1 : 0)" js_isPointInStroke ::
@@ -434,6 +517,12 @@ foreign import javascript unsafe
 isPointInStroke ::
                 (MonadIO m) => CanvasRenderingContext2D -> Float -> Float -> m Bool
 isPointInStroke self x y = liftIO (js_isPointInStroke (self) x y)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.isPointInStroke Mozilla CanvasRenderingContext2D.isPointInStroke documentation> 
+isPointInStroke_ ::
+                 (MonadIO m) => CanvasRenderingContext2D -> Float -> Float -> m ()
+isPointInStroke_ self x y
+  = liftIO (void (js_isPointInStroke (self) x y))
  
 foreign import javascript unsafe "$1[\"measureText\"]($2)"
         js_measureText ::
@@ -446,6 +535,22 @@ measureText ::
 measureText self text
   = liftIO
       (nullableToMaybe <$> (js_measureText (self) (toJSString text)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.measureText Mozilla CanvasRenderingContext2D.measureText documentation> 
+measureText_ ::
+             (MonadIO m, ToJSString text) =>
+               CanvasRenderingContext2D -> text -> m ()
+measureText_ self text
+  = liftIO (void (js_measureText (self) (toJSString text)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.measureText Mozilla CanvasRenderingContext2D.measureText documentation> 
+measureTextUnchecked ::
+                     (MonadIO m, ToJSString text) =>
+                       CanvasRenderingContext2D -> text -> m TextMetrics
+measureTextUnchecked self text
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_measureText (self) (toJSString text)))
  
 foreign import javascript unsafe "$1[\"setAlpha\"]($2)" js_setAlpha
         :: CanvasRenderingContext2D -> Float -> IO ()
@@ -991,6 +1096,29 @@ createPatternFromCanvas self canvas repetitionType
       (nullableToMaybe <$>
          (js_createPatternFromCanvas (self) (maybeToNullable canvas)
             (toMaybeJSString repetitionType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPatternFromCanvas_ ::
+                         (MonadIO m, ToJSString repetitionType) =>
+                           CanvasRenderingContext2D ->
+                             Maybe HTMLCanvasElement -> Maybe repetitionType -> m ()
+createPatternFromCanvas_ self canvas repetitionType
+  = liftIO
+      (void
+         (js_createPatternFromCanvas (self) (maybeToNullable canvas)
+            (toMaybeJSString repetitionType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPatternFromCanvasUnchecked ::
+                                 (MonadIO m, ToJSString repetitionType) =>
+                                   CanvasRenderingContext2D ->
+                                     Maybe HTMLCanvasElement ->
+                                       Maybe repetitionType -> m CanvasPattern
+createPatternFromCanvasUnchecked self canvas repetitionType
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createPatternFromCanvas (self) (maybeToNullable canvas)
+            (toMaybeJSString repetitionType)))
  
 foreign import javascript unsafe "$1[\"createPattern\"]($2, $3)"
         js_createPattern ::
@@ -1009,6 +1137,28 @@ createPattern self image repetitionType
       (nullableToMaybe <$>
          (js_createPattern (self) (maybeToNullable image)
             (toMaybeJSString repetitionType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPattern_ ::
+               (MonadIO m, ToJSString repetitionType) =>
+                 CanvasRenderingContext2D ->
+                   Maybe HTMLImageElement -> Maybe repetitionType -> m ()
+createPattern_ self image repetitionType
+  = liftIO
+      (void
+         (js_createPattern (self) (maybeToNullable image)
+            (toMaybeJSString repetitionType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPatternUnchecked ::
+                       (MonadIO m, ToJSString repetitionType) =>
+                         CanvasRenderingContext2D ->
+                           Maybe HTMLImageElement -> Maybe repetitionType -> m CanvasPattern
+createPatternUnchecked self image repetitionType
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createPattern (self) (maybeToNullable image)
+            (toMaybeJSString repetitionType)))
  
 foreign import javascript unsafe "$1[\"createImageData\"]($2)"
         js_createImageData ::
@@ -1023,6 +1173,22 @@ createImageData self imagedata
   = liftIO
       (nullableToMaybe <$>
          (js_createImageData (self) (maybeToNullable imagedata)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageData_ ::
+                 (MonadIO m) => CanvasRenderingContext2D -> Maybe ImageData -> m ()
+createImageData_ self imagedata
+  = liftIO
+      (void (js_createImageData (self) (maybeToNullable imagedata)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageDataUnchecked ::
+                         (MonadIO m) =>
+                           CanvasRenderingContext2D -> Maybe ImageData -> m ImageData
+createImageDataUnchecked self imagedata
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createImageData (self) (maybeToNullable imagedata)))
  
 foreign import javascript unsafe "$1[\"createImageData\"]($2, $3)"
         js_createImageDataSize ::
@@ -1036,6 +1202,21 @@ createImageDataSize ::
 createImageDataSize self sw sh
   = liftIO
       (nullableToMaybe <$> (js_createImageDataSize (self) sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageDataSize_ ::
+                     (MonadIO m) => CanvasRenderingContext2D -> Float -> Float -> m ()
+createImageDataSize_ self sw sh
+  = liftIO (void (js_createImageDataSize (self) sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageDataSizeUnchecked ::
+                             (MonadIO m) =>
+                               CanvasRenderingContext2D -> Float -> Float -> m ImageData
+createImageDataSizeUnchecked self sw sh
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createImageDataSize (self) sw sh))
  
 foreign import javascript unsafe
         "$1[\"getImageData\"]($2, $3, $4,\n$5)" js_getImageData ::
@@ -1049,6 +1230,24 @@ getImageData ::
                  Float -> Float -> Float -> Float -> m (Maybe ImageData)
 getImageData self sx sy sw sh
   = liftIO (nullableToMaybe <$> (js_getImageData (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getImageData Mozilla CanvasRenderingContext2D.getImageData documentation> 
+getImageData_ ::
+              (MonadIO m) =>
+                CanvasRenderingContext2D ->
+                  Float -> Float -> Float -> Float -> m ()
+getImageData_ self sx sy sw sh
+  = liftIO (void (js_getImageData (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getImageData Mozilla CanvasRenderingContext2D.getImageData documentation> 
+getImageDataUnchecked ::
+                      (MonadIO m) =>
+                        CanvasRenderingContext2D ->
+                          Float -> Float -> Float -> Float -> m ImageData
+getImageDataUnchecked self sx sy sw sh
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getImageData (self) sx sy sw sh))
  
 foreign import javascript unsafe
         "$1[\"webkitGetImageDataHD\"]($2,\n$3, $4, $5)"
@@ -1064,6 +1263,24 @@ webkitGetImageDataHD ::
 webkitGetImageDataHD self sx sy sw sh
   = liftIO
       (nullableToMaybe <$> (js_webkitGetImageDataHD (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitGetImageDataHD Mozilla CanvasRenderingContext2D.webkitGetImageDataHD documentation> 
+webkitGetImageDataHD_ ::
+                      (MonadIO m) =>
+                        CanvasRenderingContext2D ->
+                          Float -> Float -> Float -> Float -> m ()
+webkitGetImageDataHD_ self sx sy sw sh
+  = liftIO (void (js_webkitGetImageDataHD (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitGetImageDataHD Mozilla CanvasRenderingContext2D.webkitGetImageDataHD documentation> 
+webkitGetImageDataHDUnchecked ::
+                              (MonadIO m) =>
+                                CanvasRenderingContext2D ->
+                                  Float -> Float -> Float -> Float -> m ImageData
+webkitGetImageDataHDUnchecked self sx sy sw sh
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_webkitGetImageDataHD (self) sx sy sw sh))
  
 foreign import javascript unsafe "$1[\"drawFocusIfNeeded\"]($2)"
         js_drawFocusIfNeeded ::
@@ -1132,6 +1349,15 @@ getGlobalCompositeOperation ::
 getGlobalCompositeOperation self
   = liftIO
       (fromMaybeJSString <$> (js_getGlobalCompositeOperation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.globalCompositeOperation Mozilla CanvasRenderingContext2D.globalCompositeOperation documentation> 
+getGlobalCompositeOperationUnchecked ::
+                                     (MonadIO m, FromJSString result) =>
+                                       CanvasRenderingContext2D -> m result
+getGlobalCompositeOperationUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getGlobalCompositeOperation (self)))
  
 foreign import javascript unsafe "$1[\"lineWidth\"] = $2;"
         js_setLineWidth :: CanvasRenderingContext2D -> Float -> IO ()
@@ -1168,6 +1394,13 @@ getLineCap ::
              CanvasRenderingContext2D -> m (Maybe result)
 getLineCap self
   = liftIO (fromMaybeJSString <$> (js_getLineCap (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
+getLineCapUnchecked ::
+                    (MonadIO m, FromJSString result) =>
+                      CanvasRenderingContext2D -> m result
+getLineCapUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getLineCap (self)))
  
 foreign import javascript unsafe "$1[\"lineJoin\"] = $2;"
         js_setLineJoin ::
@@ -1189,6 +1422,13 @@ getLineJoin ::
               CanvasRenderingContext2D -> m (Maybe result)
 getLineJoin self
   = liftIO (fromMaybeJSString <$> (js_getLineJoin (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
+getLineJoinUnchecked ::
+                     (MonadIO m, FromJSString result) =>
+                       CanvasRenderingContext2D -> m result
+getLineJoinUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getLineJoin (self)))
  
 foreign import javascript unsafe "$1[\"miterLimit\"] = $2;"
         js_setMiterLimit :: CanvasRenderingContext2D -> Float -> IO ()
@@ -1273,6 +1513,14 @@ getShadowColor ::
                  CanvasRenderingContext2D -> m (Maybe result)
 getShadowColor self
   = liftIO (fromMaybeJSString <$> (js_getShadowColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.shadowColor Mozilla CanvasRenderingContext2D.shadowColor documentation> 
+getShadowColorUnchecked ::
+                        (MonadIO m, FromJSString result) =>
+                          CanvasRenderingContext2D -> m result
+getShadowColorUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getShadowColor (self)))
  
 foreign import javascript unsafe "$1[\"lineDashOffset\"] = $2;"
         js_setLineDashOffset :: CanvasRenderingContext2D -> Float -> IO ()
@@ -1312,6 +1560,13 @@ getWebkitLineDash ::
                   (MonadIO m) => CanvasRenderingContext2D -> m (Maybe Array)
 getWebkitLineDash self
   = liftIO (nullableToMaybe <$> (js_getWebkitLineDash (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitLineDash Mozilla CanvasRenderingContext2D.webkitLineDash documentation> 
+getWebkitLineDashUnchecked ::
+                           (MonadIO m) => CanvasRenderingContext2D -> m Array
+getWebkitLineDashUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getWebkitLineDash (self)))
  
 foreign import javascript unsafe
         "$1[\"webkitLineDashOffset\"] = $2;" js_setWebkitLineDashOffset ::
@@ -1432,6 +1687,13 @@ getStrokeStyle ::
                (MonadIO m) => CanvasRenderingContext2D -> m (Maybe CanvasStyle)
 getStrokeStyle self
   = liftIO (nullableToMaybe <$> (js_getStrokeStyle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.strokeStyle Mozilla CanvasRenderingContext2D.strokeStyle documentation> 
+getStrokeStyleUnchecked ::
+                        (MonadIO m) => CanvasRenderingContext2D -> m CanvasStyle
+getStrokeStyleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStrokeStyle (self)))
  
 foreign import javascript unsafe "$1[\"fillStyle\"] = $2;"
         js_setFillStyle ::
@@ -1454,6 +1716,12 @@ getFillStyle ::
              (MonadIO m) => CanvasRenderingContext2D -> m (Maybe CanvasStyle)
 getFillStyle self
   = liftIO (nullableToMaybe <$> (js_getFillStyle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fillStyle Mozilla CanvasRenderingContext2D.fillStyle documentation> 
+getFillStyleUnchecked ::
+                      (MonadIO m) => CanvasRenderingContext2D -> m CanvasStyle
+getFillStyleUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFillStyle (self)))
  
 foreign import javascript unsafe
         "$1[\"webkitBackingStorePixelRatio\"]"

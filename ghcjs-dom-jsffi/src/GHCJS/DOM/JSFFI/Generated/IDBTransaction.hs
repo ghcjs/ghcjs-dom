@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBTransaction
-       (js_objectStore, objectStore, js_abort, abort, js_getMode, getMode,
-        js_getDb, getDb, js_getError, getError, abortEvent, complete,
-        error, IDBTransaction, castToIDBTransaction, gTypeIDBTransaction)
+       (js_objectStore, objectStore, objectStore_, objectStoreUnchecked,
+        js_abort, abort, js_getMode, getMode, js_getDb, getDb,
+        getDbUnchecked, js_getError, getError, getErrorUnchecked,
+        abortEvent, complete, error, IDBTransaction, castToIDBTransaction,
+        gTypeIDBTransaction)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,6 +34,21 @@ objectStore ::
 objectStore self name
   = liftIO
       (nullableToMaybe <$> (js_objectStore (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
+objectStore_ ::
+             (MonadIO m, ToJSString name) => IDBTransaction -> name -> m ()
+objectStore_ self name
+  = liftIO (void (js_objectStore (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
+objectStoreUnchecked ::
+                     (MonadIO m, ToJSString name) =>
+                       IDBTransaction -> name -> m IDBObjectStore
+objectStoreUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_objectStore (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
         IDBTransaction -> IO ()
@@ -52,6 +71,11 @@ foreign import javascript unsafe "$1[\"db\"]" js_getDb ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
 getDb :: (MonadIO m) => IDBTransaction -> m (Maybe IDBDatabase)
 getDb self = liftIO (nullableToMaybe <$> (js_getDb (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
+getDbUnchecked :: (MonadIO m) => IDBTransaction -> m IDBDatabase
+getDbUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getDb (self)))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         IDBTransaction -> IO (Nullable DOMError)
@@ -59,6 +83,11 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
 getError :: (MonadIO m) => IDBTransaction -> m (Maybe DOMError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
+getErrorUnchecked :: (MonadIO m) => IDBTransaction -> m DOMError
+getErrorUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getError (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.onabort Mozilla IDBTransaction.onabort documentation> 
 abortEvent :: EventName IDBTransaction Event

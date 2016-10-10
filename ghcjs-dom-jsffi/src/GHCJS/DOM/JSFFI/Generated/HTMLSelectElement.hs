@@ -1,22 +1,25 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLSelectElement
-       (js_item, item, js_namedItem, namedItem, js_addBefore, addBefore,
-        js_add, add, js_remove, remove, js_checkValidity, checkValidity,
-        js_setCustomValidity, setCustomValidity, js_setAutofocus,
-        setAutofocus, js_getAutofocus, getAutofocus, js_setDisabled,
-        setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
-        js_setMultiple, setMultiple, js_getMultiple, getMultiple,
-        js_setName, setName, js_getName, getName, js_setRequired,
-        setRequired, js_getRequired, getRequired, js_setSize, setSize,
-        js_getSize, getSize, js_getType, getType, js_getOptions,
-        getOptions, js_setLength, setLength, js_getLength, getLength,
-        js_getSelectedOptions, getSelectedOptions, js_setSelectedIndex,
-        setSelectedIndex, js_getSelectedIndex, getSelectedIndex,
-        js_setValue, setValue, js_getValue, getValue, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
+       (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
+        namedItem_, namedItemUnchecked, js_addBefore, addBefore, js_add,
+        add, js_remove, remove, js_checkValidity, checkValidity,
+        checkValidity_, js_setCustomValidity, setCustomValidity,
+        js_setAutofocus, setAutofocus, js_getAutofocus, getAutofocus,
+        js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_getForm, getForm, getFormUnchecked, js_setMultiple, setMultiple,
+        js_getMultiple, getMultiple, js_setName, setName, js_getName,
+        getName, js_setRequired, setRequired, js_getRequired, getRequired,
+        js_setSize, setSize, js_getSize, getSize, js_getType, getType,
+        js_getOptions, getOptions, getOptionsUnchecked, js_setLength,
+        setLength, js_getLength, getLength, js_getSelectedOptions,
+        getSelectedOptions, getSelectedOptionsUnchecked,
+        js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
+        getSelectedIndex, js_setValue, setValue, js_getValue, getValue,
+        getValueUnchecked, js_getWillValidate, getWillValidate,
+        js_getValidity, getValidity, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, HTMLSelectElement, castToHTMLSelectElement,
-        gTypeHTMLSelectElement)
+        getLabels, getLabelsUnchecked, HTMLSelectElement,
+        castToHTMLSelectElement, gTypeHTMLSelectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -25,9 +28,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -40,6 +45,15 @@ foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
 item :: (MonadIO m) => HTMLSelectElement -> Word -> m (Maybe Node)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
+item_ :: (MonadIO m) => HTMLSelectElement -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
+itemUnchecked :: (MonadIO m) => HTMLSelectElement -> Word -> m Node
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         js_namedItem :: HTMLSelectElement -> JSString -> IO (Nullable Node)
@@ -51,6 +65,20 @@ namedItem ::
 namedItem self name
   = liftIO
       (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.namedItem Mozilla HTMLSelectElement.namedItem documentation> 
+namedItem_ ::
+           (MonadIO m, ToJSString name) => HTMLSelectElement -> name -> m ()
+namedItem_ self name
+  = liftIO (void (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.namedItem Mozilla HTMLSelectElement.namedItem documentation> 
+namedItemUnchecked ::
+                   (MonadIO m, ToJSString name) => HTMLSelectElement -> name -> m Node
+namedItemUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_addBefore
         ::
@@ -92,6 +120,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.checkValidity Mozilla HTMLSelectElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLSelectElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.checkValidity Mozilla HTMLSelectElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLSelectElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -139,6 +171,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLSelectElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.form Mozilla HTMLSelectElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLSelectElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"multiple\"] = $2;"
         js_setMultiple :: HTMLSelectElement -> Bool -> IO ()
@@ -214,6 +252,12 @@ getOptions ::
            (MonadIO m) => HTMLSelectElement -> m (Maybe HTMLOptionsCollection)
 getOptions self
   = liftIO (nullableToMaybe <$> (js_getOptions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.options Mozilla HTMLSelectElement.options documentation> 
+getOptionsUnchecked ::
+                    (MonadIO m) => HTMLSelectElement -> m HTMLOptionsCollection
+getOptionsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getOptions (self)))
  
 foreign import javascript unsafe "$1[\"length\"] = $2;"
         js_setLength :: HTMLSelectElement -> Word -> IO ()
@@ -238,6 +282,13 @@ getSelectedOptions ::
                    (MonadIO m) => HTMLSelectElement -> m (Maybe HTMLCollection)
 getSelectedOptions self
   = liftIO (nullableToMaybe <$> (js_getSelectedOptions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedOptions Mozilla HTMLSelectElement.selectedOptions documentation> 
+getSelectedOptionsUnchecked ::
+                            (MonadIO m) => HTMLSelectElement -> m HTMLCollection
+getSelectedOptionsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSelectedOptions (self)))
  
 foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
         js_setSelectedIndex :: HTMLSelectElement -> Int -> IO ()
@@ -271,6 +322,12 @@ getValue ::
          (MonadIO m, FromJSString result) =>
            HTMLSelectElement -> m (Maybe result)
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.value Mozilla HTMLSelectElement.value documentation> 
+getValueUnchecked ::
+                  (MonadIO m, FromJSString result) => HTMLSelectElement -> m result
+getValueUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue (self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         js_getWillValidate :: HTMLSelectElement -> IO Bool
@@ -287,6 +344,12 @@ getValidity ::
             (MonadIO m) => HTMLSelectElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.validity Mozilla HTMLSelectElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLSelectElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLSelectElement -> IO JSString
@@ -303,3 +366,9 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLSelectElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
+getLabelsUnchecked ::
+                   (MonadIO m) => HTMLSelectElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))

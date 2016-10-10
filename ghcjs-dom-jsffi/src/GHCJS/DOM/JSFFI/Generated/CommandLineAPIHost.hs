@@ -2,9 +2,11 @@
 module GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
        (js_clearConsoleMessages, clearConsoleMessages, js_copyText,
         copyText, js_inspect, inspect, js_inspectedObject, inspectedObject,
-        js_getEventListeners, getEventListeners, js_databaseId, databaseId,
-        js_storageId, storageId, CommandLineAPIHost,
-        castToCommandLineAPIHost, gTypeCommandLineAPIHost)
+        inspectedObject_, js_getEventListeners, getEventListeners,
+        getEventListeners_, getEventListenersUnchecked, js_databaseId,
+        databaseId, databaseId_, js_storageId, storageId, storageId_,
+        CommandLineAPIHost, castToCommandLineAPIHost,
+        gTypeCommandLineAPIHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -52,6 +56,12 @@ foreign import javascript unsafe "$1[\"inspectedObject\"]($2)"
 inspectedObject ::
                 (MonadIO m) => CommandLineAPIHost -> Int -> m JSVal
 inspectedObject self num = liftIO (js_inspectedObject (self) num)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspectedObject Mozilla CommandLineAPIHost.inspectedObject documentation> 
+inspectedObject_ ::
+                 (MonadIO m) => CommandLineAPIHost -> Int -> m ()
+inspectedObject_ self num
+  = liftIO (void (js_inspectedObject (self) num))
  
 foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
         js_getEventListeners ::
@@ -65,6 +75,24 @@ getEventListeners self node
   = liftIO
       (nullableToMaybe <$>
          (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
+getEventListeners_ ::
+                   (MonadIO m, IsNode node) =>
+                     CommandLineAPIHost -> Maybe node -> m ()
+getEventListeners_ self node
+  = liftIO
+      (void
+         (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
+getEventListenersUnchecked ::
+                           (MonadIO m, IsNode node) =>
+                             CommandLineAPIHost -> Maybe node -> m Array
+getEventListenersUnchecked self node
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"databaseId\"]($2)"
         js_databaseId :: CommandLineAPIHost -> JSVal -> IO JSString
@@ -75,6 +103,11 @@ databaseId ::
              CommandLineAPIHost -> JSVal -> m result
 databaseId self database
   = liftIO (fromJSString <$> (js_databaseId (self) database))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.databaseId Mozilla CommandLineAPIHost.databaseId documentation> 
+databaseId_ :: (MonadIO m) => CommandLineAPIHost -> JSVal -> m ()
+databaseId_ self database
+  = liftIO (void (js_databaseId (self) database))
  
 foreign import javascript unsafe "$1[\"storageId\"]($2)"
         js_storageId :: CommandLineAPIHost -> JSVal -> IO JSString
@@ -85,3 +118,8 @@ storageId ::
             CommandLineAPIHost -> JSVal -> m result
 storageId self storage
   = liftIO (fromJSString <$> (js_storageId (self) storage))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.storageId Mozilla CommandLineAPIHost.storageId documentation> 
+storageId_ :: (MonadIO m) => CommandLineAPIHost -> JSVal -> m ()
+storageId_ self storage
+  = liftIO (void (js_storageId (self) storage))

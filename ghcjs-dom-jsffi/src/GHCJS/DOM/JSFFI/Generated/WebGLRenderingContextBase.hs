@@ -10,22 +10,27 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         bufferData, js_bufferDataView, bufferDataView, js_bufferDataPtr,
         bufferDataPtr, js_bufferSubData, bufferSubData,
         js_bufferSubDataView, bufferSubDataView, js_checkFramebufferStatus,
-        checkFramebufferStatus, js_clear, clear, js_clearColor, clearColor,
-        js_clearDepth, clearDepth, js_clearStencil, clearStencil,
-        js_colorMask, colorMask, js_compileShader, compileShader,
-        js_compressedTexImage2D, compressedTexImage2D,
-        js_compressedTexSubImage2D, compressedTexSubImage2D,
-        js_copyTexImage2D, copyTexImage2D, js_copyTexSubImage2D,
-        copyTexSubImage2D, js_createBuffer, createBuffer,
-        js_createFramebuffer, createFramebuffer, js_createProgram,
-        createProgram, js_createRenderbuffer, createRenderbuffer,
-        js_createShader, createShader, js_createTexture, createTexture,
-        js_cullFace, cullFace, js_deleteBuffer, deleteBuffer,
-        js_deleteFramebuffer, deleteFramebuffer, js_deleteProgram,
-        deleteProgram, js_deleteRenderbuffer, deleteRenderbuffer,
-        js_deleteShader, deleteShader, js_deleteTexture, deleteTexture,
-        js_depthFunc, depthFunc, js_depthMask, depthMask, js_depthRange,
-        depthRange, js_detachShader, detachShader, js_disable, disable,
+        checkFramebufferStatus, checkFramebufferStatus_, js_clear, clear,
+        js_clearColor, clearColor, js_clearDepth, clearDepth,
+        js_clearStencil, clearStencil, js_colorMask, colorMask,
+        js_compileShader, compileShader, js_compressedTexImage2D,
+        compressedTexImage2D, js_compressedTexSubImage2D,
+        compressedTexSubImage2D, js_copyTexImage2D, copyTexImage2D,
+        js_copyTexSubImage2D, copyTexSubImage2D, js_createBuffer,
+        createBuffer, createBuffer_, createBufferUnchecked,
+        js_createFramebuffer, createFramebuffer, createFramebuffer_,
+        createFramebufferUnchecked, js_createProgram, createProgram,
+        createProgram_, createProgramUnchecked, js_createRenderbuffer,
+        createRenderbuffer, createRenderbuffer_,
+        createRenderbufferUnchecked, js_createShader, createShader,
+        createShader_, createShaderUnchecked, js_createTexture,
+        createTexture, createTexture_, createTextureUnchecked, js_cullFace,
+        cullFace, js_deleteBuffer, deleteBuffer, js_deleteFramebuffer,
+        deleteFramebuffer, js_deleteProgram, deleteProgram,
+        js_deleteRenderbuffer, deleteRenderbuffer, js_deleteShader,
+        deleteShader, js_deleteTexture, deleteTexture, js_depthFunc,
+        depthFunc, js_depthMask, depthMask, js_depthRange, depthRange,
+        js_detachShader, detachShader, js_disable, disable,
         js_disableVertexAttribArray, disableVertexAttribArray,
         js_drawArrays, drawArrays, js_drawElements, drawElements,
         js_enable, enable, js_enableVertexAttribArray,
@@ -33,36 +38,49 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         js_framebufferRenderbuffer, framebufferRenderbuffer,
         js_framebufferTexture2D, framebufferTexture2D, js_frontFace,
         frontFace, js_generateMipmap, generateMipmap, js_getActiveAttrib,
-        getActiveAttrib, js_getActiveUniform, getActiveUniform,
-        js_getAttachedShaders, getAttachedShaders, js_getAttribLocation,
-        getAttribLocation, js_getBufferParameter, getBufferParameter,
-        js_getContextAttributes, getContextAttributes, js_getError,
-        getError, js_getExtension, getExtension,
+        getActiveAttrib, getActiveAttrib_, getActiveAttribUnchecked,
+        js_getActiveUniform, getActiveUniform, getActiveUniform_,
+        getActiveUniformUnchecked, js_getAttachedShaders,
+        getAttachedShaders, js_getAttribLocation, getAttribLocation,
+        getAttribLocation_, js_getBufferParameter, getBufferParameter,
+        getBufferParameter_, js_getContextAttributes, getContextAttributes,
+        getContextAttributes_, getContextAttributesUnchecked, js_getError,
+        getError, getError_, js_getExtension, getExtension, getExtension_,
         js_getFramebufferAttachmentParameter,
-        getFramebufferAttachmentParameter, js_getParameter, getParameter,
-        js_getProgramParameter, getProgramParameter, js_getProgramInfoLog,
-        getProgramInfoLog, js_getRenderbufferParameter,
-        getRenderbufferParameter, js_getShaderParameter,
-        getShaderParameter, js_getShaderInfoLog, getShaderInfoLog,
+        getFramebufferAttachmentParameter,
+        getFramebufferAttachmentParameter_, js_getParameter, getParameter,
+        getParameter_, js_getProgramParameter, getProgramParameter,
+        getProgramParameter_, js_getProgramInfoLog, getProgramInfoLog,
+        getProgramInfoLog_, getProgramInfoLogUnchecked,
+        js_getRenderbufferParameter, getRenderbufferParameter,
+        getRenderbufferParameter_, js_getShaderParameter,
+        getShaderParameter, getShaderParameter_, js_getShaderInfoLog,
+        getShaderInfoLog, getShaderInfoLog_, getShaderInfoLogUnchecked,
         js_getShaderPrecisionFormat, getShaderPrecisionFormat,
-        js_getShaderSource, getShaderSource, js_getSupportedExtensions,
-        getSupportedExtensions, js_getTexParameter, getTexParameter,
-        js_getUniform, getUniform, js_getUniformLocation,
-        getUniformLocation, js_getVertexAttrib, getVertexAttrib,
-        js_getVertexAttribOffset, getVertexAttribOffset, js_hint, hint,
-        js_isBuffer, isBuffer, js_isContextLost, isContextLost,
-        js_isEnabled, isEnabled, js_isFramebuffer, isFramebuffer,
-        js_isProgram, isProgram, js_isRenderbuffer, isRenderbuffer,
-        js_isShader, isShader, js_isTexture, isTexture, js_lineWidth,
-        lineWidth, js_linkProgram, linkProgram, js_pixelStorei,
-        pixelStorei, js_polygonOffset, polygonOffset, js_readPixels,
-        readPixels, js_releaseShaderCompiler, releaseShaderCompiler,
-        js_renderbufferStorage, renderbufferStorage, js_sampleCoverage,
-        sampleCoverage, js_scissor, scissor, js_shaderSource, shaderSource,
-        js_stencilFunc, stencilFunc, js_stencilFuncSeparate,
-        stencilFuncSeparate, js_stencilMask, stencilMask,
-        js_stencilMaskSeparate, stencilMaskSeparate, js_stencilOp,
-        stencilOp, js_stencilOpSeparate, stencilOpSeparate,
+        getShaderPrecisionFormat_, getShaderPrecisionFormatUnchecked,
+        js_getShaderSource, getShaderSource, getShaderSource_,
+        getShaderSourceUnchecked, js_getSupportedExtensions,
+        getSupportedExtensions, getSupportedExtensions_,
+        js_getTexParameter, getTexParameter, getTexParameter_,
+        js_getUniform, getUniform, getUniform_, js_getUniformLocation,
+        getUniformLocation, getUniformLocation_,
+        getUniformLocationUnchecked, js_getVertexAttrib, getVertexAttrib,
+        getVertexAttrib_, js_getVertexAttribOffset, getVertexAttribOffset,
+        getVertexAttribOffset_, js_hint, hint, js_isBuffer, isBuffer,
+        isBuffer_, js_isContextLost, isContextLost, isContextLost_,
+        js_isEnabled, isEnabled, isEnabled_, js_isFramebuffer,
+        isFramebuffer, isFramebuffer_, js_isProgram, isProgram, isProgram_,
+        js_isRenderbuffer, isRenderbuffer, isRenderbuffer_, js_isShader,
+        isShader, isShader_, js_isTexture, isTexture, isTexture_,
+        js_lineWidth, lineWidth, js_linkProgram, linkProgram,
+        js_pixelStorei, pixelStorei, js_polygonOffset, polygonOffset,
+        js_readPixels, readPixels, js_releaseShaderCompiler,
+        releaseShaderCompiler, js_renderbufferStorage, renderbufferStorage,
+        js_sampleCoverage, sampleCoverage, js_scissor, scissor,
+        js_shaderSource, shaderSource, js_stencilFunc, stencilFunc,
+        js_stencilFuncSeparate, stencilFuncSeparate, js_stencilMask,
+        stencilMask, js_stencilMaskSeparate, stencilMaskSeparate,
+        js_stencilOp, stencilOp, js_stencilOpSeparate, stencilOpSeparate,
         js_texParameterf, texParameterf, js_texParameteri, texParameteri,
         js_texImage2DView, texImage2DView, js_texImage2DData,
         texImage2DData, js_texImage2D, texImage2D, js_texImage2DCanvas,
@@ -235,9 +253,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -498,6 +518,16 @@ checkFramebufferStatus self target
   = liftIO
       (js_checkFramebufferStatus (toWebGLRenderingContextBase self)
          target)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.checkFramebufferStatus Mozilla WebGLRenderingContextBase.checkFramebufferStatus documentation> 
+checkFramebufferStatus_ ::
+                        (MonadIO m, IsWebGLRenderingContextBase self) =>
+                          self -> GLenum -> m ()
+checkFramebufferStatus_ self target
+  = liftIO
+      (void
+         (js_checkFramebufferStatus (toWebGLRenderingContextBase self)
+            target))
  
 foreign import javascript unsafe "$1[\"clear\"]($2)" js_clear ::
         WebGLRenderingContextBase -> GLbitfield -> IO ()
@@ -695,6 +725,22 @@ createBuffer self
   = liftIO
       (nullableToMaybe <$>
          (js_createBuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createBuffer Mozilla WebGLRenderingContextBase.createBuffer documentation> 
+createBuffer_ ::
+              (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+createBuffer_ self
+  = liftIO
+      (void (js_createBuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createBuffer Mozilla WebGLRenderingContextBase.createBuffer documentation> 
+createBufferUnchecked ::
+                      (MonadIO m, IsWebGLRenderingContextBase self) =>
+                        self -> m WebGLBuffer
+createBufferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createBuffer (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"createFramebuffer\"]()"
         js_createFramebuffer ::
@@ -707,6 +753,22 @@ createFramebuffer ::
 createFramebuffer self
   = liftIO
       (nullableToMaybe <$>
+         (js_createFramebuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createFramebuffer Mozilla WebGLRenderingContextBase.createFramebuffer documentation> 
+createFramebuffer_ ::
+                   (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+createFramebuffer_ self
+  = liftIO
+      (void (js_createFramebuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createFramebuffer Mozilla WebGLRenderingContextBase.createFramebuffer documentation> 
+createFramebufferUnchecked ::
+                           (MonadIO m, IsWebGLRenderingContextBase self) =>
+                             self -> m WebGLFramebuffer
+createFramebufferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createFramebuffer (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"createProgram\"]()"
@@ -721,6 +783,22 @@ createProgram self
   = liftIO
       (nullableToMaybe <$>
          (js_createProgram (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createProgram Mozilla WebGLRenderingContextBase.createProgram documentation> 
+createProgram_ ::
+               (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+createProgram_ self
+  = liftIO
+      (void (js_createProgram (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createProgram Mozilla WebGLRenderingContextBase.createProgram documentation> 
+createProgramUnchecked ::
+                       (MonadIO m, IsWebGLRenderingContextBase self) =>
+                         self -> m WebGLProgram
+createProgramUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createProgram (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"createRenderbuffer\"]()"
         js_createRenderbuffer ::
@@ -733,6 +811,22 @@ createRenderbuffer ::
 createRenderbuffer self
   = liftIO
       (nullableToMaybe <$>
+         (js_createRenderbuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createRenderbuffer Mozilla WebGLRenderingContextBase.createRenderbuffer documentation> 
+createRenderbuffer_ ::
+                    (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+createRenderbuffer_ self
+  = liftIO
+      (void (js_createRenderbuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createRenderbuffer Mozilla WebGLRenderingContextBase.createRenderbuffer documentation> 
+createRenderbufferUnchecked ::
+                            (MonadIO m, IsWebGLRenderingContextBase self) =>
+                              self -> m WebGLRenderbuffer
+createRenderbufferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createRenderbuffer (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"createShader\"]($2)"
@@ -747,6 +841,23 @@ createShader self type'
   = liftIO
       (nullableToMaybe <$>
          (js_createShader (toWebGLRenderingContextBase self) type'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createShader Mozilla WebGLRenderingContextBase.createShader documentation> 
+createShader_ ::
+              (MonadIO m, IsWebGLRenderingContextBase self) =>
+                self -> GLenum -> m ()
+createShader_ self type'
+  = liftIO
+      (void (js_createShader (toWebGLRenderingContextBase self) type'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createShader Mozilla WebGLRenderingContextBase.createShader documentation> 
+createShaderUnchecked ::
+                      (MonadIO m, IsWebGLRenderingContextBase self) =>
+                        self -> GLenum -> m WebGLShader
+createShaderUnchecked self type'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createShader (toWebGLRenderingContextBase self) type'))
  
 foreign import javascript unsafe "$1[\"createTexture\"]()"
         js_createTexture ::
@@ -759,6 +870,22 @@ createTexture ::
 createTexture self
   = liftIO
       (nullableToMaybe <$>
+         (js_createTexture (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createTexture Mozilla WebGLRenderingContextBase.createTexture documentation> 
+createTexture_ ::
+               (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+createTexture_ self
+  = liftIO
+      (void (js_createTexture (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createTexture Mozilla WebGLRenderingContextBase.createTexture documentation> 
+createTextureUnchecked ::
+                       (MonadIO m, IsWebGLRenderingContextBase self) =>
+                         self -> m WebGLTexture
+createTextureUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createTexture (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"cullFace\"]($2)" js_cullFace
@@ -1061,6 +1188,28 @@ getActiveAttrib self program index
          (js_getActiveAttrib (toWebGLRenderingContextBase self)
             (maybeToNullable program)
             index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveAttrib Mozilla WebGLRenderingContextBase.getActiveAttrib documentation> 
+getActiveAttrib_ ::
+                 (MonadIO m, IsWebGLRenderingContextBase self) =>
+                   self -> Maybe WebGLProgram -> GLuint -> m ()
+getActiveAttrib_ self program index
+  = liftIO
+      (void
+         (js_getActiveAttrib (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveAttrib Mozilla WebGLRenderingContextBase.getActiveAttrib documentation> 
+getActiveAttribUnchecked ::
+                         (MonadIO m, IsWebGLRenderingContextBase self) =>
+                           self -> Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
+getActiveAttribUnchecked self program index
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getActiveAttrib (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            index))
  
 foreign import javascript unsafe "$1[\"getActiveUniform\"]($2, $3)"
         js_getActiveUniform ::
@@ -1074,6 +1223,28 @@ getActiveUniform ::
 getActiveUniform self program index
   = liftIO
       (nullableToMaybe <$>
+         (js_getActiveUniform (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveUniform Mozilla WebGLRenderingContextBase.getActiveUniform documentation> 
+getActiveUniform_ ::
+                  (MonadIO m, IsWebGLRenderingContextBase self) =>
+                    self -> Maybe WebGLProgram -> GLuint -> m ()
+getActiveUniform_ self program index
+  = liftIO
+      (void
+         (js_getActiveUniform (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveUniform Mozilla WebGLRenderingContextBase.getActiveUniform documentation> 
+getActiveUniformUnchecked ::
+                          (MonadIO m, IsWebGLRenderingContextBase self) =>
+                            self -> Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
+getActiveUniformUnchecked self program index
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getActiveUniform (toWebGLRenderingContextBase self)
             (maybeToNullable program)
             index))
@@ -1105,6 +1276,17 @@ getAttribLocation self program name
       (js_getAttribLocation (toWebGLRenderingContextBase self)
          (maybeToNullable program)
          (toJSString name))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getAttribLocation Mozilla WebGLRenderingContextBase.getAttribLocation documentation> 
+getAttribLocation_ ::
+                   (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name) =>
+                     self -> Maybe WebGLProgram -> name -> m ()
+getAttribLocation_ self program name
+  = liftIO
+      (void
+         (js_getAttribLocation (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            (toJSString name)))
  
 foreign import javascript unsafe
         "$1[\"getBufferParameter\"]($2, $3)" js_getBufferParameter ::
@@ -1118,6 +1300,16 @@ getBufferParameter self target pname
   = liftIO
       (js_getBufferParameter (toWebGLRenderingContextBase self) target
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getBufferParameter Mozilla WebGLRenderingContextBase.getBufferParameter documentation> 
+getBufferParameter_ ::
+                    (MonadIO m, IsWebGLRenderingContextBase self) =>
+                      self -> GLenum -> GLenum -> m ()
+getBufferParameter_ self target pname
+  = liftIO
+      (void
+         (js_getBufferParameter (toWebGLRenderingContextBase self) target
+            pname))
  
 foreign import javascript unsafe "$1[\"getContextAttributes\"]()"
         js_getContextAttributes ::
@@ -1131,6 +1323,22 @@ getContextAttributes self
   = liftIO
       (nullableToMaybe <$>
          (js_getContextAttributes (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getContextAttributes Mozilla WebGLRenderingContextBase.getContextAttributes documentation> 
+getContextAttributes_ ::
+                      (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+getContextAttributes_ self
+  = liftIO
+      (void (js_getContextAttributes (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getContextAttributes Mozilla WebGLRenderingContextBase.getContextAttributes documentation> 
+getContextAttributesUnchecked ::
+                              (MonadIO m, IsWebGLRenderingContextBase self) =>
+                                self -> m WebGLContextAttributes
+getContextAttributesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getContextAttributes (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"getError\"]()" js_getError
         :: WebGLRenderingContextBase -> IO GLenum
@@ -1140,6 +1348,12 @@ getError ::
          (MonadIO m, IsWebGLRenderingContextBase self) => self -> m GLenum
 getError self
   = liftIO (js_getError (toWebGLRenderingContextBase self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getError Mozilla WebGLRenderingContextBase.getError documentation> 
+getError_ ::
+          (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+getError_ self
+  = liftIO (void (js_getError (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"getExtension\"]($2)"
         js_getExtension ::
@@ -1153,6 +1367,16 @@ getExtension self name
   = liftIO
       (js_getExtension (toWebGLRenderingContextBase self)
          (toJSString name))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getExtension Mozilla WebGLRenderingContextBase.getExtension documentation> 
+getExtension_ ::
+              (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name) =>
+                self -> name -> m ()
+getExtension_ self name
+  = liftIO
+      (void
+         (js_getExtension (toWebGLRenderingContextBase self)
+            (toJSString name)))
  
 foreign import javascript unsafe
         "$1[\"getFramebufferAttachmentParameter\"]($2,\n$3, $4)"
@@ -1170,6 +1394,19 @@ getFramebufferAttachmentParameter self target attachment pname
          target
          attachment
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getFramebufferAttachmentParameter Mozilla WebGLRenderingContextBase.getFramebufferAttachmentParameter documentation> 
+getFramebufferAttachmentParameter_ ::
+                                   (MonadIO m, IsWebGLRenderingContextBase self) =>
+                                     self -> GLenum -> GLenum -> GLenum -> m ()
+getFramebufferAttachmentParameter_ self target attachment pname
+  = liftIO
+      (void
+         (js_getFramebufferAttachmentParameter
+            (toWebGLRenderingContextBase self)
+            target
+            attachment
+            pname))
  
 foreign import javascript unsafe "$1[\"getParameter\"]($2)"
         js_getParameter :: WebGLRenderingContextBase -> GLenum -> IO JSVal
@@ -1180,6 +1417,14 @@ getParameter ::
                self -> GLenum -> m JSVal
 getParameter self pname
   = liftIO (js_getParameter (toWebGLRenderingContextBase self) pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getParameter Mozilla WebGLRenderingContextBase.getParameter documentation> 
+getParameter_ ::
+              (MonadIO m, IsWebGLRenderingContextBase self) =>
+                self -> GLenum -> m ()
+getParameter_ self pname
+  = liftIO
+      (void (js_getParameter (toWebGLRenderingContextBase self) pname))
  
 foreign import javascript unsafe
         "$1[\"getProgramParameter\"]($2,\n$3)" js_getProgramParameter ::
@@ -1195,6 +1440,17 @@ getProgramParameter self program pname
       (js_getProgramParameter (toWebGLRenderingContextBase self)
          (maybeToNullable program)
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramParameter Mozilla WebGLRenderingContextBase.getProgramParameter documentation> 
+getProgramParameter_ ::
+                     (MonadIO m, IsWebGLRenderingContextBase self) =>
+                       self -> Maybe WebGLProgram -> GLenum -> m ()
+getProgramParameter_ self program pname
+  = liftIO
+      (void
+         (js_getProgramParameter (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            pname))
  
 foreign import javascript unsafe "$1[\"getProgramInfoLog\"]($2)"
         js_getProgramInfoLog ::
@@ -1209,6 +1465,27 @@ getProgramInfoLog ::
 getProgramInfoLog self program
   = liftIO
       (fromMaybeJSString <$>
+         (js_getProgramInfoLog (toWebGLRenderingContextBase self)
+            (maybeToNullable program)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramInfoLog Mozilla WebGLRenderingContextBase.getProgramInfoLog documentation> 
+getProgramInfoLog_ ::
+                   (MonadIO m, IsWebGLRenderingContextBase self) =>
+                     self -> Maybe WebGLProgram -> m ()
+getProgramInfoLog_ self program
+  = liftIO
+      (void
+         (js_getProgramInfoLog (toWebGLRenderingContextBase self)
+            (maybeToNullable program)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramInfoLog Mozilla WebGLRenderingContextBase.getProgramInfoLog documentation> 
+getProgramInfoLogUnchecked ::
+                           (MonadIO m, IsWebGLRenderingContextBase self,
+                            FromJSString result) =>
+                             self -> Maybe WebGLProgram -> m result
+getProgramInfoLogUnchecked self program
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_getProgramInfoLog (toWebGLRenderingContextBase self)
             (maybeToNullable program)))
  
@@ -1226,6 +1503,17 @@ getRenderbufferParameter self target pname
       (js_getRenderbufferParameter (toWebGLRenderingContextBase self)
          target
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getRenderbufferParameter Mozilla WebGLRenderingContextBase.getRenderbufferParameter documentation> 
+getRenderbufferParameter_ ::
+                          (MonadIO m, IsWebGLRenderingContextBase self) =>
+                            self -> GLenum -> GLenum -> m ()
+getRenderbufferParameter_ self target pname
+  = liftIO
+      (void
+         (js_getRenderbufferParameter (toWebGLRenderingContextBase self)
+            target
+            pname))
  
 foreign import javascript unsafe
         "$1[\"getShaderParameter\"]($2, $3)" js_getShaderParameter ::
@@ -1241,6 +1529,17 @@ getShaderParameter self shader pname
       (js_getShaderParameter (toWebGLRenderingContextBase self)
          (maybeToNullable shader)
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderParameter Mozilla WebGLRenderingContextBase.getShaderParameter documentation> 
+getShaderParameter_ ::
+                    (MonadIO m, IsWebGLRenderingContextBase self) =>
+                      self -> Maybe WebGLShader -> GLenum -> m ()
+getShaderParameter_ self shader pname
+  = liftIO
+      (void
+         (js_getShaderParameter (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)
+            pname))
  
 foreign import javascript unsafe "$1[\"getShaderInfoLog\"]($2)"
         js_getShaderInfoLog ::
@@ -1255,6 +1554,27 @@ getShaderInfoLog ::
 getShaderInfoLog self shader
   = liftIO
       (fromMaybeJSString <$>
+         (js_getShaderInfoLog (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderInfoLog Mozilla WebGLRenderingContextBase.getShaderInfoLog documentation> 
+getShaderInfoLog_ ::
+                  (MonadIO m, IsWebGLRenderingContextBase self) =>
+                    self -> Maybe WebGLShader -> m ()
+getShaderInfoLog_ self shader
+  = liftIO
+      (void
+         (js_getShaderInfoLog (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderInfoLog Mozilla WebGLRenderingContextBase.getShaderInfoLog documentation> 
+getShaderInfoLogUnchecked ::
+                          (MonadIO m, IsWebGLRenderingContextBase self,
+                           FromJSString result) =>
+                            self -> Maybe WebGLShader -> m result
+getShaderInfoLogUnchecked self shader
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_getShaderInfoLog (toWebGLRenderingContextBase self)
             (maybeToNullable shader)))
  
@@ -1274,6 +1594,28 @@ getShaderPrecisionFormat self shadertype precisiontype
          (js_getShaderPrecisionFormat (toWebGLRenderingContextBase self)
             shadertype
             precisiontype))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderPrecisionFormat Mozilla WebGLRenderingContextBase.getShaderPrecisionFormat documentation> 
+getShaderPrecisionFormat_ ::
+                          (MonadIO m, IsWebGLRenderingContextBase self) =>
+                            self -> GLenum -> GLenum -> m ()
+getShaderPrecisionFormat_ self shadertype precisiontype
+  = liftIO
+      (void
+         (js_getShaderPrecisionFormat (toWebGLRenderingContextBase self)
+            shadertype
+            precisiontype))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderPrecisionFormat Mozilla WebGLRenderingContextBase.getShaderPrecisionFormat documentation> 
+getShaderPrecisionFormatUnchecked ::
+                                  (MonadIO m, IsWebGLRenderingContextBase self) =>
+                                    self -> GLenum -> GLenum -> m WebGLShaderPrecisionFormat
+getShaderPrecisionFormatUnchecked self shadertype precisiontype
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getShaderPrecisionFormat (toWebGLRenderingContextBase self)
+            shadertype
+            precisiontype))
  
 foreign import javascript unsafe "$1[\"getShaderSource\"]($2)"
         js_getShaderSource ::
@@ -1290,6 +1632,27 @@ getShaderSource self shader
       (fromMaybeJSString <$>
          (js_getShaderSource (toWebGLRenderingContextBase self)
             (maybeToNullable shader)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderSource Mozilla WebGLRenderingContextBase.getShaderSource documentation> 
+getShaderSource_ ::
+                 (MonadIO m, IsWebGLRenderingContextBase self) =>
+                   self -> Maybe WebGLShader -> m ()
+getShaderSource_ self shader
+  = liftIO
+      (void
+         (js_getShaderSource (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderSource Mozilla WebGLRenderingContextBase.getShaderSource documentation> 
+getShaderSourceUnchecked ::
+                         (MonadIO m, IsWebGLRenderingContextBase self,
+                          FromJSString result) =>
+                           self -> Maybe WebGLShader -> m result
+getShaderSourceUnchecked self shader
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getShaderSource (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)))
  
 foreign import javascript unsafe "$1[\"getSupportedExtensions\"]()"
         js_getSupportedExtensions :: WebGLRenderingContextBase -> IO JSVal
@@ -1303,6 +1666,14 @@ getSupportedExtensions self
   = liftIO
       ((js_getSupportedExtensions (toWebGLRenderingContextBase self)) >>=
          fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getSupportedExtensions Mozilla WebGLRenderingContextBase.getSupportedExtensions documentation> 
+getSupportedExtensions_ ::
+                        (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+getSupportedExtensions_ self
+  = liftIO
+      (void
+         (js_getSupportedExtensions (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"getTexParameter\"]($2, $3)"
         js_getTexParameter ::
@@ -1316,6 +1687,16 @@ getTexParameter self target pname
   = liftIO
       (js_getTexParameter (toWebGLRenderingContextBase self) target
          pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getTexParameter Mozilla WebGLRenderingContextBase.getTexParameter documentation> 
+getTexParameter_ ::
+                 (MonadIO m, IsWebGLRenderingContextBase self) =>
+                   self -> GLenum -> GLenum -> m ()
+getTexParameter_ self target pname
+  = liftIO
+      (void
+         (js_getTexParameter (toWebGLRenderingContextBase self) target
+            pname))
  
 foreign import javascript unsafe "$1[\"getUniform\"]($2, $3)"
         js_getUniform ::
@@ -1331,6 +1712,17 @@ getUniform self program location
       (js_getUniform (toWebGLRenderingContextBase self)
          (maybeToNullable program)
          (maybeToNullable location))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniform Mozilla WebGLRenderingContextBase.getUniform documentation> 
+getUniform_ ::
+            (MonadIO m, IsWebGLRenderingContextBase self) =>
+              self -> Maybe WebGLProgram -> Maybe WebGLUniformLocation -> m ()
+getUniform_ self program location
+  = liftIO
+      (void
+         (js_getUniform (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            (maybeToNullable location)))
  
 foreign import javascript unsafe
         "$1[\"getUniformLocation\"]($2, $3)" js_getUniformLocation ::
@@ -1349,6 +1741,28 @@ getUniformLocation self program name
          (js_getUniformLocation (toWebGLRenderingContextBase self)
             (maybeToNullable program)
             (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniformLocation Mozilla WebGLRenderingContextBase.getUniformLocation documentation> 
+getUniformLocation_ ::
+                    (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name) =>
+                      self -> Maybe WebGLProgram -> name -> m ()
+getUniformLocation_ self program name
+  = liftIO
+      (void
+         (js_getUniformLocation (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniformLocation Mozilla WebGLRenderingContextBase.getUniformLocation documentation> 
+getUniformLocationUnchecked ::
+                            (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name) =>
+                              self -> Maybe WebGLProgram -> name -> m WebGLUniformLocation
+getUniformLocationUnchecked self program name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getUniformLocation (toWebGLRenderingContextBase self)
+            (maybeToNullable program)
+            (toJSString name)))
  
 foreign import javascript unsafe "$1[\"getVertexAttrib\"]($2, $3)"
         js_getVertexAttrib ::
@@ -1361,6 +1775,16 @@ getVertexAttrib ::
 getVertexAttrib self index pname
   = liftIO
       (js_getVertexAttrib (toWebGLRenderingContextBase self) index pname)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getVertexAttrib Mozilla WebGLRenderingContextBase.getVertexAttrib documentation> 
+getVertexAttrib_ ::
+                 (MonadIO m, IsWebGLRenderingContextBase self) =>
+                   self -> GLuint -> GLenum -> m ()
+getVertexAttrib_ self index pname
+  = liftIO
+      (void
+         (js_getVertexAttrib (toWebGLRenderingContextBase self) index
+            pname))
  
 foreign import javascript unsafe
         "$1[\"getVertexAttribOffset\"]($2,\n$3)" js_getVertexAttribOffset
@@ -1373,6 +1797,16 @@ getVertexAttribOffset ::
 getVertexAttribOffset self index pname
   = liftIO
       (round <$>
+         (js_getVertexAttribOffset (toWebGLRenderingContextBase self) index
+            pname))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getVertexAttribOffset Mozilla WebGLRenderingContextBase.getVertexAttribOffset documentation> 
+getVertexAttribOffset_ ::
+                       (MonadIO m, IsWebGLRenderingContextBase self) =>
+                         self -> GLuint -> GLenum -> m ()
+getVertexAttribOffset_ self index pname
+  = liftIO
+      (void
          (js_getVertexAttribOffset (toWebGLRenderingContextBase self) index
             pname))
  
@@ -1398,6 +1832,16 @@ isBuffer self buffer
   = liftIO
       (js_isBuffer (toWebGLRenderingContextBase self)
          (maybeToNullable buffer))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isBuffer Mozilla WebGLRenderingContextBase.isBuffer documentation> 
+isBuffer_ ::
+          (MonadIO m, IsWebGLRenderingContextBase self) =>
+            self -> Maybe WebGLBuffer -> m ()
+isBuffer_ self buffer
+  = liftIO
+      (void
+         (js_isBuffer (toWebGLRenderingContextBase self)
+            (maybeToNullable buffer)))
  
 foreign import javascript unsafe "$1[\"isContextLost\"]()"
         js_isContextLost :: WebGLRenderingContextBase -> IO GLboolean
@@ -1408,6 +1852,13 @@ isContextLost ::
                 self -> m GLboolean
 isContextLost self
   = liftIO (js_isContextLost (toWebGLRenderingContextBase self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isContextLost Mozilla WebGLRenderingContextBase.isContextLost documentation> 
+isContextLost_ ::
+               (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
+isContextLost_ self
+  = liftIO
+      (void (js_isContextLost (toWebGLRenderingContextBase self)))
  
 foreign import javascript unsafe "$1[\"isEnabled\"]($2)"
         js_isEnabled :: WebGLRenderingContextBase -> GLenum -> IO GLboolean
@@ -1418,6 +1869,14 @@ isEnabled ::
             self -> GLenum -> m GLboolean
 isEnabled self cap
   = liftIO (js_isEnabled (toWebGLRenderingContextBase self) cap)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isEnabled Mozilla WebGLRenderingContextBase.isEnabled documentation> 
+isEnabled_ ::
+           (MonadIO m, IsWebGLRenderingContextBase self) =>
+             self -> GLenum -> m ()
+isEnabled_ self cap
+  = liftIO
+      (void (js_isEnabled (toWebGLRenderingContextBase self) cap))
  
 foreign import javascript unsafe "$1[\"isFramebuffer\"]($2)"
         js_isFramebuffer ::
@@ -1432,6 +1891,16 @@ isFramebuffer self framebuffer
   = liftIO
       (js_isFramebuffer (toWebGLRenderingContextBase self)
          (maybeToNullable framebuffer))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isFramebuffer Mozilla WebGLRenderingContextBase.isFramebuffer documentation> 
+isFramebuffer_ ::
+               (MonadIO m, IsWebGLRenderingContextBase self) =>
+                 self -> Maybe WebGLFramebuffer -> m ()
+isFramebuffer_ self framebuffer
+  = liftIO
+      (void
+         (js_isFramebuffer (toWebGLRenderingContextBase self)
+            (maybeToNullable framebuffer)))
  
 foreign import javascript unsafe "$1[\"isProgram\"]($2)"
         js_isProgram ::
@@ -1445,6 +1914,16 @@ isProgram self program
   = liftIO
       (js_isProgram (toWebGLRenderingContextBase self)
          (maybeToNullable program))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isProgram Mozilla WebGLRenderingContextBase.isProgram documentation> 
+isProgram_ ::
+           (MonadIO m, IsWebGLRenderingContextBase self) =>
+             self -> Maybe WebGLProgram -> m ()
+isProgram_ self program
+  = liftIO
+      (void
+         (js_isProgram (toWebGLRenderingContextBase self)
+            (maybeToNullable program)))
  
 foreign import javascript unsafe "$1[\"isRenderbuffer\"]($2)"
         js_isRenderbuffer ::
@@ -1459,6 +1938,16 @@ isRenderbuffer self renderbuffer
   = liftIO
       (js_isRenderbuffer (toWebGLRenderingContextBase self)
          (maybeToNullable renderbuffer))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isRenderbuffer Mozilla WebGLRenderingContextBase.isRenderbuffer documentation> 
+isRenderbuffer_ ::
+                (MonadIO m, IsWebGLRenderingContextBase self) =>
+                  self -> Maybe WebGLRenderbuffer -> m ()
+isRenderbuffer_ self renderbuffer
+  = liftIO
+      (void
+         (js_isRenderbuffer (toWebGLRenderingContextBase self)
+            (maybeToNullable renderbuffer)))
  
 foreign import javascript unsafe "$1[\"isShader\"]($2)" js_isShader
         ::
@@ -1472,6 +1961,16 @@ isShader self shader
   = liftIO
       (js_isShader (toWebGLRenderingContextBase self)
          (maybeToNullable shader))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isShader Mozilla WebGLRenderingContextBase.isShader documentation> 
+isShader_ ::
+          (MonadIO m, IsWebGLRenderingContextBase self) =>
+            self -> Maybe WebGLShader -> m ()
+isShader_ self shader
+  = liftIO
+      (void
+         (js_isShader (toWebGLRenderingContextBase self)
+            (maybeToNullable shader)))
  
 foreign import javascript unsafe "$1[\"isTexture\"]($2)"
         js_isTexture ::
@@ -1485,6 +1984,16 @@ isTexture self texture
   = liftIO
       (js_isTexture (toWebGLRenderingContextBase self)
          (maybeToNullable texture))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.isTexture Mozilla WebGLRenderingContextBase.isTexture documentation> 
+isTexture_ ::
+           (MonadIO m, IsWebGLRenderingContextBase self) =>
+             self -> Maybe WebGLTexture -> m ()
+isTexture_ self texture
+  = liftIO
+      (void
+         (js_isTexture (toWebGLRenderingContextBase self)
+            (maybeToNullable texture)))
  
 foreign import javascript unsafe "$1[\"lineWidth\"]($2)"
         js_lineWidth :: WebGLRenderingContextBase -> GLfloat -> IO ()

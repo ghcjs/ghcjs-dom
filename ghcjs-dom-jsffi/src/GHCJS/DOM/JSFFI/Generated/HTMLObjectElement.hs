@@ -1,23 +1,25 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
-       (js_checkValidity, checkValidity, js_setCustomValidity,
-        setCustomValidity, js_getSVGDocument, getSVGDocument, js_getForm,
-        getForm, js_setCode, setCode, js_getCode, getCode, js_setAlign,
-        setAlign, js_getAlign, getAlign, js_setArchive, setArchive,
-        js_getArchive, getArchive, js_setBorder, setBorder, js_getBorder,
-        getBorder, js_setCodeBase, setCodeBase, js_getCodeBase,
-        getCodeBase, js_setCodeType, setCodeType, js_getCodeType,
-        getCodeType, js_setData, setData, js_getData, getData,
-        js_setDeclare, setDeclare, js_getDeclare, getDeclare, js_setHeight,
-        setHeight, js_getHeight, getHeight, js_setHspace, setHspace,
-        js_getHspace, getHspace, js_setName, setName, js_getName, getName,
-        js_setStandby, setStandby, js_getStandby, getStandby, js_setType,
-        setType, js_getType, getType, js_setUseMap, setUseMap,
-        js_getUseMap, getUseMap, js_setVspace, setVspace, js_getVspace,
-        getVspace, js_setWidth, setWidth, js_getWidth, getWidth,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
-        js_getValidationMessage, getValidationMessage,
-        js_getContentDocument, getContentDocument, HTMLObjectElement,
+       (js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_getSVGDocument,
+        getSVGDocument, getSVGDocument_, getSVGDocumentUnchecked,
+        js_getForm, getForm, getFormUnchecked, js_setCode, setCode,
+        js_getCode, getCode, js_setAlign, setAlign, js_getAlign, getAlign,
+        js_setArchive, setArchive, js_getArchive, getArchive, js_setBorder,
+        setBorder, js_getBorder, getBorder, js_setCodeBase, setCodeBase,
+        js_getCodeBase, getCodeBase, js_setCodeType, setCodeType,
+        js_getCodeType, getCodeType, js_setData, setData, js_getData,
+        getData, js_setDeclare, setDeclare, js_getDeclare, getDeclare,
+        js_setHeight, setHeight, js_getHeight, getHeight, js_setHspace,
+        setHspace, js_getHspace, getHspace, js_setName, setName,
+        js_getName, getName, js_setStandby, setStandby, js_getStandby,
+        getStandby, js_setType, setType, js_getType, getType, js_setUseMap,
+        setUseMap, js_getUseMap, getUseMap, js_setVspace, setVspace,
+        js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
+        getWidth, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getContentDocument, getContentDocument,
+        getContentDocumentUnchecked, HTMLObjectElement,
         castToHTMLObjectElement, gTypeHTMLObjectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -27,9 +29,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -42,6 +46,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.checkValidity Mozilla HTMLObjectElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLObjectElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.checkValidity Mozilla HTMLObjectElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLObjectElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -62,6 +70,17 @@ getSVGDocument ::
                (MonadIO m) => HTMLObjectElement -> m (Maybe SVGDocument)
 getSVGDocument self
   = liftIO (nullableToMaybe <$> (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 
+getSVGDocument_ :: (MonadIO m) => HTMLObjectElement -> m ()
+getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 
+getSVGDocumentUnchecked ::
+                        (MonadIO m) => HTMLObjectElement -> m SVGDocument
+getSVGDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSVGDocument (self)))
  
 foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         HTMLObjectElement -> IO (Nullable HTMLFormElement)
@@ -70,6 +89,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLObjectElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.form Mozilla HTMLObjectElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLObjectElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"code\"] = $2;" js_setCode ::
         HTMLObjectElement -> JSString -> IO ()
@@ -342,6 +367,12 @@ getValidity ::
             (MonadIO m) => HTMLObjectElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validity Mozilla HTMLObjectElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLObjectElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLObjectElement -> IO JSString
@@ -361,3 +392,10 @@ getContentDocument ::
                    (MonadIO m) => HTMLObjectElement -> m (Maybe Document)
 getContentDocument self
   = liftIO (nullableToMaybe <$> (js_getContentDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.contentDocument Mozilla HTMLObjectElement.contentDocument documentation> 
+getContentDocumentUnchecked ::
+                            (MonadIO m) => HTMLObjectElement -> m Document
+getContentDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContentDocument (self)))

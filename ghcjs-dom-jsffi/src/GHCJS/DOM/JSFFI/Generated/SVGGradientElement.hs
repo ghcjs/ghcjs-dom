@@ -2,11 +2,12 @@
 module GHCJS.DOM.JSFFI.Generated.SVGGradientElement
        (pattern SVG_SPREADMETHOD_UNKNOWN, pattern SVG_SPREADMETHOD_PAD,
         pattern SVG_SPREADMETHOD_REFLECT, pattern SVG_SPREADMETHOD_REPEAT,
-        js_getGradientUnits, getGradientUnits, js_getGradientTransform,
-        getGradientTransform, js_getSpreadMethod, getSpreadMethod,
-        SVGGradientElement, castToSVGGradientElement,
-        gTypeSVGGradientElement, IsSVGGradientElement,
-        toSVGGradientElement)
+        js_getGradientUnits, getGradientUnits, getGradientUnitsUnchecked,
+        js_getGradientTransform, getGradientTransform,
+        getGradientTransformUnchecked, js_getSpreadMethod, getSpreadMethod,
+        getSpreadMethodUnchecked, SVGGradientElement,
+        castToSVGGradientElement, gTypeSVGGradientElement,
+        IsSVGGradientElement, toSVGGradientElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +42,15 @@ getGradientUnits self
   = liftIO
       (nullableToMaybe <$>
          (js_getGradientUnits (toSVGGradientElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientUnits Mozilla SVGGradientElement.gradientUnits documentation> 
+getGradientUnitsUnchecked ::
+                          (MonadIO m, IsSVGGradientElement self) =>
+                            self -> m SVGAnimatedEnumeration
+getGradientUnitsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getGradientUnits (toSVGGradientElement self)))
  
 foreign import javascript unsafe "$1[\"gradientTransform\"]"
         js_getGradientTransform ::
@@ -52,6 +64,15 @@ getGradientTransform self
   = liftIO
       (nullableToMaybe <$>
          (js_getGradientTransform (toSVGGradientElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientTransform Mozilla SVGGradientElement.gradientTransform documentation> 
+getGradientTransformUnchecked ::
+                              (MonadIO m, IsSVGGradientElement self) =>
+                                self -> m SVGAnimatedTransformList
+getGradientTransformUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getGradientTransform (toSVGGradientElement self)))
  
 foreign import javascript unsafe "$1[\"spreadMethod\"]"
         js_getSpreadMethod ::
@@ -64,4 +85,13 @@ getSpreadMethod ::
 getSpreadMethod self
   = liftIO
       (nullableToMaybe <$>
+         (js_getSpreadMethod (toSVGGradientElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.spreadMethod Mozilla SVGGradientElement.spreadMethod documentation> 
+getSpreadMethodUnchecked ::
+                         (MonadIO m, IsSVGGradientElement self) =>
+                           self -> m SVGAnimatedEnumeration
+getSpreadMethodUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getSpreadMethod (toSVGGradientElement self)))

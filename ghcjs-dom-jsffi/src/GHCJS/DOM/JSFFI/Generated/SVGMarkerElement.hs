@@ -5,10 +5,13 @@ module GHCJS.DOM.JSFFI.Generated.SVGMarkerElement
         pattern SVG_MARKERUNITS_USERSPACEONUSE,
         pattern SVG_MARKERUNITS_STROKEWIDTH,
         pattern SVG_MARKER_ORIENT_UNKNOWN, pattern SVG_MARKER_ORIENT_AUTO,
-        pattern SVG_MARKER_ORIENT_ANGLE, js_getRefX, getRefX, js_getRefY,
-        getRefY, js_getMarkerUnits, getMarkerUnits, js_getMarkerWidth,
-        getMarkerWidth, js_getMarkerHeight, getMarkerHeight,
-        js_getOrientType, getOrientType, js_getOrientAngle, getOrientAngle,
+        pattern SVG_MARKER_ORIENT_ANGLE, js_getRefX, getRefX,
+        getRefXUnchecked, js_getRefY, getRefY, getRefYUnchecked,
+        js_getMarkerUnits, getMarkerUnits, getMarkerUnitsUnchecked,
+        js_getMarkerWidth, getMarkerWidth, getMarkerWidthUnchecked,
+        js_getMarkerHeight, getMarkerHeight, getMarkerHeightUnchecked,
+        js_getOrientType, getOrientType, getOrientTypeUnchecked,
+        js_getOrientAngle, getOrientAngle, getOrientAngleUnchecked,
         SVGMarkerElement, castToSVGMarkerElement, gTypeSVGMarkerElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -18,9 +21,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -56,6 +61,12 @@ foreign import javascript unsafe "$1[\"refX\"]" js_getRefX ::
 getRefX ::
         (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getRefX self = liftIO (nullableToMaybe <$> (js_getRefX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refX Mozilla SVGMarkerElement.refX documentation> 
+getRefXUnchecked ::
+                 (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
+getRefXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRefX (self)))
  
 foreign import javascript unsafe "$1[\"refY\"]" js_getRefY ::
         SVGMarkerElement -> IO (Nullable SVGAnimatedLength)
@@ -64,6 +75,12 @@ foreign import javascript unsafe "$1[\"refY\"]" js_getRefY ::
 getRefY ::
         (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getRefY self = liftIO (nullableToMaybe <$> (js_getRefY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refY Mozilla SVGMarkerElement.refY documentation> 
+getRefYUnchecked ::
+                 (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
+getRefYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRefY (self)))
  
 foreign import javascript unsafe "$1[\"markerUnits\"]"
         js_getMarkerUnits ::
@@ -74,6 +91,13 @@ getMarkerUnits ::
                (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedEnumeration)
 getMarkerUnits self
   = liftIO (nullableToMaybe <$> (js_getMarkerUnits (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerUnits Mozilla SVGMarkerElement.markerUnits documentation> 
+getMarkerUnitsUnchecked ::
+                        (MonadIO m) => SVGMarkerElement -> m SVGAnimatedEnumeration
+getMarkerUnitsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getMarkerUnits (self)))
  
 foreign import javascript unsafe "$1[\"markerWidth\"]"
         js_getMarkerWidth ::
@@ -84,6 +108,13 @@ getMarkerWidth ::
                (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getMarkerWidth self
   = liftIO (nullableToMaybe <$> (js_getMarkerWidth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerWidth Mozilla SVGMarkerElement.markerWidth documentation> 
+getMarkerWidthUnchecked ::
+                        (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
+getMarkerWidthUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getMarkerWidth (self)))
  
 foreign import javascript unsafe "$1[\"markerHeight\"]"
         js_getMarkerHeight ::
@@ -94,6 +125,13 @@ getMarkerHeight ::
                 (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getMarkerHeight self
   = liftIO (nullableToMaybe <$> (js_getMarkerHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerHeight Mozilla SVGMarkerElement.markerHeight documentation> 
+getMarkerHeightUnchecked ::
+                         (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
+getMarkerHeightUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getMarkerHeight (self)))
  
 foreign import javascript unsafe "$1[\"orientType\"]"
         js_getOrientType ::
@@ -104,6 +142,12 @@ getOrientType ::
               (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedEnumeration)
 getOrientType self
   = liftIO (nullableToMaybe <$> (js_getOrientType (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientType Mozilla SVGMarkerElement.orientType documentation> 
+getOrientTypeUnchecked ::
+                       (MonadIO m) => SVGMarkerElement -> m SVGAnimatedEnumeration
+getOrientTypeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getOrientType (self)))
  
 foreign import javascript unsafe "$1[\"orientAngle\"]"
         js_getOrientAngle ::
@@ -114,3 +158,10 @@ getOrientAngle ::
                (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedAngle)
 getOrientAngle self
   = liftIO (nullableToMaybe <$> (js_getOrientAngle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientAngle Mozilla SVGMarkerElement.orientAngle documentation> 
+getOrientAngleUnchecked ::
+                        (MonadIO m) => SVGMarkerElement -> m SVGAnimatedAngle
+getOrientAngleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getOrientAngle (self)))

@@ -1,9 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DocumentType
-       (js_getName, getName, js_getEntities, getEntities, js_getNotations,
-        getNotations, js_getPublicId, getPublicId, js_getSystemId,
-        getSystemId, js_getInternalSubset, getInternalSubset, DocumentType,
-        castToDocumentType, gTypeDocumentType)
+       (js_getName, getName, js_getEntities, getEntities,
+        getEntitiesUnchecked, js_getNotations, getNotations,
+        getNotationsUnchecked, js_getPublicId, getPublicId,
+        getPublicIdUnchecked, js_getSystemId, getSystemId,
+        getSystemIdUnchecked, js_getInternalSubset, getInternalSubset,
+        getInternalSubsetUnchecked, DocumentType, castToDocumentType,
+        gTypeDocumentType)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +41,12 @@ getEntities ::
             (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
 getEntities self
   = liftIO (nullableToMaybe <$> (js_getEntities (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.entities Mozilla DocumentType.entities documentation> 
+getEntitiesUnchecked ::
+                     (MonadIO m) => DocumentType -> m NamedNodeMap
+getEntitiesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getEntities (self)))
  
 foreign import javascript unsafe "$1[\"notations\"]"
         js_getNotations :: DocumentType -> IO (Nullable NamedNodeMap)
@@ -45,6 +56,12 @@ getNotations ::
              (MonadIO m) => DocumentType -> m (Maybe NamedNodeMap)
 getNotations self
   = liftIO (nullableToMaybe <$> (js_getNotations (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.notations Mozilla DocumentType.notations documentation> 
+getNotationsUnchecked ::
+                      (MonadIO m) => DocumentType -> m NamedNodeMap
+getNotationsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getNotations (self)))
  
 foreign import javascript unsafe "$1[\"publicId\"]" js_getPublicId
         :: DocumentType -> IO (Nullable JSString)
@@ -55,6 +72,12 @@ getPublicId ::
               DocumentType -> m (Maybe result)
 getPublicId self
   = liftIO (fromMaybeJSString <$> (js_getPublicId (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.publicId Mozilla DocumentType.publicId documentation> 
+getPublicIdUnchecked ::
+                     (MonadIO m, FromJSString result) => DocumentType -> m result
+getPublicIdUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getPublicId (self)))
  
 foreign import javascript unsafe "$1[\"systemId\"]" js_getSystemId
         :: DocumentType -> IO (Nullable JSString)
@@ -65,6 +88,12 @@ getSystemId ::
               DocumentType -> m (Maybe result)
 getSystemId self
   = liftIO (fromMaybeJSString <$> (js_getSystemId (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.systemId Mozilla DocumentType.systemId documentation> 
+getSystemIdUnchecked ::
+                     (MonadIO m, FromJSString result) => DocumentType -> m result
+getSystemIdUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getSystemId (self)))
  
 foreign import javascript unsafe "$1[\"internalSubset\"]"
         js_getInternalSubset :: DocumentType -> IO (Nullable JSString)
@@ -75,3 +104,10 @@ getInternalSubset ::
                     DocumentType -> m (Maybe result)
 getInternalSubset self
   = liftIO (fromMaybeJSString <$> (js_getInternalSubset (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentType.internalSubset Mozilla DocumentType.internalSubset documentation> 
+getInternalSubsetUnchecked ::
+                           (MonadIO m, FromJSString result) => DocumentType -> m result
+getInternalSubsetUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getInternalSubset (self)))

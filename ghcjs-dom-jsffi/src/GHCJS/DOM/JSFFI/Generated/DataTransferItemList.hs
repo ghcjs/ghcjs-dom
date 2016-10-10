@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DataTransferItemList
-       (js_item, item, js_clear, clear, js_addFile, addFile, js_add, add,
-        js_getLength, getLength, DataTransferItemList,
-        castToDataTransferItemList, gTypeDataTransferItemList)
+       (js_item, item, item_, itemUnchecked, js_clear, clear, js_addFile,
+        addFile, js_add, add, js_getLength, getLength,
+        DataTransferItemList, castToDataTransferItemList,
+        gTypeDataTransferItemList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +31,16 @@ item ::
        DataTransferItemList -> Word -> m (Maybe DataTransferItem)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.item Mozilla DataTransferItemList.item documentation> 
+item_ :: (MonadIO m) => DataTransferItemList -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList.item Mozilla DataTransferItemList.item documentation> 
+itemUnchecked ::
+              (MonadIO m) => DataTransferItemList -> Word -> m DataTransferItem
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         DataTransferItemList -> IO ()

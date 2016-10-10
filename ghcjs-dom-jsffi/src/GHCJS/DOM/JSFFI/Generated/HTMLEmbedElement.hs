@@ -1,11 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
-       (js_getSVGDocument, getSVGDocument, js_setAlign, setAlign,
-        js_getAlign, getAlign, js_setHeight, setHeight, js_getHeight,
-        getHeight, js_setName, setName, js_getName, getName, js_setSrc,
-        setSrc, js_getSrc, getSrc, js_setType, setType, js_getType,
-        getType, js_setWidth, setWidth, js_getWidth, getWidth,
-        HTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement)
+       (js_getSVGDocument, getSVGDocument, getSVGDocument_,
+        getSVGDocumentUnchecked, js_setAlign, setAlign, js_getAlign,
+        getAlign, js_setHeight, setHeight, js_getHeight, getHeight,
+        js_setName, setName, js_getName, getName, js_setSrc, setSrc,
+        js_getSrc, getSrc, js_setType, setType, js_getType, getType,
+        js_setWidth, setWidth, js_getWidth, getWidth, HTMLEmbedElement,
+        castToHTMLEmbedElement, gTypeHTMLEmbedElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,6 +33,17 @@ getSVGDocument ::
                (MonadIO m) => HTMLEmbedElement -> m (Maybe SVGDocument)
 getSVGDocument self
   = liftIO (nullableToMaybe <$> (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
+getSVGDocument_ :: (MonadIO m) => HTMLEmbedElement -> m ()
+getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
+getSVGDocumentUnchecked ::
+                        (MonadIO m) => HTMLEmbedElement -> m SVGDocument
+getSVGDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSVGDocument (self)))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLEmbedElement -> JSString -> IO ()

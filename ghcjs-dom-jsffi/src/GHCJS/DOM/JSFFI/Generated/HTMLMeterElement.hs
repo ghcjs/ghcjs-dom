@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMeterElement
         js_getMin, getMin, js_setMax, setMax, js_getMax, getMax, js_setLow,
         setLow, js_getLow, getLow, js_setHigh, setHigh, js_getHigh,
         getHigh, js_setOptimum, setOptimum, js_getOptimum, getOptimum,
-        js_getLabels, getLabels, HTMLMeterElement, castToHTMLMeterElement,
-        gTypeHTMLMeterElement)
+        js_getLabels, getLabels, getLabelsUnchecked, HTMLMeterElement,
+        castToHTMLMeterElement, gTypeHTMLMeterElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -112,3 +114,8 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLMeterElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
+getLabelsUnchecked :: (MonadIO m) => HTMLMeterElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))

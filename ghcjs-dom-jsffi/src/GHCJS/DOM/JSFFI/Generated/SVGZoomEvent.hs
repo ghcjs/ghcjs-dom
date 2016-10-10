@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGZoomEvent
-       (js_getZoomRectScreen, getZoomRectScreen, js_getPreviousScale,
-        getPreviousScale, js_getPreviousTranslate, getPreviousTranslate,
-        js_getNewScale, getNewScale, js_getNewTranslate, getNewTranslate,
+       (js_getZoomRectScreen, getZoomRectScreen,
+        getZoomRectScreenUnchecked, js_getPreviousScale, getPreviousScale,
+        js_getPreviousTranslate, getPreviousTranslate,
+        getPreviousTranslateUnchecked, js_getNewScale, getNewScale,
+        js_getNewTranslate, getNewTranslate, getNewTranslateUnchecked,
         SVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -12,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +32,13 @@ getZoomRectScreen ::
                   (MonadIO m) => SVGZoomEvent -> m (Maybe SVGRect)
 getZoomRectScreen self
   = liftIO (nullableToMaybe <$> (js_getZoomRectScreen (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.zoomRectScreen Mozilla SVGZoomEvent.zoomRectScreen documentation> 
+getZoomRectScreenUnchecked ::
+                           (MonadIO m) => SVGZoomEvent -> m SVGRect
+getZoomRectScreenUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getZoomRectScreen (self)))
  
 foreign import javascript unsafe "$1[\"previousScale\"]"
         js_getPreviousScale :: SVGZoomEvent -> IO Float
@@ -44,6 +55,13 @@ getPreviousTranslate ::
                      (MonadIO m) => SVGZoomEvent -> m (Maybe SVGPoint)
 getPreviousTranslate self
   = liftIO (nullableToMaybe <$> (js_getPreviousTranslate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.previousTranslate Mozilla SVGZoomEvent.previousTranslate documentation> 
+getPreviousTranslateUnchecked ::
+                              (MonadIO m) => SVGZoomEvent -> m SVGPoint
+getPreviousTranslateUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getPreviousTranslate (self)))
  
 foreign import javascript unsafe "$1[\"newScale\"]" js_getNewScale
         :: SVGZoomEvent -> IO Float
@@ -60,3 +78,10 @@ getNewTranslate ::
                 (MonadIO m) => SVGZoomEvent -> m (Maybe SVGPoint)
 getNewTranslate self
   = liftIO (nullableToMaybe <$> (js_getNewTranslate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.newTranslate Mozilla SVGZoomEvent.newTranslate documentation> 
+getNewTranslateUnchecked ::
+                         (MonadIO m) => SVGZoomEvent -> m SVGPoint
+getNewTranslateUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getNewTranslate (self)))

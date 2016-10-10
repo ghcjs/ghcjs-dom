@@ -1,11 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AudioNode
        (js_connect, connect, js_connectParam, connectParam, js_disconnect,
-        disconnect, js_getContext, getContext, js_getNumberOfInputs,
-        getNumberOfInputs, js_getNumberOfOutputs, getNumberOfOutputs,
-        js_setChannelCount, setChannelCount, js_getChannelCount,
-        getChannelCount, js_setChannelCountMode, setChannelCountMode,
-        js_getChannelCountMode, getChannelCountMode,
+        disconnect, js_getContext, getContext, getContextUnchecked,
+        js_getNumberOfInputs, getNumberOfInputs, js_getNumberOfOutputs,
+        getNumberOfOutputs, js_setChannelCount, setChannelCount,
+        js_getChannelCount, getChannelCount, js_setChannelCountMode,
+        setChannelCountMode, js_getChannelCountMode, getChannelCountMode,
         js_setChannelInterpretation, setChannelInterpretation,
         js_getChannelInterpretation, getChannelInterpretation, AudioNode,
         castToAudioNode, gTypeAudioNode, IsAudioNode, toAudioNode)
@@ -17,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -69,6 +71,13 @@ getContext ::
            (MonadIO m, IsAudioNode self) => self -> m (Maybe AudioContext)
 getContext self
   = liftIO (nullableToMaybe <$> (js_getContext (toAudioNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
+getContextUnchecked ::
+                    (MonadIO m, IsAudioNode self) => self -> m AudioContext
+getContextUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContext (toAudioNode self)))
  
 foreign import javascript unsafe "$1[\"numberOfInputs\"]"
         js_getNumberOfInputs :: AudioNode -> IO Word

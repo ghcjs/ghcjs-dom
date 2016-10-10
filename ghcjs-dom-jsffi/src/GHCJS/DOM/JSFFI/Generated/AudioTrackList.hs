@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AudioTrackList
-       (js_item, item, js_getTrackById, getTrackById, js_getLength,
+       (js_item, item, item_, itemUnchecked, js_getTrackById,
+        getTrackById, getTrackById_, getTrackByIdUnchecked, js_getLength,
         getLength, change, addTrack, removeTrack, AudioTrackList,
         castToAudioTrackList, gTypeAudioTrackList)
        where
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -27,6 +30,16 @@ item ::
      (MonadIO m) => AudioTrackList -> Word -> m (Maybe AudioTrack)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.item Mozilla AudioTrackList.item documentation> 
+item_ :: (MonadIO m) => AudioTrackList -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.item Mozilla AudioTrackList.item documentation> 
+itemUnchecked ::
+              (MonadIO m) => AudioTrackList -> Word -> m AudioTrack
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
         js_getTrackById ::
@@ -39,6 +52,20 @@ getTrackById ::
 getTrackById self id
   = liftIO
       (nullableToMaybe <$> (js_getTrackById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.getTrackById Mozilla AudioTrackList.getTrackById documentation> 
+getTrackById_ ::
+              (MonadIO m, ToJSString id) => AudioTrackList -> id -> m ()
+getTrackById_ self id
+  = liftIO (void (js_getTrackById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.getTrackById Mozilla AudioTrackList.getTrackById documentation> 
+getTrackByIdUnchecked ::
+                      (MonadIO m, ToJSString id) => AudioTrackList -> id -> m AudioTrack
+getTrackByIdUnchecked self id
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTrackById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         AudioTrackList -> IO Word

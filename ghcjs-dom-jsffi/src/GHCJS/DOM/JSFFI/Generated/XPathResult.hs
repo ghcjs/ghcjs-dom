@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.XPathResult
-       (js_iterateNext, iterateNext, js_snapshotItem, snapshotItem,
-        pattern ANY_TYPE, pattern NUMBER_TYPE, pattern STRING_TYPE,
-        pattern BOOLEAN_TYPE, pattern UNORDERED_NODE_ITERATOR_TYPE,
+       (js_iterateNext, iterateNext, iterateNext_, iterateNextUnchecked,
+        js_snapshotItem, snapshotItem, snapshotItem_,
+        snapshotItemUnchecked, pattern ANY_TYPE, pattern NUMBER_TYPE,
+        pattern STRING_TYPE, pattern BOOLEAN_TYPE,
+        pattern UNORDERED_NODE_ITERATOR_TYPE,
         pattern ORDERED_NODE_ITERATOR_TYPE,
         pattern UNORDERED_NODE_SNAPSHOT_TYPE,
         pattern ORDERED_NODE_SNAPSHOT_TYPE,
@@ -10,9 +12,9 @@ module GHCJS.DOM.JSFFI.Generated.XPathResult
         js_getResultType, getResultType, js_getNumberValue, getNumberValue,
         js_getStringValue, getStringValue, js_getBooleanValue,
         getBooleanValue, js_getSingleNodeValue, getSingleNodeValue,
-        js_getInvalidIteratorState, getInvalidIteratorState,
-        js_getSnapshotLength, getSnapshotLength, XPathResult,
-        castToXPathResult, gTypeXPathResult)
+        getSingleNodeValueUnchecked, js_getInvalidIteratorState,
+        getInvalidIteratorState, js_getSnapshotLength, getSnapshotLength,
+        XPathResult, castToXPathResult, gTypeXPathResult)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -21,9 +23,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +40,15 @@ foreign import javascript unsafe "$1[\"iterateNext\"]()"
 iterateNext :: (MonadIO m) => XPathResult -> m (Maybe Node)
 iterateNext self
   = liftIO (nullableToMaybe <$> (js_iterateNext (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.iterateNext Mozilla XPathResult.iterateNext documentation> 
+iterateNext_ :: (MonadIO m) => XPathResult -> m ()
+iterateNext_ self = liftIO (void (js_iterateNext (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.iterateNext Mozilla XPathResult.iterateNext documentation> 
+iterateNextUnchecked :: (MonadIO m) => XPathResult -> m Node
+iterateNextUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_iterateNext (self)))
  
 foreign import javascript unsafe "$1[\"snapshotItem\"]($2)"
         js_snapshotItem :: XPathResult -> Word -> IO (Nullable Node)
@@ -45,6 +58,18 @@ snapshotItem ::
              (MonadIO m) => XPathResult -> Word -> m (Maybe Node)
 snapshotItem self index
   = liftIO (nullableToMaybe <$> (js_snapshotItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotItem Mozilla XPathResult.snapshotItem documentation> 
+snapshotItem_ :: (MonadIO m) => XPathResult -> Word -> m ()
+snapshotItem_ self index
+  = liftIO (void (js_snapshotItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotItem Mozilla XPathResult.snapshotItem documentation> 
+snapshotItemUnchecked ::
+                      (MonadIO m) => XPathResult -> Word -> m Node
+snapshotItemUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_snapshotItem (self) index))
 pattern ANY_TYPE = 0
 pattern NUMBER_TYPE = 1
 pattern STRING_TYPE = 2
@@ -93,6 +118,12 @@ foreign import javascript unsafe "$1[\"singleNodeValue\"]"
 getSingleNodeValue :: (MonadIO m) => XPathResult -> m (Maybe Node)
 getSingleNodeValue self
   = liftIO (nullableToMaybe <$> (js_getSingleNodeValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.singleNodeValue Mozilla XPathResult.singleNodeValue documentation> 
+getSingleNodeValueUnchecked :: (MonadIO m) => XPathResult -> m Node
+getSingleNodeValueUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSingleNodeValue (self)))
  
 foreign import javascript unsafe
         "($1[\"invalidIteratorState\"] ? 1 : 0)" js_getInvalidIteratorState

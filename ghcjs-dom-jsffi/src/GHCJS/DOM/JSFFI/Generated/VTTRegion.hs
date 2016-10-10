@@ -1,15 +1,16 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.VTTRegion
-       (js_newVTTRegion, newVTTRegion, js_getTrack, getTrack, js_setId,
-        setId, js_getId, getId, js_setWidth, setWidth, js_getWidth,
-        getWidth, js_setHeight, setHeight, js_getHeight, getHeight,
-        js_setRegionAnchorX, setRegionAnchorX, js_getRegionAnchorX,
-        getRegionAnchorX, js_setRegionAnchorY, setRegionAnchorY,
-        js_getRegionAnchorY, getRegionAnchorY, js_setViewportAnchorX,
-        setViewportAnchorX, js_getViewportAnchorX, getViewportAnchorX,
-        js_setViewportAnchorY, setViewportAnchorY, js_getViewportAnchorY,
-        getViewportAnchorY, js_setScroll, setScroll, js_getScroll,
-        getScroll, VTTRegion, castToVTTRegion, gTypeVTTRegion)
+       (js_newVTTRegion, newVTTRegion, js_getTrack, getTrack,
+        getTrackUnchecked, js_setId, setId, js_getId, getId, js_setWidth,
+        setWidth, js_getWidth, getWidth, js_setHeight, setHeight,
+        js_getHeight, getHeight, js_setRegionAnchorX, setRegionAnchorX,
+        js_getRegionAnchorX, getRegionAnchorX, js_setRegionAnchorY,
+        setRegionAnchorY, js_getRegionAnchorY, getRegionAnchorY,
+        js_setViewportAnchorX, setViewportAnchorX, js_getViewportAnchorX,
+        getViewportAnchorX, js_setViewportAnchorY, setViewportAnchorY,
+        js_getViewportAnchorY, getViewportAnchorY, js_setScroll, setScroll,
+        js_getScroll, getScroll, VTTRegion, castToVTTRegion,
+        gTypeVTTRegion)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +42,11 @@ foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
 getTrack :: (MonadIO m) => VTTRegion -> m (Maybe TextTrack)
 getTrack self = liftIO (nullableToMaybe <$> (js_getTrack (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
+getTrackUnchecked :: (MonadIO m) => VTTRegion -> m TextTrack
+getTrackUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTrack (self)))
  
 foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
         VTTRegion -> JSString -> IO ()

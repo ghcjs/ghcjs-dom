@@ -1,14 +1,16 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
-       (js_checkValidity, checkValidity, js_setCustomValidity,
-        setCustomValidity, js_getHtmlFor, getHtmlFor, js_getForm, getForm,
+       (js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_getHtmlFor, getHtmlFor,
+        getHtmlForUnchecked, js_getForm, getForm, getFormUnchecked,
         js_setName, setName, js_getName, getName, js_getType, getType,
         js_setDefaultValue, setDefaultValue, js_getDefaultValue,
-        getDefaultValue, js_setValue, setValue, js_getValue, getValue,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        getDefaultValue, getDefaultValueUnchecked, js_setValue, setValue,
+        js_getValue, getValue, getValueUnchecked, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, HTMLOutputElement, castToHTMLOutputElement,
-        gTypeHTMLOutputElement)
+        getLabels, getLabelsUnchecked, HTMLOutputElement,
+        castToHTMLOutputElement, gTypeHTMLOutputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -17,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,6 +36,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.checkValidity Mozilla HTMLOutputElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLOutputElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.checkValidity Mozilla HTMLOutputElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLOutputElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -52,6 +60,12 @@ getHtmlFor ::
            (MonadIO m) => HTMLOutputElement -> m (Maybe DOMSettableTokenList)
 getHtmlFor self
   = liftIO (nullableToMaybe <$> (js_getHtmlFor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.htmlFor Mozilla HTMLOutputElement.htmlFor documentation> 
+getHtmlForUnchecked ::
+                    (MonadIO m) => HTMLOutputElement -> m DOMSettableTokenList
+getHtmlForUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getHtmlFor (self)))
  
 foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
         HTMLOutputElement -> IO (Nullable HTMLFormElement)
@@ -60,6 +74,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLOutputElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.form Mozilla HTMLOutputElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLOutputElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         HTMLOutputElement -> JSString -> IO ()
@@ -105,6 +125,13 @@ getDefaultValue ::
                   HTMLOutputElement -> m (Maybe result)
 getDefaultValue self
   = liftIO (fromMaybeJSString <$> (js_getDefaultValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
+getDefaultValueUnchecked ::
+                         (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+getDefaultValueUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getDefaultValue (self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: HTMLOutputElement -> Nullable JSString -> IO ()
@@ -124,6 +151,12 @@ getValue ::
          (MonadIO m, FromJSString result) =>
            HTMLOutputElement -> m (Maybe result)
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
+getValueUnchecked ::
+                  (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+getValueUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue (self)))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         js_getWillValidate :: HTMLOutputElement -> IO Bool
@@ -140,6 +173,12 @@ getValidity ::
             (MonadIO m) => HTMLOutputElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validity Mozilla HTMLOutputElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLOutputElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLOutputElement -> IO JSString
@@ -156,3 +195,9 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLOutputElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
+getLabelsUnchecked ::
+                   (MonadIO m) => HTMLOutputElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))

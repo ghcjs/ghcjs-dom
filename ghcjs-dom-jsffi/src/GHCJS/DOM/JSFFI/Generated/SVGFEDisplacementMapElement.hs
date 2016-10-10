@@ -2,9 +2,11 @@
 module GHCJS.DOM.JSFFI.Generated.SVGFEDisplacementMapElement
        (pattern SVG_CHANNEL_UNKNOWN, pattern SVG_CHANNEL_R,
         pattern SVG_CHANNEL_G, pattern SVG_CHANNEL_B,
-        pattern SVG_CHANNEL_A, js_getIn1, getIn1, js_getIn2, getIn2,
-        js_getScale, getScale, js_getXChannelSelector, getXChannelSelector,
-        js_getYChannelSelector, getYChannelSelector,
+        pattern SVG_CHANNEL_A, js_getIn1, getIn1, getIn1Unchecked,
+        js_getIn2, getIn2, getIn2Unchecked, js_getScale, getScale,
+        getScaleUnchecked, js_getXChannelSelector, getXChannelSelector,
+        getXChannelSelectorUnchecked, js_getYChannelSelector,
+        getYChannelSelector, getYChannelSelectorUnchecked,
         SVGFEDisplacementMapElement, castToSVGFEDisplacementMapElement,
         gTypeSVGFEDisplacementMapElement)
        where
@@ -15,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +40,12 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
+getIn1Unchecked ::
+                (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedString
+getIn1Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
         SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedString)
@@ -45,6 +55,12 @@ getIn2 ::
        (MonadIO m) =>
          SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedString)
 getIn2 self = liftIO (nullableToMaybe <$> (js_getIn2 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
+getIn2Unchecked ::
+                (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedString
+getIn2Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn2 (self)))
  
 foreign import javascript unsafe "$1[\"scale\"]" js_getScale ::
         SVGFEDisplacementMapElement -> IO (Nullable SVGAnimatedNumber)
@@ -54,6 +70,12 @@ getScale ::
          (MonadIO m) =>
            SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedNumber)
 getScale self = liftIO (nullableToMaybe <$> (js_getScale (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 
+getScaleUnchecked ::
+                  (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedNumber
+getScaleUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getScale (self)))
  
 foreign import javascript unsafe "$1[\"xChannelSelector\"]"
         js_getXChannelSelector ::
@@ -65,6 +87,14 @@ getXChannelSelector ::
                       SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedEnumeration)
 getXChannelSelector self
   = liftIO (nullableToMaybe <$> (js_getXChannelSelector (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.xChannelSelector Mozilla SVGFEDisplacementMapElement.xChannelSelector documentation> 
+getXChannelSelectorUnchecked ::
+                             (MonadIO m) =>
+                               SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
+getXChannelSelectorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getXChannelSelector (self)))
  
 foreign import javascript unsafe "$1[\"yChannelSelector\"]"
         js_getYChannelSelector ::
@@ -76,3 +106,11 @@ getYChannelSelector ::
                       SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedEnumeration)
 getYChannelSelector self
   = liftIO (nullableToMaybe <$> (js_getYChannelSelector (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.yChannelSelector Mozilla SVGFEDisplacementMapElement.yChannelSelector documentation> 
+getYChannelSelectorUnchecked ::
+                             (MonadIO m) =>
+                               SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
+getYChannelSelectorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getYChannelSelector (self)))

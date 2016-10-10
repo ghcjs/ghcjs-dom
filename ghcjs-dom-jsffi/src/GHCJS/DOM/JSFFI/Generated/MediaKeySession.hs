@@ -1,9 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeySession
        (js_update, update, js_close, close, js_getError, getError,
-        js_getKeySystem, getKeySystem, js_getSessionId, getSessionId,
-        webKitKeyAdded, webKitKeyError, webKitKeyMessage, MediaKeySession,
-        castToMediaKeySession, gTypeMediaKeySession)
+        getErrorUnchecked, js_getKeySystem, getKeySystem, js_getSessionId,
+        getSessionId, webKitKeyAdded, webKitKeyError, webKitKeyMessage,
+        MediaKeySession, castToMediaKeySession, gTypeMediaKeySession)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -45,6 +47,12 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 getError ::
          (MonadIO m) => MediaKeySession -> m (Maybe MediaKeyError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
+getErrorUnchecked ::
+                  (MonadIO m) => MediaKeySession -> m MediaKeyError
+getErrorUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getError (self)))
  
 foreign import javascript unsafe "$1[\"keySystem\"]"
         js_getKeySystem :: MediaKeySession -> IO JSString

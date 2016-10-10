@@ -4,11 +4,12 @@ module GHCJS.DOM.JSFFI.Generated.AudioBufferSourceNode
         noteGrainOn, js_noteOff, noteOff, pattern UNSCHEDULED_STATE,
         pattern SCHEDULED_STATE, pattern PLAYING_STATE,
         pattern FINISHED_STATE, js_setBuffer, setBuffer, js_getBuffer,
-        getBuffer, js_getPlaybackState, getPlaybackState, js_getGain,
-        getGain, js_getPlaybackRate, getPlaybackRate, js_setLoop, setLoop,
-        js_getLoop, getLoop, js_setLoopStart, setLoopStart,
-        js_getLoopStart, getLoopStart, js_setLoopEnd, setLoopEnd,
-        js_getLoopEnd, getLoopEnd, js_setLooping, setLooping,
+        getBuffer, getBufferUnchecked, js_getPlaybackState,
+        getPlaybackState, js_getGain, getGain, getGainUnchecked,
+        js_getPlaybackRate, getPlaybackRate, getPlaybackRateUnchecked,
+        js_setLoop, setLoop, js_getLoop, getLoop, js_setLoopStart,
+        setLoopStart, js_getLoopStart, getLoopStart, js_setLoopEnd,
+        setLoopEnd, js_getLoopEnd, getLoopEnd, js_setLooping, setLooping,
         js_getLooping, getLooping, ended, AudioBufferSourceNode,
         castToAudioBufferSourceNode, gTypeAudioBufferSourceNode)
        where
@@ -19,9 +20,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -91,6 +94,12 @@ foreign import javascript unsafe "$1[\"buffer\"]" js_getBuffer ::
 getBuffer ::
           (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioBuffer)
 getBuffer self = liftIO (nullableToMaybe <$> (js_getBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
+getBufferUnchecked ::
+                   (MonadIO m) => AudioBufferSourceNode -> m AudioBuffer
+getBufferUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getBuffer (self)))
  
 foreign import javascript unsafe "$1[\"playbackState\"]"
         js_getPlaybackState :: AudioBufferSourceNode -> IO Word
@@ -106,6 +115,12 @@ foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
 getGain ::
         (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioParam)
 getGain self = liftIO (nullableToMaybe <$> (js_getGain (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.gain Mozilla AudioBufferSourceNode.gain documentation> 
+getGainUnchecked ::
+                 (MonadIO m) => AudioBufferSourceNode -> m AudioParam
+getGainUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getGain (self)))
  
 foreign import javascript unsafe "$1[\"playbackRate\"]"
         js_getPlaybackRate ::
@@ -116,6 +131,13 @@ getPlaybackRate ::
                 (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioParam)
 getPlaybackRate self
   = liftIO (nullableToMaybe <$> (js_getPlaybackRate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackRate Mozilla AudioBufferSourceNode.playbackRate documentation> 
+getPlaybackRateUnchecked ::
+                         (MonadIO m) => AudioBufferSourceNode -> m AudioParam
+getPlaybackRateUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getPlaybackRate (self)))
  
 foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
         AudioBufferSourceNode -> Bool -> IO ()

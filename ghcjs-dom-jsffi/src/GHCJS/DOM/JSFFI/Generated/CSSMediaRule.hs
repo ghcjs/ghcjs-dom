@@ -1,7 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSMediaRule
-       (js_insertRule, insertRule, js_deleteRule, deleteRule, js_getMedia,
-        getMedia, js_getCssRules, getCssRules, CSSMediaRule,
+       (js_insertRule, insertRule, insertRule_, js_deleteRule, deleteRule,
+        js_getMedia, getMedia, getMediaUnchecked, js_getCssRules,
+        getCssRules, getCssRulesUnchecked, CSSMediaRule,
         castToCSSMediaRule, gTypeCSSMediaRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +31,13 @@ insertRule ::
              CSSMediaRule -> rule -> Word -> m Word
 insertRule self rule index
   = liftIO (js_insertRule (self) (toJSString rule) index)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.insertRule Mozilla CSSMediaRule.insertRule documentation> 
+insertRule_ ::
+            (MonadIO m, ToJSString rule) =>
+              CSSMediaRule -> rule -> Word -> m ()
+insertRule_ self rule index
+  = liftIO (void (js_insertRule (self) (toJSString rule) index))
  
 foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
         js_deleteRule :: CSSMediaRule -> Word -> IO ()
@@ -42,6 +52,11 @@ foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
 getMedia :: (MonadIO m) => CSSMediaRule -> m (Maybe MediaList)
 getMedia self = liftIO (nullableToMaybe <$> (js_getMedia (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
+getMediaUnchecked :: (MonadIO m) => CSSMediaRule -> m MediaList
+getMediaUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getMedia (self)))
  
 foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
         :: CSSMediaRule -> IO (Nullable CSSRuleList)
@@ -50,3 +65,9 @@ foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
 getCssRules :: (MonadIO m) => CSSMediaRule -> m (Maybe CSSRuleList)
 getCssRules self
   = liftIO (nullableToMaybe <$> (js_getCssRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.cssRules Mozilla CSSMediaRule.cssRules documentation> 
+getCssRulesUnchecked ::
+                     (MonadIO m) => CSSMediaRule -> m CSSRuleList
+getCssRulesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCssRules (self)))

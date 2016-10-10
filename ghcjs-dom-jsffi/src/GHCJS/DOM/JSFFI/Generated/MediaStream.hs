@@ -2,12 +2,14 @@
 module GHCJS.DOM.JSFFI.Generated.MediaStream
        (js_newMediaStream, newMediaStream, js_newMediaStream',
         newMediaStream', js_newMediaStream'', newMediaStream'',
-        js_getAudioTracks, getAudioTracks, js_getVideoTracks,
-        getVideoTracks, js_getTracks, getTracks, js_addTrack, addTrack,
-        js_removeTrack, removeTrack, js_getTrackById, getTrackById,
-        js_clone, clone, js_getId, getId, js_getActive, getActive, active,
-        inactive, addTrackEvent, removeTrackEvent, MediaStream,
-        castToMediaStream, gTypeMediaStream)
+        js_getAudioTracks, getAudioTracks, getAudioTracks_,
+        js_getVideoTracks, getVideoTracks, getVideoTracks_, js_getTracks,
+        getTracks, getTracks_, js_addTrack, addTrack, js_removeTrack,
+        removeTrack, js_getTrackById, getTrackById, getTrackById_,
+        getTrackByIdUnchecked, js_clone, clone, clone_, cloneUnchecked,
+        js_getId, getId, js_getActive, getActive, active, inactive,
+        addTrackEvent, removeTrackEvent, MediaStream, castToMediaStream,
+        gTypeMediaStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -62,6 +66,10 @@ getAudioTracks ::
                (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getAudioTracks self
   = liftIO ((js_getAudioTracks (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getAudioTracks Mozilla webkitMediaStream.getAudioTracks documentation> 
+getAudioTracks_ :: (MonadIO m) => MediaStream -> m ()
+getAudioTracks_ self = liftIO (void (js_getAudioTracks (self)))
  
 foreign import javascript unsafe "$1[\"getVideoTracks\"]()"
         js_getVideoTracks :: MediaStream -> IO JSVal
@@ -71,6 +79,10 @@ getVideoTracks ::
                (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getVideoTracks self
   = liftIO ((js_getVideoTracks (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getVideoTracks Mozilla webkitMediaStream.getVideoTracks documentation> 
+getVideoTracks_ :: (MonadIO m) => MediaStream -> m ()
+getVideoTracks_ self = liftIO (void (js_getVideoTracks (self)))
  
 foreign import javascript unsafe "$1[\"getTracks\"]()" js_getTracks
         :: MediaStream -> IO JSVal
@@ -80,6 +92,10 @@ getTracks ::
           (MonadIO m) => MediaStream -> m [Maybe MediaStreamTrack]
 getTracks self
   = liftIO ((js_getTracks (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTracks Mozilla webkitMediaStream.getTracks documentation> 
+getTracks_ :: (MonadIO m) => MediaStream -> m ()
+getTracks_ self = liftIO (void (js_getTracks (self)))
  
 foreign import javascript unsafe "$1[\"addTrack\"]($2)" js_addTrack
         :: MediaStream -> Nullable MediaStreamTrack -> IO ()
@@ -116,6 +132,21 @@ getTrackById ::
 getTrackById self trackId
   = liftIO
       (nullableToMaybe <$> (js_getTrackById (self) (toJSString trackId)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
+getTrackById_ ::
+              (MonadIO m, ToJSString trackId) => MediaStream -> trackId -> m ()
+getTrackById_ self trackId
+  = liftIO (void (js_getTrackById (self) (toJSString trackId)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
+getTrackByIdUnchecked ::
+                      (MonadIO m, ToJSString trackId) =>
+                        MediaStream -> trackId -> m MediaStreamTrack
+getTrackByIdUnchecked self trackId
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTrackById (self) (toJSString trackId)))
  
 foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
         MediaStream -> IO (Nullable MediaStream)
@@ -123,6 +154,15 @@ foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
 clone :: (MonadIO m) => MediaStream -> m (Maybe MediaStream)
 clone self = liftIO (nullableToMaybe <$> (js_clone (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
+clone_ :: (MonadIO m) => MediaStream -> m ()
+clone_ self = liftIO (void (js_clone (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
+cloneUnchecked :: (MonadIO m) => MediaStream -> m MediaStream
+cloneUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_clone (self)))
  
 foreign import javascript unsafe "$1[\"id\"]" js_getId ::
         MediaStream -> IO JSString

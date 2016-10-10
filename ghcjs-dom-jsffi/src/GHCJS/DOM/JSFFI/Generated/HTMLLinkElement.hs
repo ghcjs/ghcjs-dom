@@ -6,9 +6,10 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
         js_getHreflang, getHreflang, js_setMedia, setMedia, js_getMedia,
         getMedia, js_setRel, setRel, js_getRel, getRel, js_setRev, setRev,
         js_getRev, getRev, js_setSizes, setSizes, js_getSizes, getSizes,
-        js_setTarget, setTarget, js_getTarget, getTarget, js_setType,
-        setType, js_getType, getType, js_getSheet, getSheet, js_getRelList,
-        getRelList, HTMLLinkElement, castToHTMLLinkElement,
+        getSizesUnchecked, js_setTarget, setTarget, js_getTarget,
+        getTarget, js_setType, setType, js_getType, getType, js_getSheet,
+        getSheet, getSheetUnchecked, js_getRelList, getRelList,
+        getRelListUnchecked, HTMLLinkElement, castToHTMLLinkElement,
         gTypeHTMLLinkElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -156,6 +159,12 @@ foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
 getSizes ::
          (MonadIO m) => HTMLLinkElement -> m (Maybe DOMSettableTokenList)
 getSizes self = liftIO (nullableToMaybe <$> (js_getSizes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+getSizesUnchecked ::
+                  (MonadIO m) => HTMLLinkElement -> m DOMSettableTokenList
+getSizesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getSizes (self)))
  
 foreign import javascript unsafe "$1[\"target\"] = $2;"
         js_setTarget :: HTMLLinkElement -> JSString -> IO ()
@@ -195,6 +204,11 @@ foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
 getSheet :: (MonadIO m) => HTMLLinkElement -> m (Maybe StyleSheet)
 getSheet self = liftIO (nullableToMaybe <$> (js_getSheet (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
+getSheetUnchecked :: (MonadIO m) => HTMLLinkElement -> m StyleSheet
+getSheetUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getSheet (self)))
  
 foreign import javascript unsafe "$1[\"relList\"]" js_getRelList ::
         HTMLLinkElement -> IO (Nullable DOMTokenList)
@@ -204,3 +218,9 @@ getRelList ::
            (MonadIO m) => HTMLLinkElement -> m (Maybe DOMTokenList)
 getRelList self
   = liftIO (nullableToMaybe <$> (js_getRelList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.relList Mozilla HTMLLinkElement.relList documentation> 
+getRelListUnchecked ::
+                    (MonadIO m) => HTMLLinkElement -> m DOMTokenList
+getRelListUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRelList (self)))

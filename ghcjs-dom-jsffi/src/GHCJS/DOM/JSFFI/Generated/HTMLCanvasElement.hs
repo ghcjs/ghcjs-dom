@@ -1,10 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLCanvasElement
-       (js_toDataURL, toDataURL, js_getContext, getContext,
-        js_probablySupportsContext, probablySupportsContext, js_setWidth,
-        setWidth, js_getWidth, getWidth, js_setHeight, setHeight,
-        js_getHeight, getHeight, HTMLCanvasElement,
-        castToHTMLCanvasElement, gTypeHTMLCanvasElement)
+       (js_toDataURL, toDataURL, toDataURL_, js_getContext, getContext,
+        getContext_, js_probablySupportsContext, probablySupportsContext,
+        probablySupportsContext_, js_setWidth, setWidth, js_getWidth,
+        getWidth, js_setHeight, setHeight, js_getHeight, getHeight,
+        HTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,6 +34,13 @@ toDataURL ::
 toDataURL self type'
   = liftIO
       (fromJSString <$> (js_toDataURL (self) (toMaybeJSString type')))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
+toDataURL_ ::
+           (MonadIO m, ToJSString type') =>
+             HTMLCanvasElement -> Maybe type' -> m ()
+toDataURL_ self type'
+  = liftIO (void (js_toDataURL (self) (toMaybeJSString type')))
  
 foreign import javascript unsafe "$1[\"getContext\"]($2)"
         js_getContext :: HTMLCanvasElement -> JSString -> IO JSVal
@@ -42,6 +51,13 @@ getContext ::
              HTMLCanvasElement -> contextId -> m JSVal
 getContext self contextId
   = liftIO (js_getContext (self) (toJSString contextId))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.getContext Mozilla HTMLCanvasElement.getContext documentation> 
+getContext_ ::
+            (MonadIO m, ToJSString contextId) =>
+              HTMLCanvasElement -> contextId -> m ()
+getContext_ self contextId
+  = liftIO (void (js_getContext (self) (toJSString contextId)))
  
 foreign import javascript unsafe
         "$1[\"probablySupportsContext\"]($2)" js_probablySupportsContext ::
@@ -53,6 +69,14 @@ probablySupportsContext ::
                           HTMLCanvasElement -> contextId -> m JSVal
 probablySupportsContext self contextId
   = liftIO (js_probablySupportsContext (self) (toJSString contextId))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.probablySupportsContext Mozilla HTMLCanvasElement.probablySupportsContext documentation> 
+probablySupportsContext_ ::
+                         (MonadIO m, ToJSString contextId) =>
+                           HTMLCanvasElement -> contextId -> m ()
+probablySupportsContext_ self contextId
+  = liftIO
+      (void (js_probablySupportsContext (self) (toJSString contextId)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: HTMLCanvasElement -> Int -> IO ()

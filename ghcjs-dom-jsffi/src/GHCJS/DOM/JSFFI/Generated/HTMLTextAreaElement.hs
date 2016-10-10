@@ -1,33 +1,34 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
-       (js_checkValidity, checkValidity, js_setCustomValidity,
-        setCustomValidity, js_select, select, js_setRangeText,
-        setRangeText, js_setRangeText4, setRangeText4,
+       (js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_select, select,
+        js_setRangeText, setRangeText, js_setRangeText4, setRangeText4,
         js_setSelectionRange, setSelectionRange, js_setAutofocus,
         setAutofocus, js_getAutofocus, getAutofocus, js_setCols, setCols,
         js_getCols, getCols, js_setDirName, setDirName, js_getDirName,
         getDirName, js_setDisabled, setDisabled, js_getDisabled,
-        getDisabled, js_getForm, getForm, js_setMaxLength, setMaxLength,
-        js_getMaxLength, getMaxLength, js_setName, setName, js_getName,
-        getName, js_setPlaceholder, setPlaceholder, js_getPlaceholder,
-        getPlaceholder, js_setReadOnly, setReadOnly, js_getReadOnly,
-        getReadOnly, js_setRequired, setRequired, js_getRequired,
-        getRequired, js_setRows, setRows, js_getRows, getRows, js_setWrap,
-        setWrap, js_getWrap, getWrap, js_getType, getType,
-        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
-        getDefaultValue, js_setValue, setValue, js_getValue, getValue,
+        getDisabled, js_getForm, getForm, getFormUnchecked,
+        js_setMaxLength, setMaxLength, js_getMaxLength, getMaxLength,
+        js_setName, setName, js_getName, getName, js_setPlaceholder,
+        setPlaceholder, js_getPlaceholder, getPlaceholder, js_setReadOnly,
+        setReadOnly, js_getReadOnly, getReadOnly, js_setRequired,
+        setRequired, js_getRequired, getRequired, js_setRows, setRows,
+        js_getRows, getRows, js_setWrap, setWrap, js_getWrap, getWrap,
+        js_getType, getType, js_setDefaultValue, setDefaultValue,
+        js_getDefaultValue, getDefaultValue, getDefaultValueUnchecked,
+        js_setValue, setValue, js_getValue, getValue, getValueUnchecked,
         js_getTextLength, getTextLength, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
+        getWillValidate, js_getValidity, getValidity, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, js_setSelectionStart, setSelectionStart,
-        js_getSelectionStart, getSelectionStart, js_setSelectionEnd,
-        setSelectionEnd, js_getSelectionEnd, getSelectionEnd,
-        js_setSelectionDirection, setSelectionDirection,
+        getLabels, getLabelsUnchecked, js_setSelectionStart,
+        setSelectionStart, js_getSelectionStart, getSelectionStart,
+        js_setSelectionEnd, setSelectionEnd, js_getSelectionEnd,
+        getSelectionEnd, js_setSelectionDirection, setSelectionDirection,
         js_getSelectionDirection, getSelectionDirection, js_setAutocorrect,
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, HTMLTextAreaElement, castToHTMLTextAreaElement,
-        gTypeHTMLTextAreaElement)
+        getAutocapitalize, getAutocapitalizeUnchecked, HTMLTextAreaElement,
+        castToHTMLTextAreaElement, gTypeHTMLTextAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -36,9 +37,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -51,6 +54,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.checkValidity Mozilla HTMLTextAreaElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLTextAreaElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.checkValidity Mozilla HTMLTextAreaElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLTextAreaElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -173,6 +180,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLTextAreaElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.form Mozilla HTMLTextAreaElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLTextAreaElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
         js_setMaxLength :: HTMLTextAreaElement -> Int -> IO ()
@@ -308,6 +321,13 @@ getDefaultValue ::
                   HTMLTextAreaElement -> m (Maybe result)
 getDefaultValue self
   = liftIO (fromMaybeJSString <$> (js_getDefaultValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
+getDefaultValueUnchecked ::
+                         (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getDefaultValueUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getDefaultValue (self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: HTMLTextAreaElement -> Nullable JSString -> IO ()
@@ -327,6 +347,12 @@ getValue ::
          (MonadIO m, FromJSString result) =>
            HTMLTextAreaElement -> m (Maybe result)
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
+getValueUnchecked ::
+                  (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getValueUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue (self)))
  
 foreign import javascript unsafe "$1[\"textLength\"]"
         js_getTextLength :: HTMLTextAreaElement -> IO Word
@@ -350,6 +376,12 @@ getValidity ::
             (MonadIO m) => HTMLTextAreaElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validity Mozilla HTMLTextAreaElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLTextAreaElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLTextAreaElement -> IO JSString
@@ -367,6 +399,12 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 getLabels ::
           (MonadIO m) => HTMLTextAreaElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.labels Mozilla HTMLTextAreaElement.labels documentation> 
+getLabelsUnchecked ::
+                   (MonadIO m) => HTMLTextAreaElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))
  
 foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
         js_setSelectionStart :: HTMLTextAreaElement -> Int -> IO ()
@@ -454,3 +492,10 @@ getAutocapitalize ::
                     HTMLTextAreaElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO (fromMaybeJSString <$> (js_getAutocapitalize (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
+getAutocapitalizeUnchecked ::
+                           (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getAutocapitalizeUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getAutocapitalize (self)))

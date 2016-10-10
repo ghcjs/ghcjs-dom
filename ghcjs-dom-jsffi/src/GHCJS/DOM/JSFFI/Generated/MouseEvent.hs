@@ -5,12 +5,14 @@ module GHCJS.DOM.JSFFI.Generated.MouseEvent
         js_getClientY, getClientY, js_getCtrlKey, getCtrlKey,
         js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
         js_getMetaKey, getMetaKey, js_getButton, getButton,
-        js_getRelatedTarget, getRelatedTarget, js_getMovementX,
-        getMovementX, js_getMovementY, getMovementY, js_getOffsetX,
-        getOffsetX, js_getOffsetY, getOffsetY, js_getX, getX, js_getY,
-        getY, js_getFromElement, getFromElement, js_getToElement,
-        getToElement, js_getDataTransfer, getDataTransfer, MouseEvent,
-        castToMouseEvent, gTypeMouseEvent, IsMouseEvent, toMouseEvent)
+        js_getRelatedTarget, getRelatedTarget, getRelatedTargetUnchecked,
+        js_getMovementX, getMovementX, js_getMovementY, getMovementY,
+        js_getOffsetX, getOffsetX, js_getOffsetY, getOffsetY, js_getX,
+        getX, js_getY, getY, js_getFromElement, getFromElement,
+        getFromElementUnchecked, js_getToElement, getToElement,
+        getToElementUnchecked, js_getDataTransfer, getDataTransfer,
+        getDataTransferUnchecked, MouseEvent, castToMouseEvent,
+        gTypeMouseEvent, IsMouseEvent, toMouseEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -19,9 +21,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
@@ -149,6 +153,14 @@ getRelatedTarget ::
 getRelatedTarget self
   = liftIO
       (nullableToMaybe <$> (js_getRelatedTarget (toMouseEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.relatedTarget Mozilla MouseEvent.relatedTarget documentation> 
+getRelatedTargetUnchecked ::
+                          (MonadIO m, IsMouseEvent self) => self -> m EventTarget
+getRelatedTargetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getRelatedTarget (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"movementX\"]"
         js_getMovementX :: MouseEvent -> IO Int
@@ -201,6 +213,14 @@ getFromElement ::
 getFromElement self
   = liftIO
       (nullableToMaybe <$> (js_getFromElement (toMouseEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.fromElement Mozilla MouseEvent.fromElement documentation> 
+getFromElementUnchecked ::
+                        (MonadIO m, IsMouseEvent self) => self -> m Node
+getFromElementUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getFromElement (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"toElement\"]"
         js_getToElement :: MouseEvent -> IO (Nullable Node)
@@ -211,6 +231,14 @@ getToElement ::
 getToElement self
   = liftIO
       (nullableToMaybe <$> (js_getToElement (toMouseEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.toElement Mozilla MouseEvent.toElement documentation> 
+getToElementUnchecked ::
+                      (MonadIO m, IsMouseEvent self) => self -> m Node
+getToElementUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getToElement (toMouseEvent self)))
  
 foreign import javascript unsafe "$1[\"dataTransfer\"]"
         js_getDataTransfer :: MouseEvent -> IO (Nullable DataTransfer)
@@ -221,3 +249,11 @@ getDataTransfer ::
 getDataTransfer self
   = liftIO
       (nullableToMaybe <$> (js_getDataTransfer (toMouseEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.dataTransfer Mozilla MouseEvent.dataTransfer documentation> 
+getDataTransferUnchecked ::
+                         (MonadIO m, IsMouseEvent self) => self -> m DataTransfer
+getDataTransferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getDataTransfer (toMouseEvent self)))

@@ -1,15 +1,16 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLKeygenElement
-       (js_checkValidity, checkValidity, js_setCustomValidity,
-        setCustomValidity, js_setAutofocus, setAutofocus, js_getAutofocus,
-        getAutofocus, js_setChallenge, setChallenge, js_getChallenge,
-        getChallenge, js_setDisabled, setDisabled, js_getDisabled,
-        getDisabled, js_getForm, getForm, js_setKeytype, setKeytype,
-        js_getKeytype, getKeytype, js_setName, setName, js_getName,
-        getName, js_getType, getType, js_getWillValidate, getWillValidate,
-        js_getValidity, getValidity, js_getValidationMessage,
-        getValidationMessage, js_getLabels, getLabels, HTMLKeygenElement,
-        castToHTMLKeygenElement, gTypeHTMLKeygenElement)
+       (js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_setAutofocus,
+        setAutofocus, js_getAutofocus, getAutofocus, js_setChallenge,
+        setChallenge, js_getChallenge, getChallenge, js_setDisabled,
+        setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
+        getFormUnchecked, js_setKeytype, setKeytype, js_getKeytype,
+        getKeytype, js_setName, setName, js_getName, getName, js_getType,
+        getType, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnchecked,
+        HTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,6 +36,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.checkValidity Mozilla HTMLKeygenElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLKeygenElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.checkValidity Mozilla HTMLKeygenElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLKeygenElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -98,6 +105,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLKeygenElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.form Mozilla HTMLKeygenElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLKeygenElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"keytype\"] = $2;"
         js_setKeytype :: HTMLKeygenElement -> JSString -> IO ()
@@ -155,6 +168,12 @@ getValidity ::
             (MonadIO m) => HTMLKeygenElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.validity Mozilla HTMLKeygenElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLKeygenElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLKeygenElement -> IO JSString
@@ -171,3 +190,9 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLKeygenElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
+getLabelsUnchecked ::
+                   (MonadIO m) => HTMLKeygenElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))

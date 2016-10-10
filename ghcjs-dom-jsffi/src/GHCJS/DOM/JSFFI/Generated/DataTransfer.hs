@@ -1,11 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DataTransfer
-       (js_clearData, clearData, js_getData, getData, js_setData, setData,
-        js_setDragImage, setDragImage, js_setDropEffect, setDropEffect,
-        js_getDropEffect, getDropEffect, js_setEffectAllowed,
-        setEffectAllowed, js_getEffectAllowed, getEffectAllowed,
-        js_getTypes, getTypes, js_getFiles, getFiles, js_getItems,
-        getItems, DataTransfer, castToDataTransfer, gTypeDataTransfer)
+       (js_clearData, clearData, js_getData, getData, getData_,
+        js_setData, setData, js_setDragImage, setDragImage,
+        js_setDropEffect, setDropEffect, js_getDropEffect, getDropEffect,
+        js_setEffectAllowed, setEffectAllowed, js_getEffectAllowed,
+        getEffectAllowed, js_getTypes, getTypes, getTypesUnchecked,
+        js_getFiles, getFiles, getFilesUnchecked, js_getItems, getItems,
+        getItemsUnchecked, DataTransfer, castToDataTransfer,
+        gTypeDataTransfer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -40,6 +44,12 @@ getData ::
           DataTransfer -> type' -> m result
 getData self type'
   = liftIO (fromJSString <$> (js_getData (self) (toJSString type')))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.getData Mozilla DataTransfer.getData documentation> 
+getData_ ::
+         (MonadIO m, ToJSString type') => DataTransfer -> type' -> m ()
+getData_ self type'
+  = liftIO (void (js_getData (self) (toJSString type')))
  
 foreign import javascript unsafe "$1[\"setData\"]($2, $3)"
         js_setData :: DataTransfer -> JSString -> JSString -> IO ()
@@ -106,6 +116,11 @@ foreign import javascript unsafe "$1[\"types\"]" js_getTypes ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
 getTypes :: (MonadIO m) => DataTransfer -> m (Maybe Array)
 getTypes self = liftIO (nullableToMaybe <$> (js_getTypes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
+getTypesUnchecked :: (MonadIO m) => DataTransfer -> m Array
+getTypesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTypes (self)))
  
 foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
         DataTransfer -> IO (Nullable FileList)
@@ -113,6 +128,11 @@ foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
 getFiles :: (MonadIO m) => DataTransfer -> m (Maybe FileList)
 getFiles self = liftIO (nullableToMaybe <$> (js_getFiles (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
+getFilesUnchecked :: (MonadIO m) => DataTransfer -> m FileList
+getFilesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFiles (self)))
  
 foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
         DataTransfer -> IO (Nullable DataTransferItemList)
@@ -121,3 +141,9 @@ foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
 getItems ::
          (MonadIO m) => DataTransfer -> m (Maybe DataTransferItemList)
 getItems self = liftIO (nullableToMaybe <$> (js_getItems (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
+getItemsUnchecked ::
+                  (MonadIO m) => DataTransfer -> m DataTransferItemList
+getItemsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getItems (self)))

@@ -1,13 +1,18 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGMatrix
-       (js_multiply, multiply, js_inverse, inverse, js_translate,
-        translate, js_scale, scale, js_scaleNonUniform, scaleNonUniform,
-        js_rotate, rotate, js_rotateFromVector, rotateFromVector, js_flipX,
-        flipX, js_flipY, flipY, js_skewX, skewX, js_skewY, skewY, js_setA,
-        setA, js_getA, getA, js_setB, setB, js_getB, getB, js_setC, setC,
-        js_getC, getC, js_setD, setD, js_getD, getD, js_setE, setE,
-        js_getE, getE, js_setF, setF, js_getF, getF, SVGMatrix,
-        castToSVGMatrix, gTypeSVGMatrix)
+       (js_multiply, multiply, multiply_, multiplyUnchecked, js_inverse,
+        inverse, inverse_, inverseUnchecked, js_translate, translate,
+        translate_, translateUnchecked, js_scale, scale, scale_,
+        scaleUnchecked, js_scaleNonUniform, scaleNonUniform,
+        scaleNonUniform_, scaleNonUniformUnchecked, js_rotate, rotate,
+        rotate_, rotateUnchecked, js_rotateFromVector, rotateFromVector,
+        rotateFromVector_, rotateFromVectorUnchecked, js_flipX, flipX,
+        flipX_, flipXUnchecked, js_flipY, flipY, flipY_, flipYUnchecked,
+        js_skewX, skewX, skewX_, skewXUnchecked, js_skewY, skewY, skewY_,
+        skewYUnchecked, js_setA, setA, js_getA, getA, js_setB, setB,
+        js_getB, getB, js_setC, setC, js_getC, getC, js_setD, setD,
+        js_getD, getD, js_setE, setE, js_getE, getE, js_setF, setF,
+        js_getF, getF, SVGMatrix, castToSVGMatrix, gTypeSVGMatrix)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +21,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,6 +41,19 @@ multiply self secondMatrix
   = liftIO
       (nullableToMaybe <$>
          (js_multiply (self) (maybeToNullable secondMatrix)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.multiply Mozilla SVGMatrix.multiply documentation> 
+multiply_ :: (MonadIO m) => SVGMatrix -> Maybe SVGMatrix -> m ()
+multiply_ self secondMatrix
+  = liftIO (void (js_multiply (self) (maybeToNullable secondMatrix)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.multiply Mozilla SVGMatrix.multiply documentation> 
+multiplyUnchecked ::
+                  (MonadIO m) => SVGMatrix -> Maybe SVGMatrix -> m SVGMatrix
+multiplyUnchecked self secondMatrix
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_multiply (self) (maybeToNullable secondMatrix)))
  
 foreign import javascript unsafe "$1[\"inverse\"]()" js_inverse ::
         SVGMatrix -> IO (Nullable SVGMatrix)
@@ -41,6 +61,15 @@ foreign import javascript unsafe "$1[\"inverse\"]()" js_inverse ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.inverse Mozilla SVGMatrix.inverse documentation> 
 inverse :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
 inverse self = liftIO (nullableToMaybe <$> (js_inverse (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.inverse Mozilla SVGMatrix.inverse documentation> 
+inverse_ :: (MonadIO m) => SVGMatrix -> m ()
+inverse_ self = liftIO (void (js_inverse (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.inverse Mozilla SVGMatrix.inverse documentation> 
+inverseUnchecked :: (MonadIO m) => SVGMatrix -> m SVGMatrix
+inverseUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_inverse (self)))
  
 foreign import javascript unsafe "$1[\"translate\"]($2, $3)"
         js_translate ::
@@ -51,6 +80,16 @@ translate ::
           (MonadIO m) => SVGMatrix -> Float -> Float -> m (Maybe SVGMatrix)
 translate self x y
   = liftIO (nullableToMaybe <$> (js_translate (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.translate Mozilla SVGMatrix.translate documentation> 
+translate_ :: (MonadIO m) => SVGMatrix -> Float -> Float -> m ()
+translate_ self x y = liftIO (void (js_translate (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.translate Mozilla SVGMatrix.translate documentation> 
+translateUnchecked ::
+                   (MonadIO m) => SVGMatrix -> Float -> Float -> m SVGMatrix
+translateUnchecked self x y
+  = liftIO (fromJust . nullableToMaybe <$> (js_translate (self) x y))
  
 foreign import javascript unsafe "$1[\"scale\"]($2)" js_scale ::
         SVGMatrix -> Float -> IO (Nullable SVGMatrix)
@@ -59,6 +98,17 @@ foreign import javascript unsafe "$1[\"scale\"]($2)" js_scale ::
 scale :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
 scale self scaleFactor
   = liftIO (nullableToMaybe <$> (js_scale (self) scaleFactor))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scale Mozilla SVGMatrix.scale documentation> 
+scale_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
+scale_ self scaleFactor
+  = liftIO (void (js_scale (self) scaleFactor))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scale Mozilla SVGMatrix.scale documentation> 
+scaleUnchecked :: (MonadIO m) => SVGMatrix -> Float -> m SVGMatrix
+scaleUnchecked self scaleFactor
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_scale (self) scaleFactor))
  
 foreign import javascript unsafe "$1[\"scaleNonUniform\"]($2, $3)"
         js_scaleNonUniform ::
@@ -71,6 +121,21 @@ scaleNonUniform self scaleFactorX scaleFactorY
   = liftIO
       (nullableToMaybe <$>
          (js_scaleNonUniform (self) scaleFactorX scaleFactorY))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scaleNonUniform Mozilla SVGMatrix.scaleNonUniform documentation> 
+scaleNonUniform_ ::
+                 (MonadIO m) => SVGMatrix -> Float -> Float -> m ()
+scaleNonUniform_ self scaleFactorX scaleFactorY
+  = liftIO
+      (void (js_scaleNonUniform (self) scaleFactorX scaleFactorY))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scaleNonUniform Mozilla SVGMatrix.scaleNonUniform documentation> 
+scaleNonUniformUnchecked ::
+                         (MonadIO m) => SVGMatrix -> Float -> Float -> m SVGMatrix
+scaleNonUniformUnchecked self scaleFactorX scaleFactorY
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_scaleNonUniform (self) scaleFactorX scaleFactorY))
  
 foreign import javascript unsafe "$1[\"rotate\"]($2)" js_rotate ::
         SVGMatrix -> Float -> IO (Nullable SVGMatrix)
@@ -79,6 +144,15 @@ foreign import javascript unsafe "$1[\"rotate\"]($2)" js_rotate ::
 rotate :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
 rotate self angle
   = liftIO (nullableToMaybe <$> (js_rotate (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotate Mozilla SVGMatrix.rotate documentation> 
+rotate_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
+rotate_ self angle = liftIO (void (js_rotate (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotate Mozilla SVGMatrix.rotate documentation> 
+rotateUnchecked :: (MonadIO m) => SVGMatrix -> Float -> m SVGMatrix
+rotateUnchecked self angle
+  = liftIO (fromJust . nullableToMaybe <$> (js_rotate (self) angle))
  
 foreign import javascript unsafe "$1[\"rotateFromVector\"]($2, $3)"
         js_rotateFromVector ::
@@ -89,6 +163,19 @@ rotateFromVector ::
                  (MonadIO m) => SVGMatrix -> Float -> Float -> m (Maybe SVGMatrix)
 rotateFromVector self x y
   = liftIO (nullableToMaybe <$> (js_rotateFromVector (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotateFromVector Mozilla SVGMatrix.rotateFromVector documentation> 
+rotateFromVector_ ::
+                  (MonadIO m) => SVGMatrix -> Float -> Float -> m ()
+rotateFromVector_ self x y
+  = liftIO (void (js_rotateFromVector (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotateFromVector Mozilla SVGMatrix.rotateFromVector documentation> 
+rotateFromVectorUnchecked ::
+                          (MonadIO m) => SVGMatrix -> Float -> Float -> m SVGMatrix
+rotateFromVectorUnchecked self x y
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_rotateFromVector (self) x y))
  
 foreign import javascript unsafe "$1[\"flipX\"]()" js_flipX ::
         SVGMatrix -> IO (Nullable SVGMatrix)
@@ -96,6 +183,15 @@ foreign import javascript unsafe "$1[\"flipX\"]()" js_flipX ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipX Mozilla SVGMatrix.flipX documentation> 
 flipX :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
 flipX self = liftIO (nullableToMaybe <$> (js_flipX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipX Mozilla SVGMatrix.flipX documentation> 
+flipX_ :: (MonadIO m) => SVGMatrix -> m ()
+flipX_ self = liftIO (void (js_flipX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipX Mozilla SVGMatrix.flipX documentation> 
+flipXUnchecked :: (MonadIO m) => SVGMatrix -> m SVGMatrix
+flipXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_flipX (self)))
  
 foreign import javascript unsafe "$1[\"flipY\"]()" js_flipY ::
         SVGMatrix -> IO (Nullable SVGMatrix)
@@ -103,6 +199,15 @@ foreign import javascript unsafe "$1[\"flipY\"]()" js_flipY ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipY Mozilla SVGMatrix.flipY documentation> 
 flipY :: (MonadIO m) => SVGMatrix -> m (Maybe SVGMatrix)
 flipY self = liftIO (nullableToMaybe <$> (js_flipY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipY Mozilla SVGMatrix.flipY documentation> 
+flipY_ :: (MonadIO m) => SVGMatrix -> m ()
+flipY_ self = liftIO (void (js_flipY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.flipY Mozilla SVGMatrix.flipY documentation> 
+flipYUnchecked :: (MonadIO m) => SVGMatrix -> m SVGMatrix
+flipYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_flipY (self)))
  
 foreign import javascript unsafe "$1[\"skewX\"]($2)" js_skewX ::
         SVGMatrix -> Float -> IO (Nullable SVGMatrix)
@@ -111,6 +216,15 @@ foreign import javascript unsafe "$1[\"skewX\"]($2)" js_skewX ::
 skewX :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
 skewX self angle
   = liftIO (nullableToMaybe <$> (js_skewX (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewX Mozilla SVGMatrix.skewX documentation> 
+skewX_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
+skewX_ self angle = liftIO (void (js_skewX (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewX Mozilla SVGMatrix.skewX documentation> 
+skewXUnchecked :: (MonadIO m) => SVGMatrix -> Float -> m SVGMatrix
+skewXUnchecked self angle
+  = liftIO (fromJust . nullableToMaybe <$> (js_skewX (self) angle))
  
 foreign import javascript unsafe "$1[\"skewY\"]($2)" js_skewY ::
         SVGMatrix -> Float -> IO (Nullable SVGMatrix)
@@ -119,6 +233,15 @@ foreign import javascript unsafe "$1[\"skewY\"]($2)" js_skewY ::
 skewY :: (MonadIO m) => SVGMatrix -> Float -> m (Maybe SVGMatrix)
 skewY self angle
   = liftIO (nullableToMaybe <$> (js_skewY (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewY Mozilla SVGMatrix.skewY documentation> 
+skewY_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
+skewY_ self angle = liftIO (void (js_skewY (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.skewY Mozilla SVGMatrix.skewY documentation> 
+skewYUnchecked :: (MonadIO m) => SVGMatrix -> Float -> m SVGMatrix
+skewYUnchecked self angle
+  = liftIO (fromJust . nullableToMaybe <$> (js_skewY (self) angle))
  
 foreign import javascript unsafe "$1[\"a\"] = $2;" js_setA ::
         SVGMatrix -> Double -> IO ()

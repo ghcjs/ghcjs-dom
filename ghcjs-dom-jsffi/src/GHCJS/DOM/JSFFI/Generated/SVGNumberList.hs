@@ -1,10 +1,14 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGNumberList
-       (js_clear, clear, js_initialize, initialize, js_getItem, getItem,
-        js_insertItemBefore, insertItemBefore, js_replaceItem, replaceItem,
-        js_removeItem, removeItem, js_appendItem, appendItem,
-        js_getNumberOfItems, getNumberOfItems, SVGNumberList,
-        castToSVGNumberList, gTypeSVGNumberList)
+       (js_clear, clear, js_initialize, initialize, initialize_,
+        initializeUnchecked, js_getItem, getItem, getItem_,
+        getItemUnchecked, js_insertItemBefore, insertItemBefore,
+        insertItemBefore_, insertItemBeforeUnchecked, js_replaceItem,
+        replaceItem, replaceItem_, replaceItemUnchecked, js_removeItem,
+        removeItem, removeItem_, removeItemUnchecked, js_appendItem,
+        appendItem, appendItem_, appendItemUnchecked, js_getNumberOfItems,
+        getNumberOfItems, SVGNumberList, castToSVGNumberList,
+        gTypeSVGNumberList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +45,20 @@ initialize ::
 initialize self item
   = liftIO
       (nullableToMaybe <$> (js_initialize (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
+initialize_ ::
+            (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m ()
+initialize_ self item
+  = liftIO (void (js_initialize (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
+initializeUnchecked ::
+                    (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m SVGNumber
+initializeUnchecked self item
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_initialize (self) (maybeToNullable item)))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
         :: SVGNumberList -> Word -> IO (Nullable SVGNumber)
@@ -48,6 +68,16 @@ getItem ::
         (MonadIO m) => SVGNumberList -> Word -> m (Maybe SVGNumber)
 getItem self index
   = liftIO (nullableToMaybe <$> (js_getItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
+getItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
+getItem_ self index = liftIO (void (js_getItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
+getItemUnchecked ::
+                 (MonadIO m) => SVGNumberList -> Word -> m SVGNumber
+getItemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_getItem (self) index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
@@ -61,6 +91,22 @@ insertItemBefore ::
 insertItemBefore self item index
   = liftIO
       (nullableToMaybe <$>
+         (js_insertItemBefore (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.insertItemBefore Mozilla SVGNumberList.insertItemBefore documentation> 
+insertItemBefore_ ::
+                  (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> Word -> m ()
+insertItemBefore_ self item index
+  = liftIO
+      (void (js_insertItemBefore (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.insertItemBefore Mozilla SVGNumberList.insertItemBefore documentation> 
+insertItemBeforeUnchecked ::
+                          (MonadIO m) =>
+                            SVGNumberList -> Maybe SVGNumber -> Word -> m SVGNumber
+insertItemBeforeUnchecked self item index
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_insertItemBefore (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
@@ -76,6 +122,22 @@ replaceItem self item index
   = liftIO
       (nullableToMaybe <$>
          (js_replaceItem (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.replaceItem Mozilla SVGNumberList.replaceItem documentation> 
+replaceItem_ ::
+             (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> Word -> m ()
+replaceItem_ self item index
+  = liftIO
+      (void (js_replaceItem (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.replaceItem Mozilla SVGNumberList.replaceItem documentation> 
+replaceItemUnchecked ::
+                     (MonadIO m) =>
+                       SVGNumberList -> Maybe SVGNumber -> Word -> m SVGNumber
+replaceItemUnchecked self item index
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_replaceItem (self) (maybeToNullable item) index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         js_removeItem :: SVGNumberList -> Word -> IO (Nullable SVGNumber)
@@ -85,6 +147,17 @@ removeItem ::
            (MonadIO m) => SVGNumberList -> Word -> m (Maybe SVGNumber)
 removeItem self index
   = liftIO (nullableToMaybe <$> (js_removeItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
+removeItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
+removeItem_ self index = liftIO (void (js_removeItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
+removeItemUnchecked ::
+                    (MonadIO m) => SVGNumberList -> Word -> m SVGNumber
+removeItemUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_removeItem (self) index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         js_appendItem ::
@@ -97,6 +170,20 @@ appendItem ::
 appendItem self item
   = liftIO
       (nullableToMaybe <$> (js_appendItem (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
+appendItem_ ::
+            (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m ()
+appendItem_ self item
+  = liftIO (void (js_appendItem (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
+appendItemUnchecked ::
+                    (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m SVGNumber
+appendItemUnchecked self item
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_appendItem (self) (maybeToNullable item)))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
         js_getNumberOfItems :: SVGNumberList -> IO Word

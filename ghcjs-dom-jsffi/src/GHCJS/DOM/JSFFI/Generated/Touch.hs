@@ -3,10 +3,11 @@ module GHCJS.DOM.JSFFI.Generated.Touch
        (js_getClientX, getClientX, js_getClientY, getClientY,
         js_getScreenX, getScreenX, js_getScreenY, getScreenY, js_getPageX,
         getPageX, js_getPageY, getPageY, js_getTarget, getTarget,
-        js_getIdentifier, getIdentifier, js_getWebkitRadiusX,
-        getWebkitRadiusX, js_getWebkitRadiusY, getWebkitRadiusY,
-        js_getWebkitRotationAngle, getWebkitRotationAngle,
-        js_getWebkitForce, getWebkitForce, Touch, castToTouch, gTypeTouch)
+        getTargetUnchecked, js_getIdentifier, getIdentifier,
+        js_getWebkitRadiusX, getWebkitRadiusX, js_getWebkitRadiusY,
+        getWebkitRadiusY, js_getWebkitRotationAngle,
+        getWebkitRotationAngle, js_getWebkitForce, getWebkitForce, Touch,
+        castToTouch, gTypeTouch)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -71,6 +74,11 @@ foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
 getTarget :: (MonadIO m) => Touch -> m (Maybe EventTarget)
 getTarget self = liftIO (nullableToMaybe <$> (js_getTarget (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
+getTargetUnchecked :: (MonadIO m) => Touch -> m EventTarget
+getTargetUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTarget (self)))
  
 foreign import javascript unsafe "$1[\"identifier\"]"
         js_getIdentifier :: Touch -> IO Word

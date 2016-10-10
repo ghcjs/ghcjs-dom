@@ -1,11 +1,15 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.NamedNodeMap
-       (js_getNamedItem, getNamedItem, js_setNamedItem, setNamedItem,
-        js_removeNamedItem, removeNamedItem, js_item, item,
-        js_getNamedItemNS, getNamedItemNS, js_setNamedItemNS,
-        setNamedItemNS, js_removeNamedItemNS, removeNamedItemNS,
-        js_getLength, getLength, NamedNodeMap, castToNamedNodeMap,
-        gTypeNamedNodeMap)
+       (js_getNamedItem, getNamedItem, getNamedItem_,
+        getNamedItemUnchecked, js_setNamedItem, setNamedItem,
+        setNamedItem_, setNamedItemUnchecked, js_removeNamedItem,
+        removeNamedItem, removeNamedItem_, removeNamedItemUnchecked,
+        js_item, item, item_, itemUnchecked, js_getNamedItemNS,
+        getNamedItemNS, getNamedItemNS_, getNamedItemNSUnchecked,
+        js_setNamedItemNS, setNamedItemNS, setNamedItemNS_,
+        setNamedItemNSUnchecked, js_removeNamedItemNS, removeNamedItemNS,
+        removeNamedItemNS_, removeNamedItemNSUnchecked, js_getLength,
+        getLength, NamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,6 +38,20 @@ getNamedItem ::
 getNamedItem self name
   = liftIO
       (nullableToMaybe <$> (js_getNamedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
+getNamedItem_ ::
+              (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m ()
+getNamedItem_ self name
+  = liftIO (void (js_getNamedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
+getNamedItemUnchecked ::
+                      (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m Node
+getNamedItemUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getNamedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"setNamedItem\"]($2)"
         js_setNamedItem ::
@@ -45,6 +65,22 @@ setNamedItem self node
   = liftIO
       (nullableToMaybe <$>
          (js_setNamedItem (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItem Mozilla NamedNodeMap.setNamedItem documentation> 
+setNamedItem_ ::
+              (MonadIO m, IsNode node) => NamedNodeMap -> Maybe node -> m ()
+setNamedItem_ self node
+  = liftIO
+      (void
+         (js_setNamedItem (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItem Mozilla NamedNodeMap.setNamedItem documentation> 
+setNamedItemUnchecked ::
+                      (MonadIO m, IsNode node) => NamedNodeMap -> Maybe node -> m Node
+setNamedItemUnchecked self node
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_setNamedItem (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe "$1[\"removeNamedItem\"]($2)"
         js_removeNamedItem ::
@@ -57,6 +93,20 @@ removeNamedItem ::
 removeNamedItem self name
   = liftIO
       (nullableToMaybe <$> (js_removeNamedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
+removeNamedItem_ ::
+                 (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m ()
+removeNamedItem_ self name
+  = liftIO (void (js_removeNamedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
+removeNamedItemUnchecked ::
+                         (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m Node
+removeNamedItemUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_removeNamedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         NamedNodeMap -> Word -> IO (Nullable Node)
@@ -65,6 +115,15 @@ foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
 item :: (MonadIO m) => NamedNodeMap -> Word -> m (Maybe Node)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.item Mozilla NamedNodeMap.item documentation> 
+item_ :: (MonadIO m) => NamedNodeMap -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.item Mozilla NamedNodeMap.item documentation> 
+itemUnchecked :: (MonadIO m) => NamedNodeMap -> Word -> m Node
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
         js_getNamedItemNS ::
@@ -77,6 +136,26 @@ getNamedItemNS ::
 getNamedItemNS self namespaceURI localName
   = liftIO
       (nullableToMaybe <$>
+         (js_getNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItemNS Mozilla NamedNodeMap.getNamedItemNS documentation> 
+getNamedItemNS_ ::
+                (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                  NamedNodeMap -> Maybe namespaceURI -> localName -> m ()
+getNamedItemNS_ self namespaceURI localName
+  = liftIO
+      (void
+         (js_getNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItemNS Mozilla NamedNodeMap.getNamedItemNS documentation> 
+getNamedItemNSUnchecked ::
+                        (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                          NamedNodeMap -> Maybe namespaceURI -> localName -> m Node
+getNamedItemNSUnchecked self namespaceURI localName
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getNamedItemNS (self) (toMaybeJSString namespaceURI)
             (toJSString localName)))
  
@@ -92,6 +171,22 @@ setNamedItemNS self node
   = liftIO
       (nullableToMaybe <$>
          (js_setNamedItemNS (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItemNS Mozilla NamedNodeMap.setNamedItemNS documentation> 
+setNamedItemNS_ ::
+                (MonadIO m, IsNode node) => NamedNodeMap -> Maybe node -> m ()
+setNamedItemNS_ self node
+  = liftIO
+      (void
+         (js_setNamedItemNS (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItemNS Mozilla NamedNodeMap.setNamedItemNS documentation> 
+setNamedItemNSUnchecked ::
+                        (MonadIO m, IsNode node) => NamedNodeMap -> Maybe node -> m Node
+setNamedItemNSUnchecked self node
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_setNamedItemNS (self) (maybeToNullable (fmap toNode node))))
  
 foreign import javascript unsafe
         "$1[\"removeNamedItemNS\"]($2, $3)" js_removeNamedItemNS ::
@@ -104,6 +199,26 @@ removeNamedItemNS ::
 removeNamedItemNS self namespaceURI localName
   = liftIO
       (nullableToMaybe <$>
+         (js_removeNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItemNS Mozilla NamedNodeMap.removeNamedItemNS documentation> 
+removeNamedItemNS_ ::
+                   (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                     NamedNodeMap -> Maybe namespaceURI -> localName -> m ()
+removeNamedItemNS_ self namespaceURI localName
+  = liftIO
+      (void
+         (js_removeNamedItemNS (self) (toMaybeJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItemNS Mozilla NamedNodeMap.removeNamedItemNS documentation> 
+removeNamedItemNSUnchecked ::
+                           (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                             NamedNodeMap -> Maybe namespaceURI -> localName -> m Node
+removeNamedItemNSUnchecked self namespaceURI localName
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_removeNamedItemNS (self) (toMaybeJSString namespaceURI)
             (toJSString localName)))
  

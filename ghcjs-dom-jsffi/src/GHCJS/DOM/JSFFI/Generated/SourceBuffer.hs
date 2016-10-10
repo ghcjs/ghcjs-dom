@@ -3,15 +3,16 @@ module GHCJS.DOM.JSFFI.Generated.SourceBuffer
        (js_appendBuffer, appendBuffer, js_appendBufferView,
         appendBufferView, js_abort, abort, js_remove, remove, js_setMode,
         setMode, js_getMode, getMode, js_getUpdating, getUpdating,
-        js_getBuffered, getBuffered, js_setTimestampOffset,
-        setTimestampOffset, js_getTimestampOffset, getTimestampOffset,
-        js_getAudioTracks, getAudioTracks, js_getVideoTracks,
-        getVideoTracks, js_getTextTracks, getTextTracks,
-        js_setAppendWindowStart, setAppendWindowStart,
-        js_getAppendWindowStart, getAppendWindowStart,
-        js_setAppendWindowEnd, setAppendWindowEnd, js_getAppendWindowEnd,
-        getAppendWindowEnd, SourceBuffer, castToSourceBuffer,
-        gTypeSourceBuffer)
+        js_getBuffered, getBuffered, getBufferedUnchecked,
+        js_setTimestampOffset, setTimestampOffset, js_getTimestampOffset,
+        getTimestampOffset, js_getAudioTracks, getAudioTracks,
+        getAudioTracksUnchecked, js_getVideoTracks, getVideoTracks,
+        getVideoTracksUnchecked, js_getTextTracks, getTextTracks,
+        getTextTracksUnchecked, js_setAppendWindowStart,
+        setAppendWindowStart, js_getAppendWindowStart,
+        getAppendWindowStart, js_setAppendWindowEnd, setAppendWindowEnd,
+        js_getAppendWindowEnd, getAppendWindowEnd, SourceBuffer,
+        castToSourceBuffer, gTypeSourceBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -20,9 +21,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -95,6 +98,11 @@ foreign import javascript unsafe "$1[\"buffered\"]" js_getBuffered
 getBuffered :: (MonadIO m) => SourceBuffer -> m (Maybe TimeRanges)
 getBuffered self
   = liftIO (nullableToMaybe <$> (js_getBuffered (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 
+getBufferedUnchecked :: (MonadIO m) => SourceBuffer -> m TimeRanges
+getBufferedUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getBuffered (self)))
  
 foreign import javascript unsafe "$1[\"timestampOffset\"] = $2;"
         js_setTimestampOffset :: SourceBuffer -> Double -> IO ()
@@ -119,6 +127,13 @@ getAudioTracks ::
                (MonadIO m) => SourceBuffer -> m (Maybe AudioTrackList)
 getAudioTracks self
   = liftIO (nullableToMaybe <$> (js_getAudioTracks (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.audioTracks Mozilla SourceBuffer.audioTracks documentation> 
+getAudioTracksUnchecked ::
+                        (MonadIO m) => SourceBuffer -> m AudioTrackList
+getAudioTracksUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getAudioTracks (self)))
  
 foreign import javascript unsafe "$1[\"videoTracks\"]"
         js_getVideoTracks :: SourceBuffer -> IO (Nullable VideoTrackList)
@@ -128,6 +143,13 @@ getVideoTracks ::
                (MonadIO m) => SourceBuffer -> m (Maybe VideoTrackList)
 getVideoTracks self
   = liftIO (nullableToMaybe <$> (js_getVideoTracks (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.videoTracks Mozilla SourceBuffer.videoTracks documentation> 
+getVideoTracksUnchecked ::
+                        (MonadIO m) => SourceBuffer -> m VideoTrackList
+getVideoTracksUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getVideoTracks (self)))
  
 foreign import javascript unsafe "$1[\"textTracks\"]"
         js_getTextTracks :: SourceBuffer -> IO (Nullable TextTrackList)
@@ -137,6 +159,12 @@ getTextTracks ::
               (MonadIO m) => SourceBuffer -> m (Maybe TextTrackList)
 getTextTracks self
   = liftIO (nullableToMaybe <$> (js_getTextTracks (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.textTracks Mozilla SourceBuffer.textTracks documentation> 
+getTextTracksUnchecked ::
+                       (MonadIO m) => SourceBuffer -> m TextTrackList
+getTextTracksUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTextTracks (self)))
  
 foreign import javascript unsafe "$1[\"appendWindowStart\"] = $2;"
         js_setAppendWindowStart :: SourceBuffer -> Double -> IO ()

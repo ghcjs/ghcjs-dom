@@ -6,10 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.TextTrack
         js_setLanguage, setLanguage, js_getLanguage, getLanguage,
         js_getInBandMetadataTrackDispatchType,
         getInBandMetadataTrackDispatchType, js_setMode, setMode,
-        js_getMode, getMode, js_getCues, getCues, js_getActiveCues,
-        getActiveCues, cueChange, js_getRegions, getRegions,
-        js_getSourceBuffer, getSourceBuffer, TextTrack, castToTextTrack,
-        gTypeTextTrack)
+        js_getMode, getMode, js_getCues, getCues, getCuesUnchecked,
+        js_getActiveCues, getActiveCues, getActiveCuesUnchecked, cueChange,
+        js_getRegions, getRegions, getRegionsUnchecked, js_getSourceBuffer,
+        getSourceBuffer, getSourceBufferUnchecked, TextTrack,
+        castToTextTrack, gTypeTextTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -140,6 +143,11 @@ foreign import javascript unsafe "$1[\"cues\"]" js_getCues ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
 getCues :: (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
 getCues self = liftIO (nullableToMaybe <$> (js_getCues (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
+getCuesUnchecked :: (MonadIO m) => TextTrack -> m TextTrackCueList
+getCuesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCues (self)))
  
 foreign import javascript unsafe "$1[\"activeCues\"]"
         js_getActiveCues :: TextTrack -> IO (Nullable TextTrackCueList)
@@ -149,6 +157,12 @@ getActiveCues ::
               (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
 getActiveCues self
   = liftIO (nullableToMaybe <$> (js_getActiveCues (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.activeCues Mozilla TextTrack.activeCues documentation> 
+getActiveCuesUnchecked ::
+                       (MonadIO m) => TextTrack -> m TextTrackCueList
+getActiveCuesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getActiveCues (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.oncuechange Mozilla TextTrack.oncuechange documentation> 
 cueChange :: EventName TextTrack Event
@@ -161,6 +175,11 @@ foreign import javascript unsafe "$1[\"regions\"]" js_getRegions ::
 getRegions :: (MonadIO m) => TextTrack -> m (Maybe VTTRegionList)
 getRegions self
   = liftIO (nullableToMaybe <$> (js_getRegions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.regions Mozilla TextTrack.regions documentation> 
+getRegionsUnchecked :: (MonadIO m) => TextTrack -> m VTTRegionList
+getRegionsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRegions (self)))
  
 foreign import javascript unsafe "$1[\"sourceBuffer\"]"
         js_getSourceBuffer :: TextTrack -> IO (Nullable SourceBuffer)
@@ -170,3 +189,10 @@ getSourceBuffer ::
                 (MonadIO m) => TextTrack -> m (Maybe SourceBuffer)
 getSourceBuffer self
   = liftIO (nullableToMaybe <$> (js_getSourceBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.sourceBuffer Mozilla TextTrack.sourceBuffer documentation> 
+getSourceBufferUnchecked ::
+                         (MonadIO m) => TextTrack -> m SourceBuffer
+getSourceBufferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSourceBuffer (self)))

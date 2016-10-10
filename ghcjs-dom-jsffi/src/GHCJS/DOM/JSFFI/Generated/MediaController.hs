@@ -2,16 +2,17 @@
 module GHCJS.DOM.JSFFI.Generated.MediaController
        (js_newMediaController, newMediaController, js_play, play,
         js_pause, pause, js_unpause, unpause, js_getBuffered, getBuffered,
-        js_getSeekable, getSeekable, js_getDuration, getDuration,
+        getBufferedUnchecked, js_getSeekable, getSeekable,
+        getSeekableUnchecked, js_getDuration, getDuration,
         js_setCurrentTime, setCurrentTime, js_getCurrentTime,
         getCurrentTime, js_getPaused, getPaused, js_getPlayed, getPlayed,
-        js_getPlaybackState, getPlaybackState, js_setDefaultPlaybackRate,
-        setDefaultPlaybackRate, js_getDefaultPlaybackRate,
-        getDefaultPlaybackRate, js_setPlaybackRate, setPlaybackRate,
-        js_getPlaybackRate, getPlaybackRate, js_setVolume, setVolume,
-        js_getVolume, getVolume, js_setMuted, setMuted, js_getMuted,
-        getMuted, MediaController, castToMediaController,
-        gTypeMediaController)
+        getPlayedUnchecked, js_getPlaybackState, getPlaybackState,
+        js_setDefaultPlaybackRate, setDefaultPlaybackRate,
+        js_getDefaultPlaybackRate, getDefaultPlaybackRate,
+        js_setPlaybackRate, setPlaybackRate, js_getPlaybackRate,
+        getPlaybackRate, js_setVolume, setVolume, js_getVolume, getVolume,
+        js_setMuted, setMuted, js_getMuted, getMuted, MediaController,
+        castToMediaController, gTypeMediaController)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -20,9 +21,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -65,6 +68,12 @@ getBuffered ::
             (MonadIO m) => MediaController -> m (Maybe TimeRanges)
 getBuffered self
   = liftIO (nullableToMaybe <$> (js_getBuffered (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.buffered Mozilla MediaController.buffered documentation> 
+getBufferedUnchecked ::
+                     (MonadIO m) => MediaController -> m TimeRanges
+getBufferedUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getBuffered (self)))
  
 foreign import javascript unsafe "$1[\"seekable\"]" js_getSeekable
         :: MediaController -> IO (Nullable TimeRanges)
@@ -74,6 +83,12 @@ getSeekable ::
             (MonadIO m) => MediaController -> m (Maybe TimeRanges)
 getSeekable self
   = liftIO (nullableToMaybe <$> (js_getSeekable (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.seekable Mozilla MediaController.seekable documentation> 
+getSeekableUnchecked ::
+                     (MonadIO m) => MediaController -> m TimeRanges
+getSeekableUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getSeekable (self)))
  
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
         :: MediaController -> IO Double
@@ -109,6 +124,12 @@ foreign import javascript unsafe "$1[\"played\"]" js_getPlayed ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
 getPlayed :: (MonadIO m) => MediaController -> m (Maybe TimeRanges)
 getPlayed self = liftIO (nullableToMaybe <$> (js_getPlayed (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
+getPlayedUnchecked ::
+                   (MonadIO m) => MediaController -> m TimeRanges
+getPlayedUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getPlayed (self)))
  
 foreign import javascript unsafe "$1[\"playbackState\"]"
         js_getPlaybackState :: MediaController -> IO JSString

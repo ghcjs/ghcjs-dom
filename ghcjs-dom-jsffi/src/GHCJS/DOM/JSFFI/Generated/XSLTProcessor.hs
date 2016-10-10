@@ -2,10 +2,13 @@
 module GHCJS.DOM.JSFFI.Generated.XSLTProcessor
        (js_newXSLTProcessor, newXSLTProcessor, js_importStylesheet,
         importStylesheet, js_transformToFragment, transformToFragment,
-        js_transformToDocument, transformToDocument, js_setParameter,
-        setParameter, js_getParameter, getParameter, js_removeParameter,
-        removeParameter, js_clearParameters, clearParameters, js_reset,
-        reset, XSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor)
+        transformToFragment_, transformToFragmentUnchecked,
+        js_transformToDocument, transformToDocument, transformToDocument_,
+        transformToDocumentUnchecked, js_setParameter, setParameter,
+        js_getParameter, getParameter, getParameter_,
+        getParameterUnchecked, js_removeParameter, removeParameter,
+        js_clearParameters, clearParameters, js_reset, reset,
+        XSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -58,6 +63,28 @@ transformToFragment self source docVal
          (js_transformToFragment (self)
             (maybeToNullable (fmap toNode source))
             (maybeToNullable (fmap toDocument docVal))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
+transformToFragment_ ::
+                     (MonadIO m, IsNode source, IsDocument docVal) =>
+                       XSLTProcessor -> Maybe source -> Maybe docVal -> m ()
+transformToFragment_ self source docVal
+  = liftIO
+      (void
+         (js_transformToFragment (self)
+            (maybeToNullable (fmap toNode source))
+            (maybeToNullable (fmap toDocument docVal))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
+transformToFragmentUnchecked ::
+                             (MonadIO m, IsNode source, IsDocument docVal) =>
+                               XSLTProcessor -> Maybe source -> Maybe docVal -> m DocumentFragment
+transformToFragmentUnchecked self source docVal
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_transformToFragment (self)
+            (maybeToNullable (fmap toNode source))
+            (maybeToNullable (fmap toDocument docVal))))
  
 foreign import javascript unsafe "$1[\"transformToDocument\"]($2)"
         js_transformToDocument ::
@@ -70,6 +97,25 @@ transformToDocument ::
 transformToDocument self source
   = liftIO
       (nullableToMaybe <$>
+         (js_transformToDocument (self)
+            (maybeToNullable (fmap toNode source))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
+transformToDocument_ ::
+                     (MonadIO m, IsNode source) => XSLTProcessor -> Maybe source -> m ()
+transformToDocument_ self source
+  = liftIO
+      (void
+         (js_transformToDocument (self)
+            (maybeToNullable (fmap toNode source))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
+transformToDocumentUnchecked ::
+                             (MonadIO m, IsNode source) =>
+                               XSLTProcessor -> Maybe source -> m Document
+transformToDocumentUnchecked self source
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_transformToDocument (self)
             (maybeToNullable (fmap toNode source))))
  
@@ -100,6 +146,27 @@ getParameter ::
 getParameter self namespaceURI localName
   = liftIO
       (fromMaybeJSString <$>
+         (js_getParameter (self) (toJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
+getParameter_ ::
+              (MonadIO m, ToJSString namespaceURI, ToJSString localName) =>
+                XSLTProcessor -> namespaceURI -> localName -> m ()
+getParameter_ self namespaceURI localName
+  = liftIO
+      (void
+         (js_getParameter (self) (toJSString namespaceURI)
+            (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
+getParameterUnchecked ::
+                      (MonadIO m, ToJSString namespaceURI, ToJSString localName,
+                       FromJSString result) =>
+                        XSLTProcessor -> namespaceURI -> localName -> m result
+getParameterUnchecked self namespaceURI localName
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_getParameter (self) (toJSString namespaceURI)
             (toJSString localName)))
  

@@ -3,15 +3,19 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDocument
        (js_open, open, js_close, close, js_write, write, js_writeln,
         writeln, js_clear, clear, js_captureEvents, captureEvents,
         js_releaseEvents, releaseEvents, js_getEmbeds, getEmbeds,
-        js_getPlugins, getPlugins, js_getScripts, getScripts, js_getAll,
-        getAll, js_getWidth, getWidth, js_getHeight, getHeight, js_setDir,
-        setDir, js_getDir, getDir, js_setDesignMode, setDesignMode,
-        js_getDesignMode, getDesignMode, js_getCompatMode, getCompatMode,
+        getEmbedsUnchecked, js_getPlugins, getPlugins, getPluginsUnchecked,
+        js_getScripts, getScripts, getScriptsUnchecked, js_getAll, getAll,
+        getAllUnchecked, js_getWidth, getWidth, js_getHeight, getHeight,
+        js_setDir, setDir, js_getDir, getDir, getDirUnchecked,
+        js_setDesignMode, setDesignMode, js_getDesignMode, getDesignMode,
+        getDesignModeUnchecked, js_getCompatMode, getCompatMode,
         js_setBgColor, setBgColor, js_getBgColor, getBgColor,
-        js_setFgColor, setFgColor, js_getFgColor, getFgColor,
-        js_setAlinkColor, setAlinkColor, js_getAlinkColor, getAlinkColor,
+        getBgColorUnchecked, js_setFgColor, setFgColor, js_getFgColor,
+        getFgColor, getFgColorUnchecked, js_setAlinkColor, setAlinkColor,
+        js_getAlinkColor, getAlinkColor, getAlinkColorUnchecked,
         js_setLinkColor, setLinkColor, js_getLinkColor, getLinkColor,
-        js_setVlinkColor, setVlinkColor, js_getVlinkColor, getVlinkColor,
+        getLinkColorUnchecked, js_setVlinkColor, setVlinkColor,
+        js_getVlinkColor, getVlinkColor, getVlinkColorUnchecked,
         HTMLDocument, castToHTMLDocument, gTypeHTMLDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -21,9 +25,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -87,6 +93,12 @@ foreign import javascript unsafe "$1[\"embeds\"]" js_getEmbeds ::
 getEmbeds ::
           (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
 getEmbeds self = liftIO (nullableToMaybe <$> (js_getEmbeds (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.embeds Mozilla HTMLDocument.embeds documentation> 
+getEmbedsUnchecked ::
+                   (MonadIO m) => HTMLDocument -> m HTMLCollection
+getEmbedsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getEmbeds (self)))
  
 foreign import javascript unsafe "$1[\"plugins\"]" js_getPlugins ::
         HTMLDocument -> IO (Nullable HTMLCollection)
@@ -96,6 +108,12 @@ getPlugins ::
            (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
 getPlugins self
   = liftIO (nullableToMaybe <$> (js_getPlugins (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.plugins Mozilla HTMLDocument.plugins documentation> 
+getPluginsUnchecked ::
+                    (MonadIO m) => HTMLDocument -> m HTMLCollection
+getPluginsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getPlugins (self)))
  
 foreign import javascript unsafe "$1[\"scripts\"]" js_getScripts ::
         HTMLDocument -> IO (Nullable HTMLCollection)
@@ -105,6 +123,12 @@ getScripts ::
            (MonadIO m) => HTMLDocument -> m (Maybe HTMLCollection)
 getScripts self
   = liftIO (nullableToMaybe <$> (js_getScripts (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.scripts Mozilla HTMLDocument.scripts documentation> 
+getScriptsUnchecked ::
+                    (MonadIO m) => HTMLDocument -> m HTMLCollection
+getScriptsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getScripts (self)))
  
 foreign import javascript unsafe "$1[\"all\"]" js_getAll ::
         HTMLDocument -> IO (Nullable HTMLAllCollection)
@@ -113,6 +137,12 @@ foreign import javascript unsafe "$1[\"all\"]" js_getAll ::
 getAll ::
        (MonadIO m) => HTMLDocument -> m (Maybe HTMLAllCollection)
 getAll self = liftIO (nullableToMaybe <$> (js_getAll (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.all Mozilla HTMLDocument.all documentation> 
+getAllUnchecked ::
+                (MonadIO m) => HTMLDocument -> m HTMLAllCollection
+getAllUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getAll (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         HTMLDocument -> IO Int
@@ -144,6 +174,12 @@ getDir ::
        (MonadIO m, FromJSString result) =>
          HTMLDocument -> m (Maybe result)
 getDir self = liftIO (fromMaybeJSString <$> (js_getDir (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.dir Mozilla HTMLDocument.dir documentation> 
+getDirUnchecked ::
+                (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getDirUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getDir (self)))
  
 foreign import javascript unsafe "$1[\"designMode\"] = $2;"
         js_setDesignMode :: HTMLDocument -> Nullable JSString -> IO ()
@@ -163,6 +199,13 @@ getDesignMode ::
                 HTMLDocument -> m (Maybe result)
 getDesignMode self
   = liftIO (fromMaybeJSString <$> (js_getDesignMode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.designMode Mozilla HTMLDocument.designMode documentation> 
+getDesignModeUnchecked ::
+                       (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getDesignModeUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getDesignMode (self)))
  
 foreign import javascript unsafe "$1[\"compatMode\"]"
         js_getCompatMode :: HTMLDocument -> IO JSString
@@ -191,6 +234,12 @@ getBgColor ::
              HTMLDocument -> m (Maybe result)
 getBgColor self
   = liftIO (fromMaybeJSString <$> (js_getBgColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
+getBgColorUnchecked ::
+                    (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getBgColorUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor (self)))
  
 foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
         js_setFgColor :: HTMLDocument -> Nullable JSString -> IO ()
@@ -210,6 +259,12 @@ getFgColor ::
              HTMLDocument -> m (Maybe result)
 getFgColor self
   = liftIO (fromMaybeJSString <$> (js_getFgColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
+getFgColorUnchecked ::
+                    (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getFgColorUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getFgColor (self)))
  
 foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
         js_setAlinkColor :: HTMLDocument -> Nullable JSString -> IO ()
@@ -229,6 +284,13 @@ getAlinkColor ::
                 HTMLDocument -> m (Maybe result)
 getAlinkColor self
   = liftIO (fromMaybeJSString <$> (js_getAlinkColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
+getAlinkColorUnchecked ::
+                       (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getAlinkColorUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getAlinkColor (self)))
  
 foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
         js_setLinkColor :: HTMLDocument -> Nullable JSString -> IO ()
@@ -248,6 +310,13 @@ getLinkColor ::
                HTMLDocument -> m (Maybe result)
 getLinkColor self
   = liftIO (fromMaybeJSString <$> (js_getLinkColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
+getLinkColorUnchecked ::
+                      (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getLinkColorUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getLinkColor (self)))
  
 foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
         js_setVlinkColor :: HTMLDocument -> Nullable JSString -> IO ()
@@ -267,3 +336,10 @@ getVlinkColor ::
                 HTMLDocument -> m (Maybe result)
 getVlinkColor self
   = liftIO (fromMaybeJSString <$> (js_getVlinkColor (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
+getVlinkColorUnchecked ::
+                       (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getVlinkColorUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getVlinkColor (self)))

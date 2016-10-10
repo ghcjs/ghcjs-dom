@@ -1,15 +1,16 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Location
        (js_assign, assign, js_replace, replace, js_reload, reload,
-        js_toString, toString, js_setHref, setHref, js_getHref, getHref,
-        js_setProtocol, setProtocol, js_getProtocol, getProtocol,
+        js_toString, toString, toString_, js_setHref, setHref, js_getHref,
+        getHref, js_setProtocol, setProtocol, js_getProtocol, getProtocol,
         js_setHost, setHost, js_getHost, getHost, js_setHostname,
         setHostname, js_getHostname, getHostname, js_setPort, setPort,
         js_getPort, getPort, js_setPathname, setPathname, js_getPathname,
         getPathname, js_setSearch, setSearch, js_getSearch, getSearch,
         js_setHash, setHash, js_getHash, getHash, js_getOrigin, getOrigin,
-        js_getAncestorOrigins, getAncestorOrigins, Location,
-        castToLocation, gTypeLocation)
+        js_getAncestorOrigins, getAncestorOrigins,
+        getAncestorOriginsUnchecked, Location, castToLocation,
+        gTypeLocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -54,6 +57,10 @@ foreign import javascript unsafe "$1[\"toString\"]()" js_toString
 toString ::
          (MonadIO m, FromJSString result) => Location -> m result
 toString self = liftIO (fromJSString <$> (js_toString (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.toString Mozilla Location.toString documentation> 
+toString_ :: (MonadIO m) => Location -> m ()
+toString_ self = liftIO (void (js_toString (self)))
  
 foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         Location -> JSString -> IO ()
@@ -196,3 +203,10 @@ getAncestorOrigins ::
                    (MonadIO m) => Location -> m (Maybe DOMStringList)
 getAncestorOrigins self
   = liftIO (nullableToMaybe <$> (js_getAncestorOrigins (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 
+getAncestorOriginsUnchecked ::
+                            (MonadIO m) => Location -> m DOMStringList
+getAncestorOriginsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getAncestorOrigins (self)))

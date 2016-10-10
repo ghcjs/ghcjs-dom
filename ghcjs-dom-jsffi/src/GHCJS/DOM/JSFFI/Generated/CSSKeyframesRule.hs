@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSKeyframesRule
        (js_insertRule, insertRule, js_appendRule, appendRule,
-        js_deleteRule, deleteRule, js_findRule, findRule, js__get, _get,
-        js_setName, setName, js_getName, getName, js_getCssRules,
-        getCssRules, CSSKeyframesRule, castToCSSKeyframesRule,
-        gTypeCSSKeyframesRule)
+        js_deleteRule, deleteRule, js_findRule, findRule, findRule_,
+        findRuleUnchecked, js__get, _get, _get_, _getUnchecked, js_setName,
+        setName, js_getName, getName, getNameUnchecked, js_getCssRules,
+        getCssRules, getCssRulesUnchecked, CSSKeyframesRule,
+        castToCSSKeyframesRule, gTypeCSSKeyframesRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -58,6 +61,21 @@ findRule ::
 findRule self key
   = liftIO
       (nullableToMaybe <$> (js_findRule (self) (toJSString key)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.findRule Mozilla CSSKeyframesRule.findRule documentation> 
+findRule_ ::
+          (MonadIO m, ToJSString key) => CSSKeyframesRule -> key -> m ()
+findRule_ self key
+  = liftIO (void (js_findRule (self) (toJSString key)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.findRule Mozilla CSSKeyframesRule.findRule documentation> 
+findRuleUnchecked ::
+                  (MonadIO m, ToJSString key) =>
+                    CSSKeyframesRule -> key -> m CSSKeyframeRule
+findRuleUnchecked self key
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_findRule (self) (toJSString key)))
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
         CSSKeyframesRule -> Word -> IO (Nullable CSSKeyframeRule)
@@ -68,6 +86,16 @@ _get ::
        CSSKeyframesRule -> Word -> m (Maybe CSSKeyframeRule)
 _get self index
   = liftIO (nullableToMaybe <$> (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule._get Mozilla CSSKeyframesRule._get documentation> 
+_get_ :: (MonadIO m) => CSSKeyframesRule -> Word -> m ()
+_get_ self index = liftIO (void (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule._get Mozilla CSSKeyframesRule._get documentation> 
+_getUnchecked ::
+              (MonadIO m) => CSSKeyframesRule -> Word -> m CSSKeyframeRule
+_getUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js__get (self) index))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         CSSKeyframesRule -> Nullable JSString -> IO ()
@@ -86,6 +114,12 @@ getName ::
         (MonadIO m, FromJSString result) =>
           CSSKeyframesRule -> m (Maybe result)
 getName self = liftIO (fromMaybeJSString <$> (js_getName (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
+getNameUnchecked ::
+                 (MonadIO m, FromJSString result) => CSSKeyframesRule -> m result
+getNameUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getName (self)))
  
 foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
         :: CSSKeyframesRule -> IO (Nullable CSSRuleList)
@@ -95,3 +129,9 @@ getCssRules ::
             (MonadIO m) => CSSKeyframesRule -> m (Maybe CSSRuleList)
 getCssRules self
   = liftIO (nullableToMaybe <$> (js_getCssRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.cssRules Mozilla CSSKeyframesRule.cssRules documentation> 
+getCssRulesUnchecked ::
+                     (MonadIO m) => CSSKeyframesRule -> m CSSRuleList
+getCssRulesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCssRules (self)))

@@ -1,10 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFilterElement
        (js_setFilterRes, setFilterRes, js_getFilterUnits, getFilterUnits,
-        js_getPrimitiveUnits, getPrimitiveUnits, js_getX, getX, js_getY,
-        getY, js_getWidth, getWidth, js_getHeight, getHeight,
-        js_getFilterResX, getFilterResX, js_getFilterResY, getFilterResY,
-        SVGFilterElement, castToSVGFilterElement, gTypeSVGFilterElement)
+        getFilterUnitsUnchecked, js_getPrimitiveUnits, getPrimitiveUnits,
+        getPrimitiveUnitsUnchecked, js_getX, getX, getXUnchecked, js_getY,
+        getY, getYUnchecked, js_getWidth, getWidth, getWidthUnchecked,
+        js_getHeight, getHeight, getHeightUnchecked, js_getFilterResX,
+        getFilterResX, getFilterResXUnchecked, js_getFilterResY,
+        getFilterResY, getFilterResYUnchecked, SVGFilterElement,
+        castToSVGFilterElement, gTypeSVGFilterElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +44,13 @@ getFilterUnits ::
                (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedEnumeration)
 getFilterUnits self
   = liftIO (nullableToMaybe <$> (js_getFilterUnits (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterUnits Mozilla SVGFilterElement.filterUnits documentation> 
+getFilterUnitsUnchecked ::
+                        (MonadIO m) => SVGFilterElement -> m SVGAnimatedEnumeration
+getFilterUnitsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getFilterUnits (self)))
  
 foreign import javascript unsafe "$1[\"primitiveUnits\"]"
         js_getPrimitiveUnits ::
@@ -49,6 +61,13 @@ getPrimitiveUnits ::
                   (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedEnumeration)
 getPrimitiveUnits self
   = liftIO (nullableToMaybe <$> (js_getPrimitiveUnits (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.primitiveUnits Mozilla SVGFilterElement.primitiveUnits documentation> 
+getPrimitiveUnitsUnchecked ::
+                           (MonadIO m) => SVGFilterElement -> m SVGAnimatedEnumeration
+getPrimitiveUnitsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getPrimitiveUnits (self)))
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGFilterElement -> IO (Nullable SVGAnimatedLength)
@@ -57,6 +76,12 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX ::
      (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedLength)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.x Mozilla SVGFilterElement.x documentation> 
+getXUnchecked ::
+              (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
+getXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         SVGFilterElement -> IO (Nullable SVGAnimatedLength)
@@ -65,6 +90,12 @@ foreign import javascript unsafe "$1[\"y\"]" js_getY ::
 getY ::
      (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedLength)
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.y Mozilla SVGFilterElement.y documentation> 
+getYUnchecked ::
+              (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
+getYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         SVGFilterElement -> IO (Nullable SVGAnimatedLength)
@@ -73,6 +104,12 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth ::
          (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedLength)
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.width Mozilla SVGFilterElement.width documentation> 
+getWidthUnchecked ::
+                  (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
+getWidthUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         SVGFilterElement -> IO (Nullable SVGAnimatedLength)
@@ -81,6 +118,12 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight ::
           (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedLength)
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.height Mozilla SVGFilterElement.height documentation> 
+getHeightUnchecked ::
+                   (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
+getHeightUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getHeight (self)))
  
 foreign import javascript unsafe "$1[\"filterResX\"]"
         js_getFilterResX ::
@@ -91,6 +134,12 @@ getFilterResX ::
               (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedInteger)
 getFilterResX self
   = liftIO (nullableToMaybe <$> (js_getFilterResX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResX Mozilla SVGFilterElement.filterResX documentation> 
+getFilterResXUnchecked ::
+                       (MonadIO m) => SVGFilterElement -> m SVGAnimatedInteger
+getFilterResXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFilterResX (self)))
  
 foreign import javascript unsafe "$1[\"filterResY\"]"
         js_getFilterResY ::
@@ -101,3 +150,9 @@ getFilterResY ::
               (MonadIO m) => SVGFilterElement -> m (Maybe SVGAnimatedInteger)
 getFilterResY self
   = liftIO (nullableToMaybe <$> (js_getFilterResY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResY Mozilla SVGFilterElement.filterResY documentation> 
+getFilterResYUnchecked ::
+                       (MonadIO m) => SVGFilterElement -> m SVGAnimatedInteger
+getFilterResYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFilterResY (self)))

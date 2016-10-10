@@ -1,22 +1,26 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableElement
-       (js_createTHead, createTHead, js_deleteTHead, deleteTHead,
-        js_createTFoot, createTFoot, js_deleteTFoot, deleteTFoot,
-        js_createTBody, createTBody, js_createCaption, createCaption,
-        js_deleteCaption, deleteCaption, js_insertRow, insertRow,
+       (js_createTHead, createTHead, createTHead_, createTHeadUnchecked,
+        js_deleteTHead, deleteTHead, js_createTFoot, createTFoot,
+        createTFoot_, createTFootUnchecked, js_deleteTFoot, deleteTFoot,
+        js_createTBody, createTBody, createTBody_, createTBodyUnchecked,
+        js_createCaption, createCaption, createCaption_,
+        createCaptionUnchecked, js_deleteCaption, deleteCaption,
+        js_insertRow, insertRow, insertRow_, insertRowUnchecked,
         js_deleteRow, deleteRow, js_setCaption, setCaption, js_getCaption,
-        getCaption, js_setTHead, setTHead, js_getTHead, getTHead,
-        js_setTFoot, setTFoot, js_getTFoot, getTFoot, js_getRows, getRows,
-        js_getTBodies, getTBodies, js_setAlign, setAlign, js_getAlign,
-        getAlign, js_setBgColor, setBgColor, js_getBgColor, getBgColor,
-        js_setBorder, setBorder, js_getBorder, getBorder,
-        js_setCellPadding, setCellPadding, js_getCellPadding,
-        getCellPadding, js_setCellSpacing, setCellSpacing,
-        js_getCellSpacing, getCellSpacing, js_setFrame, setFrame,
-        js_getFrame, getFrame, js_setRules, setRules, js_getRules,
-        getRules, js_setSummary, setSummary, js_getSummary, getSummary,
-        js_setWidth, setWidth, js_getWidth, getWidth, HTMLTableElement,
-        castToHTMLTableElement, gTypeHTMLTableElement)
+        getCaption, getCaptionUnchecked, js_setTHead, setTHead,
+        js_getTHead, getTHead, getTHeadUnchecked, js_setTFoot, setTFoot,
+        js_getTFoot, getTFoot, getTFootUnchecked, js_getRows, getRows,
+        getRowsUnchecked, js_getTBodies, getTBodies, getTBodiesUnchecked,
+        js_setAlign, setAlign, js_getAlign, getAlign, js_setBgColor,
+        setBgColor, js_getBgColor, getBgColor, js_setBorder, setBorder,
+        js_getBorder, getBorder, js_setCellPadding, setCellPadding,
+        js_getCellPadding, getCellPadding, js_setCellSpacing,
+        setCellSpacing, js_getCellSpacing, getCellSpacing, js_setFrame,
+        setFrame, js_getFrame, getFrame, js_setRules, setRules,
+        js_getRules, getRules, js_setSummary, setSummary, js_getSummary,
+        getSummary, js_setWidth, setWidth, js_getWidth, getWidth,
+        HTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -25,9 +29,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -41,6 +47,16 @@ createTHead ::
             (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
 createTHead self
   = liftIO (nullableToMaybe <$> (js_createTHead (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
+createTHead_ :: (MonadIO m) => HTMLTableElement -> m ()
+createTHead_ self = liftIO (void (js_createTHead (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
+createTHeadUnchecked ::
+                     (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTHeadUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_createTHead (self)))
  
 foreign import javascript unsafe "$1[\"deleteTHead\"]()"
         js_deleteTHead :: HTMLTableElement -> IO ()
@@ -57,6 +73,16 @@ createTFoot ::
             (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
 createTFoot self
   = liftIO (nullableToMaybe <$> (js_createTFoot (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
+createTFoot_ :: (MonadIO m) => HTMLTableElement -> m ()
+createTFoot_ self = liftIO (void (js_createTFoot (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
+createTFootUnchecked ::
+                     (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTFootUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_createTFoot (self)))
  
 foreign import javascript unsafe "$1[\"deleteTFoot\"]()"
         js_deleteTFoot :: HTMLTableElement -> IO ()
@@ -73,6 +99,16 @@ createTBody ::
             (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
 createTBody self
   = liftIO (nullableToMaybe <$> (js_createTBody (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
+createTBody_ :: (MonadIO m) => HTMLTableElement -> m ()
+createTBody_ self = liftIO (void (js_createTBody (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
+createTBodyUnchecked ::
+                     (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTBodyUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_createTBody (self)))
  
 foreign import javascript unsafe "$1[\"createCaption\"]()"
         js_createCaption :: HTMLTableElement -> IO (Nullable HTMLElement)
@@ -82,6 +118,16 @@ createCaption ::
               (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
 createCaption self
   = liftIO (nullableToMaybe <$> (js_createCaption (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
+createCaption_ :: (MonadIO m) => HTMLTableElement -> m ()
+createCaption_ self = liftIO (void (js_createCaption (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
+createCaptionUnchecked ::
+                       (MonadIO m) => HTMLTableElement -> m HTMLElement
+createCaptionUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_createCaption (self)))
  
 foreign import javascript unsafe "$1[\"deleteCaption\"]()"
         js_deleteCaption :: HTMLTableElement -> IO ()
@@ -99,6 +145,17 @@ insertRow ::
           (MonadIO m) => HTMLTableElement -> Int -> m (Maybe HTMLElement)
 insertRow self index
   = liftIO (nullableToMaybe <$> (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
+insertRow_ :: (MonadIO m) => HTMLTableElement -> Int -> m ()
+insertRow_ self index = liftIO (void (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
+insertRowUnchecked ::
+                   (MonadIO m) => HTMLTableElement -> Int -> m HTMLElement
+insertRowUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_insertRow (self) index))
  
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         js_deleteRow :: HTMLTableElement -> Int -> IO ()
@@ -127,6 +184,12 @@ getCaption ::
              HTMLTableElement -> m (Maybe HTMLTableCaptionElement)
 getCaption self
   = liftIO (nullableToMaybe <$> (js_getCaption (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
+getCaptionUnchecked ::
+                    (MonadIO m) => HTMLTableElement -> m HTMLTableCaptionElement
+getCaptionUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCaption (self)))
  
 foreign import javascript unsafe "$1[\"tHead\"] = $2;" js_setTHead
         :: HTMLTableElement -> Nullable HTMLTableSectionElement -> IO ()
@@ -146,6 +209,12 @@ getTHead ::
          (MonadIO m) =>
            HTMLTableElement -> m (Maybe HTMLTableSectionElement)
 getTHead self = liftIO (nullableToMaybe <$> (js_getTHead (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
+getTHeadUnchecked ::
+                  (MonadIO m) => HTMLTableElement -> m HTMLTableSectionElement
+getTHeadUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTHead (self)))
  
 foreign import javascript unsafe "$1[\"tFoot\"] = $2;" js_setTFoot
         :: HTMLTableElement -> Nullable HTMLTableSectionElement -> IO ()
@@ -165,6 +234,12 @@ getTFoot ::
          (MonadIO m) =>
            HTMLTableElement -> m (Maybe HTMLTableSectionElement)
 getTFoot self = liftIO (nullableToMaybe <$> (js_getTFoot (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
+getTFootUnchecked ::
+                  (MonadIO m) => HTMLTableElement -> m HTMLTableSectionElement
+getTFootUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTFoot (self)))
  
 foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
         HTMLTableElement -> IO (Nullable HTMLCollection)
@@ -173,6 +248,12 @@ foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
 getRows ::
         (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
 getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
+getRowsUnchecked ::
+                 (MonadIO m) => HTMLTableElement -> m HTMLCollection
+getRowsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRows (self)))
  
 foreign import javascript unsafe "$1[\"tBodies\"]" js_getTBodies ::
         HTMLTableElement -> IO (Nullable HTMLCollection)
@@ -182,6 +263,12 @@ getTBodies ::
            (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
 getTBodies self
   = liftIO (nullableToMaybe <$> (js_getTBodies (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
+getTBodiesUnchecked ::
+                    (MonadIO m) => HTMLTableElement -> m HTMLCollection
+getTBodiesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTBodies (self)))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLTableElement -> JSString -> IO ()

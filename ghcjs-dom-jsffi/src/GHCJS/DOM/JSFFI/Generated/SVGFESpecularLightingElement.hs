@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFESpecularLightingElement
-       (js_getIn1, getIn1, js_getSurfaceScale, getSurfaceScale,
-        js_getSpecularConstant, getSpecularConstant,
+       (js_getIn1, getIn1, getIn1Unchecked, js_getSurfaceScale,
+        getSurfaceScale, getSurfaceScaleUnchecked, js_getSpecularConstant,
+        getSpecularConstant, getSpecularConstantUnchecked,
         js_getSpecularExponent, getSpecularExponent,
-        SVGFESpecularLightingElement, castToSVGFESpecularLightingElement,
+        getSpecularExponentUnchecked, SVGFESpecularLightingElement,
+        castToSVGFESpecularLightingElement,
         gTypeSVGFESpecularLightingElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -13,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -29,6 +33,12 @@ getIn1 ::
        (MonadIO m) =>
          SVGFESpecularLightingElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.in1 Mozilla SVGFESpecularLightingElement.in1 documentation> 
+getIn1Unchecked ::
+                (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedString
+getIn1Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"surfaceScale\"]"
         js_getSurfaceScale ::
@@ -40,6 +50,13 @@ getSurfaceScale ::
                   SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
 getSurfaceScale self
   = liftIO (nullableToMaybe <$> (js_getSurfaceScale (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.surfaceScale Mozilla SVGFESpecularLightingElement.surfaceScale documentation> 
+getSurfaceScaleUnchecked ::
+                         (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedNumber
+getSurfaceScaleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSurfaceScale (self)))
  
 foreign import javascript unsafe "$1[\"specularConstant\"]"
         js_getSpecularConstant ::
@@ -51,6 +68,13 @@ getSpecularConstant ::
                       SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
 getSpecularConstant self
   = liftIO (nullableToMaybe <$> (js_getSpecularConstant (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.specularConstant Mozilla SVGFESpecularLightingElement.specularConstant documentation> 
+getSpecularConstantUnchecked ::
+                             (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedNumber
+getSpecularConstantUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSpecularConstant (self)))
  
 foreign import javascript unsafe "$1[\"specularExponent\"]"
         js_getSpecularExponent ::
@@ -62,3 +86,10 @@ getSpecularExponent ::
                       SVGFESpecularLightingElement -> m (Maybe SVGAnimatedNumber)
 getSpecularExponent self
   = liftIO (nullableToMaybe <$> (js_getSpecularExponent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement.specularExponent Mozilla SVGFESpecularLightingElement.specularExponent documentation> 
+getSpecularExponentUnchecked ::
+                             (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedNumber
+getSpecularExponentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSpecularExponent (self)))

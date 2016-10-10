@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSPageRule
        (js_setSelectorText, setSelectorText, js_getSelectorText,
-        getSelectorText, js_getStyle, getStyle, CSSPageRule,
-        castToCSSPageRule, gTypeCSSPageRule)
+        getSelectorText, getSelectorTextUnchecked, js_getStyle, getStyle,
+        getStyleUnchecked, CSSPageRule, castToCSSPageRule,
+        gTypeCSSPageRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +39,13 @@ getSelectorText ::
                 (MonadIO m, FromJSString result) => CSSPageRule -> m (Maybe result)
 getSelectorText self
   = liftIO (fromMaybeJSString <$> (js_getSelectorText (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
+getSelectorTextUnchecked ::
+                         (MonadIO m, FromJSString result) => CSSPageRule -> m result
+getSelectorTextUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getSelectorText (self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
         CSSPageRule -> IO (Nullable CSSStyleDeclaration)
@@ -44,3 +54,9 @@ foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
 getStyle ::
          (MonadIO m) => CSSPageRule -> m (Maybe CSSStyleDeclaration)
 getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.style Mozilla CSSPageRule.style documentation> 
+getStyleUnchecked ::
+                  (MonadIO m) => CSSPageRule -> m CSSStyleDeclaration
+getStyleUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getStyle (self)))

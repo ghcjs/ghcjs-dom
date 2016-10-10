@@ -1,26 +1,47 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AudioContext
        (js_newAudioContext, newAudioContext, js_createBuffer,
-        createBuffer, js_createBufferFromArrayBuffer,
-        createBufferFromArrayBuffer, js_decodeAudioData, decodeAudioData,
-        js_createBufferSource, createBufferSource,
-        js_createMediaElementSource, createMediaElementSource,
-        js_createMediaStreamSource, createMediaStreamSource,
-        js_createMediaStreamDestination, createMediaStreamDestination,
-        js_createGain, createGain, js_createDelay, createDelay,
-        js_createBiquadFilter, createBiquadFilter, js_createWaveShaper,
-        createWaveShaper, js_createPanner, createPanner,
-        js_createConvolver, createConvolver, js_createDynamicsCompressor,
-        createDynamicsCompressor, js_createAnalyser, createAnalyser,
+        createBuffer, createBuffer_, createBufferUnchecked,
+        js_createBufferFromArrayBuffer, createBufferFromArrayBuffer,
+        createBufferFromArrayBuffer_, createBufferFromArrayBufferUnchecked,
+        js_decodeAudioData, decodeAudioData, js_createBufferSource,
+        createBufferSource, createBufferSource_,
+        createBufferSourceUnchecked, js_createMediaElementSource,
+        createMediaElementSource, createMediaElementSource_,
+        createMediaElementSourceUnchecked, js_createMediaStreamSource,
+        createMediaStreamSource, createMediaStreamSource_,
+        createMediaStreamSourceUnchecked, js_createMediaStreamDestination,
+        createMediaStreamDestination, createMediaStreamDestination_,
+        createMediaStreamDestinationUnchecked, js_createGain, createGain,
+        createGain_, createGainUnchecked, js_createDelay, createDelay,
+        createDelay_, createDelayUnchecked, js_createBiquadFilter,
+        createBiquadFilter, createBiquadFilter_,
+        createBiquadFilterUnchecked, js_createWaveShaper, createWaveShaper,
+        createWaveShaper_, createWaveShaperUnchecked, js_createPanner,
+        createPanner, createPanner_, createPannerUnchecked,
+        js_createConvolver, createConvolver, createConvolver_,
+        createConvolverUnchecked, js_createDynamicsCompressor,
+        createDynamicsCompressor, createDynamicsCompressor_,
+        createDynamicsCompressorUnchecked, js_createAnalyser,
+        createAnalyser, createAnalyser_, createAnalyserUnchecked,
         js_createScriptProcessor, createScriptProcessor,
-        js_createOscillator, createOscillator, js_createPeriodicWave,
-        createPeriodicWave, js_createChannelSplitter,
-        createChannelSplitter, js_createChannelMerger, createChannelMerger,
-        js_startRendering, startRendering, js_createGainNode,
-        createGainNode, js_createDelayNode, createDelayNode,
-        js_createJavaScriptNode, createJavaScriptNode, js_getDestination,
-        getDestination, js_getCurrentTime, getCurrentTime,
-        js_getSampleRate, getSampleRate, js_getListener, getListener,
+        createScriptProcessor_, createScriptProcessorUnchecked,
+        js_createOscillator, createOscillator, createOscillator_,
+        createOscillatorUnchecked, js_createPeriodicWave,
+        createPeriodicWave, createPeriodicWave_,
+        createPeriodicWaveUnchecked, js_createChannelSplitter,
+        createChannelSplitter, createChannelSplitter_,
+        createChannelSplitterUnchecked, js_createChannelMerger,
+        createChannelMerger, createChannelMerger_,
+        createChannelMergerUnchecked, js_startRendering, startRendering,
+        js_createGainNode, createGainNode, createGainNode_,
+        createGainNodeUnchecked, js_createDelayNode, createDelayNode,
+        createDelayNode_, createDelayNodeUnchecked,
+        js_createJavaScriptNode, createJavaScriptNode,
+        createJavaScriptNode_, createJavaScriptNodeUnchecked,
+        js_getDestination, getDestination, getDestinationUnchecked,
+        js_getCurrentTime, getCurrentTime, js_getSampleRate, getSampleRate,
+        js_getListener, getListener, getListenerUnchecked,
         js_getActiveSourceCount, getActiveSourceCount, complete,
         AudioContext, castToAudioContext, gTypeAudioContext,
         IsAudioContext, toAudioContext)
@@ -32,9 +53,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -62,6 +85,29 @@ createBuffer self numberOfChannels numberOfFrames sampleRate
          (js_createBuffer (toAudioContext self) numberOfChannels
             numberOfFrames
             sampleRate))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBuffer Mozilla AudioContext.createBuffer documentation> 
+createBuffer_ ::
+              (MonadIO m, IsAudioContext self) =>
+                self -> Word -> Word -> Float -> m ()
+createBuffer_ self numberOfChannels numberOfFrames sampleRate
+  = liftIO
+      (void
+         (js_createBuffer (toAudioContext self) numberOfChannels
+            numberOfFrames
+            sampleRate))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBuffer Mozilla AudioContext.createBuffer documentation> 
+createBufferUnchecked ::
+                      (MonadIO m, IsAudioContext self) =>
+                        self -> Word -> Word -> Float -> m AudioBuffer
+createBufferUnchecked self numberOfChannels numberOfFrames
+  sampleRate
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createBuffer (toAudioContext self) numberOfChannels
+            numberOfFrames
+            sampleRate))
  
 foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3)"
         js_createBufferFromArrayBuffer ::
@@ -75,6 +121,28 @@ createBufferFromArrayBuffer ::
 createBufferFromArrayBuffer self buffer mixToMono
   = liftIO
       (nullableToMaybe <$>
+         (js_createBufferFromArrayBuffer (toAudioContext self)
+            (maybeToNullable (fmap toArrayBuffer buffer))
+            mixToMono))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBuffer Mozilla AudioContext.createBuffer documentation> 
+createBufferFromArrayBuffer_ ::
+                             (MonadIO m, IsAudioContext self, IsArrayBuffer buffer) =>
+                               self -> Maybe buffer -> Bool -> m ()
+createBufferFromArrayBuffer_ self buffer mixToMono
+  = liftIO
+      (void
+         (js_createBufferFromArrayBuffer (toAudioContext self)
+            (maybeToNullable (fmap toArrayBuffer buffer))
+            mixToMono))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBuffer Mozilla AudioContext.createBuffer documentation> 
+createBufferFromArrayBufferUnchecked ::
+                                     (MonadIO m, IsAudioContext self, IsArrayBuffer buffer) =>
+                                       self -> Maybe buffer -> Bool -> m AudioBuffer
+createBufferFromArrayBufferUnchecked self buffer mixToMono
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createBufferFromArrayBuffer (toAudioContext self)
             (maybeToNullable (fmap toArrayBuffer buffer))
             mixToMono))
@@ -110,6 +178,20 @@ createBufferSource ::
 createBufferSource self
   = liftIO
       (nullableToMaybe <$> (js_createBufferSource (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBufferSource Mozilla AudioContext.createBufferSource documentation> 
+createBufferSource_ ::
+                    (MonadIO m, IsAudioContext self) => self -> m ()
+createBufferSource_ self
+  = liftIO (void (js_createBufferSource (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBufferSource Mozilla AudioContext.createBufferSource documentation> 
+createBufferSourceUnchecked ::
+                            (MonadIO m, IsAudioContext self) => self -> m AudioBufferSourceNode
+createBufferSourceUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createBufferSource (toAudioContext self)))
  
 foreign import javascript unsafe
         "$1[\"createMediaElementSource\"]($2)" js_createMediaElementSource
@@ -128,6 +210,28 @@ createMediaElementSource self mediaElement
       (nullableToMaybe <$>
          (js_createMediaElementSource (toAudioContext self)
             (maybeToNullable (fmap toHTMLMediaElement mediaElement))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaElementSource Mozilla AudioContext.createMediaElementSource documentation> 
+createMediaElementSource_ ::
+                          (MonadIO m, IsAudioContext self,
+                           IsHTMLMediaElement mediaElement) =>
+                            self -> Maybe mediaElement -> m ()
+createMediaElementSource_ self mediaElement
+  = liftIO
+      (void
+         (js_createMediaElementSource (toAudioContext self)
+            (maybeToNullable (fmap toHTMLMediaElement mediaElement))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaElementSource Mozilla AudioContext.createMediaElementSource documentation> 
+createMediaElementSourceUnchecked ::
+                                  (MonadIO m, IsAudioContext self,
+                                   IsHTMLMediaElement mediaElement) =>
+                                    self -> Maybe mediaElement -> m MediaElementAudioSourceNode
+createMediaElementSourceUnchecked self mediaElement
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createMediaElementSource (toAudioContext self)
+            (maybeToNullable (fmap toHTMLMediaElement mediaElement))))
  
 foreign import javascript unsafe
         "$1[\"createMediaStreamSource\"]($2)" js_createMediaStreamSource ::
@@ -141,6 +245,26 @@ createMediaStreamSource ::
 createMediaStreamSource self mediaStream
   = liftIO
       (nullableToMaybe <$>
+         (js_createMediaStreamSource (toAudioContext self)
+            (maybeToNullable mediaStream)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamSource Mozilla AudioContext.createMediaStreamSource documentation> 
+createMediaStreamSource_ ::
+                         (MonadIO m, IsAudioContext self) =>
+                           self -> Maybe MediaStream -> m ()
+createMediaStreamSource_ self mediaStream
+  = liftIO
+      (void
+         (js_createMediaStreamSource (toAudioContext self)
+            (maybeToNullable mediaStream)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamSource Mozilla AudioContext.createMediaStreamSource documentation> 
+createMediaStreamSourceUnchecked ::
+                                 (MonadIO m, IsAudioContext self) =>
+                                   self -> Maybe MediaStream -> m MediaStreamAudioSourceNode
+createMediaStreamSourceUnchecked self mediaStream
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createMediaStreamSource (toAudioContext self)
             (maybeToNullable mediaStream)))
  
@@ -157,6 +281,22 @@ createMediaStreamDestination self
   = liftIO
       (nullableToMaybe <$>
          (js_createMediaStreamDestination (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamDestination Mozilla AudioContext.createMediaStreamDestination documentation> 
+createMediaStreamDestination_ ::
+                              (MonadIO m, IsAudioContext self) => self -> m ()
+createMediaStreamDestination_ self
+  = liftIO
+      (void (js_createMediaStreamDestination (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamDestination Mozilla AudioContext.createMediaStreamDestination documentation> 
+createMediaStreamDestinationUnchecked ::
+                                      (MonadIO m, IsAudioContext self) =>
+                                        self -> m MediaStreamAudioDestinationNode
+createMediaStreamDestinationUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createMediaStreamDestination (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createGain\"]()"
         js_createGain :: AudioContext -> IO (Nullable GainNode)
@@ -167,6 +307,19 @@ createGain ::
 createGain self
   = liftIO
       (nullableToMaybe <$> (js_createGain (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGain Mozilla AudioContext.createGain documentation> 
+createGain_ :: (MonadIO m, IsAudioContext self) => self -> m ()
+createGain_ self
+  = liftIO (void (js_createGain (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGain Mozilla AudioContext.createGain documentation> 
+createGainUnchecked ::
+                    (MonadIO m, IsAudioContext self) => self -> m GainNode
+createGainUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createGain (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createDelay\"]($2)"
         js_createDelay :: AudioContext -> Double -> IO (Nullable DelayNode)
@@ -178,6 +331,20 @@ createDelay ::
 createDelay self maxDelayTime
   = liftIO
       (nullableToMaybe <$>
+         (js_createDelay (toAudioContext self) maxDelayTime))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelay Mozilla AudioContext.createDelay documentation> 
+createDelay_ ::
+             (MonadIO m, IsAudioContext self) => self -> Double -> m ()
+createDelay_ self maxDelayTime
+  = liftIO (void (js_createDelay (toAudioContext self) maxDelayTime))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelay Mozilla AudioContext.createDelay documentation> 
+createDelayUnchecked ::
+                     (MonadIO m, IsAudioContext self) => self -> Double -> m DelayNode
+createDelayUnchecked self maxDelayTime
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createDelay (toAudioContext self) maxDelayTime))
  
 foreign import javascript unsafe "$1[\"createBiquadFilter\"]()"
@@ -191,6 +358,20 @@ createBiquadFilter ::
 createBiquadFilter self
   = liftIO
       (nullableToMaybe <$> (js_createBiquadFilter (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBiquadFilter Mozilla AudioContext.createBiquadFilter documentation> 
+createBiquadFilter_ ::
+                    (MonadIO m, IsAudioContext self) => self -> m ()
+createBiquadFilter_ self
+  = liftIO (void (js_createBiquadFilter (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBiquadFilter Mozilla AudioContext.createBiquadFilter documentation> 
+createBiquadFilterUnchecked ::
+                            (MonadIO m, IsAudioContext self) => self -> m BiquadFilterNode
+createBiquadFilterUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createBiquadFilter (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createWaveShaper\"]()"
         js_createWaveShaper :: AudioContext -> IO (Nullable WaveShaperNode)
@@ -202,6 +383,20 @@ createWaveShaper ::
 createWaveShaper self
   = liftIO
       (nullableToMaybe <$> (js_createWaveShaper (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createWaveShaper Mozilla AudioContext.createWaveShaper documentation> 
+createWaveShaper_ ::
+                  (MonadIO m, IsAudioContext self) => self -> m ()
+createWaveShaper_ self
+  = liftIO (void (js_createWaveShaper (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createWaveShaper Mozilla AudioContext.createWaveShaper documentation> 
+createWaveShaperUnchecked ::
+                          (MonadIO m, IsAudioContext self) => self -> m WaveShaperNode
+createWaveShaperUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createWaveShaper (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createPanner\"]()"
         js_createPanner :: AudioContext -> IO (Nullable PannerNode)
@@ -212,6 +407,19 @@ createPanner ::
 createPanner self
   = liftIO
       (nullableToMaybe <$> (js_createPanner (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPanner Mozilla AudioContext.createPanner documentation> 
+createPanner_ :: (MonadIO m, IsAudioContext self) => self -> m ()
+createPanner_ self
+  = liftIO (void (js_createPanner (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPanner Mozilla AudioContext.createPanner documentation> 
+createPannerUnchecked ::
+                      (MonadIO m, IsAudioContext self) => self -> m PannerNode
+createPannerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createPanner (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createConvolver\"]()"
         js_createConvolver :: AudioContext -> IO (Nullable ConvolverNode)
@@ -222,6 +430,20 @@ createConvolver ::
 createConvolver self
   = liftIO
       (nullableToMaybe <$> (js_createConvolver (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createConvolver Mozilla AudioContext.createConvolver documentation> 
+createConvolver_ ::
+                 (MonadIO m, IsAudioContext self) => self -> m ()
+createConvolver_ self
+  = liftIO (void (js_createConvolver (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createConvolver Mozilla AudioContext.createConvolver documentation> 
+createConvolverUnchecked ::
+                         (MonadIO m, IsAudioContext self) => self -> m ConvolverNode
+createConvolverUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createConvolver (toAudioContext self)))
  
 foreign import javascript unsafe
         "$1[\"createDynamicsCompressor\"]()" js_createDynamicsCompressor ::
@@ -235,6 +457,21 @@ createDynamicsCompressor self
   = liftIO
       (nullableToMaybe <$>
          (js_createDynamicsCompressor (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDynamicsCompressor Mozilla AudioContext.createDynamicsCompressor documentation> 
+createDynamicsCompressor_ ::
+                          (MonadIO m, IsAudioContext self) => self -> m ()
+createDynamicsCompressor_ self
+  = liftIO (void (js_createDynamicsCompressor (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDynamicsCompressor Mozilla AudioContext.createDynamicsCompressor documentation> 
+createDynamicsCompressorUnchecked ::
+                                  (MonadIO m, IsAudioContext self) =>
+                                    self -> m DynamicsCompressorNode
+createDynamicsCompressorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createDynamicsCompressor (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createAnalyser\"]()"
         js_createAnalyser :: AudioContext -> IO (Nullable AnalyserNode)
@@ -245,6 +482,19 @@ createAnalyser ::
 createAnalyser self
   = liftIO
       (nullableToMaybe <$> (js_createAnalyser (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createAnalyser Mozilla AudioContext.createAnalyser documentation> 
+createAnalyser_ :: (MonadIO m, IsAudioContext self) => self -> m ()
+createAnalyser_ self
+  = liftIO (void (js_createAnalyser (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createAnalyser Mozilla AudioContext.createAnalyser documentation> 
+createAnalyserUnchecked ::
+                        (MonadIO m, IsAudioContext self) => self -> m AnalyserNode
+createAnalyserUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createAnalyser (toAudioContext self)))
  
 foreign import javascript unsafe
         "$1[\"createScriptProcessor\"]($2,\n$3, $4)"
@@ -263,6 +513,30 @@ createScriptProcessor self bufferSize numberOfInputChannels
          (js_createScriptProcessor (toAudioContext self) bufferSize
             numberOfInputChannels
             numberOfOutputChannels))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor Mozilla AudioContext.createScriptProcessor documentation> 
+createScriptProcessor_ ::
+                       (MonadIO m, IsAudioContext self) =>
+                         self -> Word -> Word -> Word -> m ()
+createScriptProcessor_ self bufferSize numberOfInputChannels
+  numberOfOutputChannels
+  = liftIO
+      (void
+         (js_createScriptProcessor (toAudioContext self) bufferSize
+            numberOfInputChannels
+            numberOfOutputChannels))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor Mozilla AudioContext.createScriptProcessor documentation> 
+createScriptProcessorUnchecked ::
+                               (MonadIO m, IsAudioContext self) =>
+                                 self -> Word -> Word -> Word -> m ScriptProcessorNode
+createScriptProcessorUnchecked self bufferSize
+  numberOfInputChannels numberOfOutputChannels
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createScriptProcessor (toAudioContext self) bufferSize
+            numberOfInputChannels
+            numberOfOutputChannels))
  
 foreign import javascript unsafe "$1[\"createOscillator\"]()"
         js_createOscillator :: AudioContext -> IO (Nullable OscillatorNode)
@@ -274,6 +548,20 @@ createOscillator ::
 createOscillator self
   = liftIO
       (nullableToMaybe <$> (js_createOscillator (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createOscillator Mozilla AudioContext.createOscillator documentation> 
+createOscillator_ ::
+                  (MonadIO m, IsAudioContext self) => self -> m ()
+createOscillator_ self
+  = liftIO (void (js_createOscillator (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createOscillator Mozilla AudioContext.createOscillator documentation> 
+createOscillatorUnchecked ::
+                          (MonadIO m, IsAudioContext self) => self -> m OscillatorNode
+createOscillatorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createOscillator (toAudioContext self)))
  
 foreign import javascript unsafe
         "$1[\"createPeriodicWave\"]($2, $3)" js_createPeriodicWave ::
@@ -292,6 +580,30 @@ createPeriodicWave self real imag
          (js_createPeriodicWave (toAudioContext self)
             (maybeToNullable (fmap toFloat32Array real))
             (maybeToNullable (fmap toFloat32Array imag))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPeriodicWave Mozilla AudioContext.createPeriodicWave documentation> 
+createPeriodicWave_ ::
+                    (MonadIO m, IsAudioContext self, IsFloat32Array real,
+                     IsFloat32Array imag) =>
+                      self -> Maybe real -> Maybe imag -> m ()
+createPeriodicWave_ self real imag
+  = liftIO
+      (void
+         (js_createPeriodicWave (toAudioContext self)
+            (maybeToNullable (fmap toFloat32Array real))
+            (maybeToNullable (fmap toFloat32Array imag))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPeriodicWave Mozilla AudioContext.createPeriodicWave documentation> 
+createPeriodicWaveUnchecked ::
+                            (MonadIO m, IsAudioContext self, IsFloat32Array real,
+                             IsFloat32Array imag) =>
+                              self -> Maybe real -> Maybe imag -> m PeriodicWave
+createPeriodicWaveUnchecked self real imag
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createPeriodicWave (toAudioContext self)
+            (maybeToNullable (fmap toFloat32Array real))
+            (maybeToNullable (fmap toFloat32Array imag))))
  
 foreign import javascript unsafe
         "$1[\"createChannelSplitter\"]($2)" js_createChannelSplitter ::
@@ -305,6 +617,23 @@ createChannelSplitter self numberOfOutputs
   = liftIO
       (nullableToMaybe <$>
          (js_createChannelSplitter (toAudioContext self) numberOfOutputs))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelSplitter Mozilla AudioContext.createChannelSplitter documentation> 
+createChannelSplitter_ ::
+                       (MonadIO m, IsAudioContext self) => self -> Word -> m ()
+createChannelSplitter_ self numberOfOutputs
+  = liftIO
+      (void
+         (js_createChannelSplitter (toAudioContext self) numberOfOutputs))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelSplitter Mozilla AudioContext.createChannelSplitter documentation> 
+createChannelSplitterUnchecked ::
+                               (MonadIO m, IsAudioContext self) =>
+                                 self -> Word -> m ChannelSplitterNode
+createChannelSplitterUnchecked self numberOfOutputs
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createChannelSplitter (toAudioContext self) numberOfOutputs))
  
 foreign import javascript unsafe "$1[\"createChannelMerger\"]($2)"
         js_createChannelMerger ::
@@ -317,6 +646,23 @@ createChannelMerger ::
 createChannelMerger self numberOfInputs
   = liftIO
       (nullableToMaybe <$>
+         (js_createChannelMerger (toAudioContext self) numberOfInputs))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelMerger Mozilla AudioContext.createChannelMerger documentation> 
+createChannelMerger_ ::
+                     (MonadIO m, IsAudioContext self) => self -> Word -> m ()
+createChannelMerger_ self numberOfInputs
+  = liftIO
+      (void
+         (js_createChannelMerger (toAudioContext self) numberOfInputs))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelMerger Mozilla AudioContext.createChannelMerger documentation> 
+createChannelMergerUnchecked ::
+                             (MonadIO m, IsAudioContext self) =>
+                               self -> Word -> m ChannelMergerNode
+createChannelMergerUnchecked self numberOfInputs
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createChannelMerger (toAudioContext self) numberOfInputs))
  
 foreign import javascript unsafe "$1[\"startRendering\"]()"
@@ -336,6 +682,19 @@ createGainNode ::
 createGainNode self
   = liftIO
       (nullableToMaybe <$> (js_createGainNode (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGainNode Mozilla AudioContext.createGainNode documentation> 
+createGainNode_ :: (MonadIO m, IsAudioContext self) => self -> m ()
+createGainNode_ self
+  = liftIO (void (js_createGainNode (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGainNode Mozilla AudioContext.createGainNode documentation> 
+createGainNodeUnchecked ::
+                        (MonadIO m, IsAudioContext self) => self -> m GainNode
+createGainNodeUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createGainNode (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"createDelayNode\"]($2)"
         js_createDelayNode ::
@@ -348,6 +707,21 @@ createDelayNode ::
 createDelayNode self maxDelayTime
   = liftIO
       (nullableToMaybe <$>
+         (js_createDelayNode (toAudioContext self) maxDelayTime))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelayNode Mozilla AudioContext.createDelayNode documentation> 
+createDelayNode_ ::
+                 (MonadIO m, IsAudioContext self) => self -> Double -> m ()
+createDelayNode_ self maxDelayTime
+  = liftIO
+      (void (js_createDelayNode (toAudioContext self) maxDelayTime))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelayNode Mozilla AudioContext.createDelayNode documentation> 
+createDelayNodeUnchecked ::
+                         (MonadIO m, IsAudioContext self) => self -> Double -> m DelayNode
+createDelayNodeUnchecked self maxDelayTime
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createDelayNode (toAudioContext self) maxDelayTime))
  
 foreign import javascript unsafe
@@ -367,6 +741,30 @@ createJavaScriptNode self bufferSize numberOfInputChannels
          (js_createJavaScriptNode (toAudioContext self) bufferSize
             numberOfInputChannels
             numberOfOutputChannels))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createJavaScriptNode Mozilla AudioContext.createJavaScriptNode documentation> 
+createJavaScriptNode_ ::
+                      (MonadIO m, IsAudioContext self) =>
+                        self -> Word -> Word -> Word -> m ()
+createJavaScriptNode_ self bufferSize numberOfInputChannels
+  numberOfOutputChannels
+  = liftIO
+      (void
+         (js_createJavaScriptNode (toAudioContext self) bufferSize
+            numberOfInputChannels
+            numberOfOutputChannels))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createJavaScriptNode Mozilla AudioContext.createJavaScriptNode documentation> 
+createJavaScriptNodeUnchecked ::
+                              (MonadIO m, IsAudioContext self) =>
+                                self -> Word -> Word -> Word -> m ScriptProcessorNode
+createJavaScriptNodeUnchecked self bufferSize numberOfInputChannels
+  numberOfOutputChannels
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createJavaScriptNode (toAudioContext self) bufferSize
+            numberOfInputChannels
+            numberOfOutputChannels))
  
 foreign import javascript unsafe "$1[\"destination\"]"
         js_getDestination ::
@@ -379,6 +777,14 @@ getDestination ::
 getDestination self
   = liftIO
       (nullableToMaybe <$> (js_getDestination (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.destination Mozilla AudioContext.destination documentation> 
+getDestinationUnchecked ::
+                        (MonadIO m, IsAudioContext self) => self -> m AudioDestinationNode
+getDestinationUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getDestination (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"currentTime\"]"
         js_getCurrentTime :: AudioContext -> IO Double
@@ -407,6 +813,14 @@ getListener ::
 getListener self
   = liftIO
       (nullableToMaybe <$> (js_getListener (toAudioContext self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.listener Mozilla AudioContext.listener documentation> 
+getListenerUnchecked ::
+                     (MonadIO m, IsAudioContext self) => self -> m AudioListener
+getListenerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getListener (toAudioContext self)))
  
 foreign import javascript unsafe "$1[\"activeSourceCount\"]"
         js_getActiveSourceCount :: AudioContext -> IO Word

@@ -6,8 +6,9 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransform
         pattern SVG_TRANSFORM_MATRIX, pattern SVG_TRANSFORM_TRANSLATE,
         pattern SVG_TRANSFORM_SCALE, pattern SVG_TRANSFORM_ROTATE,
         pattern SVG_TRANSFORM_SKEWX, pattern SVG_TRANSFORM_SKEWY,
-        js_getType, getType, js_getMatrix, getMatrix, js_getAngle,
-        getAngle, SVGTransform, castToSVGTransform, gTypeSVGTransform)
+        js_getType, getType, js_getMatrix, getMatrix, getMatrixUnchecked,
+        js_getAngle, getAngle, SVGTransform, castToSVGTransform,
+        gTypeSVGTransform)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -90,6 +93,11 @@ foreign import javascript unsafe "$1[\"matrix\"]" js_getMatrix ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
 getMatrix :: (MonadIO m) => SVGTransform -> m (Maybe SVGMatrix)
 getMatrix self = liftIO (nullableToMaybe <$> (js_getMatrix (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
+getMatrixUnchecked :: (MonadIO m) => SVGTransform -> m SVGMatrix
+getMatrixUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getMatrix (self)))
  
 foreign import javascript unsafe "$1[\"angle\"]" js_getAngle ::
         SVGTransform -> IO Float

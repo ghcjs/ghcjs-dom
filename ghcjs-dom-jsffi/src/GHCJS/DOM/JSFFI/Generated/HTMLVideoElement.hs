@@ -5,13 +5,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLVideoElement
         js_webkitEnterFullScreen, webkitEnterFullScreen,
         js_webkitExitFullScreen, webkitExitFullScreen,
         js_webkitSupportsPresentationMode, webkitSupportsPresentationMode,
-        js_webkitSetPresentationMode, webkitSetPresentationMode,
-        js_setWidth, setWidth, js_getWidth, getWidth, js_setHeight,
-        setHeight, js_getHeight, getHeight, js_getVideoWidth,
-        getVideoWidth, js_getVideoHeight, getVideoHeight, js_setPoster,
-        setPoster, js_getPoster, getPoster, js_getWebkitSupportsFullscreen,
-        getWebkitSupportsFullscreen, js_getWebkitDisplayingFullscreen,
-        getWebkitDisplayingFullscreen,
+        webkitSupportsPresentationMode_, js_webkitSetPresentationMode,
+        webkitSetPresentationMode, js_setWidth, setWidth, js_getWidth,
+        getWidth, js_setHeight, setHeight, js_getHeight, getHeight,
+        js_getVideoWidth, getVideoWidth, js_getVideoHeight, getVideoHeight,
+        js_setPoster, setPoster, js_getPoster, getPoster,
+        js_getWebkitSupportsFullscreen, getWebkitSupportsFullscreen,
+        js_getWebkitDisplayingFullscreen, getWebkitDisplayingFullscreen,
         js_setWebkitWirelessVideoPlaybackDisabled,
         setWebkitWirelessVideoPlaybackDisabled,
         js_getWebkitWirelessVideoPlaybackDisabled,
@@ -29,9 +29,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -77,6 +79,13 @@ webkitSupportsPresentationMode ::
                                (MonadIO m) => HTMLVideoElement -> VideoPresentationMode -> m Bool
 webkitSupportsPresentationMode self mode
   = liftIO (js_webkitSupportsPresentationMode (self) (pToJSVal mode))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSupportsPresentationMode Mozilla HTMLVideoElement.webkitSupportsPresentationMode documentation> 
+webkitSupportsPresentationMode_ ::
+                                (MonadIO m) => HTMLVideoElement -> VideoPresentationMode -> m ()
+webkitSupportsPresentationMode_ self mode
+  = liftIO
+      (void (js_webkitSupportsPresentationMode (self) (pToJSVal mode)))
  
 foreign import javascript unsafe
         "$1[\"webkitSetPresentationMode\"]($2)"

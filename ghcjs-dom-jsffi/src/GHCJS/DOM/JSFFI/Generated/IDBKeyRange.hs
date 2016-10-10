@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBKeyRange
-       (js_only, only, js_lowerBound, lowerBound, js_upperBound,
-        upperBound, js_bound, bound, js_getLower, getLower, js_getUpper,
-        getUpper, js_getLowerOpen, getLowerOpen, js_getUpperOpen,
-        getUpperOpen, IDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange)
+       (js_only, only, only_, onlyUnchecked, js_lowerBound, lowerBound,
+        lowerBound_, lowerBoundUnchecked, js_upperBound, upperBound,
+        upperBound_, upperBoundUnchecked, js_bound, bound, bound_,
+        boundUnchecked, js_getLower, getLower, js_getUpper, getUpper,
+        js_getLowerOpen, getLowerOpen, js_getUpperOpen, getUpperOpen,
+        IDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +32,16 @@ only ::
      (MonadIO m) => IDBKeyRange -> JSVal -> m (Maybe IDBKeyRange)
 only self value
   = liftIO (nullableToMaybe <$> (js_only (self) value))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
+only_ :: (MonadIO m) => IDBKeyRange -> JSVal -> m ()
+only_ self value = liftIO (void (js_only (self) value))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
+onlyUnchecked ::
+              (MonadIO m) => IDBKeyRange -> JSVal -> m IDBKeyRange
+onlyUnchecked self value
+  = liftIO (fromJust . nullableToMaybe <$> (js_only (self) value))
  
 foreign import javascript unsafe "$1[\"lowerBound\"]($2, $3)"
         js_lowerBound ::
@@ -39,6 +53,18 @@ lowerBound ::
              IDBKeyRange -> JSVal -> Bool -> m (Maybe IDBKeyRange)
 lowerBound self lower open
   = liftIO (nullableToMaybe <$> (js_lowerBound (self) lower open))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
+lowerBound_ :: (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m ()
+lowerBound_ self lower open
+  = liftIO (void (js_lowerBound (self) lower open))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
+lowerBoundUnchecked ::
+                    (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m IDBKeyRange
+lowerBoundUnchecked self lower open
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_lowerBound (self) lower open))
  
 foreign import javascript unsafe "$1[\"upperBound\"]($2, $3)"
         js_upperBound ::
@@ -50,6 +76,18 @@ upperBound ::
              IDBKeyRange -> JSVal -> Bool -> m (Maybe IDBKeyRange)
 upperBound self upper open
   = liftIO (nullableToMaybe <$> (js_upperBound (self) upper open))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
+upperBound_ :: (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m ()
+upperBound_ self upper open
+  = liftIO (void (js_upperBound (self) upper open))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
+upperBoundUnchecked ::
+                    (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m IDBKeyRange
+upperBoundUnchecked self upper open
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_upperBound (self) upper open))
  
 foreign import javascript unsafe "$1[\"bound\"]($2, $3, $4, $5)"
         js_bound ::
@@ -64,6 +102,22 @@ bound ::
 bound self lower upper lowerOpen upperOpen
   = liftIO
       (nullableToMaybe <$>
+         (js_bound (self) lower upper lowerOpen upperOpen))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
+bound_ ::
+       (MonadIO m) =>
+         IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> m ()
+bound_ self lower upper lowerOpen upperOpen
+  = liftIO (void (js_bound (self) lower upper lowerOpen upperOpen))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
+boundUnchecked ::
+               (MonadIO m) =>
+                 IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> m IDBKeyRange
+boundUnchecked self lower upper lowerOpen upperOpen
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_bound (self) lower upper lowerOpen upperOpen))
  
 foreign import javascript unsafe "$1[\"lower\"]" js_getLower ::

@@ -1,7 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerNavigator
        (js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
-        js_getWebkitPersistentStorage, getWebkitPersistentStorage,
+        getWebkitTemporaryStorageUnchecked, js_getWebkitPersistentStorage,
+        getWebkitPersistentStorage, getWebkitPersistentStorageUnchecked,
         js_getAppName, getAppName, js_getAppVersion, getAppVersion,
         js_getPlatform, getPlatform, js_getUserAgent, getUserAgent,
         js_getOnLine, getOnLine, WorkerNavigator, castToWorkerNavigator,
@@ -14,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,6 +35,14 @@ getWebkitTemporaryStorage ::
 getWebkitTemporaryStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitTemporaryStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
+getWebkitTemporaryStorageUnchecked ::
+                                   (MonadIO m) => WorkerNavigator -> m StorageQuota
+getWebkitTemporaryStorageUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getWebkitTemporaryStorage (self)))
  
 foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
         js_getWebkitPersistentStorage ::
@@ -43,6 +54,14 @@ getWebkitPersistentStorage ::
 getWebkitPersistentStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitPersistentStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 
+getWebkitPersistentStorageUnchecked ::
+                                    (MonadIO m) => WorkerNavigator -> m StorageQuota
+getWebkitPersistentStorageUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getWebkitPersistentStorage (self)))
  
 foreign import javascript unsafe "$1[\"appName\"]" js_getAppName ::
         WorkerNavigator -> IO JSString

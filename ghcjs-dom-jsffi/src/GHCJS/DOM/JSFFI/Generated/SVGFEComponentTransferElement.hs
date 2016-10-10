@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEComponentTransferElement
-       (js_getIn1, getIn1, SVGFEComponentTransferElement,
+       (js_getIn1, getIn1, getIn1Unchecked, SVGFEComponentTransferElement,
         castToSVGFEComponentTransferElement,
         gTypeSVGFEComponentTransferElement)
        where
@@ -11,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -27,3 +29,9 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEComponentTransferElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement.in1 Mozilla SVGFEComponentTransferElement.in1 documentation> 
+getIn1Unchecked ::
+                (MonadIO m) => SVGFEComponentTransferElement -> m SVGAnimatedString
+getIn1Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn1 (self)))

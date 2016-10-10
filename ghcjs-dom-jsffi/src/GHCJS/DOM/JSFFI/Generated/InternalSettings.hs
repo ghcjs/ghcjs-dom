@@ -16,7 +16,8 @@ module GHCJS.DOM.JSFFI.Generated.InternalSettings
         setCSSShapesEnabled, js_setCanStartMedia, setCanStartMedia,
         js_setShouldDisplayTrackKind, setShouldDisplayTrackKind,
         js_shouldDisplayTrackKind, shouldDisplayTrackKind,
-        js_setDefaultVideoPosterURL, setDefaultVideoPosterURL,
+        shouldDisplayTrackKind_, js_setDefaultVideoPosterURL,
+        setDefaultVideoPosterURL,
         js_setTimeWithoutMouseMovementBeforeHidingControls,
         setTimeWithoutMouseMovementBeforeHidingControls,
         js_setMediaTypeOverride, setMediaTypeOverride,
@@ -45,9 +46,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -243,6 +246,14 @@ shouldDisplayTrackKind ::
                          InternalSettings -> trackKind -> m Bool
 shouldDisplayTrackKind self trackKind
   = liftIO (js_shouldDisplayTrackKind (self) (toJSString trackKind))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InternalSettings.shouldDisplayTrackKind Mozilla InternalSettings.shouldDisplayTrackKind documentation> 
+shouldDisplayTrackKind_ ::
+                        (MonadIO m, ToJSString trackKind) =>
+                          InternalSettings -> trackKind -> m ()
+shouldDisplayTrackKind_ self trackKind
+  = liftIO
+      (void (js_shouldDisplayTrackKind (self) (toJSString trackKind)))
  
 foreign import javascript unsafe
         "$1[\"setDefaultVideoPosterURL\"]($2)" js_setDefaultVideoPosterURL

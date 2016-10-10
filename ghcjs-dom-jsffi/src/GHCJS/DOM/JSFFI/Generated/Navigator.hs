@@ -1,22 +1,26 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Navigator
-       (js_getGamepads, getGamepads, js_webkitGetUserMedia,
+       (js_getGamepads, getGamepads, getGamepads_, js_webkitGetUserMedia,
         webkitGetUserMedia, js_registerProtocolHandler,
         registerProtocolHandler, js_isProtocolHandlerRegistered,
-        isProtocolHandlerRegistered, js_unregisterProtocolHandler,
-        unregisterProtocolHandler, js_vibratePattern, vibratePattern,
-        js_vibrate, vibrate, js_javaEnabled, javaEnabled,
+        isProtocolHandlerRegistered, isProtocolHandlerRegistered_,
+        js_unregisterProtocolHandler, unregisterProtocolHandler,
+        js_vibratePattern, vibratePattern, vibratePattern_, js_vibrate,
+        vibrate, vibrate_, js_javaEnabled, javaEnabled, javaEnabled_,
         js_getStorageUpdates, getStorageUpdates, js_getWebkitBattery,
-        getWebkitBattery, js_getGeolocation, getGeolocation,
+        getWebkitBattery, getWebkitBatteryUnchecked, js_getGeolocation,
+        getGeolocation, getGeolocationUnchecked,
         js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
-        js_getWebkitPersistentStorage, getWebkitPersistentStorage,
+        getWebkitTemporaryStorageUnchecked, js_getWebkitPersistentStorage,
+        getWebkitPersistentStorage, getWebkitPersistentStorageUnchecked,
         js_getAppCodeName, getAppCodeName, js_getAppName, getAppName,
         js_getAppVersion, getAppVersion, js_getLanguage, getLanguage,
         js_getUserAgent, getUserAgent, js_getPlatform, getPlatform,
-        js_getPlugins, getPlugins, js_getMimeTypes, getMimeTypes,
-        js_getProduct, getProduct, js_getProductSub, getProductSub,
-        js_getVendor, getVendor, js_getVendorSub, getVendorSub,
-        js_getCookieEnabled, getCookieEnabled, js_getOnLine, getOnLine,
+        js_getPlugins, getPlugins, getPluginsUnchecked, js_getMimeTypes,
+        getMimeTypes, getMimeTypesUnchecked, js_getProduct, getProduct,
+        js_getProductSub, getProductSub, js_getVendor, getVendor,
+        js_getVendorSub, getVendorSub, js_getCookieEnabled,
+        getCookieEnabled, js_getOnLine, getOnLine,
         js_getHardwareConcurrency, getHardwareConcurrency, Navigator,
         castToNavigator, gTypeNavigator)
        where
@@ -27,9 +31,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -42,6 +48,10 @@ foreign import javascript unsafe "$1[\"getGamepads\"]()"
 getGamepads :: (MonadIO m) => Navigator -> m [Maybe Gamepad]
 getGamepads self
   = liftIO ((js_getGamepads (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getGamepads Mozilla Navigator.getGamepads documentation> 
+getGamepads_ :: (MonadIO m) => Navigator -> m ()
+getGamepads_ self = liftIO (void (js_getGamepads (self)))
  
 foreign import javascript unsafe
         "$1[\"webkitGetUserMedia\"]($2, $3,\n$4)" js_webkitGetUserMedia ::
@@ -94,6 +104,16 @@ isProtocolHandlerRegistered self scheme url
       (fromJSString <$>
          (js_isProtocolHandlerRegistered (self) (toJSString scheme)
             (toJSString url)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.isProtocolHandlerRegistered Mozilla Navigator.isProtocolHandlerRegistered documentation> 
+isProtocolHandlerRegistered_ ::
+                             (MonadIO m, ToJSString scheme, ToJSString url) =>
+                               Navigator -> scheme -> url -> m ()
+isProtocolHandlerRegistered_ self scheme url
+  = liftIO
+      (void
+         (js_isProtocolHandlerRegistered (self) (toJSString scheme)
+            (toJSString url)))
  
 foreign import javascript unsafe
         "$1[\"unregisterProtocolHandler\"]($2,\n$3)"
@@ -118,6 +138,14 @@ vibratePattern self pattern'
   = liftIO
       (toJSVal pattern' >>=
          \ pattern'' -> js_vibratePattern (self) pattern'')
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
+vibratePattern_ :: (MonadIO m) => Navigator -> [Word] -> m ()
+vibratePattern_ self pattern'
+  = liftIO
+      (void
+         (toJSVal pattern' >>=
+            \ pattern'' -> js_vibratePattern (self) pattern''))
  
 foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
         js_vibrate :: Navigator -> Word -> IO Bool
@@ -125,6 +153,10 @@ foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
 vibrate :: (MonadIO m) => Navigator -> Word -> m Bool
 vibrate self time = liftIO (js_vibrate (self) time)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
+vibrate_ :: (MonadIO m) => Navigator -> Word -> m ()
+vibrate_ self time = liftIO (void (js_vibrate (self) time))
  
 foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
         js_javaEnabled :: Navigator -> IO Bool
@@ -132,6 +164,10 @@ foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.javaEnabled Mozilla Navigator.javaEnabled documentation> 
 javaEnabled :: (MonadIO m) => Navigator -> m Bool
 javaEnabled self = liftIO (js_javaEnabled (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.javaEnabled Mozilla Navigator.javaEnabled documentation> 
+javaEnabled_ :: (MonadIO m) => Navigator -> m ()
+javaEnabled_ self = liftIO (void (js_javaEnabled (self)))
  
 foreign import javascript unsafe "$1[\"getStorageUpdates\"]()"
         js_getStorageUpdates :: Navigator -> IO ()
@@ -148,6 +184,13 @@ getWebkitBattery ::
                  (MonadIO m) => Navigator -> m (Maybe BatteryManager)
 getWebkitBattery self
   = liftIO (nullableToMaybe <$> (js_getWebkitBattery (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitBattery Mozilla Navigator.webkitBattery documentation> 
+getWebkitBatteryUnchecked ::
+                          (MonadIO m) => Navigator -> m BatteryManager
+getWebkitBatteryUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getWebkitBattery (self)))
  
 foreign import javascript unsafe "$1[\"geolocation\"]"
         js_getGeolocation :: Navigator -> IO (Nullable Geolocation)
@@ -156,6 +199,13 @@ foreign import javascript unsafe "$1[\"geolocation\"]"
 getGeolocation :: (MonadIO m) => Navigator -> m (Maybe Geolocation)
 getGeolocation self
   = liftIO (nullableToMaybe <$> (js_getGeolocation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.geolocation Mozilla Navigator.geolocation documentation> 
+getGeolocationUnchecked ::
+                        (MonadIO m) => Navigator -> m Geolocation
+getGeolocationUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getGeolocation (self)))
  
 foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
         js_getWebkitTemporaryStorage ::
@@ -167,6 +217,14 @@ getWebkitTemporaryStorage ::
 getWebkitTemporaryStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitTemporaryStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitTemporaryStorage Mozilla Navigator.webkitTemporaryStorage documentation> 
+getWebkitTemporaryStorageUnchecked ::
+                                   (MonadIO m) => Navigator -> m StorageQuota
+getWebkitTemporaryStorageUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getWebkitTemporaryStorage (self)))
  
 foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
         js_getWebkitPersistentStorage ::
@@ -178,6 +236,14 @@ getWebkitPersistentStorage ::
 getWebkitPersistentStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitPersistentStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitPersistentStorage Mozilla Navigator.webkitPersistentStorage documentation> 
+getWebkitPersistentStorageUnchecked ::
+                                    (MonadIO m) => Navigator -> m StorageQuota
+getWebkitPersistentStorageUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getWebkitPersistentStorage (self)))
  
 foreign import javascript unsafe "$1[\"appCodeName\"]"
         js_getAppCodeName :: Navigator -> IO JSString
@@ -239,6 +305,11 @@ foreign import javascript unsafe "$1[\"plugins\"]" js_getPlugins ::
 getPlugins :: (MonadIO m) => Navigator -> m (Maybe PluginArray)
 getPlugins self
   = liftIO (nullableToMaybe <$> (js_getPlugins (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.plugins Mozilla Navigator.plugins documentation> 
+getPluginsUnchecked :: (MonadIO m) => Navigator -> m PluginArray
+getPluginsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getPlugins (self)))
  
 foreign import javascript unsafe "$1[\"mimeTypes\"]"
         js_getMimeTypes :: Navigator -> IO (Nullable MimeTypeArray)
@@ -247,6 +318,12 @@ foreign import javascript unsafe "$1[\"mimeTypes\"]"
 getMimeTypes :: (MonadIO m) => Navigator -> m (Maybe MimeTypeArray)
 getMimeTypes self
   = liftIO (nullableToMaybe <$> (js_getMimeTypes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mimeTypes Mozilla Navigator.mimeTypes documentation> 
+getMimeTypesUnchecked ::
+                      (MonadIO m) => Navigator -> m MimeTypeArray
+getMimeTypesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getMimeTypes (self)))
  
 foreign import javascript unsafe "$1[\"product\"]" js_getProduct ::
         Navigator -> IO JSString

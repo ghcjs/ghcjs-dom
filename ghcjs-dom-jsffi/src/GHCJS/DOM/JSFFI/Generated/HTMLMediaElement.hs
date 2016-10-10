@@ -1,32 +1,36 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
-       (js_load, load, js_canPlayType, canPlayType, js_play, play,
-        js_pause, pause, js_fastSeek, fastSeek,
+       (js_load, load, js_canPlayType, canPlayType, canPlayType_, js_play,
+        play, js_pause, pause, js_fastSeek, fastSeek,
         js_webkitGenerateKeyRequest, webkitGenerateKeyRequest,
         js_webkitAddKey, webkitAddKey, js_webkitCancelKeyRequest,
         webkitCancelKeyRequest, js_webkitSetMediaKeys, webkitSetMediaKeys,
-        js_addTextTrack, addTextTrack, js_getVideoPlaybackQuality,
-        getVideoPlaybackQuality, js_webkitShowPlaybackTargetPicker,
-        webkitShowPlaybackTargetPicker, pattern NETWORK_EMPTY,
-        pattern NETWORK_IDLE, pattern NETWORK_LOADING,
-        pattern NETWORK_NO_SOURCE, pattern HAVE_NOTHING,
-        pattern HAVE_METADATA, pattern HAVE_CURRENT_DATA,
-        pattern HAVE_FUTURE_DATA, pattern HAVE_ENOUGH_DATA, js_getError,
-        getError, js_setSrc, setSrc, js_getSrc, getSrc, js_getCurrentSrc,
+        js_addTextTrack, addTextTrack, addTextTrack_,
+        addTextTrackUnchecked, js_getVideoPlaybackQuality,
+        getVideoPlaybackQuality, getVideoPlaybackQuality_,
+        getVideoPlaybackQualityUnchecked,
+        js_webkitShowPlaybackTargetPicker, webkitShowPlaybackTargetPicker,
+        pattern NETWORK_EMPTY, pattern NETWORK_IDLE,
+        pattern NETWORK_LOADING, pattern NETWORK_NO_SOURCE,
+        pattern HAVE_NOTHING, pattern HAVE_METADATA,
+        pattern HAVE_CURRENT_DATA, pattern HAVE_FUTURE_DATA,
+        pattern HAVE_ENOUGH_DATA, js_getError, getError, getErrorUnchecked,
+        js_setSrc, setSrc, js_getSrc, getSrc, js_getCurrentSrc,
         getCurrentSrc, js_getNetworkState, getNetworkState, js_setPreload,
         setPreload, js_getPreload, getPreload, js_getBuffered, getBuffered,
-        js_getReadyState, getReadyState, js_getSeeking, getSeeking,
-        js_setCurrentTime, setCurrentTime, js_getCurrentTime,
-        getCurrentTime, js_getDuration, getDuration, js_getPaused,
-        getPaused, js_setDefaultPlaybackRate, setDefaultPlaybackRate,
-        js_getDefaultPlaybackRate, getDefaultPlaybackRate,
-        js_setPlaybackRate, setPlaybackRate, js_getPlaybackRate,
-        getPlaybackRate, js_getPlayed, getPlayed, js_getSeekable,
-        getSeekable, js_getEnded, getEnded, js_setAutoplay, setAutoplay,
-        js_getAutoplay, getAutoplay, js_setLoop, setLoop, js_getLoop,
-        getLoop, js_setControls, setControls, js_getControls, getControls,
-        js_setVolume, setVolume, js_getVolume, getVolume, js_setMuted,
-        setMuted, js_getMuted, getMuted, js_setDefaultMuted,
+        getBufferedUnchecked, js_getReadyState, getReadyState,
+        js_getSeeking, getSeeking, js_setCurrentTime, setCurrentTime,
+        js_getCurrentTime, getCurrentTime, js_getDuration, getDuration,
+        js_getPaused, getPaused, js_setDefaultPlaybackRate,
+        setDefaultPlaybackRate, js_getDefaultPlaybackRate,
+        getDefaultPlaybackRate, js_setPlaybackRate, setPlaybackRate,
+        js_getPlaybackRate, getPlaybackRate, js_getPlayed, getPlayed,
+        getPlayedUnchecked, js_getSeekable, getSeekable,
+        getSeekableUnchecked, js_getEnded, getEnded, js_setAutoplay,
+        setAutoplay, js_getAutoplay, getAutoplay, js_setLoop, setLoop,
+        js_getLoop, getLoop, js_setControls, setControls, js_getControls,
+        getControls, js_setVolume, setVolume, js_getVolume, getVolume,
+        js_setMuted, setMuted, js_getMuted, getMuted, js_setDefaultMuted,
         setDefaultMuted, js_getDefaultMuted, getDefaultMuted, emptied,
         loadedMetadata, loadedData, canPlay, canPlayThrough, playing,
         ended, waiting, durationChange, timeUpdate, playEvent, pauseEvent,
@@ -39,17 +43,20 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
         getWebkitAudioDecodedByteCount, js_getWebkitVideoDecodedByteCount,
         getWebkitVideoDecodedByteCount, webKitKeyAdded, webKitKeyError,
         webKitKeyMessage, webKitNeedKey, js_getWebkitKeys, getWebkitKeys,
-        js_getAudioTracks, getAudioTracks, js_getTextTracks, getTextTracks,
-        js_getVideoTracks, getVideoTracks, js_setMediaGroup, setMediaGroup,
-        js_getMediaGroup, getMediaGroup, js_setController, setController,
-        js_getController, getController,
+        getWebkitKeysUnchecked, js_getAudioTracks, getAudioTracks,
+        getAudioTracksUnchecked, js_getTextTracks, getTextTracks,
+        getTextTracksUnchecked, js_getVideoTracks, getVideoTracks,
+        getVideoTracksUnchecked, js_setMediaGroup, setMediaGroup,
+        js_getMediaGroup, getMediaGroup, getMediaGroupUnchecked,
+        js_setController, setController, js_getController, getController,
+        getControllerUnchecked,
         js_getWebkitCurrentPlaybackTargetIsWireless,
         getWebkitCurrentPlaybackTargetIsWireless,
         webKitCurrentPlaybackTargetIsWirelessChanged,
         webKitPlaybackTargetAvailabilityChanged, js_setSrcObject,
-        setSrcObject, js_getSrcObject, getSrcObject, HTMLMediaElement,
-        castToHTMLMediaElement, gTypeHTMLMediaElement, IsHTMLMediaElement,
-        toHTMLMediaElement)
+        setSrcObject, js_getSrcObject, getSrcObject, getSrcObjectUnchecked,
+        HTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement,
+        IsHTMLMediaElement, toHTMLMediaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -58,9 +65,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -85,6 +94,17 @@ canPlayType ::
 canPlayType self type' keySystem
   = liftIO
       (fromJSString <$>
+         (js_canPlayType (toHTMLMediaElement self) (toJSString type')
+            (toMaybeJSString keySystem)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.canPlayType Mozilla HTMLMediaElement.canPlayType documentation> 
+canPlayType_ ::
+             (MonadIO m, IsHTMLMediaElement self, ToJSString type',
+              ToJSString keySystem) =>
+               self -> type' -> Maybe keySystem -> m ()
+canPlayType_ self type' keySystem
+  = liftIO
+      (void
          (js_canPlayType (toHTMLMediaElement self) (toJSString type')
             (toMaybeJSString keySystem)))
  
@@ -192,6 +212,30 @@ addTextTrack self kind label language
          (js_addTextTrack (toHTMLMediaElement self) (toJSString kind)
             (toJSString label)
             (toJSString language)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.addTextTrack Mozilla HTMLMediaElement.addTextTrack documentation> 
+addTextTrack_ ::
+              (MonadIO m, IsHTMLMediaElement self, ToJSString kind,
+               ToJSString label, ToJSString language) =>
+                self -> kind -> label -> language -> m ()
+addTextTrack_ self kind label language
+  = liftIO
+      (void
+         (js_addTextTrack (toHTMLMediaElement self) (toJSString kind)
+            (toJSString label)
+            (toJSString language)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.addTextTrack Mozilla HTMLMediaElement.addTextTrack documentation> 
+addTextTrackUnchecked ::
+                      (MonadIO m, IsHTMLMediaElement self, ToJSString kind,
+                       ToJSString label, ToJSString language) =>
+                        self -> kind -> label -> language -> m TextTrack
+addTextTrackUnchecked self kind label language
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_addTextTrack (toHTMLMediaElement self) (toJSString kind)
+            (toJSString label)
+            (toJSString language)))
  
 foreign import javascript unsafe
         "$1[\"getVideoPlaybackQuality\"]()" js_getVideoPlaybackQuality ::
@@ -204,6 +248,22 @@ getVideoPlaybackQuality ::
 getVideoPlaybackQuality self
   = liftIO
       (nullableToMaybe <$>
+         (js_getVideoPlaybackQuality (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.getVideoPlaybackQuality Mozilla HTMLMediaElement.getVideoPlaybackQuality documentation> 
+getVideoPlaybackQuality_ ::
+                         (MonadIO m, IsHTMLMediaElement self) => self -> m ()
+getVideoPlaybackQuality_ self
+  = liftIO
+      (void (js_getVideoPlaybackQuality (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.getVideoPlaybackQuality Mozilla HTMLMediaElement.getVideoPlaybackQuality documentation> 
+getVideoPlaybackQualityUnchecked ::
+                                 (MonadIO m, IsHTMLMediaElement self) =>
+                                   self -> m VideoPlaybackQuality
+getVideoPlaybackQualityUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getVideoPlaybackQuality (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
@@ -236,6 +296,14 @@ getError ::
 getError self
   = liftIO
       (nullableToMaybe <$> (js_getError (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.error Mozilla HTMLMediaElement.error documentation> 
+getErrorUnchecked ::
+                  (MonadIO m, IsHTMLMediaElement self) => self -> m MediaError
+getErrorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getError (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         HTMLMediaElement -> JSString -> IO ()
@@ -308,6 +376,14 @@ getBuffered ::
 getBuffered self
   = liftIO
       (nullableToMaybe <$> (js_getBuffered (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.buffered Mozilla HTMLMediaElement.buffered documentation> 
+getBufferedUnchecked ::
+                     (MonadIO m, IsHTMLMediaElement self) => self -> m TimeRanges
+getBufferedUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getBuffered (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: HTMLMediaElement -> IO Word
@@ -407,6 +483,14 @@ getPlayed ::
 getPlayed self
   = liftIO
       (nullableToMaybe <$> (js_getPlayed (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.played Mozilla HTMLMediaElement.played documentation> 
+getPlayedUnchecked ::
+                   (MonadIO m, IsHTMLMediaElement self) => self -> m TimeRanges
+getPlayedUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getPlayed (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"seekable\"]" js_getSeekable
         :: HTMLMediaElement -> IO (Nullable TimeRanges)
@@ -418,6 +502,14 @@ getSeekable ::
 getSeekable self
   = liftIO
       (nullableToMaybe <$> (js_getSeekable (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.seekable Mozilla HTMLMediaElement.seekable documentation> 
+getSeekableUnchecked ::
+                     (MonadIO m, IsHTMLMediaElement self) => self -> m TimeRanges
+getSeekableUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getSeekable (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "($1[\"ended\"] ? 1 : 0)"
         js_getEnded :: HTMLMediaElement -> IO Bool
@@ -721,6 +813,14 @@ getWebkitKeys ::
 getWebkitKeys self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitKeys (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.webkitKeys Mozilla HTMLMediaElement.webkitKeys documentation> 
+getWebkitKeysUnchecked ::
+                       (MonadIO m, IsHTMLMediaElement self) => self -> m MediaKeys
+getWebkitKeysUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getWebkitKeys (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"audioTracks\"]"
         js_getAudioTracks ::
@@ -733,6 +833,14 @@ getAudioTracks ::
 getAudioTracks self
   = liftIO
       (nullableToMaybe <$> (js_getAudioTracks (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.audioTracks Mozilla HTMLMediaElement.audioTracks documentation> 
+getAudioTracksUnchecked ::
+                        (MonadIO m, IsHTMLMediaElement self) => self -> m AudioTrackList
+getAudioTracksUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getAudioTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"textTracks\"]"
         js_getTextTracks :: HTMLMediaElement -> IO (Nullable TextTrackList)
@@ -744,6 +852,14 @@ getTextTracks ::
 getTextTracks self
   = liftIO
       (nullableToMaybe <$> (js_getTextTracks (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.textTracks Mozilla HTMLMediaElement.textTracks documentation> 
+getTextTracksUnchecked ::
+                       (MonadIO m, IsHTMLMediaElement self) => self -> m TextTrackList
+getTextTracksUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTextTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"videoTracks\"]"
         js_getVideoTracks ::
@@ -756,6 +872,14 @@ getVideoTracks ::
 getVideoTracks self
   = liftIO
       (nullableToMaybe <$> (js_getVideoTracks (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.videoTracks Mozilla HTMLMediaElement.videoTracks documentation> 
+getVideoTracksUnchecked ::
+                        (MonadIO m, IsHTMLMediaElement self) => self -> m VideoTrackList
+getVideoTracksUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getVideoTracks (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"mediaGroup\"] = $2;"
         js_setMediaGroup :: HTMLMediaElement -> Nullable JSString -> IO ()
@@ -778,6 +902,15 @@ getMediaGroup ::
 getMediaGroup self
   = liftIO
       (fromMaybeJSString <$>
+         (js_getMediaGroup (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.mediaGroup Mozilla HTMLMediaElement.mediaGroup documentation> 
+getMediaGroupUnchecked ::
+                       (MonadIO m, IsHTMLMediaElement self, FromJSString result) =>
+                         self -> m result
+getMediaGroupUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_getMediaGroup (toHTMLMediaElement self)))
  
 foreign import javascript unsafe "$1[\"controller\"] = $2;"
@@ -803,6 +936,14 @@ getController ::
 getController self
   = liftIO
       (nullableToMaybe <$> (js_getController (toHTMLMediaElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.controller Mozilla HTMLMediaElement.controller documentation> 
+getControllerUnchecked ::
+                       (MonadIO m, IsHTMLMediaElement self) => self -> m MediaController
+getControllerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getController (toHTMLMediaElement self)))
  
 foreign import javascript unsafe
         "($1[\"webkitCurrentPlaybackTargetIsWireless\"] ? 1 : 0)"
@@ -853,6 +994,14 @@ getSrcObject ::
              (MonadIO m, IsHTMLMediaElement self) =>
                self -> m (Maybe MediaStream)
 getSrcObject self
+  = liftIO
+      ((js_getSrcObject (toHTMLMediaElement self)) >>=
+         fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.srcObject Mozilla HTMLMediaElement.srcObject documentation> 
+getSrcObjectUnchecked ::
+                      (MonadIO m, IsHTMLMediaElement self) => self -> m MediaStream
+getSrcObjectUnchecked self
   = liftIO
       ((js_getSrcObject (toHTMLMediaElement self)) >>=
          fromJSValUnchecked)

@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
        (js_close, close, js_importScripts, importScripts, js_getSelf,
-        getSelf, js_getLocation, getLocation, error, offline, online,
-        js_getNavigator, getNavigator, WorkerGlobalScope,
+        getSelf, getSelfUnchecked, js_getLocation, getLocation,
+        getLocationUnchecked, error, offline, online, js_getNavigator,
+        getNavigator, getNavigatorUnchecked, WorkerGlobalScope,
         castToWorkerGlobalScope, gTypeWorkerGlobalScope,
         IsWorkerGlobalScope, toWorkerGlobalScope)
        where
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -47,6 +50,15 @@ getSelf ::
 getSelf self
   = liftIO
       (nullableToMaybe <$> (js_getSelf (toWorkerGlobalScope self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
+getSelfUnchecked ::
+                 (MonadIO m, IsWorkerGlobalScope self) =>
+                   self -> m WorkerGlobalScope
+getSelfUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getSelf (toWorkerGlobalScope self)))
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
         :: WorkerGlobalScope -> IO (Nullable WorkerLocation)
@@ -58,6 +70,14 @@ getLocation ::
 getLocation self
   = liftIO
       (nullableToMaybe <$> (js_getLocation (toWorkerGlobalScope self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
+getLocationUnchecked ::
+                     (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerLocation
+getLocationUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getLocation (toWorkerGlobalScope self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.onerror Mozilla WorkerGlobalScope.onerror documentation> 
 error ::
@@ -88,3 +108,11 @@ getNavigator ::
 getNavigator self
   = liftIO
       (nullableToMaybe <$> (js_getNavigator (toWorkerGlobalScope self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
+getNavigatorUnchecked ::
+                      (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerNavigator
+getNavigatorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getNavigator (toWorkerGlobalScope self)))

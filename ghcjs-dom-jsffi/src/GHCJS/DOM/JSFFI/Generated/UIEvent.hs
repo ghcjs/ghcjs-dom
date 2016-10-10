@@ -1,10 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.UIEvent
-       (js_initUIEvent, initUIEvent, js_getView, getView, js_getDetail,
-        getDetail, js_getKeyCode, getKeyCode, js_getCharCode, getCharCode,
-        js_getLayerX, getLayerX, js_getLayerY, getLayerY, js_getPageX,
-        getPageX, js_getPageY, getPageY, js_getWhich, getWhich, UIEvent,
-        castToUIEvent, gTypeUIEvent, IsUIEvent, toUIEvent)
+       (js_initUIEvent, initUIEvent, js_getView, getView,
+        getViewUnchecked, js_getDetail, getDetail, js_getKeyCode,
+        getKeyCode, js_getCharCode, getCharCode, js_getLayerX, getLayerX,
+        js_getLayerY, getLayerY, js_getPageX, getPageX, js_getPageY,
+        getPageY, js_getWhich, getWhich, UIEvent, castToUIEvent,
+        gTypeUIEvent, IsUIEvent, toUIEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
@@ -43,6 +46,12 @@ foreign import javascript unsafe "$1[\"view\"]" js_getView ::
 getView :: (MonadIO m, IsUIEvent self) => self -> m (Maybe Window)
 getView self
   = liftIO (nullableToMaybe <$> (js_getView (toUIEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
+getViewUnchecked :: (MonadIO m, IsUIEvent self) => self -> m Window
+getViewUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getView (toUIEvent self)))
  
 foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
         UIEvent -> IO Int

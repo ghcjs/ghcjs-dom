@@ -1,13 +1,17 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Performance
-       (js_webkitGetEntries, webkitGetEntries, js_webkitGetEntriesByType,
-        webkitGetEntriesByType, js_webkitGetEntriesByName,
-        webkitGetEntriesByName, js_webkitClearResourceTimings,
+       (js_webkitGetEntries, webkitGetEntries, webkitGetEntries_,
+        webkitGetEntriesUnchecked, js_webkitGetEntriesByType,
+        webkitGetEntriesByType, webkitGetEntriesByType_,
+        webkitGetEntriesByTypeUnchecked, js_webkitGetEntriesByName,
+        webkitGetEntriesByName, webkitGetEntriesByName_,
+        webkitGetEntriesByNameUnchecked, js_webkitClearResourceTimings,
         webkitClearResourceTimings, js_webkitSetResourceTimingBufferSize,
         webkitSetResourceTimingBufferSize, js_webkitMark, webkitMark,
         js_webkitClearMarks, webkitClearMarks, js_webkitMeasure,
         webkitMeasure, js_webkitClearMeasures, webkitClearMeasures, js_now,
-        now, js_getNavigation, getNavigation, js_getTiming, getTiming,
+        now, now_, js_getNavigation, getNavigation, getNavigationUnchecked,
+        js_getTiming, getTiming, getTimingUnchecked,
         webKitResourceTimingBufferFull, Performance, castToPerformance,
         gTypePerformance)
        where
@@ -18,9 +22,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -35,6 +41,17 @@ webkitGetEntries ::
                  (MonadIO m) => Performance -> m (Maybe PerformanceEntryList)
 webkitGetEntries self
   = liftIO (nullableToMaybe <$> (js_webkitGetEntries (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
+webkitGetEntries_ :: (MonadIO m) => Performance -> m ()
+webkitGetEntries_ self = liftIO (void (js_webkitGetEntries (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
+webkitGetEntriesUnchecked ::
+                          (MonadIO m) => Performance -> m PerformanceEntryList
+webkitGetEntriesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_webkitGetEntries (self)))
  
 foreign import javascript unsafe
         "$1[\"webkitGetEntriesByType\"]($2)" js_webkitGetEntriesByType ::
@@ -47,6 +64,23 @@ webkitGetEntriesByType ::
 webkitGetEntriesByType self entryType
   = liftIO
       (nullableToMaybe <$>
+         (js_webkitGetEntriesByType (self) (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByType Mozilla Performance.webkitGetEntriesByType documentation> 
+webkitGetEntriesByType_ ::
+                        (MonadIO m, ToJSString entryType) =>
+                          Performance -> entryType -> m ()
+webkitGetEntriesByType_ self entryType
+  = liftIO
+      (void (js_webkitGetEntriesByType (self) (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByType Mozilla Performance.webkitGetEntriesByType documentation> 
+webkitGetEntriesByTypeUnchecked ::
+                                (MonadIO m, ToJSString entryType) =>
+                                  Performance -> entryType -> m PerformanceEntryList
+webkitGetEntriesByTypeUnchecked self entryType
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_webkitGetEntriesByType (self) (toJSString entryType)))
  
 foreign import javascript unsafe
@@ -62,6 +96,26 @@ webkitGetEntriesByName ::
 webkitGetEntriesByName self name entryType
   = liftIO
       (nullableToMaybe <$>
+         (js_webkitGetEntriesByName (self) (toJSString name)
+            (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByName Mozilla Performance.webkitGetEntriesByName documentation> 
+webkitGetEntriesByName_ ::
+                        (MonadIO m, ToJSString name, ToJSString entryType) =>
+                          Performance -> name -> entryType -> m ()
+webkitGetEntriesByName_ self name entryType
+  = liftIO
+      (void
+         (js_webkitGetEntriesByName (self) (toJSString name)
+            (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByName Mozilla Performance.webkitGetEntriesByName documentation> 
+webkitGetEntriesByNameUnchecked ::
+                                (MonadIO m, ToJSString name, ToJSString entryType) =>
+                                  Performance -> name -> entryType -> m PerformanceEntryList
+webkitGetEntriesByNameUnchecked self name entryType
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_webkitGetEntriesByName (self) (toJSString name)
             (toJSString entryType)))
  
@@ -134,6 +188,10 @@ foreign import javascript unsafe "$1[\"now\"]()" js_now ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.now Mozilla Performance.now documentation> 
 now :: (MonadIO m) => Performance -> m Double
 now self = liftIO (js_now (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.now Mozilla Performance.now documentation> 
+now_ :: (MonadIO m) => Performance -> m ()
+now_ self = liftIO (void (js_now (self)))
  
 foreign import javascript unsafe "$1[\"navigation\"]"
         js_getNavigation ::
@@ -144,6 +202,12 @@ getNavigation ::
               (MonadIO m) => Performance -> m (Maybe PerformanceNavigation)
 getNavigation self
   = liftIO (nullableToMaybe <$> (js_getNavigation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.navigation Mozilla Performance.navigation documentation> 
+getNavigationUnchecked ::
+                       (MonadIO m) => Performance -> m PerformanceNavigation
+getNavigationUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getNavigation (self)))
  
 foreign import javascript unsafe "$1[\"timing\"]" js_getTiming ::
         Performance -> IO (Nullable PerformanceTiming)
@@ -152,6 +216,12 @@ foreign import javascript unsafe "$1[\"timing\"]" js_getTiming ::
 getTiming ::
           (MonadIO m) => Performance -> m (Maybe PerformanceTiming)
 getTiming self = liftIO (nullableToMaybe <$> (js_getTiming (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.timing Mozilla Performance.timing documentation> 
+getTimingUnchecked ::
+                   (MonadIO m) => Performance -> m PerformanceTiming
+getTimingUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTiming (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.onwebkitresourcetimingbufferfull Mozilla Performance.onwebkitresourcetimingbufferfull documentation> 
 webKitResourceTimingBufferFull :: EventName Performance Event

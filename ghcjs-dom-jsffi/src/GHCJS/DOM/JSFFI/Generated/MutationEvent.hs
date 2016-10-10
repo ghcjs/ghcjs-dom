@@ -2,10 +2,10 @@
 module GHCJS.DOM.JSFFI.Generated.MutationEvent
        (js_initMutationEvent, initMutationEvent, pattern MODIFICATION,
         pattern ADDITION, pattern REMOVAL, js_getRelatedNode,
-        getRelatedNode, js_getPrevValue, getPrevValue, js_getNewValue,
-        getNewValue, js_getAttrName, getAttrName, js_getAttrChange,
-        getAttrChange, MutationEvent, castToMutationEvent,
-        gTypeMutationEvent)
+        getRelatedNode, getRelatedNodeUnchecked, js_getPrevValue,
+        getPrevValue, js_getNewValue, getNewValue, js_getAttrName,
+        getAttrName, js_getAttrChange, getAttrChange, MutationEvent,
+        castToMutationEvent, gTypeMutationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -62,6 +64,12 @@ foreign import javascript unsafe "$1[\"relatedNode\"]"
 getRelatedNode :: (MonadIO m) => MutationEvent -> m (Maybe Node)
 getRelatedNode self
   = liftIO (nullableToMaybe <$> (js_getRelatedNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
+getRelatedNodeUnchecked :: (MonadIO m) => MutationEvent -> m Node
+getRelatedNodeUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getRelatedNode (self)))
  
 foreign import javascript unsafe "$1[\"prevValue\"]"
         js_getPrevValue :: MutationEvent -> IO JSString

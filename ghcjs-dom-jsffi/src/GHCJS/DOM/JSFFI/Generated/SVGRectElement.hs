@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGRectElement
-       (js_getX, getX, js_getY, getY, js_getWidth, getWidth, js_getHeight,
-        getHeight, js_getRx, getRx, js_getRy, getRy, SVGRectElement,
-        castToSVGRectElement, gTypeSVGRectElement)
+       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
+        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
+        getHeightUnchecked, js_getRx, getRx, getRxUnchecked, js_getRy,
+        getRy, getRyUnchecked, SVGRectElement, castToSVGRectElement,
+        gTypeSVGRectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -26,6 +30,12 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX ::
      (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.x Mozilla SVGRectElement.x documentation> 
+getXUnchecked ::
+              (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getX (self)))
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -34,6 +44,12 @@ foreign import javascript unsafe "$1[\"y\"]" js_getY ::
 getY ::
      (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.y Mozilla SVGRectElement.y documentation> 
+getYUnchecked ::
+              (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getY (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -42,6 +58,12 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth ::
          (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.width Mozilla SVGRectElement.width documentation> 
+getWidthUnchecked ::
+                  (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getWidthUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -50,6 +72,12 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight ::
           (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.height Mozilla SVGRectElement.height documentation> 
+getHeightUnchecked ::
+                   (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getHeightUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getHeight (self)))
  
 foreign import javascript unsafe "$1[\"rx\"]" js_getRx ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -58,6 +86,12 @@ foreign import javascript unsafe "$1[\"rx\"]" js_getRx ::
 getRx ::
       (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getRx self = liftIO (nullableToMaybe <$> (js_getRx (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.rx Mozilla SVGRectElement.rx documentation> 
+getRxUnchecked ::
+               (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getRxUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRx (self)))
  
 foreign import javascript unsafe "$1[\"ry\"]" js_getRy ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -66,3 +100,9 @@ foreign import javascript unsafe "$1[\"ry\"]" js_getRy ::
 getRy ::
       (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getRy self = liftIO (nullableToMaybe <$> (js_getRy (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.ry Mozilla SVGRectElement.ry documentation> 
+getRyUnchecked ::
+               (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
+getRyUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRy (self)))

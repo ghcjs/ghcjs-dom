@@ -9,15 +9,17 @@ module GHCJS.DOM.JSFFI.Generated.Event
         pattern MOUSEDRAG, pattern CLICK, pattern DBLCLICK,
         pattern KEYDOWN, pattern KEYUP, pattern KEYPRESS, pattern DRAGDROP,
         pattern FOCUS, pattern BLUR, pattern SELECT, pattern CHANGE,
-        js_getType, getType, js_getTarget, getTarget, js_getCurrentTarget,
-        getCurrentTarget, js_getEventPhase, getEventPhase, js_getBubbles,
-        getBubbles, js_getCancelable, getCancelable, js_getTimeStamp,
-        getTimeStamp, js_getDefaultPrevented, getDefaultPrevented,
-        js_getSrcElement, getSrcElement, js_setReturnValue, setReturnValue,
-        js_getReturnValue, getReturnValue, js_setCancelBubble,
-        setCancelBubble, js_getCancelBubble, getCancelBubble,
-        js_getClipboardData, getClipboardData, Event, castToEvent,
-        gTypeEvent, IsEvent, toEvent)
+        js_getType, getType, js_getTarget, getTarget, getTargetUnchecked,
+        js_getCurrentTarget, getCurrentTarget, getCurrentTargetUnchecked,
+        js_getEventPhase, getEventPhase, js_getBubbles, getBubbles,
+        js_getCancelable, getCancelable, js_getTimeStamp, getTimeStamp,
+        js_getDefaultPrevented, getDefaultPrevented, js_getSrcElement,
+        getSrcElement, getSrcElementUnchecked, js_setReturnValue,
+        setReturnValue, js_getReturnValue, getReturnValue,
+        js_setCancelBubble, setCancelBubble, js_getCancelBubble,
+        getCancelBubble, js_getClipboardData, getClipboardData,
+        getClipboardDataUnchecked, Event, castToEvent, gTypeEvent, IsEvent,
+        toEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -26,9 +28,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
@@ -106,6 +110,13 @@ getTarget ::
           (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
 getTarget self
   = liftIO (nullableToMaybe <$> (js_getTarget (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
+getTargetUnchecked ::
+                   (MonadIO m, IsEvent self) => self -> m EventTarget
+getTargetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getTarget (toEvent self)))
  
 foreign import javascript unsafe "$1[\"currentTarget\"]"
         js_getCurrentTarget :: Event -> IO (Nullable EventTarget)
@@ -115,6 +126,14 @@ getCurrentTarget ::
                  (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
 getCurrentTarget self
   = liftIO (nullableToMaybe <$> (js_getCurrentTarget (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
+getCurrentTargetUnchecked ::
+                          (MonadIO m, IsEvent self) => self -> m EventTarget
+getCurrentTargetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getCurrentTarget (toEvent self)))
  
 foreign import javascript unsafe "$1[\"eventPhase\"]"
         js_getEventPhase :: Event -> IO Word
@@ -161,6 +180,13 @@ getSrcElement ::
               (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
 getSrcElement self
   = liftIO (nullableToMaybe <$> (js_getSrcElement (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
+getSrcElementUnchecked ::
+                       (MonadIO m, IsEvent self) => self -> m EventTarget
+getSrcElementUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSrcElement (toEvent self)))
  
 foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
         js_setReturnValue :: Event -> Bool -> IO ()
@@ -201,3 +227,11 @@ getClipboardData ::
                  (MonadIO m, IsEvent self) => self -> m (Maybe DataTransfer)
 getClipboardData self
   = liftIO (nullableToMaybe <$> (js_getClipboardData (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
+getClipboardDataUnchecked ::
+                          (MonadIO m, IsEvent self) => self -> m DataTransfer
+getClipboardDataUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getClipboardData (toEvent self)))

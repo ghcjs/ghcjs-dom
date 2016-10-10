@@ -1,11 +1,14 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGElement
        (js_getPresentationAttribute, getPresentationAttribute,
+        getPresentationAttribute_, getPresentationAttributeUnchecked,
         js_setXmlbase, setXmlbase, js_getXmlbase, getXmlbase,
-        js_getOwnerSVGElement, getOwnerSVGElement, js_getViewportElement,
-        getViewportElement, js_setXmllang, setXmllang, js_getXmllang,
-        getXmllang, js_setXmlspace, setXmlspace, js_getXmlspace,
-        getXmlspace, js_getClassName, getClassName, js_getStyle, getStyle,
+        getXmlbaseUnchecked, js_getOwnerSVGElement, getOwnerSVGElement,
+        getOwnerSVGElementUnchecked, js_getViewportElement,
+        getViewportElement, getViewportElementUnchecked, js_setXmllang,
+        setXmllang, js_getXmllang, getXmllang, js_setXmlspace, setXmlspace,
+        js_getXmlspace, getXmlspace, js_getClassName, getClassName,
+        getClassNameUnchecked, js_getStyle, getStyle, getStyleUnchecked,
         js_setTabIndex, setTabIndex, js_getTabIndex, getTabIndex,
         SVGElement, castToSVGElement, gTypeSVGElement, IsSVGElement,
         toSVGElement)
@@ -17,9 +20,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +41,26 @@ getPresentationAttribute ::
 getPresentationAttribute self name
   = liftIO
       (nullableToMaybe <$>
+         (js_getPresentationAttribute (toSVGElement self)
+            (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
+getPresentationAttribute_ ::
+                          (MonadIO m, IsSVGElement self, ToJSString name) =>
+                            self -> name -> m ()
+getPresentationAttribute_ self name
+  = liftIO
+      (void
+         (js_getPresentationAttribute (toSVGElement self)
+            (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
+getPresentationAttributeUnchecked ::
+                                  (MonadIO m, IsSVGElement self, ToJSString name) =>
+                                    self -> name -> m CSSValue
+getPresentationAttributeUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getPresentationAttribute (toSVGElement self)
             (toJSString name)))
  
@@ -59,6 +84,15 @@ getXmlbase ::
 getXmlbase self
   = liftIO
       (fromMaybeJSString <$> (js_getXmlbase (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
+getXmlbaseUnchecked ::
+                    (MonadIO m, IsSVGElement self, FromJSString result) =>
+                      self -> m result
+getXmlbaseUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getXmlbase (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"ownerSVGElement\"]"
         js_getOwnerSVGElement :: SVGElement -> IO (Nullable SVGSVGElement)
@@ -69,6 +103,14 @@ getOwnerSVGElement ::
 getOwnerSVGElement self
   = liftIO
       (nullableToMaybe <$> (js_getOwnerSVGElement (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
+getOwnerSVGElementUnchecked ::
+                            (MonadIO m, IsSVGElement self) => self -> m SVGSVGElement
+getOwnerSVGElementUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getOwnerSVGElement (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"viewportElement\"]"
         js_getViewportElement :: SVGElement -> IO (Nullable SVGElement)
@@ -79,6 +121,14 @@ getViewportElement ::
 getViewportElement self
   = liftIO
       (nullableToMaybe <$> (js_getViewportElement (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
+getViewportElementUnchecked ::
+                            (MonadIO m, IsSVGElement self) => self -> m SVGElement
+getViewportElementUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getViewportElement (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"xmllang\"] = $2;"
         js_setXmllang :: SVGElement -> JSString -> IO ()
@@ -130,6 +180,14 @@ getClassName ::
 getClassName self
   = liftIO
       (nullableToMaybe <$> (js_getClassName (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
+getClassNameUnchecked ::
+                      (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
+getClassNameUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getClassName (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
         SVGElement -> IO (Nullable CSSStyleDeclaration)
@@ -140,6 +198,13 @@ getStyle ::
            self -> m (Maybe CSSStyleDeclaration)
 getStyle self
   = liftIO (nullableToMaybe <$> (js_getStyle (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
+getStyleUnchecked ::
+                  (MonadIO m, IsSVGElement self) => self -> m CSSStyleDeclaration
+getStyleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStyle (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         js_setTabIndex :: SVGElement -> Int -> IO ()

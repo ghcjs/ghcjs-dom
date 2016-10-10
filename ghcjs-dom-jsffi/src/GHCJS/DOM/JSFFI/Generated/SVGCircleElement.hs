@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGCircleElement
-       (js_getCx, getCx, js_getCy, getCy, js_getR, getR, SVGCircleElement,
+       (js_getCx, getCx, getCxUnchecked, js_getCy, getCy, getCyUnchecked,
+        js_getR, getR, getRUnchecked, SVGCircleElement,
         castToSVGCircleElement, gTypeSVGCircleElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -10,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -25,6 +28,12 @@ foreign import javascript unsafe "$1[\"cx\"]" js_getCx ::
 getCx ::
       (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
 getCx self = liftIO (nullableToMaybe <$> (js_getCx (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cx Mozilla SVGCircleElement.cx documentation> 
+getCxUnchecked ::
+               (MonadIO m) => SVGCircleElement -> m SVGAnimatedLength
+getCxUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCx (self)))
  
 foreign import javascript unsafe "$1[\"cy\"]" js_getCy ::
         SVGCircleElement -> IO (Nullable SVGAnimatedLength)
@@ -33,6 +42,12 @@ foreign import javascript unsafe "$1[\"cy\"]" js_getCy ::
 getCy ::
       (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
 getCy self = liftIO (nullableToMaybe <$> (js_getCy (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cy Mozilla SVGCircleElement.cy documentation> 
+getCyUnchecked ::
+               (MonadIO m) => SVGCircleElement -> m SVGAnimatedLength
+getCyUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCy (self)))
  
 foreign import javascript unsafe "$1[\"r\"]" js_getR ::
         SVGCircleElement -> IO (Nullable SVGAnimatedLength)
@@ -41,3 +56,9 @@ foreign import javascript unsafe "$1[\"r\"]" js_getR ::
 getR ::
      (MonadIO m) => SVGCircleElement -> m (Maybe SVGAnimatedLength)
 getR self = liftIO (nullableToMaybe <$> (js_getR (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.r Mozilla SVGCircleElement.r documentation> 
+getRUnchecked ::
+              (MonadIO m) => SVGCircleElement -> m SVGAnimatedLength
+getRUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getR (self)))

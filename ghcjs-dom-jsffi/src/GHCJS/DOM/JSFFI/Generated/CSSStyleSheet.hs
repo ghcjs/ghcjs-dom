@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSStyleSheet
-       (js_insertRule, insertRule, js_deleteRule, deleteRule, js_addRule,
-        addRule, js_removeRule, removeRule, js_getOwnerRule, getOwnerRule,
-        js_getCssRules, getCssRules, js_getRules, getRules, CSSStyleSheet,
-        castToCSSStyleSheet, gTypeCSSStyleSheet)
+       (js_insertRule, insertRule, insertRule_, js_deleteRule, deleteRule,
+        js_addRule, addRule, addRule_, js_removeRule, removeRule,
+        js_getOwnerRule, getOwnerRule, getOwnerRuleUnchecked,
+        js_getCssRules, getCssRules, getCssRulesUnchecked, js_getRules,
+        getRules, getRulesUnchecked, CSSStyleSheet, castToCSSStyleSheet,
+        gTypeCSSStyleSheet)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -29,6 +33,13 @@ insertRule ::
              CSSStyleSheet -> rule -> Word -> m Word
 insertRule self rule index
   = liftIO (js_insertRule (self) (toJSString rule) index)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.insertRule Mozilla CSSStyleSheet.insertRule documentation> 
+insertRule_ ::
+            (MonadIO m, ToJSString rule) =>
+              CSSStyleSheet -> rule -> Word -> m ()
+insertRule_ self rule index
+  = liftIO (void (js_insertRule (self) (toJSString rule) index))
  
 foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
         js_deleteRule :: CSSStyleSheet -> Word -> IO ()
@@ -48,6 +59,15 @@ addRule ::
 addRule self selector style index
   = liftIO
       (js_addRule (self) (toJSString selector) (toJSString style) index)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.addRule Mozilla CSSStyleSheet.addRule documentation> 
+addRule_ ::
+         (MonadIO m, ToJSString selector, ToJSString style) =>
+           CSSStyleSheet -> selector -> style -> Word -> m ()
+addRule_ self selector style index
+  = liftIO
+      (void
+         (js_addRule (self) (toJSString selector) (toJSString style) index))
  
 foreign import javascript unsafe "$1[\"removeRule\"]($2)"
         js_removeRule :: CSSStyleSheet -> Word -> IO ()
@@ -63,6 +83,11 @@ foreign import javascript unsafe "$1[\"ownerRule\"]"
 getOwnerRule :: (MonadIO m) => CSSStyleSheet -> m (Maybe CSSRule)
 getOwnerRule self
   = liftIO (nullableToMaybe <$> (js_getOwnerRule (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.ownerRule Mozilla CSSStyleSheet.ownerRule documentation> 
+getOwnerRuleUnchecked :: (MonadIO m) => CSSStyleSheet -> m CSSRule
+getOwnerRuleUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getOwnerRule (self)))
  
 foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
         :: CSSStyleSheet -> IO (Nullable CSSRuleList)
@@ -72,6 +97,12 @@ getCssRules ::
             (MonadIO m) => CSSStyleSheet -> m (Maybe CSSRuleList)
 getCssRules self
   = liftIO (nullableToMaybe <$> (js_getCssRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.cssRules Mozilla CSSStyleSheet.cssRules documentation> 
+getCssRulesUnchecked ::
+                     (MonadIO m) => CSSStyleSheet -> m CSSRuleList
+getCssRulesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCssRules (self)))
  
 foreign import javascript unsafe "$1[\"rules\"]" js_getRules ::
         CSSStyleSheet -> IO (Nullable CSSRuleList)
@@ -79,3 +110,8 @@ foreign import javascript unsafe "$1[\"rules\"]" js_getRules ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.rules Mozilla CSSStyleSheet.rules documentation> 
 getRules :: (MonadIO m) => CSSStyleSheet -> m (Maybe CSSRuleList)
 getRules self = liftIO (nullableToMaybe <$> (js_getRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.rules Mozilla CSSStyleSheet.rules documentation> 
+getRulesUnchecked :: (MonadIO m) => CSSStyleSheet -> m CSSRuleList
+getRulesUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRules (self)))

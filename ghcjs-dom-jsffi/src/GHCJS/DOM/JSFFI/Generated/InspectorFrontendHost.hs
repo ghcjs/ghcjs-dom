@@ -7,15 +7,17 @@ module GHCJS.DOM.JSFFI.Generated.InspectorFrontendHost
         setAttachedWindowHeight, js_setAttachedWindowWidth,
         setAttachedWindowWidth, js_setToolbarHeight, setToolbarHeight,
         js_moveWindowBy, moveWindowBy, js_localizedStringsURL,
-        localizedStringsURL, js_debuggableType, debuggableType,
-        js_copyText, copyText, js_openInNewTab, openInNewTab, js_canSave,
-        canSave, js_save, save, js_append, append, js_close, close,
-        js_platform, platform, js_port, port, js_showContextMenu,
+        localizedStringsURL, localizedStringsURL_, js_debuggableType,
+        debuggableType, debuggableType_, js_copyText, copyText,
+        js_openInNewTab, openInNewTab, js_canSave, canSave, canSave_,
+        js_save, save, js_append, append, js_close, close, js_platform,
+        platform, platform_, js_port, port, port_, js_showContextMenu,
         showContextMenu, js_dispatchEventAsContextMenuEvent,
         dispatchEventAsContextMenuEvent, js_sendMessageToBackend,
         sendMessageToBackend, js_unbufferedLog, unbufferedLog,
-        js_isUnderTest, isUnderTest, js_beep, beep, js_canInspectWorkers,
-        canInspectWorkers, js_canSaveAs, canSaveAs, InspectorFrontendHost,
+        js_isUnderTest, isUnderTest, isUnderTest_, js_beep, beep,
+        js_canInspectWorkers, canInspectWorkers, canInspectWorkers_,
+        js_canSaveAs, canSaveAs, canSaveAs_, InspectorFrontendHost,
         castToInspectorFrontendHost, gTypeInspectorFrontendHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -25,9 +27,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -129,6 +133,12 @@ localizedStringsURL ::
                       InspectorFrontendHost -> m result
 localizedStringsURL self
   = liftIO (fromJSString <$> (js_localizedStringsURL (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.localizedStringsURL Mozilla InspectorFrontendHost.localizedStringsURL documentation> 
+localizedStringsURL_ ::
+                     (MonadIO m) => InspectorFrontendHost -> m ()
+localizedStringsURL_ self
+  = liftIO (void (js_localizedStringsURL (self)))
  
 foreign import javascript unsafe "$1[\"debuggableType\"]()"
         js_debuggableType :: InspectorFrontendHost -> IO JSString
@@ -139,6 +149,10 @@ debuggableType ::
                  InspectorFrontendHost -> m result
 debuggableType self
   = liftIO (fromJSString <$> (js_debuggableType (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.debuggableType Mozilla InspectorFrontendHost.debuggableType documentation> 
+debuggableType_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+debuggableType_ self = liftIO (void (js_debuggableType (self)))
  
 foreign import javascript unsafe "$1[\"copyText\"]($2)" js_copyText
         :: InspectorFrontendHost -> JSString -> IO ()
@@ -164,6 +178,10 @@ foreign import javascript unsafe "($1[\"canSave\"]() ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSave Mozilla InspectorFrontendHost.canSave documentation> 
 canSave :: (MonadIO m) => InspectorFrontendHost -> m Bool
 canSave self = liftIO (js_canSave (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSave Mozilla InspectorFrontendHost.canSave documentation> 
+canSave_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+canSave_ self = liftIO (void (js_canSave (self)))
  
 foreign import javascript unsafe "$1[\"save\"]($2, $3, $4, $5)"
         js_save ::
@@ -205,6 +223,10 @@ platform ::
          (MonadIO m, FromJSString result) =>
            InspectorFrontendHost -> m result
 platform self = liftIO (fromJSString <$> (js_platform (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.platform Mozilla InspectorFrontendHost.platform documentation> 
+platform_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+platform_ self = liftIO (void (js_platform (self)))
  
 foreign import javascript unsafe "$1[\"port\"]()" js_port ::
         InspectorFrontendHost -> IO JSString
@@ -214,6 +236,10 @@ port ::
      (MonadIO m, FromJSString result) =>
        InspectorFrontendHost -> m result
 port self = liftIO (fromJSString <$> (js_port (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.port Mozilla InspectorFrontendHost.port documentation> 
+port_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+port_ self = liftIO (void (js_port (self)))
  
 foreign import javascript unsafe "$1[\"showContextMenu\"]($2, $3)"
         js_showContextMenu ::
@@ -270,6 +296,10 @@ foreign import javascript unsafe "($1[\"isUnderTest\"]() ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.isUnderTest Mozilla InspectorFrontendHost.isUnderTest documentation> 
 isUnderTest :: (MonadIO m) => InspectorFrontendHost -> m Bool
 isUnderTest self = liftIO (js_isUnderTest (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.isUnderTest Mozilla InspectorFrontendHost.isUnderTest documentation> 
+isUnderTest_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+isUnderTest_ self = liftIO (void (js_isUnderTest (self)))
  
 foreign import javascript unsafe "$1[\"beep\"]()" js_beep ::
         InspectorFrontendHost -> IO ()
@@ -285,6 +315,11 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canInspectWorkers Mozilla InspectorFrontendHost.canInspectWorkers documentation> 
 canInspectWorkers :: (MonadIO m) => InspectorFrontendHost -> m Bool
 canInspectWorkers self = liftIO (js_canInspectWorkers (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canInspectWorkers Mozilla InspectorFrontendHost.canInspectWorkers documentation> 
+canInspectWorkers_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+canInspectWorkers_ self
+  = liftIO (void (js_canInspectWorkers (self)))
  
 foreign import javascript unsafe "($1[\"canSaveAs\"]() ? 1 : 0)"
         js_canSaveAs :: InspectorFrontendHost -> IO Bool
@@ -292,3 +327,7 @@ foreign import javascript unsafe "($1[\"canSaveAs\"]() ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSaveAs Mozilla InspectorFrontendHost.canSaveAs documentation> 
 canSaveAs :: (MonadIO m) => InspectorFrontendHost -> m Bool
 canSaveAs self = liftIO (js_canSaveAs (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSaveAs Mozilla InspectorFrontendHost.canSaveAs documentation> 
+canSaveAs_ :: (MonadIO m) => InspectorFrontendHost -> m ()
+canSaveAs_ self = liftIO (void (js_canSaveAs (self)))

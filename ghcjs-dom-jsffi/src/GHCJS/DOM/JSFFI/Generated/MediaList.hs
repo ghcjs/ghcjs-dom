@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaList
-       (js_item, item, js_deleteMedium, deleteMedium, js_appendMedium,
-        appendMedium, js_setMediaText, setMediaText, js_getMediaText,
-        getMediaText, js_getLength, getLength, MediaList, castToMediaList,
+       (js_item, item, item_, itemUnchecked, js_deleteMedium,
+        deleteMedium, js_appendMedium, appendMedium, js_setMediaText,
+        setMediaText, js_getMediaText, getMediaText, getMediaTextUnchecked,
+        js_getLength, getLength, MediaList, castToMediaList,
         gTypeMediaList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -12,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -29,6 +32,16 @@ item ::
        MediaList -> Word -> m (Maybe result)
 item self index
   = liftIO (fromMaybeJSString <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
+item_ :: (MonadIO m) => MediaList -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
+itemUnchecked ::
+              (MonadIO m, FromJSString result) => MediaList -> Word -> m result
+itemUnchecked self index
+  = liftIO (fromJust . fromMaybeJSString <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"deleteMedium\"]($2)"
         js_deleteMedium :: MediaList -> JSString -> IO ()
@@ -65,6 +78,13 @@ getMediaText ::
              (MonadIO m, FromJSString result) => MediaList -> m (Maybe result)
 getMediaText self
   = liftIO (fromMaybeJSString <$> (js_getMediaText (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
+getMediaTextUnchecked ::
+                      (MonadIO m, FromJSString result) => MediaList -> m result
+getMediaTextUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getMediaText (self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         MediaList -> IO Word

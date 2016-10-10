@@ -1,24 +1,26 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
        (js_sortedTrackListForMenu, sortedTrackListForMenu,
-        js_sortedTrackListForMenuAudio, sortedTrackListForMenuAudio,
-        js_displayNameForTrack, displayNameForTrack,
+        sortedTrackListForMenu_, js_sortedTrackListForMenuAudio,
+        sortedTrackListForMenuAudio, sortedTrackListForMenuAudio_,
+        js_displayNameForTrack, displayNameForTrack, displayNameForTrack_,
         js_displayNameForTrackAudio, displayNameForTrackAudio,
-        js_setSelectedTextTrack, setSelectedTextTrack,
-        js_updateTextTrackContainer, updateTextTrackContainer,
-        js_enteredFullscreen, enteredFullscreen, js_exitedFullscreen,
-        exitedFullscreen, js_enterFullscreenOptimized,
+        displayNameForTrackAudio_, js_setSelectedTextTrack,
+        setSelectedTextTrack, js_updateTextTrackContainer,
+        updateTextTrackContainer, js_enteredFullscreen, enteredFullscreen,
+        js_exitedFullscreen, exitedFullscreen, js_enterFullscreenOptimized,
         enterFullscreenOptimized, js_mediaUIImageData, mediaUIImageData,
-        js_getCaptionMenuOffItem, getCaptionMenuOffItem,
-        js_getCaptionMenuAutomaticItem, getCaptionMenuAutomaticItem,
+        mediaUIImageData_, js_getCaptionMenuOffItem, getCaptionMenuOffItem,
+        getCaptionMenuOffItemUnchecked, js_getCaptionMenuAutomaticItem,
+        getCaptionMenuAutomaticItem, getCaptionMenuAutomaticItemUnchecked,
         js_getCaptionDisplayMode, getCaptionDisplayMode,
         js_getTextTrackContainer, getTextTrackContainer,
-        js_getMediaPlaybackAllowsInline, getMediaPlaybackAllowsInline,
-        js_getSupportsFullscreen, getSupportsFullscreen,
-        js_getUserGestureRequired, getUserGestureRequired,
-        js_getExternalDeviceDisplayName, getExternalDeviceDisplayName,
-        js_getExternalDeviceType, getExternalDeviceType,
-        js_setControlsDependOnPageScaleFactor,
+        getTextTrackContainerUnchecked, js_getMediaPlaybackAllowsInline,
+        getMediaPlaybackAllowsInline, js_getSupportsFullscreen,
+        getSupportsFullscreen, js_getUserGestureRequired,
+        getUserGestureRequired, js_getExternalDeviceDisplayName,
+        getExternalDeviceDisplayName, js_getExternalDeviceType,
+        getExternalDeviceType, js_setControlsDependOnPageScaleFactor,
         setControlsDependOnPageScaleFactor,
         js_getControlsDependOnPageScaleFactor,
         getControlsDependOnPageScaleFactor, MediaControlsHost,
@@ -31,9 +33,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -51,6 +55,14 @@ sortedTrackListForMenu self trackList
   = liftIO
       ((js_sortedTrackListForMenu (self) (maybeToNullable trackList)) >>=
          fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
+sortedTrackListForMenu_ ::
+                        (MonadIO m) => MediaControlsHost -> Maybe TextTrackList -> m ()
+sortedTrackListForMenu_ self trackList
+  = liftIO
+      (void
+         (js_sortedTrackListForMenu (self) (maybeToNullable trackList)))
  
 foreign import javascript unsafe
         "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenuAudio
@@ -65,6 +77,15 @@ sortedTrackListForMenuAudio self trackList
       ((js_sortedTrackListForMenuAudio (self)
           (maybeToNullable trackList))
          >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
+sortedTrackListForMenuAudio_ ::
+                             (MonadIO m) => MediaControlsHost -> Maybe AudioTrackList -> m ()
+sortedTrackListForMenuAudio_ self trackList
+  = liftIO
+      (void
+         (js_sortedTrackListForMenuAudio (self)
+            (maybeToNullable trackList)))
  
 foreign import javascript unsafe "$1[\"displayNameForTrack\"]($2)"
         js_displayNameForTrack ::
@@ -78,6 +99,13 @@ displayNameForTrack self track
   = liftIO
       (fromJSString <$>
          (js_displayNameForTrack (self) (maybeToNullable track)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.displayNameForTrack Mozilla MediaControlsHost.displayNameForTrack documentation> 
+displayNameForTrack_ ::
+                     (MonadIO m) => MediaControlsHost -> Maybe TextTrack -> m ()
+displayNameForTrack_ self track
+  = liftIO
+      (void (js_displayNameForTrack (self) (maybeToNullable track)))
  
 foreign import javascript unsafe "$1[\"displayNameForTrack\"]($2)"
         js_displayNameForTrackAudio ::
@@ -91,6 +119,13 @@ displayNameForTrackAudio self track
   = liftIO
       (fromJSString <$>
          (js_displayNameForTrackAudio (self) (maybeToNullable track)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.displayNameForTrack Mozilla MediaControlsHost.displayNameForTrack documentation> 
+displayNameForTrackAudio_ ::
+                          (MonadIO m) => MediaControlsHost -> Maybe AudioTrack -> m ()
+displayNameForTrackAudio_ self track
+  = liftIO
+      (void (js_displayNameForTrackAudio (self) (maybeToNullable track)))
  
 foreign import javascript unsafe "$1[\"setSelectedTextTrack\"]($2)"
         js_setSelectedTextTrack ::
@@ -146,6 +181,12 @@ mediaUIImageData ::
 mediaUIImageData self partID
   = liftIO
       (fromJSString <$> (js_mediaUIImageData (self) (pToJSVal partID)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.mediaUIImageData Mozilla MediaControlsHost.mediaUIImageData documentation> 
+mediaUIImageData_ ::
+                  (MonadIO m) => MediaControlsHost -> MediaUIPartID -> m ()
+mediaUIImageData_ self partID
+  = liftIO (void (js_mediaUIImageData (self) (pToJSVal partID)))
  
 foreign import javascript unsafe "$1[\"captionMenuOffItem\"]"
         js_getCaptionMenuOffItem ::
@@ -156,6 +197,13 @@ getCaptionMenuOffItem ::
                       (MonadIO m) => MediaControlsHost -> m (Maybe TextTrack)
 getCaptionMenuOffItem self
   = liftIO (nullableToMaybe <$> (js_getCaptionMenuOffItem (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuOffItem Mozilla MediaControlsHost.captionMenuOffItem documentation> 
+getCaptionMenuOffItemUnchecked ::
+                               (MonadIO m) => MediaControlsHost -> m TextTrack
+getCaptionMenuOffItemUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getCaptionMenuOffItem (self)))
  
 foreign import javascript unsafe "$1[\"captionMenuAutomaticItem\"]"
         js_getCaptionMenuAutomaticItem ::
@@ -167,6 +215,14 @@ getCaptionMenuAutomaticItem ::
 getCaptionMenuAutomaticItem self
   = liftIO
       (nullableToMaybe <$> (js_getCaptionMenuAutomaticItem (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuAutomaticItem Mozilla MediaControlsHost.captionMenuAutomaticItem documentation> 
+getCaptionMenuAutomaticItemUnchecked ::
+                                     (MonadIO m) => MediaControlsHost -> m TextTrack
+getCaptionMenuAutomaticItemUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getCaptionMenuAutomaticItem (self)))
  
 foreign import javascript unsafe "$1[\"captionDisplayMode\"]"
         js_getCaptionDisplayMode :: MediaControlsHost -> IO JSString
@@ -186,6 +242,13 @@ getTextTrackContainer ::
                       (MonadIO m) => MediaControlsHost -> m (Maybe HTMLElement)
 getTextTrackContainer self
   = liftIO (nullableToMaybe <$> (js_getTextTrackContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.textTrackContainer Mozilla MediaControlsHost.textTrackContainer documentation> 
+getTextTrackContainerUnchecked ::
+                               (MonadIO m) => MediaControlsHost -> m HTMLElement
+getTextTrackContainerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getTextTrackContainer (self)))
  
 foreign import javascript unsafe
         "($1[\"mediaPlaybackAllowsInline\"] ? 1 : 0)"

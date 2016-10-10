@@ -1,20 +1,22 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLButtonElement
-       (js_checkValidity, checkValidity, js_setCustomValidity,
-        setCustomValidity, js_setAutofocus, setAutofocus, js_getAutofocus,
-        getAutofocus, js_setDisabled, setDisabled, js_getDisabled,
-        getDisabled, js_getForm, getForm, js_setFormAction, setFormAction,
+       (js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_setAutofocus,
+        setAutofocus, js_getAutofocus, getAutofocus, js_setDisabled,
+        setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
+        getFormUnchecked, js_setFormAction, setFormAction,
         js_getFormAction, getFormAction, js_setFormEnctype, setFormEnctype,
-        js_getFormEnctype, getFormEnctype, js_setFormMethod, setFormMethod,
-        js_getFormMethod, getFormMethod, js_setFormNoValidate,
-        setFormNoValidate, js_getFormNoValidate, getFormNoValidate,
-        js_setFormTarget, setFormTarget, js_getFormTarget, getFormTarget,
-        js_setName, setName, js_getName, getName, js_setType, setType,
-        js_getType, getType, js_setValue, setValue, js_getValue, getValue,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
-        js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, HTMLButtonElement, castToHTMLButtonElement,
-        gTypeHTMLButtonElement)
+        js_getFormEnctype, getFormEnctype, getFormEnctypeUnchecked,
+        js_setFormMethod, setFormMethod, js_getFormMethod, getFormMethod,
+        getFormMethodUnchecked, js_setFormNoValidate, setFormNoValidate,
+        js_getFormNoValidate, getFormNoValidate, js_setFormTarget,
+        setFormTarget, js_getFormTarget, getFormTarget, js_setName,
+        setName, js_getName, getName, js_setType, setType, js_getType,
+        getType, getTypeUnchecked, js_setValue, setValue, js_getValue,
+        getValue, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnchecked,
+        HTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -23,9 +25,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -38,6 +42,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.checkValidity Mozilla HTMLButtonElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLButtonElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.checkValidity Mozilla HTMLButtonElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLButtonElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
         js_setCustomValidity ::
@@ -85,6 +93,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLButtonElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.form Mozilla HTMLButtonElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLButtonElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"formAction\"] = $2;"
         js_setFormAction :: HTMLButtonElement -> JSString -> IO ()
@@ -124,6 +138,13 @@ getFormEnctype ::
                  HTMLButtonElement -> m (Maybe result)
 getFormEnctype self
   = liftIO (fromMaybeJSString <$> (js_getFormEnctype (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formEnctype Mozilla HTMLButtonElement.formEnctype documentation> 
+getFormEnctypeUnchecked ::
+                        (MonadIO m, FromJSString result) => HTMLButtonElement -> m result
+getFormEnctypeUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getFormEnctype (self)))
  
 foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
         js_setFormMethod :: HTMLButtonElement -> Nullable JSString -> IO ()
@@ -144,6 +165,13 @@ getFormMethod ::
                 HTMLButtonElement -> m (Maybe result)
 getFormMethod self
   = liftIO (fromMaybeJSString <$> (js_getFormMethod (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formMethod Mozilla HTMLButtonElement.formMethod documentation> 
+getFormMethodUnchecked ::
+                       (MonadIO m, FromJSString result) => HTMLButtonElement -> m result
+getFormMethodUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getFormMethod (self)))
  
 foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
         js_setFormNoValidate :: HTMLButtonElement -> Bool -> IO ()
@@ -212,6 +240,12 @@ getType ::
         (MonadIO m, FromJSString result) =>
           HTMLButtonElement -> m (Maybe result)
 getType self = liftIO (fromMaybeJSString <$> (js_getType (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.type Mozilla HTMLButtonElement.type documentation> 
+getTypeUnchecked ::
+                 (MonadIO m, FromJSString result) => HTMLButtonElement -> m result
+getTypeUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getType (self)))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: HTMLButtonElement -> JSString -> IO ()
@@ -244,6 +278,12 @@ getValidity ::
             (MonadIO m) => HTMLButtonElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.validity Mozilla HTMLButtonElement.validity documentation> 
+getValidityUnchecked ::
+                     (MonadIO m) => HTMLButtonElement -> m ValidityState
+getValidityUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getValidity (self)))
  
 foreign import javascript unsafe "$1[\"validationMessage\"]"
         js_getValidationMessage :: HTMLButtonElement -> IO JSString
@@ -260,3 +300,9 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.labels Mozilla HTMLButtonElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLButtonElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.labels Mozilla HTMLButtonElement.labels documentation> 
+getLabelsUnchecked ::
+                   (MonadIO m) => HTMLButtonElement -> m NodeList
+getLabelsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getLabels (self)))

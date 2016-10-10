@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBRequest
-       (js_getResult, getResult, js_getError, getError, js_getSource,
-        getSource, js_getTransaction, getTransaction, js_getReadyState,
-        getReadyState, success, error, IDBRequest, castToIDBRequest,
-        gTypeIDBRequest, IsIDBRequest, toIDBRequest)
+       (js_getResult, getResult, getResultUnchecked, js_getError,
+        getError, getErrorUnchecked, js_getSource, getSource,
+        getSourceUnchecked, js_getTransaction, getTransaction,
+        getTransactionUnchecked, js_getReadyState, getReadyState, success,
+        error, IDBRequest, castToIDBRequest, gTypeIDBRequest, IsIDBRequest,
+        toIDBRequest)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -12,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +32,13 @@ getResult ::
           (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
 getResult self
   = liftIO (nullableToMaybe <$> (js_getResult (toIDBRequest self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.result Mozilla IDBRequest.result documentation> 
+getResultUnchecked ::
+                   (MonadIO m, IsIDBRequest self) => self -> m IDBAny
+getResultUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getResult (toIDBRequest self)))
  
 foreign import javascript unsafe "$1[\"error\"]" js_getError ::
         IDBRequest -> IO (Nullable DOMError)
@@ -37,6 +48,13 @@ getError ::
          (MonadIO m, IsIDBRequest self) => self -> m (Maybe DOMError)
 getError self
   = liftIO (nullableToMaybe <$> (js_getError (toIDBRequest self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.error Mozilla IDBRequest.error documentation> 
+getErrorUnchecked ::
+                  (MonadIO m, IsIDBRequest self) => self -> m DOMError
+getErrorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getError (toIDBRequest self)))
  
 foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
         IDBRequest -> IO (Nullable IDBAny)
@@ -46,6 +64,13 @@ getSource ::
           (MonadIO m, IsIDBRequest self) => self -> m (Maybe IDBAny)
 getSource self
   = liftIO (nullableToMaybe <$> (js_getSource (toIDBRequest self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.source Mozilla IDBRequest.source documentation> 
+getSourceUnchecked ::
+                   (MonadIO m, IsIDBRequest self) => self -> m IDBAny
+getSourceUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSource (toIDBRequest self)))
  
 foreign import javascript unsafe "$1[\"transaction\"]"
         js_getTransaction :: IDBRequest -> IO (Nullable IDBTransaction)
@@ -56,6 +81,14 @@ getTransaction ::
 getTransaction self
   = liftIO
       (nullableToMaybe <$> (js_getTransaction (toIDBRequest self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.transaction Mozilla IDBRequest.transaction documentation> 
+getTransactionUnchecked ::
+                        (MonadIO m, IsIDBRequest self) => self -> m IDBTransaction
+getTransactionUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTransaction (toIDBRequest self)))
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: IDBRequest -> IO JSString

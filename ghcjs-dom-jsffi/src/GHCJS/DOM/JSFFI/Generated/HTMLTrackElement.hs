@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
         getSrclang, js_setLabel, setLabel, js_getLabel, getLabel,
         js_setDefault, setDefault, js_getDefault, getDefault,
         js_getReadyState, getReadyState, js_getTrack, getTrack,
-        HTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement)
+        getTrackUnchecked, HTMLTrackElement, castToHTMLTrackElement,
+        gTypeHTMLTrackElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -119,3 +122,8 @@ foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
 getTrack :: (MonadIO m) => HTMLTrackElement -> m (Maybe TextTrack)
 getTrack self = liftIO (nullableToMaybe <$> (js_getTrack (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
+getTrackUnchecked :: (MonadIO m) => HTMLTrackElement -> m TextTrack
+getTrackUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTrack (self)))

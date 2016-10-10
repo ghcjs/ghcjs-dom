@@ -1,11 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CharacterData
-       (js_substringData, substringData, js_appendData, appendData,
-        js_insertData, insertData, js_deleteData, deleteData,
-        js_replaceData, replaceData, js_setData, setData, js_getData,
-        getData, js_getLength, getLength, CharacterData,
-        castToCharacterData, gTypeCharacterData, IsCharacterData,
-        toCharacterData)
+       (js_substringData, substringData, substringData_,
+        substringDataUnchecked, js_appendData, appendData, js_insertData,
+        insertData, js_deleteData, deleteData, js_replaceData, replaceData,
+        js_setData, setData, js_getData, getData, getDataUnchecked,
+        js_getLength, getLength, CharacterData, castToCharacterData,
+        gTypeCharacterData, IsCharacterData, toCharacterData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,6 +35,22 @@ substringData ::
 substringData self offset length
   = liftIO
       (fromMaybeJSString <$>
+         (js_substringData (toCharacterData self) offset length))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
+substringData_ ::
+               (MonadIO m, IsCharacterData self) => self -> Word -> Word -> m ()
+substringData_ self offset length
+  = liftIO
+      (void (js_substringData (toCharacterData self) offset length))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
+substringDataUnchecked ::
+                       (MonadIO m, IsCharacterData self, FromJSString result) =>
+                         self -> Word -> Word -> m result
+substringDataUnchecked self offset length
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_substringData (toCharacterData self) offset length))
  
 foreign import javascript unsafe "$1[\"appendData\"]($2)"
@@ -98,6 +116,15 @@ getData ::
 getData self
   = liftIO
       (fromMaybeJSString <$> (js_getData (toCharacterData self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
+getDataUnchecked ::
+                 (MonadIO m, IsCharacterData self, FromJSString result) =>
+                   self -> m result
+getDataUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getData (toCharacterData self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         CharacterData -> IO Word

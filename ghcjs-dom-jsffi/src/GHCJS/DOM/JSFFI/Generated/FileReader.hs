@@ -5,8 +5,9 @@ module GHCJS.DOM.JSFFI.Generated.FileReader
         js_readAsText, readAsText, js_readAsDataURL, readAsDataURL,
         js_abort, abort, pattern EMPTY, pattern LOADING, pattern DONE,
         js_getReadyState, getReadyState, js_getResult, getResult,
-        js_getError, getError, loadStart, progress, load, abortEvent,
-        error, loadEnd, FileReader, castToFileReader, gTypeFileReader)
+        js_getError, getError, getErrorUnchecked, loadStart, progress,
+        load, abortEvent, error, loadEnd, FileReader, castToFileReader,
+        gTypeFileReader)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -102,6 +105,11 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
 getError :: (MonadIO m) => FileReader -> m (Maybe FileError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
+getErrorUnchecked :: (MonadIO m) => FileReader -> m FileError
+getErrorUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getError (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onloadstart Mozilla FileReader.onloadstart documentation> 
 loadStart :: EventName FileReader ProgressEvent

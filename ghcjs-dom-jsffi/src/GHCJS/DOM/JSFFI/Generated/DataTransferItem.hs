@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DataTransferItem
-       (js_getAsString, getAsString, js_getAsFile, getAsFile, js_getKind,
-        getKind, js_getType, getType, DataTransferItem,
-        castToDataTransferItem, gTypeDataTransferItem)
+       (js_getAsString, getAsString, js_getAsFile, getAsFile, getAsFile_,
+        getAsFileUnchecked, js_getKind, getKind, js_getType, getType,
+        DataTransferItem, castToDataTransferItem, gTypeDataTransferItem)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,6 +38,15 @@ foreign import javascript unsafe "$1[\"getAsFile\"]()" js_getAsFile
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsFile Mozilla DataTransferItem.getAsFile documentation> 
 getAsFile :: (MonadIO m) => DataTransferItem -> m (Maybe Blob)
 getAsFile self = liftIO (nullableToMaybe <$> (js_getAsFile (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsFile Mozilla DataTransferItem.getAsFile documentation> 
+getAsFile_ :: (MonadIO m) => DataTransferItem -> m ()
+getAsFile_ self = liftIO (void (js_getAsFile (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsFile Mozilla DataTransferItem.getAsFile documentation> 
+getAsFileUnchecked :: (MonadIO m) => DataTransferItem -> m Blob
+getAsFileUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getAsFile (self)))
  
 foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         DataTransferItem -> IO JSString

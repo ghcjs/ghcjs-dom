@@ -2,10 +2,12 @@
 module GHCJS.DOM.JSFFI.Generated.SVGFEGaussianBlurElement
        (js_setStdDeviation, setStdDeviation, pattern SVG_EDGEMODE_UNKNOWN,
         pattern SVG_EDGEMODE_DUPLICATE, pattern SVG_EDGEMODE_WRAP,
-        pattern SVG_EDGEMODE_NONE, js_getIn1, getIn1, js_getStdDeviationX,
-        getStdDeviationX, js_getStdDeviationY, getStdDeviationY,
-        js_getEdgeMode, getEdgeMode, SVGFEGaussianBlurElement,
-        castToSVGFEGaussianBlurElement, gTypeSVGFEGaussianBlurElement)
+        pattern SVG_EDGEMODE_NONE, js_getIn1, getIn1, getIn1Unchecked,
+        js_getStdDeviationX, getStdDeviationX, getStdDeviationXUnchecked,
+        js_getStdDeviationY, getStdDeviationY, getStdDeviationYUnchecked,
+        js_getEdgeMode, getEdgeMode, getEdgeModeUnchecked,
+        SVGFEGaussianBlurElement, castToSVGFEGaussianBlurElement,
+        gTypeSVGFEGaussianBlurElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -14,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -44,6 +48,12 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEGaussianBlurElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.in1 Mozilla SVGFEGaussianBlurElement.in1 documentation> 
+getIn1Unchecked ::
+                (MonadIO m) => SVGFEGaussianBlurElement -> m SVGAnimatedString
+getIn1Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"stdDeviationX\"]"
         js_getStdDeviationX ::
@@ -55,6 +65,13 @@ getStdDeviationX ::
                    SVGFEGaussianBlurElement -> m (Maybe SVGAnimatedNumber)
 getStdDeviationX self
   = liftIO (nullableToMaybe <$> (js_getStdDeviationX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.stdDeviationX Mozilla SVGFEGaussianBlurElement.stdDeviationX documentation> 
+getStdDeviationXUnchecked ::
+                          (MonadIO m) => SVGFEGaussianBlurElement -> m SVGAnimatedNumber
+getStdDeviationXUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStdDeviationX (self)))
  
 foreign import javascript unsafe "$1[\"stdDeviationY\"]"
         js_getStdDeviationY ::
@@ -66,6 +83,13 @@ getStdDeviationY ::
                    SVGFEGaussianBlurElement -> m (Maybe SVGAnimatedNumber)
 getStdDeviationY self
   = liftIO (nullableToMaybe <$> (js_getStdDeviationY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.stdDeviationY Mozilla SVGFEGaussianBlurElement.stdDeviationY documentation> 
+getStdDeviationYUnchecked ::
+                          (MonadIO m) => SVGFEGaussianBlurElement -> m SVGAnimatedNumber
+getStdDeviationYUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStdDeviationY (self)))
  
 foreign import javascript unsafe "$1[\"edgeMode\"]" js_getEdgeMode
         :: SVGFEGaussianBlurElement -> IO (Nullable SVGAnimatedEnumeration)
@@ -76,3 +100,9 @@ getEdgeMode ::
               SVGFEGaussianBlurElement -> m (Maybe SVGAnimatedEnumeration)
 getEdgeMode self
   = liftIO (nullableToMaybe <$> (js_getEdgeMode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.edgeMode Mozilla SVGFEGaussianBlurElement.edgeMode documentation> 
+getEdgeModeUnchecked ::
+                     (MonadIO m) => SVGFEGaussianBlurElement -> m SVGAnimatedEnumeration
+getEdgeModeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getEdgeMode (self)))

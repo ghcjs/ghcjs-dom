@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeyEvent
        (js_getKeySystem, getKeySystem, js_getSessionId, getSessionId,
-        js_getInitData, getInitData, js_getMessage, getMessage,
-        js_getDefaultURL, getDefaultURL, js_getErrorCode, getErrorCode,
+        js_getInitData, getInitData, getInitDataUnchecked, js_getMessage,
+        getMessage, getMessageUnchecked, js_getDefaultURL, getDefaultURL,
+        js_getErrorCode, getErrorCode, getErrorCodeUnchecked,
         js_getSystemCode, getSystemCode, MediaKeyEvent,
         castToMediaKeyEvent, gTypeMediaKeyEvent)
        where
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -46,6 +49,12 @@ foreign import javascript unsafe "$1[\"initData\"]" js_getInitData
 getInitData :: (MonadIO m) => MediaKeyEvent -> m (Maybe Uint8Array)
 getInitData self
   = liftIO (nullableToMaybe <$> (js_getInitData (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.initData Mozilla MediaKeyEvent.initData documentation> 
+getInitDataUnchecked ::
+                     (MonadIO m) => MediaKeyEvent -> m Uint8Array
+getInitDataUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getInitData (self)))
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
         MediaKeyEvent -> IO (Nullable Uint8Array)
@@ -54,6 +63,11 @@ foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
 getMessage :: (MonadIO m) => MediaKeyEvent -> m (Maybe Uint8Array)
 getMessage self
   = liftIO (nullableToMaybe <$> (js_getMessage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.message Mozilla MediaKeyEvent.message documentation> 
+getMessageUnchecked :: (MonadIO m) => MediaKeyEvent -> m Uint8Array
+getMessageUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getMessage (self)))
  
 foreign import javascript unsafe "$1[\"defaultURL\"]"
         js_getDefaultURL :: MediaKeyEvent -> IO JSString
@@ -72,6 +86,12 @@ getErrorCode ::
              (MonadIO m) => MediaKeyEvent -> m (Maybe MediaKeyError)
 getErrorCode self
   = liftIO (nullableToMaybe <$> (js_getErrorCode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.errorCode Mozilla MediaKeyEvent.errorCode documentation> 
+getErrorCodeUnchecked ::
+                      (MonadIO m) => MediaKeyEvent -> m MediaKeyError
+getErrorCodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getErrorCode (self)))
  
 foreign import javascript unsafe "$1[\"systemCode\"]"
         js_getSystemCode :: MediaKeyEvent -> IO Word

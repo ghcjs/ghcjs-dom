@@ -2,18 +2,21 @@
 module GHCJS.DOM.JSFFI.Generated.Selection
        (js_collapse, collapse, js_collapseToEnd, collapseToEnd,
         js_collapseToStart, collapseToStart, js_deleteFromDocument,
-        deleteFromDocument, js_containsNode, containsNode,
+        deleteFromDocument, js_containsNode, containsNode, containsNode_,
         js_selectAllChildren, selectAllChildren, js_extend, extend,
-        js_getRangeAt, getRangeAt, js_removeAllRanges, removeAllRanges,
-        js_addRange, addRange, js_toString, toString, js_modify, modify,
+        js_getRangeAt, getRangeAt, getRangeAt_, getRangeAtUnchecked,
+        js_removeAllRanges, removeAllRanges, js_addRange, addRange,
+        js_toString, toString, toString_, js_modify, modify,
         js_setBaseAndExtent, setBaseAndExtent, js_setPosition, setPosition,
         js_empty, empty, js_getAnchorNode, getAnchorNode,
-        js_getAnchorOffset, getAnchorOffset, js_getFocusNode, getFocusNode,
+        getAnchorNodeUnchecked, js_getAnchorOffset, getAnchorOffset,
+        js_getFocusNode, getFocusNode, getFocusNodeUnchecked,
         js_getFocusOffset, getFocusOffset, js_getIsCollapsed,
         getIsCollapsed, js_getRangeCount, getRangeCount, js_getBaseNode,
-        getBaseNode, js_getBaseOffset, getBaseOffset, js_getExtentNode,
-        getExtentNode, js_getExtentOffset, getExtentOffset, js_getType,
-        getType, Selection, castToSelection, gTypeSelection)
+        getBaseNode, getBaseNodeUnchecked, js_getBaseOffset, getBaseOffset,
+        js_getExtentNode, getExtentNode, getExtentNodeUnchecked,
+        js_getExtentOffset, getExtentOffset, js_getType, getType,
+        Selection, castToSelection, gTypeSelection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -22,9 +25,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -73,6 +78,15 @@ containsNode self node allowPartial
   = liftIO
       (js_containsNode (self) (maybeToNullable (fmap toNode node))
          allowPartial)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.containsNode Mozilla Selection.containsNode documentation> 
+containsNode_ ::
+              (MonadIO m, IsNode node) => Selection -> Maybe node -> Bool -> m ()
+containsNode_ self node allowPartial
+  = liftIO
+      (void
+         (js_containsNode (self) (maybeToNullable (fmap toNode node))
+            allowPartial))
  
 foreign import javascript unsafe "$1[\"selectAllChildren\"]($2)"
         js_selectAllChildren :: Selection -> Nullable Node -> IO ()
@@ -101,6 +115,16 @@ foreign import javascript unsafe "$1[\"getRangeAt\"]($2)"
 getRangeAt :: (MonadIO m) => Selection -> Int -> m (Maybe Range)
 getRangeAt self index
   = liftIO (nullableToMaybe <$> (js_getRangeAt (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.getRangeAt Mozilla Selection.getRangeAt documentation> 
+getRangeAt_ :: (MonadIO m) => Selection -> Int -> m ()
+getRangeAt_ self index = liftIO (void (js_getRangeAt (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.getRangeAt Mozilla Selection.getRangeAt documentation> 
+getRangeAtUnchecked :: (MonadIO m) => Selection -> Int -> m Range
+getRangeAtUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getRangeAt (self) index))
  
 foreign import javascript unsafe "$1[\"removeAllRanges\"]()"
         js_removeAllRanges :: Selection -> IO ()
@@ -124,6 +148,10 @@ foreign import javascript unsafe "$1[\"toString\"]()" js_toString
 toString ::
          (MonadIO m, FromJSString result) => Selection -> m result
 toString self = liftIO (fromJSString <$> (js_toString (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.toString Mozilla Selection.toString documentation> 
+toString_ :: (MonadIO m) => Selection -> m ()
+toString_ self = liftIO (void (js_toString (self)))
  
 foreign import javascript unsafe "$1[\"modify\"]($2, $3, $4)"
         js_modify :: Selection -> JSString -> JSString -> JSString -> IO ()
@@ -179,6 +207,11 @@ foreign import javascript unsafe "$1[\"anchorNode\"]"
 getAnchorNode :: (MonadIO m) => Selection -> m (Maybe Node)
 getAnchorNode self
   = liftIO (nullableToMaybe <$> (js_getAnchorNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.anchorNode Mozilla Selection.anchorNode documentation> 
+getAnchorNodeUnchecked :: (MonadIO m) => Selection -> m Node
+getAnchorNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getAnchorNode (self)))
  
 foreign import javascript unsafe "$1[\"anchorOffset\"]"
         js_getAnchorOffset :: Selection -> IO Int
@@ -194,6 +227,11 @@ foreign import javascript unsafe "$1[\"focusNode\"]"
 getFocusNode :: (MonadIO m) => Selection -> m (Maybe Node)
 getFocusNode self
   = liftIO (nullableToMaybe <$> (js_getFocusNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.focusNode Mozilla Selection.focusNode documentation> 
+getFocusNodeUnchecked :: (MonadIO m) => Selection -> m Node
+getFocusNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFocusNode (self)))
  
 foreign import javascript unsafe "$1[\"focusOffset\"]"
         js_getFocusOffset :: Selection -> IO Int
@@ -223,6 +261,11 @@ foreign import javascript unsafe "$1[\"baseNode\"]" js_getBaseNode
 getBaseNode :: (MonadIO m) => Selection -> m (Maybe Node)
 getBaseNode self
   = liftIO (nullableToMaybe <$> (js_getBaseNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.baseNode Mozilla Selection.baseNode documentation> 
+getBaseNodeUnchecked :: (MonadIO m) => Selection -> m Node
+getBaseNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getBaseNode (self)))
  
 foreign import javascript unsafe "$1[\"baseOffset\"]"
         js_getBaseOffset :: Selection -> IO Int
@@ -238,6 +281,11 @@ foreign import javascript unsafe "$1[\"extentNode\"]"
 getExtentNode :: (MonadIO m) => Selection -> m (Maybe Node)
 getExtentNode self
   = liftIO (nullableToMaybe <$> (js_getExtentNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extentNode Mozilla Selection.extentNode documentation> 
+getExtentNodeUnchecked :: (MonadIO m) => Selection -> m Node
+getExtentNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getExtentNode (self)))
  
 foreign import javascript unsafe "$1[\"extentOffset\"]"
         js_getExtentOffset :: Selection -> IO Int

@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.NodeFilter
-       (js_acceptNode, acceptNode, pattern FILTER_ACCEPT,
+       (js_acceptNode, acceptNode, acceptNode_, pattern FILTER_ACCEPT,
         pattern FILTER_REJECT, pattern FILTER_SKIP, pattern SHOW_ALL,
         pattern SHOW_ELEMENT, pattern SHOW_ATTRIBUTE, pattern SHOW_TEXT,
         pattern SHOW_CDATA_SECTION, pattern SHOW_ENTITY_REFERENCE,
@@ -17,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,6 +35,13 @@ acceptNode ::
            (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m Int
 acceptNode self n
   = liftIO (js_acceptNode (self) (maybeToNullable (fmap toNode n)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter.acceptNode Mozilla NodeFilter.acceptNode documentation> 
+acceptNode_ ::
+            (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m ()
+acceptNode_ self n
+  = liftIO
+      (void (js_acceptNode (self) (maybeToNullable (fmap toNode n))))
 pattern FILTER_ACCEPT = 1
 pattern FILTER_REJECT = 2
 pattern FILTER_SKIP = 3

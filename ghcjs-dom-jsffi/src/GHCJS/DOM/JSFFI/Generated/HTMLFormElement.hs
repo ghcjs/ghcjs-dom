@@ -1,21 +1,24 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFormElement
-       (js__get, _get, js_submit, submit, js_reset, reset,
-        js_checkValidity, checkValidity, js_requestAutocomplete,
-        requestAutocomplete, js_setAcceptCharset, setAcceptCharset,
-        js_getAcceptCharset, getAcceptCharset, js_setAction, setAction,
-        js_getAction, getAction, js_setAutocomplete, setAutocomplete,
-        js_getAutocomplete, getAutocomplete, js_setEnctype, setEnctype,
-        js_getEnctype, getEnctype, js_setEncoding, setEncoding,
-        js_getEncoding, getEncoding, js_setMethod, setMethod, js_getMethod,
-        getMethod, js_setName, setName, js_getName, getName,
-        js_setNoValidate, setNoValidate, js_getNoValidate, getNoValidate,
-        js_setTarget, setTarget, js_getTarget, getTarget, js_getElements,
-        getElements, js_getLength, getLength, js_setAutocorrect,
+       (js__get, _get, _get_, _getUnchecked, js_submit, submit, js_reset,
+        reset, js_checkValidity, checkValidity, checkValidity_,
+        js_requestAutocomplete, requestAutocomplete, js_setAcceptCharset,
+        setAcceptCharset, js_getAcceptCharset, getAcceptCharset,
+        js_setAction, setAction, js_getAction, getAction,
+        js_setAutocomplete, setAutocomplete, js_getAutocomplete,
+        getAutocomplete, js_setEnctype, setEnctype, js_getEnctype,
+        getEnctype, getEnctypeUnchecked, js_setEncoding, setEncoding,
+        js_getEncoding, getEncoding, getEncodingUnchecked, js_setMethod,
+        setMethod, js_getMethod, getMethod, getMethodUnchecked, js_setName,
+        setName, js_getName, getName, js_setNoValidate, setNoValidate,
+        js_getNoValidate, getNoValidate, js_setTarget, setTarget,
+        js_getTarget, getTarget, js_getElements, getElements,
+        getElementsUnchecked, js_getLength, getLength, js_setAutocorrect,
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, autocomplete, autocompleteerror,
-        HTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement)
+        getAutocapitalize, getAutocapitalizeUnchecked, autocomplete,
+        autocompleteerror, HTMLFormElement, castToHTMLFormElement,
+        gTypeHTMLFormElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -24,9 +27,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +44,16 @@ foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
 _get :: (MonadIO m) => HTMLFormElement -> Word -> m (Maybe Element)
 _get self index
   = liftIO (nullableToMaybe <$> (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
+_get_ :: (MonadIO m) => HTMLFormElement -> Word -> m ()
+_get_ self index = liftIO (void (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
+_getUnchecked ::
+              (MonadIO m) => HTMLFormElement -> Word -> m Element
+_getUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js__get (self) index))
  
 foreign import javascript unsafe "$1[\"submit\"]()" js_submit ::
         HTMLFormElement -> IO ()
@@ -61,6 +76,10 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.checkValidity Mozilla HTMLFormElement.checkValidity documentation> 
 checkValidity :: (MonadIO m) => HTMLFormElement -> m Bool
 checkValidity self = liftIO (js_checkValidity (self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.checkValidity Mozilla HTMLFormElement.checkValidity documentation> 
+checkValidity_ :: (MonadIO m) => HTMLFormElement -> m ()
+checkValidity_ self = liftIO (void (js_checkValidity (self)))
  
 foreign import javascript unsafe "$1[\"requestAutocomplete\"]()"
         js_requestAutocomplete :: HTMLFormElement -> IO ()
@@ -139,6 +158,12 @@ getEnctype ::
              HTMLFormElement -> m (Maybe result)
 getEnctype self
   = liftIO (fromMaybeJSString <$> (js_getEnctype (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
+getEnctypeUnchecked ::
+                    (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+getEnctypeUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getEnctype (self)))
  
 foreign import javascript unsafe "$1[\"encoding\"] = $2;"
         js_setEncoding :: HTMLFormElement -> Nullable JSString -> IO ()
@@ -158,6 +183,12 @@ getEncoding ::
               HTMLFormElement -> m (Maybe result)
 getEncoding self
   = liftIO (fromMaybeJSString <$> (js_getEncoding (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
+getEncodingUnchecked ::
+                     (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+getEncodingUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getEncoding (self)))
  
 foreign import javascript unsafe "$1[\"method\"] = $2;"
         js_setMethod :: HTMLFormElement -> Nullable JSString -> IO ()
@@ -177,6 +208,12 @@ getMethod ::
             HTMLFormElement -> m (Maybe result)
 getMethod self
   = liftIO (fromMaybeJSString <$> (js_getMethod (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
+getMethodUnchecked ::
+                   (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+getMethodUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getMethod (self)))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         HTMLFormElement -> JSString -> IO ()
@@ -232,6 +269,12 @@ getElements ::
             (MonadIO m) => HTMLFormElement -> m (Maybe HTMLCollection)
 getElements self
   = liftIO (nullableToMaybe <$> (js_getElements (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.elements Mozilla HTMLFormElement.elements documentation> 
+getElementsUnchecked ::
+                     (MonadIO m) => HTMLFormElement -> m HTMLCollection
+getElementsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getElements (self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         HTMLFormElement -> IO Int
@@ -273,6 +316,13 @@ getAutocapitalize ::
                     HTMLFormElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO (fromMaybeJSString <$> (js_getAutocapitalize (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
+getAutocapitalizeUnchecked ::
+                           (MonadIO m, FromJSString result) => HTMLFormElement -> m result
+getAutocapitalizeUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getAutocapitalize (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.onautocomplete Mozilla HTMLFormElement.onautocomplete documentation> 
 autocomplete :: EventName HTMLFormElement onautocomplete

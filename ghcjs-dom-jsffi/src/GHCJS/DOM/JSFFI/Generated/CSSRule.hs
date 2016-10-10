@@ -6,9 +6,11 @@ module GHCJS.DOM.JSFFI.Generated.CSSRule
         pattern SUPPORTS_RULE, pattern WEBKIT_VIEWPORT_RULE,
         pattern WEBKIT_REGION_RULE, pattern WEBKIT_KEYFRAMES_RULE,
         pattern WEBKIT_KEYFRAME_RULE, js_getType, getType, js_setCssText,
-        setCssText, js_getCssText, getCssText, js_getParentStyleSheet,
-        getParentStyleSheet, js_getParentRule, getParentRule, CSSRule,
-        castToCSSRule, gTypeCSSRule, IsCSSRule, toCSSRule)
+        setCssText, js_getCssText, getCssText, getCssTextUnchecked,
+        js_getParentStyleSheet, getParentStyleSheet,
+        getParentStyleSheetUnchecked, js_getParentRule, getParentRule,
+        getParentRuleUnchecked, CSSRule, castToCSSRule, gTypeCSSRule,
+        IsCSSRule, toCSSRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -17,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -65,6 +69,14 @@ getCssText ::
              self -> m (Maybe result)
 getCssText self
   = liftIO (fromMaybeJSString <$> (js_getCssText (toCSSRule self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
+getCssTextUnchecked ::
+                    (MonadIO m, IsCSSRule self, FromJSString result) =>
+                      self -> m result
+getCssTextUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getCssText (toCSSRule self)))
  
 foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
         js_getParentStyleSheet :: CSSRule -> IO (Nullable CSSStyleSheet)
@@ -75,6 +87,14 @@ getParentStyleSheet ::
 getParentStyleSheet self
   = liftIO
       (nullableToMaybe <$> (js_getParentStyleSheet (toCSSRule self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
+getParentStyleSheetUnchecked ::
+                             (MonadIO m, IsCSSRule self) => self -> m CSSStyleSheet
+getParentStyleSheetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getParentStyleSheet (toCSSRule self)))
  
 foreign import javascript unsafe "$1[\"parentRule\"]"
         js_getParentRule :: CSSRule -> IO (Nullable CSSRule)
@@ -84,3 +104,11 @@ getParentRule ::
               (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
 getParentRule self
   = liftIO (nullableToMaybe <$> (js_getParentRule (toCSSRule self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
+getParentRuleUnchecked ::
+                       (MonadIO m, IsCSSRule self) => self -> m CSSRule
+getParentRuleUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getParentRule (toCSSRule self)))

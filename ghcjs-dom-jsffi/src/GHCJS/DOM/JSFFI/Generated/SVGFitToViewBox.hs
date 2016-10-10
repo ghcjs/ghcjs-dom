@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFitToViewBox
-       (js_getViewBox, getViewBox, js_getPreserveAspectRatio,
-        getPreserveAspectRatio, SVGFitToViewBox, castToSVGFitToViewBox,
-        gTypeSVGFitToViewBox)
+       (js_getViewBox, getViewBox, getViewBoxUnchecked,
+        js_getPreserveAspectRatio, getPreserveAspectRatio,
+        getPreserveAspectRatioUnchecked, SVGFitToViewBox,
+        castToSVGFitToViewBox, gTypeSVGFitToViewBox)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -27,6 +30,12 @@ getViewBox ::
            (MonadIO m) => SVGFitToViewBox -> m (Maybe SVGAnimatedRect)
 getViewBox self
   = liftIO (nullableToMaybe <$> (js_getViewBox (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
+getViewBoxUnchecked ::
+                    (MonadIO m) => SVGFitToViewBox -> m SVGAnimatedRect
+getViewBoxUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getViewBox (self)))
  
 foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
         js_getPreserveAspectRatio ::
@@ -38,3 +47,10 @@ getPreserveAspectRatio ::
                          SVGFitToViewBox -> m (Maybe SVGAnimatedPreserveAspectRatio)
 getPreserveAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getPreserveAspectRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
+getPreserveAspectRatioUnchecked ::
+                                (MonadIO m) => SVGFitToViewBox -> m SVGAnimatedPreserveAspectRatio
+getPreserveAspectRatioUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getPreserveAspectRatio (self)))

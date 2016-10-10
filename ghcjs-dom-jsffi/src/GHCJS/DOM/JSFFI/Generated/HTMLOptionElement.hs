@@ -1,12 +1,13 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOptionElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_getForm, getForm, js_setLabel, setLabel, js_getLabel, getLabel,
-        js_setDefaultSelected, setDefaultSelected, js_getDefaultSelected,
-        getDefaultSelected, js_setSelected, setSelected, js_getSelected,
-        getSelected, js_setValue, setValue, js_getValue, getValue,
-        js_setText, setText, js_getText, getText, js_getIndex, getIndex,
-        HTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement)
+        js_getForm, getForm, getFormUnchecked, js_setLabel, setLabel,
+        js_getLabel, getLabel, js_setDefaultSelected, setDefaultSelected,
+        js_getDefaultSelected, getDefaultSelected, js_setSelected,
+        setSelected, js_getSelected, getSelected, js_setValue, setValue,
+        js_getValue, getValue, js_setText, setText, js_getText, getText,
+        js_getIndex, getIndex, HTMLOptionElement, castToHTMLOptionElement,
+        gTypeHTMLOptionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -44,6 +47,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLOptionElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.form Mozilla HTMLOptionElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLOptionElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
         :: HTMLOptionElement -> JSString -> IO ()

@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLElement
        (js_insertAdjacentElement, insertAdjacentElement,
+        insertAdjacentElement_, insertAdjacentElementUnchecked,
         js_insertAdjacentHTML, insertAdjacentHTML, js_insertAdjacentText,
         insertAdjacentText, js_click, click, js_setTitle, setTitle,
         js_getTitle, getTitle, js_setLang, setLang, js_getLang, getLang,
@@ -11,10 +12,12 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         setWebkitdropzone, js_getWebkitdropzone, getWebkitdropzone,
         js_setHidden, setHidden, js_getHidden, getHidden, js_setAccessKey,
         setAccessKey, js_getAccessKey, getAccessKey, js_setInnerText,
-        setInnerText, js_getInnerText, getInnerText, js_setOuterText,
-        setOuterText, js_getOuterText, getOuterText, js_getChildren,
-        getChildren, js_setContentEditable, setContentEditable,
-        js_getContentEditable, getContentEditable, js_getIsContentEditable,
+        setInnerText, js_getInnerText, getInnerText, getInnerTextUnchecked,
+        js_setOuterText, setOuterText, js_getOuterText, getOuterText,
+        getOuterTextUnchecked, js_getChildren, getChildren,
+        getChildrenUnchecked, js_setContentEditable, setContentEditable,
+        js_getContentEditable, getContentEditable,
+        getContentEditableUnchecked, js_getIsContentEditable,
         getIsContentEditable, js_setSpellcheck, setSpellcheck,
         js_getSpellcheck, getSpellcheck, HTMLElement, castToHTMLElement,
         gTypeHTMLElement, IsHTMLElement, toHTMLElement)
@@ -26,9 +29,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -48,6 +53,28 @@ insertAdjacentElement ::
 insertAdjacentElement self where' element
   = liftIO
       (nullableToMaybe <$>
+         (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
+            (maybeToNullable (fmap toElement element))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
+insertAdjacentElement_ ::
+                       (MonadIO m, IsHTMLElement self, ToJSString where',
+                        IsElement element) =>
+                         self -> where' -> Maybe element -> m ()
+insertAdjacentElement_ self where' element
+  = liftIO
+      (void
+         (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
+            (maybeToNullable (fmap toElement element))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
+insertAdjacentElementUnchecked ::
+                               (MonadIO m, IsHTMLElement self, ToJSString where',
+                                IsElement element) =>
+                                 self -> where' -> Maybe element -> m Element
+insertAdjacentElementUnchecked self where' element
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
             (maybeToNullable (fmap toElement element))))
  
@@ -272,6 +299,15 @@ getInnerText ::
 getInnerText self
   = liftIO
       (fromMaybeJSString <$> (js_getInnerText (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
+getInnerTextUnchecked ::
+                      (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                        self -> m result
+getInnerTextUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getInnerText (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
         js_setOuterText :: HTMLElement -> Nullable JSString -> IO ()
@@ -294,6 +330,15 @@ getOuterText ::
 getOuterText self
   = liftIO
       (fromMaybeJSString <$> (js_getOuterText (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
+getOuterTextUnchecked ::
+                      (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                        self -> m result
+getOuterTextUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getOuterText (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"children\"]" js_getChildren
         :: HTMLElement -> IO (Nullable HTMLCollection)
@@ -304,6 +349,14 @@ getChildren ::
 getChildren self
   = liftIO
       (nullableToMaybe <$> (js_getChildren (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
+getChildrenUnchecked ::
+                     (MonadIO m, IsHTMLElement self) => self -> m HTMLCollection
+getChildrenUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getChildren (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
         js_setContentEditable :: HTMLElement -> Nullable JSString -> IO ()
@@ -326,6 +379,15 @@ getContentEditable ::
 getContentEditable self
   = liftIO
       (fromMaybeJSString <$>
+         (js_getContentEditable (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
+getContentEditableUnchecked ::
+                            (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                              self -> m result
+getContentEditableUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
          (js_getContentEditable (toHTMLElement self)))
  
 foreign import javascript unsafe

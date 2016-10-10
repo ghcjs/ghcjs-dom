@@ -3,8 +3,9 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEMorphologyElement
        (js_setRadius, setRadius, pattern SVG_MORPHOLOGY_OPERATOR_UNKNOWN,
         pattern SVG_MORPHOLOGY_OPERATOR_ERODE,
         pattern SVG_MORPHOLOGY_OPERATOR_DILATE, js_getIn1, getIn1,
-        js_getOperator, getOperator, js_getRadiusX, getRadiusX,
-        js_getRadiusY, getRadiusY, SVGFEMorphologyElement,
+        getIn1Unchecked, js_getOperator, getOperator, getOperatorUnchecked,
+        js_getRadiusX, getRadiusX, getRadiusXUnchecked, js_getRadiusY,
+        getRadiusY, getRadiusYUnchecked, SVGFEMorphologyElement,
         castToSVGFEMorphologyElement, gTypeSVGFEMorphologyElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -14,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -42,6 +45,12 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEMorphologyElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.in1 Mozilla SVGFEMorphologyElement.in1 documentation> 
+getIn1Unchecked ::
+                (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedString
+getIn1Unchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getIn1 (self)))
  
 foreign import javascript unsafe "$1[\"operator\"]" js_getOperator
         :: SVGFEMorphologyElement -> IO (Nullable SVGAnimatedEnumeration)
@@ -52,6 +61,12 @@ getOperator ::
               SVGFEMorphologyElement -> m (Maybe SVGAnimatedEnumeration)
 getOperator self
   = liftIO (nullableToMaybe <$> (js_getOperator (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.operator Mozilla SVGFEMorphologyElement.operator documentation> 
+getOperatorUnchecked ::
+                     (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedEnumeration
+getOperatorUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getOperator (self)))
  
 foreign import javascript unsafe "$1[\"radiusX\"]" js_getRadiusX ::
         SVGFEMorphologyElement -> IO (Nullable SVGAnimatedNumber)
@@ -62,6 +77,12 @@ getRadiusX ::
              SVGFEMorphologyElement -> m (Maybe SVGAnimatedNumber)
 getRadiusX self
   = liftIO (nullableToMaybe <$> (js_getRadiusX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusX Mozilla SVGFEMorphologyElement.radiusX documentation> 
+getRadiusXUnchecked ::
+                    (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedNumber
+getRadiusXUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRadiusX (self)))
  
 foreign import javascript unsafe "$1[\"radiusY\"]" js_getRadiusY ::
         SVGFEMorphologyElement -> IO (Nullable SVGAnimatedNumber)
@@ -72,3 +93,9 @@ getRadiusY ::
              SVGFEMorphologyElement -> m (Maybe SVGAnimatedNumber)
 getRadiusY self
   = liftIO (nullableToMaybe <$> (js_getRadiusY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusY Mozilla SVGFEMorphologyElement.radiusY documentation> 
+getRadiusYUnchecked ::
+                    (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedNumber
+getRadiusYUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRadiusY (self)))

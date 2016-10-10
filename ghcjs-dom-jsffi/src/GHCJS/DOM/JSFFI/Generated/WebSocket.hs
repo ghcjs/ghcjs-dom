@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.WebSocket
         pattern OPEN, pattern CLOSING, pattern CLOSED, js_getUrl, getUrl,
         js_getReadyState, getReadyState, js_getBufferedAmount,
         getBufferedAmount, open, message, error, closeEvent,
-        js_getProtocol, getProtocol, js_getExtensions, getExtensions,
+        js_getProtocol, getProtocol, getProtocolUnchecked,
+        js_getExtensions, getExtensions, getExtensionsUnchecked,
         js_setBinaryType, setBinaryType, js_getBinaryType, getBinaryType,
         WebSocket, castToWebSocket, gTypeWebSocket)
        where
@@ -17,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -149,6 +152,12 @@ getProtocol ::
             (MonadIO m, FromJSString result) => WebSocket -> m (Maybe result)
 getProtocol self
   = liftIO (fromMaybeJSString <$> (js_getProtocol (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 
+getProtocolUnchecked ::
+                     (MonadIO m, FromJSString result) => WebSocket -> m result
+getProtocolUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getProtocol (self)))
  
 foreign import javascript unsafe "$1[\"extensions\"]"
         js_getExtensions :: WebSocket -> IO (Nullable JSString)
@@ -158,6 +167,13 @@ getExtensions ::
               (MonadIO m, FromJSString result) => WebSocket -> m (Maybe result)
 getExtensions self
   = liftIO (fromMaybeJSString <$> (js_getExtensions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
+getExtensionsUnchecked ::
+                       (MonadIO m, FromJSString result) => WebSocket -> m result
+getExtensionsUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getExtensions (self)))
  
 foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
         js_setBinaryType :: WebSocket -> JSString -> IO ()

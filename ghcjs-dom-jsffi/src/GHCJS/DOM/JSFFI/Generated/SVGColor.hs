@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGColor
         pattern SVG_COLORTYPE_UNKNOWN, pattern SVG_COLORTYPE_RGBCOLOR,
         pattern SVG_COLORTYPE_RGBCOLOR_ICCCOLOR,
         pattern SVG_COLORTYPE_CURRENTCOLOR, js_getColorType, getColorType,
-        js_getRgbColor, getRgbColor, SVGColor, castToSVGColor,
-        gTypeSVGColor, IsSVGColor, toSVGColor)
+        js_getRgbColor, getRgbColor, getRgbColorUnchecked, SVGColor,
+        castToSVGColor, gTypeSVGColor, IsSVGColor, toSVGColor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -15,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -79,3 +81,10 @@ getRgbColor ::
             (MonadIO m, IsSVGColor self) => self -> m (Maybe RGBColor)
 getRgbColor self
   = liftIO (nullableToMaybe <$> (js_getRgbColor (toSVGColor self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColor Mozilla SVGColor.rgbColor documentation> 
+getRgbColorUnchecked ::
+                     (MonadIO m, IsSVGColor self) => self -> m RGBColor
+getRgbColorUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getRgbColor (toSVGColor self)))

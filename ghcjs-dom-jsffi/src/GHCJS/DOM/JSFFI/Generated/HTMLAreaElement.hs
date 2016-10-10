@@ -9,7 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAreaElement
         js_getHost, getHost, js_getHostname, getHostname, js_getPathname,
         getPathname, js_getPort, getPort, js_getProtocol, getProtocol,
         js_getSearch, getSearch, js_getRelList, getRelList,
-        HTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement)
+        getRelListUnchecked, HTMLAreaElement, castToHTMLAreaElement,
+        gTypeHTMLAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -18,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -219,3 +222,9 @@ getRelList ::
            (MonadIO m) => HTMLAreaElement -> m (Maybe DOMTokenList)
 getRelList self
   = liftIO (nullableToMaybe <$> (js_getRelList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.relList Mozilla HTMLAreaElement.relList documentation> 
+getRelListUnchecked ::
+                    (MonadIO m) => HTMLAreaElement -> m DOMTokenList
+getRelListUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRelList (self)))

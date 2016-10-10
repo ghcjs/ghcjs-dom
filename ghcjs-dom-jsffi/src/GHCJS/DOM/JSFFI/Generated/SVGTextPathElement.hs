@@ -6,7 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextPathElement
         pattern TEXTPATH_SPACINGTYPE_UNKNOWN,
         pattern TEXTPATH_SPACINGTYPE_AUTO,
         pattern TEXTPATH_SPACINGTYPE_EXACT, js_getStartOffset,
-        getStartOffset, js_getMethod, getMethod, js_getSpacing, getSpacing,
+        getStartOffset, getStartOffsetUnchecked, js_getMethod, getMethod,
+        getMethodUnchecked, js_getSpacing, getSpacing, getSpacingUnchecked,
         SVGTextPathElement, castToSVGTextPathElement,
         gTypeSVGTextPathElement)
        where
@@ -17,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -40,6 +43,13 @@ getStartOffset ::
                (MonadIO m) => SVGTextPathElement -> m (Maybe SVGAnimatedLength)
 getStartOffset self
   = liftIO (nullableToMaybe <$> (js_getStartOffset (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 
+getStartOffsetUnchecked ::
+                        (MonadIO m) => SVGTextPathElement -> m SVGAnimatedLength
+getStartOffsetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStartOffset (self)))
  
 foreign import javascript unsafe "$1[\"method\"]" js_getMethod ::
         SVGTextPathElement -> IO (Nullable SVGAnimatedEnumeration)
@@ -49,6 +59,12 @@ getMethod ::
           (MonadIO m) =>
             SVGTextPathElement -> m (Maybe SVGAnimatedEnumeration)
 getMethod self = liftIO (nullableToMaybe <$> (js_getMethod (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
+getMethodUnchecked ::
+                   (MonadIO m) => SVGTextPathElement -> m SVGAnimatedEnumeration
+getMethodUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getMethod (self)))
  
 foreign import javascript unsafe "$1[\"spacing\"]" js_getSpacing ::
         SVGTextPathElement -> IO (Nullable SVGAnimatedEnumeration)
@@ -59,3 +75,9 @@ getSpacing ::
              SVGTextPathElement -> m (Maybe SVGAnimatedEnumeration)
 getSpacing self
   = liftIO (nullableToMaybe <$> (js_getSpacing (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 
+getSpacingUnchecked ::
+                    (MonadIO m) => SVGTextPathElement -> m SVGAnimatedEnumeration
+getSpacingUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getSpacing (self)))

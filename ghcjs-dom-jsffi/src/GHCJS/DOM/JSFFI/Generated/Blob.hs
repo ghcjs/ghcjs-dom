@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Blob
        (js_newBlob, newBlob, js_newBlob', newBlob', js_slice, slice,
-        js_getSize, getSize, js_getType, getType, Blob, castToBlob,
-        gTypeBlob, IsBlob, toBlob)
+        slice_, sliceUnchecked, js_getSize, getSize, js_getType, getType,
+        Blob, castToBlob, gTypeBlob, IsBlob, toBlob)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -49,6 +51,26 @@ slice ::
 slice self start end contentType
   = liftIO
       (nullableToMaybe <$>
+         (js_slice (toBlob self) (fromIntegral start) (fromIntegral end)
+            (toMaybeJSString contentType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.slice Mozilla Blob.slice documentation> 
+slice_ ::
+       (MonadIO m, IsBlob self, ToJSString contentType) =>
+         self -> Int64 -> Int64 -> Maybe contentType -> m ()
+slice_ self start end contentType
+  = liftIO
+      (void
+         (js_slice (toBlob self) (fromIntegral start) (fromIntegral end)
+            (toMaybeJSString contentType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.slice Mozilla Blob.slice documentation> 
+sliceUnchecked ::
+               (MonadIO m, IsBlob self, ToJSString contentType) =>
+                 self -> Int64 -> Int64 -> Maybe contentType -> m Blob
+sliceUnchecked self start end contentType
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_slice (toBlob self) (fromIntegral start) (fromIntegral end)
             (toMaybeJSString contentType)))
  

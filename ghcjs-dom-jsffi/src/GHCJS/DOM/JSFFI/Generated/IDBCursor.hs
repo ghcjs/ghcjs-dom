@@ -1,7 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBCursor
-       (js_update, update, js_advance, advance, js_continue, continue,
-        js_delete, delete, js_getSource, getSource, js_getDirection,
+       (js_update, update, update_, updateUnchecked, js_advance, advance,
+        js_continue, continue, js_delete, delete, delete_, deleteUnchecked,
+        js_getSource, getSource, getSourceUnchecked, js_getDirection,
         getDirection, js_getKey, getKey, js_getPrimaryKey, getPrimaryKey,
         IDBCursor, castToIDBCursor, gTypeIDBCursor, IsIDBCursor,
         toIDBCursor)
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,6 +33,19 @@ update ::
          self -> JSVal -> m (Maybe IDBRequest)
 update self value
   = liftIO (nullableToMaybe <$> (js_update (toIDBCursor self) value))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.update Mozilla IDBCursor.update documentation> 
+update_ :: (MonadIO m, IsIDBCursor self) => self -> JSVal -> m ()
+update_ self value
+  = liftIO (void (js_update (toIDBCursor self) value))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.update Mozilla IDBCursor.update documentation> 
+updateUnchecked ::
+                (MonadIO m, IsIDBCursor self) => self -> JSVal -> m IDBRequest
+updateUnchecked self value
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_update (toIDBCursor self) value))
  
 foreign import javascript unsafe "$1[\"advance\"]($2)" js_advance
         :: IDBCursor -> Word -> IO ()
@@ -53,6 +69,17 @@ delete ::
        (MonadIO m, IsIDBCursor self) => self -> m (Maybe IDBRequest)
 delete self
   = liftIO (nullableToMaybe <$> (js_delete (toIDBCursor self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.delete Mozilla IDBCursor.delete documentation> 
+delete_ :: (MonadIO m, IsIDBCursor self) => self -> m ()
+delete_ self = liftIO (void (js_delete (toIDBCursor self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.delete Mozilla IDBCursor.delete documentation> 
+deleteUnchecked ::
+                (MonadIO m, IsIDBCursor self) => self -> m IDBRequest
+deleteUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_delete (toIDBCursor self)))
  
 foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
         IDBCursor -> IO (Nullable IDBAny)
@@ -62,6 +89,13 @@ getSource ::
           (MonadIO m, IsIDBCursor self) => self -> m (Maybe IDBAny)
 getSource self
   = liftIO (nullableToMaybe <$> (js_getSource (toIDBCursor self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.source Mozilla IDBCursor.source documentation> 
+getSourceUnchecked ::
+                   (MonadIO m, IsIDBCursor self) => self -> m IDBAny
+getSourceUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSource (toIDBCursor self)))
  
 foreign import javascript unsafe "$1[\"direction\"]"
         js_getDirection :: IDBCursor -> IO JSString

@@ -1,12 +1,12 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
-       (js_setText, setText, js_getText, getText, js_setHtmlFor,
-        setHtmlFor, js_getHtmlFor, getHtmlFor, js_setEvent, setEvent,
-        js_getEvent, getEvent, js_setCharset, setCharset, js_getCharset,
-        getCharset, js_setAsync, setAsync, js_getAsync, getAsync,
-        js_setDefer, setDefer, js_getDefer, getDefer, js_setSrc, setSrc,
-        js_getSrc, getSrc, js_setType, setType, js_getType, getType,
-        js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
+       (js_setText, setText, js_getText, getText, getTextUnchecked,
+        js_setHtmlFor, setHtmlFor, js_getHtmlFor, getHtmlFor, js_setEvent,
+        setEvent, js_getEvent, getEvent, js_setCharset, setCharset,
+        js_getCharset, getCharset, js_setAsync, setAsync, js_getAsync,
+        getAsync, js_setDefer, setDefer, js_getDefer, getDefer, js_setSrc,
+        setSrc, js_getSrc, getSrc, js_setType, setType, js_getType,
+        getType, js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
         getCrossOrigin, js_setNonce, setNonce, js_getNonce, getNonce,
         HTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement)
        where
@@ -17,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -42,6 +44,12 @@ getText ::
         (MonadIO m, FromJSString result) =>
           HTMLScriptElement -> m (Maybe result)
 getText self = liftIO (fromMaybeJSString <$> (js_getText (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
+getTextUnchecked ::
+                 (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getTextUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getText (self)))
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         js_setHtmlFor :: HTMLScriptElement -> JSString -> IO ()

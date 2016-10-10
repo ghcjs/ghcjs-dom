@@ -1,17 +1,19 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
-       (js_getSVGDocument, getSVGDocument, js_setFrameBorder,
-        setFrameBorder, js_getFrameBorder, getFrameBorder, js_setLongDesc,
-        setLongDesc, js_getLongDesc, getLongDesc, js_setMarginHeight,
-        setMarginHeight, js_getMarginHeight, getMarginHeight,
-        js_setMarginWidth, setMarginWidth, js_getMarginWidth,
-        getMarginWidth, js_setName, setName, js_getName, getName,
-        js_setNoResize, setNoResize, js_getNoResize, getNoResize,
-        js_setScrolling, setScrolling, js_getScrolling, getScrolling,
-        js_setSrc, setSrc, js_getSrc, getSrc, js_getContentDocument,
-        getContentDocument, js_getContentWindow, getContentWindow,
-        js_setLocation, setLocation, js_getLocation, getLocation,
-        js_getWidth, getWidth, js_getHeight, getHeight, HTMLFrameElement,
+       (js_getSVGDocument, getSVGDocument, getSVGDocument_,
+        getSVGDocumentUnchecked, js_setFrameBorder, setFrameBorder,
+        js_getFrameBorder, getFrameBorder, js_setLongDesc, setLongDesc,
+        js_getLongDesc, getLongDesc, js_setMarginHeight, setMarginHeight,
+        js_getMarginHeight, getMarginHeight, js_setMarginWidth,
+        setMarginWidth, js_getMarginWidth, getMarginWidth, js_setName,
+        setName, js_getName, getName, js_setNoResize, setNoResize,
+        js_getNoResize, getNoResize, js_setScrolling, setScrolling,
+        js_getScrolling, getScrolling, js_setSrc, setSrc, js_getSrc,
+        getSrc, js_getContentDocument, getContentDocument,
+        getContentDocumentUnchecked, js_getContentWindow, getContentWindow,
+        getContentWindowUnchecked, js_setLocation, setLocation,
+        js_getLocation, getLocation, getLocationUnchecked, js_getWidth,
+        getWidth, js_getHeight, getHeight, HTMLFrameElement,
         castToHTMLFrameElement, gTypeHTMLFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -21,9 +23,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -37,6 +41,17 @@ getSVGDocument ::
                (MonadIO m) => HTMLFrameElement -> m (Maybe SVGDocument)
 getSVGDocument self
   = liftIO (nullableToMaybe <$> (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.getSVGDocument Mozilla HTMLFrameElement.getSVGDocument documentation> 
+getSVGDocument_ :: (MonadIO m) => HTMLFrameElement -> m ()
+getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.getSVGDocument Mozilla HTMLFrameElement.getSVGDocument documentation> 
+getSVGDocumentUnchecked ::
+                        (MonadIO m) => HTMLFrameElement -> m SVGDocument
+getSVGDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSVGDocument (self)))
  
 foreign import javascript unsafe "$1[\"frameBorder\"] = $2;"
         js_setFrameBorder :: HTMLFrameElement -> JSString -> IO ()
@@ -182,6 +197,13 @@ getContentDocument ::
                    (MonadIO m) => HTMLFrameElement -> m (Maybe Document)
 getContentDocument self
   = liftIO (nullableToMaybe <$> (js_getContentDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentDocument Mozilla HTMLFrameElement.contentDocument documentation> 
+getContentDocumentUnchecked ::
+                            (MonadIO m) => HTMLFrameElement -> m Document
+getContentDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContentDocument (self)))
  
 foreign import javascript unsafe "$1[\"contentWindow\"]"
         js_getContentWindow :: HTMLFrameElement -> IO (Nullable Window)
@@ -191,6 +213,13 @@ getContentWindow ::
                  (MonadIO m) => HTMLFrameElement -> m (Maybe Window)
 getContentWindow self
   = liftIO (nullableToMaybe <$> (js_getContentWindow (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentWindow Mozilla HTMLFrameElement.contentWindow documentation> 
+getContentWindowUnchecked ::
+                          (MonadIO m) => HTMLFrameElement -> m Window
+getContentWindowUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContentWindow (self)))
  
 foreign import javascript unsafe "$1[\"location\"] = $2;"
         js_setLocation :: HTMLFrameElement -> Nullable JSString -> IO ()
@@ -211,6 +240,12 @@ getLocation ::
               HTMLFrameElement -> m (Maybe result)
 getLocation self
   = liftIO (fromMaybeJSString <$> (js_getLocation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
+getLocationUnchecked ::
+                     (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
+getLocationUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getLocation (self)))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         HTMLFrameElement -> IO Int

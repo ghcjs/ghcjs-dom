@@ -1,9 +1,14 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SubtleCrypto
-       (js_encrypt, encrypt, js_decrypt, decrypt, js_sign, sign,
-        js_verify, verify, js_digest, digest, js_generateKey, generateKey,
-        js_importKey, importKey, js_exportKey, exportKey, js_wrapKey,
-        wrapKey, js_unwrapKey, unwrapKey, SubtleCrypto, castToSubtleCrypto,
+       (js_encrypt, encrypt, encrypt_, encryptUnchecked, js_decrypt,
+        decrypt, decrypt_, decryptUnchecked, js_sign, sign, sign_,
+        signUnchecked, js_verify, verify, verify_, verifyUnchecked,
+        js_digest, digest, digest_, digestUnchecked, js_generateKey,
+        generateKey, generateKey_, generateKeyUnchecked, js_importKey,
+        importKey, importKey_, importKeyUnchecked, js_exportKey, exportKey,
+        exportKey_, exportKeyUnchecked, js_wrapKey, wrapKey, wrapKey_,
+        wrapKeyUnchecked, js_unwrapKey, unwrapKey, unwrapKey_,
+        unwrapKeyUnchecked, SubtleCrypto, castToSubtleCrypto,
         gTypeSubtleCrypto)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -13,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -38,6 +45,32 @@ encrypt self algorithm key data'
             \ data'' ->
               js_encrypt (self) (toJSString algorithm) (maybeToNullable key)
                 data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.encrypt Mozilla WebKitSubtleCrypto.encrypt documentation> 
+encrypt_ ::
+         (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+           SubtleCrypto ->
+             algorithm -> Maybe CryptoKey -> [Maybe data'] -> m ()
+encrypt_ self algorithm key data'
+  = liftIO
+      (void
+         (toJSVal data' >>=
+            \ data'' ->
+              js_encrypt (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.encrypt Mozilla WebKitSubtleCrypto.encrypt documentation> 
+encryptUnchecked ::
+                 (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+                   SubtleCrypto ->
+                     algorithm -> Maybe CryptoKey -> [Maybe data'] -> m Promise
+encryptUnchecked self algorithm key data'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (toJSVal data' >>=
+            \ data'' ->
+              js_encrypt (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
  
 foreign import javascript unsafe "$1[\"decrypt\"]($2, $3, $4)"
         js_decrypt ::
@@ -56,6 +89,32 @@ decrypt self algorithm key data'
             \ data'' ->
               js_decrypt (self) (toJSString algorithm) (maybeToNullable key)
                 data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.decrypt Mozilla WebKitSubtleCrypto.decrypt documentation> 
+decrypt_ ::
+         (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+           SubtleCrypto ->
+             algorithm -> Maybe CryptoKey -> [Maybe data'] -> m ()
+decrypt_ self algorithm key data'
+  = liftIO
+      (void
+         (toJSVal data' >>=
+            \ data'' ->
+              js_decrypt (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.decrypt Mozilla WebKitSubtleCrypto.decrypt documentation> 
+decryptUnchecked ::
+                 (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+                   SubtleCrypto ->
+                     algorithm -> Maybe CryptoKey -> [Maybe data'] -> m Promise
+decryptUnchecked self algorithm key data'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (toJSVal data' >>=
+            \ data'' ->
+              js_decrypt (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
  
 foreign import javascript unsafe "$1[\"sign\"]($2, $3, $4)" js_sign
         ::
@@ -70,6 +129,32 @@ sign ::
 sign self algorithm key data'
   = liftIO
       (nullableToMaybe <$>
+         (toJSVal data' >>=
+            \ data'' ->
+              js_sign (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.sign Mozilla WebKitSubtleCrypto.sign documentation> 
+sign_ ::
+      (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+        SubtleCrypto ->
+          algorithm -> Maybe CryptoKey -> [Maybe data'] -> m ()
+sign_ self algorithm key data'
+  = liftIO
+      (void
+         (toJSVal data' >>=
+            \ data'' ->
+              js_sign (self) (toJSString algorithm) (maybeToNullable key)
+                data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.sign Mozilla WebKitSubtleCrypto.sign documentation> 
+signUnchecked ::
+              (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+                SubtleCrypto ->
+                  algorithm -> Maybe CryptoKey -> [Maybe data'] -> m Promise
+signUnchecked self algorithm key data'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (toJSVal data' >>=
             \ data'' ->
               js_sign (self) (toJSString algorithm) (maybeToNullable key)
@@ -98,6 +183,38 @@ verify self algorithm key signature data'
               js_verify (self) (toJSString algorithm) (maybeToNullable key)
                 (maybeToNullable (fmap toCryptoOperationData signature))
                 data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.verify Mozilla WebKitSubtleCrypto.verify documentation> 
+verify_ ::
+        (MonadIO m, ToJSString algorithm, IsCryptoOperationData signature,
+         IsCryptoOperationData data') =>
+          SubtleCrypto ->
+            algorithm ->
+              Maybe CryptoKey -> Maybe signature -> [Maybe data'] -> m ()
+verify_ self algorithm key signature data'
+  = liftIO
+      (void
+         (toJSVal data' >>=
+            \ data'' ->
+              js_verify (self) (toJSString algorithm) (maybeToNullable key)
+                (maybeToNullable (fmap toCryptoOperationData signature))
+                data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.verify Mozilla WebKitSubtleCrypto.verify documentation> 
+verifyUnchecked ::
+                (MonadIO m, ToJSString algorithm, IsCryptoOperationData signature,
+                 IsCryptoOperationData data') =>
+                  SubtleCrypto ->
+                    algorithm ->
+                      Maybe CryptoKey -> Maybe signature -> [Maybe data'] -> m Promise
+verifyUnchecked self algorithm key signature data'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (toJSVal data' >>=
+            \ data'' ->
+              js_verify (self) (toJSString algorithm) (maybeToNullable key)
+                (maybeToNullable (fmap toCryptoOperationData signature))
+                data''))
  
 foreign import javascript unsafe "$1[\"digest\"]($2, $3)" js_digest
         :: SubtleCrypto -> JSString -> JSVal -> IO (Nullable Promise)
@@ -109,6 +226,26 @@ digest ::
 digest self algorithm data'
   = liftIO
       (nullableToMaybe <$>
+         (toJSVal data' >>=
+            \ data'' -> js_digest (self) (toJSString algorithm) data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.digest Mozilla WebKitSubtleCrypto.digest documentation> 
+digest_ ::
+        (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+          SubtleCrypto -> algorithm -> [Maybe data'] -> m ()
+digest_ self algorithm data'
+  = liftIO
+      (void
+         (toJSVal data' >>=
+            \ data'' -> js_digest (self) (toJSString algorithm) data''))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.digest Mozilla WebKitSubtleCrypto.digest documentation> 
+digestUnchecked ::
+                (MonadIO m, ToJSString algorithm, IsCryptoOperationData data') =>
+                  SubtleCrypto -> algorithm -> [Maybe data'] -> m Promise
+digestUnchecked self algorithm data'
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (toJSVal data' >>=
             \ data'' -> js_digest (self) (toJSString algorithm) data''))
  
@@ -124,6 +261,30 @@ generateKey ::
 generateKey self algorithm extractable keyUsages
   = liftIO
       (nullableToMaybe <$>
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_generateKey (self) (toJSString algorithm) extractable
+                keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.generateKey Mozilla WebKitSubtleCrypto.generateKey documentation> 
+generateKey_ ::
+             (MonadIO m, ToJSString algorithm) =>
+               SubtleCrypto -> algorithm -> Bool -> [KeyUsage] -> m ()
+generateKey_ self algorithm extractable keyUsages
+  = liftIO
+      (void
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_generateKey (self) (toJSString algorithm) extractable
+                keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.generateKey Mozilla WebKitSubtleCrypto.generateKey documentation> 
+generateKeyUnchecked ::
+                     (MonadIO m, ToJSString algorithm) =>
+                       SubtleCrypto -> algorithm -> Bool -> [KeyUsage] -> m Promise
+generateKeyUnchecked self algorithm extractable keyUsages
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (toJSVal keyUsages >>=
             \ keyUsages' ->
               js_generateKey (self) (toJSString algorithm) extractable
@@ -154,6 +315,42 @@ importKey self format keyData algorithm extractable keyUsages
                 (toJSString algorithm)
                 extractable
                 keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.importKey Mozilla WebKitSubtleCrypto.importKey documentation> 
+importKey_ ::
+           (MonadIO m, ToJSString format, IsCryptoOperationData keyData,
+            ToJSString algorithm) =>
+             SubtleCrypto ->
+               format -> Maybe keyData -> algorithm -> Bool -> [KeyUsage] -> m ()
+importKey_ self format keyData algorithm extractable keyUsages
+  = liftIO
+      (void
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_importKey (self) (toJSString format)
+                (maybeToNullable (fmap toCryptoOperationData keyData))
+                (toJSString algorithm)
+                extractable
+                keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.importKey Mozilla WebKitSubtleCrypto.importKey documentation> 
+importKeyUnchecked ::
+                   (MonadIO m, ToJSString format, IsCryptoOperationData keyData,
+                    ToJSString algorithm) =>
+                     SubtleCrypto ->
+                       format ->
+                         Maybe keyData -> algorithm -> Bool -> [KeyUsage] -> m Promise
+importKeyUnchecked self format keyData algorithm extractable
+  keyUsages
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_importKey (self) (toJSString format)
+                (maybeToNullable (fmap toCryptoOperationData keyData))
+                (toJSString algorithm)
+                extractable
+                keyUsages'))
  
 foreign import javascript unsafe "$1[\"exportKey\"]($2, $3)"
         js_exportKey ::
@@ -167,6 +364,24 @@ exportKey ::
 exportKey self format key
   = liftIO
       (nullableToMaybe <$>
+         (js_exportKey (self) (toJSString format) (maybeToNullable key)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.exportKey Mozilla WebKitSubtleCrypto.exportKey documentation> 
+exportKey_ ::
+           (MonadIO m, ToJSString format) =>
+             SubtleCrypto -> format -> Maybe CryptoKey -> m ()
+exportKey_ self format key
+  = liftIO
+      (void
+         (js_exportKey (self) (toJSString format) (maybeToNullable key)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.exportKey Mozilla WebKitSubtleCrypto.exportKey documentation> 
+exportKeyUnchecked ::
+                   (MonadIO m, ToJSString format) =>
+                     SubtleCrypto -> format -> Maybe CryptoKey -> m Promise
+exportKeyUnchecked self format key
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_exportKey (self) (toJSString format) (maybeToNullable key)))
  
 foreign import javascript unsafe "$1[\"wrapKey\"]($2, $3, $4, $5)"
@@ -186,6 +401,32 @@ wrapKey ::
 wrapKey self format key wrappingKey wrapAlgorithm
   = liftIO
       (nullableToMaybe <$>
+         (js_wrapKey (self) (toJSString format) (maybeToNullable key)
+            (maybeToNullable wrappingKey)
+            (toJSString wrapAlgorithm)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.wrapKey Mozilla WebKitSubtleCrypto.wrapKey documentation> 
+wrapKey_ ::
+         (MonadIO m, ToJSString format, ToJSString wrapAlgorithm) =>
+           SubtleCrypto ->
+             format ->
+               Maybe CryptoKey -> Maybe CryptoKey -> wrapAlgorithm -> m ()
+wrapKey_ self format key wrappingKey wrapAlgorithm
+  = liftIO
+      (void
+         (js_wrapKey (self) (toJSString format) (maybeToNullable key)
+            (maybeToNullable wrappingKey)
+            (toJSString wrapAlgorithm)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.wrapKey Mozilla WebKitSubtleCrypto.wrapKey documentation> 
+wrapKeyUnchecked ::
+                 (MonadIO m, ToJSString format, ToJSString wrapAlgorithm) =>
+                   SubtleCrypto ->
+                     format ->
+                       Maybe CryptoKey -> Maybe CryptoKey -> wrapAlgorithm -> m Promise
+wrapKeyUnchecked self format key wrappingKey wrapAlgorithm
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_wrapKey (self) (toJSString format) (maybeToNullable key)
             (maybeToNullable wrappingKey)
             (toJSString wrapAlgorithm)))
@@ -212,6 +453,54 @@ unwrapKey self format wrappedKey unwrappingKey unwrapAlgorithm
   unwrappedKeyAlgorithm extractable keyUsages
   = liftIO
       (nullableToMaybe <$>
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_unwrapKey (self) (toJSString format)
+                (maybeToNullable (fmap toCryptoOperationData wrappedKey))
+                (maybeToNullable unwrappingKey)
+                (toJSString unwrapAlgorithm)
+                (toJSString unwrappedKeyAlgorithm)
+                extractable
+                keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.unwrapKey Mozilla WebKitSubtleCrypto.unwrapKey documentation> 
+unwrapKey_ ::
+           (MonadIO m, ToJSString format, IsCryptoOperationData wrappedKey,
+            ToJSString unwrapAlgorithm, ToJSString unwrappedKeyAlgorithm) =>
+             SubtleCrypto ->
+               format ->
+                 Maybe wrappedKey ->
+                   Maybe CryptoKey ->
+                     unwrapAlgorithm ->
+                       unwrappedKeyAlgorithm -> Bool -> [KeyUsage] -> m ()
+unwrapKey_ self format wrappedKey unwrappingKey unwrapAlgorithm
+  unwrappedKeyAlgorithm extractable keyUsages
+  = liftIO
+      (void
+         (toJSVal keyUsages >>=
+            \ keyUsages' ->
+              js_unwrapKey (self) (toJSString format)
+                (maybeToNullable (fmap toCryptoOperationData wrappedKey))
+                (maybeToNullable unwrappingKey)
+                (toJSString unwrapAlgorithm)
+                (toJSString unwrappedKeyAlgorithm)
+                extractable
+                keyUsages'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.unwrapKey Mozilla WebKitSubtleCrypto.unwrapKey documentation> 
+unwrapKeyUnchecked ::
+                   (MonadIO m, ToJSString format, IsCryptoOperationData wrappedKey,
+                    ToJSString unwrapAlgorithm, ToJSString unwrappedKeyAlgorithm) =>
+                     SubtleCrypto ->
+                       format ->
+                         Maybe wrappedKey ->
+                           Maybe CryptoKey ->
+                             unwrapAlgorithm ->
+                               unwrappedKeyAlgorithm -> Bool -> [KeyUsage] -> m Promise
+unwrapKeyUnchecked self format wrappedKey unwrappingKey
+  unwrapAlgorithm unwrappedKeyAlgorithm extractable keyUsages
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (toJSVal keyUsages >>=
             \ keyUsages' ->
               js_unwrapKey (self) (toJSString format)

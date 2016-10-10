@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AllVideoCapabilities
        (js_getSourceType, getSourceType, js_getSourceId, getSourceId,
-        js_getWidth, getWidth, js_getHeight, getHeight, js_getFrameRate,
-        getFrameRate, js_getAspectRatio, getAspectRatio, js_getFacingMode,
-        getFacingMode, AllVideoCapabilities, castToAllVideoCapabilities,
+        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
+        getHeightUnchecked, js_getFrameRate, getFrameRate,
+        getFrameRateUnchecked, js_getAspectRatio, getAspectRatio,
+        getAspectRatioUnchecked, js_getFacingMode, getFacingMode,
+        AllVideoCapabilities, castToAllVideoCapabilities,
         gTypeAllVideoCapabilities)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -13,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -48,6 +52,12 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth ::
          (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.width Mozilla AllVideoCapabilities.width documentation> 
+getWidthUnchecked ::
+                  (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
+getWidthUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getWidth (self)))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         AllVideoCapabilities -> IO (Nullable CapabilityRange)
@@ -56,6 +66,12 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight ::
           (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.height Mozilla AllVideoCapabilities.height documentation> 
+getHeightUnchecked ::
+                   (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
+getHeightUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getHeight (self)))
  
 foreign import javascript unsafe "$1[\"frameRate\"]"
         js_getFrameRate ::
@@ -66,6 +82,12 @@ getFrameRate ::
              (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getFrameRate self
   = liftIO (nullableToMaybe <$> (js_getFrameRate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.frameRate Mozilla AllVideoCapabilities.frameRate documentation> 
+getFrameRateUnchecked ::
+                      (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
+getFrameRateUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFrameRate (self)))
  
 foreign import javascript unsafe "$1[\"aspectRatio\"]"
         js_getAspectRatio ::
@@ -76,6 +98,13 @@ getAspectRatio ::
                (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getAspectRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.aspectRatio Mozilla AllVideoCapabilities.aspectRatio documentation> 
+getAspectRatioUnchecked ::
+                        (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
+getAspectRatioUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getAspectRatio (self)))
  
 foreign import javascript unsafe "$1[\"facingMode\"]"
         js_getFacingMode :: AllVideoCapabilities -> IO JSVal

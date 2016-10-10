@@ -1,14 +1,14 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitCSSTransformValue
-       (js__get, _get, pattern CSS_TRANSLATE, pattern CSS_TRANSLATEX,
-        pattern CSS_TRANSLATEY, pattern CSS_ROTATE, pattern CSS_SCALE,
-        pattern CSS_SCALEX, pattern CSS_SCALEY, pattern CSS_SKEW,
-        pattern CSS_SKEWX, pattern CSS_SKEWY, pattern CSS_MATRIX,
-        pattern CSS_TRANSLATEZ, pattern CSS_TRANSLATE3D,
-        pattern CSS_ROTATEX, pattern CSS_ROTATEY, pattern CSS_ROTATEZ,
-        pattern CSS_ROTATE3D, pattern CSS_SCALEZ, pattern CSS_SCALE3D,
-        pattern CSS_PERSPECTIVE, pattern CSS_MATRIX3D, js_getOperationType,
-        getOperationType, WebKitCSSTransformValue,
+       (js__get, _get, _get_, _getUnchecked, pattern CSS_TRANSLATE,
+        pattern CSS_TRANSLATEX, pattern CSS_TRANSLATEY, pattern CSS_ROTATE,
+        pattern CSS_SCALE, pattern CSS_SCALEX, pattern CSS_SCALEY,
+        pattern CSS_SKEW, pattern CSS_SKEWX, pattern CSS_SKEWY,
+        pattern CSS_MATRIX, pattern CSS_TRANSLATEZ,
+        pattern CSS_TRANSLATE3D, pattern CSS_ROTATEX, pattern CSS_ROTATEY,
+        pattern CSS_ROTATEZ, pattern CSS_ROTATE3D, pattern CSS_SCALEZ,
+        pattern CSS_SCALE3D, pattern CSS_PERSPECTIVE, pattern CSS_MATRIX3D,
+        js_getOperationType, getOperationType, WebKitCSSTransformValue,
         castToWebKitCSSTransformValue, gTypeWebKitCSSTransformValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -18,9 +18,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -35,6 +37,16 @@ _get ::
        WebKitCSSTransformValue -> Word -> m (Maybe CSSValue)
 _get self index
   = liftIO (nullableToMaybe <$> (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue._get Mozilla WebKitCSSTransformValue._get documentation> 
+_get_ :: (MonadIO m) => WebKitCSSTransformValue -> Word -> m ()
+_get_ self index = liftIO (void (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSTransformValue._get Mozilla WebKitCSSTransformValue._get documentation> 
+_getUnchecked ::
+              (MonadIO m) => WebKitCSSTransformValue -> Word -> m CSSValue
+_getUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js__get (self) index))
 pattern CSS_TRANSLATE = 1
 pattern CSS_TRANSLATEX = 2
 pattern CSS_TRANSLATEY = 3

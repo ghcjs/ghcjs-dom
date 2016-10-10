@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.PluginArray
-       (js_item, item, js_namedItem, namedItem, js_refresh, refresh,
-        js_getLength, getLength, PluginArray, castToPluginArray,
-        gTypePluginArray)
+       (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
+        namedItem_, namedItemUnchecked, js_refresh, refresh, js_getLength,
+        getLength, PluginArray, castToPluginArray, gTypePluginArray)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +11,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -26,6 +28,15 @@ foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
 item :: (MonadIO m) => PluginArray -> Word -> m (Maybe Plugin)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.item Mozilla PluginArray.item documentation> 
+item_ :: (MonadIO m) => PluginArray -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.item Mozilla PluginArray.item documentation> 
+itemUnchecked :: (MonadIO m) => PluginArray -> Word -> m Plugin
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         js_namedItem :: PluginArray -> JSString -> IO (Nullable Plugin)
@@ -37,6 +48,20 @@ namedItem ::
 namedItem self name
   = liftIO
       (nullableToMaybe <$> (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.namedItem Mozilla PluginArray.namedItem documentation> 
+namedItem_ ::
+           (MonadIO m, ToJSString name) => PluginArray -> name -> m ()
+namedItem_ self name
+  = liftIO (void (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray.namedItem Mozilla PluginArray.namedItem documentation> 
+namedItemUnchecked ::
+                   (MonadIO m, ToJSString name) => PluginArray -> name -> m Plugin
+namedItemUnchecked self name
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_namedItem (self) (toJSString name)))
  
 foreign import javascript unsafe "$1[\"refresh\"]($2)" js_refresh
         :: PluginArray -> Bool -> IO ()

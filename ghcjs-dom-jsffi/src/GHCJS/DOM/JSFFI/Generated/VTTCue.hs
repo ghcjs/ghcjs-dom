@@ -1,10 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.VTTCue
        (js_newVTTCue, newVTTCue, js_getCueAsHTML, getCueAsHTML,
-        js_setVertical, setVertical, js_getVertical, getVertical,
-        js_setSnapToLines, setSnapToLines, js_getSnapToLines,
-        getSnapToLines, js_setLine, setLine, js_getLine, getLine,
-        js_setPosition, setPosition, js_getPosition, getPosition,
+        getCueAsHTML_, getCueAsHTMLUnchecked, js_setVertical, setVertical,
+        js_getVertical, getVertical, js_setSnapToLines, setSnapToLines,
+        js_getSnapToLines, getSnapToLines, js_setLine, setLine, js_getLine,
+        getLine, js_setPosition, setPosition, js_getPosition, getPosition,
         js_setSize, setSize, js_getSize, getSize, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setText, setText, js_getText, getText,
         js_setRegionId, setRegionId, js_getRegionId, getRegionId, VTTCue,
@@ -17,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -43,6 +45,16 @@ foreign import javascript unsafe "$1[\"getCueAsHTML\"]()"
 getCueAsHTML :: (MonadIO m) => VTTCue -> m (Maybe DocumentFragment)
 getCueAsHTML self
   = liftIO (nullableToMaybe <$> (js_getCueAsHTML (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
+getCueAsHTML_ :: (MonadIO m) => VTTCue -> m ()
+getCueAsHTML_ self = liftIO (void (js_getCueAsHTML (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
+getCueAsHTMLUnchecked ::
+                      (MonadIO m) => VTTCue -> m DocumentFragment
+getCueAsHTMLUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCueAsHTML (self)))
  
 foreign import javascript unsafe "$1[\"vertical\"] = $2;"
         js_setVertical :: VTTCue -> JSString -> IO ()

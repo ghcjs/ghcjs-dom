@@ -1,6 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.TextTrackList
-       (js_item, item, js_getTrackById, getTrackById, js_getLength,
+       (js_item, item, item_, itemUnchecked, js_getTrackById,
+        getTrackById, getTrackById_, getTrackByIdUnchecked, js_getLength,
         getLength, addTrack, change, removeTrack, TextTrackList,
         castToTextTrackList, gTypeTextTrackList)
        where
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -26,6 +29,16 @@ foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
 item :: (MonadIO m) => TextTrackList -> Word -> m (Maybe TextTrack)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.item Mozilla TextTrackList.item documentation> 
+item_ :: (MonadIO m) => TextTrackList -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.item Mozilla TextTrackList.item documentation> 
+itemUnchecked ::
+              (MonadIO m) => TextTrackList -> Word -> m TextTrack
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
         js_getTrackById ::
@@ -38,6 +51,20 @@ getTrackById ::
 getTrackById self id
   = liftIO
       (nullableToMaybe <$> (js_getTrackById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.getTrackById Mozilla TextTrackList.getTrackById documentation> 
+getTrackById_ ::
+              (MonadIO m, ToJSString id) => TextTrackList -> id -> m ()
+getTrackById_ self id
+  = liftIO (void (js_getTrackById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.getTrackById Mozilla TextTrackList.getTrackById documentation> 
+getTrackByIdUnchecked ::
+                      (MonadIO m, ToJSString id) => TextTrackList -> id -> m TextTrack
+getTrackByIdUnchecked self id
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTrackById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         TextTrackList -> IO Word

@@ -1,9 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableSectionElement
-       (js_insertRow, insertRow, js_deleteRow, deleteRow, js_setAlign,
-        setAlign, js_getAlign, getAlign, js_setCh, setCh, js_getCh, getCh,
-        js_setChOff, setChOff, js_getChOff, getChOff, js_setVAlign,
-        setVAlign, js_getVAlign, getVAlign, js_getRows, getRows,
+       (js_insertRow, insertRow, insertRow_, insertRowUnchecked,
+        js_deleteRow, deleteRow, js_setAlign, setAlign, js_getAlign,
+        getAlign, js_setCh, setCh, js_getCh, getCh, js_setChOff, setChOff,
+        js_getChOff, getChOff, js_setVAlign, setVAlign, js_getVAlign,
+        getVAlign, js_getRows, getRows, getRowsUnchecked,
         HTMLTableSectionElement, castToHTMLTableSectionElement,
         gTypeHTMLTableSectionElement)
        where
@@ -14,9 +15,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,6 +35,17 @@ insertRow ::
             HTMLTableSectionElement -> Int -> m (Maybe HTMLElement)
 insertRow self index
   = liftIO (nullableToMaybe <$> (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
+insertRow_ :: (MonadIO m) => HTMLTableSectionElement -> Int -> m ()
+insertRow_ self index = liftIO (void (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
+insertRowUnchecked ::
+                   (MonadIO m) => HTMLTableSectionElement -> Int -> m HTMLElement
+insertRowUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_insertRow (self) index))
  
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         js_deleteRow :: HTMLTableSectionElement -> Int -> IO ()
@@ -119,3 +133,9 @@ foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
 getRows ::
         (MonadIO m) => HTMLTableSectionElement -> m (Maybe HTMLCollection)
 getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.rows Mozilla HTMLTableSectionElement.rows documentation> 
+getRowsUnchecked ::
+                 (MonadIO m) => HTMLTableSectionElement -> m HTMLCollection
+getRowsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRows (self)))

@@ -6,8 +6,9 @@ module GHCJS.DOM.JSFFI.Generated.OscillatorNode
         pattern UNSCHEDULED_STATE, pattern SCHEDULED_STATE,
         pattern PLAYING_STATE, pattern FINISHED_STATE, js_setType, setType,
         js_getType, getType, js_getPlaybackState, getPlaybackState,
-        js_getFrequency, getFrequency, js_getDetune, getDetune, ended,
-        OscillatorNode, castToOscillatorNode, gTypeOscillatorNode)
+        js_getFrequency, getFrequency, getFrequencyUnchecked, js_getDetune,
+        getDetune, getDetuneUnchecked, ended, OscillatorNode,
+        castToOscillatorNode, gTypeOscillatorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -102,6 +105,12 @@ getFrequency ::
              (MonadIO m) => OscillatorNode -> m (Maybe AudioParam)
 getFrequency self
   = liftIO (nullableToMaybe <$> (js_getFrequency (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.frequency Mozilla OscillatorNode.frequency documentation> 
+getFrequencyUnchecked ::
+                      (MonadIO m) => OscillatorNode -> m AudioParam
+getFrequencyUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getFrequency (self)))
  
 foreign import javascript unsafe "$1[\"detune\"]" js_getDetune ::
         OscillatorNode -> IO (Nullable AudioParam)
@@ -109,6 +118,11 @@ foreign import javascript unsafe "$1[\"detune\"]" js_getDetune ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
 getDetune :: (MonadIO m) => OscillatorNode -> m (Maybe AudioParam)
 getDetune self = liftIO (nullableToMaybe <$> (js_getDetune (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
+getDetuneUnchecked :: (MonadIO m) => OscillatorNode -> m AudioParam
+getDetuneUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getDetune (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.onended Mozilla OscillatorNode.onended documentation> 
 ended :: EventName OscillatorNode Event

@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DocumentFragment
        (js_newDocumentFragment, newDocumentFragment, js_querySelector,
-        querySelector, js_querySelectorAll, querySelectorAll,
-        DocumentFragment, castToDocumentFragment, gTypeDocumentFragment)
+        querySelector, querySelector_, querySelectorUnchecked,
+        js_querySelectorAll, querySelectorAll, querySelectorAll_,
+        querySelectorAllUnchecked, DocumentFragment,
+        castToDocumentFragment, gTypeDocumentFragment)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +43,22 @@ querySelector self selectors
   = liftIO
       (nullableToMaybe <$>
          (js_querySelector (self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
+querySelector_ ::
+               (MonadIO m, ToJSString selectors) =>
+                 DocumentFragment -> selectors -> m ()
+querySelector_ self selectors
+  = liftIO (void (js_querySelector (self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
+querySelectorUnchecked ::
+                       (MonadIO m, ToJSString selectors) =>
+                         DocumentFragment -> selectors -> m Element
+querySelectorUnchecked self selectors
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_querySelector (self) (toJSString selectors)))
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
         js_querySelectorAll ::
@@ -51,4 +71,20 @@ querySelectorAll ::
 querySelectorAll self selectors
   = liftIO
       (nullableToMaybe <$>
+         (js_querySelectorAll (self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
+querySelectorAll_ ::
+                  (MonadIO m, ToJSString selectors) =>
+                    DocumentFragment -> selectors -> m ()
+querySelectorAll_ self selectors
+  = liftIO (void (js_querySelectorAll (self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
+querySelectorAllUnchecked ::
+                          (MonadIO m, ToJSString selectors) =>
+                            DocumentFragment -> selectors -> m NodeList
+querySelectorAllUnchecked self selectors
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_querySelectorAll (self) (toJSString selectors)))

@@ -1,13 +1,14 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableRowElement
-       (js_insertCell, insertCell, js_deleteCell, deleteCell,
-        js_getRowIndex, getRowIndex, js_getSectionRowIndex,
-        getSectionRowIndex, js_getCells, getCells, js_setAlign, setAlign,
-        js_getAlign, getAlign, js_setBgColor, setBgColor, js_getBgColor,
-        getBgColor, js_setCh, setCh, js_getCh, getCh, js_setChOff,
-        setChOff, js_getChOff, getChOff, js_setVAlign, setVAlign,
-        js_getVAlign, getVAlign, HTMLTableRowElement,
-        castToHTMLTableRowElement, gTypeHTMLTableRowElement)
+       (js_insertCell, insertCell, insertCell_, insertCellUnchecked,
+        js_deleteCell, deleteCell, js_getRowIndex, getRowIndex,
+        js_getSectionRowIndex, getSectionRowIndex, js_getCells, getCells,
+        getCellsUnchecked, js_setAlign, setAlign, js_getAlign, getAlign,
+        js_setBgColor, setBgColor, js_getBgColor, getBgColor, js_setCh,
+        setCh, js_getCh, getCh, js_setChOff, setChOff, js_getChOff,
+        getChOff, js_setVAlign, setVAlign, js_getVAlign, getVAlign,
+        HTMLTableRowElement, castToHTMLTableRowElement,
+        gTypeHTMLTableRowElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +17,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,6 +36,17 @@ insertCell ::
            (MonadIO m) => HTMLTableRowElement -> Int -> m (Maybe HTMLElement)
 insertCell self index
   = liftIO (nullableToMaybe <$> (js_insertCell (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
+insertCell_ :: (MonadIO m) => HTMLTableRowElement -> Int -> m ()
+insertCell_ self index = liftIO (void (js_insertCell (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
+insertCellUnchecked ::
+                    (MonadIO m) => HTMLTableRowElement -> Int -> m HTMLElement
+insertCellUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_insertCell (self) index))
  
 foreign import javascript unsafe "$1[\"deleteCell\"]($2)"
         js_deleteCell :: HTMLTableRowElement -> Int -> IO ()
@@ -62,6 +76,12 @@ foreign import javascript unsafe "$1[\"cells\"]" js_getCells ::
 getCells ::
          (MonadIO m) => HTMLTableRowElement -> m (Maybe HTMLCollection)
 getCells self = liftIO (nullableToMaybe <$> (js_getCells (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.cells Mozilla HTMLTableRowElement.cells documentation> 
+getCellsUnchecked ::
+                  (MonadIO m) => HTMLTableRowElement -> m HTMLCollection
+getCellsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCells (self)))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLTableRowElement -> JSString -> IO ()

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
        (js_speak, speak, js_cancel, cancel, js_pause, pause, js_resume,
-        resume, js_getVoices, getVoices, js_getPending, getPending,
-        js_getSpeaking, getSpeaking, js_getPaused, getPaused,
+        resume, js_getVoices, getVoices, getVoices_, js_getPending,
+        getPending, js_getSpeaking, getSpeaking, js_getPaused, getPaused,
         SpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -12,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -59,6 +61,10 @@ getVoices ::
           (MonadIO m) => SpeechSynthesis -> m [Maybe SpeechSynthesisVoice]
 getVoices self
   = liftIO ((js_getVoices (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.getVoices Mozilla SpeechSynthesis.getVoices documentation> 
+getVoices_ :: (MonadIO m) => SpeechSynthesis -> m ()
+getVoices_ self = liftIO (void (js_getVoices (self)))
  
 foreign import javascript unsafe "($1[\"pending\"] ? 1 : 0)"
         js_getPending :: SpeechSynthesis -> IO Bool

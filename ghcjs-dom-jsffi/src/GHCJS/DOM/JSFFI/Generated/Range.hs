@@ -5,23 +5,32 @@ module GHCJS.DOM.JSFFI.Generated.Range
         js_setEndBefore, setEndBefore, js_setEndAfter, setEndAfter,
         js_collapse, collapse, js_selectNode, selectNode,
         js_selectNodeContents, selectNodeContents,
-        js_compareBoundaryPoints, compareBoundaryPoints, js_deleteContents,
-        deleteContents, js_extractContents, extractContents,
-        js_cloneContents, cloneContents, js_insertNode, insertNode,
+        js_compareBoundaryPoints, compareBoundaryPoints,
+        compareBoundaryPoints_, js_deleteContents, deleteContents,
+        js_extractContents, extractContents, extractContents_,
+        extractContentsUnchecked, js_cloneContents, cloneContents,
+        cloneContents_, cloneContentsUnchecked, js_insertNode, insertNode,
         js_surroundContents, surroundContents, js_cloneRange, cloneRange,
-        js_toString, toString, js_detach, detach, js_getClientRects,
-        getClientRects, js_getBoundingClientRect, getBoundingClientRect,
-        js_createContextualFragment, createContextualFragment,
-        js_intersectsNode, intersectsNode, js_compareNode, compareNode,
-        js_comparePoint, comparePoint, js_isPointInRange, isPointInRange,
-        js_expand, expand, pattern START_TO_START, pattern START_TO_END,
+        cloneRange_, cloneRangeUnchecked, js_toString, toString, toString_,
+        js_detach, detach, js_getClientRects, getClientRects,
+        getClientRects_, getClientRectsUnchecked, js_getBoundingClientRect,
+        getBoundingClientRect, getBoundingClientRect_,
+        getBoundingClientRectUnchecked, js_createContextualFragment,
+        createContextualFragment, createContextualFragment_,
+        createContextualFragmentUnchecked, js_intersectsNode,
+        intersectsNode, intersectsNode_, js_compareNode, compareNode,
+        compareNode_, js_comparePoint, comparePoint, comparePoint_,
+        js_isPointInRange, isPointInRange, isPointInRange_, js_expand,
+        expand, pattern START_TO_START, pattern START_TO_END,
         pattern END_TO_END, pattern END_TO_START, pattern NODE_BEFORE,
         pattern NODE_AFTER, pattern NODE_BEFORE_AND_AFTER,
         pattern NODE_INSIDE, js_getStartContainer, getStartContainer,
-        js_getStartOffset, getStartOffset, js_getEndContainer,
-        getEndContainer, js_getEndOffset, getEndOffset, js_getCollapsed,
-        getCollapsed, js_getCommonAncestorContainer,
-        getCommonAncestorContainer, Range, castToRange, gTypeRange)
+        getStartContainerUnchecked, js_getStartOffset, getStartOffset,
+        js_getEndContainer, getEndContainer, getEndContainerUnchecked,
+        js_getEndOffset, getEndOffset, js_getCollapsed, getCollapsed,
+        js_getCommonAncestorContainer, getCommonAncestorContainer,
+        getCommonAncestorContainerUnchecked, Range, castToRange,
+        gTypeRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -30,9 +39,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -145,6 +156,15 @@ compareBoundaryPoints ::
 compareBoundaryPoints self how sourceRange
   = liftIO
       (js_compareBoundaryPoints (self) how (maybeToNullable sourceRange))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareBoundaryPoints Mozilla Range.compareBoundaryPoints documentation> 
+compareBoundaryPoints_ ::
+                       (MonadIO m) => Range -> Word -> Maybe Range -> m ()
+compareBoundaryPoints_ self how sourceRange
+  = liftIO
+      (void
+         (js_compareBoundaryPoints (self) how
+            (maybeToNullable sourceRange)))
  
 foreign import javascript unsafe "$1[\"deleteContents\"]()"
         js_deleteContents :: Range -> IO ()
@@ -161,6 +181,17 @@ extractContents ::
                 (MonadIO m) => Range -> m (Maybe DocumentFragment)
 extractContents self
   = liftIO (nullableToMaybe <$> (js_extractContents (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
+extractContents_ :: (MonadIO m) => Range -> m ()
+extractContents_ self = liftIO (void (js_extractContents (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
+extractContentsUnchecked ::
+                         (MonadIO m) => Range -> m DocumentFragment
+extractContentsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_extractContents (self)))
  
 foreign import javascript unsafe "$1[\"cloneContents\"]()"
         js_cloneContents :: Range -> IO (Nullable DocumentFragment)
@@ -169,6 +200,16 @@ foreign import javascript unsafe "$1[\"cloneContents\"]()"
 cloneContents :: (MonadIO m) => Range -> m (Maybe DocumentFragment)
 cloneContents self
   = liftIO (nullableToMaybe <$> (js_cloneContents (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
+cloneContents_ :: (MonadIO m) => Range -> m ()
+cloneContents_ self = liftIO (void (js_cloneContents (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
+cloneContentsUnchecked ::
+                       (MonadIO m) => Range -> m DocumentFragment
+cloneContentsUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_cloneContents (self)))
  
 foreign import javascript unsafe "$1[\"insertNode\"]($2)"
         js_insertNode :: Range -> Nullable Node -> IO ()
@@ -198,6 +239,15 @@ foreign import javascript unsafe "$1[\"cloneRange\"]()"
 cloneRange :: (MonadIO m) => Range -> m (Maybe Range)
 cloneRange self
   = liftIO (nullableToMaybe <$> (js_cloneRange (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
+cloneRange_ :: (MonadIO m) => Range -> m ()
+cloneRange_ self = liftIO (void (js_cloneRange (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
+cloneRangeUnchecked :: (MonadIO m) => Range -> m Range
+cloneRangeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_cloneRange (self)))
  
 foreign import javascript unsafe "$1[\"toString\"]()" js_toString
         :: Range -> IO JSString
@@ -205,6 +255,10 @@ foreign import javascript unsafe "$1[\"toString\"]()" js_toString
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.toString Mozilla Range.toString documentation> 
 toString :: (MonadIO m, FromJSString result) => Range -> m result
 toString self = liftIO (fromJSString <$> (js_toString (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.toString Mozilla Range.toString documentation> 
+toString_ :: (MonadIO m) => Range -> m ()
+toString_ self = liftIO (void (js_toString (self)))
  
 foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
         Range -> IO ()
@@ -220,6 +274,16 @@ foreign import javascript unsafe "$1[\"getClientRects\"]()"
 getClientRects :: (MonadIO m) => Range -> m (Maybe ClientRectList)
 getClientRects self
   = liftIO (nullableToMaybe <$> (js_getClientRects (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
+getClientRects_ :: (MonadIO m) => Range -> m ()
+getClientRects_ self = liftIO (void (js_getClientRects (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
+getClientRectsUnchecked :: (MonadIO m) => Range -> m ClientRectList
+getClientRectsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getClientRects (self)))
  
 foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
         js_getBoundingClientRect :: Range -> IO (Nullable ClientRect)
@@ -229,6 +293,18 @@ getBoundingClientRect ::
                       (MonadIO m) => Range -> m (Maybe ClientRect)
 getBoundingClientRect self
   = liftIO (nullableToMaybe <$> (js_getBoundingClientRect (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
+getBoundingClientRect_ :: (MonadIO m) => Range -> m ()
+getBoundingClientRect_ self
+  = liftIO (void (js_getBoundingClientRect (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
+getBoundingClientRectUnchecked ::
+                               (MonadIO m) => Range -> m ClientRect
+getBoundingClientRectUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getBoundingClientRect (self)))
  
 foreign import javascript unsafe
         "$1[\"createContextualFragment\"]($2)" js_createContextualFragment
@@ -242,6 +318,22 @@ createContextualFragment self html
   = liftIO
       (nullableToMaybe <$>
          (js_createContextualFragment (self) (toJSString html)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
+createContextualFragment_ ::
+                          (MonadIO m, ToJSString html) => Range -> html -> m ()
+createContextualFragment_ self html
+  = liftIO
+      (void (js_createContextualFragment (self) (toJSString html)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
+createContextualFragmentUnchecked ::
+                                  (MonadIO m, ToJSString html) =>
+                                    Range -> html -> m DocumentFragment
+createContextualFragmentUnchecked self html
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createContextualFragment (self) (toJSString html)))
  
 foreign import javascript unsafe
         "($1[\"intersectsNode\"]($2) ? 1 : 0)" js_intersectsNode ::
@@ -253,6 +345,14 @@ intersectsNode ::
 intersectsNode self refNode
   = liftIO
       (js_intersectsNode (self) (maybeToNullable (fmap toNode refNode)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
+intersectsNode_ ::
+                (MonadIO m, IsNode refNode) => Range -> Maybe refNode -> m ()
+intersectsNode_ self refNode
+  = liftIO
+      (void
+         (js_intersectsNode (self) (maybeToNullable (fmap toNode refNode))))
  
 foreign import javascript unsafe "$1[\"compareNode\"]($2)"
         js_compareNode :: Range -> Nullable Node -> IO Int
@@ -263,6 +363,14 @@ compareNode ::
 compareNode self refNode
   = liftIO
       (js_compareNode (self) (maybeToNullable (fmap toNode refNode)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareNode Mozilla Range.compareNode documentation> 
+compareNode_ ::
+             (MonadIO m, IsNode refNode) => Range -> Maybe refNode -> m ()
+compareNode_ self refNode
+  = liftIO
+      (void
+         (js_compareNode (self) (maybeToNullable (fmap toNode refNode))))
  
 foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
         js_comparePoint :: Range -> Nullable Node -> Int -> IO Int
@@ -275,6 +383,16 @@ comparePoint self refNode offset
   = liftIO
       (js_comparePoint (self) (maybeToNullable (fmap toNode refNode))
          offset)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
+comparePoint_ ::
+              (MonadIO m, IsNode refNode) =>
+                Range -> Maybe refNode -> Int -> m ()
+comparePoint_ self refNode offset
+  = liftIO
+      (void
+         (js_comparePoint (self) (maybeToNullable (fmap toNode refNode))
+            offset))
  
 foreign import javascript unsafe
         "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)" js_isPointInRange ::
@@ -288,6 +406,16 @@ isPointInRange self refNode offset
   = liftIO
       (js_isPointInRange (self) (maybeToNullable (fmap toNode refNode))
          offset)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
+isPointInRange_ ::
+                (MonadIO m, IsNode refNode) =>
+                  Range -> Maybe refNode -> Int -> m ()
+isPointInRange_ self refNode offset
+  = liftIO
+      (void
+         (js_isPointInRange (self) (maybeToNullable (fmap toNode refNode))
+            offset))
  
 foreign import javascript unsafe "$1[\"expand\"]($2)" js_expand ::
         Range -> JSString -> IO ()
@@ -311,6 +439,12 @@ foreign import javascript unsafe "$1[\"startContainer\"]"
 getStartContainer :: (MonadIO m) => Range -> m (Maybe Node)
 getStartContainer self
   = liftIO (nullableToMaybe <$> (js_getStartContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startContainer Mozilla Range.startContainer documentation> 
+getStartContainerUnchecked :: (MonadIO m) => Range -> m Node
+getStartContainerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getStartContainer (self)))
  
 foreign import javascript unsafe "$1[\"startOffset\"]"
         js_getStartOffset :: Range -> IO Int
@@ -326,6 +460,12 @@ foreign import javascript unsafe "$1[\"endContainer\"]"
 getEndContainer :: (MonadIO m) => Range -> m (Maybe Node)
 getEndContainer self
   = liftIO (nullableToMaybe <$> (js_getEndContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endContainer Mozilla Range.endContainer documentation> 
+getEndContainerUnchecked :: (MonadIO m) => Range -> m Node
+getEndContainerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getEndContainer (self)))
  
 foreign import javascript unsafe "$1[\"endOffset\"]"
         js_getEndOffset :: Range -> IO Int
@@ -350,3 +490,11 @@ getCommonAncestorContainer ::
 getCommonAncestorContainer self
   = liftIO
       (nullableToMaybe <$> (js_getCommonAncestorContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.commonAncestorContainer Mozilla Range.commonAncestorContainer documentation> 
+getCommonAncestorContainerUnchecked ::
+                                    (MonadIO m) => Range -> m Node
+getCommonAncestorContainerUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getCommonAncestorContainer (self)))

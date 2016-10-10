@@ -1,9 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerLocation
-       (js_toString, toString, js_getHref, getHref, js_getProtocol,
-        getProtocol, js_getHost, getHost, js_getHostname, getHostname,
-        js_getPort, getPort, js_getPathname, getPathname, js_getSearch,
-        getSearch, js_getHash, getHash, WorkerLocation,
+       (js_toString, toString, toString_, js_getHref, getHref,
+        js_getProtocol, getProtocol, js_getHost, getHost, js_getHostname,
+        getHostname, js_getPort, getPort, js_getPathname, getPathname,
+        js_getSearch, getSearch, js_getHash, getHash, WorkerLocation,
         castToWorkerLocation, gTypeWorkerLocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -13,9 +13,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,6 +30,10 @@ foreign import javascript unsafe "$1[\"toString\"]()" js_toString
 toString ::
          (MonadIO m, FromJSString result) => WorkerLocation -> m result
 toString self = liftIO (fromJSString <$> (js_toString (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation.toString Mozilla WorkerLocation.toString documentation> 
+toString_ :: (MonadIO m) => WorkerLocation -> m ()
+toString_ self = liftIO (void (js_toString (self)))
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         WorkerLocation -> IO JSString

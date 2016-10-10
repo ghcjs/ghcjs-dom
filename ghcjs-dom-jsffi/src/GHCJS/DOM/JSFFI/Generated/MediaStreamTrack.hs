@@ -1,8 +1,10 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaStreamTrack
        (js_getSources, getSources, js_getConstraints, getConstraints,
-        js_states, states, js_getCapabilities, getCapabilities,
-        js_applyConstraints, applyConstraints, js_clone, clone, js_stop,
+        getConstraints_, getConstraintsUnchecked, js_states, states,
+        states_, statesUnchecked, js_getCapabilities, getCapabilities,
+        getCapabilities_, getCapabilitiesUnchecked, js_applyConstraints,
+        applyConstraints, js_clone, clone, clone_, cloneUnchecked, js_stop,
         stop, js_getKind, getKind, js_getId, getId, js_getLabel, getLabel,
         js_setEnabled, setEnabled, js_getEnabled, getEnabled, js_getMuted,
         getMuted, mute, unmute, js_get_readonly, get_readonly,
@@ -17,9 +19,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -50,6 +54,21 @@ getConstraints ::
 getConstraints self
   = liftIO
       (nullableToMaybe <$> (js_getConstraints (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getConstraints Mozilla MediaStreamTrack.getConstraints documentation> 
+getConstraints_ ::
+                (MonadIO m, IsMediaStreamTrack self) => self -> m ()
+getConstraints_ self
+  = liftIO (void (js_getConstraints (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getConstraints Mozilla MediaStreamTrack.getConstraints documentation> 
+getConstraintsUnchecked ::
+                        (MonadIO m, IsMediaStreamTrack self) =>
+                          self -> m MediaTrackConstraints
+getConstraintsUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getConstraints (toMediaStreamTrack self)))
  
 foreign import javascript unsafe "$1[\"states\"]()" js_states ::
         MediaStreamTrack -> IO (Nullable MediaSourceStates)
@@ -61,6 +80,18 @@ states ::
 states self
   = liftIO
       (nullableToMaybe <$> (js_states (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.states Mozilla MediaStreamTrack.states documentation> 
+states_ :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
+states_ self = liftIO (void (js_states (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.states Mozilla MediaStreamTrack.states documentation> 
+statesUnchecked ::
+                (MonadIO m, IsMediaStreamTrack self) => self -> m MediaSourceStates
+statesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_states (toMediaStreamTrack self)))
  
 foreign import javascript unsafe "$1[\"getCapabilities\"]()"
         js_getCapabilities ::
@@ -73,6 +104,21 @@ getCapabilities ::
 getCapabilities self
   = liftIO
       (nullableToMaybe <$>
+         (js_getCapabilities (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getCapabilities Mozilla MediaStreamTrack.getCapabilities documentation> 
+getCapabilities_ ::
+                 (MonadIO m, IsMediaStreamTrack self) => self -> m ()
+getCapabilities_ self
+  = liftIO (void (js_getCapabilities (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getCapabilities Mozilla MediaStreamTrack.getCapabilities documentation> 
+getCapabilitiesUnchecked ::
+                         (MonadIO m, IsMediaStreamTrack self) =>
+                           self -> m MediaStreamCapabilities
+getCapabilitiesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getCapabilities (toMediaStreamTrack self)))
  
 foreign import javascript unsafe "$1[\"applyConstraints\"]($2)"
@@ -97,6 +143,18 @@ clone ::
         self -> m (Maybe MediaStreamTrack)
 clone self
   = liftIO (nullableToMaybe <$> (js_clone (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
+clone_ :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
+clone_ self = liftIO (void (js_clone (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
+cloneUnchecked ::
+               (MonadIO m, IsMediaStreamTrack self) => self -> m MediaStreamTrack
+cloneUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_clone (toMediaStreamTrack self)))
  
 foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
         MediaStreamTrack -> IO ()

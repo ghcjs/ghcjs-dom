@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLLabelElement
-       (js_getForm, getForm, js_setHtmlFor, setHtmlFor, js_getHtmlFor,
-        getHtmlFor, js_getControl, getControl, HTMLLabelElement,
-        castToHTMLLabelElement, gTypeHTMLLabelElement)
+       (js_getForm, getForm, getFormUnchecked, js_setHtmlFor, setHtmlFor,
+        js_getHtmlFor, getHtmlFor, js_getControl, getControl,
+        getControlUnchecked, HTMLLabelElement, castToHTMLLabelElement,
+        gTypeHTMLLabelElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -11,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -26,6 +29,12 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.form Mozilla HTMLLabelElement.form documentation> 
+getFormUnchecked ::
+                 (MonadIO m) => HTMLLabelElement -> m HTMLFormElement
+getFormUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getForm (self)))
  
 foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
         js_setHtmlFor :: HTMLLabelElement -> JSString -> IO ()
@@ -52,3 +61,9 @@ getControl ::
            (MonadIO m) => HTMLLabelElement -> m (Maybe HTMLElement)
 getControl self
   = liftIO (nullableToMaybe <$> (js_getControl (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.control Mozilla HTMLLabelElement.control documentation> 
+getControlUnchecked ::
+                    (MonadIO m) => HTMLLabelElement -> m HTMLElement
+getControlUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getControl (self)))

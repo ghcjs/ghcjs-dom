@@ -4,13 +4,18 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
         createOffer, js_createAnswer, createAnswer, js_setLocalDescription,
         setLocalDescription, js_setRemoteDescription, setRemoteDescription,
         js_updateIce, updateIce, js_addIceCandidate, addIceCandidate,
-        js_getLocalStreams, getLocalStreams, js_getRemoteStreams,
-        getRemoteStreams, js_getStreamById, getStreamById,
-        js_getConfiguration, getConfiguration, js_addStream, addStream,
-        js_removeStream, removeStream, js_getStats, getStats,
-        js_createDataChannel, createDataChannel, js_createDTMFSender,
-        createDTMFSender, js_close, close, js_getLocalDescription,
-        getLocalDescription, js_getRemoteDescription, getRemoteDescription,
+        js_getLocalStreams, getLocalStreams, getLocalStreams_,
+        js_getRemoteStreams, getRemoteStreams, getRemoteStreams_,
+        js_getStreamById, getStreamById, getStreamById_,
+        getStreamByIdUnchecked, js_getConfiguration, getConfiguration,
+        getConfiguration_, getConfigurationUnchecked, js_addStream,
+        addStream, js_removeStream, removeStream, js_getStats, getStats,
+        js_createDataChannel, createDataChannel, createDataChannel_,
+        createDataChannelUnchecked, js_createDTMFSender, createDTMFSender,
+        createDTMFSender_, createDTMFSenderUnchecked, js_close, close,
+        js_getLocalDescription, getLocalDescription,
+        getLocalDescriptionUnchecked, js_getRemoteDescription,
+        getRemoteDescription, getRemoteDescriptionUnchecked,
         js_getSignalingState, getSignalingState, js_getIceGatheringState,
         getIceGatheringState, js_getIceConnectionState,
         getIceConnectionState, negotiationNeeded, iceCandidate,
@@ -25,9 +30,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -166,6 +173,10 @@ getLocalStreams ::
                 (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getLocalStreams self
   = liftIO ((js_getLocalStreams (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getLocalStreams Mozilla webkitRTCPeerConnection.getLocalStreams documentation> 
+getLocalStreams_ :: (MonadIO m) => RTCPeerConnection -> m ()
+getLocalStreams_ self = liftIO (void (js_getLocalStreams (self)))
  
 foreign import javascript unsafe "$1[\"getRemoteStreams\"]()"
         js_getRemoteStreams :: RTCPeerConnection -> IO JSVal
@@ -175,6 +186,10 @@ getRemoteStreams ::
                  (MonadIO m) => RTCPeerConnection -> m [Maybe MediaStream]
 getRemoteStreams self
   = liftIO ((js_getRemoteStreams (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getRemoteStreams Mozilla webkitRTCPeerConnection.getRemoteStreams documentation> 
+getRemoteStreams_ :: (MonadIO m) => RTCPeerConnection -> m ()
+getRemoteStreams_ self = liftIO (void (js_getRemoteStreams (self)))
  
 foreign import javascript unsafe "$1[\"getStreamById\"]($2)"
         js_getStreamById ::
@@ -188,6 +203,22 @@ getStreamById self streamId
   = liftIO
       (nullableToMaybe <$>
          (js_getStreamById (self) (toJSString streamId)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
+getStreamById_ ::
+               (MonadIO m, ToJSString streamId) =>
+                 RTCPeerConnection -> streamId -> m ()
+getStreamById_ self streamId
+  = liftIO (void (js_getStreamById (self) (toJSString streamId)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
+getStreamByIdUnchecked ::
+                       (MonadIO m, ToJSString streamId) =>
+                         RTCPeerConnection -> streamId -> m MediaStream
+getStreamByIdUnchecked self streamId
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getStreamById (self) (toJSString streamId)))
  
 foreign import javascript unsafe "$1[\"getConfiguration\"]()"
         js_getConfiguration ::
@@ -198,6 +229,17 @@ getConfiguration ::
                  (MonadIO m) => RTCPeerConnection -> m (Maybe RTCConfiguration)
 getConfiguration self
   = liftIO (nullableToMaybe <$> (js_getConfiguration (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
+getConfiguration_ :: (MonadIO m) => RTCPeerConnection -> m ()
+getConfiguration_ self = liftIO (void (js_getConfiguration (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
+getConfigurationUnchecked ::
+                          (MonadIO m) => RTCPeerConnection -> m RTCConfiguration
+getConfigurationUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getConfiguration (self)))
  
 foreign import javascript unsafe "$1[\"addStream\"]($2)"
         js_addStream :: RTCPeerConnection -> Nullable MediaStream -> IO ()
@@ -253,6 +295,27 @@ createDataChannel self label options
       (nullableToMaybe <$>
          (js_createDataChannel (self) (toMaybeJSString label)
             (maybeToNullable (fmap toDictionary options))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
+createDataChannel_ ::
+                   (MonadIO m, ToJSString label, IsDictionary options) =>
+                     RTCPeerConnection -> Maybe label -> Maybe options -> m ()
+createDataChannel_ self label options
+  = liftIO
+      (void
+         (js_createDataChannel (self) (toMaybeJSString label)
+            (maybeToNullable (fmap toDictionary options))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
+createDataChannelUnchecked ::
+                           (MonadIO m, ToJSString label, IsDictionary options) =>
+                             RTCPeerConnection ->
+                               Maybe label -> Maybe options -> m RTCDataChannel
+createDataChannelUnchecked self label options
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_createDataChannel (self) (toMaybeJSString label)
+            (maybeToNullable (fmap toDictionary options))))
  
 foreign import javascript unsafe "$1[\"createDTMFSender\"]($2)"
         js_createDTMFSender ::
@@ -266,6 +329,26 @@ createDTMFSender ::
 createDTMFSender self track
   = liftIO
       (nullableToMaybe <$>
+         (js_createDTMFSender (self)
+            (maybeToNullable (fmap toMediaStreamTrack track))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDTMFSender Mozilla webkitRTCPeerConnection.createDTMFSender documentation> 
+createDTMFSender_ ::
+                  (MonadIO m, IsMediaStreamTrack track) =>
+                    RTCPeerConnection -> Maybe track -> m ()
+createDTMFSender_ self track
+  = liftIO
+      (void
+         (js_createDTMFSender (self)
+            (maybeToNullable (fmap toMediaStreamTrack track))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDTMFSender Mozilla webkitRTCPeerConnection.createDTMFSender documentation> 
+createDTMFSenderUnchecked ::
+                          (MonadIO m, IsMediaStreamTrack track) =>
+                            RTCPeerConnection -> Maybe track -> m RTCDTMFSender
+createDTMFSenderUnchecked self track
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_createDTMFSender (self)
             (maybeToNullable (fmap toMediaStreamTrack track))))
  
@@ -285,6 +368,13 @@ getLocalDescription ::
                     (MonadIO m) => RTCPeerConnection -> m (Maybe RTCSessionDescription)
 getLocalDescription self
   = liftIO (nullableToMaybe <$> (js_getLocalDescription (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.localDescription Mozilla webkitRTCPeerConnection.localDescription documentation> 
+getLocalDescriptionUnchecked ::
+                             (MonadIO m) => RTCPeerConnection -> m RTCSessionDescription
+getLocalDescriptionUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getLocalDescription (self)))
  
 foreign import javascript unsafe "$1[\"remoteDescription\"]"
         js_getRemoteDescription ::
@@ -295,6 +385,13 @@ getRemoteDescription ::
                      (MonadIO m) => RTCPeerConnection -> m (Maybe RTCSessionDescription)
 getRemoteDescription self
   = liftIO (nullableToMaybe <$> (js_getRemoteDescription (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.remoteDescription Mozilla webkitRTCPeerConnection.remoteDescription documentation> 
+getRemoteDescriptionUnchecked ::
+                              (MonadIO m) => RTCPeerConnection -> m RTCSessionDescription
+getRemoteDescriptionUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getRemoteDescription (self)))
  
 foreign import javascript unsafe "$1[\"signalingState\"]"
         js_getSignalingState :: RTCPeerConnection -> IO JSString

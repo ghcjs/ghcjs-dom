@@ -3,11 +3,11 @@ module GHCJS.DOM.JSFFI.Generated.SpeechSynthesisUtterance
        (js_newSpeechSynthesisUtterance, newSpeechSynthesisUtterance,
         js_setText, setText, js_getText, getText, js_setLang, setLang,
         js_getLang, getLang, js_setVoice, setVoice, js_getVoice, getVoice,
-        js_setVolume, setVolume, js_getVolume, getVolume, js_setRate,
-        setRate, js_getRate, getRate, js_setPitch, setPitch, js_getPitch,
-        getPitch, start, end, error, pause, resume, mark, boundary,
-        SpeechSynthesisUtterance, castToSpeechSynthesisUtterance,
-        gTypeSpeechSynthesisUtterance)
+        getVoiceUnchecked, js_setVolume, setVolume, js_getVolume,
+        getVolume, js_setRate, setRate, js_getRate, getRate, js_setPitch,
+        setPitch, js_getPitch, getPitch, start, end, error, pause, resume,
+        mark, boundary, SpeechSynthesisUtterance,
+        castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -16,9 +16,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -90,6 +92,12 @@ getVoice ::
          (MonadIO m) =>
            SpeechSynthesisUtterance -> m (Maybe SpeechSynthesisVoice)
 getVoice self = liftIO (nullableToMaybe <$> (js_getVoice (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.voice Mozilla SpeechSynthesisUtterance.voice documentation> 
+getVoiceUnchecked ::
+                  (MonadIO m) => SpeechSynthesisUtterance -> m SpeechSynthesisVoice
+getVoiceUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getVoice (self)))
  
 foreign import javascript unsafe "$1[\"volume\"] = $2;"
         js_setVolume :: SpeechSynthesisUtterance -> Float -> IO ()

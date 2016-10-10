@@ -3,8 +3,9 @@ module GHCJS.DOM.JSFFI.Generated.VideoTrack
        (js_getId, getId, js_setKind, setKind, js_getKind, getKind,
         js_getLabel, getLabel, js_setLanguage, setLanguage, js_getLanguage,
         getLanguage, js_setSelected, setSelected, js_getSelected,
-        getSelected, js_getSourceBuffer, getSourceBuffer, VideoTrack,
-        castToVideoTrack, gTypeVideoTrack)
+        getSelected, js_getSourceBuffer, getSourceBuffer,
+        getSourceBufferUnchecked, VideoTrack, castToVideoTrack,
+        gTypeVideoTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -13,9 +14,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -91,3 +94,10 @@ getSourceBuffer ::
                 (MonadIO m) => VideoTrack -> m (Maybe SourceBuffer)
 getSourceBuffer self
   = liftIO (nullableToMaybe <$> (js_getSourceBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.sourceBuffer Mozilla VideoTrack.sourceBuffer documentation> 
+getSourceBufferUnchecked ::
+                         (MonadIO m) => VideoTrack -> m SourceBuffer
+getSourceBufferUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSourceBuffer (self)))

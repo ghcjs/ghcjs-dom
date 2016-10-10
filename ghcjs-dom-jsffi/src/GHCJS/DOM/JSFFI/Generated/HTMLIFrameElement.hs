@@ -1,20 +1,21 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLIFrameElement
-       (js_getSVGDocument, getSVGDocument, js_setAlign, setAlign,
-        js_getAlign, getAlign, js_setFrameBorder, setFrameBorder,
-        js_getFrameBorder, getFrameBorder, js_setHeight, setHeight,
-        js_getHeight, getHeight, js_setLongDesc, setLongDesc,
-        js_getLongDesc, getLongDesc, js_setMarginHeight, setMarginHeight,
-        js_getMarginHeight, getMarginHeight, js_setMarginWidth,
-        setMarginWidth, js_getMarginWidth, getMarginWidth, js_setName,
-        setName, js_getName, getName, js_setSandbox, setSandbox,
-        js_getSandbox, getSandbox, js_setScrolling, setScrolling,
-        js_getScrolling, getScrolling, js_setSrc, setSrc, js_getSrc,
-        getSrc, js_setSrcdoc, setSrcdoc, js_getSrcdoc, getSrcdoc,
-        js_setWidth, setWidth, js_getWidth, getWidth,
-        js_getContentDocument, getContentDocument, js_getContentWindow,
-        getContentWindow, HTMLIFrameElement, castToHTMLIFrameElement,
-        gTypeHTMLIFrameElement)
+       (js_getSVGDocument, getSVGDocument, getSVGDocument_,
+        getSVGDocumentUnchecked, js_setAlign, setAlign, js_getAlign,
+        getAlign, js_setFrameBorder, setFrameBorder, js_getFrameBorder,
+        getFrameBorder, js_setHeight, setHeight, js_getHeight, getHeight,
+        js_setLongDesc, setLongDesc, js_getLongDesc, getLongDesc,
+        js_setMarginHeight, setMarginHeight, js_getMarginHeight,
+        getMarginHeight, js_setMarginWidth, setMarginWidth,
+        js_getMarginWidth, getMarginWidth, js_setName, setName, js_getName,
+        getName, js_setSandbox, setSandbox, js_getSandbox, getSandbox,
+        js_setScrolling, setScrolling, js_getScrolling, getScrolling,
+        js_setSrc, setSrc, js_getSrc, getSrc, js_setSrcdoc, setSrcdoc,
+        js_getSrcdoc, getSrcdoc, js_setWidth, setWidth, js_getWidth,
+        getWidth, js_getContentDocument, getContentDocument,
+        getContentDocumentUnchecked, js_getContentWindow, getContentWindow,
+        getContentWindowUnchecked, HTMLIFrameElement,
+        castToHTMLIFrameElement, gTypeHTMLIFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -23,9 +24,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -39,6 +42,17 @@ getSVGDocument ::
                (MonadIO m) => HTMLIFrameElement -> m (Maybe SVGDocument)
 getSVGDocument self
   = liftIO (nullableToMaybe <$> (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.getSVGDocument Mozilla HTMLIFrameElement.getSVGDocument documentation> 
+getSVGDocument_ :: (MonadIO m) => HTMLIFrameElement -> m ()
+getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.getSVGDocument Mozilla HTMLIFrameElement.getSVGDocument documentation> 
+getSVGDocumentUnchecked ::
+                        (MonadIO m) => HTMLIFrameElement -> m SVGDocument
+getSVGDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getSVGDocument (self)))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLIFrameElement -> JSString -> IO ()
@@ -252,6 +266,13 @@ getContentDocument ::
                    (MonadIO m) => HTMLIFrameElement -> m (Maybe Document)
 getContentDocument self
   = liftIO (nullableToMaybe <$> (js_getContentDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.contentDocument Mozilla HTMLIFrameElement.contentDocument documentation> 
+getContentDocumentUnchecked ::
+                            (MonadIO m) => HTMLIFrameElement -> m Document
+getContentDocumentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContentDocument (self)))
  
 foreign import javascript unsafe "$1[\"contentWindow\"]"
         js_getContentWindow :: HTMLIFrameElement -> IO (Nullable Window)
@@ -261,3 +282,10 @@ getContentWindow ::
                  (MonadIO m) => HTMLIFrameElement -> m (Maybe Window)
 getContentWindow self
   = liftIO (nullableToMaybe <$> (js_getContentWindow (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.contentWindow Mozilla HTMLIFrameElement.contentWindow documentation> 
+getContentWindowUnchecked ::
+                          (MonadIO m) => HTMLIFrameElement -> m Window
+getContentWindowUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getContentWindow (self)))

@@ -1,7 +1,9 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.VTTRegionList
-       (js_item, item, js_getRegionById, getRegionById, js_getLength,
-        getLength, VTTRegionList, castToVTTRegionList, gTypeVTTRegionList)
+       (js_item, item, item_, itemUnchecked, js_getRegionById,
+        getRegionById, getRegionById_, getRegionByIdUnchecked,
+        js_getLength, getLength, VTTRegionList, castToVTTRegionList,
+        gTypeVTTRegionList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
@@ -10,9 +12,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -25,6 +29,16 @@ foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
 item :: (MonadIO m) => VTTRegionList -> Word -> m (Maybe VTTRegion)
 item self index
   = liftIO (nullableToMaybe <$> (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.item Mozilla VTTRegionList.item documentation> 
+item_ :: (MonadIO m) => VTTRegionList -> Word -> m ()
+item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.item Mozilla VTTRegionList.item documentation> 
+itemUnchecked ::
+              (MonadIO m) => VTTRegionList -> Word -> m VTTRegion
+itemUnchecked self index
+  = liftIO (fromJust . nullableToMaybe <$> (js_item (self) index))
  
 foreign import javascript unsafe "$1[\"getRegionById\"]($2)"
         js_getRegionById ::
@@ -37,6 +51,20 @@ getRegionById ::
 getRegionById self id
   = liftIO
       (nullableToMaybe <$> (js_getRegionById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.getRegionById Mozilla VTTRegionList.getRegionById documentation> 
+getRegionById_ ::
+               (MonadIO m, ToJSString id) => VTTRegionList -> id -> m ()
+getRegionById_ self id
+  = liftIO (void (js_getRegionById (self) (toJSString id)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegionList.getRegionById Mozilla VTTRegionList.getRegionById documentation> 
+getRegionByIdUnchecked ::
+                       (MonadIO m, ToJSString id) => VTTRegionList -> id -> m VTTRegion
+getRegionByIdUnchecked self id
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getRegionById (self) (toJSString id)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         VTTRegionList -> IO Word

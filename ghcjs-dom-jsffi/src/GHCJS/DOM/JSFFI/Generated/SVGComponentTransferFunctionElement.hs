@@ -6,10 +6,12 @@ module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
         pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA, js_getType, getType,
-        js_getTableValues, getTableValues, js_getSlope, getSlope,
-        js_getIntercept, getIntercept, js_getAmplitude, getAmplitude,
-        js_getExponent, getExponent, js_getOffset, getOffset,
-        SVGComponentTransferFunctionElement,
+        getTypeUnchecked, js_getTableValues, getTableValues,
+        getTableValuesUnchecked, js_getSlope, getSlope, getSlopeUnchecked,
+        js_getIntercept, getIntercept, getInterceptUnchecked,
+        js_getAmplitude, getAmplitude, getAmplitudeUnchecked,
+        js_getExponent, getExponent, getExponentUnchecked, js_getOffset,
+        getOffset, getOffsetUnchecked, SVGComponentTransferFunctionElement,
         castToSVGComponentTransferFunctionElement,
         gTypeSVGComponentTransferFunctionElement,
         IsSVGComponentTransferFunctionElement,
@@ -22,9 +24,11 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
+import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
+import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -48,6 +52,15 @@ getType self
   = liftIO
       (nullableToMaybe <$>
          (js_getType (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
+getTypeUnchecked ::
+                 (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                   self -> m SVGAnimatedEnumeration
+getTypeUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getType (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"tableValues\"]"
         js_getTableValues ::
@@ -62,6 +75,15 @@ getTableValues self
   = liftIO
       (nullableToMaybe <$>
          (js_getTableValues (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.tableValues Mozilla SVGComponentTransferFunctionElement.tableValues documentation> 
+getTableValuesUnchecked ::
+                        (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                          self -> m SVGAnimatedNumberList
+getTableValuesUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getTableValues (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"slope\"]" js_getSlope ::
         SVGComponentTransferFunctionElement ->
@@ -74,6 +96,15 @@ getSlope ::
 getSlope self
   = liftIO
       (nullableToMaybe <$>
+         (js_getSlope (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
+getSlopeUnchecked ::
+                  (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                    self -> m SVGAnimatedNumber
+getSlopeUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getSlope (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"intercept\"]"
@@ -89,6 +120,15 @@ getIntercept self
   = liftIO
       (nullableToMaybe <$>
          (js_getIntercept (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.intercept Mozilla SVGComponentTransferFunctionElement.intercept documentation> 
+getInterceptUnchecked ::
+                      (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                        self -> m SVGAnimatedNumber
+getInterceptUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getIntercept (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"amplitude\"]"
         js_getAmplitude ::
@@ -102,6 +142,15 @@ getAmplitude ::
 getAmplitude self
   = liftIO
       (nullableToMaybe <$>
+         (js_getAmplitude (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.amplitude Mozilla SVGComponentTransferFunctionElement.amplitude documentation> 
+getAmplitudeUnchecked ::
+                      (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                        self -> m SVGAnimatedNumber
+getAmplitudeUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getAmplitude (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"exponent\"]" js_getExponent
@@ -117,6 +166,15 @@ getExponent self
   = liftIO
       (nullableToMaybe <$>
          (js_getExponent (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
+getExponentUnchecked ::
+                     (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                       self -> m SVGAnimatedNumber
+getExponentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getExponent (toSVGComponentTransferFunctionElement self)))
  
 foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
         SVGComponentTransferFunctionElement ->
@@ -129,4 +187,13 @@ getOffset ::
 getOffset self
   = liftIO
       (nullableToMaybe <$>
+         (js_getOffset (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 
+getOffsetUnchecked ::
+                   (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
+                     self -> m SVGAnimatedNumber
+getOffsetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_getOffset (toSVGComponentTransferFunctionElement self)))
