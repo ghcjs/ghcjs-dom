@@ -7,7 +7,7 @@ module GHCJS.DOM.Types (
   , DOMContext(..), DOM, askDOM, runDOM, MonadDOM(..), liftDOM
 
   -- * JavaScript Value
-  , JSVal(..), ToJSVal(..), FromJSVal(..)
+  , JSVal(..), ToJSVal(..), FromJSVal(..), PToJSVal(..), PFromJSVal(..)
 
   -- * JavaScript String
   , JSString(..), ToJSString(..), FromJSString(..)
@@ -22,7 +22,7 @@ module GHCJS.DOM.Types (
   -- * Object
   , maybeJSNullOrUndefined, GType(..)
   , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
-  , js_eq
+  , js_eq, strictEqual
 
   -- * Callbacks
   , AudioBufferCallback(..)
@@ -714,7 +714,7 @@ liftJSM :: MonadJSM m => JSM a -> m a
 liftJSM = liftIO
 
 -- | This is the same as 'liftJSM' except when using ghcjs-dom-webkit with GHC (instead of ghcjs-dom-jsaddle)
-liftDOM :: DOM a -> DOM a
+liftDOM :: MonadDOM m => DOM a -> m a
 liftDOM = liftIO
 
 -- | Gets the JavaScript context from the monad
@@ -743,6 +743,12 @@ newtype GType = GType JSVal
 
 foreign import javascript unsafe
   "$1===$2" js_eq :: JSVal -> JSVal -> Bool
+
+strictEqual :: (ToJSVal a, ToJSVal b) => a -> b -> JSM Bool
+strictEqual a b = do
+    aval <- toJSVal a
+    bval <- toJSVal b
+    return $ js_eq aval bval
 
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
     typeInstanceIsA' :: JSVal -> JSVal -> Bool
