@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.TextTrackCueList
        (js_item, item, item_, itemUnchecked, js_getCueById, getCueById,
         getCueById_, getCueByIdUnchecked, js_getLength, getLength,
-        TextTrackCueList, castToTextTrackCueList, gTypeTextTrackCueList)
+        TextTrackCueList(..), gTypeTextTrackCueList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

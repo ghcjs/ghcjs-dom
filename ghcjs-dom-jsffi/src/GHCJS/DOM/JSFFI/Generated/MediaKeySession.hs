@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeySession
        (js_update, update, js_close, close, js_getError, getError,
         getErrorUnchecked, js_getKeySystem, getKeySystem, js_getSessionId,
         getSessionId, webKitKeyAdded, webKitKeyError, webKitKeyMessage,
-        MediaKeySession, castToMediaKeySession, gTypeMediaKeySession)
+        MediaKeySession(..), gTypeMediaKeySession)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

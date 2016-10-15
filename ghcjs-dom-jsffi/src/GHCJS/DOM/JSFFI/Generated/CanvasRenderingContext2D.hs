@@ -83,8 +83,8 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         js_getWebkitBackingStorePixelRatio,
         getWebkitBackingStorePixelRatio, js_setWebkitImageSmoothingEnabled,
         setWebkitImageSmoothingEnabled, js_getWebkitImageSmoothingEnabled,
-        getWebkitImageSmoothingEnabled, CanvasRenderingContext2D,
-        castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D)
+        getWebkitImageSmoothingEnabled, CanvasRenderingContext2D(..),
+        gTypeCanvasRenderingContext2D)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

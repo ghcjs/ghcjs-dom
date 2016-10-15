@@ -9,8 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAreaElement
         js_getHost, getHost, js_getHostname, getHostname, js_getPathname,
         getPathname, js_getPort, getPort, js_getProtocol, getProtocol,
         js_getSearch, getSearch, js_getRelList, getRelList,
-        getRelListUnchecked, HTMLAreaElement, castToHTMLAreaElement,
-        gTypeHTMLAreaElement)
+        getRelListUnchecked, HTMLAreaElement(..), gTypeHTMLAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

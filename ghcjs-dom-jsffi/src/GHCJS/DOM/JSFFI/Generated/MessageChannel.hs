@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.MessageChannel
        (js_newMessageChannel, newMessageChannel, js_getPort1, getPort1,
         getPort1Unchecked, js_getPort2, getPort2, getPort2Unchecked,
-        MessageChannel, castToMessageChannel, gTypeMessageChannel)
+        MessageChannel(..), gTypeMessageChannel)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

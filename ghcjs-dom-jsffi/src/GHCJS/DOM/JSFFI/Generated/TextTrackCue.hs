@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.TextTrackCue
         js_setStartTime, setStartTime, js_getStartTime, getStartTime,
         js_setEndTime, setEndTime, js_getEndTime, getEndTime,
         js_setPauseOnExit, setPauseOnExit, js_getPauseOnExit,
-        getPauseOnExit, enter, exit, TextTrackCue, castToTextTrackCue,
-        gTypeTextTrackCue, IsTextTrackCue, toTextTrackCue)
+        getPauseOnExit, enter, exit, TextTrackCue(..), gTypeTextTrackCue,
+        IsTextTrackCue, toTextTrackCue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

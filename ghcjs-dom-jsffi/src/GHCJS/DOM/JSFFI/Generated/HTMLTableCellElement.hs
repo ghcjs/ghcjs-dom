@@ -11,8 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableCellElement
         js_setRowSpan, setRowSpan, js_getRowSpan, getRowSpan, js_setScope,
         setScope, js_getScope, getScope, js_setVAlign, setVAlign,
         js_getVAlign, getVAlign, js_setWidth, setWidth, js_getWidth,
-        getWidth, HTMLTableCellElement, castToHTMLTableCellElement,
-        gTypeHTMLTableCellElement)
+        getWidth, HTMLTableCellElement(..), gTypeHTMLTableCellElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

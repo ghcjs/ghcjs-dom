@@ -42,7 +42,7 @@ module GHCJS.DOM.JSFFI.Generated.Node
         getBaseURIUnchecked, js_setTextContent, setTextContent,
         js_getTextContent, getTextContent, getTextContentUnchecked,
         js_getParentElement, getParentElement, getParentElementUnchecked,
-        Node, castToNode, gTypeNode, IsNode, toNode)
+        Node(..), gTypeNode, IsNode, toNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

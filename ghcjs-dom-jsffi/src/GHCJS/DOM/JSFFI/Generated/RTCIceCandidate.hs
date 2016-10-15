@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.RTCIceCandidate
        (js_newRTCIceCandidate, newRTCIceCandidate, js_getCandidate,
         getCandidate, js_getSdpMid, getSdpMid, js_getSdpMLineIndex,
-        getSdpMLineIndex, RTCIceCandidate, castToRTCIceCandidate,
-        gTypeRTCIceCandidate)
+        getSdpMLineIndex, RTCIceCandidate(..), gTypeRTCIceCandidate)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ErrorEvent
        (js_getMessage, getMessage, js_getFilename, getFilename,
-        js_getLineno, getLineno, js_getColno, getColno, ErrorEvent,
-        castToErrorEvent, gTypeErrorEvent)
+        js_getLineno, getLineno, js_getColno, getColno, ErrorEvent(..),
+        gTypeErrorEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

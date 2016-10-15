@@ -9,8 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGAngle
         js_setValueInSpecifiedUnits, setValueInSpecifiedUnits,
         js_getValueInSpecifiedUnits, getValueInSpecifiedUnits,
         js_setValueAsString, setValueAsString, js_getValueAsString,
-        getValueAsString, getValueAsStringUnchecked, SVGAngle,
-        castToSVGAngle, gTypeSVGAngle)
+        getValueAsString, getValueAsStringUnchecked, SVGAngle(..),
+        gTypeSVGAngle)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

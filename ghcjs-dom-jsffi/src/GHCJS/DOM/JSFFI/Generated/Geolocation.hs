@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Geolocation
        (js_getCurrentPosition, getCurrentPosition, js_watchPosition,
         watchPosition, watchPosition_, js_clearWatch, clearWatch,
-        Geolocation, castToGeolocation, gTypeGeolocation)
+        Geolocation(..), gTypeGeolocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

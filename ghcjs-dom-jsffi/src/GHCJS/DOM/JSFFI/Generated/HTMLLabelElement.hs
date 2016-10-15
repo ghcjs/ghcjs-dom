@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLLabelElement
        (js_getForm, getForm, getFormUnchecked, js_setHtmlFor, setHtmlFor,
         js_getHtmlFor, getHtmlFor, js_getControl, getControl,
-        getControlUnchecked, HTMLLabelElement, castToHTMLLabelElement,
-        gTypeHTMLLabelElement)
+        getControlUnchecked, HTMLLabelElement(..), gTypeHTMLLabelElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

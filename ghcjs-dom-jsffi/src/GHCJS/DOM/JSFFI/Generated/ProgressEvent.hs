@@ -1,9 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ProgressEvent
        (js_getLengthComputable, getLengthComputable, js_getLoaded,
-        getLoaded, js_getTotal, getTotal, ProgressEvent,
-        castToProgressEvent, gTypeProgressEvent, IsProgressEvent,
-        toProgressEvent)
+        getLoaded, js_getTotal, getTotal, ProgressEvent(..),
+        gTypeProgressEvent, IsProgressEvent, toProgressEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

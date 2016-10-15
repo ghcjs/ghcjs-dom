@@ -14,8 +14,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGPreserveAspectRatio
         pattern SVG_MEETORSLICE_UNKNOWN, pattern SVG_MEETORSLICE_MEET,
         pattern SVG_MEETORSLICE_SLICE, js_setAlign, setAlign, js_getAlign,
         getAlign, js_setMeetOrSlice, setMeetOrSlice, js_getMeetOrSlice,
-        getMeetOrSlice, SVGPreserveAspectRatio,
-        castToSVGPreserveAspectRatio, gTypeSVGPreserveAspectRatio)
+        getMeetOrSlice, SVGPreserveAspectRatio(..),
+        gTypeSVGPreserveAspectRatio)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

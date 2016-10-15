@@ -11,8 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMarqueeElement
         js_getScrollDelay, getScrollDelay, js_setTrueSpeed, setTrueSpeed,
         js_getTrueSpeed, getTrueSpeed, js_setVspace, setVspace,
         js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
-        getWidth, HTMLMarqueeElement, castToHTMLMarqueeElement,
-        gTypeHTMLMarqueeElement)
+        getWidth, HTMLMarqueeElement(..), gTypeHTMLMarqueeElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

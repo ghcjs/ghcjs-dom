@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.MimeTypeArray
        (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
         namedItem_, namedItemUnchecked, js_getLength, getLength,
-        MimeTypeArray, castToMimeTypeArray, gTypeMimeTypeArray)
+        MimeTypeArray(..), gTypeMimeTypeArray)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

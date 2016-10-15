@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGMarkerElement
         js_getMarkerHeight, getMarkerHeight, getMarkerHeightUnchecked,
         js_getOrientType, getOrientType, getOrientTypeUnchecked,
         js_getOrientAngle, getOrientAngle, getOrientAngleUnchecked,
-        SVGMarkerElement, castToSVGMarkerElement, gTypeSVGMarkerElement)
+        SVGMarkerElement(..), gTypeSVGMarkerElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

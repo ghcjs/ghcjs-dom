@@ -6,8 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGFilterElement
         getY, getYUnchecked, js_getWidth, getWidth, getWidthUnchecked,
         js_getHeight, getHeight, getHeightUnchecked, js_getFilterResX,
         getFilterResX, getFilterResXUnchecked, js_getFilterResY,
-        getFilterResY, getFilterResYUnchecked, SVGFilterElement,
-        castToSVGFilterElement, gTypeSVGFilterElement)
+        getFilterResY, getFilterResYUnchecked, SVGFilterElement(..),
+        gTypeSVGFilterElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

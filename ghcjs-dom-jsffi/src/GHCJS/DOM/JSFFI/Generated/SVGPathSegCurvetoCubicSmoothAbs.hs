@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicSmoothAbs
        (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
         js_setX2, setX2, js_getX2, getX2, js_setY2, setY2, js_getY2, getY2,
-        SVGPathSegCurvetoCubicSmoothAbs,
-        castToSVGPathSegCurvetoCubicSmoothAbs,
+        SVGPathSegCurvetoCubicSmoothAbs(..),
         gTypeSVGPathSegCurvetoCubicSmoothAbs)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

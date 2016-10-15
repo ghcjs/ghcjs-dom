@@ -14,7 +14,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathResult
         getBooleanValue, js_getSingleNodeValue, getSingleNodeValue,
         getSingleNodeValueUnchecked, js_getInvalidIteratorState,
         getInvalidIteratorState, js_getSnapshotLength, getSnapshotLength,
-        XPathResult, castToXPathResult, gTypeXPathResult)
+        XPathResult(..), gTypeXPathResult)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

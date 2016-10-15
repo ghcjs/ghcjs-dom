@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.WindowTimers
        (js_setTimeout, setTimeout, setTimeout_, js_clearTimeout,
         clearTimeout, js_setInterval, setInterval, setInterval_,
-        js_clearInterval, clearInterval, WindowTimers, castToWindowTimers,
+        js_clearInterval, clearInterval, WindowTimers(..),
         gTypeWindowTimers)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

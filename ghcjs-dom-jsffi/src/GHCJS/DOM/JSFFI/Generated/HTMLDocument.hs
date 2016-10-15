@@ -16,7 +16,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDocument
         js_setLinkColor, setLinkColor, js_getLinkColor, getLinkColor,
         getLinkColorUnchecked, js_setVlinkColor, setVlinkColor,
         js_getVlinkColor, getVlinkColor, getVlinkColorUnchecked,
-        HTMLDocument, castToHTMLDocument, gTypeHTMLDocument)
+        HTMLDocument(..), gTypeHTMLDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

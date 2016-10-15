@@ -10,7 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLKeygenElement
         getType, js_getWillValidate, getWillValidate, js_getValidity,
         getValidity, getValidityUnchecked, js_getValidationMessage,
         getValidationMessage, js_getLabels, getLabels, getLabelsUnchecked,
-        HTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement)
+        HTMLKeygenElement(..), gTypeHTMLKeygenElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

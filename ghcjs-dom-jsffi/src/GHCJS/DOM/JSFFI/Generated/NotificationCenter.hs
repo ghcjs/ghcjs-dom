@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.NotificationCenter
        (js_createNotification, createNotification, createNotification_,
         createNotificationUnchecked, js_checkPermission, checkPermission,
         checkPermission_, js_requestPermission, requestPermission,
-        NotificationCenter, castToNotificationCenter,
-        gTypeNotificationCenter)
+        NotificationCenter(..), gTypeNotificationCenter)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

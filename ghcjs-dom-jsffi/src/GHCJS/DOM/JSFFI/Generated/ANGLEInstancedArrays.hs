@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.ANGLEInstancedArrays
        (js_drawArraysInstancedANGLE, drawArraysInstancedANGLE,
         js_drawElementsInstancedANGLE, drawElementsInstancedANGLE,
         js_vertexAttribDivisorANGLE, vertexAttribDivisorANGLE,
-        pattern VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE, ANGLEInstancedArrays,
-        castToANGLEInstancedArrays, gTypeANGLEInstancedArrays)
+        pattern VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE,
+        ANGLEInstancedArrays(..), gTypeANGLEInstancedArrays)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

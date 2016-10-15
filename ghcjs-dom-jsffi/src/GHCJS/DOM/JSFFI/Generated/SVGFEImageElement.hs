@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEImageElement
        (js_getPreserveAspectRatio, getPreserveAspectRatio,
-        getPreserveAspectRatioUnchecked, SVGFEImageElement,
-        castToSVGFEImageElement, gTypeSVGFEImageElement)
+        getPreserveAspectRatioUnchecked, SVGFEImageElement(..),
+        gTypeSVGFEImageElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

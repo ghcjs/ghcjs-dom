@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOListElement
        (js_setCompact, setCompact, js_getCompact, getCompact, js_setStart,
         setStart, js_getStart, getStart, js_setReversed, setReversed,
         js_getReversed, getReversed, js_setType, setType, js_getType,
-        getType, HTMLOListElement, castToHTMLOListElement,
-        gTypeHTMLOListElement)
+        getType, HTMLOListElement(..), gTypeHTMLOListElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

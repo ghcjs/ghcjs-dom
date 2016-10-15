@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Blob
        (js_newBlob, newBlob, js_newBlob', newBlob', js_slice, slice,
         slice_, sliceUnchecked, js_getSize, getSize, js_getType, getType,
-        Blob, castToBlob, gTypeBlob, IsBlob, toBlob)
+        Blob(..), gTypeBlob, IsBlob, toBlob)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

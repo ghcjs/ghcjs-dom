@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DOMSettableTokenList
        (js__get, _get, _get_, _getUnchecked, js_setValue, setValue,
-        js_getValue, getValue, DOMSettableTokenList,
-        castToDOMSettableTokenList, gTypeDOMSettableTokenList)
+        js_getValue, getValue, DOMSettableTokenList(..),
+        gTypeDOMSettableTokenList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

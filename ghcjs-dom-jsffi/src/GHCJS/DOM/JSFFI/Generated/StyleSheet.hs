@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.StyleSheet
         getParentStyleSheet, getParentStyleSheetUnchecked, js_getHref,
         getHref, getHrefUnchecked, js_getTitle, getTitle,
         getTitleUnchecked, js_getMedia, getMedia, getMediaUnchecked,
-        StyleSheet, castToStyleSheet, gTypeStyleSheet, IsStyleSheet,
-        toStyleSheet)
+        StyleSheet(..), gTypeStyleSheet, IsStyleSheet, toStyleSheet)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

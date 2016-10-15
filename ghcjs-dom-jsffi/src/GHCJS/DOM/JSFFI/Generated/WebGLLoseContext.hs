@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLLoseContext
        (js_loseContext, loseContext, js_restoreContext, restoreContext,
-        WebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext)
+        WebGLLoseContext(..), gTypeWebGLLoseContext)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

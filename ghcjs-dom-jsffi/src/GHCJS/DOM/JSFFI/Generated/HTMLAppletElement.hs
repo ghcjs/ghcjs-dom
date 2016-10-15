@@ -8,8 +8,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAppletElement
         setHspace, js_getHspace, getHspace, js_setName, setName,
         js_getName, getName, js_setObject, setObject, js_getObject,
         getObject, js_setVspace, setVspace, js_getVspace, getVspace,
-        js_setWidth, setWidth, js_getWidth, getWidth, HTMLAppletElement,
-        castToHTMLAppletElement, gTypeHTMLAppletElement)
+        js_setWidth, setWidth, js_getWidth, getWidth,
+        HTMLAppletElement(..), gTypeHTMLAppletElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

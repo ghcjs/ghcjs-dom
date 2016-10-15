@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaList
        (js_item, item, item_, itemUnchecked, js_deleteMedium,
         deleteMedium, js_appendMedium, appendMedium, js_setMediaText,
         setMediaText, js_getMediaText, getMediaText, getMediaTextUnchecked,
-        js_getLength, getLength, MediaList, castToMediaList,
-        gTypeMediaList)
+        js_getLength, getLength, MediaList(..), gTypeMediaList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

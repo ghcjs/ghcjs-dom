@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBKeyRange
         upperBound_, upperBoundUnchecked, js_bound, bound, bound_,
         boundUnchecked, js_getLower, getLower, js_getUpper, getUpper,
         js_getLowerOpen, getLowerOpen, js_getUpperOpen, getUpperOpen,
-        IDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange)
+        IDBKeyRange(..), gTypeIDBKeyRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

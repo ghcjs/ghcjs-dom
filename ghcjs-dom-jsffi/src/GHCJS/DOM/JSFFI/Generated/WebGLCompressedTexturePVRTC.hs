@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLCompressedTexturePVRTC
         pattern COMPRESSED_RGB_PVRTC_2BPPV1_IMG,
         pattern COMPRESSED_RGBA_PVRTC_4BPPV1_IMG,
         pattern COMPRESSED_RGBA_PVRTC_2BPPV1_IMG,
-        WebGLCompressedTexturePVRTC, castToWebGLCompressedTexturePVRTC,
-        gTypeWebGLCompressedTexturePVRTC)
+        WebGLCompressedTexturePVRTC(..), gTypeWebGLCompressedTexturePVRTC)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.ConvolverNode
        (js_setBuffer, setBuffer, js_getBuffer, getBuffer,
         getBufferUnchecked, js_setNormalize, setNormalize, js_getNormalize,
-        getNormalize, ConvolverNode, castToConvolverNode,
-        gTypeConvolverNode)
+        getNormalize, ConvolverNode(..), gTypeConvolverNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

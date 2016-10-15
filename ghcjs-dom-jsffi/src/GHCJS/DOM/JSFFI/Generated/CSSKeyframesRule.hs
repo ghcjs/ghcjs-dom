@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSKeyframesRule
         js_deleteRule, deleteRule, js_findRule, findRule, findRule_,
         findRuleUnchecked, js__get, _get, _get_, _getUnchecked, js_setName,
         setName, js_getName, getName, getNameUnchecked, js_getCssRules,
-        getCssRules, getCssRulesUnchecked, CSSKeyframesRule,
-        castToCSSKeyframesRule, gTypeCSSKeyframesRule)
+        getCssRules, getCssRulesUnchecked, CSSKeyframesRule(..),
+        gTypeCSSKeyframesRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

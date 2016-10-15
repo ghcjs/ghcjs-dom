@@ -18,8 +18,7 @@ module GHCJS.DOM.JSFFI.Generated.Event
         setReturnValue, js_getReturnValue, getReturnValue,
         js_setCancelBubble, setCancelBubble, js_getCancelBubble,
         getCancelBubble, js_getClipboardData, getClipboardData,
-        getClipboardDataUnchecked, Event, castToEvent, gTypeEvent, IsEvent,
-        toEvent)
+        getClipboardDataUnchecked, Event(..), gTypeEvent, IsEvent, toEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -16,8 +16,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBObjectStore
         js_getKeyPath, getKeyPath, getKeyPathUnchecked, js_getIndexNames,
         getIndexNames, getIndexNamesUnchecked, js_getTransaction,
         getTransaction, getTransactionUnchecked, js_getAutoIncrement,
-        getAutoIncrement, IDBObjectStore, castToIDBObjectStore,
-        gTypeIDBObjectStore)
+        getAutoIncrement, IDBObjectStore(..), gTypeIDBObjectStore)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

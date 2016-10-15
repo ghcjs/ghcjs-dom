@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Rect
        (js_getTop, getTop, getTopUnchecked, js_getRight, getRight,
         getRightUnchecked, js_getBottom, getBottom, getBottomUnchecked,
-        js_getLeft, getLeft, getLeftUnchecked, Rect, castToRect, gTypeRect)
+        js_getLeft, getLeft, getLeftUnchecked, Rect(..), gTypeRect)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.Attr
        (js_getName, getName, getNameUnchecked, js_getSpecified,
         getSpecified, js_setValue, setValue, js_getValue, getValue,
         getValueUnchecked, js_getOwnerElement, getOwnerElement,
-        getOwnerElementUnchecked, js_getIsId, getIsId, Attr, castToAttr,
-        gTypeAttr)
+        getOwnerElementUnchecked, js_getIsId, getIsId, Attr(..), gTypeAttr)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

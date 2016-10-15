@@ -6,8 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSFilterValue
         pattern CSS_FILTER_INVERT, pattern CSS_FILTER_OPACITY,
         pattern CSS_FILTER_BRIGHTNESS, pattern CSS_FILTER_CONTRAST,
         pattern CSS_FILTER_BLUR, pattern CSS_FILTER_DROP_SHADOW,
-        js_getOperationType, getOperationType, WebKitCSSFilterValue,
-        castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue)
+        js_getOperationType, getOperationType, WebKitCSSFilterValue(..),
+        gTypeWebKitCSSFilterValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

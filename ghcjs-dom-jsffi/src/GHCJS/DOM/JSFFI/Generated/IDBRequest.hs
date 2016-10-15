@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBRequest
         getError, getErrorUnchecked, js_getSource, getSource,
         getSourceUnchecked, js_getTransaction, getTransaction,
         getTransactionUnchecked, js_getReadyState, getReadyState, success,
-        error, IDBRequest, castToIDBRequest, gTypeIDBRequest, IsIDBRequest,
-        toIDBRequest)
+        error, IDBRequest(..), gTypeIDBRequest, IsIDBRequest, toIDBRequest)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

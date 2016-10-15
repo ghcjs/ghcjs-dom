@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.ApplicationCache
         pattern UNCACHED, pattern IDLE, pattern CHECKING,
         pattern DOWNLOADING, pattern UPDATEREADY, pattern OBSOLETE,
         js_getStatus, getStatus, checking, error, noUpdate, downloading,
-        progress, updateReady, cached, obsolete, ApplicationCache,
-        castToApplicationCache, gTypeApplicationCache)
+        progress, updateReady, cached, obsolete, ApplicationCache(..),
+        gTypeApplicationCache)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

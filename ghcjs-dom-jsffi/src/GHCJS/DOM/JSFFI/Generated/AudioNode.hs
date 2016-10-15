@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.AudioNode
         js_getChannelCount, getChannelCount, js_setChannelCountMode,
         setChannelCountMode, js_getChannelCountMode, getChannelCountMode,
         js_setChannelInterpretation, setChannelInterpretation,
-        js_getChannelInterpretation, getChannelInterpretation, AudioNode,
-        castToAudioNode, gTypeAudioNode, IsAudioNode, toAudioNode)
+        js_getChannelInterpretation, getChannelInterpretation,
+        AudioNode(..), gTypeAudioNode, IsAudioNode, toAudioNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

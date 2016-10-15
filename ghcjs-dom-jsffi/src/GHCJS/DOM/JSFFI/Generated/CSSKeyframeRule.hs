@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSKeyframeRule
        (js_setKeyText, setKeyText, js_getKeyText, getKeyText, js_getStyle,
-        getStyle, getStyleUnchecked, CSSKeyframeRule,
-        castToCSSKeyframeRule, gTypeCSSKeyframeRule)
+        getStyle, getStyleUnchecked, CSSKeyframeRule(..),
+        gTypeCSSKeyframeRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

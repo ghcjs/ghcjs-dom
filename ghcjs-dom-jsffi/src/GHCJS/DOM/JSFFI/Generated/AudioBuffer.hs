@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioBuffer
         getChannelDataUnchecked, js_getLength, getLength, js_getDuration,
         getDuration, js_getSampleRate, getSampleRate, js_setGain, setGain,
         js_getGain, getGain, js_getNumberOfChannels, getNumberOfChannels,
-        AudioBuffer, castToAudioBuffer, gTypeAudioBuffer)
+        AudioBuffer(..), gTypeAudioBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -12,8 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.Performance
         webkitMeasure, js_webkitClearMeasures, webkitClearMeasures, js_now,
         now, now_, js_getNavigation, getNavigation, getNavigationUnchecked,
         js_getTiming, getTiming, getTimingUnchecked,
-        webKitResourceTimingBufferFull, Performance, castToPerformance,
-        gTypePerformance)
+        webKitResourceTimingBufferFull, Performance(..), gTypePerformance)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPatternElement
         getPatternTransform, getPatternTransformUnchecked, js_getX, getX,
         getXUnchecked, js_getY, getY, getYUnchecked, js_getWidth, getWidth,
         getWidthUnchecked, js_getHeight, getHeight, getHeightUnchecked,
-        SVGPatternElement, castToSVGPatternElement, gTypeSVGPatternElement)
+        SVGPatternElement(..), gTypeSVGPatternElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

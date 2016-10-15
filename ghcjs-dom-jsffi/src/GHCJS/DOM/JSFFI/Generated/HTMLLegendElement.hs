@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLLegendElement
        (js_getForm, getForm, getFormUnchecked, js_setAlign, setAlign,
-        js_getAlign, getAlign, HTMLLegendElement, castToHTMLLegendElement,
+        js_getAlign, getAlign, HTMLLegendElement(..),
         gTypeHTMLLegendElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

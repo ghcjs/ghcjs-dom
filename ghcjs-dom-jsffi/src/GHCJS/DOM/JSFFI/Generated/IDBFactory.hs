@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.IDBFactory
        (js_open, open, open_, openUnchecked, js_deleteDatabase,
         deleteDatabase, deleteDatabase_, deleteDatabaseUnchecked, js_cmp,
-        cmp, cmp_, IDBFactory, castToIDBFactory, gTypeIDBFactory)
+        cmp, cmp_, IDBFactory(..), gTypeIDBFactory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

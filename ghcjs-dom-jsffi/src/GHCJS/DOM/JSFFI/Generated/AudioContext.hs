@@ -43,8 +43,8 @@ module GHCJS.DOM.JSFFI.Generated.AudioContext
         js_getCurrentTime, getCurrentTime, js_getSampleRate, getSampleRate,
         js_getListener, getListener, getListenerUnchecked,
         js_getActiveSourceCount, getActiveSourceCount, complete,
-        AudioContext, castToAudioContext, gTypeAudioContext,
-        IsAudioContext, toAudioContext)
+        AudioContext(..), gTypeAudioContext, IsAudioContext,
+        toAudioContext)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

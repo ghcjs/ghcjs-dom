@@ -17,8 +17,8 @@ module GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
         getResponseXMLUnchecked, js_setResponseType, setResponseType,
         js_getResponseType, getResponseType, js_getResponse, getResponse,
         getResponseUnchecked, js_getStatus, getStatus, js_getStatusText,
-        getStatusText, js_getResponseURL, getResponseURL, XMLHttpRequest,
-        castToXMLHttpRequest, gTypeXMLHttpRequest)
+        getStatusText, js_getResponseURL, getResponseURL,
+        XMLHttpRequest(..), gTypeXMLHttpRequest)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

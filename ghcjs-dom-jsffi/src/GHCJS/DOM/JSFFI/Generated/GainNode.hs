@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.GainNode
-       (js_getGain, getGain, getGainUnchecked, GainNode, castToGainNode,
+       (js_getGain, getGain, getGainUnchecked, GainNode(..),
         gTypeGainNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

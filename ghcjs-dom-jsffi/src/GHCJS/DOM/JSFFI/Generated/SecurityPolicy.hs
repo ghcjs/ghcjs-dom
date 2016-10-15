@@ -14,7 +14,7 @@ module GHCJS.DOM.JSFFI.Generated.SecurityPolicy
         getAllowsInlineScript, js_getAllowsInlineStyle,
         getAllowsInlineStyle, js_getIsActive, getIsActive,
         js_getReportURIs, getReportURIs, getReportURIsUnchecked,
-        SecurityPolicy, castToSecurityPolicy, gTypeSecurityPolicy)
+        SecurityPolicy(..), gTypeSecurityPolicy)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

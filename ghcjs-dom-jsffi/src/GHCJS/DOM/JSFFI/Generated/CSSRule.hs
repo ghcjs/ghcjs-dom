@@ -9,8 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSRule
         setCssText, js_getCssText, getCssText, getCssTextUnchecked,
         js_getParentStyleSheet, getParentStyleSheet,
         getParentStyleSheetUnchecked, js_getParentRule, getParentRule,
-        getParentRuleUnchecked, CSSRule, castToCSSRule, gTypeCSSRule,
-        IsCSSRule, toCSSRule)
+        getParentRuleUnchecked, CSSRule(..), gTypeCSSRule, IsCSSRule,
+        toCSSRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

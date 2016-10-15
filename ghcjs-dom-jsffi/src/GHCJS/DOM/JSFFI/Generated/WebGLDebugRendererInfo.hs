@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLDebugRendererInfo
        (pattern UNMASKED_VENDOR_WEBGL, pattern UNMASKED_RENDERER_WEBGL,
-        WebGLDebugRendererInfo, castToWebGLDebugRendererInfo,
-        gTypeWebGLDebugRendererInfo)
+        WebGLDebugRendererInfo(..), gTypeWebGLDebugRendererInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

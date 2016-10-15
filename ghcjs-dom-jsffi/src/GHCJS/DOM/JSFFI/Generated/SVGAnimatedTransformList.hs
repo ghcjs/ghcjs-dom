@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedTransformList
        (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedTransformList,
-        castToSVGAnimatedTransformList, gTypeSVGAnimatedTransformList)
+        getAnimVal, getAnimValUnchecked, SVGAnimatedTransformList(..),
+        gTypeSVGAnimatedTransformList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeyError
         pattern MEDIA_KEYERR_SERVICE, pattern MEDIA_KEYERR_OUTPUT,
         pattern MEDIA_KEYERR_HARDWARECHANGE, pattern MEDIA_KEYERR_DOMAIN,
         js_getCode, getCode, js_getSystemCode, getSystemCode,
-        MediaKeyError, castToMediaKeyError, gTypeMediaKeyError)
+        MediaKeyError(..), gTypeMediaKeyError)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

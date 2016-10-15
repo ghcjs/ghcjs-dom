@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.VideoTrackList
        (js_item, item, item_, itemUnchecked, js_getTrackById,
         getTrackById, getTrackById_, getTrackByIdUnchecked, js_getLength,
         getLength, js_getSelectedIndex, getSelectedIndex, change, addTrack,
-        removeTrack, VideoTrackList, castToVideoTrackList,
-        gTypeVideoTrackList)
+        removeTrack, VideoTrackList(..), gTypeVideoTrackList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

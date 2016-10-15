@@ -8,8 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaStream
         removeTrack, js_getTrackById, getTrackById, getTrackById_,
         getTrackByIdUnchecked, js_clone, clone, clone_, cloneUnchecked,
         js_getId, getId, js_getActive, getActive, active, inactive,
-        addTrackEvent, removeTrackEvent, MediaStream, castToMediaStream,
-        gTypeMediaStream)
+        addTrackEvent, removeTrackEvent, MediaStream(..), gTypeMediaStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

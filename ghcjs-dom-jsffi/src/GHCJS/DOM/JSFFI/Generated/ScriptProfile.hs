@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ScriptProfile
        (js_getTitle, getTitle, js_getUid, getUid, js_getRootNode,
-        getRootNode, getRootNodeUnchecked, ScriptProfile,
-        castToScriptProfile, gTypeScriptProfile)
+        getRootNode, getRootNodeUnchecked, ScriptProfile(..),
+        gTypeScriptProfile)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitAnimationEvent
        (js_getAnimationName, getAnimationName, js_getElapsedTime,
-        getElapsedTime, WebKitAnimationEvent, castToWebKitAnimationEvent,
+        getElapsedTime, WebKitAnimationEvent(..),
         gTypeWebKitAnimationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

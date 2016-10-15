@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.DOMImplementation
         createCSSStyleSheet, createCSSStyleSheet_,
         createCSSStyleSheetUnchecked, js_createHTMLDocument,
         createHTMLDocument, createHTMLDocument_,
-        createHTMLDocumentUnchecked, DOMImplementation,
-        castToDOMImplementation, gTypeDOMImplementation)
+        createHTMLDocumentUnchecked, DOMImplementation(..),
+        gTypeDOMImplementation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

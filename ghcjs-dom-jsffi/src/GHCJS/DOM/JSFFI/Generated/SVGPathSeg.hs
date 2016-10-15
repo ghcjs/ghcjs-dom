@@ -16,8 +16,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSeg
         pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS,
         pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL, js_getPathSegType,
         getPathSegType, js_getPathSegTypeAsLetter, getPathSegTypeAsLetter,
-        SVGPathSeg, castToSVGPathSeg, gTypeSVGPathSeg, IsSVGPathSeg,
-        toSVGPathSeg)
+        SVGPathSeg(..), gTypeSVGPathSeg, IsSVGPathSeg, toSVGPathSeg)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

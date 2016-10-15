@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.NavigatorUserMediaError
-       (js_getConstraintName, getConstraintName, NavigatorUserMediaError,
-        castToNavigatorUserMediaError, gTypeNavigatorUserMediaError)
+       (js_getConstraintName, getConstraintName,
+        NavigatorUserMediaError(..), gTypeNavigatorUserMediaError)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

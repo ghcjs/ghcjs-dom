@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.DynamicsCompressorNode
         getRatioUnchecked, js_getReduction, getReduction,
         getReductionUnchecked, js_getAttack, getAttack, getAttackUnchecked,
         js_getRelease, getRelease, getReleaseUnchecked,
-        DynamicsCompressorNode, castToDynamicsCompressorNode,
-        gTypeDynamicsCompressorNode)
+        DynamicsCompressorNode(..), gTypeDynamicsCompressorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

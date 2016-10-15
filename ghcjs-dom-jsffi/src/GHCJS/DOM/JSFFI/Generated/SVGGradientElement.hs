@@ -5,9 +5,9 @@ module GHCJS.DOM.JSFFI.Generated.SVGGradientElement
         js_getGradientUnits, getGradientUnits, getGradientUnitsUnchecked,
         js_getGradientTransform, getGradientTransform,
         getGradientTransformUnchecked, js_getSpreadMethod, getSpreadMethod,
-        getSpreadMethodUnchecked, SVGGradientElement,
-        castToSVGGradientElement, gTypeSVGGradientElement,
-        IsSVGGradientElement, toSVGGradientElement)
+        getSpreadMethodUnchecked, SVGGradientElement(..),
+        gTypeSVGGradientElement, IsSVGGradientElement,
+        toSVGGradientElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

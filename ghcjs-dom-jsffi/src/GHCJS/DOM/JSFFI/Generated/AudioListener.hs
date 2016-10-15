@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioListener
         js_setVelocity, setVelocity, js_setDopplerFactor, setDopplerFactor,
         js_getDopplerFactor, getDopplerFactor, js_setSpeedOfSound,
         setSpeedOfSound, js_getSpeedOfSound, getSpeedOfSound,
-        AudioListener, castToAudioListener, gTypeAudioListener)
+        AudioListener(..), gTypeAudioListener)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SQLResultSet
        (js_getRows, getRows, getRowsUnchecked, js_getInsertId,
-        getInsertId, js_getRowsAffected, getRowsAffected, SQLResultSet,
-        castToSQLResultSet, gTypeSQLResultSet)
+        getInsertId, js_getRowsAffected, getRowsAffected, SQLResultSet(..),
+        gTypeSQLResultSet)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

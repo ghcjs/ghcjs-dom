@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLActiveInfo
        (js_getSize, getSize, js_getType, getType, js_getName, getName,
-        WebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo)
+        WebGLActiveInfo(..), gTypeWebGLActiveInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -12,8 +12,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGLength
         js_setValueInSpecifiedUnits, setValueInSpecifiedUnits,
         js_getValueInSpecifiedUnits, getValueInSpecifiedUnits,
         js_setValueAsString, setValueAsString, js_getValueAsString,
-        getValueAsString, getValueAsStringUnchecked, SVGLength,
-        castToSVGLength, gTypeSVGLength)
+        getValueAsString, getValueAsStringUnchecked, SVGLength(..),
+        gTypeSVGLength)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

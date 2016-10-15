@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.DataTransferItemList
        (js_item, item, item_, itemUnchecked, js_clear, clear, js_addFile,
         addFile, js_add, add, js_getLength, getLength,
-        DataTransferItemList, castToDataTransferItemList,
-        gTypeDataTransferItemList)
+        DataTransferItemList(..), gTypeDataTransferItemList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

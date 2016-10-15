@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.KeyboardEvent
         js_getKeyLocation, getKeyLocation, js_getCtrlKey, getCtrlKey,
         js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
         js_getMetaKey, getMetaKey, js_getAltGraphKey, getAltGraphKey,
-        KeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent)
+        KeyboardEvent(..), gTypeKeyboardEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

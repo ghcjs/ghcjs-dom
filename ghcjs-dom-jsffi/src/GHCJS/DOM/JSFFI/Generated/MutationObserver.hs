@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.MutationObserver
        (js_newMutationObserver, newMutationObserver, js_observe, observe,
         js_takeRecords, takeRecords, takeRecords_, js_disconnect,
-        disconnect, MutationObserver, castToMutationObserver,
-        gTypeMutationObserver)
+        disconnect, MutationObserver(..), gTypeMutationObserver)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

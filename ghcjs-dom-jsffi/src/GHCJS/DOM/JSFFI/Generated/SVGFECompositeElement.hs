@@ -11,8 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFECompositeElement
         js_getOperator, getOperator, getOperatorUnchecked, js_getK1, getK1,
         getK1Unchecked, js_getK2, getK2, getK2Unchecked, js_getK3, getK3,
         getK3Unchecked, js_getK4, getK4, getK4Unchecked,
-        SVGFECompositeElement, castToSVGFECompositeElement,
-        gTypeSVGFECompositeElement)
+        SVGFECompositeElement(..), gTypeSVGFECompositeElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

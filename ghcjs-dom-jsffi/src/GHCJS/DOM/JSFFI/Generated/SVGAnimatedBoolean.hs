@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedBoolean
        (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
-        js_getAnimVal, getAnimVal, SVGAnimatedBoolean,
-        castToSVGAnimatedBoolean, gTypeSVGAnimatedBoolean)
+        js_getAnimVal, getAnimVal, SVGAnimatedBoolean(..),
+        gTypeSVGAnimatedBoolean)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

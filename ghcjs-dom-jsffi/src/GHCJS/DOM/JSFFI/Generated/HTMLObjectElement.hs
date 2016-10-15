@@ -19,8 +19,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
         getWidth, js_getWillValidate, getWillValidate, js_getValidity,
         getValidity, getValidityUnchecked, js_getValidationMessage,
         getValidationMessage, js_getContentDocument, getContentDocument,
-        getContentDocumentUnchecked, HTMLObjectElement,
-        castToHTMLObjectElement, gTypeHTMLObjectElement)
+        getContentDocumentUnchecked, HTMLObjectElement(..),
+        gTypeHTMLObjectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

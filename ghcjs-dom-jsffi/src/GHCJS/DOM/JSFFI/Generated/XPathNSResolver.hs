@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.XPathNSResolver
        (js_lookupNamespaceURI, lookupNamespaceURI, lookupNamespaceURI_,
-        lookupNamespaceURIUnchecked, XPathNSResolver,
-        castToXPathNSResolver, gTypeXPathNSResolver)
+        lookupNamespaceURIUnchecked, XPathNSResolver(..),
+        gTypeXPathNSResolver)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

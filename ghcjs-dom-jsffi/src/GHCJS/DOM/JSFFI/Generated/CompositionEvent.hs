@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CompositionEvent
        (js_initCompositionEvent, initCompositionEvent, js_getData,
-        getData, CompositionEvent, castToCompositionEvent,
-        gTypeCompositionEvent)
+        getData, CompositionEvent(..), gTypeCompositionEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

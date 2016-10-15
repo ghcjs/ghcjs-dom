@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSRuleList
        (js_item, item, item_, itemUnchecked, js_getLength, getLength,
-        CSSRuleList, castToCSSRuleList, gTypeCSSRuleList)
+        CSSRuleList(..), gTypeCSSRuleList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

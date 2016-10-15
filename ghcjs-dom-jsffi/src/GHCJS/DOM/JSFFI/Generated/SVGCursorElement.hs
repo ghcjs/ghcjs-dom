@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGCursorElement
        (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        SVGCursorElement, castToSVGCursorElement, gTypeSVGCursorElement)
+        SVGCursorElement(..), gTypeSVGCursorElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

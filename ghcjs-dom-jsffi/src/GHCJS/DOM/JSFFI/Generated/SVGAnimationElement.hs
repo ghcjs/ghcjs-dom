@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimationElement
         getSimpleDuration, getSimpleDuration_, js_beginElement,
         beginElement, js_beginElementAt, beginElementAt, js_endElement,
         endElement, js_endElementAt, endElementAt, js_getTargetElement,
-        getTargetElement, getTargetElementUnchecked, SVGAnimationElement,
-        castToSVGAnimationElement, gTypeSVGAnimationElement,
+        getTargetElement, getTargetElementUnchecked,
+        SVGAnimationElement(..), gTypeSVGAnimationElement,
         IsSVGAnimationElement, toSVGAnimationElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

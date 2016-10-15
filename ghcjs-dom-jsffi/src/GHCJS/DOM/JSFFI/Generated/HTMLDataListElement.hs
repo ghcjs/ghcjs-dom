@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLDataListElement
        (js_getOptions, getOptions, getOptionsUnchecked,
-        HTMLDataListElement, castToHTMLDataListElement,
-        gTypeHTMLDataListElement)
+        HTMLDataListElement(..), gTypeHTMLDataListElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

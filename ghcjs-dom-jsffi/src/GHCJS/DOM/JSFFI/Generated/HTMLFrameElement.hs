@@ -13,8 +13,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
         getContentDocumentUnchecked, js_getContentWindow, getContentWindow,
         getContentWindowUnchecked, js_setLocation, setLocation,
         js_getLocation, getLocation, getLocationUnchecked, js_getWidth,
-        getWidth, js_getHeight, getHeight, HTMLFrameElement,
-        castToHTMLFrameElement, gTypeHTMLFrameElement)
+        getWidth, js_getHeight, getHeight, HTMLFrameElement(..),
+        gTypeHTMLFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

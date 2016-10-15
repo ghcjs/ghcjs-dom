@@ -14,8 +14,8 @@ module GHCJS.DOM.JSFFI.Generated.PannerNode
         setConeInnerAngle, js_getConeInnerAngle, getConeInnerAngle,
         js_setConeOuterAngle, setConeOuterAngle, js_getConeOuterAngle,
         getConeOuterAngle, js_setConeOuterGain, setConeOuterGain,
-        js_getConeOuterGain, getConeOuterGain, PannerNode,
-        castToPannerNode, gTypePannerNode)
+        js_getConeOuterGain, getConeOuterGain, PannerNode(..),
+        gTypePannerNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

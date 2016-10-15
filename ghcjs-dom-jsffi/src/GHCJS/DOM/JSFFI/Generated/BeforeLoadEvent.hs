@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.BeforeLoadEvent
-       (js_getUrl, getUrl, BeforeLoadEvent, castToBeforeLoadEvent,
-        gTypeBeforeLoadEvent)
+       (js_getUrl, getUrl, BeforeLoadEvent(..), gTypeBeforeLoadEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

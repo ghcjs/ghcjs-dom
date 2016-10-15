@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGStopElement
-       (js_getOffset, getOffset, getOffsetUnchecked, SVGStopElement,
-        castToSVGStopElement, gTypeSVGStopElement)
+       (js_getOffset, getOffset, getOffsetUnchecked, SVGStopElement(..),
+        gTypeSVGStopElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

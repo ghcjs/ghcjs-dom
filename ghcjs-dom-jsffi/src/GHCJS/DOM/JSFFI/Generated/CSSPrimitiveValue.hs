@@ -16,8 +16,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSPrimitiveValue
         pattern CSS_IDENT, pattern CSS_ATTR, pattern CSS_COUNTER,
         pattern CSS_RECT, pattern CSS_RGBCOLOR, pattern CSS_VW,
         pattern CSS_VH, pattern CSS_VMIN, pattern CSS_VMAX,
-        js_getPrimitiveType, getPrimitiveType, CSSPrimitiveValue,
-        castToCSSPrimitiveValue, gTypeCSSPrimitiveValue)
+        js_getPrimitiveType, getPrimitiveType, CSSPrimitiveValue(..),
+        gTypeCSSPrimitiveValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

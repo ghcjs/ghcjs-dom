@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFormControlsCollection
        (js__get, _get, _get_, _getUnchecked, js_namedItem, namedItem,
-        namedItem_, namedItemUnchecked, HTMLFormControlsCollection,
-        castToHTMLFormControlsCollection, gTypeHTMLFormControlsCollection)
+        namedItem_, namedItemUnchecked, HTMLFormControlsCollection(..),
+        gTypeHTMLFormControlsCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

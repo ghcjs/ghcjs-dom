@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.History
        (js_back, back, js_forward, forward, js_go, go, js_pushState,
         pushState, js_replaceState, replaceState, js_getLength, getLength,
-        js_getState, getState, getStateUnchecked, History, castToHistory,
+        js_getState, getState, getStateUnchecked, History(..),
         gTypeHistory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

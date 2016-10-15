@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AudioStreamTrack
-       (js_newAudioStreamTrack, newAudioStreamTrack, AudioStreamTrack,
-        castToAudioStreamTrack, gTypeAudioStreamTrack)
+       (js_newAudioStreamTrack, newAudioStreamTrack, AudioStreamTrack(..),
+        gTypeAudioStreamTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

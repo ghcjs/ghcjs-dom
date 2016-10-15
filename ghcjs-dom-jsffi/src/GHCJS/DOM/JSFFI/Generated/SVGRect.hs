@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGRect
        (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
         js_setWidth, setWidth, js_getWidth, getWidth, js_setHeight,
-        setHeight, js_getHeight, getHeight, SVGRect, castToSVGRect,
-        gTypeSVGRect)
+        setHeight, js_getHeight, getHeight, SVGRect(..), gTypeSVGRect)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.EventTarget
        (js_addEventListener, addEventListener, js_removeEventListener,
         removeEventListener, js_dispatchEvent, dispatchEvent,
-        dispatchEvent_, EventTarget, castToEventTarget, gTypeEventTarget,
-        IsEventTarget, toEventTarget)
+        dispatchEvent_, EventTarget(..), gTypeEventTarget, IsEventTarget,
+        toEventTarget)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

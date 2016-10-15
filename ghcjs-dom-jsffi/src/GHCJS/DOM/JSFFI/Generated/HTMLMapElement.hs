@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLMapElement
        (js_getAreas, getAreas, getAreasUnchecked, js_setName, setName,
-        js_getName, getName, HTMLMapElement, castToHTMLMapElement,
-        gTypeHTMLMapElement)
+        js_getName, getName, HTMLMapElement(..), gTypeHTMLMapElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

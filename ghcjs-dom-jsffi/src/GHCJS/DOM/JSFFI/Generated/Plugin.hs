@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.Plugin
        (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
         namedItem_, namedItemUnchecked, js_getName, getName,
         js_getFilename, getFilename, js_getDescription, getDescription,
-        js_getLength, getLength, Plugin, castToPlugin, gTypePlugin)
+        js_getLength, getLength, Plugin(..), gTypePlugin)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

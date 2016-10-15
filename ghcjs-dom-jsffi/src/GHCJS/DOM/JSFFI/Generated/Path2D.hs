@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.Path2D
         js_newPath2D'', newPath2D'', js_addPath, addPath, js_closePath,
         closePath, js_moveTo, moveTo, js_lineTo, lineTo,
         js_quadraticCurveTo, quadraticCurveTo, js_bezierCurveTo,
-        bezierCurveTo, js_arcTo, arcTo, js_rect, rect, js_arc, arc, Path2D,
-        castToPath2D, gTypePath2D)
+        bezierCurveTo, js_arcTo, arcTo, js_rect, rect, js_arc, arc,
+        Path2D(..), gTypePath2D)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

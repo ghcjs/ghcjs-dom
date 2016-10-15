@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SourceInfo
        (js_getSourceId, getSourceId, js_getKind, getKind, js_getLabel,
-        getLabel, SourceInfo, castToSourceInfo, gTypeSourceInfo)
+        getLabel, SourceInfo(..), gTypeSourceInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

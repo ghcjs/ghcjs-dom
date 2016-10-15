@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBVersionChangeEvent
        (js_getOldVersion, getOldVersion, js_getNewVersion, getNewVersion,
-        getNewVersionUnchecked, IDBVersionChangeEvent,
-        castToIDBVersionChangeEvent, gTypeIDBVersionChangeEvent)
+        getNewVersionUnchecked, IDBVersionChangeEvent(..),
+        gTypeIDBVersionChangeEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

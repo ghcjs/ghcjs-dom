@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ImageData
        (js_newImageData, newImageData, js_newImageData', newImageData',
-        js_getWidth, getWidth, js_getHeight, getHeight, ImageData,
-        castToImageData, gTypeImageData)
+        js_getWidth, getWidth, js_getHeight, getHeight, ImageData(..),
+        gTypeImageData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

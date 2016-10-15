@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.VideoStreamTrack
-       (js_newVideoStreamTrack, newVideoStreamTrack, VideoStreamTrack,
-        castToVideoStreamTrack, gTypeVideoStreamTrack)
+       (js_newVideoStreamTrack, newVideoStreamTrack, VideoStreamTrack(..),
+        gTypeVideoStreamTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaQueryList
        (js_addListener, addListener, js_removeListener, removeListener,
-        js_getMedia, getMedia, js_getMatches, getMatches, MediaQueryList,
-        castToMediaQueryList, gTypeMediaQueryList)
+        js_getMedia, getMedia, js_getMatches, getMatches,
+        MediaQueryList(..), gTypeMediaQueryList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

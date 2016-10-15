@@ -75,6 +75,8 @@ import           GHCJS.DOM.JSFFI.Generated.EventTarget
 import           GHCJS.DOM.EventTargetClosures
 import           Data.Word (Word)
 import           Data.Foldable (forM_)
+import           Data.Traversable (mapM)
+import           Data.Coerce (coerce)
 
 type EventM t e = ReaderT e IO
 
@@ -121,7 +123,7 @@ eventTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventTarget = event >>= Event.getTarget
 
 target :: (IsEvent e, IsGObject t) => EventM t e (Maybe t)
-target = (fmap (unsafeCastGObject . toGObject)) <$> eventTarget
+target = eventTarget >>= mapM (liftJSM . fromJSValUnchecked . coerce)
 
 eventCurrentTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventCurrentTarget = event >>= Event.getCurrentTarget

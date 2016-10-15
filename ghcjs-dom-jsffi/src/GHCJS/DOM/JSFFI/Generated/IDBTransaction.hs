@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBTransaction
        (js_objectStore, objectStore, objectStore_, objectStoreUnchecked,
         js_abort, abort, js_getMode, getMode, js_getDb, getDb,
         getDbUnchecked, js_getError, getError, getErrorUnchecked,
-        abortEvent, complete, error, IDBTransaction, castToIDBTransaction,
+        abortEvent, complete, error, IDBTransaction(..),
         gTypeIDBTransaction)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

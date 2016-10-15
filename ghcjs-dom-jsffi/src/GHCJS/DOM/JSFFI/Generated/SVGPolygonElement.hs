@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPolygonElement
        (js_getPoints, getPoints, getPointsUnchecked, js_getAnimatedPoints,
-        getAnimatedPoints, getAnimatedPointsUnchecked, SVGPolygonElement,
-        castToSVGPolygonElement, gTypeSVGPolygonElement)
+        getAnimatedPoints, getAnimatedPointsUnchecked,
+        SVGPolygonElement(..), gTypeSVGPolygonElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

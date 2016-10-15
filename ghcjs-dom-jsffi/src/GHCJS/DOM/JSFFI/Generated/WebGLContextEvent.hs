@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLContextEvent
-       (js_getStatusMessage, getStatusMessage, WebGLContextEvent,
-        castToWebGLContextEvent, gTypeWebGLContextEvent)
+       (js_getStatusMessage, getStatusMessage, WebGLContextEvent(..),
+        gTypeWebGLContextEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

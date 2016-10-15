@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEColorMatrixElement
         pattern SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA, js_getIn1, getIn1,
         getIn1Unchecked, js_getType, getType, getTypeUnchecked,
         js_getValues, getValues, getValuesUnchecked,
-        SVGFEColorMatrixElement, castToSVGFEColorMatrixElement,
-        gTypeSVGFEColorMatrixElement)
+        SVGFEColorMatrixElement(..), gTypeSVGFEColorMatrixElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

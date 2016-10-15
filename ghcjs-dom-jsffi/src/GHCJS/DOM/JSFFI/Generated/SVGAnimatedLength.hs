@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedLength
        (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedLength,
-        castToSVGAnimatedLength, gTypeSVGAnimatedLength)
+        getAnimVal, getAnimValUnchecked, SVGAnimatedLength(..),
+        gTypeSVGAnimatedLength)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

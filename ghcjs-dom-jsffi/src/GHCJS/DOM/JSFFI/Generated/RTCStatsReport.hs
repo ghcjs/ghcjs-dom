@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.RTCStatsReport
        (js_stat, stat, stat_, js_names, names, names_, js_getTimestamp,
         getTimestamp, getTimestampUnchecked, js_getId, getId, js_getType,
         getType, js_getLocal, getLocal, getLocalUnchecked, js_getRemote,
-        getRemote, getRemoteUnchecked, RTCStatsReport,
-        castToRTCStatsReport, gTypeRTCStatsReport)
+        getRemote, getRemoteUnchecked, RTCStatsReport(..),
+        gTypeRTCStatsReport)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

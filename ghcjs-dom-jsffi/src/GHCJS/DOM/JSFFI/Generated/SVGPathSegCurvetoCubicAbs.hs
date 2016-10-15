@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoCubicAbs
        (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
         js_setX1, setX1, js_getX1, getX1, js_setY1, setY1, js_getY1, getY1,
         js_setX2, setX2, js_getX2, getX2, js_setY2, setY2, js_getY2, getY2,
-        SVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs,
-        gTypeSVGPathSegCurvetoCubicAbs)
+        SVGPathSegCurvetoCubicAbs(..), gTypeSVGPathSegCurvetoCubicAbs)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

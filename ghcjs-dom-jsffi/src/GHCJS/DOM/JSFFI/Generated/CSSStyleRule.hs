@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.CSSStyleRule
        (js_setSelectorText, setSelectorText, js_getSelectorText,
         getSelectorText, getSelectorTextUnchecked, js_getStyle, getStyle,
-        getStyleUnchecked, CSSStyleRule, castToCSSStyleRule,
-        gTypeCSSStyleRule)
+        getStyleUnchecked, CSSStyleRule(..), gTypeCSSStyleRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

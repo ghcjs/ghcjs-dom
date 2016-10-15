@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SourceBufferList
        (js_item, item, item_, itemUnchecked, js_getLength, getLength,
-        SourceBufferList, castToSourceBufferList, gTypeSourceBufferList)
+        SourceBufferList(..), gTypeSourceBufferList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

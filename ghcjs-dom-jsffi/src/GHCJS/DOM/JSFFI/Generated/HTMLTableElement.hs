@@ -20,7 +20,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableElement
         setFrame, js_getFrame, getFrame, js_setRules, setRules,
         js_getRules, getRules, js_setSummary, setSummary, js_getSummary,
         getSummary, js_setWidth, setWidth, js_getWidth, getWidth,
-        HTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement)
+        HTMLTableElement(..), gTypeHTMLTableElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.UserMessageHandler
-       (js_postMessage, postMessage, UserMessageHandler,
-        castToUserMessageHandler, gTypeUserMessageHandler)
+       (js_postMessage, postMessage, UserMessageHandler(..),
+        gTypeUserMessageHandler)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

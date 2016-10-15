@@ -10,8 +10,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGElement
         js_getXmlspace, getXmlspace, js_getClassName, getClassName,
         getClassNameUnchecked, js_getStyle, getStyle, getStyleUnchecked,
         js_setTabIndex, setTabIndex, js_getTabIndex, getTabIndex,
-        SVGElement, castToSVGElement, gTypeSVGElement, IsSVGElement,
-        toSVGElement)
+        SVGElement(..), gTypeSVGElement, IsSVGElement, toSVGElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

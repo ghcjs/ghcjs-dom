@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.DocumentFragment
        (js_newDocumentFragment, newDocumentFragment, js_querySelector,
         querySelector, querySelector_, querySelectorUnchecked,
         js_querySelectorAll, querySelectorAll, querySelectorAll_,
-        querySelectorAllUnchecked, DocumentFragment,
-        castToDocumentFragment, gTypeDocumentFragment)
+        querySelectorAllUnchecked, DocumentFragment(..),
+        gTypeDocumentFragment)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

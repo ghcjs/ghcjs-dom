@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.DOMParser
        (js_newDOMParser, newDOMParser, js_parseFromString,
         parseFromString, parseFromString_, parseFromStringUnchecked,
-        DOMParser, castToDOMParser, gTypeDOMParser)
+        DOMParser(..), gTypeDOMParser)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

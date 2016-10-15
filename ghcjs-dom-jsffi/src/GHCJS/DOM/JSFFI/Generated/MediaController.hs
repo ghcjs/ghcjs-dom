@@ -11,8 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaController
         js_getDefaultPlaybackRate, getDefaultPlaybackRate,
         js_setPlaybackRate, setPlaybackRate, js_getPlaybackRate,
         getPlaybackRate, js_setVolume, setVolume, js_getVolume, getVolume,
-        js_setMuted, setMuted, js_getMuted, getMuted, MediaController,
-        castToMediaController, gTypeMediaController)
+        js_setMuted, setMuted, js_getMuted, getMuted, MediaController(..),
+        gTypeMediaController)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

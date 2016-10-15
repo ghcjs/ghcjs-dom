@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLDetailsElement
-       (js_setOpen, setOpen, js_getOpen, getOpen, HTMLDetailsElement,
-        castToHTMLDetailsElement, gTypeHTMLDetailsElement)
+       (js_setOpen, setOpen, js_getOpen, getOpen, HTMLDetailsElement(..),
+        gTypeHTMLDetailsElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

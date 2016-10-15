@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AllAudioCapabilities
        (js_getSourceId, getSourceId, js_getVolume, getVolume,
-        getVolumeUnchecked, AllAudioCapabilities,
-        castToAllAudioCapabilities, gTypeAllAudioCapabilities)
+        getVolumeUnchecked, AllAudioCapabilities(..),
+        gTypeAllAudioCapabilities)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

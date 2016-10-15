@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGGlyphRefElement
         js_setFormat, setFormat, js_getFormat, getFormat, js_setX, setX,
         js_getX, getX, js_setY, setY, js_getY, getY, js_setDx, setDx,
         js_getDx, getDx, js_setDy, setDy, js_getDy, getDy,
-        SVGGlyphRefElement, castToSVGGlyphRefElement,
-        gTypeSVGGlyphRefElement)
+        SVGGlyphRefElement(..), gTypeSVGGlyphRefElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

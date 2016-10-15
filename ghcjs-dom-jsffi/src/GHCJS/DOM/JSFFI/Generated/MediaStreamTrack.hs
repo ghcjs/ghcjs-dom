@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaStreamTrack
         js_setEnabled, setEnabled, js_getEnabled, getEnabled, js_getMuted,
         getMuted, mute, unmute, js_get_readonly, get_readonly,
         js_getRemote, getRemote, js_getReadyState, getReadyState, started,
-        ended, overConstrained, MediaStreamTrack, castToMediaStreamTrack,
+        ended, overConstrained, MediaStreamTrack(..),
         gTypeMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

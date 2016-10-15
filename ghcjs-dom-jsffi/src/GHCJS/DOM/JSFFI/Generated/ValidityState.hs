@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.ValidityState
         js_getTooLong, getTooLong, js_getRangeUnderflow, getRangeUnderflow,
         js_getRangeOverflow, getRangeOverflow, js_getStepMismatch,
         getStepMismatch, js_getBadInput, getBadInput, js_getCustomError,
-        getCustomError, js_getValid, getValid, ValidityState,
-        castToValidityState, gTypeValidityState)
+        getCustomError, js_getValid, getValid, ValidityState(..),
+        gTypeValidityState)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

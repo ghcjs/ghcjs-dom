@@ -8,8 +8,8 @@ module GHCJS.DOM.JSFFI.Generated.AudioParam
         js_setTargetValueAtTime, setTargetValueAtTime, js_setValue,
         setValue, js_getValue, getValue, js_getMinValue, getMinValue,
         js_getMaxValue, getMaxValue, js_getDefaultValue, getDefaultValue,
-        js_getName, getName, js_getUnits, getUnits, AudioParam,
-        castToAudioParam, gTypeAudioParam)
+        js_getName, getName, js_getUnits, getUnits, AudioParam(..),
+        gTypeAudioParam)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

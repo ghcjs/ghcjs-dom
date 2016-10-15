@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFieldSetElement
         js_getType, getType, js_getElements, getElements,
         getElementsUnchecked, js_getWillValidate, getWillValidate,
         js_getValidity, getValidity, getValidityUnchecked,
-        js_getValidationMessage, getValidationMessage, HTMLFieldSetElement,
-        castToHTMLFieldSetElement, gTypeHTMLFieldSetElement)
+        js_getValidationMessage, getValidationMessage,
+        HTMLFieldSetElement(..), gTypeHTMLFieldSetElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

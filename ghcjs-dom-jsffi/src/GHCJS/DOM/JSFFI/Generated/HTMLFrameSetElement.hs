@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFrameSetElement
        (js_setCols, setCols, js_getCols, getCols, js_setRows, setRows,
         js_getRows, getRows, beforeUnload, hashChange, message, offline,
         online, popState, resize, storage, unload, orientationChange, blur,
-        error, focus, load, HTMLFrameSetElement, castToHTMLFrameSetElement,
+        error, focus, load, HTMLFrameSetElement(..),
         gTypeHTMLFrameSetElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

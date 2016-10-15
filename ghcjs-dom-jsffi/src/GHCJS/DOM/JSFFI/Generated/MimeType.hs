@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.MimeType
        (js_getType, getType, js_getSuffixes, getSuffixes,
         js_getDescription, getDescription, js_getEnabledPlugin,
-        getEnabledPlugin, getEnabledPluginUnchecked, MimeType,
-        castToMimeType, gTypeMimeType)
+        getEnabledPlugin, getEnabledPluginUnchecked, MimeType(..),
+        gTypeMimeType)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

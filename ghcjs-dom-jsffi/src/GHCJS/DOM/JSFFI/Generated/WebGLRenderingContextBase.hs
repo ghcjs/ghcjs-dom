@@ -242,9 +242,9 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         pattern UNPACK_COLORSPACE_CONVERSION_WEBGL,
         pattern BROWSER_DEFAULT_WEBGL, js_getDrawingBufferWidth,
         getDrawingBufferWidth, js_getDrawingBufferHeight,
-        getDrawingBufferHeight, WebGLRenderingContextBase,
-        castToWebGLRenderingContextBase, gTypeWebGLRenderingContextBase,
-        IsWebGLRenderingContextBase, toWebGLRenderingContextBase)
+        getDrawingBufferHeight, WebGLRenderingContextBase(..),
+        gTypeWebGLRenderingContextBase, IsWebGLRenderingContextBase,
+        toWebGLRenderingContextBase)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

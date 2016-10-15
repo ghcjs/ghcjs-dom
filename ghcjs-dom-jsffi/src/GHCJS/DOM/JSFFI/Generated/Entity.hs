@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Entity
        (js_getPublicId, getPublicId, getPublicIdUnchecked, js_getSystemId,
         getSystemId, getSystemIdUnchecked, js_getNotationName,
-        getNotationName, getNotationNameUnchecked, Entity, castToEntity,
-        gTypeEntity)
+        getNotationName, getNotationNameUnchecked, Entity(..), gTypeEntity)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

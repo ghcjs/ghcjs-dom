@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegMovetoRel
        (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
-        SVGPathSegMovetoRel, castToSVGPathSegMovetoRel,
-        gTypeSVGPathSegMovetoRel)
+        SVGPathSegMovetoRel(..), gTypeSVGPathSegMovetoRel)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

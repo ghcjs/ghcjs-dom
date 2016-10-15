@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.CryptoKeyPair
        (js_getPublicKey, getPublicKey, getPublicKeyUnchecked,
         js_getPrivateKey, getPrivateKey, getPrivateKeyUnchecked,
-        CryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair)
+        CryptoKeyPair(..), gTypeCryptoKeyPair)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

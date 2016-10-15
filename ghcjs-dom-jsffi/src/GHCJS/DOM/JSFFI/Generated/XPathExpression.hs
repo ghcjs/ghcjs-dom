@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.XPathExpression
        (js_evaluate, evaluate, evaluate_, evaluateUnchecked,
-        XPathExpression, castToXPathExpression, gTypeXPathExpression)
+        XPathExpression(..), gTypeXPathExpression)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

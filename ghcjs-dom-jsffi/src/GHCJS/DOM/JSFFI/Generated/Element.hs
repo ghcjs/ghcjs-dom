@@ -74,7 +74,7 @@ module GHCJS.DOM.JSFFI.Generated.Element
         touchStart, touchMove, touchEnd, touchCancel,
         webKitFullscreenChange, webKitFullscreenError,
         webKitWillRevealBottom, webKitWillRevealLeft,
-        webKitWillRevealRight, webKitWillRevealTop, Element, castToElement,
+        webKitWillRevealRight, webKitWillRevealTop, Element(..),
         gTypeElement, IsElement, toElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.OfflineAudioContext
        (js_newOfflineAudioContext, newOfflineAudioContext,
-        OfflineAudioContext, castToOfflineAudioContext,
-        gTypeOfflineAudioContext)
+        OfflineAudioContext(..), gTypeOfflineAudioContext)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

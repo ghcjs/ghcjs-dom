@@ -11,8 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.SourceBuffer
         getTextTracksUnchecked, js_setAppendWindowStart,
         setAppendWindowStart, js_getAppendWindowStart,
         getAppendWindowStart, js_setAppendWindowEnd, setAppendWindowEnd,
-        js_getAppendWindowEnd, getAppendWindowEnd, SourceBuffer,
-        castToSourceBuffer, gTypeSourceBuffer)
+        js_getAppendWindowEnd, getAppendWindowEnd, SourceBuffer(..),
+        gTypeSourceBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

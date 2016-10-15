@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.CSSImportRule
        (js_getHref, getHref, getHrefUnchecked, js_getMedia, getMedia,
         getMediaUnchecked, js_getStyleSheet, getStyleSheet,
-        getStyleSheetUnchecked, CSSImportRule, castToCSSImportRule,
-        gTypeCSSImportRule)
+        getStyleSheetUnchecked, CSSImportRule(..), gTypeCSSImportRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

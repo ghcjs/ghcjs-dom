@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransform
         pattern SVG_TRANSFORM_SCALE, pattern SVG_TRANSFORM_ROTATE,
         pattern SVG_TRANSFORM_SKEWX, pattern SVG_TRANSFORM_SKEWY,
         js_getType, getType, js_getMatrix, getMatrix, getMatrixUnchecked,
-        js_getAngle, getAngle, SVGTransform, castToSVGTransform,
-        gTypeSVGTransform)
+        js_getAngle, getAngle, SVGTransform(..), gTypeSVGTransform)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

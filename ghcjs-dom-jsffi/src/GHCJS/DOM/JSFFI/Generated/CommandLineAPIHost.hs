@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
         inspectedObject_, js_getEventListeners, getEventListeners,
         getEventListeners_, getEventListenersUnchecked, js_databaseId,
         databaseId, databaseId_, js_storageId, storageId, storageId_,
-        CommandLineAPIHost, castToCommandLineAPIHost,
-        gTypeCommandLineAPIHost)
+        CommandLineAPIHost(..), gTypeCommandLineAPIHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

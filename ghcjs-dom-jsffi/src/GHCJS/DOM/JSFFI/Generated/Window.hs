@@ -88,7 +88,7 @@ module GHCJS.DOM.JSFFI.Generated.Window
         touchMove, touchEnd, touchCancel, gestureStart, gestureChange,
         gestureEnd, deviceMotion, deviceOrientation, webKitDeviceProximity,
         webKitWillRevealBottom, webKitWillRevealLeft,
-        webKitWillRevealRight, webKitWillRevealTop, Window, castToWindow,
+        webKitWillRevealRight, webKitWillRevealTop, Window(..),
         gTypeWindow)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

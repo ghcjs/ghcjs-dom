@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SecurityPolicyViolationEvent
         getViolatedDirective, js_getEffectiveDirective,
         getEffectiveDirective, js_getOriginalPolicy, getOriginalPolicy,
         js_getSourceFile, getSourceFile, js_getLineNumber, getLineNumber,
-        SecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent,
+        SecurityPolicyViolationEvent(..),
         gTypeSecurityPolicyViolationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

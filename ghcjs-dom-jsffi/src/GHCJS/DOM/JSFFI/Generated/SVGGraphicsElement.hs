@@ -8,9 +8,9 @@ module GHCJS.DOM.JSFFI.Generated.SVGGraphicsElement
         getTransformUnchecked, js_getNearestViewportElement,
         getNearestViewportElement, getNearestViewportElementUnchecked,
         js_getFarthestViewportElement, getFarthestViewportElement,
-        getFarthestViewportElementUnchecked, SVGGraphicsElement,
-        castToSVGGraphicsElement, gTypeSVGGraphicsElement,
-        IsSVGGraphicsElement, toSVGGraphicsElement)
+        getFarthestViewportElementUnchecked, SVGGraphicsElement(..),
+        gTypeSVGGraphicsElement, IsSVGGraphicsElement,
+        toSVGGraphicsElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

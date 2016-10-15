@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLBodyElement
         js_setVLink, setVLink, js_getVLink, getVLink, beforeUnload,
         hashChange, message, offline, online, popState, resize, storage,
         unload, orientationChange, blur, error, focus, load,
-        HTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement)
+        HTMLBodyElement(..), gTypeHTMLBodyElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

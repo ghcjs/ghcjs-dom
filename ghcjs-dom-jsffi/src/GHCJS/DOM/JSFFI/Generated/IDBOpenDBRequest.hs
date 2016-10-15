@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBOpenDBRequest
-       (blocked, upgradeNeeded, IDBOpenDBRequest, castToIDBOpenDBRequest,
+       (blocked, upgradeNeeded, IDBOpenDBRequest(..),
         gTypeIDBOpenDBRequest)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

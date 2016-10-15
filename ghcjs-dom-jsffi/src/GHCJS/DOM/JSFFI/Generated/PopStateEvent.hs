@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.PopStateEvent
-       (js_getState, getState, PopStateEvent, castToPopStateEvent,
-        gTypePopStateEvent)
+       (js_getState, getState, PopStateEvent(..), gTypePopStateEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBIndex
         js_count, count, count_, countUnchecked, js_getName, getName,
         js_getObjectStore, getObjectStore, getObjectStoreUnchecked,
         js_getKeyPath, getKeyPath, getKeyPathUnchecked, js_getMultiEntry,
-        getMultiEntry, js_getUnique, getUnique, IDBIndex, castToIDBIndex,
+        getMultiEntry, js_getUnique, getUnique, IDBIndex(..),
         gTypeIDBIndex)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

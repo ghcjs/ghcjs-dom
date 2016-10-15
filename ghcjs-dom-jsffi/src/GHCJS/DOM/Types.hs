@@ -1,5 +1,6 @@
-{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances #-}
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances, RankNTypes, ImplicitParams, FlexibleContexts, ScopedTypeVariables #-}
 module GHCJS.DOM.Types (
+
   -- * JavaScript Context and Monad
     JSContextRef(..), JSM, askJSM, runJSM, MonadJSM(..), liftJSM
 
@@ -21,7 +22,8 @@ module GHCJS.DOM.Types (
 
   -- * Object
   , maybeJSNullOrUndefined, GType(..)
-  , GObject(..), IsGObject, toGObject, castToGObject, gTypeGObject, unsafeCastGObject, isA, objectToString
+  , GObject(..), IsGObject, toGObject, gTypeGObject, isA, objectToString
+  , castTo, unsafeCastTo, uncheckedCastTo
   , js_eq, strictEqual
 
   -- * Callbacks
@@ -56,25 +58,25 @@ module GHCJS.DOM.Types (
   , MutationCallback(MutationCallback), unMutationCallback, IsMutationCallback, toMutationCallback
 
   -- * Promise
-  , Promise(Promise), unPromise, IsPromise, toPromise, castToPromise, gTypePromise
+  , Promise(Promise), unPromise, IsPromise, toPromise, gTypePromise
 
   -- * Date
-  , Date(Date), unDate, IsDate, toDate, castToDate, gTypeDate
+  , Date(Date), unDate, IsDate, toDate, gTypeDate
 
   -- * Arrays
-  , Array(Array), unArray, IsArray, toArray, castToArray, gTypeArray
+  , Array(Array), unArray, IsArray, toArray, gTypeArray
   , ObjectArray(ObjectArray), unObjectArray, IsObjectArray, toObjectArray
-  , ArrayBuffer(ArrayBuffer), unArrayBuffer, IsArrayBuffer, toArrayBuffer, castToArrayBuffer, gTypeArrayBuffer
+  , ArrayBuffer(ArrayBuffer), unArrayBuffer, IsArrayBuffer, toArrayBuffer, gTypeArrayBuffer
   , ArrayBufferView(ArrayBufferView), unArrayBufferView, IsArrayBufferView, toArrayBufferView
-  , Float32Array(Float32Array), unFloat32Array, IsFloat32Array, toFloat32Array, castToFloat32Array, gTypeFloat32Array
-  , Float64Array(Float64Array), unFloat64Array, IsFloat64Array, toFloat64Array, castToFloat64Array, gTypeFloat64Array
-  , Uint8Array(Uint8Array), unUint8Array, IsUint8Array, toUint8Array, castToUint8Array, gTypeUint8Array
-  , Uint8ClampedArray(Uint8ClampedArray), unUint8ClampedArray, IsUint8ClampedArray, toUint8ClampedArray, castToUint8ClampedArray, gTypeUint8ClampedArray
-  , Uint16Array(Uint16Array), unUint16Array, IsUint16Array, toUint16Array, castToUint16Array, gTypeUint16Array
-  , Uint32Array(Uint32Array), unUint32Array, IsUint32Array, toUint32Array, castToUint32Array, gTypeUint32Array
-  , Int8Array(Int8Array), unInt8Array, IsInt8Array, toInt8Array, castToInt8Array, gTypeInt8Array
-  , Int16Array(Int16Array), unInt16Array, IsInt16Array, toInt16Array, castToInt16Array, gTypeInt16Array
-  , Int32Array(Int32Array), unInt32Array, IsInt32Array, toInt32Array, castToInt32Array, gTypeInt32Array
+  , Float32Array(Float32Array), unFloat32Array, IsFloat32Array, toFloat32Array, gTypeFloat32Array
+  , Float64Array(Float64Array), unFloat64Array, IsFloat64Array, toFloat64Array, gTypeFloat64Array
+  , Uint8Array(Uint8Array), unUint8Array, IsUint8Array, toUint8Array, gTypeUint8Array
+  , Uint8ClampedArray(Uint8ClampedArray), unUint8ClampedArray, IsUint8ClampedArray, toUint8ClampedArray, gTypeUint8ClampedArray
+  , Uint16Array(Uint16Array), unUint16Array, IsUint16Array, toUint16Array, gTypeUint16Array
+  , Uint32Array(Uint32Array), unUint32Array, IsUint32Array, toUint32Array, gTypeUint32Array
+  , Int8Array(Int8Array), unInt8Array, IsInt8Array, toInt8Array, gTypeInt8Array
+  , Int16Array(Int16Array), unInt16Array, IsInt16Array, toInt16Array, gTypeInt16Array
+  , Int32Array(Int32Array), unInt32Array, IsInt32Array, toInt32Array, gTypeInt32Array
 
   -- * Geolocation
   , SerializedScriptValue(SerializedScriptValue), unSerializedScriptValue, IsSerializedScriptValue, toSerializedScriptValue
@@ -99,574 +101,574 @@ module GHCJS.DOM.Types (
   -- * Interface types from IDL files
 
 -- AUTO GENERATION STARTS HERE
-  , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, castToANGLEInstancedArrays, gTypeANGLEInstancedArrays
-  , AbstractView(AbstractView), unAbstractView, castToAbstractView, gTypeAbstractView
-  , AbstractWorker(AbstractWorker), unAbstractWorker, castToAbstractWorker, gTypeAbstractWorker
-  , AllAudioCapabilities(AllAudioCapabilities), unAllAudioCapabilities, castToAllAudioCapabilities, gTypeAllAudioCapabilities
-  , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, castToAllVideoCapabilities, gTypeAllVideoCapabilities
-  , AnalyserNode(AnalyserNode), unAnalyserNode, castToAnalyserNode, gTypeAnalyserNode
-  , AnimationEvent(AnimationEvent), unAnimationEvent, castToAnimationEvent, gTypeAnimationEvent
-  , ApplicationCache(ApplicationCache), unApplicationCache, castToApplicationCache, gTypeApplicationCache
-  , Attr(Attr), unAttr, castToAttr, gTypeAttr
-  , AudioBuffer(AudioBuffer), unAudioBuffer, castToAudioBuffer, gTypeAudioBuffer
-  , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, castToAudioBufferSourceNode, gTypeAudioBufferSourceNode
-  , AudioContext(AudioContext), unAudioContext, IsAudioContext, toAudioContext, castToAudioContext, gTypeAudioContext
-  , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, castToAudioDestinationNode, gTypeAudioDestinationNode
-  , AudioListener(AudioListener), unAudioListener, castToAudioListener, gTypeAudioListener
-  , AudioNode(AudioNode), unAudioNode, IsAudioNode, toAudioNode, castToAudioNode, gTypeAudioNode
-  , AudioParam(AudioParam), unAudioParam, castToAudioParam, gTypeAudioParam
-  , AudioProcessingEvent(AudioProcessingEvent), unAudioProcessingEvent, castToAudioProcessingEvent, gTypeAudioProcessingEvent
-  , AudioStreamTrack(AudioStreamTrack), unAudioStreamTrack, castToAudioStreamTrack, gTypeAudioStreamTrack
-  , AudioTrack(AudioTrack), unAudioTrack, castToAudioTrack, gTypeAudioTrack
-  , AudioTrackList(AudioTrackList), unAudioTrackList, castToAudioTrackList, gTypeAudioTrackList
-  , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, castToAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
-  , BarProp(BarProp), unBarProp, castToBarProp, gTypeBarProp
-  , BatteryManager(BatteryManager), unBatteryManager, castToBatteryManager, gTypeBatteryManager
-  , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, castToBeforeLoadEvent, gTypeBeforeLoadEvent
-  , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, castToBeforeUnloadEvent, gTypeBeforeUnloadEvent
-  , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, castToBiquadFilterNode, gTypeBiquadFilterNode
-  , Blob(Blob), unBlob, IsBlob, toBlob, castToBlob, gTypeBlob
-  , CDATASection(CDATASection), unCDATASection, castToCDATASection, gTypeCDATASection
-  , CSS(CSS), unCSS, castToCSS, gTypeCSS
-  , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, castToCSSCharsetRule, gTypeCSSCharsetRule
-  , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
-  , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, castToCSSFontFaceRule, gTypeCSSFontFaceRule
-  , CSSImportRule(CSSImportRule), unCSSImportRule, castToCSSImportRule, gTypeCSSImportRule
-  , CSSKeyframeRule(CSSKeyframeRule), unCSSKeyframeRule, castToCSSKeyframeRule, gTypeCSSKeyframeRule
-  , CSSKeyframesRule(CSSKeyframesRule), unCSSKeyframesRule, castToCSSKeyframesRule, gTypeCSSKeyframesRule
-  , CSSMediaRule(CSSMediaRule), unCSSMediaRule, castToCSSMediaRule, gTypeCSSMediaRule
-  , CSSPageRule(CSSPageRule), unCSSPageRule, castToCSSPageRule, gTypeCSSPageRule
-  , CSSPrimitiveValue(CSSPrimitiveValue), unCSSPrimitiveValue, castToCSSPrimitiveValue, gTypeCSSPrimitiveValue
-  , CSSRule(CSSRule), unCSSRule, IsCSSRule, toCSSRule, castToCSSRule, gTypeCSSRule
-  , CSSRuleList(CSSRuleList), unCSSRuleList, castToCSSRuleList, gTypeCSSRuleList
-  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, castToCSSStyleDeclaration, gTypeCSSStyleDeclaration
-  , CSSStyleRule(CSSStyleRule), unCSSStyleRule, castToCSSStyleRule, gTypeCSSStyleRule
-  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, castToCSSStyleSheet, gTypeCSSStyleSheet
-  , CSSSupportsRule(CSSSupportsRule), unCSSSupportsRule, castToCSSSupportsRule, gTypeCSSSupportsRule
-  , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, castToCSSUnknownRule, gTypeCSSUnknownRule
-  , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, castToCSSValue, gTypeCSSValue
-  , CSSValueList(CSSValueList), unCSSValueList, IsCSSValueList, toCSSValueList, castToCSSValueList, gTypeCSSValueList
-  , CanvasGradient(CanvasGradient), unCanvasGradient, castToCanvasGradient, gTypeCanvasGradient
-  , CanvasPattern(CanvasPattern), unCanvasPattern, castToCanvasPattern, gTypeCanvasPattern
-  , CanvasProxy(CanvasProxy), unCanvasProxy, castToCanvasProxy, gTypeCanvasProxy
-  , CanvasRenderingContext(CanvasRenderingContext), unCanvasRenderingContext, IsCanvasRenderingContext, toCanvasRenderingContext, castToCanvasRenderingContext, gTypeCanvasRenderingContext
-  , CanvasRenderingContext2D(CanvasRenderingContext2D), unCanvasRenderingContext2D, castToCanvasRenderingContext2D, gTypeCanvasRenderingContext2D
-  , CapabilityRange(CapabilityRange), unCapabilityRange, castToCapabilityRange, gTypeCapabilityRange
-  , ChannelMergerNode(ChannelMergerNode), unChannelMergerNode, castToChannelMergerNode, gTypeChannelMergerNode
-  , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, castToChannelSplitterNode, gTypeChannelSplitterNode
-  , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, castToCharacterData, gTypeCharacterData
-  , ChildNode(ChildNode), unChildNode, castToChildNode, gTypeChildNode
-  , ClientRect(ClientRect), unClientRect, castToClientRect, gTypeClientRect
-  , ClientRectList(ClientRectList), unClientRectList, castToClientRectList, gTypeClientRectList
-  , CloseEvent(CloseEvent), unCloseEvent, castToCloseEvent, gTypeCloseEvent
-  , CommandLineAPIHost(CommandLineAPIHost), unCommandLineAPIHost, castToCommandLineAPIHost, gTypeCommandLineAPIHost
-  , Comment(Comment), unComment, castToComment, gTypeComment
-  , CompositionEvent(CompositionEvent), unCompositionEvent, castToCompositionEvent, gTypeCompositionEvent
-  , ConvolverNode(ConvolverNode), unConvolverNode, castToConvolverNode, gTypeConvolverNode
-  , Coordinates(Coordinates), unCoordinates, castToCoordinates, gTypeCoordinates
-  , Counter(Counter), unCounter, castToCounter, gTypeCounter
-  , Crypto(Crypto), unCrypto, castToCrypto, gTypeCrypto
-  , CryptoKey(CryptoKey), unCryptoKey, castToCryptoKey, gTypeCryptoKey
-  , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, castToCryptoKeyPair, gTypeCryptoKeyPair
-  , CustomEvent(CustomEvent), unCustomEvent, castToCustomEvent, gTypeCustomEvent
-  , DOMError(DOMError), unDOMError, IsDOMError, toDOMError, castToDOMError, gTypeDOMError
-  , DOMImplementation(DOMImplementation), unDOMImplementation, castToDOMImplementation, gTypeDOMImplementation
-  , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, castToDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
-  , DOMParser(DOMParser), unDOMParser, castToDOMParser, gTypeDOMParser
-  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, castToDOMSettableTokenList, gTypeDOMSettableTokenList
-  , DOMStringList(DOMStringList), unDOMStringList, castToDOMStringList, gTypeDOMStringList
-  , DOMStringMap(DOMStringMap), unDOMStringMap, castToDOMStringMap, gTypeDOMStringMap
-  , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, castToDOMTokenList, gTypeDOMTokenList
-  , DataCue(DataCue), unDataCue, castToDataCue, gTypeDataCue
-  , DataTransfer(DataTransfer), unDataTransfer, castToDataTransfer, gTypeDataTransfer
-  , DataTransferItem(DataTransferItem), unDataTransferItem, castToDataTransferItem, gTypeDataTransferItem
-  , DataTransferItemList(DataTransferItemList), unDataTransferItemList, castToDataTransferItemList, gTypeDataTransferItemList
-  , Database(Database), unDatabase, castToDatabase, gTypeDatabase
-  , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
-  , DelayNode(DelayNode), unDelayNode, castToDelayNode, gTypeDelayNode
-  , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, castToDeviceMotionEvent, gTypeDeviceMotionEvent
-  , DeviceOrientationEvent(DeviceOrientationEvent), unDeviceOrientationEvent, castToDeviceOrientationEvent, gTypeDeviceOrientationEvent
-  , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, castToDeviceProximityEvent, gTypeDeviceProximityEvent
-  , Document(Document), unDocument, IsDocument, toDocument, castToDocument, gTypeDocument
-  , DocumentFragment(DocumentFragment), unDocumentFragment, castToDocumentFragment, gTypeDocumentFragment
-  , DocumentType(DocumentType), unDocumentType, castToDocumentType, gTypeDocumentType
-  , DynamicsCompressorNode(DynamicsCompressorNode), unDynamicsCompressorNode, castToDynamicsCompressorNode, gTypeDynamicsCompressorNode
-  , EXTBlendMinMax(EXTBlendMinMax), unEXTBlendMinMax, castToEXTBlendMinMax, gTypeEXTBlendMinMax
-  , EXTFragDepth(EXTFragDepth), unEXTFragDepth, castToEXTFragDepth, gTypeEXTFragDepth
-  , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, castToEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
-  , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, castToEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
-  , EXTsRGB(EXTsRGB), unEXTsRGB, castToEXTsRGB, gTypeEXTsRGB
-  , Element(Element), unElement, IsElement, toElement, castToElement, gTypeElement
-  , Entity(Entity), unEntity, castToEntity, gTypeEntity
-  , EntityReference(EntityReference), unEntityReference, castToEntityReference, gTypeEntityReference
-  , ErrorEvent(ErrorEvent), unErrorEvent, castToErrorEvent, gTypeErrorEvent
-  , Event(Event), unEvent, IsEvent, toEvent, castToEvent, gTypeEvent
-  , EventListener(EventListener), unEventListener, castToEventListener, gTypeEventListener
-  , EventSource(EventSource), unEventSource, castToEventSource, gTypeEventSource
-  , EventTarget(EventTarget), unEventTarget, IsEventTarget, toEventTarget, castToEventTarget, gTypeEventTarget
-  , File(File), unFile, castToFile, gTypeFile
-  , FileError(FileError), unFileError, castToFileError, gTypeFileError
-  , FileList(FileList), unFileList, castToFileList, gTypeFileList
-  , FileReader(FileReader), unFileReader, castToFileReader, gTypeFileReader
-  , FileReaderSync(FileReaderSync), unFileReaderSync, castToFileReaderSync, gTypeFileReaderSync
-  , FocusEvent(FocusEvent), unFocusEvent, castToFocusEvent, gTypeFocusEvent
-  , FontLoader(FontLoader), unFontLoader, castToFontLoader, gTypeFontLoader
-  , FormData(FormData), unFormData, castToFormData, gTypeFormData
-  , GainNode(GainNode), unGainNode, castToGainNode, gTypeGainNode
-  , Gamepad(Gamepad), unGamepad, castToGamepad, gTypeGamepad
-  , GamepadButton(GamepadButton), unGamepadButton, castToGamepadButton, gTypeGamepadButton
-  , GamepadEvent(GamepadEvent), unGamepadEvent, castToGamepadEvent, gTypeGamepadEvent
-  , Geolocation(Geolocation), unGeolocation, castToGeolocation, gTypeGeolocation
-  , Geoposition(Geoposition), unGeoposition, castToGeoposition, gTypeGeoposition
-  , HTMLAllCollection(HTMLAllCollection), unHTMLAllCollection, castToHTMLAllCollection, gTypeHTMLAllCollection
-  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement
-  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, castToHTMLAppletElement, gTypeHTMLAppletElement
-  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, castToHTMLAreaElement, gTypeHTMLAreaElement
-  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, castToHTMLAudioElement, gTypeHTMLAudioElement
-  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, castToHTMLBRElement, gTypeHTMLBRElement
-  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, castToHTMLBaseElement, gTypeHTMLBaseElement
-  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, castToHTMLBaseFontElement, gTypeHTMLBaseFontElement
-  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, castToHTMLBodyElement, gTypeHTMLBodyElement
-  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, castToHTMLButtonElement, gTypeHTMLButtonElement
-  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, castToHTMLCanvasElement, gTypeHTMLCanvasElement
-  , HTMLCollection(HTMLCollection), unHTMLCollection, IsHTMLCollection, toHTMLCollection, castToHTMLCollection, gTypeHTMLCollection
-  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, castToHTMLDListElement, gTypeHTMLDListElement
-  , HTMLDataListElement(HTMLDataListElement), unHTMLDataListElement, castToHTMLDataListElement, gTypeHTMLDataListElement
-  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, castToHTMLDetailsElement, gTypeHTMLDetailsElement
-  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, castToHTMLDirectoryElement, gTypeHTMLDirectoryElement
-  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, castToHTMLDivElement, gTypeHTMLDivElement
-  , HTMLDocument(HTMLDocument), unHTMLDocument, castToHTMLDocument, gTypeHTMLDocument
-  , HTMLElement(HTMLElement), unHTMLElement, IsHTMLElement, toHTMLElement, castToHTMLElement, gTypeHTMLElement
-  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, castToHTMLEmbedElement, gTypeHTMLEmbedElement
-  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, castToHTMLFieldSetElement, gTypeHTMLFieldSetElement
-  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement
-  , HTMLFormControlsCollection(HTMLFormControlsCollection), unHTMLFormControlsCollection, castToHTMLFormControlsCollection, gTypeHTMLFormControlsCollection
-  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, castToHTMLFormElement, gTypeHTMLFormElement
-  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, castToHTMLFrameElement, gTypeHTMLFrameElement
-  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, castToHTMLFrameSetElement, gTypeHTMLFrameSetElement
-  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement
-  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, castToHTMLHeadElement, gTypeHTMLHeadElement
-  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, castToHTMLHeadingElement, gTypeHTMLHeadingElement
-  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement
-  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, castToHTMLIFrameElement, gTypeHTMLIFrameElement
-  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, castToHTMLImageElement, gTypeHTMLImageElement
-  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, castToHTMLInputElement, gTypeHTMLInputElement
-  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, castToHTMLKeygenElement, gTypeHTMLKeygenElement
-  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, castToHTMLLIElement, gTypeHTMLLIElement
-  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, castToHTMLLabelElement, gTypeHTMLLabelElement
-  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, castToHTMLLegendElement, gTypeHTMLLegendElement
-  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, castToHTMLLinkElement, gTypeHTMLLinkElement
-  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, castToHTMLMapElement, gTypeHTMLMapElement
-  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, castToHTMLMarqueeElement, gTypeHTMLMarqueeElement
-  , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, IsHTMLMediaElement, toHTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement
-  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, castToHTMLMenuElement, gTypeHTMLMenuElement
-  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, castToHTMLMetaElement, gTypeHTMLMetaElement
-  , HTMLMeterElement(HTMLMeterElement), unHTMLMeterElement, castToHTMLMeterElement, gTypeHTMLMeterElement
-  , HTMLModElement(HTMLModElement), unHTMLModElement, castToHTMLModElement, gTypeHTMLModElement
-  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, castToHTMLOListElement, gTypeHTMLOListElement
-  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, castToHTMLObjectElement, gTypeHTMLObjectElement
-  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, castToHTMLOptGroupElement, gTypeHTMLOptGroupElement
-  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, castToHTMLOptionElement, gTypeHTMLOptionElement
-  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, castToHTMLOptionsCollection, gTypeHTMLOptionsCollection
-  , HTMLOutputElement(HTMLOutputElement), unHTMLOutputElement, castToHTMLOutputElement, gTypeHTMLOutputElement
-  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, castToHTMLParagraphElement, gTypeHTMLParagraphElement
-  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement
-  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, castToHTMLPreElement, gTypeHTMLPreElement
-  , HTMLProgressElement(HTMLProgressElement), unHTMLProgressElement, castToHTMLProgressElement, gTypeHTMLProgressElement
-  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, castToHTMLQuoteElement, gTypeHTMLQuoteElement
-  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement
-  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, castToHTMLSelectElement, gTypeHTMLSelectElement
-  , HTMLSourceElement(HTMLSourceElement), unHTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement
-  , HTMLSpanElement(HTMLSpanElement), unHTMLSpanElement, castToHTMLSpanElement, gTypeHTMLSpanElement
-  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, castToHTMLStyleElement, gTypeHTMLStyleElement
-  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, castToHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
-  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, castToHTMLTableCellElement, gTypeHTMLTableCellElement
-  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, castToHTMLTableColElement, gTypeHTMLTableColElement
-  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, castToHTMLTableElement, gTypeHTMLTableElement
-  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, castToHTMLTableRowElement, gTypeHTMLTableRowElement
-  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, castToHTMLTableSectionElement, gTypeHTMLTableSectionElement
-  , HTMLTemplateElement(HTMLTemplateElement), unHTMLTemplateElement, castToHTMLTemplateElement, gTypeHTMLTemplateElement
-  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, castToHTMLTextAreaElement, gTypeHTMLTextAreaElement
-  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement
-  , HTMLTrackElement(HTMLTrackElement), unHTMLTrackElement, castToHTMLTrackElement, gTypeHTMLTrackElement
-  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, castToHTMLUListElement, gTypeHTMLUListElement
-  , HTMLUnknownElement(HTMLUnknownElement), unHTMLUnknownElement, castToHTMLUnknownElement, gTypeHTMLUnknownElement
-  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, castToHTMLVideoElement, gTypeHTMLVideoElement
-  , HashChangeEvent(HashChangeEvent), unHashChangeEvent, castToHashChangeEvent, gTypeHashChangeEvent
-  , History(History), unHistory, castToHistory, gTypeHistory
-  , IDBAny(IDBAny), unIDBAny, castToIDBAny, gTypeIDBAny
-  , IDBCursor(IDBCursor), unIDBCursor, IsIDBCursor, toIDBCursor, castToIDBCursor, gTypeIDBCursor
-  , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, castToIDBCursorWithValue, gTypeIDBCursorWithValue
-  , IDBDatabase(IDBDatabase), unIDBDatabase, castToIDBDatabase, gTypeIDBDatabase
-  , IDBFactory(IDBFactory), unIDBFactory, castToIDBFactory, gTypeIDBFactory
-  , IDBIndex(IDBIndex), unIDBIndex, castToIDBIndex, gTypeIDBIndex
-  , IDBKeyRange(IDBKeyRange), unIDBKeyRange, castToIDBKeyRange, gTypeIDBKeyRange
-  , IDBObjectStore(IDBObjectStore), unIDBObjectStore, castToIDBObjectStore, gTypeIDBObjectStore
-  , IDBOpenDBRequest(IDBOpenDBRequest), unIDBOpenDBRequest, castToIDBOpenDBRequest, gTypeIDBOpenDBRequest
-  , IDBRequest(IDBRequest), unIDBRequest, IsIDBRequest, toIDBRequest, castToIDBRequest, gTypeIDBRequest
-  , IDBTransaction(IDBTransaction), unIDBTransaction, castToIDBTransaction, gTypeIDBTransaction
-  , IDBVersionChangeEvent(IDBVersionChangeEvent), unIDBVersionChangeEvent, castToIDBVersionChangeEvent, gTypeIDBVersionChangeEvent
-  , ImageData(ImageData), unImageData, castToImageData, gTypeImageData
-  , InspectorFrontendHost(InspectorFrontendHost), unInspectorFrontendHost, castToInspectorFrontendHost, gTypeInspectorFrontendHost
-  , InternalSettings(InternalSettings), unInternalSettings, castToInternalSettings, gTypeInternalSettings
-  , Internals(Internals), unInternals, castToInternals, gTypeInternals
-  , KeyboardEvent(KeyboardEvent), unKeyboardEvent, castToKeyboardEvent, gTypeKeyboardEvent
-  , Location(Location), unLocation, castToLocation, gTypeLocation
-  , MallocStatistics(MallocStatistics), unMallocStatistics, castToMallocStatistics, gTypeMallocStatistics
-  , MediaController(MediaController), unMediaController, castToMediaController, gTypeMediaController
-  , MediaControlsHost(MediaControlsHost), unMediaControlsHost, castToMediaControlsHost, gTypeMediaControlsHost
-  , MediaElementAudioSourceNode(MediaElementAudioSourceNode), unMediaElementAudioSourceNode, castToMediaElementAudioSourceNode, gTypeMediaElementAudioSourceNode
-  , MediaError(MediaError), unMediaError, castToMediaError, gTypeMediaError
-  , MediaKeyError(MediaKeyError), unMediaKeyError, castToMediaKeyError, gTypeMediaKeyError
-  , MediaKeyEvent(MediaKeyEvent), unMediaKeyEvent, castToMediaKeyEvent, gTypeMediaKeyEvent
-  , MediaKeyMessageEvent(MediaKeyMessageEvent), unMediaKeyMessageEvent, castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent
-  , MediaKeyNeededEvent(MediaKeyNeededEvent), unMediaKeyNeededEvent, castToMediaKeyNeededEvent, gTypeMediaKeyNeededEvent
-  , MediaKeySession(MediaKeySession), unMediaKeySession, castToMediaKeySession, gTypeMediaKeySession
-  , MediaKeys(MediaKeys), unMediaKeys, castToMediaKeys, gTypeMediaKeys
-  , MediaList(MediaList), unMediaList, castToMediaList, gTypeMediaList
-  , MediaQueryList(MediaQueryList), unMediaQueryList, castToMediaQueryList, gTypeMediaQueryList
-  , MediaSource(MediaSource), unMediaSource, castToMediaSource, gTypeMediaSource
-  , MediaSourceStates(MediaSourceStates), unMediaSourceStates, castToMediaSourceStates, gTypeMediaSourceStates
-  , MediaStream(MediaStream), unMediaStream, castToMediaStream, gTypeMediaStream
-  , MediaStreamAudioDestinationNode(MediaStreamAudioDestinationNode), unMediaStreamAudioDestinationNode, castToMediaStreamAudioDestinationNode, gTypeMediaStreamAudioDestinationNode
-  , MediaStreamAudioSourceNode(MediaStreamAudioSourceNode), unMediaStreamAudioSourceNode, castToMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode
-  , MediaStreamCapabilities(MediaStreamCapabilities), unMediaStreamCapabilities, IsMediaStreamCapabilities, toMediaStreamCapabilities, castToMediaStreamCapabilities, gTypeMediaStreamCapabilities
-  , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, castToMediaStreamEvent, gTypeMediaStreamEvent
-  , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, castToMediaStreamTrack, gTypeMediaStreamTrack
-  , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, castToMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
-  , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, castToMediaTrackConstraint, gTypeMediaTrackConstraint
-  , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, castToMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
-  , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, castToMediaTrackConstraints, gTypeMediaTrackConstraints
-  , MemoryInfo(MemoryInfo), unMemoryInfo, castToMemoryInfo, gTypeMemoryInfo
-  , MessageChannel(MessageChannel), unMessageChannel, castToMessageChannel, gTypeMessageChannel
-  , MessageEvent(MessageEvent), unMessageEvent, castToMessageEvent, gTypeMessageEvent
-  , MessagePort(MessagePort), unMessagePort, castToMessagePort, gTypeMessagePort
-  , MimeType(MimeType), unMimeType, castToMimeType, gTypeMimeType
-  , MimeTypeArray(MimeTypeArray), unMimeTypeArray, castToMimeTypeArray, gTypeMimeTypeArray
-  , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, castToMouseEvent, gTypeMouseEvent
-  , MutationEvent(MutationEvent), unMutationEvent, castToMutationEvent, gTypeMutationEvent
-  , MutationObserver(MutationObserver), unMutationObserver, castToMutationObserver, gTypeMutationObserver
-  , MutationRecord(MutationRecord), unMutationRecord, castToMutationRecord, gTypeMutationRecord
-  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap
-  , Navigator(Navigator), unNavigator, castToNavigator, gTypeNavigator
-  , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, castToNavigatorUserMediaError, gTypeNavigatorUserMediaError
-  , Node(Node), unNode, IsNode, toNode, castToNode, gTypeNode
-  , NodeFilter(NodeFilter), unNodeFilter, castToNodeFilter, gTypeNodeFilter
-  , NodeIterator(NodeIterator), unNodeIterator, castToNodeIterator, gTypeNodeIterator
-  , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, castToNodeList, gTypeNodeList
-  , Notification(Notification), unNotification, castToNotification, gTypeNotification
-  , NotificationCenter(NotificationCenter), unNotificationCenter, castToNotificationCenter, gTypeNotificationCenter
-  , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, castToOESElementIndexUint, gTypeOESElementIndexUint
-  , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, castToOESStandardDerivatives, gTypeOESStandardDerivatives
-  , OESTextureFloat(OESTextureFloat), unOESTextureFloat, castToOESTextureFloat, gTypeOESTextureFloat
-  , OESTextureFloatLinear(OESTextureFloatLinear), unOESTextureFloatLinear, castToOESTextureFloatLinear, gTypeOESTextureFloatLinear
-  , OESTextureHalfFloat(OESTextureHalfFloat), unOESTextureHalfFloat, castToOESTextureHalfFloat, gTypeOESTextureHalfFloat
-  , OESTextureHalfFloatLinear(OESTextureHalfFloatLinear), unOESTextureHalfFloatLinear, castToOESTextureHalfFloatLinear, gTypeOESTextureHalfFloatLinear
-  , OESVertexArrayObject(OESVertexArrayObject), unOESVertexArrayObject, castToOESVertexArrayObject, gTypeOESVertexArrayObject
-  , OfflineAudioCompletionEvent(OfflineAudioCompletionEvent), unOfflineAudioCompletionEvent, castToOfflineAudioCompletionEvent, gTypeOfflineAudioCompletionEvent
-  , OfflineAudioContext(OfflineAudioContext), unOfflineAudioContext, castToOfflineAudioContext, gTypeOfflineAudioContext
-  , OscillatorNode(OscillatorNode), unOscillatorNode, castToOscillatorNode, gTypeOscillatorNode
-  , OverflowEvent(OverflowEvent), unOverflowEvent, castToOverflowEvent, gTypeOverflowEvent
-  , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, castToPageTransitionEvent, gTypePageTransitionEvent
-  , PannerNode(PannerNode), unPannerNode, castToPannerNode, gTypePannerNode
-  , Path2D(Path2D), unPath2D, castToPath2D, gTypePath2D
-  , Performance(Performance), unPerformance, castToPerformance, gTypePerformance
-  , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, castToPerformanceEntry, gTypePerformanceEntry
-  , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, castToPerformanceEntryList, gTypePerformanceEntryList
-  , PerformanceMark(PerformanceMark), unPerformanceMark, castToPerformanceMark, gTypePerformanceMark
-  , PerformanceMeasure(PerformanceMeasure), unPerformanceMeasure, castToPerformanceMeasure, gTypePerformanceMeasure
-  , PerformanceNavigation(PerformanceNavigation), unPerformanceNavigation, castToPerformanceNavigation, gTypePerformanceNavigation
-  , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, castToPerformanceResourceTiming, gTypePerformanceResourceTiming
-  , PerformanceTiming(PerformanceTiming), unPerformanceTiming, castToPerformanceTiming, gTypePerformanceTiming
-  , PeriodicWave(PeriodicWave), unPeriodicWave, castToPeriodicWave, gTypePeriodicWave
-  , Plugin(Plugin), unPlugin, castToPlugin, gTypePlugin
-  , PluginArray(PluginArray), unPluginArray, castToPluginArray, gTypePluginArray
-  , PopStateEvent(PopStateEvent), unPopStateEvent, castToPopStateEvent, gTypePopStateEvent
-  , PositionError(PositionError), unPositionError, castToPositionError, gTypePositionError
-  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, castToProcessingInstruction, gTypeProcessingInstruction
-  , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, castToProgressEvent, gTypeProgressEvent
-  , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, castToQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
-  , RGBColor(RGBColor), unRGBColor, castToRGBColor, gTypeRGBColor
-  , RTCConfiguration(RTCConfiguration), unRTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration
-  , RTCDTMFSender(RTCDTMFSender), unRTCDTMFSender, castToRTCDTMFSender, gTypeRTCDTMFSender
-  , RTCDTMFToneChangeEvent(RTCDTMFToneChangeEvent), unRTCDTMFToneChangeEvent, castToRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent
-  , RTCDataChannel(RTCDataChannel), unRTCDataChannel, castToRTCDataChannel, gTypeRTCDataChannel
-  , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, castToRTCDataChannelEvent, gTypeRTCDataChannelEvent
-  , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, castToRTCIceCandidate, gTypeRTCIceCandidate
-  , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, castToRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
-  , RTCIceServer(RTCIceServer), unRTCIceServer, castToRTCIceServer, gTypeRTCIceServer
-  , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, castToRTCPeerConnection, gTypeRTCPeerConnection
-  , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, castToRTCSessionDescription, gTypeRTCSessionDescription
-  , RTCStatsReport(RTCStatsReport), unRTCStatsReport, castToRTCStatsReport, gTypeRTCStatsReport
-  , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, castToRTCStatsResponse, gTypeRTCStatsResponse
-  , RadioNodeList(RadioNodeList), unRadioNodeList, castToRadioNodeList, gTypeRadioNodeList
-  , Range(Range), unRange, castToRange, gTypeRange
-  , ReadableStream(ReadableStream), unReadableStream, castToReadableStream, gTypeReadableStream
-  , Rect(Rect), unRect, castToRect, gTypeRect
-  , SQLError(SQLError), unSQLError, castToSQLError, gTypeSQLError
-  , SQLResultSet(SQLResultSet), unSQLResultSet, castToSQLResultSet, gTypeSQLResultSet
-  , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, castToSQLResultSetRowList, gTypeSQLResultSetRowList
-  , SQLTransaction(SQLTransaction), unSQLTransaction, castToSQLTransaction, gTypeSQLTransaction
-  , SVGAElement(SVGAElement), unSVGAElement, castToSVGAElement, gTypeSVGAElement
-  , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, castToSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
-  , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, castToSVGAltGlyphElement, gTypeSVGAltGlyphElement
-  , SVGAltGlyphItemElement(SVGAltGlyphItemElement), unSVGAltGlyphItemElement, castToSVGAltGlyphItemElement, gTypeSVGAltGlyphItemElement
-  , SVGAngle(SVGAngle), unSVGAngle, castToSVGAngle, gTypeSVGAngle
-  , SVGAnimateColorElement(SVGAnimateColorElement), unSVGAnimateColorElement, castToSVGAnimateColorElement, gTypeSVGAnimateColorElement
-  , SVGAnimateElement(SVGAnimateElement), unSVGAnimateElement, castToSVGAnimateElement, gTypeSVGAnimateElement
-  , SVGAnimateMotionElement(SVGAnimateMotionElement), unSVGAnimateMotionElement, castToSVGAnimateMotionElement, gTypeSVGAnimateMotionElement
-  , SVGAnimateTransformElement(SVGAnimateTransformElement), unSVGAnimateTransformElement, castToSVGAnimateTransformElement, gTypeSVGAnimateTransformElement
-  , SVGAnimatedAngle(SVGAnimatedAngle), unSVGAnimatedAngle, castToSVGAnimatedAngle, gTypeSVGAnimatedAngle
-  , SVGAnimatedBoolean(SVGAnimatedBoolean), unSVGAnimatedBoolean, castToSVGAnimatedBoolean, gTypeSVGAnimatedBoolean
-  , SVGAnimatedEnumeration(SVGAnimatedEnumeration), unSVGAnimatedEnumeration, castToSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration
-  , SVGAnimatedInteger(SVGAnimatedInteger), unSVGAnimatedInteger, castToSVGAnimatedInteger, gTypeSVGAnimatedInteger
-  , SVGAnimatedLength(SVGAnimatedLength), unSVGAnimatedLength, castToSVGAnimatedLength, gTypeSVGAnimatedLength
-  , SVGAnimatedLengthList(SVGAnimatedLengthList), unSVGAnimatedLengthList, castToSVGAnimatedLengthList, gTypeSVGAnimatedLengthList
-  , SVGAnimatedNumber(SVGAnimatedNumber), unSVGAnimatedNumber, castToSVGAnimatedNumber, gTypeSVGAnimatedNumber
-  , SVGAnimatedNumberList(SVGAnimatedNumberList), unSVGAnimatedNumberList, castToSVGAnimatedNumberList, gTypeSVGAnimatedNumberList
-  , SVGAnimatedPreserveAspectRatio(SVGAnimatedPreserveAspectRatio), unSVGAnimatedPreserveAspectRatio, castToSVGAnimatedPreserveAspectRatio, gTypeSVGAnimatedPreserveAspectRatio
-  , SVGAnimatedRect(SVGAnimatedRect), unSVGAnimatedRect, castToSVGAnimatedRect, gTypeSVGAnimatedRect
-  , SVGAnimatedString(SVGAnimatedString), unSVGAnimatedString, castToSVGAnimatedString, gTypeSVGAnimatedString
-  , SVGAnimatedTransformList(SVGAnimatedTransformList), unSVGAnimatedTransformList, castToSVGAnimatedTransformList, gTypeSVGAnimatedTransformList
-  , SVGAnimationElement(SVGAnimationElement), unSVGAnimationElement, IsSVGAnimationElement, toSVGAnimationElement, castToSVGAnimationElement, gTypeSVGAnimationElement
-  , SVGCircleElement(SVGCircleElement), unSVGCircleElement, castToSVGCircleElement, gTypeSVGCircleElement
-  , SVGClipPathElement(SVGClipPathElement), unSVGClipPathElement, castToSVGClipPathElement, gTypeSVGClipPathElement
-  , SVGColor(SVGColor), unSVGColor, IsSVGColor, toSVGColor, castToSVGColor, gTypeSVGColor
-  , SVGComponentTransferFunctionElement(SVGComponentTransferFunctionElement), unSVGComponentTransferFunctionElement, IsSVGComponentTransferFunctionElement, toSVGComponentTransferFunctionElement, castToSVGComponentTransferFunctionElement, gTypeSVGComponentTransferFunctionElement
-  , SVGCursorElement(SVGCursorElement), unSVGCursorElement, castToSVGCursorElement, gTypeSVGCursorElement
-  , SVGDefsElement(SVGDefsElement), unSVGDefsElement, castToSVGDefsElement, gTypeSVGDefsElement
-  , SVGDescElement(SVGDescElement), unSVGDescElement, castToSVGDescElement, gTypeSVGDescElement
-  , SVGDocument(SVGDocument), unSVGDocument, castToSVGDocument, gTypeSVGDocument
-  , SVGElement(SVGElement), unSVGElement, IsSVGElement, toSVGElement, castToSVGElement, gTypeSVGElement
-  , SVGEllipseElement(SVGEllipseElement), unSVGEllipseElement, castToSVGEllipseElement, gTypeSVGEllipseElement
-  , SVGExternalResourcesRequired(SVGExternalResourcesRequired), unSVGExternalResourcesRequired, castToSVGExternalResourcesRequired, gTypeSVGExternalResourcesRequired
-  , SVGFEBlendElement(SVGFEBlendElement), unSVGFEBlendElement, castToSVGFEBlendElement, gTypeSVGFEBlendElement
-  , SVGFEColorMatrixElement(SVGFEColorMatrixElement), unSVGFEColorMatrixElement, castToSVGFEColorMatrixElement, gTypeSVGFEColorMatrixElement
-  , SVGFEComponentTransferElement(SVGFEComponentTransferElement), unSVGFEComponentTransferElement, castToSVGFEComponentTransferElement, gTypeSVGFEComponentTransferElement
-  , SVGFECompositeElement(SVGFECompositeElement), unSVGFECompositeElement, castToSVGFECompositeElement, gTypeSVGFECompositeElement
-  , SVGFEConvolveMatrixElement(SVGFEConvolveMatrixElement), unSVGFEConvolveMatrixElement, castToSVGFEConvolveMatrixElement, gTypeSVGFEConvolveMatrixElement
-  , SVGFEDiffuseLightingElement(SVGFEDiffuseLightingElement), unSVGFEDiffuseLightingElement, castToSVGFEDiffuseLightingElement, gTypeSVGFEDiffuseLightingElement
-  , SVGFEDisplacementMapElement(SVGFEDisplacementMapElement), unSVGFEDisplacementMapElement, castToSVGFEDisplacementMapElement, gTypeSVGFEDisplacementMapElement
-  , SVGFEDistantLightElement(SVGFEDistantLightElement), unSVGFEDistantLightElement, castToSVGFEDistantLightElement, gTypeSVGFEDistantLightElement
-  , SVGFEDropShadowElement(SVGFEDropShadowElement), unSVGFEDropShadowElement, castToSVGFEDropShadowElement, gTypeSVGFEDropShadowElement
-  , SVGFEFloodElement(SVGFEFloodElement), unSVGFEFloodElement, castToSVGFEFloodElement, gTypeSVGFEFloodElement
-  , SVGFEFuncAElement(SVGFEFuncAElement), unSVGFEFuncAElement, castToSVGFEFuncAElement, gTypeSVGFEFuncAElement
-  , SVGFEFuncBElement(SVGFEFuncBElement), unSVGFEFuncBElement, castToSVGFEFuncBElement, gTypeSVGFEFuncBElement
-  , SVGFEFuncGElement(SVGFEFuncGElement), unSVGFEFuncGElement, castToSVGFEFuncGElement, gTypeSVGFEFuncGElement
-  , SVGFEFuncRElement(SVGFEFuncRElement), unSVGFEFuncRElement, castToSVGFEFuncRElement, gTypeSVGFEFuncRElement
-  , SVGFEGaussianBlurElement(SVGFEGaussianBlurElement), unSVGFEGaussianBlurElement, castToSVGFEGaussianBlurElement, gTypeSVGFEGaussianBlurElement
-  , SVGFEImageElement(SVGFEImageElement), unSVGFEImageElement, castToSVGFEImageElement, gTypeSVGFEImageElement
-  , SVGFEMergeElement(SVGFEMergeElement), unSVGFEMergeElement, castToSVGFEMergeElement, gTypeSVGFEMergeElement
-  , SVGFEMergeNodeElement(SVGFEMergeNodeElement), unSVGFEMergeNodeElement, castToSVGFEMergeNodeElement, gTypeSVGFEMergeNodeElement
-  , SVGFEMorphologyElement(SVGFEMorphologyElement), unSVGFEMorphologyElement, castToSVGFEMorphologyElement, gTypeSVGFEMorphologyElement
-  , SVGFEOffsetElement(SVGFEOffsetElement), unSVGFEOffsetElement, castToSVGFEOffsetElement, gTypeSVGFEOffsetElement
-  , SVGFEPointLightElement(SVGFEPointLightElement), unSVGFEPointLightElement, castToSVGFEPointLightElement, gTypeSVGFEPointLightElement
-  , SVGFESpecularLightingElement(SVGFESpecularLightingElement), unSVGFESpecularLightingElement, castToSVGFESpecularLightingElement, gTypeSVGFESpecularLightingElement
-  , SVGFESpotLightElement(SVGFESpotLightElement), unSVGFESpotLightElement, castToSVGFESpotLightElement, gTypeSVGFESpotLightElement
-  , SVGFETileElement(SVGFETileElement), unSVGFETileElement, castToSVGFETileElement, gTypeSVGFETileElement
-  , SVGFETurbulenceElement(SVGFETurbulenceElement), unSVGFETurbulenceElement, castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement
-  , SVGFilterElement(SVGFilterElement), unSVGFilterElement, castToSVGFilterElement, gTypeSVGFilterElement
-  , SVGFilterPrimitiveStandardAttributes(SVGFilterPrimitiveStandardAttributes), unSVGFilterPrimitiveStandardAttributes, castToSVGFilterPrimitiveStandardAttributes, gTypeSVGFilterPrimitiveStandardAttributes
-  , SVGFitToViewBox(SVGFitToViewBox), unSVGFitToViewBox, castToSVGFitToViewBox, gTypeSVGFitToViewBox
-  , SVGFontElement(SVGFontElement), unSVGFontElement, castToSVGFontElement, gTypeSVGFontElement
-  , SVGFontFaceElement(SVGFontFaceElement), unSVGFontFaceElement, castToSVGFontFaceElement, gTypeSVGFontFaceElement
-  , SVGFontFaceFormatElement(SVGFontFaceFormatElement), unSVGFontFaceFormatElement, castToSVGFontFaceFormatElement, gTypeSVGFontFaceFormatElement
-  , SVGFontFaceNameElement(SVGFontFaceNameElement), unSVGFontFaceNameElement, castToSVGFontFaceNameElement, gTypeSVGFontFaceNameElement
-  , SVGFontFaceSrcElement(SVGFontFaceSrcElement), unSVGFontFaceSrcElement, castToSVGFontFaceSrcElement, gTypeSVGFontFaceSrcElement
-  , SVGFontFaceUriElement(SVGFontFaceUriElement), unSVGFontFaceUriElement, castToSVGFontFaceUriElement, gTypeSVGFontFaceUriElement
-  , SVGForeignObjectElement(SVGForeignObjectElement), unSVGForeignObjectElement, castToSVGForeignObjectElement, gTypeSVGForeignObjectElement
-  , SVGGElement(SVGGElement), unSVGGElement, castToSVGGElement, gTypeSVGGElement
-  , SVGGlyphElement(SVGGlyphElement), unSVGGlyphElement, castToSVGGlyphElement, gTypeSVGGlyphElement
-  , SVGGlyphRefElement(SVGGlyphRefElement), unSVGGlyphRefElement, castToSVGGlyphRefElement, gTypeSVGGlyphRefElement
-  , SVGGradientElement(SVGGradientElement), unSVGGradientElement, IsSVGGradientElement, toSVGGradientElement, castToSVGGradientElement, gTypeSVGGradientElement
-  , SVGGraphicsElement(SVGGraphicsElement), unSVGGraphicsElement, IsSVGGraphicsElement, toSVGGraphicsElement, castToSVGGraphicsElement, gTypeSVGGraphicsElement
-  , SVGHKernElement(SVGHKernElement), unSVGHKernElement, castToSVGHKernElement, gTypeSVGHKernElement
-  , SVGImageElement(SVGImageElement), unSVGImageElement, castToSVGImageElement, gTypeSVGImageElement
-  , SVGLength(SVGLength), unSVGLength, castToSVGLength, gTypeSVGLength
-  , SVGLengthList(SVGLengthList), unSVGLengthList, castToSVGLengthList, gTypeSVGLengthList
-  , SVGLineElement(SVGLineElement), unSVGLineElement, castToSVGLineElement, gTypeSVGLineElement
-  , SVGLinearGradientElement(SVGLinearGradientElement), unSVGLinearGradientElement, castToSVGLinearGradientElement, gTypeSVGLinearGradientElement
-  , SVGMPathElement(SVGMPathElement), unSVGMPathElement, castToSVGMPathElement, gTypeSVGMPathElement
-  , SVGMarkerElement(SVGMarkerElement), unSVGMarkerElement, castToSVGMarkerElement, gTypeSVGMarkerElement
-  , SVGMaskElement(SVGMaskElement), unSVGMaskElement, castToSVGMaskElement, gTypeSVGMaskElement
-  , SVGMatrix(SVGMatrix), unSVGMatrix, castToSVGMatrix, gTypeSVGMatrix
-  , SVGMetadataElement(SVGMetadataElement), unSVGMetadataElement, castToSVGMetadataElement, gTypeSVGMetadataElement
-  , SVGMissingGlyphElement(SVGMissingGlyphElement), unSVGMissingGlyphElement, castToSVGMissingGlyphElement, gTypeSVGMissingGlyphElement
-  , SVGNumber(SVGNumber), unSVGNumber, castToSVGNumber, gTypeSVGNumber
-  , SVGNumberList(SVGNumberList), unSVGNumberList, castToSVGNumberList, gTypeSVGNumberList
-  , SVGPaint(SVGPaint), unSVGPaint, castToSVGPaint, gTypeSVGPaint
-  , SVGPathElement(SVGPathElement), unSVGPathElement, castToSVGPathElement, gTypeSVGPathElement
-  , SVGPathSeg(SVGPathSeg), unSVGPathSeg, IsSVGPathSeg, toSVGPathSeg, castToSVGPathSeg, gTypeSVGPathSeg
-  , SVGPathSegArcAbs(SVGPathSegArcAbs), unSVGPathSegArcAbs, castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs
-  , SVGPathSegArcRel(SVGPathSegArcRel), unSVGPathSegArcRel, castToSVGPathSegArcRel, gTypeSVGPathSegArcRel
-  , SVGPathSegClosePath(SVGPathSegClosePath), unSVGPathSegClosePath, castToSVGPathSegClosePath, gTypeSVGPathSegClosePath
-  , SVGPathSegCurvetoCubicAbs(SVGPathSegCurvetoCubicAbs), unSVGPathSegCurvetoCubicAbs, castToSVGPathSegCurvetoCubicAbs, gTypeSVGPathSegCurvetoCubicAbs
-  , SVGPathSegCurvetoCubicRel(SVGPathSegCurvetoCubicRel), unSVGPathSegCurvetoCubicRel, castToSVGPathSegCurvetoCubicRel, gTypeSVGPathSegCurvetoCubicRel
-  , SVGPathSegCurvetoCubicSmoothAbs(SVGPathSegCurvetoCubicSmoothAbs), unSVGPathSegCurvetoCubicSmoothAbs, castToSVGPathSegCurvetoCubicSmoothAbs, gTypeSVGPathSegCurvetoCubicSmoothAbs
-  , SVGPathSegCurvetoCubicSmoothRel(SVGPathSegCurvetoCubicSmoothRel), unSVGPathSegCurvetoCubicSmoothRel, castToSVGPathSegCurvetoCubicSmoothRel, gTypeSVGPathSegCurvetoCubicSmoothRel
-  , SVGPathSegCurvetoQuadraticAbs(SVGPathSegCurvetoQuadraticAbs), unSVGPathSegCurvetoQuadraticAbs, castToSVGPathSegCurvetoQuadraticAbs, gTypeSVGPathSegCurvetoQuadraticAbs
-  , SVGPathSegCurvetoQuadraticRel(SVGPathSegCurvetoQuadraticRel), unSVGPathSegCurvetoQuadraticRel, castToSVGPathSegCurvetoQuadraticRel, gTypeSVGPathSegCurvetoQuadraticRel
-  , SVGPathSegCurvetoQuadraticSmoothAbs(SVGPathSegCurvetoQuadraticSmoothAbs), unSVGPathSegCurvetoQuadraticSmoothAbs, castToSVGPathSegCurvetoQuadraticSmoothAbs, gTypeSVGPathSegCurvetoQuadraticSmoothAbs
-  , SVGPathSegCurvetoQuadraticSmoothRel(SVGPathSegCurvetoQuadraticSmoothRel), unSVGPathSegCurvetoQuadraticSmoothRel, castToSVGPathSegCurvetoQuadraticSmoothRel, gTypeSVGPathSegCurvetoQuadraticSmoothRel
-  , SVGPathSegLinetoAbs(SVGPathSegLinetoAbs), unSVGPathSegLinetoAbs, castToSVGPathSegLinetoAbs, gTypeSVGPathSegLinetoAbs
-  , SVGPathSegLinetoHorizontalAbs(SVGPathSegLinetoHorizontalAbs), unSVGPathSegLinetoHorizontalAbs, castToSVGPathSegLinetoHorizontalAbs, gTypeSVGPathSegLinetoHorizontalAbs
-  , SVGPathSegLinetoHorizontalRel(SVGPathSegLinetoHorizontalRel), unSVGPathSegLinetoHorizontalRel, castToSVGPathSegLinetoHorizontalRel, gTypeSVGPathSegLinetoHorizontalRel
-  , SVGPathSegLinetoRel(SVGPathSegLinetoRel), unSVGPathSegLinetoRel, castToSVGPathSegLinetoRel, gTypeSVGPathSegLinetoRel
-  , SVGPathSegLinetoVerticalAbs(SVGPathSegLinetoVerticalAbs), unSVGPathSegLinetoVerticalAbs, castToSVGPathSegLinetoVerticalAbs, gTypeSVGPathSegLinetoVerticalAbs
-  , SVGPathSegLinetoVerticalRel(SVGPathSegLinetoVerticalRel), unSVGPathSegLinetoVerticalRel, castToSVGPathSegLinetoVerticalRel, gTypeSVGPathSegLinetoVerticalRel
-  , SVGPathSegList(SVGPathSegList), unSVGPathSegList, castToSVGPathSegList, gTypeSVGPathSegList
-  , SVGPathSegMovetoAbs(SVGPathSegMovetoAbs), unSVGPathSegMovetoAbs, castToSVGPathSegMovetoAbs, gTypeSVGPathSegMovetoAbs
-  , SVGPathSegMovetoRel(SVGPathSegMovetoRel), unSVGPathSegMovetoRel, castToSVGPathSegMovetoRel, gTypeSVGPathSegMovetoRel
-  , SVGPatternElement(SVGPatternElement), unSVGPatternElement, castToSVGPatternElement, gTypeSVGPatternElement
-  , SVGPoint(SVGPoint), unSVGPoint, castToSVGPoint, gTypeSVGPoint
-  , SVGPointList(SVGPointList), unSVGPointList, castToSVGPointList, gTypeSVGPointList
-  , SVGPolygonElement(SVGPolygonElement), unSVGPolygonElement, castToSVGPolygonElement, gTypeSVGPolygonElement
-  , SVGPolylineElement(SVGPolylineElement), unSVGPolylineElement, castToSVGPolylineElement, gTypeSVGPolylineElement
-  , SVGPreserveAspectRatio(SVGPreserveAspectRatio), unSVGPreserveAspectRatio, castToSVGPreserveAspectRatio, gTypeSVGPreserveAspectRatio
-  , SVGRadialGradientElement(SVGRadialGradientElement), unSVGRadialGradientElement, castToSVGRadialGradientElement, gTypeSVGRadialGradientElement
-  , SVGRect(SVGRect), unSVGRect, castToSVGRect, gTypeSVGRect
-  , SVGRectElement(SVGRectElement), unSVGRectElement, castToSVGRectElement, gTypeSVGRectElement
-  , SVGRenderingIntent(SVGRenderingIntent), unSVGRenderingIntent, castToSVGRenderingIntent, gTypeSVGRenderingIntent
-  , SVGSVGElement(SVGSVGElement), unSVGSVGElement, castToSVGSVGElement, gTypeSVGSVGElement
-  , SVGScriptElement(SVGScriptElement), unSVGScriptElement, castToSVGScriptElement, gTypeSVGScriptElement
-  , SVGSetElement(SVGSetElement), unSVGSetElement, castToSVGSetElement, gTypeSVGSetElement
-  , SVGStopElement(SVGStopElement), unSVGStopElement, castToSVGStopElement, gTypeSVGStopElement
-  , SVGStringList(SVGStringList), unSVGStringList, castToSVGStringList, gTypeSVGStringList
-  , SVGStyleElement(SVGStyleElement), unSVGStyleElement, castToSVGStyleElement, gTypeSVGStyleElement
-  , SVGSwitchElement(SVGSwitchElement), unSVGSwitchElement, castToSVGSwitchElement, gTypeSVGSwitchElement
-  , SVGSymbolElement(SVGSymbolElement), unSVGSymbolElement, castToSVGSymbolElement, gTypeSVGSymbolElement
-  , SVGTRefElement(SVGTRefElement), unSVGTRefElement, castToSVGTRefElement, gTypeSVGTRefElement
-  , SVGTSpanElement(SVGTSpanElement), unSVGTSpanElement, castToSVGTSpanElement, gTypeSVGTSpanElement
-  , SVGTests(SVGTests), unSVGTests, castToSVGTests, gTypeSVGTests
-  , SVGTextContentElement(SVGTextContentElement), unSVGTextContentElement, IsSVGTextContentElement, toSVGTextContentElement, castToSVGTextContentElement, gTypeSVGTextContentElement
-  , SVGTextElement(SVGTextElement), unSVGTextElement, castToSVGTextElement, gTypeSVGTextElement
-  , SVGTextPathElement(SVGTextPathElement), unSVGTextPathElement, castToSVGTextPathElement, gTypeSVGTextPathElement
-  , SVGTextPositioningElement(SVGTextPositioningElement), unSVGTextPositioningElement, IsSVGTextPositioningElement, toSVGTextPositioningElement, castToSVGTextPositioningElement, gTypeSVGTextPositioningElement
-  , SVGTitleElement(SVGTitleElement), unSVGTitleElement, castToSVGTitleElement, gTypeSVGTitleElement
-  , SVGTransform(SVGTransform), unSVGTransform, castToSVGTransform, gTypeSVGTransform
-  , SVGTransformList(SVGTransformList), unSVGTransformList, castToSVGTransformList, gTypeSVGTransformList
-  , SVGURIReference(SVGURIReference), unSVGURIReference, castToSVGURIReference, gTypeSVGURIReference
-  , SVGUnitTypes(SVGUnitTypes), unSVGUnitTypes, castToSVGUnitTypes, gTypeSVGUnitTypes
-  , SVGUseElement(SVGUseElement), unSVGUseElement, castToSVGUseElement, gTypeSVGUseElement
-  , SVGVKernElement(SVGVKernElement), unSVGVKernElement, castToSVGVKernElement, gTypeSVGVKernElement
-  , SVGViewElement(SVGViewElement), unSVGViewElement, castToSVGViewElement, gTypeSVGViewElement
-  , SVGViewSpec(SVGViewSpec), unSVGViewSpec, castToSVGViewSpec, gTypeSVGViewSpec
-  , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, castToSVGZoomAndPan, gTypeSVGZoomAndPan
-  , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent
-  , Screen(Screen), unScreen, castToScreen, gTypeScreen
-  , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, castToScriptProcessorNode, gTypeScriptProcessorNode
-  , ScriptProfile(ScriptProfile), unScriptProfile, castToScriptProfile, gTypeScriptProfile
-  , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, castToScriptProfileNode, gTypeScriptProfileNode
-  , SecurityPolicy(SecurityPolicy), unSecurityPolicy, castToSecurityPolicy, gTypeSecurityPolicy
-  , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, castToSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
-  , Selection(Selection), unSelection, castToSelection, gTypeSelection
-  , SourceBuffer(SourceBuffer), unSourceBuffer, castToSourceBuffer, gTypeSourceBuffer
-  , SourceBufferList(SourceBufferList), unSourceBufferList, castToSourceBufferList, gTypeSourceBufferList
-  , SourceInfo(SourceInfo), unSourceInfo, castToSourceInfo, gTypeSourceInfo
-  , SpeechSynthesis(SpeechSynthesis), unSpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis
-  , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, castToSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
-  , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, castToSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
-  , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, castToSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
-  , Storage(Storage), unStorage, castToStorage, gTypeStorage
-  , StorageEvent(StorageEvent), unStorageEvent, castToStorageEvent, gTypeStorageEvent
-  , StorageInfo(StorageInfo), unStorageInfo, castToStorageInfo, gTypeStorageInfo
-  , StorageQuota(StorageQuota), unStorageQuota, castToStorageQuota, gTypeStorageQuota
-  , StyleMedia(StyleMedia), unStyleMedia, castToStyleMedia, gTypeStyleMedia
-  , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, castToStyleSheet, gTypeStyleSheet
-  , StyleSheetList(StyleSheetList), unStyleSheetList, castToStyleSheetList, gTypeStyleSheetList
-  , SubtleCrypto(SubtleCrypto), unSubtleCrypto, castToSubtleCrypto, gTypeSubtleCrypto
-  , Text(Text), unText, IsText, toText, castToText, gTypeText
-  , TextEvent(TextEvent), unTextEvent, castToTextEvent, gTypeTextEvent
-  , TextMetrics(TextMetrics), unTextMetrics, castToTextMetrics, gTypeTextMetrics
-  , TextTrack(TextTrack), unTextTrack, castToTextTrack, gTypeTextTrack
-  , TextTrackCue(TextTrackCue), unTextTrackCue, IsTextTrackCue, toTextTrackCue, castToTextTrackCue, gTypeTextTrackCue
-  , TextTrackCueList(TextTrackCueList), unTextTrackCueList, castToTextTrackCueList, gTypeTextTrackCueList
-  , TextTrackList(TextTrackList), unTextTrackList, castToTextTrackList, gTypeTextTrackList
-  , TimeRanges(TimeRanges), unTimeRanges, castToTimeRanges, gTypeTimeRanges
-  , Touch(Touch), unTouch, castToTouch, gTypeTouch
-  , TouchEvent(TouchEvent), unTouchEvent, castToTouchEvent, gTypeTouchEvent
-  , TouchList(TouchList), unTouchList, castToTouchList, gTypeTouchList
-  , TrackEvent(TrackEvent), unTrackEvent, castToTrackEvent, gTypeTrackEvent
-  , TransitionEvent(TransitionEvent), unTransitionEvent, castToTransitionEvent, gTypeTransitionEvent
-  , TreeWalker(TreeWalker), unTreeWalker, castToTreeWalker, gTypeTreeWalker
-  , TypeConversions(TypeConversions), unTypeConversions, castToTypeConversions, gTypeTypeConversions
-  , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, castToUIEvent, gTypeUIEvent
-  , UIRequestEvent(UIRequestEvent), unUIRequestEvent, castToUIRequestEvent, gTypeUIRequestEvent
-  , URL(URL), unURL, castToURL, gTypeURL
-  , URLUtils(URLUtils), unURLUtils, castToURLUtils, gTypeURLUtils
-  , UserMessageHandler(UserMessageHandler), unUserMessageHandler, castToUserMessageHandler, gTypeUserMessageHandler
-  , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, castToUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
-  , VTTCue(VTTCue), unVTTCue, castToVTTCue, gTypeVTTCue
-  , VTTRegion(VTTRegion), unVTTRegion, castToVTTRegion, gTypeVTTRegion
-  , VTTRegionList(VTTRegionList), unVTTRegionList, castToVTTRegionList, gTypeVTTRegionList
-  , ValidityState(ValidityState), unValidityState, castToValidityState, gTypeValidityState
-  , VideoPlaybackQuality(VideoPlaybackQuality), unVideoPlaybackQuality, castToVideoPlaybackQuality, gTypeVideoPlaybackQuality
-  , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, castToVideoStreamTrack, gTypeVideoStreamTrack
-  , VideoTrack(VideoTrack), unVideoTrack, castToVideoTrack, gTypeVideoTrack
-  , VideoTrackList(VideoTrackList), unVideoTrackList, castToVideoTrackList, gTypeVideoTrackList
-  , WaveShaperNode(WaveShaperNode), unWaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode
-  , WebGL2RenderingContext(WebGL2RenderingContext), unWebGL2RenderingContext, castToWebGL2RenderingContext, gTypeWebGL2RenderingContext
-  , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, castToWebGLActiveInfo, gTypeWebGLActiveInfo
-  , WebGLBuffer(WebGLBuffer), unWebGLBuffer, castToWebGLBuffer, gTypeWebGLBuffer
-  , WebGLCompressedTextureATC(WebGLCompressedTextureATC), unWebGLCompressedTextureATC, castToWebGLCompressedTextureATC, gTypeWebGLCompressedTextureATC
-  , WebGLCompressedTexturePVRTC(WebGLCompressedTexturePVRTC), unWebGLCompressedTexturePVRTC, castToWebGLCompressedTexturePVRTC, gTypeWebGLCompressedTexturePVRTC
-  , WebGLCompressedTextureS3TC(WebGLCompressedTextureS3TC), unWebGLCompressedTextureS3TC, castToWebGLCompressedTextureS3TC, gTypeWebGLCompressedTextureS3TC
-  , WebGLContextAttributes(WebGLContextAttributes), unWebGLContextAttributes, castToWebGLContextAttributes, gTypeWebGLContextAttributes
-  , WebGLContextEvent(WebGLContextEvent), unWebGLContextEvent, castToWebGLContextEvent, gTypeWebGLContextEvent
-  , WebGLDebugRendererInfo(WebGLDebugRendererInfo), unWebGLDebugRendererInfo, castToWebGLDebugRendererInfo, gTypeWebGLDebugRendererInfo
-  , WebGLDebugShaders(WebGLDebugShaders), unWebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders
-  , WebGLDepthTexture(WebGLDepthTexture), unWebGLDepthTexture, castToWebGLDepthTexture, gTypeWebGLDepthTexture
-  , WebGLDrawBuffers(WebGLDrawBuffers), unWebGLDrawBuffers, castToWebGLDrawBuffers, gTypeWebGLDrawBuffers
-  , WebGLFramebuffer(WebGLFramebuffer), unWebGLFramebuffer, castToWebGLFramebuffer, gTypeWebGLFramebuffer
-  , WebGLLoseContext(WebGLLoseContext), unWebGLLoseContext, castToWebGLLoseContext, gTypeWebGLLoseContext
-  , WebGLProgram(WebGLProgram), unWebGLProgram, castToWebGLProgram, gTypeWebGLProgram
-  , WebGLQuery(WebGLQuery), unWebGLQuery, castToWebGLQuery, gTypeWebGLQuery
-  , WebGLRenderbuffer(WebGLRenderbuffer), unWebGLRenderbuffer, castToWebGLRenderbuffer, gTypeWebGLRenderbuffer
-  , WebGLRenderingContext(WebGLRenderingContext), unWebGLRenderingContext, castToWebGLRenderingContext, gTypeWebGLRenderingContext
-  , WebGLRenderingContextBase(WebGLRenderingContextBase), unWebGLRenderingContextBase, IsWebGLRenderingContextBase, toWebGLRenderingContextBase, castToWebGLRenderingContextBase, gTypeWebGLRenderingContextBase
-  , WebGLSampler(WebGLSampler), unWebGLSampler, castToWebGLSampler, gTypeWebGLSampler
-  , WebGLShader(WebGLShader), unWebGLShader, castToWebGLShader, gTypeWebGLShader
-  , WebGLShaderPrecisionFormat(WebGLShaderPrecisionFormat), unWebGLShaderPrecisionFormat, castToWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat
-  , WebGLSync(WebGLSync), unWebGLSync, castToWebGLSync, gTypeWebGLSync
-  , WebGLTexture(WebGLTexture), unWebGLTexture, castToWebGLTexture, gTypeWebGLTexture
-  , WebGLTransformFeedback(WebGLTransformFeedback), unWebGLTransformFeedback, castToWebGLTransformFeedback, gTypeWebGLTransformFeedback
-  , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, castToWebGLUniformLocation, gTypeWebGLUniformLocation
-  , WebGLVertexArrayObject(WebGLVertexArrayObject), unWebGLVertexArrayObject, castToWebGLVertexArrayObject, gTypeWebGLVertexArrayObject
-  , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, castToWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
-  , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, castToWebKitAnimationEvent, gTypeWebKitAnimationEvent
-  , WebKitCSSFilterValue(WebKitCSSFilterValue), unWebKitCSSFilterValue, castToWebKitCSSFilterValue, gTypeWebKitCSSFilterValue
-  , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, castToWebKitCSSMatrix, gTypeWebKitCSSMatrix
-  , WebKitCSSRegionRule(WebKitCSSRegionRule), unWebKitCSSRegionRule, castToWebKitCSSRegionRule, gTypeWebKitCSSRegionRule
-  , WebKitCSSTransformValue(WebKitCSSTransformValue), unWebKitCSSTransformValue, castToWebKitCSSTransformValue, gTypeWebKitCSSTransformValue
-  , WebKitCSSViewportRule(WebKitCSSViewportRule), unWebKitCSSViewportRule, castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule
-  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, castToWebKitNamedFlow, gTypeWebKitNamedFlow
-  , WebKitNamespace(WebKitNamespace), unWebKitNamespace, castToWebKitNamespace, gTypeWebKitNamespace
-  , WebKitPlaybackTargetAvailabilityEvent(WebKitPlaybackTargetAvailabilityEvent), unWebKitPlaybackTargetAvailabilityEvent, castToWebKitPlaybackTargetAvailabilityEvent, gTypeWebKitPlaybackTargetAvailabilityEvent
-  , WebKitPoint(WebKitPoint), unWebKitPoint, castToWebKitPoint, gTypeWebKitPoint
-  , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, castToWebKitTransitionEvent, gTypeWebKitTransitionEvent
-  , WebSocket(WebSocket), unWebSocket, castToWebSocket, gTypeWebSocket
-  , WheelEvent(WheelEvent), unWheelEvent, castToWheelEvent, gTypeWheelEvent
-  , Window(Window), unWindow, castToWindow, gTypeWindow
-  , WindowBase64(WindowBase64), unWindowBase64, castToWindowBase64, gTypeWindowBase64
-  , WindowTimers(WindowTimers), unWindowTimers, castToWindowTimers, gTypeWindowTimers
-  , Worker(Worker), unWorker, castToWorker, gTypeWorker
-  , WorkerGlobalScope(WorkerGlobalScope), unWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope, castToWorkerGlobalScope, gTypeWorkerGlobalScope
-  , WorkerLocation(WorkerLocation), unWorkerLocation, castToWorkerLocation, gTypeWorkerLocation
-  , WorkerNavigator(WorkerNavigator), unWorkerNavigator, castToWorkerNavigator, gTypeWorkerNavigator
-  , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, castToXMLHttpRequest, gTypeXMLHttpRequest
-  , XMLHttpRequestProgressEvent(XMLHttpRequestProgressEvent), unXMLHttpRequestProgressEvent, castToXMLHttpRequestProgressEvent, gTypeXMLHttpRequestProgressEvent
-  , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, castToXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
-  , XMLSerializer(XMLSerializer), unXMLSerializer, castToXMLSerializer, gTypeXMLSerializer
-  , XPathEvaluator(XPathEvaluator), unXPathEvaluator, castToXPathEvaluator, gTypeXPathEvaluator
-  , XPathExpression(XPathExpression), unXPathExpression, castToXPathExpression, gTypeXPathExpression
-  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, castToXPathNSResolver, gTypeXPathNSResolver
-  , XPathResult(XPathResult), unXPathResult, castToXPathResult, gTypeXPathResult
-  , XSLTProcessor(XSLTProcessor), unXSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor
+  , ANGLEInstancedArrays(ANGLEInstancedArrays), unANGLEInstancedArrays, gTypeANGLEInstancedArrays
+  , AbstractView(AbstractView), unAbstractView, gTypeAbstractView
+  , AbstractWorker(AbstractWorker), unAbstractWorker, gTypeAbstractWorker
+  , AllAudioCapabilities(AllAudioCapabilities), unAllAudioCapabilities, gTypeAllAudioCapabilities
+  , AllVideoCapabilities(AllVideoCapabilities), unAllVideoCapabilities, gTypeAllVideoCapabilities
+  , AnalyserNode(AnalyserNode), unAnalyserNode, gTypeAnalyserNode
+  , AnimationEvent(AnimationEvent), unAnimationEvent, gTypeAnimationEvent
+  , ApplicationCache(ApplicationCache), unApplicationCache, gTypeApplicationCache
+  , Attr(Attr), unAttr, gTypeAttr
+  , AudioBuffer(AudioBuffer), unAudioBuffer, gTypeAudioBuffer
+  , AudioBufferSourceNode(AudioBufferSourceNode), unAudioBufferSourceNode, gTypeAudioBufferSourceNode
+  , AudioContext(AudioContext), unAudioContext, IsAudioContext, toAudioContext, gTypeAudioContext
+  , AudioDestinationNode(AudioDestinationNode), unAudioDestinationNode, gTypeAudioDestinationNode
+  , AudioListener(AudioListener), unAudioListener, gTypeAudioListener
+  , AudioNode(AudioNode), unAudioNode, IsAudioNode, toAudioNode, gTypeAudioNode
+  , AudioParam(AudioParam), unAudioParam, gTypeAudioParam
+  , AudioProcessingEvent(AudioProcessingEvent), unAudioProcessingEvent, gTypeAudioProcessingEvent
+  , AudioStreamTrack(AudioStreamTrack), unAudioStreamTrack, gTypeAudioStreamTrack
+  , AudioTrack(AudioTrack), unAudioTrack, gTypeAudioTrack
+  , AudioTrackList(AudioTrackList), unAudioTrackList, gTypeAudioTrackList
+  , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
+  , BarProp(BarProp), unBarProp, gTypeBarProp
+  , BatteryManager(BatteryManager), unBatteryManager, gTypeBatteryManager
+  , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, gTypeBeforeLoadEvent
+  , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, gTypeBeforeUnloadEvent
+  , BiquadFilterNode(BiquadFilterNode), unBiquadFilterNode, gTypeBiquadFilterNode
+  , Blob(Blob), unBlob, IsBlob, toBlob, gTypeBlob
+  , CDATASection(CDATASection), unCDATASection, gTypeCDATASection
+  , CSS(CSS), unCSS, gTypeCSS
+  , CSSCharsetRule(CSSCharsetRule), unCSSCharsetRule, gTypeCSSCharsetRule
+  , CSSFontFaceLoadEvent(CSSFontFaceLoadEvent), unCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent
+  , CSSFontFaceRule(CSSFontFaceRule), unCSSFontFaceRule, gTypeCSSFontFaceRule
+  , CSSImportRule(CSSImportRule), unCSSImportRule, gTypeCSSImportRule
+  , CSSKeyframeRule(CSSKeyframeRule), unCSSKeyframeRule, gTypeCSSKeyframeRule
+  , CSSKeyframesRule(CSSKeyframesRule), unCSSKeyframesRule, gTypeCSSKeyframesRule
+  , CSSMediaRule(CSSMediaRule), unCSSMediaRule, gTypeCSSMediaRule
+  , CSSPageRule(CSSPageRule), unCSSPageRule, gTypeCSSPageRule
+  , CSSPrimitiveValue(CSSPrimitiveValue), unCSSPrimitiveValue, gTypeCSSPrimitiveValue
+  , CSSRule(CSSRule), unCSSRule, IsCSSRule, toCSSRule, gTypeCSSRule
+  , CSSRuleList(CSSRuleList), unCSSRuleList, gTypeCSSRuleList
+  , CSSStyleDeclaration(CSSStyleDeclaration), unCSSStyleDeclaration, gTypeCSSStyleDeclaration
+  , CSSStyleRule(CSSStyleRule), unCSSStyleRule, gTypeCSSStyleRule
+  , CSSStyleSheet(CSSStyleSheet), unCSSStyleSheet, gTypeCSSStyleSheet
+  , CSSSupportsRule(CSSSupportsRule), unCSSSupportsRule, gTypeCSSSupportsRule
+  , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, gTypeCSSUnknownRule
+  , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, gTypeCSSValue
+  , CSSValueList(CSSValueList), unCSSValueList, IsCSSValueList, toCSSValueList, gTypeCSSValueList
+  , CanvasGradient(CanvasGradient), unCanvasGradient, gTypeCanvasGradient
+  , CanvasPattern(CanvasPattern), unCanvasPattern, gTypeCanvasPattern
+  , CanvasProxy(CanvasProxy), unCanvasProxy, gTypeCanvasProxy
+  , CanvasRenderingContext(CanvasRenderingContext), unCanvasRenderingContext, IsCanvasRenderingContext, toCanvasRenderingContext, gTypeCanvasRenderingContext
+  , CanvasRenderingContext2D(CanvasRenderingContext2D), unCanvasRenderingContext2D, gTypeCanvasRenderingContext2D
+  , CapabilityRange(CapabilityRange), unCapabilityRange, gTypeCapabilityRange
+  , ChannelMergerNode(ChannelMergerNode), unChannelMergerNode, gTypeChannelMergerNode
+  , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, gTypeChannelSplitterNode
+  , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, gTypeCharacterData
+  , ChildNode(ChildNode), unChildNode, gTypeChildNode
+  , ClientRect(ClientRect), unClientRect, gTypeClientRect
+  , ClientRectList(ClientRectList), unClientRectList, gTypeClientRectList
+  , CloseEvent(CloseEvent), unCloseEvent, gTypeCloseEvent
+  , CommandLineAPIHost(CommandLineAPIHost), unCommandLineAPIHost, gTypeCommandLineAPIHost
+  , Comment(Comment), unComment, gTypeComment
+  , CompositionEvent(CompositionEvent), unCompositionEvent, gTypeCompositionEvent
+  , ConvolverNode(ConvolverNode), unConvolverNode, gTypeConvolverNode
+  , Coordinates(Coordinates), unCoordinates, gTypeCoordinates
+  , Counter(Counter), unCounter, gTypeCounter
+  , Crypto(Crypto), unCrypto, gTypeCrypto
+  , CryptoKey(CryptoKey), unCryptoKey, gTypeCryptoKey
+  , CryptoKeyPair(CryptoKeyPair), unCryptoKeyPair, gTypeCryptoKeyPair
+  , CustomEvent(CustomEvent), unCustomEvent, gTypeCustomEvent
+  , DOMError(DOMError), unDOMError, IsDOMError, toDOMError, gTypeDOMError
+  , DOMImplementation(DOMImplementation), unDOMImplementation, gTypeDOMImplementation
+  , DOMNamedFlowCollection(DOMNamedFlowCollection), unDOMNamedFlowCollection, gTypeDOMNamedFlowCollection
+  , DOMParser(DOMParser), unDOMParser, gTypeDOMParser
+  , DOMSettableTokenList(DOMSettableTokenList), unDOMSettableTokenList, gTypeDOMSettableTokenList
+  , DOMStringList(DOMStringList), unDOMStringList, gTypeDOMStringList
+  , DOMStringMap(DOMStringMap), unDOMStringMap, gTypeDOMStringMap
+  , DOMTokenList(DOMTokenList), unDOMTokenList, IsDOMTokenList, toDOMTokenList, gTypeDOMTokenList
+  , DataCue(DataCue), unDataCue, gTypeDataCue
+  , DataTransfer(DataTransfer), unDataTransfer, gTypeDataTransfer
+  , DataTransferItem(DataTransferItem), unDataTransferItem, gTypeDataTransferItem
+  , DataTransferItemList(DataTransferItemList), unDataTransferItemList, gTypeDataTransferItemList
+  , Database(Database), unDatabase, gTypeDatabase
+  , DedicatedWorkerGlobalScope(DedicatedWorkerGlobalScope), unDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope
+  , DelayNode(DelayNode), unDelayNode, gTypeDelayNode
+  , DeviceMotionEvent(DeviceMotionEvent), unDeviceMotionEvent, gTypeDeviceMotionEvent
+  , DeviceOrientationEvent(DeviceOrientationEvent), unDeviceOrientationEvent, gTypeDeviceOrientationEvent
+  , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, gTypeDeviceProximityEvent
+  , Document(Document), unDocument, IsDocument, toDocument, gTypeDocument
+  , DocumentFragment(DocumentFragment), unDocumentFragment, gTypeDocumentFragment
+  , DocumentType(DocumentType), unDocumentType, gTypeDocumentType
+  , DynamicsCompressorNode(DynamicsCompressorNode), unDynamicsCompressorNode, gTypeDynamicsCompressorNode
+  , EXTBlendMinMax(EXTBlendMinMax), unEXTBlendMinMax, gTypeEXTBlendMinMax
+  , EXTFragDepth(EXTFragDepth), unEXTFragDepth, gTypeEXTFragDepth
+  , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
+  , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
+  , EXTsRGB(EXTsRGB), unEXTsRGB, gTypeEXTsRGB
+  , Element(Element), unElement, IsElement, toElement, gTypeElement
+  , Entity(Entity), unEntity, gTypeEntity
+  , EntityReference(EntityReference), unEntityReference, gTypeEntityReference
+  , ErrorEvent(ErrorEvent), unErrorEvent, gTypeErrorEvent
+  , Event(Event), unEvent, IsEvent, toEvent, gTypeEvent
+  , EventListener(EventListener), unEventListener, gTypeEventListener
+  , EventSource(EventSource), unEventSource, gTypeEventSource
+  , EventTarget(EventTarget), unEventTarget, IsEventTarget, toEventTarget, gTypeEventTarget
+  , File(File), unFile, gTypeFile
+  , FileError(FileError), unFileError, gTypeFileError
+  , FileList(FileList), unFileList, gTypeFileList
+  , FileReader(FileReader), unFileReader, gTypeFileReader
+  , FileReaderSync(FileReaderSync), unFileReaderSync, gTypeFileReaderSync
+  , FocusEvent(FocusEvent), unFocusEvent, gTypeFocusEvent
+  , FontLoader(FontLoader), unFontLoader, gTypeFontLoader
+  , FormData(FormData), unFormData, gTypeFormData
+  , GainNode(GainNode), unGainNode, gTypeGainNode
+  , Gamepad(Gamepad), unGamepad, gTypeGamepad
+  , GamepadButton(GamepadButton), unGamepadButton, gTypeGamepadButton
+  , GamepadEvent(GamepadEvent), unGamepadEvent, gTypeGamepadEvent
+  , Geolocation(Geolocation), unGeolocation, gTypeGeolocation
+  , Geoposition(Geoposition), unGeoposition, gTypeGeoposition
+  , HTMLAllCollection(HTMLAllCollection), unHTMLAllCollection, gTypeHTMLAllCollection
+  , HTMLAnchorElement(HTMLAnchorElement), unHTMLAnchorElement, gTypeHTMLAnchorElement
+  , HTMLAppletElement(HTMLAppletElement), unHTMLAppletElement, gTypeHTMLAppletElement
+  , HTMLAreaElement(HTMLAreaElement), unHTMLAreaElement, gTypeHTMLAreaElement
+  , HTMLAudioElement(HTMLAudioElement), unHTMLAudioElement, gTypeHTMLAudioElement
+  , HTMLBRElement(HTMLBRElement), unHTMLBRElement, gTypeHTMLBRElement
+  , HTMLBaseElement(HTMLBaseElement), unHTMLBaseElement, gTypeHTMLBaseElement
+  , HTMLBaseFontElement(HTMLBaseFontElement), unHTMLBaseFontElement, gTypeHTMLBaseFontElement
+  , HTMLBodyElement(HTMLBodyElement), unHTMLBodyElement, gTypeHTMLBodyElement
+  , HTMLButtonElement(HTMLButtonElement), unHTMLButtonElement, gTypeHTMLButtonElement
+  , HTMLCanvasElement(HTMLCanvasElement), unHTMLCanvasElement, gTypeHTMLCanvasElement
+  , HTMLCollection(HTMLCollection), unHTMLCollection, IsHTMLCollection, toHTMLCollection, gTypeHTMLCollection
+  , HTMLDListElement(HTMLDListElement), unHTMLDListElement, gTypeHTMLDListElement
+  , HTMLDataListElement(HTMLDataListElement), unHTMLDataListElement, gTypeHTMLDataListElement
+  , HTMLDetailsElement(HTMLDetailsElement), unHTMLDetailsElement, gTypeHTMLDetailsElement
+  , HTMLDirectoryElement(HTMLDirectoryElement), unHTMLDirectoryElement, gTypeHTMLDirectoryElement
+  , HTMLDivElement(HTMLDivElement), unHTMLDivElement, gTypeHTMLDivElement
+  , HTMLDocument(HTMLDocument), unHTMLDocument, gTypeHTMLDocument
+  , HTMLElement(HTMLElement), unHTMLElement, IsHTMLElement, toHTMLElement, gTypeHTMLElement
+  , HTMLEmbedElement(HTMLEmbedElement), unHTMLEmbedElement, gTypeHTMLEmbedElement
+  , HTMLFieldSetElement(HTMLFieldSetElement), unHTMLFieldSetElement, gTypeHTMLFieldSetElement
+  , HTMLFontElement(HTMLFontElement), unHTMLFontElement, gTypeHTMLFontElement
+  , HTMLFormControlsCollection(HTMLFormControlsCollection), unHTMLFormControlsCollection, gTypeHTMLFormControlsCollection
+  , HTMLFormElement(HTMLFormElement), unHTMLFormElement, gTypeHTMLFormElement
+  , HTMLFrameElement(HTMLFrameElement), unHTMLFrameElement, gTypeHTMLFrameElement
+  , HTMLFrameSetElement(HTMLFrameSetElement), unHTMLFrameSetElement, gTypeHTMLFrameSetElement
+  , HTMLHRElement(HTMLHRElement), unHTMLHRElement, gTypeHTMLHRElement
+  , HTMLHeadElement(HTMLHeadElement), unHTMLHeadElement, gTypeHTMLHeadElement
+  , HTMLHeadingElement(HTMLHeadingElement), unHTMLHeadingElement, gTypeHTMLHeadingElement
+  , HTMLHtmlElement(HTMLHtmlElement), unHTMLHtmlElement, gTypeHTMLHtmlElement
+  , HTMLIFrameElement(HTMLIFrameElement), unHTMLIFrameElement, gTypeHTMLIFrameElement
+  , HTMLImageElement(HTMLImageElement), unHTMLImageElement, gTypeHTMLImageElement
+  , HTMLInputElement(HTMLInputElement), unHTMLInputElement, gTypeHTMLInputElement
+  , HTMLKeygenElement(HTMLKeygenElement), unHTMLKeygenElement, gTypeHTMLKeygenElement
+  , HTMLLIElement(HTMLLIElement), unHTMLLIElement, gTypeHTMLLIElement
+  , HTMLLabelElement(HTMLLabelElement), unHTMLLabelElement, gTypeHTMLLabelElement
+  , HTMLLegendElement(HTMLLegendElement), unHTMLLegendElement, gTypeHTMLLegendElement
+  , HTMLLinkElement(HTMLLinkElement), unHTMLLinkElement, gTypeHTMLLinkElement
+  , HTMLMapElement(HTMLMapElement), unHTMLMapElement, gTypeHTMLMapElement
+  , HTMLMarqueeElement(HTMLMarqueeElement), unHTMLMarqueeElement, gTypeHTMLMarqueeElement
+  , HTMLMediaElement(HTMLMediaElement), unHTMLMediaElement, IsHTMLMediaElement, toHTMLMediaElement, gTypeHTMLMediaElement
+  , HTMLMenuElement(HTMLMenuElement), unHTMLMenuElement, gTypeHTMLMenuElement
+  , HTMLMetaElement(HTMLMetaElement), unHTMLMetaElement, gTypeHTMLMetaElement
+  , HTMLMeterElement(HTMLMeterElement), unHTMLMeterElement, gTypeHTMLMeterElement
+  , HTMLModElement(HTMLModElement), unHTMLModElement, gTypeHTMLModElement
+  , HTMLOListElement(HTMLOListElement), unHTMLOListElement, gTypeHTMLOListElement
+  , HTMLObjectElement(HTMLObjectElement), unHTMLObjectElement, gTypeHTMLObjectElement
+  , HTMLOptGroupElement(HTMLOptGroupElement), unHTMLOptGroupElement, gTypeHTMLOptGroupElement
+  , HTMLOptionElement(HTMLOptionElement), unHTMLOptionElement, gTypeHTMLOptionElement
+  , HTMLOptionsCollection(HTMLOptionsCollection), unHTMLOptionsCollection, gTypeHTMLOptionsCollection
+  , HTMLOutputElement(HTMLOutputElement), unHTMLOutputElement, gTypeHTMLOutputElement
+  , HTMLParagraphElement(HTMLParagraphElement), unHTMLParagraphElement, gTypeHTMLParagraphElement
+  , HTMLParamElement(HTMLParamElement), unHTMLParamElement, gTypeHTMLParamElement
+  , HTMLPreElement(HTMLPreElement), unHTMLPreElement, gTypeHTMLPreElement
+  , HTMLProgressElement(HTMLProgressElement), unHTMLProgressElement, gTypeHTMLProgressElement
+  , HTMLQuoteElement(HTMLQuoteElement), unHTMLQuoteElement, gTypeHTMLQuoteElement
+  , HTMLScriptElement(HTMLScriptElement), unHTMLScriptElement, gTypeHTMLScriptElement
+  , HTMLSelectElement(HTMLSelectElement), unHTMLSelectElement, gTypeHTMLSelectElement
+  , HTMLSourceElement(HTMLSourceElement), unHTMLSourceElement, gTypeHTMLSourceElement
+  , HTMLSpanElement(HTMLSpanElement), unHTMLSpanElement, gTypeHTMLSpanElement
+  , HTMLStyleElement(HTMLStyleElement), unHTMLStyleElement, gTypeHTMLStyleElement
+  , HTMLTableCaptionElement(HTMLTableCaptionElement), unHTMLTableCaptionElement, gTypeHTMLTableCaptionElement
+  , HTMLTableCellElement(HTMLTableCellElement), unHTMLTableCellElement, gTypeHTMLTableCellElement
+  , HTMLTableColElement(HTMLTableColElement), unHTMLTableColElement, gTypeHTMLTableColElement
+  , HTMLTableElement(HTMLTableElement), unHTMLTableElement, gTypeHTMLTableElement
+  , HTMLTableRowElement(HTMLTableRowElement), unHTMLTableRowElement, gTypeHTMLTableRowElement
+  , HTMLTableSectionElement(HTMLTableSectionElement), unHTMLTableSectionElement, gTypeHTMLTableSectionElement
+  , HTMLTemplateElement(HTMLTemplateElement), unHTMLTemplateElement, gTypeHTMLTemplateElement
+  , HTMLTextAreaElement(HTMLTextAreaElement), unHTMLTextAreaElement, gTypeHTMLTextAreaElement
+  , HTMLTitleElement(HTMLTitleElement), unHTMLTitleElement, gTypeHTMLTitleElement
+  , HTMLTrackElement(HTMLTrackElement), unHTMLTrackElement, gTypeHTMLTrackElement
+  , HTMLUListElement(HTMLUListElement), unHTMLUListElement, gTypeHTMLUListElement
+  , HTMLUnknownElement(HTMLUnknownElement), unHTMLUnknownElement, gTypeHTMLUnknownElement
+  , HTMLVideoElement(HTMLVideoElement), unHTMLVideoElement, gTypeHTMLVideoElement
+  , HashChangeEvent(HashChangeEvent), unHashChangeEvent, gTypeHashChangeEvent
+  , History(History), unHistory, gTypeHistory
+  , IDBAny(IDBAny), unIDBAny, gTypeIDBAny
+  , IDBCursor(IDBCursor), unIDBCursor, IsIDBCursor, toIDBCursor, gTypeIDBCursor
+  , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, gTypeIDBCursorWithValue
+  , IDBDatabase(IDBDatabase), unIDBDatabase, gTypeIDBDatabase
+  , IDBFactory(IDBFactory), unIDBFactory, gTypeIDBFactory
+  , IDBIndex(IDBIndex), unIDBIndex, gTypeIDBIndex
+  , IDBKeyRange(IDBKeyRange), unIDBKeyRange, gTypeIDBKeyRange
+  , IDBObjectStore(IDBObjectStore), unIDBObjectStore, gTypeIDBObjectStore
+  , IDBOpenDBRequest(IDBOpenDBRequest), unIDBOpenDBRequest, gTypeIDBOpenDBRequest
+  , IDBRequest(IDBRequest), unIDBRequest, IsIDBRequest, toIDBRequest, gTypeIDBRequest
+  , IDBTransaction(IDBTransaction), unIDBTransaction, gTypeIDBTransaction
+  , IDBVersionChangeEvent(IDBVersionChangeEvent), unIDBVersionChangeEvent, gTypeIDBVersionChangeEvent
+  , ImageData(ImageData), unImageData, gTypeImageData
+  , InspectorFrontendHost(InspectorFrontendHost), unInspectorFrontendHost, gTypeInspectorFrontendHost
+  , InternalSettings(InternalSettings), unInternalSettings, gTypeInternalSettings
+  , Internals(Internals), unInternals, gTypeInternals
+  , KeyboardEvent(KeyboardEvent), unKeyboardEvent, gTypeKeyboardEvent
+  , Location(Location), unLocation, gTypeLocation
+  , MallocStatistics(MallocStatistics), unMallocStatistics, gTypeMallocStatistics
+  , MediaController(MediaController), unMediaController, gTypeMediaController
+  , MediaControlsHost(MediaControlsHost), unMediaControlsHost, gTypeMediaControlsHost
+  , MediaElementAudioSourceNode(MediaElementAudioSourceNode), unMediaElementAudioSourceNode, gTypeMediaElementAudioSourceNode
+  , MediaError(MediaError), unMediaError, gTypeMediaError
+  , MediaKeyError(MediaKeyError), unMediaKeyError, gTypeMediaKeyError
+  , MediaKeyEvent(MediaKeyEvent), unMediaKeyEvent, gTypeMediaKeyEvent
+  , MediaKeyMessageEvent(MediaKeyMessageEvent), unMediaKeyMessageEvent, gTypeMediaKeyMessageEvent
+  , MediaKeyNeededEvent(MediaKeyNeededEvent), unMediaKeyNeededEvent, gTypeMediaKeyNeededEvent
+  , MediaKeySession(MediaKeySession), unMediaKeySession, gTypeMediaKeySession
+  , MediaKeys(MediaKeys), unMediaKeys, gTypeMediaKeys
+  , MediaList(MediaList), unMediaList, gTypeMediaList
+  , MediaQueryList(MediaQueryList), unMediaQueryList, gTypeMediaQueryList
+  , MediaSource(MediaSource), unMediaSource, gTypeMediaSource
+  , MediaSourceStates(MediaSourceStates), unMediaSourceStates, gTypeMediaSourceStates
+  , MediaStream(MediaStream), unMediaStream, gTypeMediaStream
+  , MediaStreamAudioDestinationNode(MediaStreamAudioDestinationNode), unMediaStreamAudioDestinationNode, gTypeMediaStreamAudioDestinationNode
+  , MediaStreamAudioSourceNode(MediaStreamAudioSourceNode), unMediaStreamAudioSourceNode, gTypeMediaStreamAudioSourceNode
+  , MediaStreamCapabilities(MediaStreamCapabilities), unMediaStreamCapabilities, IsMediaStreamCapabilities, toMediaStreamCapabilities, gTypeMediaStreamCapabilities
+  , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, gTypeMediaStreamEvent
+  , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, gTypeMediaStreamTrack
+  , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
+  , MediaTrackConstraint(MediaTrackConstraint), unMediaTrackConstraint, gTypeMediaTrackConstraint
+  , MediaTrackConstraintSet(MediaTrackConstraintSet), unMediaTrackConstraintSet, gTypeMediaTrackConstraintSet
+  , MediaTrackConstraints(MediaTrackConstraints), unMediaTrackConstraints, gTypeMediaTrackConstraints
+  , MemoryInfo(MemoryInfo), unMemoryInfo, gTypeMemoryInfo
+  , MessageChannel(MessageChannel), unMessageChannel, gTypeMessageChannel
+  , MessageEvent(MessageEvent), unMessageEvent, gTypeMessageEvent
+  , MessagePort(MessagePort), unMessagePort, gTypeMessagePort
+  , MimeType(MimeType), unMimeType, gTypeMimeType
+  , MimeTypeArray(MimeTypeArray), unMimeTypeArray, gTypeMimeTypeArray
+  , MouseEvent(MouseEvent), unMouseEvent, IsMouseEvent, toMouseEvent, gTypeMouseEvent
+  , MutationEvent(MutationEvent), unMutationEvent, gTypeMutationEvent
+  , MutationObserver(MutationObserver), unMutationObserver, gTypeMutationObserver
+  , MutationRecord(MutationRecord), unMutationRecord, gTypeMutationRecord
+  , NamedNodeMap(NamedNodeMap), unNamedNodeMap, gTypeNamedNodeMap
+  , Navigator(Navigator), unNavigator, gTypeNavigator
+  , NavigatorUserMediaError(NavigatorUserMediaError), unNavigatorUserMediaError, gTypeNavigatorUserMediaError
+  , Node(Node), unNode, IsNode, toNode, gTypeNode
+  , NodeFilter(NodeFilter), unNodeFilter, gTypeNodeFilter
+  , NodeIterator(NodeIterator), unNodeIterator, gTypeNodeIterator
+  , NodeList(NodeList), unNodeList, IsNodeList, toNodeList, gTypeNodeList
+  , Notification(Notification), unNotification, gTypeNotification
+  , NotificationCenter(NotificationCenter), unNotificationCenter, gTypeNotificationCenter
+  , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, gTypeOESElementIndexUint
+  , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, gTypeOESStandardDerivatives
+  , OESTextureFloat(OESTextureFloat), unOESTextureFloat, gTypeOESTextureFloat
+  , OESTextureFloatLinear(OESTextureFloatLinear), unOESTextureFloatLinear, gTypeOESTextureFloatLinear
+  , OESTextureHalfFloat(OESTextureHalfFloat), unOESTextureHalfFloat, gTypeOESTextureHalfFloat
+  , OESTextureHalfFloatLinear(OESTextureHalfFloatLinear), unOESTextureHalfFloatLinear, gTypeOESTextureHalfFloatLinear
+  , OESVertexArrayObject(OESVertexArrayObject), unOESVertexArrayObject, gTypeOESVertexArrayObject
+  , OfflineAudioCompletionEvent(OfflineAudioCompletionEvent), unOfflineAudioCompletionEvent, gTypeOfflineAudioCompletionEvent
+  , OfflineAudioContext(OfflineAudioContext), unOfflineAudioContext, gTypeOfflineAudioContext
+  , OscillatorNode(OscillatorNode), unOscillatorNode, gTypeOscillatorNode
+  , OverflowEvent(OverflowEvent), unOverflowEvent, gTypeOverflowEvent
+  , PageTransitionEvent(PageTransitionEvent), unPageTransitionEvent, gTypePageTransitionEvent
+  , PannerNode(PannerNode), unPannerNode, gTypePannerNode
+  , Path2D(Path2D), unPath2D, gTypePath2D
+  , Performance(Performance), unPerformance, gTypePerformance
+  , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, gTypePerformanceEntry
+  , PerformanceEntryList(PerformanceEntryList), unPerformanceEntryList, gTypePerformanceEntryList
+  , PerformanceMark(PerformanceMark), unPerformanceMark, gTypePerformanceMark
+  , PerformanceMeasure(PerformanceMeasure), unPerformanceMeasure, gTypePerformanceMeasure
+  , PerformanceNavigation(PerformanceNavigation), unPerformanceNavigation, gTypePerformanceNavigation
+  , PerformanceResourceTiming(PerformanceResourceTiming), unPerformanceResourceTiming, gTypePerformanceResourceTiming
+  , PerformanceTiming(PerformanceTiming), unPerformanceTiming, gTypePerformanceTiming
+  , PeriodicWave(PeriodicWave), unPeriodicWave, gTypePeriodicWave
+  , Plugin(Plugin), unPlugin, gTypePlugin
+  , PluginArray(PluginArray), unPluginArray, gTypePluginArray
+  , PopStateEvent(PopStateEvent), unPopStateEvent, gTypePopStateEvent
+  , PositionError(PositionError), unPositionError, gTypePositionError
+  , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, gTypeProcessingInstruction
+  , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, gTypeProgressEvent
+  , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
+  , RGBColor(RGBColor), unRGBColor, gTypeRGBColor
+  , RTCConfiguration(RTCConfiguration), unRTCConfiguration, gTypeRTCConfiguration
+  , RTCDTMFSender(RTCDTMFSender), unRTCDTMFSender, gTypeRTCDTMFSender
+  , RTCDTMFToneChangeEvent(RTCDTMFToneChangeEvent), unRTCDTMFToneChangeEvent, gTypeRTCDTMFToneChangeEvent
+  , RTCDataChannel(RTCDataChannel), unRTCDataChannel, gTypeRTCDataChannel
+  , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, gTypeRTCDataChannelEvent
+  , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, gTypeRTCIceCandidate
+  , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
+  , RTCIceServer(RTCIceServer), unRTCIceServer, gTypeRTCIceServer
+  , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, gTypeRTCPeerConnection
+  , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, gTypeRTCSessionDescription
+  , RTCStatsReport(RTCStatsReport), unRTCStatsReport, gTypeRTCStatsReport
+  , RTCStatsResponse(RTCStatsResponse), unRTCStatsResponse, gTypeRTCStatsResponse
+  , RadioNodeList(RadioNodeList), unRadioNodeList, gTypeRadioNodeList
+  , Range(Range), unRange, gTypeRange
+  , ReadableStream(ReadableStream), unReadableStream, gTypeReadableStream
+  , Rect(Rect), unRect, gTypeRect
+  , SQLError(SQLError), unSQLError, gTypeSQLError
+  , SQLResultSet(SQLResultSet), unSQLResultSet, gTypeSQLResultSet
+  , SQLResultSetRowList(SQLResultSetRowList), unSQLResultSetRowList, gTypeSQLResultSetRowList
+  , SQLTransaction(SQLTransaction), unSQLTransaction, gTypeSQLTransaction
+  , SVGAElement(SVGAElement), unSVGAElement, gTypeSVGAElement
+  , SVGAltGlyphDefElement(SVGAltGlyphDefElement), unSVGAltGlyphDefElement, gTypeSVGAltGlyphDefElement
+  , SVGAltGlyphElement(SVGAltGlyphElement), unSVGAltGlyphElement, gTypeSVGAltGlyphElement
+  , SVGAltGlyphItemElement(SVGAltGlyphItemElement), unSVGAltGlyphItemElement, gTypeSVGAltGlyphItemElement
+  , SVGAngle(SVGAngle), unSVGAngle, gTypeSVGAngle
+  , SVGAnimateColorElement(SVGAnimateColorElement), unSVGAnimateColorElement, gTypeSVGAnimateColorElement
+  , SVGAnimateElement(SVGAnimateElement), unSVGAnimateElement, gTypeSVGAnimateElement
+  , SVGAnimateMotionElement(SVGAnimateMotionElement), unSVGAnimateMotionElement, gTypeSVGAnimateMotionElement
+  , SVGAnimateTransformElement(SVGAnimateTransformElement), unSVGAnimateTransformElement, gTypeSVGAnimateTransformElement
+  , SVGAnimatedAngle(SVGAnimatedAngle), unSVGAnimatedAngle, gTypeSVGAnimatedAngle
+  , SVGAnimatedBoolean(SVGAnimatedBoolean), unSVGAnimatedBoolean, gTypeSVGAnimatedBoolean
+  , SVGAnimatedEnumeration(SVGAnimatedEnumeration), unSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration
+  , SVGAnimatedInteger(SVGAnimatedInteger), unSVGAnimatedInteger, gTypeSVGAnimatedInteger
+  , SVGAnimatedLength(SVGAnimatedLength), unSVGAnimatedLength, gTypeSVGAnimatedLength
+  , SVGAnimatedLengthList(SVGAnimatedLengthList), unSVGAnimatedLengthList, gTypeSVGAnimatedLengthList
+  , SVGAnimatedNumber(SVGAnimatedNumber), unSVGAnimatedNumber, gTypeSVGAnimatedNumber
+  , SVGAnimatedNumberList(SVGAnimatedNumberList), unSVGAnimatedNumberList, gTypeSVGAnimatedNumberList
+  , SVGAnimatedPreserveAspectRatio(SVGAnimatedPreserveAspectRatio), unSVGAnimatedPreserveAspectRatio, gTypeSVGAnimatedPreserveAspectRatio
+  , SVGAnimatedRect(SVGAnimatedRect), unSVGAnimatedRect, gTypeSVGAnimatedRect
+  , SVGAnimatedString(SVGAnimatedString), unSVGAnimatedString, gTypeSVGAnimatedString
+  , SVGAnimatedTransformList(SVGAnimatedTransformList), unSVGAnimatedTransformList, gTypeSVGAnimatedTransformList
+  , SVGAnimationElement(SVGAnimationElement), unSVGAnimationElement, IsSVGAnimationElement, toSVGAnimationElement, gTypeSVGAnimationElement
+  , SVGCircleElement(SVGCircleElement), unSVGCircleElement, gTypeSVGCircleElement
+  , SVGClipPathElement(SVGClipPathElement), unSVGClipPathElement, gTypeSVGClipPathElement
+  , SVGColor(SVGColor), unSVGColor, IsSVGColor, toSVGColor, gTypeSVGColor
+  , SVGComponentTransferFunctionElement(SVGComponentTransferFunctionElement), unSVGComponentTransferFunctionElement, IsSVGComponentTransferFunctionElement, toSVGComponentTransferFunctionElement, gTypeSVGComponentTransferFunctionElement
+  , SVGCursorElement(SVGCursorElement), unSVGCursorElement, gTypeSVGCursorElement
+  , SVGDefsElement(SVGDefsElement), unSVGDefsElement, gTypeSVGDefsElement
+  , SVGDescElement(SVGDescElement), unSVGDescElement, gTypeSVGDescElement
+  , SVGDocument(SVGDocument), unSVGDocument, gTypeSVGDocument
+  , SVGElement(SVGElement), unSVGElement, IsSVGElement, toSVGElement, gTypeSVGElement
+  , SVGEllipseElement(SVGEllipseElement), unSVGEllipseElement, gTypeSVGEllipseElement
+  , SVGExternalResourcesRequired(SVGExternalResourcesRequired), unSVGExternalResourcesRequired, gTypeSVGExternalResourcesRequired
+  , SVGFEBlendElement(SVGFEBlendElement), unSVGFEBlendElement, gTypeSVGFEBlendElement
+  , SVGFEColorMatrixElement(SVGFEColorMatrixElement), unSVGFEColorMatrixElement, gTypeSVGFEColorMatrixElement
+  , SVGFEComponentTransferElement(SVGFEComponentTransferElement), unSVGFEComponentTransferElement, gTypeSVGFEComponentTransferElement
+  , SVGFECompositeElement(SVGFECompositeElement), unSVGFECompositeElement, gTypeSVGFECompositeElement
+  , SVGFEConvolveMatrixElement(SVGFEConvolveMatrixElement), unSVGFEConvolveMatrixElement, gTypeSVGFEConvolveMatrixElement
+  , SVGFEDiffuseLightingElement(SVGFEDiffuseLightingElement), unSVGFEDiffuseLightingElement, gTypeSVGFEDiffuseLightingElement
+  , SVGFEDisplacementMapElement(SVGFEDisplacementMapElement), unSVGFEDisplacementMapElement, gTypeSVGFEDisplacementMapElement
+  , SVGFEDistantLightElement(SVGFEDistantLightElement), unSVGFEDistantLightElement, gTypeSVGFEDistantLightElement
+  , SVGFEDropShadowElement(SVGFEDropShadowElement), unSVGFEDropShadowElement, gTypeSVGFEDropShadowElement
+  , SVGFEFloodElement(SVGFEFloodElement), unSVGFEFloodElement, gTypeSVGFEFloodElement
+  , SVGFEFuncAElement(SVGFEFuncAElement), unSVGFEFuncAElement, gTypeSVGFEFuncAElement
+  , SVGFEFuncBElement(SVGFEFuncBElement), unSVGFEFuncBElement, gTypeSVGFEFuncBElement
+  , SVGFEFuncGElement(SVGFEFuncGElement), unSVGFEFuncGElement, gTypeSVGFEFuncGElement
+  , SVGFEFuncRElement(SVGFEFuncRElement), unSVGFEFuncRElement, gTypeSVGFEFuncRElement
+  , SVGFEGaussianBlurElement(SVGFEGaussianBlurElement), unSVGFEGaussianBlurElement, gTypeSVGFEGaussianBlurElement
+  , SVGFEImageElement(SVGFEImageElement), unSVGFEImageElement, gTypeSVGFEImageElement
+  , SVGFEMergeElement(SVGFEMergeElement), unSVGFEMergeElement, gTypeSVGFEMergeElement
+  , SVGFEMergeNodeElement(SVGFEMergeNodeElement), unSVGFEMergeNodeElement, gTypeSVGFEMergeNodeElement
+  , SVGFEMorphologyElement(SVGFEMorphologyElement), unSVGFEMorphologyElement, gTypeSVGFEMorphologyElement
+  , SVGFEOffsetElement(SVGFEOffsetElement), unSVGFEOffsetElement, gTypeSVGFEOffsetElement
+  , SVGFEPointLightElement(SVGFEPointLightElement), unSVGFEPointLightElement, gTypeSVGFEPointLightElement
+  , SVGFESpecularLightingElement(SVGFESpecularLightingElement), unSVGFESpecularLightingElement, gTypeSVGFESpecularLightingElement
+  , SVGFESpotLightElement(SVGFESpotLightElement), unSVGFESpotLightElement, gTypeSVGFESpotLightElement
+  , SVGFETileElement(SVGFETileElement), unSVGFETileElement, gTypeSVGFETileElement
+  , SVGFETurbulenceElement(SVGFETurbulenceElement), unSVGFETurbulenceElement, gTypeSVGFETurbulenceElement
+  , SVGFilterElement(SVGFilterElement), unSVGFilterElement, gTypeSVGFilterElement
+  , SVGFilterPrimitiveStandardAttributes(SVGFilterPrimitiveStandardAttributes), unSVGFilterPrimitiveStandardAttributes, gTypeSVGFilterPrimitiveStandardAttributes
+  , SVGFitToViewBox(SVGFitToViewBox), unSVGFitToViewBox, gTypeSVGFitToViewBox
+  , SVGFontElement(SVGFontElement), unSVGFontElement, gTypeSVGFontElement
+  , SVGFontFaceElement(SVGFontFaceElement), unSVGFontFaceElement, gTypeSVGFontFaceElement
+  , SVGFontFaceFormatElement(SVGFontFaceFormatElement), unSVGFontFaceFormatElement, gTypeSVGFontFaceFormatElement
+  , SVGFontFaceNameElement(SVGFontFaceNameElement), unSVGFontFaceNameElement, gTypeSVGFontFaceNameElement
+  , SVGFontFaceSrcElement(SVGFontFaceSrcElement), unSVGFontFaceSrcElement, gTypeSVGFontFaceSrcElement
+  , SVGFontFaceUriElement(SVGFontFaceUriElement), unSVGFontFaceUriElement, gTypeSVGFontFaceUriElement
+  , SVGForeignObjectElement(SVGForeignObjectElement), unSVGForeignObjectElement, gTypeSVGForeignObjectElement
+  , SVGGElement(SVGGElement), unSVGGElement, gTypeSVGGElement
+  , SVGGlyphElement(SVGGlyphElement), unSVGGlyphElement, gTypeSVGGlyphElement
+  , SVGGlyphRefElement(SVGGlyphRefElement), unSVGGlyphRefElement, gTypeSVGGlyphRefElement
+  , SVGGradientElement(SVGGradientElement), unSVGGradientElement, IsSVGGradientElement, toSVGGradientElement, gTypeSVGGradientElement
+  , SVGGraphicsElement(SVGGraphicsElement), unSVGGraphicsElement, IsSVGGraphicsElement, toSVGGraphicsElement, gTypeSVGGraphicsElement
+  , SVGHKernElement(SVGHKernElement), unSVGHKernElement, gTypeSVGHKernElement
+  , SVGImageElement(SVGImageElement), unSVGImageElement, gTypeSVGImageElement
+  , SVGLength(SVGLength), unSVGLength, gTypeSVGLength
+  , SVGLengthList(SVGLengthList), unSVGLengthList, gTypeSVGLengthList
+  , SVGLineElement(SVGLineElement), unSVGLineElement, gTypeSVGLineElement
+  , SVGLinearGradientElement(SVGLinearGradientElement), unSVGLinearGradientElement, gTypeSVGLinearGradientElement
+  , SVGMPathElement(SVGMPathElement), unSVGMPathElement, gTypeSVGMPathElement
+  , SVGMarkerElement(SVGMarkerElement), unSVGMarkerElement, gTypeSVGMarkerElement
+  , SVGMaskElement(SVGMaskElement), unSVGMaskElement, gTypeSVGMaskElement
+  , SVGMatrix(SVGMatrix), unSVGMatrix, gTypeSVGMatrix
+  , SVGMetadataElement(SVGMetadataElement), unSVGMetadataElement, gTypeSVGMetadataElement
+  , SVGMissingGlyphElement(SVGMissingGlyphElement), unSVGMissingGlyphElement, gTypeSVGMissingGlyphElement
+  , SVGNumber(SVGNumber), unSVGNumber, gTypeSVGNumber
+  , SVGNumberList(SVGNumberList), unSVGNumberList, gTypeSVGNumberList
+  , SVGPaint(SVGPaint), unSVGPaint, gTypeSVGPaint
+  , SVGPathElement(SVGPathElement), unSVGPathElement, gTypeSVGPathElement
+  , SVGPathSeg(SVGPathSeg), unSVGPathSeg, IsSVGPathSeg, toSVGPathSeg, gTypeSVGPathSeg
+  , SVGPathSegArcAbs(SVGPathSegArcAbs), unSVGPathSegArcAbs, gTypeSVGPathSegArcAbs
+  , SVGPathSegArcRel(SVGPathSegArcRel), unSVGPathSegArcRel, gTypeSVGPathSegArcRel
+  , SVGPathSegClosePath(SVGPathSegClosePath), unSVGPathSegClosePath, gTypeSVGPathSegClosePath
+  , SVGPathSegCurvetoCubicAbs(SVGPathSegCurvetoCubicAbs), unSVGPathSegCurvetoCubicAbs, gTypeSVGPathSegCurvetoCubicAbs
+  , SVGPathSegCurvetoCubicRel(SVGPathSegCurvetoCubicRel), unSVGPathSegCurvetoCubicRel, gTypeSVGPathSegCurvetoCubicRel
+  , SVGPathSegCurvetoCubicSmoothAbs(SVGPathSegCurvetoCubicSmoothAbs), unSVGPathSegCurvetoCubicSmoothAbs, gTypeSVGPathSegCurvetoCubicSmoothAbs
+  , SVGPathSegCurvetoCubicSmoothRel(SVGPathSegCurvetoCubicSmoothRel), unSVGPathSegCurvetoCubicSmoothRel, gTypeSVGPathSegCurvetoCubicSmoothRel
+  , SVGPathSegCurvetoQuadraticAbs(SVGPathSegCurvetoQuadraticAbs), unSVGPathSegCurvetoQuadraticAbs, gTypeSVGPathSegCurvetoQuadraticAbs
+  , SVGPathSegCurvetoQuadraticRel(SVGPathSegCurvetoQuadraticRel), unSVGPathSegCurvetoQuadraticRel, gTypeSVGPathSegCurvetoQuadraticRel
+  , SVGPathSegCurvetoQuadraticSmoothAbs(SVGPathSegCurvetoQuadraticSmoothAbs), unSVGPathSegCurvetoQuadraticSmoothAbs, gTypeSVGPathSegCurvetoQuadraticSmoothAbs
+  , SVGPathSegCurvetoQuadraticSmoothRel(SVGPathSegCurvetoQuadraticSmoothRel), unSVGPathSegCurvetoQuadraticSmoothRel, gTypeSVGPathSegCurvetoQuadraticSmoothRel
+  , SVGPathSegLinetoAbs(SVGPathSegLinetoAbs), unSVGPathSegLinetoAbs, gTypeSVGPathSegLinetoAbs
+  , SVGPathSegLinetoHorizontalAbs(SVGPathSegLinetoHorizontalAbs), unSVGPathSegLinetoHorizontalAbs, gTypeSVGPathSegLinetoHorizontalAbs
+  , SVGPathSegLinetoHorizontalRel(SVGPathSegLinetoHorizontalRel), unSVGPathSegLinetoHorizontalRel, gTypeSVGPathSegLinetoHorizontalRel
+  , SVGPathSegLinetoRel(SVGPathSegLinetoRel), unSVGPathSegLinetoRel, gTypeSVGPathSegLinetoRel
+  , SVGPathSegLinetoVerticalAbs(SVGPathSegLinetoVerticalAbs), unSVGPathSegLinetoVerticalAbs, gTypeSVGPathSegLinetoVerticalAbs
+  , SVGPathSegLinetoVerticalRel(SVGPathSegLinetoVerticalRel), unSVGPathSegLinetoVerticalRel, gTypeSVGPathSegLinetoVerticalRel
+  , SVGPathSegList(SVGPathSegList), unSVGPathSegList, gTypeSVGPathSegList
+  , SVGPathSegMovetoAbs(SVGPathSegMovetoAbs), unSVGPathSegMovetoAbs, gTypeSVGPathSegMovetoAbs
+  , SVGPathSegMovetoRel(SVGPathSegMovetoRel), unSVGPathSegMovetoRel, gTypeSVGPathSegMovetoRel
+  , SVGPatternElement(SVGPatternElement), unSVGPatternElement, gTypeSVGPatternElement
+  , SVGPoint(SVGPoint), unSVGPoint, gTypeSVGPoint
+  , SVGPointList(SVGPointList), unSVGPointList, gTypeSVGPointList
+  , SVGPolygonElement(SVGPolygonElement), unSVGPolygonElement, gTypeSVGPolygonElement
+  , SVGPolylineElement(SVGPolylineElement), unSVGPolylineElement, gTypeSVGPolylineElement
+  , SVGPreserveAspectRatio(SVGPreserveAspectRatio), unSVGPreserveAspectRatio, gTypeSVGPreserveAspectRatio
+  , SVGRadialGradientElement(SVGRadialGradientElement), unSVGRadialGradientElement, gTypeSVGRadialGradientElement
+  , SVGRect(SVGRect), unSVGRect, gTypeSVGRect
+  , SVGRectElement(SVGRectElement), unSVGRectElement, gTypeSVGRectElement
+  , SVGRenderingIntent(SVGRenderingIntent), unSVGRenderingIntent, gTypeSVGRenderingIntent
+  , SVGSVGElement(SVGSVGElement), unSVGSVGElement, gTypeSVGSVGElement
+  , SVGScriptElement(SVGScriptElement), unSVGScriptElement, gTypeSVGScriptElement
+  , SVGSetElement(SVGSetElement), unSVGSetElement, gTypeSVGSetElement
+  , SVGStopElement(SVGStopElement), unSVGStopElement, gTypeSVGStopElement
+  , SVGStringList(SVGStringList), unSVGStringList, gTypeSVGStringList
+  , SVGStyleElement(SVGStyleElement), unSVGStyleElement, gTypeSVGStyleElement
+  , SVGSwitchElement(SVGSwitchElement), unSVGSwitchElement, gTypeSVGSwitchElement
+  , SVGSymbolElement(SVGSymbolElement), unSVGSymbolElement, gTypeSVGSymbolElement
+  , SVGTRefElement(SVGTRefElement), unSVGTRefElement, gTypeSVGTRefElement
+  , SVGTSpanElement(SVGTSpanElement), unSVGTSpanElement, gTypeSVGTSpanElement
+  , SVGTests(SVGTests), unSVGTests, gTypeSVGTests
+  , SVGTextContentElement(SVGTextContentElement), unSVGTextContentElement, IsSVGTextContentElement, toSVGTextContentElement, gTypeSVGTextContentElement
+  , SVGTextElement(SVGTextElement), unSVGTextElement, gTypeSVGTextElement
+  , SVGTextPathElement(SVGTextPathElement), unSVGTextPathElement, gTypeSVGTextPathElement
+  , SVGTextPositioningElement(SVGTextPositioningElement), unSVGTextPositioningElement, IsSVGTextPositioningElement, toSVGTextPositioningElement, gTypeSVGTextPositioningElement
+  , SVGTitleElement(SVGTitleElement), unSVGTitleElement, gTypeSVGTitleElement
+  , SVGTransform(SVGTransform), unSVGTransform, gTypeSVGTransform
+  , SVGTransformList(SVGTransformList), unSVGTransformList, gTypeSVGTransformList
+  , SVGURIReference(SVGURIReference), unSVGURIReference, gTypeSVGURIReference
+  , SVGUnitTypes(SVGUnitTypes), unSVGUnitTypes, gTypeSVGUnitTypes
+  , SVGUseElement(SVGUseElement), unSVGUseElement, gTypeSVGUseElement
+  , SVGVKernElement(SVGVKernElement), unSVGVKernElement, gTypeSVGVKernElement
+  , SVGViewElement(SVGViewElement), unSVGViewElement, gTypeSVGViewElement
+  , SVGViewSpec(SVGViewSpec), unSVGViewSpec, gTypeSVGViewSpec
+  , SVGZoomAndPan(SVGZoomAndPan), unSVGZoomAndPan, gTypeSVGZoomAndPan
+  , SVGZoomEvent(SVGZoomEvent), unSVGZoomEvent, gTypeSVGZoomEvent
+  , Screen(Screen), unScreen, gTypeScreen
+  , ScriptProcessorNode(ScriptProcessorNode), unScriptProcessorNode, gTypeScriptProcessorNode
+  , ScriptProfile(ScriptProfile), unScriptProfile, gTypeScriptProfile
+  , ScriptProfileNode(ScriptProfileNode), unScriptProfileNode, gTypeScriptProfileNode
+  , SecurityPolicy(SecurityPolicy), unSecurityPolicy, gTypeSecurityPolicy
+  , SecurityPolicyViolationEvent(SecurityPolicyViolationEvent), unSecurityPolicyViolationEvent, gTypeSecurityPolicyViolationEvent
+  , Selection(Selection), unSelection, gTypeSelection
+  , SourceBuffer(SourceBuffer), unSourceBuffer, gTypeSourceBuffer
+  , SourceBufferList(SourceBufferList), unSourceBufferList, gTypeSourceBufferList
+  , SourceInfo(SourceInfo), unSourceInfo, gTypeSourceInfo
+  , SpeechSynthesis(SpeechSynthesis), unSpeechSynthesis, gTypeSpeechSynthesis
+  , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
+  , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
+  , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
+  , Storage(Storage), unStorage, gTypeStorage
+  , StorageEvent(StorageEvent), unStorageEvent, gTypeStorageEvent
+  , StorageInfo(StorageInfo), unStorageInfo, gTypeStorageInfo
+  , StorageQuota(StorageQuota), unStorageQuota, gTypeStorageQuota
+  , StyleMedia(StyleMedia), unStyleMedia, gTypeStyleMedia
+  , StyleSheet(StyleSheet), unStyleSheet, IsStyleSheet, toStyleSheet, gTypeStyleSheet
+  , StyleSheetList(StyleSheetList), unStyleSheetList, gTypeStyleSheetList
+  , SubtleCrypto(SubtleCrypto), unSubtleCrypto, gTypeSubtleCrypto
+  , Text(Text), unText, IsText, toText, gTypeText
+  , TextEvent(TextEvent), unTextEvent, gTypeTextEvent
+  , TextMetrics(TextMetrics), unTextMetrics, gTypeTextMetrics
+  , TextTrack(TextTrack), unTextTrack, gTypeTextTrack
+  , TextTrackCue(TextTrackCue), unTextTrackCue, IsTextTrackCue, toTextTrackCue, gTypeTextTrackCue
+  , TextTrackCueList(TextTrackCueList), unTextTrackCueList, gTypeTextTrackCueList
+  , TextTrackList(TextTrackList), unTextTrackList, gTypeTextTrackList
+  , TimeRanges(TimeRanges), unTimeRanges, gTypeTimeRanges
+  , Touch(Touch), unTouch, gTypeTouch
+  , TouchEvent(TouchEvent), unTouchEvent, gTypeTouchEvent
+  , TouchList(TouchList), unTouchList, gTypeTouchList
+  , TrackEvent(TrackEvent), unTrackEvent, gTypeTrackEvent
+  , TransitionEvent(TransitionEvent), unTransitionEvent, gTypeTransitionEvent
+  , TreeWalker(TreeWalker), unTreeWalker, gTypeTreeWalker
+  , TypeConversions(TypeConversions), unTypeConversions, gTypeTypeConversions
+  , UIEvent(UIEvent), unUIEvent, IsUIEvent, toUIEvent, gTypeUIEvent
+  , UIRequestEvent(UIRequestEvent), unUIRequestEvent, gTypeUIRequestEvent
+  , URL(URL), unURL, gTypeURL
+  , URLUtils(URLUtils), unURLUtils, gTypeURLUtils
+  , UserMessageHandler(UserMessageHandler), unUserMessageHandler, gTypeUserMessageHandler
+  , UserMessageHandlersNamespace(UserMessageHandlersNamespace), unUserMessageHandlersNamespace, gTypeUserMessageHandlersNamespace
+  , VTTCue(VTTCue), unVTTCue, gTypeVTTCue
+  , VTTRegion(VTTRegion), unVTTRegion, gTypeVTTRegion
+  , VTTRegionList(VTTRegionList), unVTTRegionList, gTypeVTTRegionList
+  , ValidityState(ValidityState), unValidityState, gTypeValidityState
+  , VideoPlaybackQuality(VideoPlaybackQuality), unVideoPlaybackQuality, gTypeVideoPlaybackQuality
+  , VideoStreamTrack(VideoStreamTrack), unVideoStreamTrack, gTypeVideoStreamTrack
+  , VideoTrack(VideoTrack), unVideoTrack, gTypeVideoTrack
+  , VideoTrackList(VideoTrackList), unVideoTrackList, gTypeVideoTrackList
+  , WaveShaperNode(WaveShaperNode), unWaveShaperNode, gTypeWaveShaperNode
+  , WebGL2RenderingContext(WebGL2RenderingContext), unWebGL2RenderingContext, gTypeWebGL2RenderingContext
+  , WebGLActiveInfo(WebGLActiveInfo), unWebGLActiveInfo, gTypeWebGLActiveInfo
+  , WebGLBuffer(WebGLBuffer), unWebGLBuffer, gTypeWebGLBuffer
+  , WebGLCompressedTextureATC(WebGLCompressedTextureATC), unWebGLCompressedTextureATC, gTypeWebGLCompressedTextureATC
+  , WebGLCompressedTexturePVRTC(WebGLCompressedTexturePVRTC), unWebGLCompressedTexturePVRTC, gTypeWebGLCompressedTexturePVRTC
+  , WebGLCompressedTextureS3TC(WebGLCompressedTextureS3TC), unWebGLCompressedTextureS3TC, gTypeWebGLCompressedTextureS3TC
+  , WebGLContextAttributes(WebGLContextAttributes), unWebGLContextAttributes, gTypeWebGLContextAttributes
+  , WebGLContextEvent(WebGLContextEvent), unWebGLContextEvent, gTypeWebGLContextEvent
+  , WebGLDebugRendererInfo(WebGLDebugRendererInfo), unWebGLDebugRendererInfo, gTypeWebGLDebugRendererInfo
+  , WebGLDebugShaders(WebGLDebugShaders), unWebGLDebugShaders, gTypeWebGLDebugShaders
+  , WebGLDepthTexture(WebGLDepthTexture), unWebGLDepthTexture, gTypeWebGLDepthTexture
+  , WebGLDrawBuffers(WebGLDrawBuffers), unWebGLDrawBuffers, gTypeWebGLDrawBuffers
+  , WebGLFramebuffer(WebGLFramebuffer), unWebGLFramebuffer, gTypeWebGLFramebuffer
+  , WebGLLoseContext(WebGLLoseContext), unWebGLLoseContext, gTypeWebGLLoseContext
+  , WebGLProgram(WebGLProgram), unWebGLProgram, gTypeWebGLProgram
+  , WebGLQuery(WebGLQuery), unWebGLQuery, gTypeWebGLQuery
+  , WebGLRenderbuffer(WebGLRenderbuffer), unWebGLRenderbuffer, gTypeWebGLRenderbuffer
+  , WebGLRenderingContext(WebGLRenderingContext), unWebGLRenderingContext, gTypeWebGLRenderingContext
+  , WebGLRenderingContextBase(WebGLRenderingContextBase), unWebGLRenderingContextBase, IsWebGLRenderingContextBase, toWebGLRenderingContextBase, gTypeWebGLRenderingContextBase
+  , WebGLSampler(WebGLSampler), unWebGLSampler, gTypeWebGLSampler
+  , WebGLShader(WebGLShader), unWebGLShader, gTypeWebGLShader
+  , WebGLShaderPrecisionFormat(WebGLShaderPrecisionFormat), unWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat
+  , WebGLSync(WebGLSync), unWebGLSync, gTypeWebGLSync
+  , WebGLTexture(WebGLTexture), unWebGLTexture, gTypeWebGLTexture
+  , WebGLTransformFeedback(WebGLTransformFeedback), unWebGLTransformFeedback, gTypeWebGLTransformFeedback
+  , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, gTypeWebGLUniformLocation
+  , WebGLVertexArrayObject(WebGLVertexArrayObject), unWebGLVertexArrayObject, gTypeWebGLVertexArrayObject
+  , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
+  , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, gTypeWebKitAnimationEvent
+  , WebKitCSSFilterValue(WebKitCSSFilterValue), unWebKitCSSFilterValue, gTypeWebKitCSSFilterValue
+  , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, gTypeWebKitCSSMatrix
+  , WebKitCSSRegionRule(WebKitCSSRegionRule), unWebKitCSSRegionRule, gTypeWebKitCSSRegionRule
+  , WebKitCSSTransformValue(WebKitCSSTransformValue), unWebKitCSSTransformValue, gTypeWebKitCSSTransformValue
+  , WebKitCSSViewportRule(WebKitCSSViewportRule), unWebKitCSSViewportRule, gTypeWebKitCSSViewportRule
+  , WebKitNamedFlow(WebKitNamedFlow), unWebKitNamedFlow, gTypeWebKitNamedFlow
+  , WebKitNamespace(WebKitNamespace), unWebKitNamespace, gTypeWebKitNamespace
+  , WebKitPlaybackTargetAvailabilityEvent(WebKitPlaybackTargetAvailabilityEvent), unWebKitPlaybackTargetAvailabilityEvent, gTypeWebKitPlaybackTargetAvailabilityEvent
+  , WebKitPoint(WebKitPoint), unWebKitPoint, gTypeWebKitPoint
+  , WebKitTransitionEvent(WebKitTransitionEvent), unWebKitTransitionEvent, gTypeWebKitTransitionEvent
+  , WebSocket(WebSocket), unWebSocket, gTypeWebSocket
+  , WheelEvent(WheelEvent), unWheelEvent, gTypeWheelEvent
+  , Window(Window), unWindow, gTypeWindow
+  , WindowBase64(WindowBase64), unWindowBase64, gTypeWindowBase64
+  , WindowTimers(WindowTimers), unWindowTimers, gTypeWindowTimers
+  , Worker(Worker), unWorker, gTypeWorker
+  , WorkerGlobalScope(WorkerGlobalScope), unWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope, gTypeWorkerGlobalScope
+  , WorkerLocation(WorkerLocation), unWorkerLocation, gTypeWorkerLocation
+  , WorkerNavigator(WorkerNavigator), unWorkerNavigator, gTypeWorkerNavigator
+  , XMLHttpRequest(XMLHttpRequest), unXMLHttpRequest, gTypeXMLHttpRequest
+  , XMLHttpRequestProgressEvent(XMLHttpRequestProgressEvent), unXMLHttpRequestProgressEvent, gTypeXMLHttpRequestProgressEvent
+  , XMLHttpRequestUpload(XMLHttpRequestUpload), unXMLHttpRequestUpload, gTypeXMLHttpRequestUpload
+  , XMLSerializer(XMLSerializer), unXMLSerializer, gTypeXMLSerializer
+  , XPathEvaluator(XPathEvaluator), unXPathEvaluator, gTypeXPathEvaluator
+  , XPathExpression(XPathExpression), unXPathExpression, gTypeXPathExpression
+  , XPathNSResolver(XPathNSResolver), unXPathNSResolver, gTypeXPathNSResolver
+  , XPathResult(XPathResult), unXPathResult, gTypeXPathResult
+  , XSLTProcessor(XSLTProcessor), unXSLTProcessor, gTypeXSLTProcessor
 -- AUTO GENERATION ENDS HERE
   ) where
 
 import Control.Applicative ((<$>))
-import qualified Data.Text as T (Text)
+import qualified Data.Text as T (unpack, Text)
 import qualified Data.Text.Lazy as LT (Text)
 import Data.JSString (pack, unpack)
 import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
@@ -678,6 +680,9 @@ import GHCJS.Foreign.Callback.Internal (Callback(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
+import GHC.Stack (HasCallStack)
+import Data.Coerce (coerce, Coercible)
+import Data.Monoid ((<>))
 
 -- | Identifies a JavaScript execution context.
 --   When using GHCJS this is just '()' since their is only one context.
@@ -741,6 +746,8 @@ propagateGError = id
 
 newtype GType = GType JSVal
 
+foreign import javascript unsafe "$r = $1.toString();" gTypeToString :: GType -> JSString
+
 foreign import javascript unsafe
   "$1===$2" js_eq :: JSVal -> JSVal -> Bool
 
@@ -755,17 +762,41 @@ foreign import javascript unsafe "h$isInstanceOf $1 $2"
 
 typeInstanceIsA o (GType t) = typeInstanceIsA' o t
 
--- The usage of foreignPtrToPtr should be safe as the evaluation will only be
--- forced if the object is used afterwards
+-- | Safe but slow way to cast
 --
-castTo :: (IsGObject obj, IsGObject obj') => GType -> String
-                                                -> obj -> IO obj'
-castTo gtype objTypeName obj =
-  case toGObject obj of
-    gobj@(GObject objRef)
-      | typeInstanceIsA objRef gtype
-                  -> return $ unsafeCastGObject gobj
-      | otherwise -> error $ "Cannot cast object to " ++ objTypeName
+-- > castTo Element x >>= \case
+-- >     Nothing      -> error "Was not an element"
+-- >     Just element -> ...
+castTo :: forall obj obj'. (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM (Maybe obj')
+castTo constructor obj = do
+  let gtype = typeGType (undefined :: obj')
+      jsval = coerce obj
+  if typeInstanceIsA jsval gtype
+    then return . Just $ constructor jsval
+    else return Nothing
+
+-- | Unsafe way to cast.  Slow but if it fails an error message will
+--   result and the message should be clear (uses HasCallStack).
+--
+-- > element <- unsafeCastTo Element x
+unsafeCastTo :: forall obj obj'. (HasCallStack, IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM obj'
+unsafeCastTo constructor obj = do
+  let gtype = typeGType (undefined :: obj')
+      jsval = coerce obj
+  if typeInstanceIsA jsval gtype
+    then return $ constructor jsval
+    else do
+      let srcType  = textFromJSString . gTypeToString $ typeGType obj
+          destType = textFromJSString . gTypeToString $ typeGType (undefined :: obj')
+      error $ "unsafeCastTo :: invalid conversion from " <> T.unpack srcType <> " to "
+        <> T.unpack destType <> " requested."
+
+-- | Unsafe way to cast, super fast but if it fails you program
+--   will probably crash later on in some unpredictable way.
+--
+-- > element <- uncheckedCastTo Element x
+uncheckedCastTo :: (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM obj'
+uncheckedCastTo constructor obj = return . constructor $ coerce obj
 
 -- | Determine if this is an instance of a particular type
 --
@@ -774,11 +805,14 @@ isA obj = typeInstanceIsA (unGObject $ toGObject obj)
 
 newtype GObject = GObject { unGObject :: JSVal }
 
-class (ToJSVal o, FromJSVal o) => IsGObject o where
-  -- | Safe upcast.
-  toGObject         :: o -> GObject
-  -- | Unchecked downcast.
-  unsafeCastGObject :: GObject -> o
+class (ToJSVal o, FromJSVal o, Coercible o JSVal) => IsGObject o where
+  -- | Given object get the GType of the type.  The actual argument
+  --   passed in is ignored.
+  typeGType :: o -> GType
+
+-- | Safe upcast.
+toGObject :: IsGObject o => o -> GObject
+toGObject = GObject . coerce
 
 instance PToJSVal GObject where
   pToJSVal = unGObject
@@ -813,20 +847,18 @@ instance FromJSVal GObject where
 --  {-# INLINE fromJSVal #-}
 
 instance IsGObject GObject where
-  toGObject = id
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = id
-  {-# INLINE unsafeCastGObject #-}
+  typeGType _ = gTypeGObject
+  {-# INLINE typeGType #-}
 
 castToGObject :: IsGObject obj => obj -> IO obj
 castToGObject = return
 
-foreign import javascript unsafe "object" gTypeGObject :: GType
+foreign import javascript unsafe "Object" gTypeGObject :: GType
 
 foreign import javascript unsafe "$1[\"toString\"]()" js_objectToString :: GObject -> IO JSString
 
 objectToString :: (MonadIO m, IsGObject self, FromJSString result) => self -> m result
-objectToString self = liftIO (fromJSString <$> (js_objectToString (toGObject self)))
+objectToString self = liftIO (fromJSString <$> js_objectToString (toGObject self))
 
 -- | Fastest string type to use when you just
 --   want to take a string from the DOM then
@@ -933,13 +965,11 @@ instance FromJSVal SerializedScriptValue where
 
 class IsGObject o => IsSerializedScriptValue o
 toSerializedScriptValue :: IsSerializedScriptValue o => o -> SerializedScriptValue
-toSerializedScriptValue = unsafeCastGObject . toGObject
+toSerializedScriptValue = SerializedScriptValue . coerce
 
 instance IsSerializedScriptValue SerializedScriptValue
 instance IsGObject SerializedScriptValue where
-  toGObject = GObject . unSerializedScriptValue
-  unsafeCastGObject = SerializedScriptValue . unGObject
--- TODO add more IsSerializedScriptValue instances
+  typeGType _ = error "Unable to get the JavaScript type of SerializedScriptValue"
 
 newtype PositionOptions = PositionOptions { unPositionOptions :: JSVal }
 
@@ -964,13 +994,11 @@ instance FromJSVal PositionOptions where
 
 class IsGObject o => IsPositionOptions o
 toPositionOptions :: IsPositionOptions o => o -> PositionOptions
-toPositionOptions = unsafeCastGObject . toGObject
+toPositionOptions = PositionOptions . coerce
 
 instance IsPositionOptions PositionOptions
 instance IsGObject PositionOptions where
-  toGObject = GObject . unPositionOptions
-  unsafeCastGObject = PositionOptions . unGObject
--- TODO add more IsPositionOptions instances
+  typeGType _ = error "Unable to get the JavaScript type of PositionOptions"
 
 newtype Dictionary = Dictionary { unDictionary :: JSVal }
 
@@ -995,13 +1023,11 @@ instance FromJSVal Dictionary where
 
 class IsGObject o => IsDictionary o
 toDictionary :: IsDictionary o => o -> Dictionary
-toDictionary = unsafeCastGObject . toGObject
+toDictionary = Dictionary . coerce
 
 instance IsDictionary Dictionary
 instance IsGObject Dictionary where
-  toGObject = GObject . unDictionary
-  unsafeCastGObject = Dictionary . unGObject
--- TODO add more IsDictionary instances
+  typeGType _ = error "Unable to get the JavaScript type of Dictionary"
 
 newtype BlobPropertyBag = BlobPropertyBag { unBlobPropertyBag :: JSVal }
 
@@ -1026,13 +1052,11 @@ instance FromJSVal BlobPropertyBag where
 
 class IsGObject o => IsBlobPropertyBag o
 toBlobPropertyBag :: IsBlobPropertyBag o => o -> BlobPropertyBag
-toBlobPropertyBag = unsafeCastGObject . toGObject
+toBlobPropertyBag = BlobPropertyBag . coerce
 
 instance IsBlobPropertyBag BlobPropertyBag
 instance IsGObject BlobPropertyBag where
-  toGObject = GObject . unBlobPropertyBag
-  unsafeCastGObject = BlobPropertyBag . unGObject
--- TODO add more IsBlobPropertyBag instances
+  typeGType _ = error "Unable to get the JavaScript type of BlobPropertyBag"
 
 newtype MutationCallback = MutationCallback { unMutationCallback :: JSVal }
 
@@ -1057,13 +1081,11 @@ instance FromJSVal MutationCallback where
 
 class IsGObject o => IsMutationCallback o
 toMutationCallback :: IsMutationCallback o => o -> MutationCallback
-toMutationCallback = unsafeCastGObject . toGObject
+toMutationCallback = MutationCallback . coerce
 
 instance IsMutationCallback MutationCallback
 instance IsGObject MutationCallback where
-  toGObject = GObject . unMutationCallback
-  unsafeCastGObject = MutationCallback . unGObject
--- TODO add more IsMutationCallback instances
+  typeGType _ = error "Unable to get the JavaScript type of MutationCallback"
 
 newtype Promise = Promise { unPromise :: JSVal }
 
@@ -1088,16 +1110,11 @@ instance FromJSVal Promise where
 
 class IsGObject o => IsPromise o
 toPromise :: IsPromise o => o -> Promise
-toPromise = unsafeCastGObject . toGObject
+toPromise = Promise . coerce
 
 instance IsPromise Promise
 instance IsGObject Promise where
-  toGObject = GObject . unPromise
-  unsafeCastGObject = Promise . unGObject
--- TODO add more IsPromise instances
-
-castToPromise :: IsGObject obj => obj -> IO Promise
-castToPromise = castTo gTypePromise "Promise"
+  typeGType _ = gTypePromise
 
 foreign import javascript unsafe "window[\"Promise\"]" gTypePromise :: GType
 
@@ -1124,15 +1141,11 @@ instance FromJSVal ArrayBuffer where
 
 class IsGObject o => IsArrayBuffer o
 toArrayBuffer :: IsArrayBuffer o => o -> ArrayBuffer
-toArrayBuffer = unsafeCastGObject . toGObject
+toArrayBuffer = ArrayBuffer . coerce
 
 instance IsArrayBuffer ArrayBuffer
 instance IsGObject ArrayBuffer where
-  toGObject = GObject . unArrayBuffer
-  unsafeCastGObject = ArrayBuffer . unGObject
-
-castToArrayBuffer :: IsGObject obj => obj -> IO ArrayBuffer
-castToArrayBuffer = castTo gTypeArrayBuffer "ArrayBuffer"
+  typeGType _ = gTypeArrayBuffer
 
 foreign import javascript unsafe "window[\"ArrayBuffer\"]" gTypeArrayBuffer :: GType
 
@@ -1159,16 +1172,11 @@ instance FromJSVal Float32Array where
 
 class IsGObject o => IsFloat32Array o
 toFloat32Array :: IsFloat32Array o => o -> Float32Array
-toFloat32Array = unsafeCastGObject . toGObject
+toFloat32Array = Float32Array . coerce
 
 instance IsFloat32Array Float32Array
 instance IsGObject Float32Array where
-  toGObject = GObject . unFloat32Array
-  unsafeCastGObject = Float32Array . unGObject
--- TODO add more IsFloat32Array instances
-
-castToFloat32Array :: IsGObject obj => obj -> IO Float32Array
-castToFloat32Array = castTo gTypeFloat32Array "Float32Array"
+  typeGType _ = gTypeFloat32Array
 
 foreign import javascript unsafe "window[\"Float32Array\"]" gTypeFloat32Array :: GType
 
@@ -1195,16 +1203,11 @@ instance FromJSVal Float64Array where
 
 class IsGObject o => IsFloat64Array o
 toFloat64Array :: IsFloat64Array o => o -> Float64Array
-toFloat64Array = unsafeCastGObject . toGObject
+toFloat64Array = Float64Array . coerce
 
 instance IsFloat64Array Float64Array
 instance IsGObject Float64Array where
-  toGObject = GObject . unFloat64Array
-  unsafeCastGObject = Float64Array . unGObject
--- TODO add more IsFloat64Array instances
-
-castToFloat64Array :: IsGObject obj => obj -> IO Float64Array
-castToFloat64Array = castTo gTypeFloat64Array "Float64Array"
+  typeGType _ = gTypeFloat64Array
 
 foreign import javascript unsafe "window[\"Float64Array\"]" gTypeFloat64Array :: GType
 
@@ -1231,16 +1234,11 @@ instance FromJSVal Uint8Array where
 
 class IsGObject o => IsUint8Array o
 toUint8Array :: IsUint8Array o => o -> Uint8Array
-toUint8Array = unsafeCastGObject . toGObject
+toUint8Array = Uint8Array . coerce
 
 instance IsUint8Array Uint8Array
 instance IsGObject Uint8Array where
-  toGObject = GObject . unUint8Array
-  unsafeCastGObject = Uint8Array . unGObject
--- TODO add more IsUint8Array instances
-
-castToUint8Array :: IsGObject obj => obj -> IO Uint8Array
-castToUint8Array = castTo gTypeUint8Array "Uint8Array"
+  typeGType _ = gTypeUint8Array
 
 foreign import javascript unsafe "window[\"Uint8Array\"]" gTypeUint8Array :: GType
 
@@ -1267,16 +1265,11 @@ instance FromJSVal Uint8ClampedArray where
 
 class IsGObject o => IsUint8ClampedArray o
 toUint8ClampedArray :: IsUint8ClampedArray o => o -> Uint8ClampedArray
-toUint8ClampedArray = unsafeCastGObject . toGObject
+toUint8ClampedArray = Uint8ClampedArray . coerce
 
 instance IsUint8ClampedArray Uint8ClampedArray
 instance IsGObject Uint8ClampedArray where
-  toGObject = GObject . unUint8ClampedArray
-  unsafeCastGObject = Uint8ClampedArray . unGObject
--- TODO add more IsUint8ClampedArray instances
-
-castToUint8ClampedArray :: IsGObject obj => obj -> IO Uint8ClampedArray
-castToUint8ClampedArray = castTo gTypeUint8ClampedArray "Uint8ClampedArray"
+  typeGType _ = gTypeUint8ClampedArray
 
 foreign import javascript unsafe "window[\"Uint8ClampedArray\"]" gTypeUint8ClampedArray :: GType
 
@@ -1303,16 +1296,11 @@ instance FromJSVal Uint16Array where
 
 class IsGObject o => IsUint16Array o
 toUint16Array :: IsUint16Array o => o -> Uint16Array
-toUint16Array = unsafeCastGObject . toGObject
+toUint16Array = Uint16Array . coerce
 
 instance IsUint16Array Uint16Array
 instance IsGObject Uint16Array where
-  toGObject = GObject . unUint16Array
-  unsafeCastGObject = Uint16Array . unGObject
--- TODO add more IsUint16Array instances
-
-castToUint16Array :: IsGObject obj => obj -> IO Uint16Array
-castToUint16Array = castTo gTypeUint16Array "Uint16Array"
+  typeGType _ = gTypeUint16Array
 
 foreign import javascript unsafe "window[\"Uint16Array\"]" gTypeUint16Array :: GType
 
@@ -1339,16 +1327,11 @@ instance FromJSVal Uint32Array where
 
 class IsGObject o => IsUint32Array o
 toUint32Array :: IsUint32Array o => o -> Uint32Array
-toUint32Array = unsafeCastGObject . toGObject
+toUint32Array = Uint32Array . coerce
 
 instance IsUint32Array Uint32Array
 instance IsGObject Uint32Array where
-  toGObject = GObject . unUint32Array
-  unsafeCastGObject = Uint32Array . unGObject
--- TODO add more IsUint32Array instances
-
-castToUint32Array :: IsGObject obj => obj -> IO Uint32Array
-castToUint32Array = castTo gTypeUint32Array "Uint32Array"
+  typeGType _ = gTypeUint32Array
 
 foreign import javascript unsafe "window[\"Uint32Array\"]" gTypeUint32Array :: GType
 
@@ -1375,16 +1358,11 @@ instance FromJSVal Int8Array where
 
 class IsGObject o => IsInt8Array o
 toInt8Array :: IsInt8Array o => o -> Int8Array
-toInt8Array = unsafeCastGObject . toGObject
+toInt8Array = Int8Array . coerce
 
 instance IsInt8Array Int8Array
 instance IsGObject Int8Array where
-  toGObject = GObject . unInt8Array
-  unsafeCastGObject = Int8Array . unGObject
--- TODO add more IsInt8Array instances
-
-castToInt8Array :: IsGObject obj => obj -> IO Int8Array
-castToInt8Array = castTo gTypeInt8Array "Int8Array"
+  typeGType _ = gTypeInt8Array
 
 foreign import javascript unsafe "window[\"Int8Array\"]" gTypeInt8Array :: GType
 
@@ -1411,16 +1389,11 @@ instance FromJSVal Int16Array where
 
 class IsGObject o => IsInt16Array o
 toInt16Array :: IsInt16Array o => o -> Int16Array
-toInt16Array = unsafeCastGObject . toGObject
+toInt16Array = Int16Array . coerce
 
 instance IsInt16Array Int16Array
 instance IsGObject Int16Array where
-  toGObject = GObject . unInt16Array
-  unsafeCastGObject = Int16Array . unGObject
--- TODO add more IsInt16Array instances
-
-castToInt16Array :: IsGObject obj => obj -> IO Int16Array
-castToInt16Array = castTo gTypeInt16Array "Int16Array"
+  typeGType _ = gTypeInt16Array
 
 foreign import javascript unsafe "window[\"Int16Array\"]" gTypeInt16Array :: GType
 
@@ -1447,16 +1420,11 @@ instance FromJSVal Int32Array where
 
 class IsGObject o => IsInt32Array o
 toInt32Array :: IsInt32Array o => o -> Int32Array
-toInt32Array = unsafeCastGObject . toGObject
+toInt32Array = Int32Array . coerce
 
 instance IsInt32Array Int32Array
 instance IsGObject Int32Array where
-  toGObject = GObject . unInt32Array
-  unsafeCastGObject = Int32Array . unGObject
--- TODO add more IsInt32Array instances
-
-castToInt32Array :: IsGObject obj => obj -> IO Int32Array
-castToInt32Array = castTo gTypeInt32Array "Int32Array"
+  typeGType _ = gTypeInt32Array
 
 foreign import javascript unsafe "window[\"Int32Array\"]" gTypeInt32Array :: GType
 
@@ -1483,13 +1451,11 @@ instance FromJSVal ObjectArray where
 
 class IsGObject o => IsObjectArray o
 toObjectArray :: IsObjectArray o => o -> ObjectArray
-toObjectArray = unsafeCastGObject . toGObject
+toObjectArray = ObjectArray . coerce
 
 instance IsObjectArray ObjectArray
 instance IsGObject ObjectArray where
-  toGObject = GObject . unObjectArray
-  unsafeCastGObject = ObjectArray . unGObject
--- TODO add more IsObjectArray instances
+  typeGType _ = error "Unable to get the JavaScript type of ObjectArray"
 
 newtype ArrayBufferView = ArrayBufferView { unArrayBufferView :: JSVal }
 
@@ -1514,13 +1480,11 @@ instance FromJSVal ArrayBufferView where
 
 class IsGObject o => IsArrayBufferView o
 toArrayBufferView :: IsArrayBufferView o => o -> ArrayBufferView
-toArrayBufferView = unsafeCastGObject . toGObject
+toArrayBufferView = ArrayBufferView . coerce
 
 instance IsArrayBufferView ArrayBufferView
 instance IsGObject ArrayBufferView where
-  toGObject = GObject . unArrayBufferView
-  unsafeCastGObject = ArrayBufferView . unGObject
--- TODO add more IsArrayBufferView instances
+  typeGType _ = error "Unable to get the JavaScript type of ArrayBufferView"
 
 newtype Array = Array { unArray :: JSVal }
 
@@ -1545,16 +1509,11 @@ instance FromJSVal Array where
 
 class IsGObject o => IsArray o
 toArray :: IsArray o => o -> Array
-toArray = unsafeCastGObject . toGObject
+toArray = Array . coerce
 
 instance IsArray Array
 instance IsGObject Array where
-  toGObject = GObject . unArray
-  unsafeCastGObject = Array . unGObject
--- TODO add more IsArray instances
-
-castToArray :: IsGObject obj => obj -> IO Array
-castToArray = castTo gTypeArray "Array"
+  typeGType _ = gTypeArray
 
 foreign import javascript unsafe "window[\"Array\"]" gTypeArray :: GType
 
@@ -1581,16 +1540,11 @@ instance FromJSVal Date where
 
 class IsGObject o => IsDate o
 toDate :: IsDate o => o -> Date
-toDate = unsafeCastGObject . toGObject
+toDate = Date . coerce
 
 instance IsDate Date
 instance IsGObject Date where
-  toGObject = GObject . unDate
-  unsafeCastGObject = Date . unGObject
--- TODO add more IsDate instances
-
-castToDate :: IsGObject obj => obj -> IO Date
-castToDate = castTo gTypeDate "Date"
+  typeGType _ = gTypeDate
 
 foreign import javascript unsafe "window[\"Date\"]" gTypeDate :: GType
 
@@ -1617,13 +1571,11 @@ instance FromJSVal Acceleration where
 
 class IsGObject o => IsAcceleration o
 toAcceleration :: IsAcceleration o => o -> Acceleration
-toAcceleration = unsafeCastGObject . toGObject
+toAcceleration = Acceleration . coerce
 
 instance IsAcceleration Acceleration
 instance IsGObject Acceleration where
-  toGObject = GObject . unAcceleration
-  unsafeCastGObject = Acceleration . unGObject
--- TODO add more IsAcceleration instances
+  typeGType _ = error "Unable to get the JavaScript type of Acceleration"
 
 newtype RotationRate = RotationRate { unRotationRate :: JSVal }
 
@@ -1648,13 +1600,11 @@ instance FromJSVal RotationRate where
 
 class IsGObject o => IsRotationRate o
 toRotationRate :: IsRotationRate o => o -> RotationRate
-toRotationRate = unsafeCastGObject . toGObject
+toRotationRate = RotationRate . coerce
 
 instance IsRotationRate RotationRate
 instance IsGObject RotationRate where
-  toGObject = GObject . unRotationRate
-  unsafeCastGObject = RotationRate . unGObject
--- TODO add more IsRotationRate instances
+  typeGType _ = error "Unable to get the JavaScript type of RotationRate"
 
 newtype Algorithm = Algorithm { unAlgorithm :: JSVal }
 
@@ -1679,13 +1629,11 @@ instance FromJSVal Algorithm where
 
 class IsGObject o => IsAlgorithm o
 toAlgorithm :: IsAlgorithm o => o -> Algorithm
-toAlgorithm = unsafeCastGObject . toGObject
+toAlgorithm = Algorithm . coerce
 
 instance IsAlgorithm Algorithm
 instance IsGObject Algorithm where
-  toGObject = GObject . unAlgorithm
-  unsafeCastGObject = Algorithm . unGObject
--- TODO add more IsAlgorithm instances
+  typeGType _ = error "Unable to get the JavaScript type of Algorithm"
 
 newtype CryptoOperationData = CryptoOperationData { unCryptoOperationData :: JSVal }
 
@@ -1710,12 +1658,11 @@ instance FromJSVal CryptoOperationData where
 
 class IsGObject o => IsCryptoOperationData o
 toCryptoOperationData :: IsCryptoOperationData o => o -> CryptoOperationData
-toCryptoOperationData = unsafeCastGObject . toGObject
+toCryptoOperationData = CryptoOperationData . coerce
 
 instance IsCryptoOperationData CryptoOperationData
 instance IsGObject CryptoOperationData where
-  toGObject = GObject . unCryptoOperationData
-  unsafeCastGObject = CryptoOperationData . unGObject
+  typeGType _ = error "Unable to get the JavaScript type of CryptoOperationData"
 instance IsCryptoOperationData ArrayBuffer
 instance IsCryptoOperationData ArrayBufferView
 
@@ -1742,12 +1689,11 @@ instance FromJSVal CanvasStyle where
 
 class IsGObject o => IsCanvasStyle o
 toCanvasStyle :: IsCanvasStyle o => o -> CanvasStyle
-toCanvasStyle = unsafeCastGObject . toGObject
+toCanvasStyle = CanvasStyle . coerce
 
 instance IsCanvasStyle CanvasStyle
 instance IsGObject CanvasStyle where
-  toGObject = GObject . unCanvasStyle
-  unsafeCastGObject = CanvasStyle . unGObject
+  typeGType _ = error "Unable to get the JavaScript type of CanvasStyle"
 instance IsCanvasStyle CanvasGradient
 instance IsCanvasStyle CanvasPattern
 
@@ -1774,12 +1720,11 @@ instance FromJSVal DOMException where
 
 class IsGObject o => IsDOMException o
 toDOMException :: IsDOMException o => o -> DOMException
-toDOMException = unsafeCastGObject . toGObject
+toDOMException = DOMException . coerce
 
 instance IsDOMException DOMException
 instance IsGObject DOMException where
-  toGObject = GObject . unDOMException
-  unsafeCastGObject = DOMException . unGObject
+  typeGType _ = error "Unable to get the JavaScript type of DOMException"
 
 type GLenum = Word32
 type GLboolean = Bool
@@ -1825,14 +1770,8 @@ instance FromJSVal ANGLEInstancedArrays where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ANGLEInstancedArrays where
-  toGObject = GObject . unANGLEInstancedArrays
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ANGLEInstancedArrays . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToANGLEInstancedArrays :: IsGObject obj => obj -> IO ANGLEInstancedArrays
-castToANGLEInstancedArrays = castTo gTypeANGLEInstancedArrays "ANGLEInstancedArrays"
-
+  typeGType _ = gTypeANGLEInstancedArrays
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractView".
@@ -1860,14 +1799,8 @@ instance FromJSVal AbstractView where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AbstractView where
-  toGObject = GObject . unAbstractView
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AbstractView . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAbstractView :: IsGObject obj => obj -> IO AbstractView
-castToAbstractView = castTo gTypeAbstractView "AbstractView"
-
+  typeGType _ = gTypeAbstractView
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AbstractView\"]" gTypeAbstractView :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
@@ -1895,14 +1828,8 @@ instance FromJSVal AbstractWorker where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AbstractWorker where
-  toGObject = GObject . unAbstractWorker
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AbstractWorker . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAbstractWorker :: IsGObject obj => obj -> IO AbstractWorker
-castToAbstractWorker = castTo gTypeAbstractWorker "AbstractWorker"
-
+  typeGType _ = gTypeAbstractWorker
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AllAudioCapabilities".
@@ -1934,14 +1861,8 @@ instance FromJSVal AllAudioCapabilities where
 
 instance IsMediaStreamCapabilities AllAudioCapabilities
 instance IsGObject AllAudioCapabilities where
-  toGObject = GObject . unAllAudioCapabilities
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AllAudioCapabilities . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAllAudioCapabilities :: IsGObject obj => obj -> IO AllAudioCapabilities
-castToAllAudioCapabilities = castTo gTypeAllAudioCapabilities "AllAudioCapabilities"
-
+  typeGType _ = gTypeAllAudioCapabilities
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AllAudioCapabilities\"]" gTypeAllAudioCapabilities :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AllVideoCapabilities".
@@ -1973,14 +1894,8 @@ instance FromJSVal AllVideoCapabilities where
 
 instance IsMediaStreamCapabilities AllVideoCapabilities
 instance IsGObject AllVideoCapabilities where
-  toGObject = GObject . unAllVideoCapabilities
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AllVideoCapabilities . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAllVideoCapabilities :: IsGObject obj => obj -> IO AllVideoCapabilities
-castToAllVideoCapabilities = castTo gTypeAllVideoCapabilities "AllVideoCapabilities"
-
+  typeGType _ = gTypeAllVideoCapabilities
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AllVideoCapabilities\"]" gTypeAllVideoCapabilities :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnalyserNode".
@@ -2014,14 +1929,8 @@ instance FromJSVal AnalyserNode where
 instance IsAudioNode AnalyserNode
 instance IsEventTarget AnalyserNode
 instance IsGObject AnalyserNode where
-  toGObject = GObject . unAnalyserNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AnalyserNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAnalyserNode :: IsGObject obj => obj -> IO AnalyserNode
-castToAnalyserNode = castTo gTypeAnalyserNode "AnalyserNode"
-
+  typeGType _ = gTypeAnalyserNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationEvent".
@@ -2053,14 +1962,8 @@ instance FromJSVal AnimationEvent where
 
 instance IsEvent AnimationEvent
 instance IsGObject AnimationEvent where
-  toGObject = GObject . unAnimationEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AnimationEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAnimationEvent :: IsGObject obj => obj -> IO AnimationEvent
-castToAnimationEvent = castTo gTypeAnimationEvent "AnimationEvent"
-
+  typeGType _ = gTypeAnimationEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplicationCache".
@@ -2092,14 +1995,8 @@ instance FromJSVal ApplicationCache where
 
 instance IsEventTarget ApplicationCache
 instance IsGObject ApplicationCache where
-  toGObject = GObject . unApplicationCache
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ApplicationCache . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToApplicationCache :: IsGObject obj => obj -> IO ApplicationCache
-castToApplicationCache = castTo gTypeApplicationCache "ApplicationCache"
-
+  typeGType _ = gTypeApplicationCache
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ApplicationCache\"]" gTypeApplicationCache :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Attr".
@@ -2133,14 +2030,8 @@ instance FromJSVal Attr where
 instance IsNode Attr
 instance IsEventTarget Attr
 instance IsGObject Attr where
-  toGObject = GObject . unAttr
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Attr . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAttr :: IsGObject obj => obj -> IO Attr
-castToAttr = castTo gTypeAttr "Attr"
-
+  typeGType _ = gTypeAttr
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Attr\"]" gTypeAttr :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
@@ -2168,14 +2059,8 @@ instance FromJSVal AudioBuffer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioBuffer where
-  toGObject = GObject . unAudioBuffer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioBuffer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioBuffer :: IsGObject obj => obj -> IO AudioBuffer
-castToAudioBuffer = castTo gTypeAudioBuffer "AudioBuffer"
-
+  typeGType _ = gTypeAudioBuffer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBufferSourceNode".
@@ -2209,14 +2094,8 @@ instance FromJSVal AudioBufferSourceNode where
 instance IsAudioNode AudioBufferSourceNode
 instance IsEventTarget AudioBufferSourceNode
 instance IsGObject AudioBufferSourceNode where
-  toGObject = GObject . unAudioBufferSourceNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioBufferSourceNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioBufferSourceNode :: IsGObject obj => obj -> IO AudioBufferSourceNode
-castToAudioBufferSourceNode = castTo gTypeAudioBufferSourceNode "AudioBufferSourceNode"
-
+  typeGType _ = gTypeAudioBufferSourceNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioContext".
@@ -2248,19 +2127,13 @@ instance FromJSVal AudioContext where
 
 class IsEventTarget o => IsAudioContext o
 toAudioContext :: IsAudioContext o => o -> AudioContext
-toAudioContext = unsafeCastGObject . toGObject
+toAudioContext = AudioContext . coerce
 
 instance IsAudioContext AudioContext
 instance IsEventTarget AudioContext
 instance IsGObject AudioContext where
-  toGObject = GObject . unAudioContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioContext :: IsGObject obj => obj -> IO AudioContext
-castToAudioContext = castTo gTypeAudioContext "AudioContext"
-
+  typeGType _ = gTypeAudioContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioDestinationNode".
@@ -2294,14 +2167,8 @@ instance FromJSVal AudioDestinationNode where
 instance IsAudioNode AudioDestinationNode
 instance IsEventTarget AudioDestinationNode
 instance IsGObject AudioDestinationNode where
-  toGObject = GObject . unAudioDestinationNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioDestinationNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioDestinationNode :: IsGObject obj => obj -> IO AudioDestinationNode
-castToAudioDestinationNode = castTo gTypeAudioDestinationNode "AudioDestinationNode"
-
+  typeGType _ = gTypeAudioDestinationNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
@@ -2329,14 +2196,8 @@ instance FromJSVal AudioListener where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioListener where
-  toGObject = GObject . unAudioListener
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioListener . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioListener :: IsGObject obj => obj -> IO AudioListener
-castToAudioListener = castTo gTypeAudioListener "AudioListener"
-
+  typeGType _ = gTypeAudioListener
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioNode".
@@ -2368,19 +2229,13 @@ instance FromJSVal AudioNode where
 
 class IsEventTarget o => IsAudioNode o
 toAudioNode :: IsAudioNode o => o -> AudioNode
-toAudioNode = unsafeCastGObject . toGObject
+toAudioNode = AudioNode . coerce
 
 instance IsAudioNode AudioNode
 instance IsEventTarget AudioNode
 instance IsGObject AudioNode where
-  toGObject = GObject . unAudioNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioNode :: IsGObject obj => obj -> IO AudioNode
-castToAudioNode = castTo gTypeAudioNode "AudioNode"
-
+  typeGType _ = gTypeAudioNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
@@ -2408,14 +2263,8 @@ instance FromJSVal AudioParam where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioParam where
-  toGObject = GObject . unAudioParam
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioParam . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioParam :: IsGObject obj => obj -> IO AudioParam
-castToAudioParam = castTo gTypeAudioParam "AudioParam"
-
+  typeGType _ = gTypeAudioParam
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioProcessingEvent".
@@ -2447,14 +2296,8 @@ instance FromJSVal AudioProcessingEvent where
 
 instance IsEvent AudioProcessingEvent
 instance IsGObject AudioProcessingEvent where
-  toGObject = GObject . unAudioProcessingEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioProcessingEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioProcessingEvent :: IsGObject obj => obj -> IO AudioProcessingEvent
-castToAudioProcessingEvent = castTo gTypeAudioProcessingEvent "AudioProcessingEvent"
-
+  typeGType _ = gTypeAudioProcessingEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioStreamTrack".
@@ -2488,14 +2331,8 @@ instance FromJSVal AudioStreamTrack where
 instance IsMediaStreamTrack AudioStreamTrack
 instance IsEventTarget AudioStreamTrack
 instance IsGObject AudioStreamTrack where
-  toGObject = GObject . unAudioStreamTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioStreamTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioStreamTrack :: IsGObject obj => obj -> IO AudioStreamTrack
-castToAudioStreamTrack = castTo gTypeAudioStreamTrack "AudioStreamTrack"
-
+  typeGType _ = gTypeAudioStreamTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioStreamTrack\"]" gTypeAudioStreamTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
@@ -2523,14 +2360,8 @@ instance FromJSVal AudioTrack where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject AudioTrack where
-  toGObject = GObject . unAudioTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioTrack :: IsGObject obj => obj -> IO AudioTrack
-castToAudioTrack = castTo gTypeAudioTrack "AudioTrack"
-
+  typeGType _ = gTypeAudioTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrackList".
@@ -2562,14 +2393,8 @@ instance FromJSVal AudioTrackList where
 
 instance IsEventTarget AudioTrackList
 instance IsGObject AudioTrackList where
-  toGObject = GObject . unAudioTrackList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AudioTrackList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAudioTrackList :: IsGObject obj => obj -> IO AudioTrackList
-castToAudioTrackList = castTo gTypeAudioTrackList "AudioTrackList"
-
+  typeGType _ = gTypeAudioTrackList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AutocompleteErrorEvent".
@@ -2601,14 +2426,8 @@ instance FromJSVal AutocompleteErrorEvent where
 
 instance IsEvent AutocompleteErrorEvent
 instance IsGObject AutocompleteErrorEvent where
-  toGObject = GObject . unAutocompleteErrorEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = AutocompleteErrorEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToAutocompleteErrorEvent :: IsGObject obj => obj -> IO AutocompleteErrorEvent
-castToAutocompleteErrorEvent = castTo gTypeAutocompleteErrorEvent "AutocompleteErrorEvent"
-
+  typeGType _ = gTypeAutocompleteErrorEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BarProp".
@@ -2636,14 +2455,8 @@ instance FromJSVal BarProp where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject BarProp where
-  toGObject = GObject . unBarProp
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = BarProp . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBarProp :: IsGObject obj => obj -> IO BarProp
-castToBarProp = castTo gTypeBarProp "BarProp"
-
+  typeGType _ = gTypeBarProp
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BatteryManager".
@@ -2675,14 +2488,8 @@ instance FromJSVal BatteryManager where
 
 instance IsEventTarget BatteryManager
 instance IsGObject BatteryManager where
-  toGObject = GObject . unBatteryManager
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = BatteryManager . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBatteryManager :: IsGObject obj => obj -> IO BatteryManager
-castToBatteryManager = castTo gTypeBatteryManager "BatteryManager"
-
+  typeGType _ = gTypeBatteryManager
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BatteryManager\"]" gTypeBatteryManager :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEvent".
@@ -2714,14 +2521,8 @@ instance FromJSVal BeforeLoadEvent where
 
 instance IsEvent BeforeLoadEvent
 instance IsGObject BeforeLoadEvent where
-  toGObject = GObject . unBeforeLoadEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = BeforeLoadEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBeforeLoadEvent :: IsGObject obj => obj -> IO BeforeLoadEvent
-castToBeforeLoadEvent = castTo gTypeBeforeLoadEvent "BeforeLoadEvent"
-
+  typeGType _ = gTypeBeforeLoadEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeUnloadEvent".
@@ -2753,14 +2554,8 @@ instance FromJSVal BeforeUnloadEvent where
 
 instance IsEvent BeforeUnloadEvent
 instance IsGObject BeforeUnloadEvent where
-  toGObject = GObject . unBeforeUnloadEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = BeforeUnloadEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBeforeUnloadEvent :: IsGObject obj => obj -> IO BeforeUnloadEvent
-castToBeforeUnloadEvent = castTo gTypeBeforeUnloadEvent "BeforeUnloadEvent"
-
+  typeGType _ = gTypeBeforeUnloadEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BiquadFilterNode".
@@ -2794,14 +2589,8 @@ instance FromJSVal BiquadFilterNode where
 instance IsAudioNode BiquadFilterNode
 instance IsEventTarget BiquadFilterNode
 instance IsGObject BiquadFilterNode where
-  toGObject = GObject . unBiquadFilterNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = BiquadFilterNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBiquadFilterNode :: IsGObject obj => obj -> IO BiquadFilterNode
-castToBiquadFilterNode = castTo gTypeBiquadFilterNode "BiquadFilterNode"
-
+  typeGType _ = gTypeBiquadFilterNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Blob".
@@ -2830,18 +2619,12 @@ instance FromJSVal Blob where
 
 class IsGObject o => IsBlob o
 toBlob :: IsBlob o => o -> Blob
-toBlob = unsafeCastGObject . toGObject
+toBlob = Blob . coerce
 
 instance IsBlob Blob
 instance IsGObject Blob where
-  toGObject = GObject . unBlob
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Blob . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToBlob :: IsGObject obj => obj -> IO Blob
-castToBlob = castTo gTypeBlob "Blob"
-
+  typeGType _ = gTypeBlob
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Blob\"]" gTypeBlob :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CDATASection".
@@ -2879,14 +2662,8 @@ instance IsCharacterData CDATASection
 instance IsNode CDATASection
 instance IsEventTarget CDATASection
 instance IsGObject CDATASection where
-  toGObject = GObject . unCDATASection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CDATASection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCDATASection :: IsGObject obj => obj -> IO CDATASection
-castToCDATASection = castTo gTypeCDATASection "CDATASection"
-
+  typeGType _ = gTypeCDATASection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CDATASection\"]" gTypeCDATASection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSS".
@@ -2914,14 +2691,8 @@ instance FromJSVal CSS where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CSS where
-  toGObject = GObject . unCSS
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSS . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSS :: IsGObject obj => obj -> IO CSS
-castToCSS = castTo gTypeCSS "CSS"
-
+  typeGType _ = gTypeCSS
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSCharsetRule".
@@ -2953,14 +2724,8 @@ instance FromJSVal CSSCharsetRule where
 
 instance IsCSSRule CSSCharsetRule
 instance IsGObject CSSCharsetRule where
-  toGObject = GObject . unCSSCharsetRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSCharsetRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSCharsetRule :: IsGObject obj => obj -> IO CSSCharsetRule
-castToCSSCharsetRule = castTo gTypeCSSCharsetRule "CSSCharsetRule"
-
+  typeGType _ = gTypeCSSCharsetRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSCharsetRule\"]" gTypeCSSCharsetRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceLoadEvent".
@@ -2992,14 +2757,8 @@ instance FromJSVal CSSFontFaceLoadEvent where
 
 instance IsEvent CSSFontFaceLoadEvent
 instance IsGObject CSSFontFaceLoadEvent where
-  toGObject = GObject . unCSSFontFaceLoadEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSFontFaceLoadEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSFontFaceLoadEvent :: IsGObject obj => obj -> IO CSSFontFaceLoadEvent
-castToCSSFontFaceLoadEvent = castTo gTypeCSSFontFaceLoadEvent "CSSFontFaceLoadEvent"
-
+  typeGType _ = gTypeCSSFontFaceLoadEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceRule".
@@ -3031,14 +2790,8 @@ instance FromJSVal CSSFontFaceRule where
 
 instance IsCSSRule CSSFontFaceRule
 instance IsGObject CSSFontFaceRule where
-  toGObject = GObject . unCSSFontFaceRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSFontFaceRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSFontFaceRule :: IsGObject obj => obj -> IO CSSFontFaceRule
-castToCSSFontFaceRule = castTo gTypeCSSFontFaceRule "CSSFontFaceRule"
-
+  typeGType _ = gTypeCSSFontFaceRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSImportRule".
@@ -3070,14 +2823,8 @@ instance FromJSVal CSSImportRule where
 
 instance IsCSSRule CSSImportRule
 instance IsGObject CSSImportRule where
-  toGObject = GObject . unCSSImportRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSImportRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSImportRule :: IsGObject obj => obj -> IO CSSImportRule
-castToCSSImportRule = castTo gTypeCSSImportRule "CSSImportRule"
-
+  typeGType _ = gTypeCSSImportRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframeRule".
@@ -3109,14 +2856,8 @@ instance FromJSVal CSSKeyframeRule where
 
 instance IsCSSRule CSSKeyframeRule
 instance IsGObject CSSKeyframeRule where
-  toGObject = GObject . unCSSKeyframeRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSKeyframeRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSKeyframeRule :: IsGObject obj => obj -> IO CSSKeyframeRule
-castToCSSKeyframeRule = castTo gTypeCSSKeyframeRule "CSSKeyframeRule"
-
+  typeGType _ = gTypeCSSKeyframeRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframesRule".
@@ -3148,14 +2889,8 @@ instance FromJSVal CSSKeyframesRule where
 
 instance IsCSSRule CSSKeyframesRule
 instance IsGObject CSSKeyframesRule where
-  toGObject = GObject . unCSSKeyframesRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSKeyframesRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSKeyframesRule :: IsGObject obj => obj -> IO CSSKeyframesRule
-castToCSSKeyframesRule = castTo gTypeCSSKeyframesRule "CSSKeyframesRule"
-
+  typeGType _ = gTypeCSSKeyframesRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSMediaRule".
@@ -3187,14 +2922,8 @@ instance FromJSVal CSSMediaRule where
 
 instance IsCSSRule CSSMediaRule
 instance IsGObject CSSMediaRule where
-  toGObject = GObject . unCSSMediaRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSMediaRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSMediaRule :: IsGObject obj => obj -> IO CSSMediaRule
-castToCSSMediaRule = castTo gTypeCSSMediaRule "CSSMediaRule"
-
+  typeGType _ = gTypeCSSMediaRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPageRule".
@@ -3226,14 +2955,8 @@ instance FromJSVal CSSPageRule where
 
 instance IsCSSRule CSSPageRule
 instance IsGObject CSSPageRule where
-  toGObject = GObject . unCSSPageRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSPageRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSPageRule :: IsGObject obj => obj -> IO CSSPageRule
-castToCSSPageRule = castTo gTypeCSSPageRule "CSSPageRule"
-
+  typeGType _ = gTypeCSSPageRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPrimitiveValue".
@@ -3265,14 +2988,8 @@ instance FromJSVal CSSPrimitiveValue where
 
 instance IsCSSValue CSSPrimitiveValue
 instance IsGObject CSSPrimitiveValue where
-  toGObject = GObject . unCSSPrimitiveValue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSPrimitiveValue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSPrimitiveValue :: IsGObject obj => obj -> IO CSSPrimitiveValue
-castToCSSPrimitiveValue = castTo gTypeCSSPrimitiveValue "CSSPrimitiveValue"
-
+  typeGType _ = gTypeCSSPrimitiveValue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimitiveValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
@@ -3301,18 +3018,12 @@ instance FromJSVal CSSRule where
 
 class IsGObject o => IsCSSRule o
 toCSSRule :: IsCSSRule o => o -> CSSRule
-toCSSRule = unsafeCastGObject . toGObject
+toCSSRule = CSSRule . coerce
 
 instance IsCSSRule CSSRule
 instance IsGObject CSSRule where
-  toGObject = GObject . unCSSRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSRule :: IsGObject obj => obj -> IO CSSRule
-castToCSSRule = castTo gTypeCSSRule "CSSRule"
-
+  typeGType _ = gTypeCSSRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSRule\"]" gTypeCSSRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
@@ -3340,14 +3051,8 @@ instance FromJSVal CSSRuleList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CSSRuleList where
-  toGObject = GObject . unCSSRuleList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSRuleList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSRuleList :: IsGObject obj => obj -> IO CSSRuleList
-castToCSSRuleList = castTo gTypeCSSRuleList "CSSRuleList"
-
+  typeGType _ = gTypeCSSRuleList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSRuleList\"]" gTypeCSSRuleList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
@@ -3375,14 +3080,8 @@ instance FromJSVal CSSStyleDeclaration where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CSSStyleDeclaration where
-  toGObject = GObject . unCSSStyleDeclaration
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSStyleDeclaration . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSStyleDeclaration :: IsGObject obj => obj -> IO CSSStyleDeclaration
-castToCSSStyleDeclaration = castTo gTypeCSSStyleDeclaration "CSSStyleDeclaration"
-
+  typeGType _ = gTypeCSSStyleDeclaration
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSStyleDeclaration\"]" gTypeCSSStyleDeclaration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleRule".
@@ -3414,14 +3113,8 @@ instance FromJSVal CSSStyleRule where
 
 instance IsCSSRule CSSStyleRule
 instance IsGObject CSSStyleRule where
-  toGObject = GObject . unCSSStyleRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSStyleRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSStyleRule :: IsGObject obj => obj -> IO CSSStyleRule
-castToCSSStyleRule = castTo gTypeCSSStyleRule "CSSStyleRule"
-
+  typeGType _ = gTypeCSSStyleRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleSheet".
@@ -3453,14 +3146,8 @@ instance FromJSVal CSSStyleSheet where
 
 instance IsStyleSheet CSSStyleSheet
 instance IsGObject CSSStyleSheet where
-  toGObject = GObject . unCSSStyleSheet
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSStyleSheet . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSStyleSheet :: IsGObject obj => obj -> IO CSSStyleSheet
-castToCSSStyleSheet = castTo gTypeCSSStyleSheet "CSSStyleSheet"
-
+  typeGType _ = gTypeCSSStyleSheet
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSStyleSheet\"]" gTypeCSSStyleSheet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSSupportsRule".
@@ -3492,14 +3179,8 @@ instance FromJSVal CSSSupportsRule where
 
 instance IsCSSRule CSSSupportsRule
 instance IsGObject CSSSupportsRule where
-  toGObject = GObject . unCSSSupportsRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSSupportsRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSSupportsRule :: IsGObject obj => obj -> IO CSSSupportsRule
-castToCSSSupportsRule = castTo gTypeCSSSupportsRule "CSSSupportsRule"
-
+  typeGType _ = gTypeCSSSupportsRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSUnknownRule".
@@ -3531,14 +3212,8 @@ instance FromJSVal CSSUnknownRule where
 
 instance IsCSSRule CSSUnknownRule
 instance IsGObject CSSUnknownRule where
-  toGObject = GObject . unCSSUnknownRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSUnknownRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSUnknownRule :: IsGObject obj => obj -> IO CSSUnknownRule
-castToCSSUnknownRule = castTo gTypeCSSUnknownRule "CSSUnknownRule"
-
+  typeGType _ = gTypeCSSUnknownRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
@@ -3567,18 +3242,12 @@ instance FromJSVal CSSValue where
 
 class IsGObject o => IsCSSValue o
 toCSSValue :: IsCSSValue o => o -> CSSValue
-toCSSValue = unsafeCastGObject . toGObject
+toCSSValue = CSSValue . coerce
 
 instance IsCSSValue CSSValue
 instance IsGObject CSSValue where
-  toGObject = GObject . unCSSValue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSValue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSValue :: IsGObject obj => obj -> IO CSSValue
-castToCSSValue = castTo gTypeCSSValue "CSSValue"
-
+  typeGType _ = gTypeCSSValue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSValue\"]" gTypeCSSValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValueList".
@@ -3610,19 +3279,13 @@ instance FromJSVal CSSValueList where
 
 class IsCSSValue o => IsCSSValueList o
 toCSSValueList :: IsCSSValueList o => o -> CSSValueList
-toCSSValueList = unsafeCastGObject . toGObject
+toCSSValueList = CSSValueList . coerce
 
 instance IsCSSValueList CSSValueList
 instance IsCSSValue CSSValueList
 instance IsGObject CSSValueList where
-  toGObject = GObject . unCSSValueList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CSSValueList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCSSValueList :: IsGObject obj => obj -> IO CSSValueList
-castToCSSValueList = castTo gTypeCSSValueList "CSSValueList"
-
+  typeGType _ = gTypeCSSValueList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
@@ -3650,14 +3313,8 @@ instance FromJSVal CanvasGradient where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasGradient where
-  toGObject = GObject . unCanvasGradient
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CanvasGradient . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCanvasGradient :: IsGObject obj => obj -> IO CanvasGradient
-castToCanvasGradient = castTo gTypeCanvasGradient "CanvasGradient"
-
+  typeGType _ = gTypeCanvasGradient
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
@@ -3685,14 +3342,8 @@ instance FromJSVal CanvasPattern where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasPattern where
-  toGObject = GObject . unCanvasPattern
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CanvasPattern . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCanvasPattern :: IsGObject obj => obj -> IO CanvasPattern
-castToCanvasPattern = castTo gTypeCanvasPattern "CanvasPattern"
-
+  typeGType _ = gTypeCanvasPattern
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
@@ -3720,14 +3371,8 @@ instance FromJSVal CanvasProxy where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CanvasProxy where
-  toGObject = GObject . unCanvasProxy
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CanvasProxy . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCanvasProxy :: IsGObject obj => obj -> IO CanvasProxy
-castToCanvasProxy = castTo gTypeCanvasProxy "CanvasProxy"
-
+  typeGType _ = gTypeCanvasProxy
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext".
@@ -3756,18 +3401,12 @@ instance FromJSVal CanvasRenderingContext where
 
 class IsGObject o => IsCanvasRenderingContext o
 toCanvasRenderingContext :: IsCanvasRenderingContext o => o -> CanvasRenderingContext
-toCanvasRenderingContext = unsafeCastGObject . toGObject
+toCanvasRenderingContext = CanvasRenderingContext . coerce
 
 instance IsCanvasRenderingContext CanvasRenderingContext
 instance IsGObject CanvasRenderingContext where
-  toGObject = GObject . unCanvasRenderingContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CanvasRenderingContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCanvasRenderingContext :: IsGObject obj => obj -> IO CanvasRenderingContext
-castToCanvasRenderingContext = castTo gTypeCanvasRenderingContext "CanvasRenderingContext"
-
+  typeGType _ = gTypeCanvasRenderingContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CanvasRenderingContext\"]" gTypeCanvasRenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext2D".
@@ -3799,14 +3438,8 @@ instance FromJSVal CanvasRenderingContext2D where
 
 instance IsCanvasRenderingContext CanvasRenderingContext2D
 instance IsGObject CanvasRenderingContext2D where
-  toGObject = GObject . unCanvasRenderingContext2D
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CanvasRenderingContext2D . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCanvasRenderingContext2D :: IsGObject obj => obj -> IO CanvasRenderingContext2D
-castToCanvasRenderingContext2D = castTo gTypeCanvasRenderingContext2D "CanvasRenderingContext2D"
-
+  typeGType _ = gTypeCanvasRenderingContext2D
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CapabilityRange".
@@ -3834,14 +3467,8 @@ instance FromJSVal CapabilityRange where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CapabilityRange where
-  toGObject = GObject . unCapabilityRange
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CapabilityRange . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCapabilityRange :: IsGObject obj => obj -> IO CapabilityRange
-castToCapabilityRange = castTo gTypeCapabilityRange "CapabilityRange"
-
+  typeGType _ = gTypeCapabilityRange
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CapabilityRange\"]" gTypeCapabilityRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelMergerNode".
@@ -3875,14 +3502,8 @@ instance FromJSVal ChannelMergerNode where
 instance IsAudioNode ChannelMergerNode
 instance IsEventTarget ChannelMergerNode
 instance IsGObject ChannelMergerNode where
-  toGObject = GObject . unChannelMergerNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ChannelMergerNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToChannelMergerNode :: IsGObject obj => obj -> IO ChannelMergerNode
-castToChannelMergerNode = castTo gTypeChannelMergerNode "ChannelMergerNode"
-
+  typeGType _ = gTypeChannelMergerNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelSplitterNode".
@@ -3916,14 +3537,8 @@ instance FromJSVal ChannelSplitterNode where
 instance IsAudioNode ChannelSplitterNode
 instance IsEventTarget ChannelSplitterNode
 instance IsGObject ChannelSplitterNode where
-  toGObject = GObject . unChannelSplitterNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ChannelSplitterNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToChannelSplitterNode :: IsGObject obj => obj -> IO ChannelSplitterNode
-castToChannelSplitterNode = castTo gTypeChannelSplitterNode "ChannelSplitterNode"
-
+  typeGType _ = gTypeChannelSplitterNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CharacterData".
@@ -3956,20 +3571,14 @@ instance FromJSVal CharacterData where
 
 class IsNode o => IsCharacterData o
 toCharacterData :: IsCharacterData o => o -> CharacterData
-toCharacterData = unsafeCastGObject . toGObject
+toCharacterData = CharacterData . coerce
 
 instance IsCharacterData CharacterData
 instance IsNode CharacterData
 instance IsEventTarget CharacterData
 instance IsGObject CharacterData where
-  toGObject = GObject . unCharacterData
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CharacterData . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCharacterData :: IsGObject obj => obj -> IO CharacterData
-castToCharacterData = castTo gTypeCharacterData "CharacterData"
-
+  typeGType _ = gTypeCharacterData
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CharacterData\"]" gTypeCharacterData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
@@ -3997,14 +3606,8 @@ instance FromJSVal ChildNode where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ChildNode where
-  toGObject = GObject . unChildNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ChildNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToChildNode :: IsGObject obj => obj -> IO ChildNode
-castToChildNode = castTo gTypeChildNode "ChildNode"
-
+  typeGType _ = gTypeChildNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
@@ -4032,14 +3635,8 @@ instance FromJSVal ClientRect where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ClientRect where
-  toGObject = GObject . unClientRect
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ClientRect . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToClientRect :: IsGObject obj => obj -> IO ClientRect
-castToClientRect = castTo gTypeClientRect "ClientRect"
-
+  typeGType _ = gTypeClientRect
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
@@ -4067,14 +3664,8 @@ instance FromJSVal ClientRectList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ClientRectList where
-  toGObject = GObject . unClientRectList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ClientRectList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToClientRectList :: IsGObject obj => obj -> IO ClientRectList
-castToClientRectList = castTo gTypeClientRectList "ClientRectList"
-
+  typeGType _ = gTypeClientRectList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CloseEvent".
@@ -4106,14 +3697,8 @@ instance FromJSVal CloseEvent where
 
 instance IsEvent CloseEvent
 instance IsGObject CloseEvent where
-  toGObject = GObject . unCloseEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CloseEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCloseEvent :: IsGObject obj => obj -> IO CloseEvent
-castToCloseEvent = castTo gTypeCloseEvent "CloseEvent"
-
+  typeGType _ = gTypeCloseEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
@@ -4141,14 +3726,8 @@ instance FromJSVal CommandLineAPIHost where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CommandLineAPIHost where
-  toGObject = GObject . unCommandLineAPIHost
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CommandLineAPIHost . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCommandLineAPIHost :: IsGObject obj => obj -> IO CommandLineAPIHost
-castToCommandLineAPIHost = castTo gTypeCommandLineAPIHost "CommandLineAPIHost"
-
+  typeGType _ = gTypeCommandLineAPIHost
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Comment".
@@ -4184,14 +3763,8 @@ instance IsCharacterData Comment
 instance IsNode Comment
 instance IsEventTarget Comment
 instance IsGObject Comment where
-  toGObject = GObject . unComment
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Comment . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToComment :: IsGObject obj => obj -> IO Comment
-castToComment = castTo gTypeComment "Comment"
-
+  typeGType _ = gTypeComment
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Comment\"]" gTypeComment :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CompositionEvent".
@@ -4225,14 +3798,8 @@ instance FromJSVal CompositionEvent where
 instance IsUIEvent CompositionEvent
 instance IsEvent CompositionEvent
 instance IsGObject CompositionEvent where
-  toGObject = GObject . unCompositionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CompositionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCompositionEvent :: IsGObject obj => obj -> IO CompositionEvent
-castToCompositionEvent = castTo gTypeCompositionEvent "CompositionEvent"
-
+  typeGType _ = gTypeCompositionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConvolverNode".
@@ -4266,14 +3833,8 @@ instance FromJSVal ConvolverNode where
 instance IsAudioNode ConvolverNode
 instance IsEventTarget ConvolverNode
 instance IsGObject ConvolverNode where
-  toGObject = GObject . unConvolverNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ConvolverNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToConvolverNode :: IsGObject obj => obj -> IO ConvolverNode
-castToConvolverNode = castTo gTypeConvolverNode "ConvolverNode"
-
+  typeGType _ = gTypeConvolverNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
@@ -4301,14 +3862,8 @@ instance FromJSVal Coordinates where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Coordinates where
-  toGObject = GObject . unCoordinates
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Coordinates . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCoordinates :: IsGObject obj => obj -> IO Coordinates
-castToCoordinates = castTo gTypeCoordinates "Coordinates"
-
+  typeGType _ = gTypeCoordinates
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Counter".
@@ -4336,14 +3891,8 @@ instance FromJSVal Counter where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Counter where
-  toGObject = GObject . unCounter
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Counter . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCounter :: IsGObject obj => obj -> IO Counter
-castToCounter = castTo gTypeCounter "Counter"
-
+  typeGType _ = gTypeCounter
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
@@ -4371,14 +3920,8 @@ instance FromJSVal Crypto where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Crypto where
-  toGObject = GObject . unCrypto
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Crypto . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCrypto :: IsGObject obj => obj -> IO Crypto
-castToCrypto = castTo gTypeCrypto "Crypto"
-
+  typeGType _ = gTypeCrypto
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
@@ -4406,14 +3949,8 @@ instance FromJSVal CryptoKey where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CryptoKey where
-  toGObject = GObject . unCryptoKey
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CryptoKey . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCryptoKey :: IsGObject obj => obj -> IO CryptoKey
-castToCryptoKey = castTo gTypeCryptoKey "CryptoKey"
-
+  typeGType _ = gTypeCryptoKey
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
@@ -4441,14 +3978,8 @@ instance FromJSVal CryptoKeyPair where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject CryptoKeyPair where
-  toGObject = GObject . unCryptoKeyPair
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CryptoKeyPair . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCryptoKeyPair :: IsGObject obj => obj -> IO CryptoKeyPair
-castToCryptoKeyPair = castTo gTypeCryptoKeyPair "CryptoKeyPair"
-
+  typeGType _ = gTypeCryptoKeyPair
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CustomEvent".
@@ -4480,14 +4011,8 @@ instance FromJSVal CustomEvent where
 
 instance IsEvent CustomEvent
 instance IsGObject CustomEvent where
-  toGObject = GObject . unCustomEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = CustomEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToCustomEvent :: IsGObject obj => obj -> IO CustomEvent
-castToCustomEvent = castTo gTypeCustomEvent "CustomEvent"
-
+  typeGType _ = gTypeCustomEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMError".
@@ -4516,18 +4041,12 @@ instance FromJSVal DOMError where
 
 class IsGObject o => IsDOMError o
 toDOMError :: IsDOMError o => o -> DOMError
-toDOMError = unsafeCastGObject . toGObject
+toDOMError = DOMError . coerce
 
 instance IsDOMError DOMError
 instance IsGObject DOMError where
-  toGObject = GObject . unDOMError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMError :: IsGObject obj => obj -> IO DOMError
-castToDOMError = castTo gTypeDOMError "DOMError"
-
+  typeGType _ = gTypeDOMError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
@@ -4555,14 +4074,8 @@ instance FromJSVal DOMImplementation where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMImplementation where
-  toGObject = GObject . unDOMImplementation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMImplementation . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMImplementation :: IsGObject obj => obj -> IO DOMImplementation
-castToDOMImplementation = castTo gTypeDOMImplementation "DOMImplementation"
-
+  typeGType _ = gTypeDOMImplementation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMImplementation\"]" gTypeDOMImplementation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
@@ -4590,14 +4103,8 @@ instance FromJSVal DOMNamedFlowCollection where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMNamedFlowCollection where
-  toGObject = GObject . unDOMNamedFlowCollection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMNamedFlowCollection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMNamedFlowCollection :: IsGObject obj => obj -> IO DOMNamedFlowCollection
-castToDOMNamedFlowCollection = castTo gTypeDOMNamedFlowCollection "DOMNamedFlowCollection"
-
+  typeGType _ = gTypeDOMNamedFlowCollection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
@@ -4625,14 +4132,8 @@ instance FromJSVal DOMParser where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMParser where
-  toGObject = GObject . unDOMParser
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMParser . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMParser :: IsGObject obj => obj -> IO DOMParser
-castToDOMParser = castTo gTypeDOMParser "DOMParser"
-
+  typeGType _ = gTypeDOMParser
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMSettableTokenList".
@@ -4664,14 +4165,8 @@ instance FromJSVal DOMSettableTokenList where
 
 instance IsDOMTokenList DOMSettableTokenList
 instance IsGObject DOMSettableTokenList where
-  toGObject = GObject . unDOMSettableTokenList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMSettableTokenList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMSettableTokenList :: IsGObject obj => obj -> IO DOMSettableTokenList
-castToDOMSettableTokenList = castTo gTypeDOMSettableTokenList "DOMSettableTokenList"
-
+  typeGType _ = gTypeDOMSettableTokenList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMSettableTokenList\"]" gTypeDOMSettableTokenList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
@@ -4699,14 +4194,8 @@ instance FromJSVal DOMStringList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMStringList where
-  toGObject = GObject . unDOMStringList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMStringList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMStringList :: IsGObject obj => obj -> IO DOMStringList
-castToDOMStringList = castTo gTypeDOMStringList "DOMStringList"
-
+  typeGType _ = gTypeDOMStringList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMStringList\"]" gTypeDOMStringList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
@@ -4734,14 +4223,8 @@ instance FromJSVal DOMStringMap where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DOMStringMap where
-  toGObject = GObject . unDOMStringMap
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMStringMap . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMStringMap :: IsGObject obj => obj -> IO DOMStringMap
-castToDOMStringMap = castTo gTypeDOMStringMap "DOMStringMap"
-
+  typeGType _ = gTypeDOMStringMap
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
@@ -4770,18 +4253,12 @@ instance FromJSVal DOMTokenList where
 
 class IsGObject o => IsDOMTokenList o
 toDOMTokenList :: IsDOMTokenList o => o -> DOMTokenList
-toDOMTokenList = unsafeCastGObject . toGObject
+toDOMTokenList = DOMTokenList . coerce
 
 instance IsDOMTokenList DOMTokenList
 instance IsGObject DOMTokenList where
-  toGObject = GObject . unDOMTokenList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DOMTokenList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDOMTokenList :: IsGObject obj => obj -> IO DOMTokenList
-castToDOMTokenList = castTo gTypeDOMTokenList "DOMTokenList"
-
+  typeGType _ = gTypeDOMTokenList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DOMTokenList\"]" gTypeDOMTokenList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataCue".
@@ -4815,14 +4292,8 @@ instance FromJSVal DataCue where
 instance IsTextTrackCue DataCue
 instance IsEventTarget DataCue
 instance IsGObject DataCue where
-  toGObject = GObject . unDataCue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DataCue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDataCue :: IsGObject obj => obj -> IO DataCue
-castToDataCue = castTo gTypeDataCue "DataCue"
-
+  typeGType _ = gTypeDataCue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
@@ -4850,14 +4321,8 @@ instance FromJSVal DataTransfer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransfer where
-  toGObject = GObject . unDataTransfer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DataTransfer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDataTransfer :: IsGObject obj => obj -> IO DataTransfer
-castToDataTransfer = castTo gTypeDataTransfer "DataTransfer"
-
+  typeGType _ = gTypeDataTransfer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
@@ -4885,14 +4350,8 @@ instance FromJSVal DataTransferItem where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransferItem where
-  toGObject = GObject . unDataTransferItem
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DataTransferItem . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDataTransferItem :: IsGObject obj => obj -> IO DataTransferItem
-castToDataTransferItem = castTo gTypeDataTransferItem "DataTransferItem"
-
+  typeGType _ = gTypeDataTransferItem
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
@@ -4920,14 +4379,8 @@ instance FromJSVal DataTransferItemList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject DataTransferItemList where
-  toGObject = GObject . unDataTransferItemList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DataTransferItemList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDataTransferItemList :: IsGObject obj => obj -> IO DataTransferItemList
-castToDataTransferItemList = castTo gTypeDataTransferItemList "DataTransferItemList"
-
+  typeGType _ = gTypeDataTransferItemList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Database".
@@ -4955,14 +4408,8 @@ instance FromJSVal Database where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Database where
-  toGObject = GObject . unDatabase
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Database . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDatabase :: IsGObject obj => obj -> IO Database
-castToDatabase = castTo gTypeDatabase "Database"
-
+  typeGType _ = gTypeDatabase
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DedicatedWorkerGlobalScope".
@@ -4996,14 +4443,8 @@ instance FromJSVal DedicatedWorkerGlobalScope where
 instance IsWorkerGlobalScope DedicatedWorkerGlobalScope
 instance IsEventTarget DedicatedWorkerGlobalScope
 instance IsGObject DedicatedWorkerGlobalScope where
-  toGObject = GObject . unDedicatedWorkerGlobalScope
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DedicatedWorkerGlobalScope . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDedicatedWorkerGlobalScope :: IsGObject obj => obj -> IO DedicatedWorkerGlobalScope
-castToDedicatedWorkerGlobalScope = castTo gTypeDedicatedWorkerGlobalScope "DedicatedWorkerGlobalScope"
-
+  typeGType _ = gTypeDedicatedWorkerGlobalScope
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DelayNode".
@@ -5037,14 +4478,8 @@ instance FromJSVal DelayNode where
 instance IsAudioNode DelayNode
 instance IsEventTarget DelayNode
 instance IsGObject DelayNode where
-  toGObject = GObject . unDelayNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DelayNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDelayNode :: IsGObject obj => obj -> IO DelayNode
-castToDelayNode = castTo gTypeDelayNode "DelayNode"
-
+  typeGType _ = gTypeDelayNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceMotionEvent".
@@ -5076,14 +4511,8 @@ instance FromJSVal DeviceMotionEvent where
 
 instance IsEvent DeviceMotionEvent
 instance IsGObject DeviceMotionEvent where
-  toGObject = GObject . unDeviceMotionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DeviceMotionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDeviceMotionEvent :: IsGObject obj => obj -> IO DeviceMotionEvent
-castToDeviceMotionEvent = castTo gTypeDeviceMotionEvent "DeviceMotionEvent"
-
+  typeGType _ = gTypeDeviceMotionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceOrientationEvent".
@@ -5115,14 +4544,8 @@ instance FromJSVal DeviceOrientationEvent where
 
 instance IsEvent DeviceOrientationEvent
 instance IsGObject DeviceOrientationEvent where
-  toGObject = GObject . unDeviceOrientationEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DeviceOrientationEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDeviceOrientationEvent :: IsGObject obj => obj -> IO DeviceOrientationEvent
-castToDeviceOrientationEvent = castTo gTypeDeviceOrientationEvent "DeviceOrientationEvent"
-
+  typeGType _ = gTypeDeviceOrientationEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceProximityEvent".
@@ -5154,14 +4577,8 @@ instance FromJSVal DeviceProximityEvent where
 
 instance IsEvent DeviceProximityEvent
 instance IsGObject DeviceProximityEvent where
-  toGObject = GObject . unDeviceProximityEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DeviceProximityEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDeviceProximityEvent :: IsGObject obj => obj -> IO DeviceProximityEvent
-castToDeviceProximityEvent = castTo gTypeDeviceProximityEvent "DeviceProximityEvent"
-
+  typeGType _ = gTypeDeviceProximityEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Document".
@@ -5194,20 +4611,14 @@ instance FromJSVal Document where
 
 class IsNode o => IsDocument o
 toDocument :: IsDocument o => o -> Document
-toDocument = unsafeCastGObject . toGObject
+toDocument = Document . coerce
 
 instance IsDocument Document
 instance IsNode Document
 instance IsEventTarget Document
 instance IsGObject Document where
-  toGObject = GObject . unDocument
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Document . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDocument :: IsGObject obj => obj -> IO Document
-castToDocument = castTo gTypeDocument "Document"
-
+  typeGType _ = gTypeDocument
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Document\"]" gTypeDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentFragment".
@@ -5241,14 +4652,8 @@ instance FromJSVal DocumentFragment where
 instance IsNode DocumentFragment
 instance IsEventTarget DocumentFragment
 instance IsGObject DocumentFragment where
-  toGObject = GObject . unDocumentFragment
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DocumentFragment . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDocumentFragment :: IsGObject obj => obj -> IO DocumentFragment
-castToDocumentFragment = castTo gTypeDocumentFragment "DocumentFragment"
-
+  typeGType _ = gTypeDocumentFragment
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DocumentFragment\"]" gTypeDocumentFragment :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentType".
@@ -5282,14 +4687,8 @@ instance FromJSVal DocumentType where
 instance IsNode DocumentType
 instance IsEventTarget DocumentType
 instance IsGObject DocumentType where
-  toGObject = GObject . unDocumentType
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DocumentType . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDocumentType :: IsGObject obj => obj -> IO DocumentType
-castToDocumentType = castTo gTypeDocumentType "DocumentType"
-
+  typeGType _ = gTypeDocumentType
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DocumentType\"]" gTypeDocumentType :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DynamicsCompressorNode".
@@ -5323,14 +4722,8 @@ instance FromJSVal DynamicsCompressorNode where
 instance IsAudioNode DynamicsCompressorNode
 instance IsEventTarget DynamicsCompressorNode
 instance IsGObject DynamicsCompressorNode where
-  toGObject = GObject . unDynamicsCompressorNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = DynamicsCompressorNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToDynamicsCompressorNode :: IsGObject obj => obj -> IO DynamicsCompressorNode
-castToDynamicsCompressorNode = castTo gTypeDynamicsCompressorNode "DynamicsCompressorNode"
-
+  typeGType _ = gTypeDynamicsCompressorNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
@@ -5358,14 +4751,8 @@ instance FromJSVal EXTBlendMinMax where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTBlendMinMax where
-  toGObject = GObject . unEXTBlendMinMax
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EXTBlendMinMax . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEXTBlendMinMax :: IsGObject obj => obj -> IO EXTBlendMinMax
-castToEXTBlendMinMax = castTo gTypeEXTBlendMinMax "EXTBlendMinMax"
-
+  typeGType _ = gTypeEXTBlendMinMax
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
@@ -5393,14 +4780,8 @@ instance FromJSVal EXTFragDepth where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTFragDepth where
-  toGObject = GObject . unEXTFragDepth
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EXTFragDepth . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEXTFragDepth :: IsGObject obj => obj -> IO EXTFragDepth
-castToEXTFragDepth = castTo gTypeEXTFragDepth "EXTFragDepth"
-
+  typeGType _ = gTypeEXTFragDepth
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
@@ -5428,14 +4809,8 @@ instance FromJSVal EXTShaderTextureLOD where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTShaderTextureLOD where
-  toGObject = GObject . unEXTShaderTextureLOD
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EXTShaderTextureLOD . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEXTShaderTextureLOD :: IsGObject obj => obj -> IO EXTShaderTextureLOD
-castToEXTShaderTextureLOD = castTo gTypeEXTShaderTextureLOD "EXTShaderTextureLOD"
-
+  typeGType _ = gTypeEXTShaderTextureLOD
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
@@ -5463,14 +4838,8 @@ instance FromJSVal EXTTextureFilterAnisotropic where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTTextureFilterAnisotropic where
-  toGObject = GObject . unEXTTextureFilterAnisotropic
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EXTTextureFilterAnisotropic . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEXTTextureFilterAnisotropic :: IsGObject obj => obj -> IO EXTTextureFilterAnisotropic
-castToEXTTextureFilterAnisotropic = castTo gTypeEXTTextureFilterAnisotropic "EXTTextureFilterAnisotropic"
-
+  typeGType _ = gTypeEXTTextureFilterAnisotropic
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
@@ -5498,14 +4867,8 @@ instance FromJSVal EXTsRGB where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EXTsRGB where
-  toGObject = GObject . unEXTsRGB
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EXTsRGB . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEXTsRGB :: IsGObject obj => obj -> IO EXTsRGB
-castToEXTsRGB = castTo gTypeEXTsRGB "EXTsRGB"
-
+  typeGType _ = gTypeEXTsRGB
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Element".
@@ -5538,20 +4901,14 @@ instance FromJSVal Element where
 
 class IsNode o => IsElement o
 toElement :: IsElement o => o -> Element
-toElement = unsafeCastGObject . toGObject
+toElement = Element . coerce
 
 instance IsElement Element
 instance IsNode Element
 instance IsEventTarget Element
 instance IsGObject Element where
-  toGObject = GObject . unElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Element . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToElement :: IsGObject obj => obj -> IO Element
-castToElement = castTo gTypeElement "Element"
-
+  typeGType _ = gTypeElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Element\"]" gTypeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Entity".
@@ -5585,14 +4942,8 @@ instance FromJSVal Entity where
 instance IsNode Entity
 instance IsEventTarget Entity
 instance IsGObject Entity where
-  toGObject = GObject . unEntity
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Entity . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEntity :: IsGObject obj => obj -> IO Entity
-castToEntity = castTo gTypeEntity "Entity"
-
+  typeGType _ = gTypeEntity
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Entity\"]" gTypeEntity :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EntityReference".
@@ -5626,14 +4977,8 @@ instance FromJSVal EntityReference where
 instance IsNode EntityReference
 instance IsEventTarget EntityReference
 instance IsGObject EntityReference where
-  toGObject = GObject . unEntityReference
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EntityReference . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEntityReference :: IsGObject obj => obj -> IO EntityReference
-castToEntityReference = castTo gTypeEntityReference "EntityReference"
-
+  typeGType _ = gTypeEntityReference
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EntityReference\"]" gTypeEntityReference :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ErrorEvent".
@@ -5665,14 +5010,8 @@ instance FromJSVal ErrorEvent where
 
 instance IsEvent ErrorEvent
 instance IsGObject ErrorEvent where
-  toGObject = GObject . unErrorEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ErrorEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToErrorEvent :: IsGObject obj => obj -> IO ErrorEvent
-castToErrorEvent = castTo gTypeErrorEvent "ErrorEvent"
-
+  typeGType _ = gTypeErrorEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Event".
@@ -5701,18 +5040,12 @@ instance FromJSVal Event where
 
 class IsGObject o => IsEvent o
 toEvent :: IsEvent o => o -> Event
-toEvent = unsafeCastGObject . toGObject
+toEvent = Event . coerce
 
 instance IsEvent Event
 instance IsGObject Event where
-  toGObject = GObject . unEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Event . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEvent :: IsGObject obj => obj -> IO Event
-castToEvent = castTo gTypeEvent "Event"
-
+  typeGType _ = gTypeEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Event\"]" gTypeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventListener".
@@ -5740,14 +5073,8 @@ instance FromJSVal EventListener where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject EventListener where
-  toGObject = GObject . unEventListener
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EventListener . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEventListener :: IsGObject obj => obj -> IO EventListener
-castToEventListener = castTo gTypeEventListener "EventListener"
-
+  typeGType _ = gTypeEventListener
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventSource".
@@ -5779,14 +5106,8 @@ instance FromJSVal EventSource where
 
 instance IsEventTarget EventSource
 instance IsGObject EventSource where
-  toGObject = GObject . unEventSource
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EventSource . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEventSource :: IsGObject obj => obj -> IO EventSource
-castToEventSource = castTo gTypeEventSource "EventSource"
-
+  typeGType _ = gTypeEventSource
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
@@ -5815,18 +5136,12 @@ instance FromJSVal EventTarget where
 
 class IsGObject o => IsEventTarget o
 toEventTarget :: IsEventTarget o => o -> EventTarget
-toEventTarget = unsafeCastGObject . toGObject
+toEventTarget = EventTarget . coerce
 
 instance IsEventTarget EventTarget
 instance IsGObject EventTarget where
-  toGObject = GObject . unEventTarget
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = EventTarget . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToEventTarget :: IsGObject obj => obj -> IO EventTarget
-castToEventTarget = castTo gTypeEventTarget "EventTarget"
-
+  typeGType _ = gTypeEventTarget
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EventTarget\"]" gTypeEventTarget :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.File".
@@ -5858,14 +5173,8 @@ instance FromJSVal File where
 
 instance IsBlob File
 instance IsGObject File where
-  toGObject = GObject . unFile
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = File . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFile :: IsGObject obj => obj -> IO File
-castToFile = castTo gTypeFile "File"
-
+  typeGType _ = gTypeFile
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"File\"]" gTypeFile :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileError".
@@ -5893,14 +5202,8 @@ instance FromJSVal FileError where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject FileError where
-  toGObject = GObject . unFileError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FileError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFileError :: IsGObject obj => obj -> IO FileError
-castToFileError = castTo gTypeFileError "FileError"
-
+  typeGType _ = gTypeFileError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileList".
@@ -5928,14 +5231,8 @@ instance FromJSVal FileList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject FileList where
-  toGObject = GObject . unFileList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FileList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFileList :: IsGObject obj => obj -> IO FileList
-castToFileList = castTo gTypeFileList "FileList"
-
+  typeGType _ = gTypeFileList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FileList\"]" gTypeFileList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileReader".
@@ -5967,14 +5264,8 @@ instance FromJSVal FileReader where
 
 instance IsEventTarget FileReader
 instance IsGObject FileReader where
-  toGObject = GObject . unFileReader
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FileReader . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFileReader :: IsGObject obj => obj -> IO FileReader
-castToFileReader = castTo gTypeFileReader "FileReader"
-
+  typeGType _ = gTypeFileReader
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
@@ -6002,14 +5293,8 @@ instance FromJSVal FileReaderSync where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject FileReaderSync where
-  toGObject = GObject . unFileReaderSync
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FileReaderSync . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFileReaderSync :: IsGObject obj => obj -> IO FileReaderSync
-castToFileReaderSync = castTo gTypeFileReaderSync "FileReaderSync"
-
+  typeGType _ = gTypeFileReaderSync
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FocusEvent".
@@ -6043,14 +5328,8 @@ instance FromJSVal FocusEvent where
 instance IsUIEvent FocusEvent
 instance IsEvent FocusEvent
 instance IsGObject FocusEvent where
-  toGObject = GObject . unFocusEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FocusEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFocusEvent :: IsGObject obj => obj -> IO FocusEvent
-castToFocusEvent = castTo gTypeFocusEvent "FocusEvent"
-
+  typeGType _ = gTypeFocusEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FontLoader".
@@ -6082,14 +5361,8 @@ instance FromJSVal FontLoader where
 
 instance IsEventTarget FontLoader
 instance IsGObject FontLoader where
-  toGObject = GObject . unFontLoader
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FontLoader . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFontLoader :: IsGObject obj => obj -> IO FontLoader
-castToFontLoader = castTo gTypeFontLoader "FontLoader"
-
+  typeGType _ = gTypeFontLoader
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FontLoader\"]" gTypeFontLoader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FormData".
@@ -6117,14 +5390,8 @@ instance FromJSVal FormData where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject FormData where
-  toGObject = GObject . unFormData
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = FormData . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToFormData :: IsGObject obj => obj -> IO FormData
-castToFormData = castTo gTypeFormData "FormData"
-
+  typeGType _ = gTypeFormData
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GainNode".
@@ -6158,14 +5425,8 @@ instance FromJSVal GainNode where
 instance IsAudioNode GainNode
 instance IsEventTarget GainNode
 instance IsGObject GainNode where
-  toGObject = GObject . unGainNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = GainNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGainNode :: IsGObject obj => obj -> IO GainNode
-castToGainNode = castTo gTypeGainNode "GainNode"
-
+  typeGType _ = gTypeGainNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
@@ -6193,14 +5454,8 @@ instance FromJSVal Gamepad where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Gamepad where
-  toGObject = GObject . unGamepad
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Gamepad . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGamepad :: IsGObject obj => obj -> IO Gamepad
-castToGamepad = castTo gTypeGamepad "Gamepad"
-
+  typeGType _ = gTypeGamepad
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
@@ -6228,14 +5483,8 @@ instance FromJSVal GamepadButton where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject GamepadButton where
-  toGObject = GObject . unGamepadButton
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = GamepadButton . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGamepadButton :: IsGObject obj => obj -> IO GamepadButton
-castToGamepadButton = castTo gTypeGamepadButton "GamepadButton"
-
+  typeGType _ = gTypeGamepadButton
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadEvent".
@@ -6267,14 +5516,8 @@ instance FromJSVal GamepadEvent where
 
 instance IsEvent GamepadEvent
 instance IsGObject GamepadEvent where
-  toGObject = GObject . unGamepadEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = GamepadEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGamepadEvent :: IsGObject obj => obj -> IO GamepadEvent
-castToGamepadEvent = castTo gTypeGamepadEvent "GamepadEvent"
-
+  typeGType _ = gTypeGamepadEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
@@ -6302,14 +5545,8 @@ instance FromJSVal Geolocation where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Geolocation where
-  toGObject = GObject . unGeolocation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Geolocation . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGeolocation :: IsGObject obj => obj -> IO Geolocation
-castToGeolocation = castTo gTypeGeolocation "Geolocation"
-
+  typeGType _ = gTypeGeolocation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Geolocation\"]" gTypeGeolocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
@@ -6337,14 +5574,8 @@ instance FromJSVal Geoposition where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Geoposition where
-  toGObject = GObject . unGeoposition
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Geoposition . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToGeoposition :: IsGObject obj => obj -> IO Geoposition
-castToGeoposition = castTo gTypeGeoposition "Geoposition"
-
+  typeGType _ = gTypeGeoposition
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
@@ -6372,14 +5603,8 @@ instance FromJSVal HTMLAllCollection where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject HTMLAllCollection where
-  toGObject = GObject . unHTMLAllCollection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLAllCollection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLAllCollection :: IsGObject obj => obj -> IO HTMLAllCollection
-castToHTMLAllCollection = castTo gTypeHTMLAllCollection "HTMLAllCollection"
-
+  typeGType _ = gTypeHTMLAllCollection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAnchorElement".
@@ -6417,14 +5642,8 @@ instance IsElement HTMLAnchorElement
 instance IsNode HTMLAnchorElement
 instance IsEventTarget HTMLAnchorElement
 instance IsGObject HTMLAnchorElement where
-  toGObject = GObject . unHTMLAnchorElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLAnchorElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLAnchorElement :: IsGObject obj => obj -> IO HTMLAnchorElement
-castToHTMLAnchorElement = castTo gTypeHTMLAnchorElement "HTMLAnchorElement"
-
+  typeGType _ = gTypeHTMLAnchorElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAppletElement".
@@ -6462,14 +5681,8 @@ instance IsElement HTMLAppletElement
 instance IsNode HTMLAppletElement
 instance IsEventTarget HTMLAppletElement
 instance IsGObject HTMLAppletElement where
-  toGObject = GObject . unHTMLAppletElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLAppletElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLAppletElement :: IsGObject obj => obj -> IO HTMLAppletElement
-castToHTMLAppletElement = castTo gTypeHTMLAppletElement "HTMLAppletElement"
-
+  typeGType _ = gTypeHTMLAppletElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLAppletElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAreaElement".
@@ -6507,14 +5720,8 @@ instance IsElement HTMLAreaElement
 instance IsNode HTMLAreaElement
 instance IsEventTarget HTMLAreaElement
 instance IsGObject HTMLAreaElement where
-  toGObject = GObject . unHTMLAreaElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLAreaElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLAreaElement :: IsGObject obj => obj -> IO HTMLAreaElement
-castToHTMLAreaElement = castTo gTypeHTMLAreaElement "HTMLAreaElement"
-
+  typeGType _ = gTypeHTMLAreaElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAudioElement".
@@ -6554,14 +5761,8 @@ instance IsElement HTMLAudioElement
 instance IsNode HTMLAudioElement
 instance IsEventTarget HTMLAudioElement
 instance IsGObject HTMLAudioElement where
-  toGObject = GObject . unHTMLAudioElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLAudioElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLAudioElement :: IsGObject obj => obj -> IO HTMLAudioElement
-castToHTMLAudioElement = castTo gTypeHTMLAudioElement "HTMLAudioElement"
-
+  typeGType _ = gTypeHTMLAudioElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBRElement".
@@ -6599,14 +5800,8 @@ instance IsElement HTMLBRElement
 instance IsNode HTMLBRElement
 instance IsEventTarget HTMLBRElement
 instance IsGObject HTMLBRElement where
-  toGObject = GObject . unHTMLBRElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLBRElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLBRElement :: IsGObject obj => obj -> IO HTMLBRElement
-castToHTMLBRElement = castTo gTypeHTMLBRElement "HTMLBRElement"
-
+  typeGType _ = gTypeHTMLBRElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseElement".
@@ -6644,14 +5839,8 @@ instance IsElement HTMLBaseElement
 instance IsNode HTMLBaseElement
 instance IsEventTarget HTMLBaseElement
 instance IsGObject HTMLBaseElement where
-  toGObject = GObject . unHTMLBaseElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLBaseElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLBaseElement :: IsGObject obj => obj -> IO HTMLBaseElement
-castToHTMLBaseElement = castTo gTypeHTMLBaseElement "HTMLBaseElement"
-
+  typeGType _ = gTypeHTMLBaseElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseFontElement".
@@ -6689,14 +5878,8 @@ instance IsElement HTMLBaseFontElement
 instance IsNode HTMLBaseFontElement
 instance IsEventTarget HTMLBaseFontElement
 instance IsGObject HTMLBaseFontElement where
-  toGObject = GObject . unHTMLBaseFontElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLBaseFontElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLBaseFontElement :: IsGObject obj => obj -> IO HTMLBaseFontElement
-castToHTMLBaseFontElement = castTo gTypeHTMLBaseFontElement "HTMLBaseFontElement"
-
+  typeGType _ = gTypeHTMLBaseFontElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLBaseFontElement\"]" gTypeHTMLBaseFontElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBodyElement".
@@ -6734,14 +5917,8 @@ instance IsElement HTMLBodyElement
 instance IsNode HTMLBodyElement
 instance IsEventTarget HTMLBodyElement
 instance IsGObject HTMLBodyElement where
-  toGObject = GObject . unHTMLBodyElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLBodyElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLBodyElement :: IsGObject obj => obj -> IO HTMLBodyElement
-castToHTMLBodyElement = castTo gTypeHTMLBodyElement "HTMLBodyElement"
-
+  typeGType _ = gTypeHTMLBodyElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLButtonElement".
@@ -6779,14 +5956,8 @@ instance IsElement HTMLButtonElement
 instance IsNode HTMLButtonElement
 instance IsEventTarget HTMLButtonElement
 instance IsGObject HTMLButtonElement where
-  toGObject = GObject . unHTMLButtonElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLButtonElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLButtonElement :: IsGObject obj => obj -> IO HTMLButtonElement
-castToHTMLButtonElement = castTo gTypeHTMLButtonElement "HTMLButtonElement"
-
+  typeGType _ = gTypeHTMLButtonElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButtonElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCanvasElement".
@@ -6824,14 +5995,8 @@ instance IsElement HTMLCanvasElement
 instance IsNode HTMLCanvasElement
 instance IsEventTarget HTMLCanvasElement
 instance IsGObject HTMLCanvasElement where
-  toGObject = GObject . unHTMLCanvasElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLCanvasElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLCanvasElement :: IsGObject obj => obj -> IO HTMLCanvasElement
-castToHTMLCanvasElement = castTo gTypeHTMLCanvasElement "HTMLCanvasElement"
-
+  typeGType _ = gTypeHTMLCanvasElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLCanvasElement\"]" gTypeHTMLCanvasElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
@@ -6860,18 +6025,12 @@ instance FromJSVal HTMLCollection where
 
 class IsGObject o => IsHTMLCollection o
 toHTMLCollection :: IsHTMLCollection o => o -> HTMLCollection
-toHTMLCollection = unsafeCastGObject . toGObject
+toHTMLCollection = HTMLCollection . coerce
 
 instance IsHTMLCollection HTMLCollection
 instance IsGObject HTMLCollection where
-  toGObject = GObject . unHTMLCollection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLCollection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLCollection :: IsGObject obj => obj -> IO HTMLCollection
-castToHTMLCollection = castTo gTypeHTMLCollection "HTMLCollection"
-
+  typeGType _ = gTypeHTMLCollection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDListElement".
@@ -6909,14 +6068,8 @@ instance IsElement HTMLDListElement
 instance IsNode HTMLDListElement
 instance IsEventTarget HTMLDListElement
 instance IsGObject HTMLDListElement where
-  toGObject = GObject . unHTMLDListElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDListElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDListElement :: IsGObject obj => obj -> IO HTMLDListElement
-castToHTMLDListElement = castTo gTypeHTMLDListElement "HTMLDListElement"
-
+  typeGType _ = gTypeHTMLDListElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDataListElement".
@@ -6954,14 +6107,8 @@ instance IsElement HTMLDataListElement
 instance IsNode HTMLDataListElement
 instance IsEventTarget HTMLDataListElement
 instance IsGObject HTMLDataListElement where
-  toGObject = GObject . unHTMLDataListElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDataListElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDataListElement :: IsGObject obj => obj -> IO HTMLDataListElement
-castToHTMLDataListElement = castTo gTypeHTMLDataListElement "HTMLDataListElement"
-
+  typeGType _ = gTypeHTMLDataListElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDetailsElement".
@@ -6999,14 +6146,8 @@ instance IsElement HTMLDetailsElement
 instance IsNode HTMLDetailsElement
 instance IsEventTarget HTMLDetailsElement
 instance IsGObject HTMLDetailsElement where
-  toGObject = GObject . unHTMLDetailsElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDetailsElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDetailsElement :: IsGObject obj => obj -> IO HTMLDetailsElement
-castToHTMLDetailsElement = castTo gTypeHTMLDetailsElement "HTMLDetailsElement"
-
+  typeGType _ = gTypeHTMLDetailsElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetailsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDirectoryElement".
@@ -7044,14 +6185,8 @@ instance IsElement HTMLDirectoryElement
 instance IsNode HTMLDirectoryElement
 instance IsEventTarget HTMLDirectoryElement
 instance IsGObject HTMLDirectoryElement where
-  toGObject = GObject . unHTMLDirectoryElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDirectoryElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDirectoryElement :: IsGObject obj => obj -> IO HTMLDirectoryElement
-castToHTMLDirectoryElement = castTo gTypeHTMLDirectoryElement "HTMLDirectoryElement"
-
+  typeGType _ = gTypeHTMLDirectoryElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDirectoryElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDivElement".
@@ -7089,14 +6224,8 @@ instance IsElement HTMLDivElement
 instance IsNode HTMLDivElement
 instance IsEventTarget HTMLDivElement
 instance IsGObject HTMLDivElement where
-  toGObject = GObject . unHTMLDivElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDivElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDivElement :: IsGObject obj => obj -> IO HTMLDivElement
-castToHTMLDivElement = castTo gTypeHTMLDivElement "HTMLDivElement"
-
+  typeGType _ = gTypeHTMLDivElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDocument".
@@ -7132,14 +6261,8 @@ instance IsDocument HTMLDocument
 instance IsNode HTMLDocument
 instance IsEventTarget HTMLDocument
 instance IsGObject HTMLDocument where
-  toGObject = GObject . unHTMLDocument
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLDocument . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLDocument :: IsGObject obj => obj -> IO HTMLDocument
-castToHTMLDocument = castTo gTypeHTMLDocument "HTMLDocument"
-
+  typeGType _ = gTypeHTMLDocument
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLElement".
@@ -7173,21 +6296,15 @@ instance FromJSVal HTMLElement where
 
 class IsElement o => IsHTMLElement o
 toHTMLElement :: IsHTMLElement o => o -> HTMLElement
-toHTMLElement = unsafeCastGObject . toGObject
+toHTMLElement = HTMLElement . coerce
 
 instance IsHTMLElement HTMLElement
 instance IsElement HTMLElement
 instance IsNode HTMLElement
 instance IsEventTarget HTMLElement
 instance IsGObject HTMLElement where
-  toGObject = GObject . unHTMLElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLElement :: IsGObject obj => obj -> IO HTMLElement
-castToHTMLElement = castTo gTypeHTMLElement "HTMLElement"
-
+  typeGType _ = gTypeHTMLElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLEmbedElement".
@@ -7225,14 +6342,8 @@ instance IsElement HTMLEmbedElement
 instance IsNode HTMLEmbedElement
 instance IsEventTarget HTMLEmbedElement
 instance IsGObject HTMLEmbedElement where
-  toGObject = GObject . unHTMLEmbedElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLEmbedElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLEmbedElement :: IsGObject obj => obj -> IO HTMLEmbedElement
-castToHTMLEmbedElement = castTo gTypeHTMLEmbedElement "HTMLEmbedElement"
-
+  typeGType _ = gTypeHTMLEmbedElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFieldSetElement".
@@ -7270,14 +6381,8 @@ instance IsElement HTMLFieldSetElement
 instance IsNode HTMLFieldSetElement
 instance IsEventTarget HTMLFieldSetElement
 instance IsGObject HTMLFieldSetElement where
-  toGObject = GObject . unHTMLFieldSetElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFieldSetElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFieldSetElement :: IsGObject obj => obj -> IO HTMLFieldSetElement
-castToHTMLFieldSetElement = castTo gTypeHTMLFieldSetElement "HTMLFieldSetElement"
-
+  typeGType _ = gTypeHTMLFieldSetElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFieldSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFontElement".
@@ -7315,14 +6420,8 @@ instance IsElement HTMLFontElement
 instance IsNode HTMLFontElement
 instance IsEventTarget HTMLFontElement
 instance IsGObject HTMLFontElement where
-  toGObject = GObject . unHTMLFontElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFontElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFontElement :: IsGObject obj => obj -> IO HTMLFontElement
-castToHTMLFontElement = castTo gTypeHTMLFontElement "HTMLFontElement"
-
+  typeGType _ = gTypeHTMLFontElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFontElement\"]" gTypeHTMLFontElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormControlsCollection".
@@ -7354,14 +6453,8 @@ instance FromJSVal HTMLFormControlsCollection where
 
 instance IsHTMLCollection HTMLFormControlsCollection
 instance IsGObject HTMLFormControlsCollection where
-  toGObject = GObject . unHTMLFormControlsCollection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFormControlsCollection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFormControlsCollection :: IsGObject obj => obj -> IO HTMLFormControlsCollection
-castToHTMLFormControlsCollection = castTo gTypeHTMLFormControlsCollection "HTMLFormControlsCollection"
-
+  typeGType _ = gTypeHTMLFormControlsCollection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormElement".
@@ -7399,14 +6492,8 @@ instance IsElement HTMLFormElement
 instance IsNode HTMLFormElement
 instance IsEventTarget HTMLFormElement
 instance IsGObject HTMLFormElement where
-  toGObject = GObject . unHTMLFormElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFormElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFormElement :: IsGObject obj => obj -> IO HTMLFormElement
-castToHTMLFormElement = castTo gTypeHTMLFormElement "HTMLFormElement"
-
+  typeGType _ = gTypeHTMLFormElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameElement".
@@ -7444,14 +6531,8 @@ instance IsElement HTMLFrameElement
 instance IsNode HTMLFrameElement
 instance IsEventTarget HTMLFrameElement
 instance IsGObject HTMLFrameElement where
-  toGObject = GObject . unHTMLFrameElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFrameElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFrameElement :: IsGObject obj => obj -> IO HTMLFrameElement
-castToHTMLFrameElement = castTo gTypeHTMLFrameElement "HTMLFrameElement"
-
+  typeGType _ = gTypeHTMLFrameElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameSetElement".
@@ -7489,14 +6570,8 @@ instance IsElement HTMLFrameSetElement
 instance IsNode HTMLFrameSetElement
 instance IsEventTarget HTMLFrameSetElement
 instance IsGObject HTMLFrameSetElement where
-  toGObject = GObject . unHTMLFrameSetElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLFrameSetElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLFrameSetElement :: IsGObject obj => obj -> IO HTMLFrameSetElement
-castToHTMLFrameSetElement = castTo gTypeHTMLFrameSetElement "HTMLFrameSetElement"
-
+  typeGType _ = gTypeHTMLFrameSetElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFrameSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHRElement".
@@ -7534,14 +6609,8 @@ instance IsElement HTMLHRElement
 instance IsNode HTMLHRElement
 instance IsEventTarget HTMLHRElement
 instance IsGObject HTMLHRElement where
-  toGObject = GObject . unHTMLHRElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLHRElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLHRElement :: IsGObject obj => obj -> IO HTMLHRElement
-castToHTMLHRElement = castTo gTypeHTMLHRElement "HTMLHRElement"
-
+  typeGType _ = gTypeHTMLHRElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadElement".
@@ -7579,14 +6648,8 @@ instance IsElement HTMLHeadElement
 instance IsNode HTMLHeadElement
 instance IsEventTarget HTMLHeadElement
 instance IsGObject HTMLHeadElement where
-  toGObject = GObject . unHTMLHeadElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLHeadElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLHeadElement :: IsGObject obj => obj -> IO HTMLHeadElement
-castToHTMLHeadElement = castTo gTypeHTMLHeadElement "HTMLHeadElement"
-
+  typeGType _ = gTypeHTMLHeadElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadingElement".
@@ -7624,14 +6687,8 @@ instance IsElement HTMLHeadingElement
 instance IsNode HTMLHeadingElement
 instance IsEventTarget HTMLHeadingElement
 instance IsGObject HTMLHeadingElement where
-  toGObject = GObject . unHTMLHeadingElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLHeadingElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLHeadingElement :: IsGObject obj => obj -> IO HTMLHeadingElement
-castToHTMLHeadingElement = castTo gTypeHTMLHeadingElement "HTMLHeadingElement"
-
+  typeGType _ = gTypeHTMLHeadingElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHtmlElement".
@@ -7669,14 +6726,8 @@ instance IsElement HTMLHtmlElement
 instance IsNode HTMLHtmlElement
 instance IsEventTarget HTMLHtmlElement
 instance IsGObject HTMLHtmlElement where
-  toGObject = GObject . unHTMLHtmlElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLHtmlElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLHtmlElement :: IsGObject obj => obj -> IO HTMLHtmlElement
-castToHTMLHtmlElement = castTo gTypeHTMLHtmlElement "HTMLHtmlElement"
-
+  typeGType _ = gTypeHTMLHtmlElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLHtmlElement\"]" gTypeHTMLHtmlElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLIFrameElement".
@@ -7714,14 +6765,8 @@ instance IsElement HTMLIFrameElement
 instance IsNode HTMLIFrameElement
 instance IsEventTarget HTMLIFrameElement
 instance IsGObject HTMLIFrameElement where
-  toGObject = GObject . unHTMLIFrameElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLIFrameElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLIFrameElement :: IsGObject obj => obj -> IO HTMLIFrameElement
-castToHTMLIFrameElement = castTo gTypeHTMLIFrameElement "HTMLIFrameElement"
-
+  typeGType _ = gTypeHTMLIFrameElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLImageElement".
@@ -7759,14 +6804,8 @@ instance IsElement HTMLImageElement
 instance IsNode HTMLImageElement
 instance IsEventTarget HTMLImageElement
 instance IsGObject HTMLImageElement where
-  toGObject = GObject . unHTMLImageElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLImageElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLImageElement :: IsGObject obj => obj -> IO HTMLImageElement
-castToHTMLImageElement = castTo gTypeHTMLImageElement "HTMLImageElement"
-
+  typeGType _ = gTypeHTMLImageElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLInputElement".
@@ -7804,14 +6843,8 @@ instance IsElement HTMLInputElement
 instance IsNode HTMLInputElement
 instance IsEventTarget HTMLInputElement
 instance IsGObject HTMLInputElement where
-  toGObject = GObject . unHTMLInputElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLInputElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLInputElement :: IsGObject obj => obj -> IO HTMLInputElement
-castToHTMLInputElement = castTo gTypeHTMLInputElement "HTMLInputElement"
-
+  typeGType _ = gTypeHTMLInputElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLKeygenElement".
@@ -7849,14 +6882,8 @@ instance IsElement HTMLKeygenElement
 instance IsNode HTMLKeygenElement
 instance IsEventTarget HTMLKeygenElement
 instance IsGObject HTMLKeygenElement where
-  toGObject = GObject . unHTMLKeygenElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLKeygenElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLKeygenElement :: IsGObject obj => obj -> IO HTMLKeygenElement
-castToHTMLKeygenElement = castTo gTypeHTMLKeygenElement "HTMLKeygenElement"
-
+  typeGType _ = gTypeHTMLKeygenElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygenElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLIElement".
@@ -7894,14 +6921,8 @@ instance IsElement HTMLLIElement
 instance IsNode HTMLLIElement
 instance IsEventTarget HTMLLIElement
 instance IsGObject HTMLLIElement where
-  toGObject = GObject . unHTMLLIElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLLIElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLLIElement :: IsGObject obj => obj -> IO HTMLLIElement
-castToHTMLLIElement = castTo gTypeHTMLLIElement "HTMLLIElement"
-
+  typeGType _ = gTypeHTMLLIElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLabelElement".
@@ -7939,14 +6960,8 @@ instance IsElement HTMLLabelElement
 instance IsNode HTMLLabelElement
 instance IsEventTarget HTMLLabelElement
 instance IsGObject HTMLLabelElement where
-  toGObject = GObject . unHTMLLabelElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLLabelElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLLabelElement :: IsGObject obj => obj -> IO HTMLLabelElement
-castToHTMLLabelElement = castTo gTypeHTMLLabelElement "HTMLLabelElement"
-
+  typeGType _ = gTypeHTMLLabelElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLegendElement".
@@ -7984,14 +6999,8 @@ instance IsElement HTMLLegendElement
 instance IsNode HTMLLegendElement
 instance IsEventTarget HTMLLegendElement
 instance IsGObject HTMLLegendElement where
-  toGObject = GObject . unHTMLLegendElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLLegendElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLLegendElement :: IsGObject obj => obj -> IO HTMLLegendElement
-castToHTMLLegendElement = castTo gTypeHTMLLegendElement "HTMLLegendElement"
-
+  typeGType _ = gTypeHTMLLegendElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegendElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLinkElement".
@@ -8029,14 +7038,8 @@ instance IsElement HTMLLinkElement
 instance IsNode HTMLLinkElement
 instance IsEventTarget HTMLLinkElement
 instance IsGObject HTMLLinkElement where
-  toGObject = GObject . unHTMLLinkElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLLinkElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLLinkElement :: IsGObject obj => obj -> IO HTMLLinkElement
-castToHTMLLinkElement = castTo gTypeHTMLLinkElement "HTMLLinkElement"
-
+  typeGType _ = gTypeHTMLLinkElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMapElement".
@@ -8074,14 +7077,8 @@ instance IsElement HTMLMapElement
 instance IsNode HTMLMapElement
 instance IsEventTarget HTMLMapElement
 instance IsGObject HTMLMapElement where
-  toGObject = GObject . unHTMLMapElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMapElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMapElement :: IsGObject obj => obj -> IO HTMLMapElement
-castToHTMLMapElement = castTo gTypeHTMLMapElement "HTMLMapElement"
-
+  typeGType _ = gTypeHTMLMapElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMarqueeElement".
@@ -8119,14 +7116,8 @@ instance IsElement HTMLMarqueeElement
 instance IsNode HTMLMarqueeElement
 instance IsEventTarget HTMLMarqueeElement
 instance IsGObject HTMLMarqueeElement where
-  toGObject = GObject . unHTMLMarqueeElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMarqueeElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMarqueeElement :: IsGObject obj => obj -> IO HTMLMarqueeElement
-castToHTMLMarqueeElement = castTo gTypeHTMLMarqueeElement "HTMLMarqueeElement"
-
+  typeGType _ = gTypeHTMLMarqueeElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqueeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMediaElement".
@@ -8161,7 +7152,7 @@ instance FromJSVal HTMLMediaElement where
 
 class IsHTMLElement o => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
-toHTMLMediaElement = unsafeCastGObject . toGObject
+toHTMLMediaElement = HTMLMediaElement . coerce
 
 instance IsHTMLMediaElement HTMLMediaElement
 instance IsHTMLElement HTMLMediaElement
@@ -8169,14 +7160,8 @@ instance IsElement HTMLMediaElement
 instance IsNode HTMLMediaElement
 instance IsEventTarget HTMLMediaElement
 instance IsGObject HTMLMediaElement where
-  toGObject = GObject . unHTMLMediaElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMediaElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMediaElement :: IsGObject obj => obj -> IO HTMLMediaElement
-castToHTMLMediaElement = castTo gTypeHTMLMediaElement "HTMLMediaElement"
-
+  typeGType _ = gTypeHTMLMediaElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMenuElement".
@@ -8214,14 +7199,8 @@ instance IsElement HTMLMenuElement
 instance IsNode HTMLMenuElement
 instance IsEventTarget HTMLMenuElement
 instance IsGObject HTMLMenuElement where
-  toGObject = GObject . unHTMLMenuElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMenuElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMenuElement :: IsGObject obj => obj -> IO HTMLMenuElement
-castToHTMLMenuElement = castTo gTypeHTMLMenuElement "HTMLMenuElement"
-
+  typeGType _ = gTypeHTMLMenuElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMetaElement".
@@ -8259,14 +7238,8 @@ instance IsElement HTMLMetaElement
 instance IsNode HTMLMetaElement
 instance IsEventTarget HTMLMetaElement
 instance IsGObject HTMLMetaElement where
-  toGObject = GObject . unHTMLMetaElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMetaElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMetaElement :: IsGObject obj => obj -> IO HTMLMetaElement
-castToHTMLMetaElement = castTo gTypeHTMLMetaElement "HTMLMetaElement"
-
+  typeGType _ = gTypeHTMLMetaElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMeterElement".
@@ -8304,14 +7277,8 @@ instance IsElement HTMLMeterElement
 instance IsNode HTMLMeterElement
 instance IsEventTarget HTMLMeterElement
 instance IsGObject HTMLMeterElement where
-  toGObject = GObject . unHTMLMeterElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLMeterElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLMeterElement :: IsGObject obj => obj -> IO HTMLMeterElement
-castToHTMLMeterElement = castTo gTypeHTMLMeterElement "HTMLMeterElement"
-
+  typeGType _ = gTypeHTMLMeterElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLModElement".
@@ -8349,14 +7316,8 @@ instance IsElement HTMLModElement
 instance IsNode HTMLModElement
 instance IsEventTarget HTMLModElement
 instance IsGObject HTMLModElement where
-  toGObject = GObject . unHTMLModElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLModElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLModElement :: IsGObject obj => obj -> IO HTMLModElement
-castToHTMLModElement = castTo gTypeHTMLModElement "HTMLModElement"
-
+  typeGType _ = gTypeHTMLModElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOListElement".
@@ -8394,14 +7355,8 @@ instance IsElement HTMLOListElement
 instance IsNode HTMLOListElement
 instance IsEventTarget HTMLOListElement
 instance IsGObject HTMLOListElement where
-  toGObject = GObject . unHTMLOListElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLOListElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLOListElement :: IsGObject obj => obj -> IO HTMLOListElement
-castToHTMLOListElement = castTo gTypeHTMLOListElement "HTMLOListElement"
-
+  typeGType _ = gTypeHTMLOListElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLObjectElement".
@@ -8439,14 +7394,8 @@ instance IsElement HTMLObjectElement
 instance IsNode HTMLObjectElement
 instance IsEventTarget HTMLObjectElement
 instance IsGObject HTMLObjectElement where
-  toGObject = GObject . unHTMLObjectElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLObjectElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLObjectElement :: IsGObject obj => obj -> IO HTMLObjectElement
-castToHTMLObjectElement = castTo gTypeHTMLObjectElement "HTMLObjectElement"
-
+  typeGType _ = gTypeHTMLObjectElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObjectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptGroupElement".
@@ -8484,14 +7433,8 @@ instance IsElement HTMLOptGroupElement
 instance IsNode HTMLOptGroupElement
 instance IsEventTarget HTMLOptGroupElement
 instance IsGObject HTMLOptGroupElement where
-  toGObject = GObject . unHTMLOptGroupElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLOptGroupElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLOptGroupElement :: IsGObject obj => obj -> IO HTMLOptGroupElement
-castToHTMLOptGroupElement = castTo gTypeHTMLOptGroupElement "HTMLOptGroupElement"
-
+  typeGType _ = gTypeHTMLOptGroupElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptGroupElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionElement".
@@ -8529,14 +7472,8 @@ instance IsElement HTMLOptionElement
 instance IsNode HTMLOptionElement
 instance IsEventTarget HTMLOptionElement
 instance IsGObject HTMLOptionElement where
-  toGObject = GObject . unHTMLOptionElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLOptionElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLOptionElement :: IsGObject obj => obj -> IO HTMLOptionElement
-castToHTMLOptionElement = castTo gTypeHTMLOptionElement "HTMLOptionElement"
-
+  typeGType _ = gTypeHTMLOptionElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLOptionElement\"]" gTypeHTMLOptionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionsCollection".
@@ -8568,14 +7505,8 @@ instance FromJSVal HTMLOptionsCollection where
 
 instance IsHTMLCollection HTMLOptionsCollection
 instance IsGObject HTMLOptionsCollection where
-  toGObject = GObject . unHTMLOptionsCollection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLOptionsCollection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLOptionsCollection :: IsGObject obj => obj -> IO HTMLOptionsCollection
-castToHTMLOptionsCollection = castTo gTypeHTMLOptionsCollection "HTMLOptionsCollection"
-
+  typeGType _ = gTypeHTMLOptionsCollection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOptionsCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOutputElement".
@@ -8613,14 +7544,8 @@ instance IsElement HTMLOutputElement
 instance IsNode HTMLOutputElement
 instance IsEventTarget HTMLOutputElement
 instance IsGObject HTMLOutputElement where
-  toGObject = GObject . unHTMLOutputElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLOutputElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLOutputElement :: IsGObject obj => obj -> IO HTMLOutputElement
-castToHTMLOutputElement = castTo gTypeHTMLOutputElement "HTMLOutputElement"
-
+  typeGType _ = gTypeHTMLOutputElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParagraphElement".
@@ -8658,14 +7583,8 @@ instance IsElement HTMLParagraphElement
 instance IsNode HTMLParagraphElement
 instance IsEventTarget HTMLParagraphElement
 instance IsGObject HTMLParagraphElement where
-  toGObject = GObject . unHTMLParagraphElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLParagraphElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLParagraphElement :: IsGObject obj => obj -> IO HTMLParagraphElement
-castToHTMLParagraphElement = castTo gTypeHTMLParagraphElement "HTMLParagraphElement"
-
+  typeGType _ = gTypeHTMLParagraphElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLParagraphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParamElement".
@@ -8703,14 +7622,8 @@ instance IsElement HTMLParamElement
 instance IsNode HTMLParamElement
 instance IsEventTarget HTMLParamElement
 instance IsGObject HTMLParamElement where
-  toGObject = GObject . unHTMLParamElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLParamElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLParamElement :: IsGObject obj => obj -> IO HTMLParamElement
-castToHTMLParamElement = castTo gTypeHTMLParamElement "HTMLParamElement"
-
+  typeGType _ = gTypeHTMLParamElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLPreElement".
@@ -8748,14 +7661,8 @@ instance IsElement HTMLPreElement
 instance IsNode HTMLPreElement
 instance IsEventTarget HTMLPreElement
 instance IsGObject HTMLPreElement where
-  toGObject = GObject . unHTMLPreElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLPreElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLPreElement :: IsGObject obj => obj -> IO HTMLPreElement
-castToHTMLPreElement = castTo gTypeHTMLPreElement "HTMLPreElement"
-
+  typeGType _ = gTypeHTMLPreElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLProgressElement".
@@ -8793,14 +7700,8 @@ instance IsElement HTMLProgressElement
 instance IsNode HTMLProgressElement
 instance IsEventTarget HTMLProgressElement
 instance IsGObject HTMLProgressElement where
-  toGObject = GObject . unHTMLProgressElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLProgressElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLProgressElement :: IsGObject obj => obj -> IO HTMLProgressElement
-castToHTMLProgressElement = castTo gTypeHTMLProgressElement "HTMLProgressElement"
-
+  typeGType _ = gTypeHTMLProgressElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLQuoteElement".
@@ -8838,14 +7739,8 @@ instance IsElement HTMLQuoteElement
 instance IsNode HTMLQuoteElement
 instance IsEventTarget HTMLQuoteElement
 instance IsGObject HTMLQuoteElement where
-  toGObject = GObject . unHTMLQuoteElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLQuoteElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLQuoteElement :: IsGObject obj => obj -> IO HTMLQuoteElement
-castToHTMLQuoteElement = castTo gTypeHTMLQuoteElement "HTMLQuoteElement"
-
+  typeGType _ = gTypeHTMLQuoteElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLScriptElement".
@@ -8883,14 +7778,8 @@ instance IsElement HTMLScriptElement
 instance IsNode HTMLScriptElement
 instance IsEventTarget HTMLScriptElement
 instance IsGObject HTMLScriptElement where
-  toGObject = GObject . unHTMLScriptElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLScriptElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLScriptElement :: IsGObject obj => obj -> IO HTMLScriptElement
-castToHTMLScriptElement = castTo gTypeHTMLScriptElement "HTMLScriptElement"
-
+  typeGType _ = gTypeHTMLScriptElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScriptElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSelectElement".
@@ -8928,14 +7817,8 @@ instance IsElement HTMLSelectElement
 instance IsNode HTMLSelectElement
 instance IsEventTarget HTMLSelectElement
 instance IsGObject HTMLSelectElement where
-  toGObject = GObject . unHTMLSelectElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLSelectElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLSelectElement :: IsGObject obj => obj -> IO HTMLSelectElement
-castToHTMLSelectElement = castTo gTypeHTMLSelectElement "HTMLSelectElement"
-
+  typeGType _ = gTypeHTMLSelectElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSourceElement".
@@ -8973,14 +7856,8 @@ instance IsElement HTMLSourceElement
 instance IsNode HTMLSourceElement
 instance IsEventTarget HTMLSourceElement
 instance IsGObject HTMLSourceElement where
-  toGObject = GObject . unHTMLSourceElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLSourceElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLSourceElement :: IsGObject obj => obj -> IO HTMLSourceElement
-castToHTMLSourceElement = castTo gTypeHTMLSourceElement "HTMLSourceElement"
-
+  typeGType _ = gTypeHTMLSourceElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSpanElement".
@@ -9018,14 +7895,8 @@ instance IsElement HTMLSpanElement
 instance IsNode HTMLSpanElement
 instance IsEventTarget HTMLSpanElement
 instance IsGObject HTMLSpanElement where
-  toGObject = GObject . unHTMLSpanElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLSpanElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLSpanElement :: IsGObject obj => obj -> IO HTMLSpanElement
-castToHTMLSpanElement = castTo gTypeHTMLSpanElement "HTMLSpanElement"
-
+  typeGType _ = gTypeHTMLSpanElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLStyleElement".
@@ -9063,14 +7934,8 @@ instance IsElement HTMLStyleElement
 instance IsNode HTMLStyleElement
 instance IsEventTarget HTMLStyleElement
 instance IsGObject HTMLStyleElement where
-  toGObject = GObject . unHTMLStyleElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLStyleElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLStyleElement :: IsGObject obj => obj -> IO HTMLStyleElement
-castToHTMLStyleElement = castTo gTypeHTMLStyleElement "HTMLStyleElement"
-
+  typeGType _ = gTypeHTMLStyleElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCaptionElement".
@@ -9108,14 +7973,8 @@ instance IsElement HTMLTableCaptionElement
 instance IsNode HTMLTableCaptionElement
 instance IsEventTarget HTMLTableCaptionElement
 instance IsGObject HTMLTableCaptionElement where
-  toGObject = GObject . unHTMLTableCaptionElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableCaptionElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableCaptionElement :: IsGObject obj => obj -> IO HTMLTableCaptionElement
-castToHTMLTableCaptionElement = castTo gTypeHTMLTableCaptionElement "HTMLTableCaptionElement"
-
+  typeGType _ = gTypeHTMLTableCaptionElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTMLTableCaptionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCellElement".
@@ -9153,14 +8012,8 @@ instance IsElement HTMLTableCellElement
 instance IsNode HTMLTableCellElement
 instance IsEventTarget HTMLTableCellElement
 instance IsGObject HTMLTableCellElement where
-  toGObject = GObject . unHTMLTableCellElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableCellElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableCellElement :: IsGObject obj => obj -> IO HTMLTableCellElement
-castToHTMLTableCellElement = castTo gTypeHTMLTableCellElement "HTMLTableCellElement"
-
+  typeGType _ = gTypeHTMLTableCellElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTableCellElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableColElement".
@@ -9198,14 +8051,8 @@ instance IsElement HTMLTableColElement
 instance IsNode HTMLTableColElement
 instance IsEventTarget HTMLTableColElement
 instance IsGObject HTMLTableColElement where
-  toGObject = GObject . unHTMLTableColElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableColElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableColElement :: IsGObject obj => obj -> IO HTMLTableColElement
-castToHTMLTableColElement = castTo gTypeHTMLTableColElement "HTMLTableColElement"
-
+  typeGType _ = gTypeHTMLTableColElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTableColElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableElement".
@@ -9243,14 +8090,8 @@ instance IsElement HTMLTableElement
 instance IsNode HTMLTableElement
 instance IsEventTarget HTMLTableElement
 instance IsGObject HTMLTableElement where
-  toGObject = GObject . unHTMLTableElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableElement :: IsGObject obj => obj -> IO HTMLTableElement
-castToHTMLTableElement = castTo gTypeHTMLTableElement "HTMLTableElement"
-
+  typeGType _ = gTypeHTMLTableElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableRowElement".
@@ -9288,14 +8129,8 @@ instance IsElement HTMLTableRowElement
 instance IsNode HTMLTableRowElement
 instance IsEventTarget HTMLTableRowElement
 instance IsGObject HTMLTableRowElement where
-  toGObject = GObject . unHTMLTableRowElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableRowElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableRowElement :: IsGObject obj => obj -> IO HTMLTableRowElement
-castToHTMLTableRowElement = castTo gTypeHTMLTableRowElement "HTMLTableRowElement"
-
+  typeGType _ = gTypeHTMLTableRowElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTableRowElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableSectionElement".
@@ -9333,14 +8168,8 @@ instance IsElement HTMLTableSectionElement
 instance IsNode HTMLTableSectionElement
 instance IsEventTarget HTMLTableSectionElement
 instance IsGObject HTMLTableSectionElement where
-  toGObject = GObject . unHTMLTableSectionElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTableSectionElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTableSectionElement :: IsGObject obj => obj -> IO HTMLTableSectionElement
-castToHTMLTableSectionElement = castTo gTypeHTMLTableSectionElement "HTMLTableSectionElement"
-
+  typeGType _ = gTypeHTMLTableSectionElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTMLTableSectionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTemplateElement".
@@ -9378,14 +8207,8 @@ instance IsElement HTMLTemplateElement
 instance IsNode HTMLTemplateElement
 instance IsEventTarget HTMLTemplateElement
 instance IsGObject HTMLTemplateElement where
-  toGObject = GObject . unHTMLTemplateElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTemplateElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTemplateElement :: IsGObject obj => obj -> IO HTMLTemplateElement
-castToHTMLTemplateElement = castTo gTypeHTMLTemplateElement "HTMLTemplateElement"
-
+  typeGType _ = gTypeHTMLTemplateElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTextAreaElement".
@@ -9423,14 +8246,8 @@ instance IsElement HTMLTextAreaElement
 instance IsNode HTMLTextAreaElement
 instance IsEventTarget HTMLTextAreaElement
 instance IsGObject HTMLTextAreaElement where
-  toGObject = GObject . unHTMLTextAreaElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTextAreaElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTextAreaElement :: IsGObject obj => obj -> IO HTMLTextAreaElement
-castToHTMLTextAreaElement = castTo gTypeHTMLTextAreaElement "HTMLTextAreaElement"
-
+  typeGType _ = gTypeHTMLTextAreaElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLTextAreaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTitleElement".
@@ -9468,14 +8285,8 @@ instance IsElement HTMLTitleElement
 instance IsNode HTMLTitleElement
 instance IsEventTarget HTMLTitleElement
 instance IsGObject HTMLTitleElement where
-  toGObject = GObject . unHTMLTitleElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTitleElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTitleElement :: IsGObject obj => obj -> IO HTMLTitleElement
-castToHTMLTitleElement = castTo gTypeHTMLTitleElement "HTMLTitleElement"
-
+  typeGType _ = gTypeHTMLTitleElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTrackElement".
@@ -9513,14 +8324,8 @@ instance IsElement HTMLTrackElement
 instance IsNode HTMLTrackElement
 instance IsEventTarget HTMLTrackElement
 instance IsGObject HTMLTrackElement where
-  toGObject = GObject . unHTMLTrackElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLTrackElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLTrackElement :: IsGObject obj => obj -> IO HTMLTrackElement
-castToHTMLTrackElement = castTo gTypeHTMLTrackElement "HTMLTrackElement"
-
+  typeGType _ = gTypeHTMLTrackElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUListElement".
@@ -9558,14 +8363,8 @@ instance IsElement HTMLUListElement
 instance IsNode HTMLUListElement
 instance IsEventTarget HTMLUListElement
 instance IsGObject HTMLUListElement where
-  toGObject = GObject . unHTMLUListElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLUListElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLUListElement :: IsGObject obj => obj -> IO HTMLUListElement
-castToHTMLUListElement = castTo gTypeHTMLUListElement "HTMLUListElement"
-
+  typeGType _ = gTypeHTMLUListElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUnknownElement".
@@ -9603,14 +8402,8 @@ instance IsElement HTMLUnknownElement
 instance IsNode HTMLUnknownElement
 instance IsEventTarget HTMLUnknownElement
 instance IsGObject HTMLUnknownElement where
-  toGObject = GObject . unHTMLUnknownElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLUnknownElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLUnknownElement :: IsGObject obj => obj -> IO HTMLUnknownElement
-castToHTMLUnknownElement = castTo gTypeHTMLUnknownElement "HTMLUnknownElement"
-
+  typeGType _ = gTypeHTMLUnknownElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLVideoElement".
@@ -9650,14 +8443,8 @@ instance IsElement HTMLVideoElement
 instance IsNode HTMLVideoElement
 instance IsEventTarget HTMLVideoElement
 instance IsGObject HTMLVideoElement where
-  toGObject = GObject . unHTMLVideoElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HTMLVideoElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHTMLVideoElement :: IsGObject obj => obj -> IO HTMLVideoElement
-castToHTMLVideoElement = castTo gTypeHTMLVideoElement "HTMLVideoElement"
-
+  typeGType _ = gTypeHTMLVideoElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HTMLVideoElement\"]" gTypeHTMLVideoElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HashChangeEvent".
@@ -9689,14 +8476,8 @@ instance FromJSVal HashChangeEvent where
 
 instance IsEvent HashChangeEvent
 instance IsGObject HashChangeEvent where
-  toGObject = GObject . unHashChangeEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = HashChangeEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHashChangeEvent :: IsGObject obj => obj -> IO HashChangeEvent
-castToHashChangeEvent = castTo gTypeHashChangeEvent "HashChangeEvent"
-
+  typeGType _ = gTypeHashChangeEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.History".
@@ -9724,14 +8505,8 @@ instance FromJSVal History where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject History where
-  toGObject = GObject . unHistory
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = History . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToHistory :: IsGObject obj => obj -> IO History
-castToHistory = castTo gTypeHistory "History"
-
+  typeGType _ = gTypeHistory
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"History\"]" gTypeHistory :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBAny".
@@ -9759,14 +8534,8 @@ instance FromJSVal IDBAny where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBAny where
-  toGObject = GObject . unIDBAny
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBAny . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBAny :: IsGObject obj => obj -> IO IDBAny
-castToIDBAny = castTo gTypeIDBAny "IDBAny"
-
+  typeGType _ = gTypeIDBAny
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBAny\"]" gTypeIDBAny :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
@@ -9795,18 +8564,12 @@ instance FromJSVal IDBCursor where
 
 class IsGObject o => IsIDBCursor o
 toIDBCursor :: IsIDBCursor o => o -> IDBCursor
-toIDBCursor = unsafeCastGObject . toGObject
+toIDBCursor = IDBCursor . coerce
 
 instance IsIDBCursor IDBCursor
 instance IsGObject IDBCursor where
-  toGObject = GObject . unIDBCursor
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBCursor . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBCursor :: IsGObject obj => obj -> IO IDBCursor
-castToIDBCursor = castTo gTypeIDBCursor "IDBCursor"
-
+  typeGType _ = gTypeIDBCursor
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursorWithValue".
@@ -9838,14 +8601,8 @@ instance FromJSVal IDBCursorWithValue where
 
 instance IsIDBCursor IDBCursorWithValue
 instance IsGObject IDBCursorWithValue where
-  toGObject = GObject . unIDBCursorWithValue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBCursorWithValue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBCursorWithValue :: IsGObject obj => obj -> IO IDBCursorWithValue
-castToIDBCursorWithValue = castTo gTypeIDBCursorWithValue "IDBCursorWithValue"
-
+  typeGType _ = gTypeIDBCursorWithValue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBDatabase".
@@ -9877,14 +8634,8 @@ instance FromJSVal IDBDatabase where
 
 instance IsEventTarget IDBDatabase
 instance IsGObject IDBDatabase where
-  toGObject = GObject . unIDBDatabase
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBDatabase . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBDatabase :: IsGObject obj => obj -> IO IDBDatabase
-castToIDBDatabase = castTo gTypeIDBDatabase "IDBDatabase"
-
+  typeGType _ = gTypeIDBDatabase
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
@@ -9912,14 +8663,8 @@ instance FromJSVal IDBFactory where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBFactory where
-  toGObject = GObject . unIDBFactory
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBFactory . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBFactory :: IsGObject obj => obj -> IO IDBFactory
-castToIDBFactory = castTo gTypeIDBFactory "IDBFactory"
-
+  typeGType _ = gTypeIDBFactory
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
@@ -9947,14 +8692,8 @@ instance FromJSVal IDBIndex where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBIndex where
-  toGObject = GObject . unIDBIndex
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBIndex . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBIndex :: IsGObject obj => obj -> IO IDBIndex
-castToIDBIndex = castTo gTypeIDBIndex "IDBIndex"
-
+  typeGType _ = gTypeIDBIndex
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
@@ -9982,14 +8721,8 @@ instance FromJSVal IDBKeyRange where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBKeyRange where
-  toGObject = GObject . unIDBKeyRange
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBKeyRange . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBKeyRange :: IsGObject obj => obj -> IO IDBKeyRange
-castToIDBKeyRange = castTo gTypeIDBKeyRange "IDBKeyRange"
-
+  typeGType _ = gTypeIDBKeyRange
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
@@ -10017,14 +8750,8 @@ instance FromJSVal IDBObjectStore where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject IDBObjectStore where
-  toGObject = GObject . unIDBObjectStore
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBObjectStore . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBObjectStore :: IsGObject obj => obj -> IO IDBObjectStore
-castToIDBObjectStore = castTo gTypeIDBObjectStore "IDBObjectStore"
-
+  typeGType _ = gTypeIDBObjectStore
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBOpenDBRequest".
@@ -10058,14 +8785,8 @@ instance FromJSVal IDBOpenDBRequest where
 instance IsIDBRequest IDBOpenDBRequest
 instance IsEventTarget IDBOpenDBRequest
 instance IsGObject IDBOpenDBRequest where
-  toGObject = GObject . unIDBOpenDBRequest
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBOpenDBRequest . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBOpenDBRequest :: IsGObject obj => obj -> IO IDBOpenDBRequest
-castToIDBOpenDBRequest = castTo gTypeIDBOpenDBRequest "IDBOpenDBRequest"
-
+  typeGType _ = gTypeIDBOpenDBRequest
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBRequest".
@@ -10097,19 +8818,13 @@ instance FromJSVal IDBRequest where
 
 class IsEventTarget o => IsIDBRequest o
 toIDBRequest :: IsIDBRequest o => o -> IDBRequest
-toIDBRequest = unsafeCastGObject . toGObject
+toIDBRequest = IDBRequest . coerce
 
 instance IsIDBRequest IDBRequest
 instance IsEventTarget IDBRequest
 instance IsGObject IDBRequest where
-  toGObject = GObject . unIDBRequest
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBRequest . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBRequest :: IsGObject obj => obj -> IO IDBRequest
-castToIDBRequest = castTo gTypeIDBRequest "IDBRequest"
-
+  typeGType _ = gTypeIDBRequest
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBTransaction".
@@ -10141,14 +8856,8 @@ instance FromJSVal IDBTransaction where
 
 instance IsEventTarget IDBTransaction
 instance IsGObject IDBTransaction where
-  toGObject = GObject . unIDBTransaction
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBTransaction . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBTransaction :: IsGObject obj => obj -> IO IDBTransaction
-castToIDBTransaction = castTo gTypeIDBTransaction "IDBTransaction"
-
+  typeGType _ = gTypeIDBTransaction
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBVersionChangeEvent".
@@ -10180,14 +8889,8 @@ instance FromJSVal IDBVersionChangeEvent where
 
 instance IsEvent IDBVersionChangeEvent
 instance IsGObject IDBVersionChangeEvent where
-  toGObject = GObject . unIDBVersionChangeEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = IDBVersionChangeEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToIDBVersionChangeEvent :: IsGObject obj => obj -> IO IDBVersionChangeEvent
-castToIDBVersionChangeEvent = castTo gTypeIDBVersionChangeEvent "IDBVersionChangeEvent"
-
+  typeGType _ = gTypeIDBVersionChangeEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ImageData".
@@ -10215,14 +8918,8 @@ instance FromJSVal ImageData where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ImageData where
-  toGObject = GObject . unImageData
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ImageData . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToImageData :: IsGObject obj => obj -> IO ImageData
-castToImageData = castTo gTypeImageData "ImageData"
-
+  typeGType _ = gTypeImageData
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
@@ -10250,14 +8947,8 @@ instance FromJSVal InspectorFrontendHost where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject InspectorFrontendHost where
-  toGObject = GObject . unInspectorFrontendHost
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = InspectorFrontendHost . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToInspectorFrontendHost :: IsGObject obj => obj -> IO InspectorFrontendHost
-castToInspectorFrontendHost = castTo gTypeInspectorFrontendHost "InspectorFrontendHost"
-
+  typeGType _ = gTypeInspectorFrontendHost
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.InternalSettings".
@@ -10287,14 +8978,8 @@ instance FromJSVal InternalSettings where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject InternalSettings where
-  toGObject = GObject . unInternalSettings
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = InternalSettings . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToInternalSettings :: IsGObject obj => obj -> IO InternalSettings
-castToInternalSettings = castTo gTypeInternalSettings "InternalSettings"
-
+  typeGType _ = gTypeInternalSettings
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"InternalSettings\"]" gTypeInternalSettings :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Internals".
@@ -10322,14 +9007,8 @@ instance FromJSVal Internals where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Internals where
-  toGObject = GObject . unInternals
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Internals . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToInternals :: IsGObject obj => obj -> IO Internals
-castToInternals = castTo gTypeInternals "Internals"
-
+  typeGType _ = gTypeInternals
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Internals\"]" gTypeInternals :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.KeyboardEvent".
@@ -10363,14 +9042,8 @@ instance FromJSVal KeyboardEvent where
 instance IsUIEvent KeyboardEvent
 instance IsEvent KeyboardEvent
 instance IsGObject KeyboardEvent where
-  toGObject = GObject . unKeyboardEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = KeyboardEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToKeyboardEvent :: IsGObject obj => obj -> IO KeyboardEvent
-castToKeyboardEvent = castTo gTypeKeyboardEvent "KeyboardEvent"
-
+  typeGType _ = gTypeKeyboardEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Location".
@@ -10398,14 +9071,8 @@ instance FromJSVal Location where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Location where
-  toGObject = GObject . unLocation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Location . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToLocation :: IsGObject obj => obj -> IO Location
-castToLocation = castTo gTypeLocation "Location"
-
+  typeGType _ = gTypeLocation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Location\"]" gTypeLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MallocStatistics".
@@ -10433,14 +9100,8 @@ instance FromJSVal MallocStatistics where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MallocStatistics where
-  toGObject = GObject . unMallocStatistics
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MallocStatistics . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMallocStatistics :: IsGObject obj => obj -> IO MallocStatistics
-castToMallocStatistics = castTo gTypeMallocStatistics "MallocStatistics"
-
+  typeGType _ = gTypeMallocStatistics
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MallocStatistics\"]" gTypeMallocStatistics :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaController".
@@ -10472,14 +9133,8 @@ instance FromJSVal MediaController where
 
 instance IsEventTarget MediaController
 instance IsGObject MediaController where
-  toGObject = GObject . unMediaController
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaController . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaController :: IsGObject obj => obj -> IO MediaController
-castToMediaController = castTo gTypeMediaController "MediaController"
-
+  typeGType _ = gTypeMediaController
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
@@ -10507,14 +9162,8 @@ instance FromJSVal MediaControlsHost where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaControlsHost where
-  toGObject = GObject . unMediaControlsHost
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaControlsHost . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaControlsHost :: IsGObject obj => obj -> IO MediaControlsHost
-castToMediaControlsHost = castTo gTypeMediaControlsHost "MediaControlsHost"
-
+  typeGType _ = gTypeMediaControlsHost
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaElementAudioSourceNode".
@@ -10548,14 +9197,8 @@ instance FromJSVal MediaElementAudioSourceNode where
 instance IsAudioNode MediaElementAudioSourceNode
 instance IsEventTarget MediaElementAudioSourceNode
 instance IsGObject MediaElementAudioSourceNode where
-  toGObject = GObject . unMediaElementAudioSourceNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaElementAudioSourceNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaElementAudioSourceNode :: IsGObject obj => obj -> IO MediaElementAudioSourceNode
-castToMediaElementAudioSourceNode = castTo gTypeMediaElementAudioSourceNode "MediaElementAudioSourceNode"
-
+  typeGType _ = gTypeMediaElementAudioSourceNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaError".
@@ -10583,14 +9226,8 @@ instance FromJSVal MediaError where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaError where
-  toGObject = GObject . unMediaError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaError :: IsGObject obj => obj -> IO MediaError
-castToMediaError = castTo gTypeMediaError "MediaError"
-
+  typeGType _ = gTypeMediaError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaError\"]" gTypeMediaError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyError".
@@ -10618,14 +9255,8 @@ instance FromJSVal MediaKeyError where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaKeyError where
-  toGObject = GObject . unMediaKeyError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeyError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeyError :: IsGObject obj => obj -> IO MediaKeyError
-castToMediaKeyError = castTo gTypeMediaKeyError "MediaKeyError"
-
+  typeGType _ = gTypeMediaKeyError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeMediaKeyError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyEvent".
@@ -10657,14 +9288,8 @@ instance FromJSVal MediaKeyEvent where
 
 instance IsEvent MediaKeyEvent
 instance IsGObject MediaKeyEvent where
-  toGObject = GObject . unMediaKeyEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeyEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeyEvent :: IsGObject obj => obj -> IO MediaKeyEvent
-castToMediaKeyEvent = castTo gTypeMediaKeyEvent "MediaKeyEvent"
-
+  typeGType _ = gTypeMediaKeyEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaKeyEvent\"]" gTypeMediaKeyEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyMessageEvent".
@@ -10696,14 +9321,8 @@ instance FromJSVal MediaKeyMessageEvent where
 
 instance IsEvent MediaKeyMessageEvent
 instance IsGObject MediaKeyMessageEvent where
-  toGObject = GObject . unMediaKeyMessageEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeyMessageEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeyMessageEvent :: IsGObject obj => obj -> IO MediaKeyMessageEvent
-castToMediaKeyMessageEvent = castTo gTypeMediaKeyMessageEvent "MediaKeyMessageEvent"
-
+  typeGType _ = gTypeMediaKeyMessageEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyNeededEvent".
@@ -10735,14 +9354,8 @@ instance FromJSVal MediaKeyNeededEvent where
 
 instance IsEvent MediaKeyNeededEvent
 instance IsGObject MediaKeyNeededEvent where
-  toGObject = GObject . unMediaKeyNeededEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeyNeededEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeyNeededEvent :: IsGObject obj => obj -> IO MediaKeyNeededEvent
-castToMediaKeyNeededEvent = castTo gTypeMediaKeyNeededEvent "MediaKeyNeededEvent"
-
+  typeGType _ = gTypeMediaKeyNeededEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaKeyNeededEvent\"]" gTypeMediaKeyNeededEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySession".
@@ -10774,14 +9387,8 @@ instance FromJSVal MediaKeySession where
 
 instance IsEventTarget MediaKeySession
 instance IsGObject MediaKeySession where
-  toGObject = GObject . unMediaKeySession
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeySession . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeySession :: IsGObject obj => obj -> IO MediaKeySession
-castToMediaKeySession = castTo gTypeMediaKeySession "MediaKeySession"
-
+  typeGType _ = gTypeMediaKeySession
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
@@ -10809,14 +9416,8 @@ instance FromJSVal MediaKeys where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaKeys where
-  toGObject = GObject . unMediaKeys
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaKeys . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaKeys :: IsGObject obj => obj -> IO MediaKeys
-castToMediaKeys = castTo gTypeMediaKeys "MediaKeys"
-
+  typeGType _ = gTypeMediaKeys
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaList".
@@ -10844,14 +9445,8 @@ instance FromJSVal MediaList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaList where
-  toGObject = GObject . unMediaList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaList :: IsGObject obj => obj -> IO MediaList
-castToMediaList = castTo gTypeMediaList "MediaList"
-
+  typeGType _ = gTypeMediaList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaList\"]" gTypeMediaList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
@@ -10879,14 +9474,8 @@ instance FromJSVal MediaQueryList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaQueryList where
-  toGObject = GObject . unMediaQueryList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaQueryList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaQueryList :: IsGObject obj => obj -> IO MediaQueryList
-castToMediaQueryList = castTo gTypeMediaQueryList "MediaQueryList"
-
+  typeGType _ = gTypeMediaQueryList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaQueryList\"]" gTypeMediaQueryList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSource".
@@ -10918,14 +9507,8 @@ instance FromJSVal MediaSource where
 
 instance IsEventTarget MediaSource
 instance IsGObject MediaSource where
-  toGObject = GObject . unMediaSource
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaSource . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaSource :: IsGObject obj => obj -> IO MediaSource
-castToMediaSource = castTo gTypeMediaSource "MediaSource"
-
+  typeGType _ = gTypeMediaSource
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSourceStates".
@@ -10953,14 +9536,8 @@ instance FromJSVal MediaSourceStates where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaSourceStates where
-  toGObject = GObject . unMediaSourceStates
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaSourceStates . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaSourceStates :: IsGObject obj => obj -> IO MediaSourceStates
-castToMediaSourceStates = castTo gTypeMediaSourceStates "MediaSourceStates"
-
+  typeGType _ = gTypeMediaSourceStates
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaSourceStates\"]" gTypeMediaSourceStates :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStream".
@@ -10992,14 +9569,8 @@ instance FromJSVal MediaStream where
 
 instance IsEventTarget MediaStream
 instance IsGObject MediaStream where
-  toGObject = GObject . unMediaStream
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStream . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStream :: IsGObject obj => obj -> IO MediaStream
-castToMediaStream = castTo gTypeMediaStream "MediaStream"
-
+  typeGType _ = gTypeMediaStream
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioDestinationNode".
@@ -11033,14 +9604,8 @@ instance FromJSVal MediaStreamAudioDestinationNode where
 instance IsAudioNode MediaStreamAudioDestinationNode
 instance IsEventTarget MediaStreamAudioDestinationNode
 instance IsGObject MediaStreamAudioDestinationNode where
-  toGObject = GObject . unMediaStreamAudioDestinationNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamAudioDestinationNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamAudioDestinationNode :: IsGObject obj => obj -> IO MediaStreamAudioDestinationNode
-castToMediaStreamAudioDestinationNode = castTo gTypeMediaStreamAudioDestinationNode "MediaStreamAudioDestinationNode"
-
+  typeGType _ = gTypeMediaStreamAudioDestinationNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioSourceNode".
@@ -11074,14 +9639,8 @@ instance FromJSVal MediaStreamAudioSourceNode where
 instance IsAudioNode MediaStreamAudioSourceNode
 instance IsEventTarget MediaStreamAudioSourceNode
 instance IsGObject MediaStreamAudioSourceNode where
-  toGObject = GObject . unMediaStreamAudioSourceNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamAudioSourceNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamAudioSourceNode :: IsGObject obj => obj -> IO MediaStreamAudioSourceNode
-castToMediaStreamAudioSourceNode = castTo gTypeMediaStreamAudioSourceNode "MediaStreamAudioSourceNode"
-
+  typeGType _ = gTypeMediaStreamAudioSourceNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamCapabilities".
@@ -11110,18 +9669,12 @@ instance FromJSVal MediaStreamCapabilities where
 
 class IsGObject o => IsMediaStreamCapabilities o
 toMediaStreamCapabilities :: IsMediaStreamCapabilities o => o -> MediaStreamCapabilities
-toMediaStreamCapabilities = unsafeCastGObject . toGObject
+toMediaStreamCapabilities = MediaStreamCapabilities . coerce
 
 instance IsMediaStreamCapabilities MediaStreamCapabilities
 instance IsGObject MediaStreamCapabilities where
-  toGObject = GObject . unMediaStreamCapabilities
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamCapabilities . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamCapabilities :: IsGObject obj => obj -> IO MediaStreamCapabilities
-castToMediaStreamCapabilities = castTo gTypeMediaStreamCapabilities "MediaStreamCapabilities"
-
+  typeGType _ = gTypeMediaStreamCapabilities
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamCapabilities\"]" gTypeMediaStreamCapabilities :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamEvent".
@@ -11153,14 +9706,8 @@ instance FromJSVal MediaStreamEvent where
 
 instance IsEvent MediaStreamEvent
 instance IsGObject MediaStreamEvent where
-  toGObject = GObject . unMediaStreamEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamEvent :: IsGObject obj => obj -> IO MediaStreamEvent
-castToMediaStreamEvent = castTo gTypeMediaStreamEvent "MediaStreamEvent"
-
+  typeGType _ = gTypeMediaStreamEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrack".
@@ -11192,19 +9739,13 @@ instance FromJSVal MediaStreamTrack where
 
 class IsEventTarget o => IsMediaStreamTrack o
 toMediaStreamTrack :: IsMediaStreamTrack o => o -> MediaStreamTrack
-toMediaStreamTrack = unsafeCastGObject . toGObject
+toMediaStreamTrack = MediaStreamTrack . coerce
 
 instance IsMediaStreamTrack MediaStreamTrack
 instance IsEventTarget MediaStreamTrack
 instance IsGObject MediaStreamTrack where
-  toGObject = GObject . unMediaStreamTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamTrack :: IsGObject obj => obj -> IO MediaStreamTrack
-castToMediaStreamTrack = castTo gTypeMediaStreamTrack "MediaStreamTrack"
-
+  typeGType _ = gTypeMediaStreamTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackEvent".
@@ -11236,14 +9777,8 @@ instance FromJSVal MediaStreamTrackEvent where
 
 instance IsEvent MediaStreamTrackEvent
 instance IsGObject MediaStreamTrackEvent where
-  toGObject = GObject . unMediaStreamTrackEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaStreamTrackEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaStreamTrackEvent :: IsGObject obj => obj -> IO MediaStreamTrackEvent
-castToMediaStreamTrackEvent = castTo gTypeMediaStreamTrackEvent "MediaStreamTrackEvent"
-
+  typeGType _ = gTypeMediaStreamTrackEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraint".
@@ -11271,14 +9806,8 @@ instance FromJSVal MediaTrackConstraint where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraint where
-  toGObject = GObject . unMediaTrackConstraint
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaTrackConstraint . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaTrackConstraint :: IsGObject obj => obj -> IO MediaTrackConstraint
-castToMediaTrackConstraint = castTo gTypeMediaTrackConstraint "MediaTrackConstraint"
-
+  typeGType _ = gTypeMediaTrackConstraint
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaTrackConstraint\"]" gTypeMediaTrackConstraint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
@@ -11306,14 +9835,8 @@ instance FromJSVal MediaTrackConstraintSet where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraintSet where
-  toGObject = GObject . unMediaTrackConstraintSet
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaTrackConstraintSet . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaTrackConstraintSet :: IsGObject obj => obj -> IO MediaTrackConstraintSet
-castToMediaTrackConstraintSet = castTo gTypeMediaTrackConstraintSet "MediaTrackConstraintSet"
-
+  typeGType _ = gTypeMediaTrackConstraintSet
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
@@ -11341,14 +9864,8 @@ instance FromJSVal MediaTrackConstraints where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MediaTrackConstraints where
-  toGObject = GObject . unMediaTrackConstraints
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MediaTrackConstraints . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMediaTrackConstraints :: IsGObject obj => obj -> IO MediaTrackConstraints
-castToMediaTrackConstraints = castTo gTypeMediaTrackConstraints "MediaTrackConstraints"
-
+  typeGType _ = gTypeMediaTrackConstraints
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MemoryInfo".
@@ -11376,14 +9893,8 @@ instance FromJSVal MemoryInfo where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MemoryInfo where
-  toGObject = GObject . unMemoryInfo
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MemoryInfo . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMemoryInfo :: IsGObject obj => obj -> IO MemoryInfo
-castToMemoryInfo = castTo gTypeMemoryInfo "MemoryInfo"
-
+  typeGType _ = gTypeMemoryInfo
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MemoryInfo\"]" gTypeMemoryInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
@@ -11411,14 +9922,8 @@ instance FromJSVal MessageChannel where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MessageChannel where
-  toGObject = GObject . unMessageChannel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MessageChannel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMessageChannel :: IsGObject obj => obj -> IO MessageChannel
-castToMessageChannel = castTo gTypeMessageChannel "MessageChannel"
-
+  typeGType _ = gTypeMessageChannel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessageEvent".
@@ -11450,14 +9955,8 @@ instance FromJSVal MessageEvent where
 
 instance IsEvent MessageEvent
 instance IsGObject MessageEvent where
-  toGObject = GObject . unMessageEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MessageEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMessageEvent :: IsGObject obj => obj -> IO MessageEvent
-castToMessageEvent = castTo gTypeMessageEvent "MessageEvent"
-
+  typeGType _ = gTypeMessageEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessagePort".
@@ -11489,14 +9988,8 @@ instance FromJSVal MessagePort where
 
 instance IsEventTarget MessagePort
 instance IsGObject MessagePort where
-  toGObject = GObject . unMessagePort
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MessagePort . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMessagePort :: IsGObject obj => obj -> IO MessagePort
-castToMessagePort = castTo gTypeMessagePort "MessagePort"
-
+  typeGType _ = gTypeMessagePort
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MessagePort\"]" gTypeMessagePort :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MimeType".
@@ -11524,14 +10017,8 @@ instance FromJSVal MimeType where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MimeType where
-  toGObject = GObject . unMimeType
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MimeType . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMimeType :: IsGObject obj => obj -> IO MimeType
-castToMimeType = castTo gTypeMimeType "MimeType"
-
+  typeGType _ = gTypeMimeType
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MimeType\"]" gTypeMimeType :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MimeTypeArray".
@@ -11559,14 +10046,8 @@ instance FromJSVal MimeTypeArray where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MimeTypeArray where
-  toGObject = GObject . unMimeTypeArray
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MimeTypeArray . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMimeTypeArray :: IsGObject obj => obj -> IO MimeTypeArray
-castToMimeTypeArray = castTo gTypeMimeTypeArray "MimeTypeArray"
-
+  typeGType _ = gTypeMimeTypeArray
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeMimeTypeArray :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MouseEvent".
@@ -11599,20 +10080,14 @@ instance FromJSVal MouseEvent where
 
 class IsUIEvent o => IsMouseEvent o
 toMouseEvent :: IsMouseEvent o => o -> MouseEvent
-toMouseEvent = unsafeCastGObject . toGObject
+toMouseEvent = MouseEvent . coerce
 
 instance IsMouseEvent MouseEvent
 instance IsUIEvent MouseEvent
 instance IsEvent MouseEvent
 instance IsGObject MouseEvent where
-  toGObject = GObject . unMouseEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MouseEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMouseEvent :: IsGObject obj => obj -> IO MouseEvent
-castToMouseEvent = castTo gTypeMouseEvent "MouseEvent"
-
+  typeGType _ = gTypeMouseEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MouseEvent\"]" gTypeMouseEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationEvent".
@@ -11644,14 +10119,8 @@ instance FromJSVal MutationEvent where
 
 instance IsEvent MutationEvent
 instance IsGObject MutationEvent where
-  toGObject = GObject . unMutationEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MutationEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMutationEvent :: IsGObject obj => obj -> IO MutationEvent
-castToMutationEvent = castTo gTypeMutationEvent "MutationEvent"
-
+  typeGType _ = gTypeMutationEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
@@ -11679,14 +10148,8 @@ instance FromJSVal MutationObserver where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MutationObserver where
-  toGObject = GObject . unMutationObserver
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MutationObserver . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMutationObserver :: IsGObject obj => obj -> IO MutationObserver
-castToMutationObserver = castTo gTypeMutationObserver "MutationObserver"
-
+  typeGType _ = gTypeMutationObserver
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
@@ -11714,14 +10177,8 @@ instance FromJSVal MutationRecord where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject MutationRecord where
-  toGObject = GObject . unMutationRecord
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = MutationRecord . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToMutationRecord :: IsGObject obj => obj -> IO MutationRecord
-castToMutationRecord = castTo gTypeMutationRecord "MutationRecord"
-
+  typeGType _ = gTypeMutationRecord
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
@@ -11749,14 +10206,8 @@ instance FromJSVal NamedNodeMap where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject NamedNodeMap where
-  toGObject = GObject . unNamedNodeMap
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NamedNodeMap . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNamedNodeMap :: IsGObject obj => obj -> IO NamedNodeMap
-castToNamedNodeMap = castTo gTypeNamedNodeMap "NamedNodeMap"
-
+  typeGType _ = gTypeNamedNodeMap
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NamedNodeMap\"]" gTypeNamedNodeMap :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Navigator".
@@ -11784,14 +10235,8 @@ instance FromJSVal Navigator where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Navigator where
-  toGObject = GObject . unNavigator
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Navigator . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNavigator :: IsGObject obj => obj -> IO Navigator
-castToNavigator = castTo gTypeNavigator "Navigator"
-
+  typeGType _ = gTypeNavigator
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Navigator\"]" gTypeNavigator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaError".
@@ -11823,14 +10268,8 @@ instance FromJSVal NavigatorUserMediaError where
 
 instance IsDOMError NavigatorUserMediaError
 instance IsGObject NavigatorUserMediaError where
-  toGObject = GObject . unNavigatorUserMediaError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NavigatorUserMediaError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNavigatorUserMediaError :: IsGObject obj => obj -> IO NavigatorUserMediaError
-castToNavigatorUserMediaError = castTo gTypeNavigatorUserMediaError "NavigatorUserMediaError"
-
+  typeGType _ = gTypeNavigatorUserMediaError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Node".
@@ -11862,19 +10301,13 @@ instance FromJSVal Node where
 
 class IsEventTarget o => IsNode o
 toNode :: IsNode o => o -> Node
-toNode = unsafeCastGObject . toGObject
+toNode = Node . coerce
 
 instance IsNode Node
 instance IsEventTarget Node
 instance IsGObject Node where
-  toGObject = GObject . unNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Node . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNode :: IsGObject obj => obj -> IO Node
-castToNode = castTo gTypeNode "Node"
-
+  typeGType _ = gTypeNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Node\"]" gTypeNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NodeFilter".
@@ -11902,14 +10335,8 @@ instance FromJSVal NodeFilter where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject NodeFilter where
-  toGObject = GObject . unNodeFilter
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NodeFilter . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNodeFilter :: IsGObject obj => obj -> IO NodeFilter
-castToNodeFilter = castTo gTypeNodeFilter "NodeFilter"
-
+  typeGType _ = gTypeNodeFilter
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NodeFilter\"]" gTypeNodeFilter :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
@@ -11937,14 +10364,8 @@ instance FromJSVal NodeIterator where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject NodeIterator where
-  toGObject = GObject . unNodeIterator
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NodeIterator . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNodeIterator :: IsGObject obj => obj -> IO NodeIterator
-castToNodeIterator = castTo gTypeNodeIterator "NodeIterator"
-
+  typeGType _ = gTypeNodeIterator
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NodeIterator\"]" gTypeNodeIterator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NodeList".
@@ -11973,18 +10394,12 @@ instance FromJSVal NodeList where
 
 class IsGObject o => IsNodeList o
 toNodeList :: IsNodeList o => o -> NodeList
-toNodeList = unsafeCastGObject . toGObject
+toNodeList = NodeList . coerce
 
 instance IsNodeList NodeList
 instance IsGObject NodeList where
-  toGObject = GObject . unNodeList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NodeList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNodeList :: IsGObject obj => obj -> IO NodeList
-castToNodeList = castTo gTypeNodeList "NodeList"
-
+  typeGType _ = gTypeNodeList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Notification".
@@ -12016,14 +10431,8 @@ instance FromJSVal Notification where
 
 instance IsEventTarget Notification
 instance IsGObject Notification where
-  toGObject = GObject . unNotification
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Notification . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNotification :: IsGObject obj => obj -> IO Notification
-castToNotification = castTo gTypeNotification "Notification"
-
+  typeGType _ = gTypeNotification
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
@@ -12051,14 +10460,8 @@ instance FromJSVal NotificationCenter where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject NotificationCenter where
-  toGObject = GObject . unNotificationCenter
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = NotificationCenter . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToNotificationCenter :: IsGObject obj => obj -> IO NotificationCenter
-castToNotificationCenter = castTo gTypeNotificationCenter "NotificationCenter"
-
+  typeGType _ = gTypeNotificationCenter
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
@@ -12086,14 +10489,8 @@ instance FromJSVal OESElementIndexUint where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESElementIndexUint where
-  toGObject = GObject . unOESElementIndexUint
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESElementIndexUint . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESElementIndexUint :: IsGObject obj => obj -> IO OESElementIndexUint
-castToOESElementIndexUint = castTo gTypeOESElementIndexUint "OESElementIndexUint"
-
+  typeGType _ = gTypeOESElementIndexUint
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
@@ -12121,14 +10518,8 @@ instance FromJSVal OESStandardDerivatives where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESStandardDerivatives where
-  toGObject = GObject . unOESStandardDerivatives
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESStandardDerivatives . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESStandardDerivatives :: IsGObject obj => obj -> IO OESStandardDerivatives
-castToOESStandardDerivatives = castTo gTypeOESStandardDerivatives "OESStandardDerivatives"
-
+  typeGType _ = gTypeOESStandardDerivatives
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
@@ -12156,14 +10547,8 @@ instance FromJSVal OESTextureFloat where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureFloat where
-  toGObject = GObject . unOESTextureFloat
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESTextureFloat . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESTextureFloat :: IsGObject obj => obj -> IO OESTextureFloat
-castToOESTextureFloat = castTo gTypeOESTextureFloat "OESTextureFloat"
-
+  typeGType _ = gTypeOESTextureFloat
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
@@ -12191,14 +10576,8 @@ instance FromJSVal OESTextureFloatLinear where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureFloatLinear where
-  toGObject = GObject . unOESTextureFloatLinear
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESTextureFloatLinear . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESTextureFloatLinear :: IsGObject obj => obj -> IO OESTextureFloatLinear
-castToOESTextureFloatLinear = castTo gTypeOESTextureFloatLinear "OESTextureFloatLinear"
-
+  typeGType _ = gTypeOESTextureFloatLinear
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
@@ -12226,14 +10605,8 @@ instance FromJSVal OESTextureHalfFloat where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureHalfFloat where
-  toGObject = GObject . unOESTextureHalfFloat
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESTextureHalfFloat . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESTextureHalfFloat :: IsGObject obj => obj -> IO OESTextureHalfFloat
-castToOESTextureHalfFloat = castTo gTypeOESTextureHalfFloat "OESTextureHalfFloat"
-
+  typeGType _ = gTypeOESTextureHalfFloat
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
@@ -12261,14 +10634,8 @@ instance FromJSVal OESTextureHalfFloatLinear where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESTextureHalfFloatLinear where
-  toGObject = GObject . unOESTextureHalfFloatLinear
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESTextureHalfFloatLinear . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESTextureHalfFloatLinear :: IsGObject obj => obj -> IO OESTextureHalfFloatLinear
-castToOESTextureHalfFloatLinear = castTo gTypeOESTextureHalfFloatLinear "OESTextureHalfFloatLinear"
-
+  typeGType _ = gTypeOESTextureHalfFloatLinear
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
@@ -12296,14 +10663,8 @@ instance FromJSVal OESVertexArrayObject where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject OESVertexArrayObject where
-  toGObject = GObject . unOESVertexArrayObject
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OESVertexArrayObject . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOESVertexArrayObject :: IsGObject obj => obj -> IO OESVertexArrayObject
-castToOESVertexArrayObject = castTo gTypeOESVertexArrayObject "OESVertexArrayObject"
-
+  typeGType _ = gTypeOESVertexArrayObject
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioCompletionEvent".
@@ -12335,14 +10696,8 @@ instance FromJSVal OfflineAudioCompletionEvent where
 
 instance IsEvent OfflineAudioCompletionEvent
 instance IsGObject OfflineAudioCompletionEvent where
-  toGObject = GObject . unOfflineAudioCompletionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OfflineAudioCompletionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOfflineAudioCompletionEvent :: IsGObject obj => obj -> IO OfflineAudioCompletionEvent
-castToOfflineAudioCompletionEvent = castTo gTypeOfflineAudioCompletionEvent "OfflineAudioCompletionEvent"
-
+  typeGType _ = gTypeOfflineAudioCompletionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioContext".
@@ -12376,14 +10731,8 @@ instance FromJSVal OfflineAudioContext where
 instance IsAudioContext OfflineAudioContext
 instance IsEventTarget OfflineAudioContext
 instance IsGObject OfflineAudioContext where
-  toGObject = GObject . unOfflineAudioContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OfflineAudioContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOfflineAudioContext :: IsGObject obj => obj -> IO OfflineAudioContext
-castToOfflineAudioContext = castTo gTypeOfflineAudioContext "OfflineAudioContext"
-
+  typeGType _ = gTypeOfflineAudioContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineAudioContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OscillatorNode".
@@ -12417,14 +10766,8 @@ instance FromJSVal OscillatorNode where
 instance IsAudioNode OscillatorNode
 instance IsEventTarget OscillatorNode
 instance IsGObject OscillatorNode where
-  toGObject = GObject . unOscillatorNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OscillatorNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOscillatorNode :: IsGObject obj => obj -> IO OscillatorNode
-castToOscillatorNode = castTo gTypeOscillatorNode "OscillatorNode"
-
+  typeGType _ = gTypeOscillatorNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverflowEvent".
@@ -12456,14 +10799,8 @@ instance FromJSVal OverflowEvent where
 
 instance IsEvent OverflowEvent
 instance IsGObject OverflowEvent where
-  toGObject = GObject . unOverflowEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = OverflowEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToOverflowEvent :: IsGObject obj => obj -> IO OverflowEvent
-castToOverflowEvent = castTo gTypeOverflowEvent "OverflowEvent"
-
+  typeGType _ = gTypeOverflowEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PageTransitionEvent".
@@ -12495,14 +10832,8 @@ instance FromJSVal PageTransitionEvent where
 
 instance IsEvent PageTransitionEvent
 instance IsGObject PageTransitionEvent where
-  toGObject = GObject . unPageTransitionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PageTransitionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPageTransitionEvent :: IsGObject obj => obj -> IO PageTransitionEvent
-castToPageTransitionEvent = castTo gTypePageTransitionEvent "PageTransitionEvent"
-
+  typeGType _ = gTypePageTransitionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PannerNode".
@@ -12536,14 +10867,8 @@ instance FromJSVal PannerNode where
 instance IsAudioNode PannerNode
 instance IsEventTarget PannerNode
 instance IsGObject PannerNode where
-  toGObject = GObject . unPannerNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PannerNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPannerNode :: IsGObject obj => obj -> IO PannerNode
-castToPannerNode = castTo gTypePannerNode "PannerNode"
-
+  typeGType _ = gTypePannerNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Path2D".
@@ -12571,14 +10896,8 @@ instance FromJSVal Path2D where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Path2D where
-  toGObject = GObject . unPath2D
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Path2D . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPath2D :: IsGObject obj => obj -> IO Path2D
-castToPath2D = castTo gTypePath2D "Path2D"
-
+  typeGType _ = gTypePath2D
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Performance".
@@ -12610,14 +10929,8 @@ instance FromJSVal Performance where
 
 instance IsEventTarget Performance
 instance IsGObject Performance where
-  toGObject = GObject . unPerformance
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Performance . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformance :: IsGObject obj => obj -> IO Performance
-castToPerformance = castTo gTypePerformance "Performance"
-
+  typeGType _ = gTypePerformance
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
@@ -12646,18 +10959,12 @@ instance FromJSVal PerformanceEntry where
 
 class IsGObject o => IsPerformanceEntry o
 toPerformanceEntry :: IsPerformanceEntry o => o -> PerformanceEntry
-toPerformanceEntry = unsafeCastGObject . toGObject
+toPerformanceEntry = PerformanceEntry . coerce
 
 instance IsPerformanceEntry PerformanceEntry
 instance IsGObject PerformanceEntry where
-  toGObject = GObject . unPerformanceEntry
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceEntry . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceEntry :: IsGObject obj => obj -> IO PerformanceEntry
-castToPerformanceEntry = castTo gTypePerformanceEntry "PerformanceEntry"
-
+  typeGType _ = gTypePerformanceEntry
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntryList".
@@ -12685,14 +10992,8 @@ instance FromJSVal PerformanceEntryList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceEntryList where
-  toGObject = GObject . unPerformanceEntryList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceEntryList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceEntryList :: IsGObject obj => obj -> IO PerformanceEntryList
-castToPerformanceEntryList = castTo gTypePerformanceEntryList "PerformanceEntryList"
-
+  typeGType _ = gTypePerformanceEntryList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceEntryList\"]" gTypePerformanceEntryList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMark".
@@ -12724,14 +11025,8 @@ instance FromJSVal PerformanceMark where
 
 instance IsPerformanceEntry PerformanceMark
 instance IsGObject PerformanceMark where
-  toGObject = GObject . unPerformanceMark
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceMark . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceMark :: IsGObject obj => obj -> IO PerformanceMark
-castToPerformanceMark = castTo gTypePerformanceMark "PerformanceMark"
-
+  typeGType _ = gTypePerformanceMark
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMeasure".
@@ -12763,14 +11058,8 @@ instance FromJSVal PerformanceMeasure where
 
 instance IsPerformanceEntry PerformanceMeasure
 instance IsGObject PerformanceMeasure where
-  toGObject = GObject . unPerformanceMeasure
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceMeasure . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceMeasure :: IsGObject obj => obj -> IO PerformanceMeasure
-castToPerformanceMeasure = castTo gTypePerformanceMeasure "PerformanceMeasure"
-
+  typeGType _ = gTypePerformanceMeasure
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
@@ -12798,14 +11087,8 @@ instance FromJSVal PerformanceNavigation where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceNavigation where
-  toGObject = GObject . unPerformanceNavigation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceNavigation . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceNavigation :: IsGObject obj => obj -> IO PerformanceNavigation
-castToPerformanceNavigation = castTo gTypePerformanceNavigation "PerformanceNavigation"
-
+  typeGType _ = gTypePerformanceNavigation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceResourceTiming".
@@ -12837,14 +11120,8 @@ instance FromJSVal PerformanceResourceTiming where
 
 instance IsPerformanceEntry PerformanceResourceTiming
 instance IsGObject PerformanceResourceTiming where
-  toGObject = GObject . unPerformanceResourceTiming
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceResourceTiming . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceResourceTiming :: IsGObject obj => obj -> IO PerformanceResourceTiming
-castToPerformanceResourceTiming = castTo gTypePerformanceResourceTiming "PerformanceResourceTiming"
-
+  typeGType _ = gTypePerformanceResourceTiming
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
@@ -12872,14 +11149,8 @@ instance FromJSVal PerformanceTiming where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PerformanceTiming where
-  toGObject = GObject . unPerformanceTiming
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PerformanceTiming . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPerformanceTiming :: IsGObject obj => obj -> IO PerformanceTiming
-castToPerformanceTiming = castTo gTypePerformanceTiming "PerformanceTiming"
-
+  typeGType _ = gTypePerformanceTiming
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
@@ -12907,14 +11178,8 @@ instance FromJSVal PeriodicWave where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PeriodicWave where
-  toGObject = GObject . unPeriodicWave
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PeriodicWave . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPeriodicWave :: IsGObject obj => obj -> IO PeriodicWave
-castToPeriodicWave = castTo gTypePeriodicWave "PeriodicWave"
-
+  typeGType _ = gTypePeriodicWave
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Plugin".
@@ -12942,14 +11207,8 @@ instance FromJSVal Plugin where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Plugin where
-  toGObject = GObject . unPlugin
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Plugin . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPlugin :: IsGObject obj => obj -> IO Plugin
-castToPlugin = castTo gTypePlugin "Plugin"
-
+  typeGType _ = gTypePlugin
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Plugin\"]" gTypePlugin :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PluginArray".
@@ -12977,14 +11236,8 @@ instance FromJSVal PluginArray where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PluginArray where
-  toGObject = GObject . unPluginArray
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PluginArray . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPluginArray :: IsGObject obj => obj -> IO PluginArray
-castToPluginArray = castTo gTypePluginArray "PluginArray"
-
+  typeGType _ = gTypePluginArray
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PluginArray\"]" gTypePluginArray :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PopStateEvent".
@@ -13016,14 +11269,8 @@ instance FromJSVal PopStateEvent where
 
 instance IsEvent PopStateEvent
 instance IsGObject PopStateEvent where
-  toGObject = GObject . unPopStateEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PopStateEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPopStateEvent :: IsGObject obj => obj -> IO PopStateEvent
-castToPopStateEvent = castTo gTypePopStateEvent "PopStateEvent"
-
+  typeGType _ = gTypePopStateEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PositionError".
@@ -13051,14 +11298,8 @@ instance FromJSVal PositionError where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject PositionError where
-  toGObject = GObject . unPositionError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = PositionError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToPositionError :: IsGObject obj => obj -> IO PositionError
-castToPositionError = castTo gTypePositionError "PositionError"
-
+  typeGType _ = gTypePositionError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ProcessingInstruction".
@@ -13094,14 +11335,8 @@ instance IsCharacterData ProcessingInstruction
 instance IsNode ProcessingInstruction
 instance IsEventTarget ProcessingInstruction
 instance IsGObject ProcessingInstruction where
-  toGObject = GObject . unProcessingInstruction
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ProcessingInstruction . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToProcessingInstruction :: IsGObject obj => obj -> IO ProcessingInstruction
-castToProcessingInstruction = castTo gTypeProcessingInstruction "ProcessingInstruction"
-
+  typeGType _ = gTypeProcessingInstruction
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ProcessingInstruction\"]" gTypeProcessingInstruction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ProgressEvent".
@@ -13133,19 +11368,13 @@ instance FromJSVal ProgressEvent where
 
 class IsEvent o => IsProgressEvent o
 toProgressEvent :: IsProgressEvent o => o -> ProgressEvent
-toProgressEvent = unsafeCastGObject . toGObject
+toProgressEvent = ProgressEvent . coerce
 
 instance IsProgressEvent ProgressEvent
 instance IsEvent ProgressEvent
 instance IsGObject ProgressEvent where
-  toGObject = GObject . unProgressEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ProgressEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToProgressEvent :: IsGObject obj => obj -> IO ProgressEvent
-castToProgressEvent = castTo gTypeProgressEvent "ProgressEvent"
-
+  typeGType _ = gTypeProgressEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
@@ -13173,14 +11402,8 @@ instance FromJSVal QuickTimePluginReplacement where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject QuickTimePluginReplacement where
-  toGObject = GObject . unQuickTimePluginReplacement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = QuickTimePluginReplacement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToQuickTimePluginReplacement :: IsGObject obj => obj -> IO QuickTimePluginReplacement
-castToQuickTimePluginReplacement = castTo gTypeQuickTimePluginReplacement "QuickTimePluginReplacement"
-
+  typeGType _ = gTypeQuickTimePluginReplacement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
@@ -13208,14 +11431,8 @@ instance FromJSVal RGBColor where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RGBColor where
-  toGObject = GObject . unRGBColor
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RGBColor . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRGBColor :: IsGObject obj => obj -> IO RGBColor
-castToRGBColor = castTo gTypeRGBColor "RGBColor"
-
+  typeGType _ = gTypeRGBColor
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
@@ -13243,14 +11460,8 @@ instance FromJSVal RTCConfiguration where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCConfiguration where
-  toGObject = GObject . unRTCConfiguration
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCConfiguration . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCConfiguration :: IsGObject obj => obj -> IO RTCConfiguration
-castToRTCConfiguration = castTo gTypeRTCConfiguration "RTCConfiguration"
-
+  typeGType _ = gTypeRTCConfiguration
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFSender".
@@ -13282,14 +11493,8 @@ instance FromJSVal RTCDTMFSender where
 
 instance IsEventTarget RTCDTMFSender
 instance IsGObject RTCDTMFSender where
-  toGObject = GObject . unRTCDTMFSender
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCDTMFSender . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCDTMFSender :: IsGObject obj => obj -> IO RTCDTMFSender
-castToRTCDTMFSender = castTo gTypeRTCDTMFSender "RTCDTMFSender"
-
+  typeGType _ = gTypeRTCDTMFSender
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFToneChangeEvent".
@@ -13321,14 +11526,8 @@ instance FromJSVal RTCDTMFToneChangeEvent where
 
 instance IsEvent RTCDTMFToneChangeEvent
 instance IsGObject RTCDTMFToneChangeEvent where
-  toGObject = GObject . unRTCDTMFToneChangeEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCDTMFToneChangeEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCDTMFToneChangeEvent :: IsGObject obj => obj -> IO RTCDTMFToneChangeEvent
-castToRTCDTMFToneChangeEvent = castTo gTypeRTCDTMFToneChangeEvent "RTCDTMFToneChangeEvent"
-
+  typeGType _ = gTypeRTCDTMFToneChangeEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannel".
@@ -13360,14 +11559,8 @@ instance FromJSVal RTCDataChannel where
 
 instance IsEventTarget RTCDataChannel
 instance IsGObject RTCDataChannel where
-  toGObject = GObject . unRTCDataChannel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCDataChannel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCDataChannel :: IsGObject obj => obj -> IO RTCDataChannel
-castToRTCDataChannel = castTo gTypeRTCDataChannel "RTCDataChannel"
-
+  typeGType _ = gTypeRTCDataChannel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEvent".
@@ -13399,14 +11592,8 @@ instance FromJSVal RTCDataChannelEvent where
 
 instance IsEvent RTCDataChannelEvent
 instance IsGObject RTCDataChannelEvent where
-  toGObject = GObject . unRTCDataChannelEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCDataChannelEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCDataChannelEvent :: IsGObject obj => obj -> IO RTCDataChannelEvent
-castToRTCDataChannelEvent = castTo gTypeRTCDataChannelEvent "RTCDataChannelEvent"
-
+  typeGType _ = gTypeRTCDataChannelEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
@@ -13434,14 +11621,8 @@ instance FromJSVal RTCIceCandidate where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCIceCandidate where
-  toGObject = GObject . unRTCIceCandidate
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCIceCandidate . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCIceCandidate :: IsGObject obj => obj -> IO RTCIceCandidate
-castToRTCIceCandidate = castTo gTypeRTCIceCandidate "RTCIceCandidate"
-
+  typeGType _ = gTypeRTCIceCandidate
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidateEvent".
@@ -13473,14 +11654,8 @@ instance FromJSVal RTCIceCandidateEvent where
 
 instance IsEvent RTCIceCandidateEvent
 instance IsGObject RTCIceCandidateEvent where
-  toGObject = GObject . unRTCIceCandidateEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCIceCandidateEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCIceCandidateEvent :: IsGObject obj => obj -> IO RTCIceCandidateEvent
-castToRTCIceCandidateEvent = castTo gTypeRTCIceCandidateEvent "RTCIceCandidateEvent"
-
+  typeGType _ = gTypeRTCIceCandidateEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
@@ -13508,14 +11683,8 @@ instance FromJSVal RTCIceServer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCIceServer where
-  toGObject = GObject . unRTCIceServer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCIceServer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCIceServer :: IsGObject obj => obj -> IO RTCIceServer
-castToRTCIceServer = castTo gTypeRTCIceServer "RTCIceServer"
-
+  typeGType _ = gTypeRTCIceServer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnection".
@@ -13547,14 +11716,8 @@ instance FromJSVal RTCPeerConnection where
 
 instance IsEventTarget RTCPeerConnection
 instance IsGObject RTCPeerConnection where
-  toGObject = GObject . unRTCPeerConnection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCPeerConnection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCPeerConnection :: IsGObject obj => obj -> IO RTCPeerConnection
-castToRTCPeerConnection = castTo gTypeRTCPeerConnection "RTCPeerConnection"
-
+  typeGType _ = gTypeRTCPeerConnection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
@@ -13582,14 +11745,8 @@ instance FromJSVal RTCSessionDescription where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCSessionDescription where
-  toGObject = GObject . unRTCSessionDescription
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCSessionDescription . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCSessionDescription :: IsGObject obj => obj -> IO RTCSessionDescription
-castToRTCSessionDescription = castTo gTypeRTCSessionDescription "RTCSessionDescription"
-
+  typeGType _ = gTypeRTCSessionDescription
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
@@ -13617,14 +11774,8 @@ instance FromJSVal RTCStatsReport where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCStatsReport where
-  toGObject = GObject . unRTCStatsReport
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCStatsReport . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCStatsReport :: IsGObject obj => obj -> IO RTCStatsReport
-castToRTCStatsReport = castTo gTypeRTCStatsReport "RTCStatsReport"
-
+  typeGType _ = gTypeRTCStatsReport
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsResponse".
@@ -13652,14 +11803,8 @@ instance FromJSVal RTCStatsResponse where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject RTCStatsResponse where
-  toGObject = GObject . unRTCStatsResponse
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RTCStatsResponse . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRTCStatsResponse :: IsGObject obj => obj -> IO RTCStatsResponse
-castToRTCStatsResponse = castTo gTypeRTCStatsResponse "RTCStatsResponse"
-
+  typeGType _ = gTypeRTCStatsResponse
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCStatsResponse\"]" gTypeRTCStatsResponse :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RadioNodeList".
@@ -13691,14 +11836,8 @@ instance FromJSVal RadioNodeList where
 
 instance IsNodeList RadioNodeList
 instance IsGObject RadioNodeList where
-  toGObject = GObject . unRadioNodeList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = RadioNodeList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRadioNodeList :: IsGObject obj => obj -> IO RadioNodeList
-castToRadioNodeList = castTo gTypeRadioNodeList "RadioNodeList"
-
+  typeGType _ = gTypeRadioNodeList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Range".
@@ -13726,14 +11865,8 @@ instance FromJSVal Range where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Range where
-  toGObject = GObject . unRange
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Range . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRange :: IsGObject obj => obj -> IO Range
-castToRange = castTo gTypeRange "Range"
-
+  typeGType _ = gTypeRange
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Range\"]" gTypeRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
@@ -13761,14 +11894,8 @@ instance FromJSVal ReadableStream where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ReadableStream where
-  toGObject = GObject . unReadableStream
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ReadableStream . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToReadableStream :: IsGObject obj => obj -> IO ReadableStream
-castToReadableStream = castTo gTypeReadableStream "ReadableStream"
-
+  typeGType _ = gTypeReadableStream
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Rect".
@@ -13796,14 +11923,8 @@ instance FromJSVal Rect where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Rect where
-  toGObject = GObject . unRect
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Rect . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToRect :: IsGObject obj => obj -> IO Rect
-castToRect = castTo gTypeRect "Rect"
-
+  typeGType _ = gTypeRect
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Rect\"]" gTypeRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLError".
@@ -13831,14 +11952,8 @@ instance FromJSVal SQLError where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLError where
-  toGObject = GObject . unSQLError
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SQLError . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSQLError :: IsGObject obj => obj -> IO SQLError
-castToSQLError = castTo gTypeSQLError "SQLError"
-
+  typeGType _ = gTypeSQLError
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
@@ -13866,14 +11981,8 @@ instance FromJSVal SQLResultSet where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLResultSet where
-  toGObject = GObject . unSQLResultSet
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SQLResultSet . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSQLResultSet :: IsGObject obj => obj -> IO SQLResultSet
-castToSQLResultSet = castTo gTypeSQLResultSet "SQLResultSet"
-
+  typeGType _ = gTypeSQLResultSet
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
@@ -13901,14 +12010,8 @@ instance FromJSVal SQLResultSetRowList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLResultSetRowList where
-  toGObject = GObject . unSQLResultSetRowList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SQLResultSetRowList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSQLResultSetRowList :: IsGObject obj => obj -> IO SQLResultSetRowList
-castToSQLResultSetRowList = castTo gTypeSQLResultSetRowList "SQLResultSetRowList"
-
+  typeGType _ = gTypeSQLResultSetRowList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
@@ -13936,14 +12039,8 @@ instance FromJSVal SQLTransaction where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SQLTransaction where
-  toGObject = GObject . unSQLTransaction
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SQLTransaction . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSQLTransaction :: IsGObject obj => obj -> IO SQLTransaction
-castToSQLTransaction = castTo gTypeSQLTransaction "SQLTransaction"
-
+  typeGType _ = gTypeSQLTransaction
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAElement".
@@ -13983,14 +12080,8 @@ instance IsElement SVGAElement
 instance IsNode SVGAElement
 instance IsEventTarget SVGAElement
 instance IsGObject SVGAElement where
-  toGObject = GObject . unSVGAElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAElement :: IsGObject obj => obj -> IO SVGAElement
-castToSVGAElement = castTo gTypeSVGAElement "SVGAElement"
-
+  typeGType _ = gTypeSVGAElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphDefElement".
@@ -14028,14 +12119,8 @@ instance IsElement SVGAltGlyphDefElement
 instance IsNode SVGAltGlyphDefElement
 instance IsEventTarget SVGAltGlyphDefElement
 instance IsGObject SVGAltGlyphDefElement where
-  toGObject = GObject . unSVGAltGlyphDefElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAltGlyphDefElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAltGlyphDefElement :: IsGObject obj => obj -> IO SVGAltGlyphDefElement
-castToSVGAltGlyphDefElement = castTo gTypeSVGAltGlyphDefElement "SVGAltGlyphDefElement"
-
+  typeGType _ = gTypeSVGAltGlyphDefElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphElement".
@@ -14079,14 +12164,8 @@ instance IsElement SVGAltGlyphElement
 instance IsNode SVGAltGlyphElement
 instance IsEventTarget SVGAltGlyphElement
 instance IsGObject SVGAltGlyphElement where
-  toGObject = GObject . unSVGAltGlyphElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAltGlyphElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAltGlyphElement :: IsGObject obj => obj -> IO SVGAltGlyphElement
-castToSVGAltGlyphElement = castTo gTypeSVGAltGlyphElement "SVGAltGlyphElement"
-
+  typeGType _ = gTypeSVGAltGlyphElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphItemElement".
@@ -14124,14 +12203,8 @@ instance IsElement SVGAltGlyphItemElement
 instance IsNode SVGAltGlyphItemElement
 instance IsEventTarget SVGAltGlyphItemElement
 instance IsGObject SVGAltGlyphItemElement where
-  toGObject = GObject . unSVGAltGlyphItemElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAltGlyphItemElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAltGlyphItemElement :: IsGObject obj => obj -> IO SVGAltGlyphItemElement
-castToSVGAltGlyphItemElement = castTo gTypeSVGAltGlyphItemElement "SVGAltGlyphItemElement"
-
+  typeGType _ = gTypeSVGAltGlyphItemElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
@@ -14159,14 +12232,8 @@ instance FromJSVal SVGAngle where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAngle where
-  toGObject = GObject . unSVGAngle
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAngle . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAngle :: IsGObject obj => obj -> IO SVGAngle
-castToSVGAngle = castTo gTypeSVGAngle "SVGAngle"
-
+  typeGType _ = gTypeSVGAngle
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateColorElement".
@@ -14206,14 +12273,8 @@ instance IsElement SVGAnimateColorElement
 instance IsNode SVGAnimateColorElement
 instance IsEventTarget SVGAnimateColorElement
 instance IsGObject SVGAnimateColorElement where
-  toGObject = GObject . unSVGAnimateColorElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimateColorElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimateColorElement :: IsGObject obj => obj -> IO SVGAnimateColorElement
-castToSVGAnimateColorElement = castTo gTypeSVGAnimateColorElement "SVGAnimateColorElement"
-
+  typeGType _ = gTypeSVGAnimateColorElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateElement".
@@ -14253,14 +12314,8 @@ instance IsElement SVGAnimateElement
 instance IsNode SVGAnimateElement
 instance IsEventTarget SVGAnimateElement
 instance IsGObject SVGAnimateElement where
-  toGObject = GObject . unSVGAnimateElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimateElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimateElement :: IsGObject obj => obj -> IO SVGAnimateElement
-castToSVGAnimateElement = castTo gTypeSVGAnimateElement "SVGAnimateElement"
-
+  typeGType _ = gTypeSVGAnimateElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateMotionElement".
@@ -14300,14 +12355,8 @@ instance IsElement SVGAnimateMotionElement
 instance IsNode SVGAnimateMotionElement
 instance IsEventTarget SVGAnimateMotionElement
 instance IsGObject SVGAnimateMotionElement where
-  toGObject = GObject . unSVGAnimateMotionElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimateMotionElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimateMotionElement :: IsGObject obj => obj -> IO SVGAnimateMotionElement
-castToSVGAnimateMotionElement = castTo gTypeSVGAnimateMotionElement "SVGAnimateMotionElement"
-
+  typeGType _ = gTypeSVGAnimateMotionElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateTransformElement".
@@ -14347,14 +12396,8 @@ instance IsElement SVGAnimateTransformElement
 instance IsNode SVGAnimateTransformElement
 instance IsEventTarget SVGAnimateTransformElement
 instance IsGObject SVGAnimateTransformElement where
-  toGObject = GObject . unSVGAnimateTransformElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimateTransformElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimateTransformElement :: IsGObject obj => obj -> IO SVGAnimateTransformElement
-castToSVGAnimateTransformElement = castTo gTypeSVGAnimateTransformElement "SVGAnimateTransformElement"
-
+  typeGType _ = gTypeSVGAnimateTransformElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
@@ -14382,14 +12425,8 @@ instance FromJSVal SVGAnimatedAngle where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedAngle where
-  toGObject = GObject . unSVGAnimatedAngle
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedAngle . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedAngle :: IsGObject obj => obj -> IO SVGAnimatedAngle
-castToSVGAnimatedAngle = castTo gTypeSVGAnimatedAngle "SVGAnimatedAngle"
-
+  typeGType _ = gTypeSVGAnimatedAngle
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
@@ -14417,14 +12454,8 @@ instance FromJSVal SVGAnimatedBoolean where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedBoolean where
-  toGObject = GObject . unSVGAnimatedBoolean
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedBoolean . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedBoolean :: IsGObject obj => obj -> IO SVGAnimatedBoolean
-castToSVGAnimatedBoolean = castTo gTypeSVGAnimatedBoolean "SVGAnimatedBoolean"
-
+  typeGType _ = gTypeSVGAnimatedBoolean
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
@@ -14452,14 +12483,8 @@ instance FromJSVal SVGAnimatedEnumeration where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedEnumeration where
-  toGObject = GObject . unSVGAnimatedEnumeration
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedEnumeration . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedEnumeration :: IsGObject obj => obj -> IO SVGAnimatedEnumeration
-castToSVGAnimatedEnumeration = castTo gTypeSVGAnimatedEnumeration "SVGAnimatedEnumeration"
-
+  typeGType _ = gTypeSVGAnimatedEnumeration
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
@@ -14487,14 +12512,8 @@ instance FromJSVal SVGAnimatedInteger where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedInteger where
-  toGObject = GObject . unSVGAnimatedInteger
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedInteger . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedInteger :: IsGObject obj => obj -> IO SVGAnimatedInteger
-castToSVGAnimatedInteger = castTo gTypeSVGAnimatedInteger "SVGAnimatedInteger"
-
+  typeGType _ = gTypeSVGAnimatedInteger
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
@@ -14522,14 +12541,8 @@ instance FromJSVal SVGAnimatedLength where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedLength where
-  toGObject = GObject . unSVGAnimatedLength
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedLength . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedLength :: IsGObject obj => obj -> IO SVGAnimatedLength
-castToSVGAnimatedLength = castTo gTypeSVGAnimatedLength "SVGAnimatedLength"
-
+  typeGType _ = gTypeSVGAnimatedLength
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
@@ -14557,14 +12570,8 @@ instance FromJSVal SVGAnimatedLengthList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedLengthList where
-  toGObject = GObject . unSVGAnimatedLengthList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedLengthList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedLengthList :: IsGObject obj => obj -> IO SVGAnimatedLengthList
-castToSVGAnimatedLengthList = castTo gTypeSVGAnimatedLengthList "SVGAnimatedLengthList"
-
+  typeGType _ = gTypeSVGAnimatedLengthList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
@@ -14592,14 +12599,8 @@ instance FromJSVal SVGAnimatedNumber where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedNumber where
-  toGObject = GObject . unSVGAnimatedNumber
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedNumber . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedNumber :: IsGObject obj => obj -> IO SVGAnimatedNumber
-castToSVGAnimatedNumber = castTo gTypeSVGAnimatedNumber "SVGAnimatedNumber"
-
+  typeGType _ = gTypeSVGAnimatedNumber
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
@@ -14627,14 +12628,8 @@ instance FromJSVal SVGAnimatedNumberList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedNumberList where
-  toGObject = GObject . unSVGAnimatedNumberList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedNumberList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedNumberList :: IsGObject obj => obj -> IO SVGAnimatedNumberList
-castToSVGAnimatedNumberList = castTo gTypeSVGAnimatedNumberList "SVGAnimatedNumberList"
-
+  typeGType _ = gTypeSVGAnimatedNumberList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
@@ -14662,14 +12657,8 @@ instance FromJSVal SVGAnimatedPreserveAspectRatio where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedPreserveAspectRatio where
-  toGObject = GObject . unSVGAnimatedPreserveAspectRatio
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedPreserveAspectRatio . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedPreserveAspectRatio :: IsGObject obj => obj -> IO SVGAnimatedPreserveAspectRatio
-castToSVGAnimatedPreserveAspectRatio = castTo gTypeSVGAnimatedPreserveAspectRatio "SVGAnimatedPreserveAspectRatio"
-
+  typeGType _ = gTypeSVGAnimatedPreserveAspectRatio
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
@@ -14697,14 +12686,8 @@ instance FromJSVal SVGAnimatedRect where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedRect where
-  toGObject = GObject . unSVGAnimatedRect
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedRect . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedRect :: IsGObject obj => obj -> IO SVGAnimatedRect
-castToSVGAnimatedRect = castTo gTypeSVGAnimatedRect "SVGAnimatedRect"
-
+  typeGType _ = gTypeSVGAnimatedRect
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
@@ -14732,14 +12715,8 @@ instance FromJSVal SVGAnimatedString where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedString where
-  toGObject = GObject . unSVGAnimatedString
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedString . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedString :: IsGObject obj => obj -> IO SVGAnimatedString
-castToSVGAnimatedString = castTo gTypeSVGAnimatedString "SVGAnimatedString"
-
+  typeGType _ = gTypeSVGAnimatedString
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
@@ -14767,14 +12744,8 @@ instance FromJSVal SVGAnimatedTransformList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGAnimatedTransformList where
-  toGObject = GObject . unSVGAnimatedTransformList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimatedTransformList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimatedTransformList :: IsGObject obj => obj -> IO SVGAnimatedTransformList
-castToSVGAnimatedTransformList = castTo gTypeSVGAnimatedTransformList "SVGAnimatedTransformList"
-
+  typeGType _ = gTypeSVGAnimatedTransformList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimationElement".
@@ -14809,7 +12780,7 @@ instance FromJSVal SVGAnimationElement where
 
 class IsSVGElement o => IsSVGAnimationElement o
 toSVGAnimationElement :: IsSVGAnimationElement o => o -> SVGAnimationElement
-toSVGAnimationElement = unsafeCastGObject . toGObject
+toSVGAnimationElement = SVGAnimationElement . coerce
 
 instance IsSVGAnimationElement SVGAnimationElement
 instance IsSVGElement SVGAnimationElement
@@ -14817,14 +12788,8 @@ instance IsElement SVGAnimationElement
 instance IsNode SVGAnimationElement
 instance IsEventTarget SVGAnimationElement
 instance IsGObject SVGAnimationElement where
-  toGObject = GObject . unSVGAnimationElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGAnimationElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGAnimationElement :: IsGObject obj => obj -> IO SVGAnimationElement
-castToSVGAnimationElement = castTo gTypeSVGAnimationElement "SVGAnimationElement"
-
+  typeGType _ = gTypeSVGAnimationElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCircleElement".
@@ -14864,14 +12829,8 @@ instance IsElement SVGCircleElement
 instance IsNode SVGCircleElement
 instance IsEventTarget SVGCircleElement
 instance IsGObject SVGCircleElement where
-  toGObject = GObject . unSVGCircleElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGCircleElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGCircleElement :: IsGObject obj => obj -> IO SVGCircleElement
-castToSVGCircleElement = castTo gTypeSVGCircleElement "SVGCircleElement"
-
+  typeGType _ = gTypeSVGCircleElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGClipPathElement".
@@ -14911,14 +12870,8 @@ instance IsElement SVGClipPathElement
 instance IsNode SVGClipPathElement
 instance IsEventTarget SVGClipPathElement
 instance IsGObject SVGClipPathElement where
-  toGObject = GObject . unSVGClipPathElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGClipPathElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGClipPathElement :: IsGObject obj => obj -> IO SVGClipPathElement
-castToSVGClipPathElement = castTo gTypeSVGClipPathElement "SVGClipPathElement"
-
+  typeGType _ = gTypeSVGClipPathElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGColor".
@@ -14950,19 +12903,13 @@ instance FromJSVal SVGColor where
 
 class IsCSSValue o => IsSVGColor o
 toSVGColor :: IsSVGColor o => o -> SVGColor
-toSVGColor = unsafeCastGObject . toGObject
+toSVGColor = SVGColor . coerce
 
 instance IsSVGColor SVGColor
 instance IsCSSValue SVGColor
 instance IsGObject SVGColor where
-  toGObject = GObject . unSVGColor
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGColor . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGColor :: IsGObject obj => obj -> IO SVGColor
-castToSVGColor = castTo gTypeSVGColor "SVGColor"
-
+  typeGType _ = gTypeSVGColor
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGColor\"]" gTypeSVGColor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGComponentTransferFunctionElement".
@@ -14997,7 +12944,7 @@ instance FromJSVal SVGComponentTransferFunctionElement where
 
 class IsSVGElement o => IsSVGComponentTransferFunctionElement o
 toSVGComponentTransferFunctionElement :: IsSVGComponentTransferFunctionElement o => o -> SVGComponentTransferFunctionElement
-toSVGComponentTransferFunctionElement = unsafeCastGObject . toGObject
+toSVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement . coerce
 
 instance IsSVGComponentTransferFunctionElement SVGComponentTransferFunctionElement
 instance IsSVGElement SVGComponentTransferFunctionElement
@@ -15005,14 +12952,8 @@ instance IsElement SVGComponentTransferFunctionElement
 instance IsNode SVGComponentTransferFunctionElement
 instance IsEventTarget SVGComponentTransferFunctionElement
 instance IsGObject SVGComponentTransferFunctionElement where
-  toGObject = GObject . unSVGComponentTransferFunctionElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGComponentTransferFunctionElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGComponentTransferFunctionElement :: IsGObject obj => obj -> IO SVGComponentTransferFunctionElement
-castToSVGComponentTransferFunctionElement = castTo gTypeSVGComponentTransferFunctionElement "SVGComponentTransferFunctionElement"
-
+  typeGType _ = gTypeSVGComponentTransferFunctionElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCursorElement".
@@ -15050,14 +12991,8 @@ instance IsElement SVGCursorElement
 instance IsNode SVGCursorElement
 instance IsEventTarget SVGCursorElement
 instance IsGObject SVGCursorElement where
-  toGObject = GObject . unSVGCursorElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGCursorElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGCursorElement :: IsGObject obj => obj -> IO SVGCursorElement
-castToSVGCursorElement = castTo gTypeSVGCursorElement "SVGCursorElement"
-
+  typeGType _ = gTypeSVGCursorElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDefsElement".
@@ -15097,14 +13032,8 @@ instance IsElement SVGDefsElement
 instance IsNode SVGDefsElement
 instance IsEventTarget SVGDefsElement
 instance IsGObject SVGDefsElement where
-  toGObject = GObject . unSVGDefsElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGDefsElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGDefsElement :: IsGObject obj => obj -> IO SVGDefsElement
-castToSVGDefsElement = castTo gTypeSVGDefsElement "SVGDefsElement"
-
+  typeGType _ = gTypeSVGDefsElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDescElement".
@@ -15142,14 +13071,8 @@ instance IsElement SVGDescElement
 instance IsNode SVGDescElement
 instance IsEventTarget SVGDescElement
 instance IsGObject SVGDescElement where
-  toGObject = GObject . unSVGDescElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGDescElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGDescElement :: IsGObject obj => obj -> IO SVGDescElement
-castToSVGDescElement = castTo gTypeSVGDescElement "SVGDescElement"
-
+  typeGType _ = gTypeSVGDescElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDocument".
@@ -15185,14 +13108,8 @@ instance IsDocument SVGDocument
 instance IsNode SVGDocument
 instance IsEventTarget SVGDocument
 instance IsGObject SVGDocument where
-  toGObject = GObject . unSVGDocument
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGDocument . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGDocument :: IsGObject obj => obj -> IO SVGDocument
-castToSVGDocument = castTo gTypeSVGDocument "SVGDocument"
-
+  typeGType _ = gTypeSVGDocument
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGDocument\"]" gTypeSVGDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGElement".
@@ -15226,21 +13143,15 @@ instance FromJSVal SVGElement where
 
 class IsElement o => IsSVGElement o
 toSVGElement :: IsSVGElement o => o -> SVGElement
-toSVGElement = unsafeCastGObject . toGObject
+toSVGElement = SVGElement . coerce
 
 instance IsSVGElement SVGElement
 instance IsElement SVGElement
 instance IsNode SVGElement
 instance IsEventTarget SVGElement
 instance IsGObject SVGElement where
-  toGObject = GObject . unSVGElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGElement :: IsGObject obj => obj -> IO SVGElement
-castToSVGElement = castTo gTypeSVGElement "SVGElement"
-
+  typeGType _ = gTypeSVGElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGEllipseElement".
@@ -15280,14 +13191,8 @@ instance IsElement SVGEllipseElement
 instance IsNode SVGEllipseElement
 instance IsEventTarget SVGEllipseElement
 instance IsGObject SVGEllipseElement where
-  toGObject = GObject . unSVGEllipseElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGEllipseElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGEllipseElement :: IsGObject obj => obj -> IO SVGEllipseElement
-castToSVGEllipseElement = castTo gTypeSVGEllipseElement "SVGEllipseElement"
-
+  typeGType _ = gTypeSVGEllipseElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
@@ -15315,14 +13220,8 @@ instance FromJSVal SVGExternalResourcesRequired where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGExternalResourcesRequired where
-  toGObject = GObject . unSVGExternalResourcesRequired
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGExternalResourcesRequired . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGExternalResourcesRequired :: IsGObject obj => obj -> IO SVGExternalResourcesRequired
-castToSVGExternalResourcesRequired = castTo gTypeSVGExternalResourcesRequired "SVGExternalResourcesRequired"
-
+  typeGType _ = gTypeSVGExternalResourcesRequired
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEBlendElement".
@@ -15360,14 +13259,8 @@ instance IsElement SVGFEBlendElement
 instance IsNode SVGFEBlendElement
 instance IsEventTarget SVGFEBlendElement
 instance IsGObject SVGFEBlendElement where
-  toGObject = GObject . unSVGFEBlendElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEBlendElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEBlendElement :: IsGObject obj => obj -> IO SVGFEBlendElement
-castToSVGFEBlendElement = castTo gTypeSVGFEBlendElement "SVGFEBlendElement"
-
+  typeGType _ = gTypeSVGFEBlendElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEColorMatrixElement".
@@ -15405,14 +13298,8 @@ instance IsElement SVGFEColorMatrixElement
 instance IsNode SVGFEColorMatrixElement
 instance IsEventTarget SVGFEColorMatrixElement
 instance IsGObject SVGFEColorMatrixElement where
-  toGObject = GObject . unSVGFEColorMatrixElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEColorMatrixElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEColorMatrixElement :: IsGObject obj => obj -> IO SVGFEColorMatrixElement
-castToSVGFEColorMatrixElement = castTo gTypeSVGFEColorMatrixElement "SVGFEColorMatrixElement"
-
+  typeGType _ = gTypeSVGFEColorMatrixElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEComponentTransferElement".
@@ -15450,14 +13337,8 @@ instance IsElement SVGFEComponentTransferElement
 instance IsNode SVGFEComponentTransferElement
 instance IsEventTarget SVGFEComponentTransferElement
 instance IsGObject SVGFEComponentTransferElement where
-  toGObject = GObject . unSVGFEComponentTransferElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEComponentTransferElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEComponentTransferElement :: IsGObject obj => obj -> IO SVGFEComponentTransferElement
-castToSVGFEComponentTransferElement = castTo gTypeSVGFEComponentTransferElement "SVGFEComponentTransferElement"
-
+  typeGType _ = gTypeSVGFEComponentTransferElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFECompositeElement".
@@ -15495,14 +13376,8 @@ instance IsElement SVGFECompositeElement
 instance IsNode SVGFECompositeElement
 instance IsEventTarget SVGFECompositeElement
 instance IsGObject SVGFECompositeElement where
-  toGObject = GObject . unSVGFECompositeElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFECompositeElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFECompositeElement :: IsGObject obj => obj -> IO SVGFECompositeElement
-castToSVGFECompositeElement = castTo gTypeSVGFECompositeElement "SVGFECompositeElement"
-
+  typeGType _ = gTypeSVGFECompositeElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEConvolveMatrixElement".
@@ -15540,14 +13415,8 @@ instance IsElement SVGFEConvolveMatrixElement
 instance IsNode SVGFEConvolveMatrixElement
 instance IsEventTarget SVGFEConvolveMatrixElement
 instance IsGObject SVGFEConvolveMatrixElement where
-  toGObject = GObject . unSVGFEConvolveMatrixElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEConvolveMatrixElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEConvolveMatrixElement :: IsGObject obj => obj -> IO SVGFEConvolveMatrixElement
-castToSVGFEConvolveMatrixElement = castTo gTypeSVGFEConvolveMatrixElement "SVGFEConvolveMatrixElement"
-
+  typeGType _ = gTypeSVGFEConvolveMatrixElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDiffuseLightingElement".
@@ -15585,14 +13454,8 @@ instance IsElement SVGFEDiffuseLightingElement
 instance IsNode SVGFEDiffuseLightingElement
 instance IsEventTarget SVGFEDiffuseLightingElement
 instance IsGObject SVGFEDiffuseLightingElement where
-  toGObject = GObject . unSVGFEDiffuseLightingElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEDiffuseLightingElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEDiffuseLightingElement :: IsGObject obj => obj -> IO SVGFEDiffuseLightingElement
-castToSVGFEDiffuseLightingElement = castTo gTypeSVGFEDiffuseLightingElement "SVGFEDiffuseLightingElement"
-
+  typeGType _ = gTypeSVGFEDiffuseLightingElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDisplacementMapElement".
@@ -15630,14 +13493,8 @@ instance IsElement SVGFEDisplacementMapElement
 instance IsNode SVGFEDisplacementMapElement
 instance IsEventTarget SVGFEDisplacementMapElement
 instance IsGObject SVGFEDisplacementMapElement where
-  toGObject = GObject . unSVGFEDisplacementMapElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEDisplacementMapElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEDisplacementMapElement :: IsGObject obj => obj -> IO SVGFEDisplacementMapElement
-castToSVGFEDisplacementMapElement = castTo gTypeSVGFEDisplacementMapElement "SVGFEDisplacementMapElement"
-
+  typeGType _ = gTypeSVGFEDisplacementMapElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDistantLightElement".
@@ -15675,14 +13532,8 @@ instance IsElement SVGFEDistantLightElement
 instance IsNode SVGFEDistantLightElement
 instance IsEventTarget SVGFEDistantLightElement
 instance IsGObject SVGFEDistantLightElement where
-  toGObject = GObject . unSVGFEDistantLightElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEDistantLightElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEDistantLightElement :: IsGObject obj => obj -> IO SVGFEDistantLightElement
-castToSVGFEDistantLightElement = castTo gTypeSVGFEDistantLightElement "SVGFEDistantLightElement"
-
+  typeGType _ = gTypeSVGFEDistantLightElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDropShadowElement".
@@ -15720,14 +13571,8 @@ instance IsElement SVGFEDropShadowElement
 instance IsNode SVGFEDropShadowElement
 instance IsEventTarget SVGFEDropShadowElement
 instance IsGObject SVGFEDropShadowElement where
-  toGObject = GObject . unSVGFEDropShadowElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEDropShadowElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEDropShadowElement :: IsGObject obj => obj -> IO SVGFEDropShadowElement
-castToSVGFEDropShadowElement = castTo gTypeSVGFEDropShadowElement "SVGFEDropShadowElement"
-
+  typeGType _ = gTypeSVGFEDropShadowElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFloodElement".
@@ -15765,14 +13610,8 @@ instance IsElement SVGFEFloodElement
 instance IsNode SVGFEFloodElement
 instance IsEventTarget SVGFEFloodElement
 instance IsGObject SVGFEFloodElement where
-  toGObject = GObject . unSVGFEFloodElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEFloodElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEFloodElement :: IsGObject obj => obj -> IO SVGFEFloodElement
-castToSVGFEFloodElement = castTo gTypeSVGFEFloodElement "SVGFEFloodElement"
-
+  typeGType _ = gTypeSVGFEFloodElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncAElement".
@@ -15812,14 +13651,8 @@ instance IsElement SVGFEFuncAElement
 instance IsNode SVGFEFuncAElement
 instance IsEventTarget SVGFEFuncAElement
 instance IsGObject SVGFEFuncAElement where
-  toGObject = GObject . unSVGFEFuncAElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEFuncAElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEFuncAElement :: IsGObject obj => obj -> IO SVGFEFuncAElement
-castToSVGFEFuncAElement = castTo gTypeSVGFEFuncAElement "SVGFEFuncAElement"
-
+  typeGType _ = gTypeSVGFEFuncAElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncBElement".
@@ -15859,14 +13692,8 @@ instance IsElement SVGFEFuncBElement
 instance IsNode SVGFEFuncBElement
 instance IsEventTarget SVGFEFuncBElement
 instance IsGObject SVGFEFuncBElement where
-  toGObject = GObject . unSVGFEFuncBElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEFuncBElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEFuncBElement :: IsGObject obj => obj -> IO SVGFEFuncBElement
-castToSVGFEFuncBElement = castTo gTypeSVGFEFuncBElement "SVGFEFuncBElement"
-
+  typeGType _ = gTypeSVGFEFuncBElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncGElement".
@@ -15906,14 +13733,8 @@ instance IsElement SVGFEFuncGElement
 instance IsNode SVGFEFuncGElement
 instance IsEventTarget SVGFEFuncGElement
 instance IsGObject SVGFEFuncGElement where
-  toGObject = GObject . unSVGFEFuncGElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEFuncGElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEFuncGElement :: IsGObject obj => obj -> IO SVGFEFuncGElement
-castToSVGFEFuncGElement = castTo gTypeSVGFEFuncGElement "SVGFEFuncGElement"
-
+  typeGType _ = gTypeSVGFEFuncGElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncRElement".
@@ -15953,14 +13774,8 @@ instance IsElement SVGFEFuncRElement
 instance IsNode SVGFEFuncRElement
 instance IsEventTarget SVGFEFuncRElement
 instance IsGObject SVGFEFuncRElement where
-  toGObject = GObject . unSVGFEFuncRElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEFuncRElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEFuncRElement :: IsGObject obj => obj -> IO SVGFEFuncRElement
-castToSVGFEFuncRElement = castTo gTypeSVGFEFuncRElement "SVGFEFuncRElement"
-
+  typeGType _ = gTypeSVGFEFuncRElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEGaussianBlurElement".
@@ -15998,14 +13813,8 @@ instance IsElement SVGFEGaussianBlurElement
 instance IsNode SVGFEGaussianBlurElement
 instance IsEventTarget SVGFEGaussianBlurElement
 instance IsGObject SVGFEGaussianBlurElement where
-  toGObject = GObject . unSVGFEGaussianBlurElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEGaussianBlurElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEGaussianBlurElement :: IsGObject obj => obj -> IO SVGFEGaussianBlurElement
-castToSVGFEGaussianBlurElement = castTo gTypeSVGFEGaussianBlurElement "SVGFEGaussianBlurElement"
-
+  typeGType _ = gTypeSVGFEGaussianBlurElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEImageElement".
@@ -16043,14 +13852,8 @@ instance IsElement SVGFEImageElement
 instance IsNode SVGFEImageElement
 instance IsEventTarget SVGFEImageElement
 instance IsGObject SVGFEImageElement where
-  toGObject = GObject . unSVGFEImageElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEImageElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEImageElement :: IsGObject obj => obj -> IO SVGFEImageElement
-castToSVGFEImageElement = castTo gTypeSVGFEImageElement "SVGFEImageElement"
-
+  typeGType _ = gTypeSVGFEImageElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeElement".
@@ -16088,14 +13891,8 @@ instance IsElement SVGFEMergeElement
 instance IsNode SVGFEMergeElement
 instance IsEventTarget SVGFEMergeElement
 instance IsGObject SVGFEMergeElement where
-  toGObject = GObject . unSVGFEMergeElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEMergeElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEMergeElement :: IsGObject obj => obj -> IO SVGFEMergeElement
-castToSVGFEMergeElement = castTo gTypeSVGFEMergeElement "SVGFEMergeElement"
-
+  typeGType _ = gTypeSVGFEMergeElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeNodeElement".
@@ -16133,14 +13930,8 @@ instance IsElement SVGFEMergeNodeElement
 instance IsNode SVGFEMergeNodeElement
 instance IsEventTarget SVGFEMergeNodeElement
 instance IsGObject SVGFEMergeNodeElement where
-  toGObject = GObject . unSVGFEMergeNodeElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEMergeNodeElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEMergeNodeElement :: IsGObject obj => obj -> IO SVGFEMergeNodeElement
-castToSVGFEMergeNodeElement = castTo gTypeSVGFEMergeNodeElement "SVGFEMergeNodeElement"
-
+  typeGType _ = gTypeSVGFEMergeNodeElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMorphologyElement".
@@ -16178,14 +13969,8 @@ instance IsElement SVGFEMorphologyElement
 instance IsNode SVGFEMorphologyElement
 instance IsEventTarget SVGFEMorphologyElement
 instance IsGObject SVGFEMorphologyElement where
-  toGObject = GObject . unSVGFEMorphologyElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEMorphologyElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEMorphologyElement :: IsGObject obj => obj -> IO SVGFEMorphologyElement
-castToSVGFEMorphologyElement = castTo gTypeSVGFEMorphologyElement "SVGFEMorphologyElement"
-
+  typeGType _ = gTypeSVGFEMorphologyElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEOffsetElement".
@@ -16223,14 +14008,8 @@ instance IsElement SVGFEOffsetElement
 instance IsNode SVGFEOffsetElement
 instance IsEventTarget SVGFEOffsetElement
 instance IsGObject SVGFEOffsetElement where
-  toGObject = GObject . unSVGFEOffsetElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEOffsetElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEOffsetElement :: IsGObject obj => obj -> IO SVGFEOffsetElement
-castToSVGFEOffsetElement = castTo gTypeSVGFEOffsetElement "SVGFEOffsetElement"
-
+  typeGType _ = gTypeSVGFEOffsetElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEPointLightElement".
@@ -16268,14 +14047,8 @@ instance IsElement SVGFEPointLightElement
 instance IsNode SVGFEPointLightElement
 instance IsEventTarget SVGFEPointLightElement
 instance IsGObject SVGFEPointLightElement where
-  toGObject = GObject . unSVGFEPointLightElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFEPointLightElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFEPointLightElement :: IsGObject obj => obj -> IO SVGFEPointLightElement
-castToSVGFEPointLightElement = castTo gTypeSVGFEPointLightElement "SVGFEPointLightElement"
-
+  typeGType _ = gTypeSVGFEPointLightElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpecularLightingElement".
@@ -16313,14 +14086,8 @@ instance IsElement SVGFESpecularLightingElement
 instance IsNode SVGFESpecularLightingElement
 instance IsEventTarget SVGFESpecularLightingElement
 instance IsGObject SVGFESpecularLightingElement where
-  toGObject = GObject . unSVGFESpecularLightingElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFESpecularLightingElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFESpecularLightingElement :: IsGObject obj => obj -> IO SVGFESpecularLightingElement
-castToSVGFESpecularLightingElement = castTo gTypeSVGFESpecularLightingElement "SVGFESpecularLightingElement"
-
+  typeGType _ = gTypeSVGFESpecularLightingElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpotLightElement".
@@ -16358,14 +14125,8 @@ instance IsElement SVGFESpotLightElement
 instance IsNode SVGFESpotLightElement
 instance IsEventTarget SVGFESpotLightElement
 instance IsGObject SVGFESpotLightElement where
-  toGObject = GObject . unSVGFESpotLightElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFESpotLightElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFESpotLightElement :: IsGObject obj => obj -> IO SVGFESpotLightElement
-castToSVGFESpotLightElement = castTo gTypeSVGFESpotLightElement "SVGFESpotLightElement"
-
+  typeGType _ = gTypeSVGFESpotLightElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETileElement".
@@ -16403,14 +14164,8 @@ instance IsElement SVGFETileElement
 instance IsNode SVGFETileElement
 instance IsEventTarget SVGFETileElement
 instance IsGObject SVGFETileElement where
-  toGObject = GObject . unSVGFETileElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFETileElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFETileElement :: IsGObject obj => obj -> IO SVGFETileElement
-castToSVGFETileElement = castTo gTypeSVGFETileElement "SVGFETileElement"
-
+  typeGType _ = gTypeSVGFETileElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETurbulenceElement".
@@ -16448,14 +14203,8 @@ instance IsElement SVGFETurbulenceElement
 instance IsNode SVGFETurbulenceElement
 instance IsEventTarget SVGFETurbulenceElement
 instance IsGObject SVGFETurbulenceElement where
-  toGObject = GObject . unSVGFETurbulenceElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFETurbulenceElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFETurbulenceElement :: IsGObject obj => obj -> IO SVGFETurbulenceElement
-castToSVGFETurbulenceElement = castTo gTypeSVGFETurbulenceElement "SVGFETurbulenceElement"
-
+  typeGType _ = gTypeSVGFETurbulenceElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterElement".
@@ -16493,14 +14242,8 @@ instance IsElement SVGFilterElement
 instance IsNode SVGFilterElement
 instance IsEventTarget SVGFilterElement
 instance IsGObject SVGFilterElement where
-  toGObject = GObject . unSVGFilterElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFilterElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFilterElement :: IsGObject obj => obj -> IO SVGFilterElement
-castToSVGFilterElement = castTo gTypeSVGFilterElement "SVGFilterElement"
-
+  typeGType _ = gTypeSVGFilterElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
@@ -16528,14 +14271,8 @@ instance FromJSVal SVGFilterPrimitiveStandardAttributes where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGFilterPrimitiveStandardAttributes where
-  toGObject = GObject . unSVGFilterPrimitiveStandardAttributes
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFilterPrimitiveStandardAttributes . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFilterPrimitiveStandardAttributes :: IsGObject obj => obj -> IO SVGFilterPrimitiveStandardAttributes
-castToSVGFilterPrimitiveStandardAttributes = castTo gTypeSVGFilterPrimitiveStandardAttributes "SVGFilterPrimitiveStandardAttributes"
-
+  typeGType _ = gTypeSVGFilterPrimitiveStandardAttributes
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
@@ -16563,14 +14300,8 @@ instance FromJSVal SVGFitToViewBox where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGFitToViewBox where
-  toGObject = GObject . unSVGFitToViewBox
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFitToViewBox . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFitToViewBox :: IsGObject obj => obj -> IO SVGFitToViewBox
-castToSVGFitToViewBox = castTo gTypeSVGFitToViewBox "SVGFitToViewBox"
-
+  typeGType _ = gTypeSVGFitToViewBox
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontElement".
@@ -16608,14 +14339,8 @@ instance IsElement SVGFontElement
 instance IsNode SVGFontElement
 instance IsEventTarget SVGFontElement
 instance IsGObject SVGFontElement where
-  toGObject = GObject . unSVGFontElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontElement :: IsGObject obj => obj -> IO SVGFontElement
-castToSVGFontElement = castTo gTypeSVGFontElement "SVGFontElement"
-
+  typeGType _ = gTypeSVGFontElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceElement".
@@ -16653,14 +14378,8 @@ instance IsElement SVGFontFaceElement
 instance IsNode SVGFontFaceElement
 instance IsEventTarget SVGFontFaceElement
 instance IsGObject SVGFontFaceElement where
-  toGObject = GObject . unSVGFontFaceElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontFaceElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontFaceElement :: IsGObject obj => obj -> IO SVGFontFaceElement
-castToSVGFontFaceElement = castTo gTypeSVGFontFaceElement "SVGFontFaceElement"
-
+  typeGType _ = gTypeSVGFontFaceElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceFormatElement".
@@ -16698,14 +14417,8 @@ instance IsElement SVGFontFaceFormatElement
 instance IsNode SVGFontFaceFormatElement
 instance IsEventTarget SVGFontFaceFormatElement
 instance IsGObject SVGFontFaceFormatElement where
-  toGObject = GObject . unSVGFontFaceFormatElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontFaceFormatElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontFaceFormatElement :: IsGObject obj => obj -> IO SVGFontFaceFormatElement
-castToSVGFontFaceFormatElement = castTo gTypeSVGFontFaceFormatElement "SVGFontFaceFormatElement"
-
+  typeGType _ = gTypeSVGFontFaceFormatElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceNameElement".
@@ -16743,14 +14456,8 @@ instance IsElement SVGFontFaceNameElement
 instance IsNode SVGFontFaceNameElement
 instance IsEventTarget SVGFontFaceNameElement
 instance IsGObject SVGFontFaceNameElement where
-  toGObject = GObject . unSVGFontFaceNameElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontFaceNameElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontFaceNameElement :: IsGObject obj => obj -> IO SVGFontFaceNameElement
-castToSVGFontFaceNameElement = castTo gTypeSVGFontFaceNameElement "SVGFontFaceNameElement"
-
+  typeGType _ = gTypeSVGFontFaceNameElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceSrcElement".
@@ -16788,14 +14495,8 @@ instance IsElement SVGFontFaceSrcElement
 instance IsNode SVGFontFaceSrcElement
 instance IsEventTarget SVGFontFaceSrcElement
 instance IsGObject SVGFontFaceSrcElement where
-  toGObject = GObject . unSVGFontFaceSrcElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontFaceSrcElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontFaceSrcElement :: IsGObject obj => obj -> IO SVGFontFaceSrcElement
-castToSVGFontFaceSrcElement = castTo gTypeSVGFontFaceSrcElement "SVGFontFaceSrcElement"
-
+  typeGType _ = gTypeSVGFontFaceSrcElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceUriElement".
@@ -16833,14 +14534,8 @@ instance IsElement SVGFontFaceUriElement
 instance IsNode SVGFontFaceUriElement
 instance IsEventTarget SVGFontFaceUriElement
 instance IsGObject SVGFontFaceUriElement where
-  toGObject = GObject . unSVGFontFaceUriElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGFontFaceUriElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGFontFaceUriElement :: IsGObject obj => obj -> IO SVGFontFaceUriElement
-castToSVGFontFaceUriElement = castTo gTypeSVGFontFaceUriElement "SVGFontFaceUriElement"
-
+  typeGType _ = gTypeSVGFontFaceUriElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGForeignObjectElement".
@@ -16880,14 +14575,8 @@ instance IsElement SVGForeignObjectElement
 instance IsNode SVGForeignObjectElement
 instance IsEventTarget SVGForeignObjectElement
 instance IsGObject SVGForeignObjectElement where
-  toGObject = GObject . unSVGForeignObjectElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGForeignObjectElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGForeignObjectElement :: IsGObject obj => obj -> IO SVGForeignObjectElement
-castToSVGForeignObjectElement = castTo gTypeSVGForeignObjectElement "SVGForeignObjectElement"
-
+  typeGType _ = gTypeSVGForeignObjectElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGElement".
@@ -16927,14 +14616,8 @@ instance IsElement SVGGElement
 instance IsNode SVGGElement
 instance IsEventTarget SVGGElement
 instance IsGObject SVGGElement where
-  toGObject = GObject . unSVGGElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGGElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGGElement :: IsGObject obj => obj -> IO SVGGElement
-castToSVGGElement = castTo gTypeSVGGElement "SVGGElement"
-
+  typeGType _ = gTypeSVGGElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphElement".
@@ -16972,14 +14655,8 @@ instance IsElement SVGGlyphElement
 instance IsNode SVGGlyphElement
 instance IsEventTarget SVGGlyphElement
 instance IsGObject SVGGlyphElement where
-  toGObject = GObject . unSVGGlyphElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGGlyphElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGGlyphElement :: IsGObject obj => obj -> IO SVGGlyphElement
-castToSVGGlyphElement = castTo gTypeSVGGlyphElement "SVGGlyphElement"
-
+  typeGType _ = gTypeSVGGlyphElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphRefElement".
@@ -17017,14 +14694,8 @@ instance IsElement SVGGlyphRefElement
 instance IsNode SVGGlyphRefElement
 instance IsEventTarget SVGGlyphRefElement
 instance IsGObject SVGGlyphRefElement where
-  toGObject = GObject . unSVGGlyphRefElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGGlyphRefElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGGlyphRefElement :: IsGObject obj => obj -> IO SVGGlyphRefElement
-castToSVGGlyphRefElement = castTo gTypeSVGGlyphRefElement "SVGGlyphRefElement"
-
+  typeGType _ = gTypeSVGGlyphRefElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGradientElement".
@@ -17059,7 +14730,7 @@ instance FromJSVal SVGGradientElement where
 
 class IsSVGElement o => IsSVGGradientElement o
 toSVGGradientElement :: IsSVGGradientElement o => o -> SVGGradientElement
-toSVGGradientElement = unsafeCastGObject . toGObject
+toSVGGradientElement = SVGGradientElement . coerce
 
 instance IsSVGGradientElement SVGGradientElement
 instance IsSVGElement SVGGradientElement
@@ -17067,14 +14738,8 @@ instance IsElement SVGGradientElement
 instance IsNode SVGGradientElement
 instance IsEventTarget SVGGradientElement
 instance IsGObject SVGGradientElement where
-  toGObject = GObject . unSVGGradientElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGGradientElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGGradientElement :: IsGObject obj => obj -> IO SVGGradientElement
-castToSVGGradientElement = castTo gTypeSVGGradientElement "SVGGradientElement"
-
+  typeGType _ = gTypeSVGGradientElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGraphicsElement".
@@ -17109,7 +14774,7 @@ instance FromJSVal SVGGraphicsElement where
 
 class IsSVGElement o => IsSVGGraphicsElement o
 toSVGGraphicsElement :: IsSVGGraphicsElement o => o -> SVGGraphicsElement
-toSVGGraphicsElement = unsafeCastGObject . toGObject
+toSVGGraphicsElement = SVGGraphicsElement . coerce
 
 instance IsSVGGraphicsElement SVGGraphicsElement
 instance IsSVGElement SVGGraphicsElement
@@ -17117,14 +14782,8 @@ instance IsElement SVGGraphicsElement
 instance IsNode SVGGraphicsElement
 instance IsEventTarget SVGGraphicsElement
 instance IsGObject SVGGraphicsElement where
-  toGObject = GObject . unSVGGraphicsElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGGraphicsElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGGraphicsElement :: IsGObject obj => obj -> IO SVGGraphicsElement
-castToSVGGraphicsElement = castTo gTypeSVGGraphicsElement "SVGGraphicsElement"
-
+  typeGType _ = gTypeSVGGraphicsElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGHKernElement".
@@ -17162,14 +14821,8 @@ instance IsElement SVGHKernElement
 instance IsNode SVGHKernElement
 instance IsEventTarget SVGHKernElement
 instance IsGObject SVGHKernElement where
-  toGObject = GObject . unSVGHKernElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGHKernElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGHKernElement :: IsGObject obj => obj -> IO SVGHKernElement
-castToSVGHKernElement = castTo gTypeSVGHKernElement "SVGHKernElement"
-
+  typeGType _ = gTypeSVGHKernElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGImageElement".
@@ -17209,14 +14862,8 @@ instance IsElement SVGImageElement
 instance IsNode SVGImageElement
 instance IsEventTarget SVGImageElement
 instance IsGObject SVGImageElement where
-  toGObject = GObject . unSVGImageElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGImageElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGImageElement :: IsGObject obj => obj -> IO SVGImageElement
-castToSVGImageElement = castTo gTypeSVGImageElement "SVGImageElement"
-
+  typeGType _ = gTypeSVGImageElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
@@ -17244,14 +14891,8 @@ instance FromJSVal SVGLength where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGLength where
-  toGObject = GObject . unSVGLength
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGLength . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGLength :: IsGObject obj => obj -> IO SVGLength
-castToSVGLength = castTo gTypeSVGLength "SVGLength"
-
+  typeGType _ = gTypeSVGLength
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
@@ -17279,14 +14920,8 @@ instance FromJSVal SVGLengthList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGLengthList where
-  toGObject = GObject . unSVGLengthList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGLengthList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGLengthList :: IsGObject obj => obj -> IO SVGLengthList
-castToSVGLengthList = castTo gTypeSVGLengthList "SVGLengthList"
-
+  typeGType _ = gTypeSVGLengthList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLineElement".
@@ -17326,14 +14961,8 @@ instance IsElement SVGLineElement
 instance IsNode SVGLineElement
 instance IsEventTarget SVGLineElement
 instance IsGObject SVGLineElement where
-  toGObject = GObject . unSVGLineElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGLineElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGLineElement :: IsGObject obj => obj -> IO SVGLineElement
-castToSVGLineElement = castTo gTypeSVGLineElement "SVGLineElement"
-
+  typeGType _ = gTypeSVGLineElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLinearGradientElement".
@@ -17373,14 +15002,8 @@ instance IsElement SVGLinearGradientElement
 instance IsNode SVGLinearGradientElement
 instance IsEventTarget SVGLinearGradientElement
 instance IsGObject SVGLinearGradientElement where
-  toGObject = GObject . unSVGLinearGradientElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGLinearGradientElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGLinearGradientElement :: IsGObject obj => obj -> IO SVGLinearGradientElement
-castToSVGLinearGradientElement = castTo gTypeSVGLinearGradientElement "SVGLinearGradientElement"
-
+  typeGType _ = gTypeSVGLinearGradientElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMPathElement".
@@ -17418,14 +15041,8 @@ instance IsElement SVGMPathElement
 instance IsNode SVGMPathElement
 instance IsEventTarget SVGMPathElement
 instance IsGObject SVGMPathElement where
-  toGObject = GObject . unSVGMPathElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMPathElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMPathElement :: IsGObject obj => obj -> IO SVGMPathElement
-castToSVGMPathElement = castTo gTypeSVGMPathElement "SVGMPathElement"
-
+  typeGType _ = gTypeSVGMPathElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMarkerElement".
@@ -17463,14 +15080,8 @@ instance IsElement SVGMarkerElement
 instance IsNode SVGMarkerElement
 instance IsEventTarget SVGMarkerElement
 instance IsGObject SVGMarkerElement where
-  toGObject = GObject . unSVGMarkerElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMarkerElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMarkerElement :: IsGObject obj => obj -> IO SVGMarkerElement
-castToSVGMarkerElement = castTo gTypeSVGMarkerElement "SVGMarkerElement"
-
+  typeGType _ = gTypeSVGMarkerElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMaskElement".
@@ -17508,14 +15119,8 @@ instance IsElement SVGMaskElement
 instance IsNode SVGMaskElement
 instance IsEventTarget SVGMaskElement
 instance IsGObject SVGMaskElement where
-  toGObject = GObject . unSVGMaskElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMaskElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMaskElement :: IsGObject obj => obj -> IO SVGMaskElement
-castToSVGMaskElement = castTo gTypeSVGMaskElement "SVGMaskElement"
-
+  typeGType _ = gTypeSVGMaskElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
@@ -17543,14 +15148,8 @@ instance FromJSVal SVGMatrix where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGMatrix where
-  toGObject = GObject . unSVGMatrix
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMatrix . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMatrix :: IsGObject obj => obj -> IO SVGMatrix
-castToSVGMatrix = castTo gTypeSVGMatrix "SVGMatrix"
-
+  typeGType _ = gTypeSVGMatrix
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMetadataElement".
@@ -17588,14 +15187,8 @@ instance IsElement SVGMetadataElement
 instance IsNode SVGMetadataElement
 instance IsEventTarget SVGMetadataElement
 instance IsGObject SVGMetadataElement where
-  toGObject = GObject . unSVGMetadataElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMetadataElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMetadataElement :: IsGObject obj => obj -> IO SVGMetadataElement
-castToSVGMetadataElement = castTo gTypeSVGMetadataElement "SVGMetadataElement"
-
+  typeGType _ = gTypeSVGMetadataElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMissingGlyphElement".
@@ -17633,14 +15226,8 @@ instance IsElement SVGMissingGlyphElement
 instance IsNode SVGMissingGlyphElement
 instance IsEventTarget SVGMissingGlyphElement
 instance IsGObject SVGMissingGlyphElement where
-  toGObject = GObject . unSVGMissingGlyphElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGMissingGlyphElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGMissingGlyphElement :: IsGObject obj => obj -> IO SVGMissingGlyphElement
-castToSVGMissingGlyphElement = castTo gTypeSVGMissingGlyphElement "SVGMissingGlyphElement"
-
+  typeGType _ = gTypeSVGMissingGlyphElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
@@ -17668,14 +15255,8 @@ instance FromJSVal SVGNumber where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGNumber where
-  toGObject = GObject . unSVGNumber
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGNumber . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGNumber :: IsGObject obj => obj -> IO SVGNumber
-castToSVGNumber = castTo gTypeSVGNumber "SVGNumber"
-
+  typeGType _ = gTypeSVGNumber
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
@@ -17703,14 +15284,8 @@ instance FromJSVal SVGNumberList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGNumberList where
-  toGObject = GObject . unSVGNumberList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGNumberList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGNumberList :: IsGObject obj => obj -> IO SVGNumberList
-castToSVGNumberList = castTo gTypeSVGNumberList "SVGNumberList"
-
+  typeGType _ = gTypeSVGNumberList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPaint".
@@ -17744,14 +15319,8 @@ instance FromJSVal SVGPaint where
 instance IsSVGColor SVGPaint
 instance IsCSSValue SVGPaint
 instance IsGObject SVGPaint where
-  toGObject = GObject . unSVGPaint
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPaint . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPaint :: IsGObject obj => obj -> IO SVGPaint
-castToSVGPaint = castTo gTypeSVGPaint "SVGPaint"
-
+  typeGType _ = gTypeSVGPaint
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPaint\"]" gTypeSVGPaint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathElement".
@@ -17791,14 +15360,8 @@ instance IsElement SVGPathElement
 instance IsNode SVGPathElement
 instance IsEventTarget SVGPathElement
 instance IsGObject SVGPathElement where
-  toGObject = GObject . unSVGPathElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathElement :: IsGObject obj => obj -> IO SVGPathElement
-castToSVGPathElement = castTo gTypeSVGPathElement "SVGPathElement"
-
+  typeGType _ = gTypeSVGPathElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
@@ -17827,18 +15390,12 @@ instance FromJSVal SVGPathSeg where
 
 class IsGObject o => IsSVGPathSeg o
 toSVGPathSeg :: IsSVGPathSeg o => o -> SVGPathSeg
-toSVGPathSeg = unsafeCastGObject . toGObject
+toSVGPathSeg = SVGPathSeg . coerce
 
 instance IsSVGPathSeg SVGPathSeg
 instance IsGObject SVGPathSeg where
-  toGObject = GObject . unSVGPathSeg
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSeg . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSeg :: IsGObject obj => obj -> IO SVGPathSeg
-castToSVGPathSeg = castTo gTypeSVGPathSeg "SVGPathSeg"
-
+  typeGType _ = gTypeSVGPathSeg
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcAbs".
@@ -17870,14 +15427,8 @@ instance FromJSVal SVGPathSegArcAbs where
 
 instance IsSVGPathSeg SVGPathSegArcAbs
 instance IsGObject SVGPathSegArcAbs where
-  toGObject = GObject . unSVGPathSegArcAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegArcAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegArcAbs :: IsGObject obj => obj -> IO SVGPathSegArcAbs
-castToSVGPathSegArcAbs = castTo gTypeSVGPathSegArcAbs "SVGPathSegArcAbs"
-
+  typeGType _ = gTypeSVGPathSegArcAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcRel".
@@ -17909,14 +15460,8 @@ instance FromJSVal SVGPathSegArcRel where
 
 instance IsSVGPathSeg SVGPathSegArcRel
 instance IsGObject SVGPathSegArcRel where
-  toGObject = GObject . unSVGPathSegArcRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegArcRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegArcRel :: IsGObject obj => obj -> IO SVGPathSegArcRel
-castToSVGPathSegArcRel = castTo gTypeSVGPathSegArcRel "SVGPathSegArcRel"
-
+  typeGType _ = gTypeSVGPathSegArcRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegClosePath".
@@ -17948,14 +15493,8 @@ instance FromJSVal SVGPathSegClosePath where
 
 instance IsSVGPathSeg SVGPathSegClosePath
 instance IsGObject SVGPathSegClosePath where
-  toGObject = GObject . unSVGPathSegClosePath
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegClosePath . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegClosePath :: IsGObject obj => obj -> IO SVGPathSegClosePath
-castToSVGPathSegClosePath = castTo gTypeSVGPathSegClosePath "SVGPathSegClosePath"
-
+  typeGType _ = gTypeSVGPathSegClosePath
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicAbs".
@@ -17987,14 +15526,8 @@ instance FromJSVal SVGPathSegCurvetoCubicAbs where
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicAbs
 instance IsGObject SVGPathSegCurvetoCubicAbs where
-  toGObject = GObject . unSVGPathSegCurvetoCubicAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoCubicAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoCubicAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicAbs
-castToSVGPathSegCurvetoCubicAbs = castTo gTypeSVGPathSegCurvetoCubicAbs "SVGPathSegCurvetoCubicAbs"
-
+  typeGType _ = gTypeSVGPathSegCurvetoCubicAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicRel".
@@ -18026,14 +15559,8 @@ instance FromJSVal SVGPathSegCurvetoCubicRel where
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicRel
 instance IsGObject SVGPathSegCurvetoCubicRel where
-  toGObject = GObject . unSVGPathSegCurvetoCubicRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoCubicRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoCubicRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicRel
-castToSVGPathSegCurvetoCubicRel = castTo gTypeSVGPathSegCurvetoCubicRel "SVGPathSegCurvetoCubicRel"
-
+  typeGType _ = gTypeSVGPathSegCurvetoCubicRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs".
@@ -18065,14 +15592,8 @@ instance FromJSVal SVGPathSegCurvetoCubicSmoothAbs where
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothAbs
 instance IsGObject SVGPathSegCurvetoCubicSmoothAbs where
-  toGObject = GObject . unSVGPathSegCurvetoCubicSmoothAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoCubicSmoothAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoCubicSmoothAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicSmoothAbs
-castToSVGPathSegCurvetoCubicSmoothAbs = castTo gTypeSVGPathSegCurvetoCubicSmoothAbs "SVGPathSegCurvetoCubicSmoothAbs"
-
+  typeGType _ = gTypeSVGPathSegCurvetoCubicSmoothAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel".
@@ -18104,14 +15625,8 @@ instance FromJSVal SVGPathSegCurvetoCubicSmoothRel where
 
 instance IsSVGPathSeg SVGPathSegCurvetoCubicSmoothRel
 instance IsGObject SVGPathSegCurvetoCubicSmoothRel where
-  toGObject = GObject . unSVGPathSegCurvetoCubicSmoothRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoCubicSmoothRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoCubicSmoothRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoCubicSmoothRel
-castToSVGPathSegCurvetoCubicSmoothRel = castTo gTypeSVGPathSegCurvetoCubicSmoothRel "SVGPathSegCurvetoCubicSmoothRel"
-
+  typeGType _ = gTypeSVGPathSegCurvetoCubicSmoothRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs".
@@ -18143,14 +15658,8 @@ instance FromJSVal SVGPathSegCurvetoQuadraticAbs where
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticAbs
 instance IsGObject SVGPathSegCurvetoQuadraticAbs where
-  toGObject = GObject . unSVGPathSegCurvetoQuadraticAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoQuadraticAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoQuadraticAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticAbs
-castToSVGPathSegCurvetoQuadraticAbs = castTo gTypeSVGPathSegCurvetoQuadraticAbs "SVGPathSegCurvetoQuadraticAbs"
-
+  typeGType _ = gTypeSVGPathSegCurvetoQuadraticAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticRel".
@@ -18182,14 +15691,8 @@ instance FromJSVal SVGPathSegCurvetoQuadraticRel where
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticRel
 instance IsGObject SVGPathSegCurvetoQuadraticRel where
-  toGObject = GObject . unSVGPathSegCurvetoQuadraticRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoQuadraticRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoQuadraticRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticRel
-castToSVGPathSegCurvetoQuadraticRel = castTo gTypeSVGPathSegCurvetoQuadraticRel "SVGPathSegCurvetoQuadraticRel"
-
+  typeGType _ = gTypeSVGPathSegCurvetoQuadraticRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs".
@@ -18221,14 +15724,8 @@ instance FromJSVal SVGPathSegCurvetoQuadraticSmoothAbs where
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothAbs
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothAbs where
-  toGObject = GObject . unSVGPathSegCurvetoQuadraticSmoothAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoQuadraticSmoothAbs :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticSmoothAbs
-castToSVGPathSegCurvetoQuadraticSmoothAbs = castTo gTypeSVGPathSegCurvetoQuadraticSmoothAbs "SVGPathSegCurvetoQuadraticSmoothAbs"
-
+  typeGType _ = gTypeSVGPathSegCurvetoQuadraticSmoothAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel".
@@ -18260,14 +15757,8 @@ instance FromJSVal SVGPathSegCurvetoQuadraticSmoothRel where
 
 instance IsSVGPathSeg SVGPathSegCurvetoQuadraticSmoothRel
 instance IsGObject SVGPathSegCurvetoQuadraticSmoothRel where
-  toGObject = GObject . unSVGPathSegCurvetoQuadraticSmoothRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegCurvetoQuadraticSmoothRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegCurvetoQuadraticSmoothRel :: IsGObject obj => obj -> IO SVGPathSegCurvetoQuadraticSmoothRel
-castToSVGPathSegCurvetoQuadraticSmoothRel = castTo gTypeSVGPathSegCurvetoQuadraticSmoothRel "SVGPathSegCurvetoQuadraticSmoothRel"
-
+  typeGType _ = gTypeSVGPathSegCurvetoQuadraticSmoothRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoAbs".
@@ -18299,14 +15790,8 @@ instance FromJSVal SVGPathSegLinetoAbs where
 
 instance IsSVGPathSeg SVGPathSegLinetoAbs
 instance IsGObject SVGPathSegLinetoAbs where
-  toGObject = GObject . unSVGPathSegLinetoAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoAbs
-castToSVGPathSegLinetoAbs = castTo gTypeSVGPathSegLinetoAbs "SVGPathSegLinetoAbs"
-
+  typeGType _ = gTypeSVGPathSegLinetoAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalAbs".
@@ -18338,14 +15823,8 @@ instance FromJSVal SVGPathSegLinetoHorizontalAbs where
 
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalAbs
 instance IsGObject SVGPathSegLinetoHorizontalAbs where
-  toGObject = GObject . unSVGPathSegLinetoHorizontalAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoHorizontalAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoHorizontalAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoHorizontalAbs
-castToSVGPathSegLinetoHorizontalAbs = castTo gTypeSVGPathSegLinetoHorizontalAbs "SVGPathSegLinetoHorizontalAbs"
-
+  typeGType _ = gTypeSVGPathSegLinetoHorizontalAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalRel".
@@ -18377,14 +15856,8 @@ instance FromJSVal SVGPathSegLinetoHorizontalRel where
 
 instance IsSVGPathSeg SVGPathSegLinetoHorizontalRel
 instance IsGObject SVGPathSegLinetoHorizontalRel where
-  toGObject = GObject . unSVGPathSegLinetoHorizontalRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoHorizontalRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoHorizontalRel :: IsGObject obj => obj -> IO SVGPathSegLinetoHorizontalRel
-castToSVGPathSegLinetoHorizontalRel = castTo gTypeSVGPathSegLinetoHorizontalRel "SVGPathSegLinetoHorizontalRel"
-
+  typeGType _ = gTypeSVGPathSegLinetoHorizontalRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoRel".
@@ -18416,14 +15889,8 @@ instance FromJSVal SVGPathSegLinetoRel where
 
 instance IsSVGPathSeg SVGPathSegLinetoRel
 instance IsGObject SVGPathSegLinetoRel where
-  toGObject = GObject . unSVGPathSegLinetoRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoRel :: IsGObject obj => obj -> IO SVGPathSegLinetoRel
-castToSVGPathSegLinetoRel = castTo gTypeSVGPathSegLinetoRel "SVGPathSegLinetoRel"
-
+  typeGType _ = gTypeSVGPathSegLinetoRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalAbs".
@@ -18455,14 +15922,8 @@ instance FromJSVal SVGPathSegLinetoVerticalAbs where
 
 instance IsSVGPathSeg SVGPathSegLinetoVerticalAbs
 instance IsGObject SVGPathSegLinetoVerticalAbs where
-  toGObject = GObject . unSVGPathSegLinetoVerticalAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoVerticalAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoVerticalAbs :: IsGObject obj => obj -> IO SVGPathSegLinetoVerticalAbs
-castToSVGPathSegLinetoVerticalAbs = castTo gTypeSVGPathSegLinetoVerticalAbs "SVGPathSegLinetoVerticalAbs"
-
+  typeGType _ = gTypeSVGPathSegLinetoVerticalAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalRel".
@@ -18494,14 +15955,8 @@ instance FromJSVal SVGPathSegLinetoVerticalRel where
 
 instance IsSVGPathSeg SVGPathSegLinetoVerticalRel
 instance IsGObject SVGPathSegLinetoVerticalRel where
-  toGObject = GObject . unSVGPathSegLinetoVerticalRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegLinetoVerticalRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegLinetoVerticalRel :: IsGObject obj => obj -> IO SVGPathSegLinetoVerticalRel
-castToSVGPathSegLinetoVerticalRel = castTo gTypeSVGPathSegLinetoVerticalRel "SVGPathSegLinetoVerticalRel"
-
+  typeGType _ = gTypeSVGPathSegLinetoVerticalRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
@@ -18529,14 +15984,8 @@ instance FromJSVal SVGPathSegList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPathSegList where
-  toGObject = GObject . unSVGPathSegList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegList :: IsGObject obj => obj -> IO SVGPathSegList
-castToSVGPathSegList = castTo gTypeSVGPathSegList "SVGPathSegList"
-
+  typeGType _ = gTypeSVGPathSegList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoAbs".
@@ -18568,14 +16017,8 @@ instance FromJSVal SVGPathSegMovetoAbs where
 
 instance IsSVGPathSeg SVGPathSegMovetoAbs
 instance IsGObject SVGPathSegMovetoAbs where
-  toGObject = GObject . unSVGPathSegMovetoAbs
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegMovetoAbs . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegMovetoAbs :: IsGObject obj => obj -> IO SVGPathSegMovetoAbs
-castToSVGPathSegMovetoAbs = castTo gTypeSVGPathSegMovetoAbs "SVGPathSegMovetoAbs"
-
+  typeGType _ = gTypeSVGPathSegMovetoAbs
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoRel".
@@ -18607,14 +16050,8 @@ instance FromJSVal SVGPathSegMovetoRel where
 
 instance IsSVGPathSeg SVGPathSegMovetoRel
 instance IsGObject SVGPathSegMovetoRel where
-  toGObject = GObject . unSVGPathSegMovetoRel
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPathSegMovetoRel . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPathSegMovetoRel :: IsGObject obj => obj -> IO SVGPathSegMovetoRel
-castToSVGPathSegMovetoRel = castTo gTypeSVGPathSegMovetoRel "SVGPathSegMovetoRel"
-
+  typeGType _ = gTypeSVGPathSegMovetoRel
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPatternElement".
@@ -18652,14 +16089,8 @@ instance IsElement SVGPatternElement
 instance IsNode SVGPatternElement
 instance IsEventTarget SVGPatternElement
 instance IsGObject SVGPatternElement where
-  toGObject = GObject . unSVGPatternElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPatternElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPatternElement :: IsGObject obj => obj -> IO SVGPatternElement
-castToSVGPatternElement = castTo gTypeSVGPatternElement "SVGPatternElement"
-
+  typeGType _ = gTypeSVGPatternElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
@@ -18687,14 +16118,8 @@ instance FromJSVal SVGPoint where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPoint where
-  toGObject = GObject . unSVGPoint
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPoint . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPoint :: IsGObject obj => obj -> IO SVGPoint
-castToSVGPoint = castTo gTypeSVGPoint "SVGPoint"
-
+  typeGType _ = gTypeSVGPoint
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
@@ -18722,14 +16147,8 @@ instance FromJSVal SVGPointList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPointList where
-  toGObject = GObject . unSVGPointList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPointList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPointList :: IsGObject obj => obj -> IO SVGPointList
-castToSVGPointList = castTo gTypeSVGPointList "SVGPointList"
-
+  typeGType _ = gTypeSVGPointList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolygonElement".
@@ -18769,14 +16188,8 @@ instance IsElement SVGPolygonElement
 instance IsNode SVGPolygonElement
 instance IsEventTarget SVGPolygonElement
 instance IsGObject SVGPolygonElement where
-  toGObject = GObject . unSVGPolygonElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPolygonElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPolygonElement :: IsGObject obj => obj -> IO SVGPolygonElement
-castToSVGPolygonElement = castTo gTypeSVGPolygonElement "SVGPolygonElement"
-
+  typeGType _ = gTypeSVGPolygonElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolylineElement".
@@ -18816,14 +16229,8 @@ instance IsElement SVGPolylineElement
 instance IsNode SVGPolylineElement
 instance IsEventTarget SVGPolylineElement
 instance IsGObject SVGPolylineElement where
-  toGObject = GObject . unSVGPolylineElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPolylineElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPolylineElement :: IsGObject obj => obj -> IO SVGPolylineElement
-castToSVGPolylineElement = castTo gTypeSVGPolylineElement "SVGPolylineElement"
-
+  typeGType _ = gTypeSVGPolylineElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
@@ -18851,14 +16258,8 @@ instance FromJSVal SVGPreserveAspectRatio where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGPreserveAspectRatio where
-  toGObject = GObject . unSVGPreserveAspectRatio
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGPreserveAspectRatio . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGPreserveAspectRatio :: IsGObject obj => obj -> IO SVGPreserveAspectRatio
-castToSVGPreserveAspectRatio = castTo gTypeSVGPreserveAspectRatio "SVGPreserveAspectRatio"
-
+  typeGType _ = gTypeSVGPreserveAspectRatio
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRadialGradientElement".
@@ -18898,14 +16299,8 @@ instance IsElement SVGRadialGradientElement
 instance IsNode SVGRadialGradientElement
 instance IsEventTarget SVGRadialGradientElement
 instance IsGObject SVGRadialGradientElement where
-  toGObject = GObject . unSVGRadialGradientElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGRadialGradientElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGRadialGradientElement :: IsGObject obj => obj -> IO SVGRadialGradientElement
-castToSVGRadialGradientElement = castTo gTypeSVGRadialGradientElement "SVGRadialGradientElement"
-
+  typeGType _ = gTypeSVGRadialGradientElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
@@ -18933,14 +16328,8 @@ instance FromJSVal SVGRect where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGRect where
-  toGObject = GObject . unSVGRect
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGRect . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGRect :: IsGObject obj => obj -> IO SVGRect
-castToSVGRect = castTo gTypeSVGRect "SVGRect"
-
+  typeGType _ = gTypeSVGRect
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRectElement".
@@ -18980,14 +16369,8 @@ instance IsElement SVGRectElement
 instance IsNode SVGRectElement
 instance IsEventTarget SVGRectElement
 instance IsGObject SVGRectElement where
-  toGObject = GObject . unSVGRectElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGRectElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGRectElement :: IsGObject obj => obj -> IO SVGRectElement
-castToSVGRectElement = castTo gTypeSVGRectElement "SVGRectElement"
-
+  typeGType _ = gTypeSVGRectElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
@@ -19015,14 +16398,8 @@ instance FromJSVal SVGRenderingIntent where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGRenderingIntent where
-  toGObject = GObject . unSVGRenderingIntent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGRenderingIntent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGRenderingIntent :: IsGObject obj => obj -> IO SVGRenderingIntent
-castToSVGRenderingIntent = castTo gTypeSVGRenderingIntent "SVGRenderingIntent"
-
+  typeGType _ = gTypeSVGRenderingIntent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSVGElement".
@@ -19062,14 +16439,8 @@ instance IsElement SVGSVGElement
 instance IsNode SVGSVGElement
 instance IsEventTarget SVGSVGElement
 instance IsGObject SVGSVGElement where
-  toGObject = GObject . unSVGSVGElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGSVGElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGSVGElement :: IsGObject obj => obj -> IO SVGSVGElement
-castToSVGSVGElement = castTo gTypeSVGSVGElement "SVGSVGElement"
-
+  typeGType _ = gTypeSVGSVGElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGScriptElement".
@@ -19107,14 +16478,8 @@ instance IsElement SVGScriptElement
 instance IsNode SVGScriptElement
 instance IsEventTarget SVGScriptElement
 instance IsGObject SVGScriptElement where
-  toGObject = GObject . unSVGScriptElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGScriptElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGScriptElement :: IsGObject obj => obj -> IO SVGScriptElement
-castToSVGScriptElement = castTo gTypeSVGScriptElement "SVGScriptElement"
-
+  typeGType _ = gTypeSVGScriptElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSetElement".
@@ -19154,14 +16519,8 @@ instance IsElement SVGSetElement
 instance IsNode SVGSetElement
 instance IsEventTarget SVGSetElement
 instance IsGObject SVGSetElement where
-  toGObject = GObject . unSVGSetElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGSetElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGSetElement :: IsGObject obj => obj -> IO SVGSetElement
-castToSVGSetElement = castTo gTypeSVGSetElement "SVGSetElement"
-
+  typeGType _ = gTypeSVGSetElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStopElement".
@@ -19199,14 +16558,8 @@ instance IsElement SVGStopElement
 instance IsNode SVGStopElement
 instance IsEventTarget SVGStopElement
 instance IsGObject SVGStopElement where
-  toGObject = GObject . unSVGStopElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGStopElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGStopElement :: IsGObject obj => obj -> IO SVGStopElement
-castToSVGStopElement = castTo gTypeSVGStopElement "SVGStopElement"
-
+  typeGType _ = gTypeSVGStopElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
@@ -19234,14 +16587,8 @@ instance FromJSVal SVGStringList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGStringList where
-  toGObject = GObject . unSVGStringList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGStringList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGStringList :: IsGObject obj => obj -> IO SVGStringList
-castToSVGStringList = castTo gTypeSVGStringList "SVGStringList"
-
+  typeGType _ = gTypeSVGStringList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStyleElement".
@@ -19279,14 +16626,8 @@ instance IsElement SVGStyleElement
 instance IsNode SVGStyleElement
 instance IsEventTarget SVGStyleElement
 instance IsGObject SVGStyleElement where
-  toGObject = GObject . unSVGStyleElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGStyleElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGStyleElement :: IsGObject obj => obj -> IO SVGStyleElement
-castToSVGStyleElement = castTo gTypeSVGStyleElement "SVGStyleElement"
-
+  typeGType _ = gTypeSVGStyleElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSwitchElement".
@@ -19326,14 +16667,8 @@ instance IsElement SVGSwitchElement
 instance IsNode SVGSwitchElement
 instance IsEventTarget SVGSwitchElement
 instance IsGObject SVGSwitchElement where
-  toGObject = GObject . unSVGSwitchElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGSwitchElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGSwitchElement :: IsGObject obj => obj -> IO SVGSwitchElement
-castToSVGSwitchElement = castTo gTypeSVGSwitchElement "SVGSwitchElement"
-
+  typeGType _ = gTypeSVGSwitchElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSymbolElement".
@@ -19371,14 +16706,8 @@ instance IsElement SVGSymbolElement
 instance IsNode SVGSymbolElement
 instance IsEventTarget SVGSymbolElement
 instance IsGObject SVGSymbolElement where
-  toGObject = GObject . unSVGSymbolElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGSymbolElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGSymbolElement :: IsGObject obj => obj -> IO SVGSymbolElement
-castToSVGSymbolElement = castTo gTypeSVGSymbolElement "SVGSymbolElement"
-
+  typeGType _ = gTypeSVGSymbolElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTRefElement".
@@ -19422,14 +16751,8 @@ instance IsElement SVGTRefElement
 instance IsNode SVGTRefElement
 instance IsEventTarget SVGTRefElement
 instance IsGObject SVGTRefElement where
-  toGObject = GObject . unSVGTRefElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTRefElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTRefElement :: IsGObject obj => obj -> IO SVGTRefElement
-castToSVGTRefElement = castTo gTypeSVGTRefElement "SVGTRefElement"
-
+  typeGType _ = gTypeSVGTRefElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTSpanElement".
@@ -19473,14 +16796,8 @@ instance IsElement SVGTSpanElement
 instance IsNode SVGTSpanElement
 instance IsEventTarget SVGTSpanElement
 instance IsGObject SVGTSpanElement where
-  toGObject = GObject . unSVGTSpanElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTSpanElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTSpanElement :: IsGObject obj => obj -> IO SVGTSpanElement
-castToSVGTSpanElement = castTo gTypeSVGTSpanElement "SVGTSpanElement"
-
+  typeGType _ = gTypeSVGTSpanElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
@@ -19508,14 +16825,8 @@ instance FromJSVal SVGTests where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTests where
-  toGObject = GObject . unSVGTests
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTests . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTests :: IsGObject obj => obj -> IO SVGTests
-castToSVGTests = castTo gTypeSVGTests "SVGTests"
-
+  typeGType _ = gTypeSVGTests
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextContentElement".
@@ -19551,7 +16862,7 @@ instance FromJSVal SVGTextContentElement where
 
 class IsSVGGraphicsElement o => IsSVGTextContentElement o
 toSVGTextContentElement :: IsSVGTextContentElement o => o -> SVGTextContentElement
-toSVGTextContentElement = unsafeCastGObject . toGObject
+toSVGTextContentElement = SVGTextContentElement . coerce
 
 instance IsSVGTextContentElement SVGTextContentElement
 instance IsSVGGraphicsElement SVGTextContentElement
@@ -19560,14 +16871,8 @@ instance IsElement SVGTextContentElement
 instance IsNode SVGTextContentElement
 instance IsEventTarget SVGTextContentElement
 instance IsGObject SVGTextContentElement where
-  toGObject = GObject . unSVGTextContentElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTextContentElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTextContentElement :: IsGObject obj => obj -> IO SVGTextContentElement
-castToSVGTextContentElement = castTo gTypeSVGTextContentElement "SVGTextContentElement"
-
+  typeGType _ = gTypeSVGTextContentElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextElement".
@@ -19611,14 +16916,8 @@ instance IsElement SVGTextElement
 instance IsNode SVGTextElement
 instance IsEventTarget SVGTextElement
 instance IsGObject SVGTextElement where
-  toGObject = GObject . unSVGTextElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTextElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTextElement :: IsGObject obj => obj -> IO SVGTextElement
-castToSVGTextElement = castTo gTypeSVGTextElement "SVGTextElement"
-
+  typeGType _ = gTypeSVGTextElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPathElement".
@@ -19660,14 +16959,8 @@ instance IsElement SVGTextPathElement
 instance IsNode SVGTextPathElement
 instance IsEventTarget SVGTextPathElement
 instance IsGObject SVGTextPathElement where
-  toGObject = GObject . unSVGTextPathElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTextPathElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTextPathElement :: IsGObject obj => obj -> IO SVGTextPathElement
-castToSVGTextPathElement = castTo gTypeSVGTextPathElement "SVGTextPathElement"
-
+  typeGType _ = gTypeSVGTextPathElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPositioningElement".
@@ -19704,7 +16997,7 @@ instance FromJSVal SVGTextPositioningElement where
 
 class IsSVGTextContentElement o => IsSVGTextPositioningElement o
 toSVGTextPositioningElement :: IsSVGTextPositioningElement o => o -> SVGTextPositioningElement
-toSVGTextPositioningElement = unsafeCastGObject . toGObject
+toSVGTextPositioningElement = SVGTextPositioningElement . coerce
 
 instance IsSVGTextPositioningElement SVGTextPositioningElement
 instance IsSVGTextContentElement SVGTextPositioningElement
@@ -19714,14 +17007,8 @@ instance IsElement SVGTextPositioningElement
 instance IsNode SVGTextPositioningElement
 instance IsEventTarget SVGTextPositioningElement
 instance IsGObject SVGTextPositioningElement where
-  toGObject = GObject . unSVGTextPositioningElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTextPositioningElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTextPositioningElement :: IsGObject obj => obj -> IO SVGTextPositioningElement
-castToSVGTextPositioningElement = castTo gTypeSVGTextPositioningElement "SVGTextPositioningElement"
-
+  typeGType _ = gTypeSVGTextPositioningElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTitleElement".
@@ -19759,14 +17046,8 @@ instance IsElement SVGTitleElement
 instance IsNode SVGTitleElement
 instance IsEventTarget SVGTitleElement
 instance IsGObject SVGTitleElement where
-  toGObject = GObject . unSVGTitleElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTitleElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTitleElement :: IsGObject obj => obj -> IO SVGTitleElement
-castToSVGTitleElement = castTo gTypeSVGTitleElement "SVGTitleElement"
-
+  typeGType _ = gTypeSVGTitleElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
@@ -19794,14 +17075,8 @@ instance FromJSVal SVGTransform where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTransform where
-  toGObject = GObject . unSVGTransform
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTransform . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTransform :: IsGObject obj => obj -> IO SVGTransform
-castToSVGTransform = castTo gTypeSVGTransform "SVGTransform"
-
+  typeGType _ = gTypeSVGTransform
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
@@ -19829,14 +17104,8 @@ instance FromJSVal SVGTransformList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGTransformList where
-  toGObject = GObject . unSVGTransformList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGTransformList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGTransformList :: IsGObject obj => obj -> IO SVGTransformList
-castToSVGTransformList = castTo gTypeSVGTransformList "SVGTransformList"
-
+  typeGType _ = gTypeSVGTransformList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
@@ -19864,14 +17133,8 @@ instance FromJSVal SVGURIReference where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGURIReference where
-  toGObject = GObject . unSVGURIReference
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGURIReference . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGURIReference :: IsGObject obj => obj -> IO SVGURIReference
-castToSVGURIReference = castTo gTypeSVGURIReference "SVGURIReference"
-
+  typeGType _ = gTypeSVGURIReference
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
@@ -19899,14 +17162,8 @@ instance FromJSVal SVGUnitTypes where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGUnitTypes where
-  toGObject = GObject . unSVGUnitTypes
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGUnitTypes . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGUnitTypes :: IsGObject obj => obj -> IO SVGUnitTypes
-castToSVGUnitTypes = castTo gTypeSVGUnitTypes "SVGUnitTypes"
-
+  typeGType _ = gTypeSVGUnitTypes
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUseElement".
@@ -19946,14 +17203,8 @@ instance IsElement SVGUseElement
 instance IsNode SVGUseElement
 instance IsEventTarget SVGUseElement
 instance IsGObject SVGUseElement where
-  toGObject = GObject . unSVGUseElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGUseElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGUseElement :: IsGObject obj => obj -> IO SVGUseElement
-castToSVGUseElement = castTo gTypeSVGUseElement "SVGUseElement"
-
+  typeGType _ = gTypeSVGUseElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGVKernElement".
@@ -19991,14 +17242,8 @@ instance IsElement SVGVKernElement
 instance IsNode SVGVKernElement
 instance IsEventTarget SVGVKernElement
 instance IsGObject SVGVKernElement where
-  toGObject = GObject . unSVGVKernElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGVKernElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGVKernElement :: IsGObject obj => obj -> IO SVGVKernElement
-castToSVGVKernElement = castTo gTypeSVGVKernElement "SVGVKernElement"
-
+  typeGType _ = gTypeSVGVKernElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewElement".
@@ -20036,14 +17281,8 @@ instance IsElement SVGViewElement
 instance IsNode SVGViewElement
 instance IsEventTarget SVGViewElement
 instance IsGObject SVGViewElement where
-  toGObject = GObject . unSVGViewElement
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGViewElement . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGViewElement :: IsGObject obj => obj -> IO SVGViewElement
-castToSVGViewElement = castTo gTypeSVGViewElement "SVGViewElement"
-
+  typeGType _ = gTypeSVGViewElement
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
@@ -20071,14 +17310,8 @@ instance FromJSVal SVGViewSpec where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGViewSpec where
-  toGObject = GObject . unSVGViewSpec
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGViewSpec . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGViewSpec :: IsGObject obj => obj -> IO SVGViewSpec
-castToSVGViewSpec = castTo gTypeSVGViewSpec "SVGViewSpec"
-
+  typeGType _ = gTypeSVGViewSpec
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
@@ -20106,14 +17339,8 @@ instance FromJSVal SVGZoomAndPan where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SVGZoomAndPan where
-  toGObject = GObject . unSVGZoomAndPan
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGZoomAndPan . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGZoomAndPan :: IsGObject obj => obj -> IO SVGZoomAndPan
-castToSVGZoomAndPan = castTo gTypeSVGZoomAndPan "SVGZoomAndPan"
-
+  typeGType _ = gTypeSVGZoomAndPan
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomEvent".
@@ -20147,14 +17374,8 @@ instance FromJSVal SVGZoomEvent where
 instance IsUIEvent SVGZoomEvent
 instance IsEvent SVGZoomEvent
 instance IsGObject SVGZoomEvent where
-  toGObject = GObject . unSVGZoomEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SVGZoomEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSVGZoomEvent :: IsGObject obj => obj -> IO SVGZoomEvent
-castToSVGZoomEvent = castTo gTypeSVGZoomEvent "SVGZoomEvent"
-
+  typeGType _ = gTypeSVGZoomEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Screen".
@@ -20182,14 +17403,8 @@ instance FromJSVal Screen where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Screen where
-  toGObject = GObject . unScreen
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Screen . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToScreen :: IsGObject obj => obj -> IO Screen
-castToScreen = castTo gTypeScreen "Screen"
-
+  typeGType _ = gTypeScreen
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Screen\"]" gTypeScreen :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProcessorNode".
@@ -20223,14 +17438,8 @@ instance FromJSVal ScriptProcessorNode where
 instance IsAudioNode ScriptProcessorNode
 instance IsEventTarget ScriptProcessorNode
 instance IsGObject ScriptProcessorNode where
-  toGObject = GObject . unScriptProcessorNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ScriptProcessorNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToScriptProcessorNode :: IsGObject obj => obj -> IO ScriptProcessorNode
-castToScriptProcessorNode = castTo gTypeScriptProcessorNode "ScriptProcessorNode"
-
+  typeGType _ = gTypeScriptProcessorNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfile".
@@ -20258,14 +17467,8 @@ instance FromJSVal ScriptProfile where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ScriptProfile where
-  toGObject = GObject . unScriptProfile
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ScriptProfile . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToScriptProfile :: IsGObject obj => obj -> IO ScriptProfile
-castToScriptProfile = castTo gTypeScriptProfile "ScriptProfile"
-
+  typeGType _ = gTypeScriptProfile
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ScriptProfile\"]" gTypeScriptProfile :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProfileNode".
@@ -20293,14 +17496,8 @@ instance FromJSVal ScriptProfileNode where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ScriptProfileNode where
-  toGObject = GObject . unScriptProfileNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ScriptProfileNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToScriptProfileNode :: IsGObject obj => obj -> IO ScriptProfileNode
-castToScriptProfileNode = castTo gTypeScriptProfileNode "ScriptProfileNode"
-
+  typeGType _ = gTypeScriptProfileNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ScriptProfileNode\"]" gTypeScriptProfileNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicy".
@@ -20328,14 +17525,8 @@ instance FromJSVal SecurityPolicy where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SecurityPolicy where
-  toGObject = GObject . unSecurityPolicy
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SecurityPolicy . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSecurityPolicy :: IsGObject obj => obj -> IO SecurityPolicy
-castToSecurityPolicy = castTo gTypeSecurityPolicy "SecurityPolicy"
-
+  typeGType _ = gTypeSecurityPolicy
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SecurityPolicy\"]" gTypeSecurityPolicy :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEvent".
@@ -20367,14 +17558,8 @@ instance FromJSVal SecurityPolicyViolationEvent where
 
 instance IsEvent SecurityPolicyViolationEvent
 instance IsGObject SecurityPolicyViolationEvent where
-  toGObject = GObject . unSecurityPolicyViolationEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SecurityPolicyViolationEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSecurityPolicyViolationEvent :: IsGObject obj => obj -> IO SecurityPolicyViolationEvent
-castToSecurityPolicyViolationEvent = castTo gTypeSecurityPolicyViolationEvent "SecurityPolicyViolationEvent"
-
+  typeGType _ = gTypeSecurityPolicyViolationEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Selection".
@@ -20402,14 +17587,8 @@ instance FromJSVal Selection where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Selection where
-  toGObject = GObject . unSelection
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Selection . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSelection :: IsGObject obj => obj -> IO Selection
-castToSelection = castTo gTypeSelection "Selection"
-
+  typeGType _ = gTypeSelection
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Selection\"]" gTypeSelection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBuffer".
@@ -20441,14 +17620,8 @@ instance FromJSVal SourceBuffer where
 
 instance IsEventTarget SourceBuffer
 instance IsGObject SourceBuffer where
-  toGObject = GObject . unSourceBuffer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SourceBuffer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSourceBuffer :: IsGObject obj => obj -> IO SourceBuffer
-castToSourceBuffer = castTo gTypeSourceBuffer "SourceBuffer"
-
+  typeGType _ = gTypeSourceBuffer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBufferList".
@@ -20480,14 +17653,8 @@ instance FromJSVal SourceBufferList where
 
 instance IsEventTarget SourceBufferList
 instance IsGObject SourceBufferList where
-  toGObject = GObject . unSourceBufferList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SourceBufferList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSourceBufferList :: IsGObject obj => obj -> IO SourceBufferList
-castToSourceBufferList = castTo gTypeSourceBufferList "SourceBufferList"
-
+  typeGType _ = gTypeSourceBufferList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SourceInfo".
@@ -20515,14 +17682,8 @@ instance FromJSVal SourceInfo where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SourceInfo where
-  toGObject = GObject . unSourceInfo
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SourceInfo . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSourceInfo :: IsGObject obj => obj -> IO SourceInfo
-castToSourceInfo = castTo gTypeSourceInfo "SourceInfo"
-
+  typeGType _ = gTypeSourceInfo
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SourceInfo\"]" gTypeSourceInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
@@ -20550,14 +17711,8 @@ instance FromJSVal SpeechSynthesis where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SpeechSynthesis where
-  toGObject = GObject . unSpeechSynthesis
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SpeechSynthesis . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSpeechSynthesis :: IsGObject obj => obj -> IO SpeechSynthesis
-castToSpeechSynthesis = castTo gTypeSpeechSynthesis "SpeechSynthesis"
-
+  typeGType _ = gTypeSpeechSynthesis
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisEvent".
@@ -20589,14 +17744,8 @@ instance FromJSVal SpeechSynthesisEvent where
 
 instance IsEvent SpeechSynthesisEvent
 instance IsGObject SpeechSynthesisEvent where
-  toGObject = GObject . unSpeechSynthesisEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SpeechSynthesisEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSpeechSynthesisEvent :: IsGObject obj => obj -> IO SpeechSynthesisEvent
-castToSpeechSynthesisEvent = castTo gTypeSpeechSynthesisEvent "SpeechSynthesisEvent"
-
+  typeGType _ = gTypeSpeechSynthesisEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisUtterance".
@@ -20628,14 +17777,8 @@ instance FromJSVal SpeechSynthesisUtterance where
 
 instance IsEventTarget SpeechSynthesisUtterance
 instance IsGObject SpeechSynthesisUtterance where
-  toGObject = GObject . unSpeechSynthesisUtterance
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SpeechSynthesisUtterance . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSpeechSynthesisUtterance :: IsGObject obj => obj -> IO SpeechSynthesisUtterance
-castToSpeechSynthesisUtterance = castTo gTypeSpeechSynthesisUtterance "SpeechSynthesisUtterance"
-
+  typeGType _ = gTypeSpeechSynthesisUtterance
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
@@ -20663,14 +17806,8 @@ instance FromJSVal SpeechSynthesisVoice where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SpeechSynthesisVoice where
-  toGObject = GObject . unSpeechSynthesisVoice
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SpeechSynthesisVoice . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSpeechSynthesisVoice :: IsGObject obj => obj -> IO SpeechSynthesisVoice
-castToSpeechSynthesisVoice = castTo gTypeSpeechSynthesisVoice "SpeechSynthesisVoice"
-
+  typeGType _ = gTypeSpeechSynthesisVoice
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Storage".
@@ -20698,14 +17835,8 @@ instance FromJSVal Storage where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Storage where
-  toGObject = GObject . unStorage
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Storage . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStorage :: IsGObject obj => obj -> IO Storage
-castToStorage = castTo gTypeStorage "Storage"
-
+  typeGType _ = gTypeStorage
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Storage\"]" gTypeStorage :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageEvent".
@@ -20737,14 +17868,8 @@ instance FromJSVal StorageEvent where
 
 instance IsEvent StorageEvent
 instance IsGObject StorageEvent where
-  toGObject = GObject . unStorageEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StorageEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStorageEvent :: IsGObject obj => obj -> IO StorageEvent
-castToStorageEvent = castTo gTypeStorageEvent "StorageEvent"
-
+  typeGType _ = gTypeStorageEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
@@ -20772,14 +17897,8 @@ instance FromJSVal StorageInfo where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject StorageInfo where
-  toGObject = GObject . unStorageInfo
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StorageInfo . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStorageInfo :: IsGObject obj => obj -> IO StorageInfo
-castToStorageInfo = castTo gTypeStorageInfo "StorageInfo"
-
+  typeGType _ = gTypeStorageInfo
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
@@ -20807,14 +17926,8 @@ instance FromJSVal StorageQuota where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject StorageQuota where
-  toGObject = GObject . unStorageQuota
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StorageQuota . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStorageQuota :: IsGObject obj => obj -> IO StorageQuota
-castToStorageQuota = castTo gTypeStorageQuota "StorageQuota"
-
+  typeGType _ = gTypeStorageQuota
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
@@ -20842,14 +17955,8 @@ instance FromJSVal StyleMedia where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject StyleMedia where
-  toGObject = GObject . unStyleMedia
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StyleMedia . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStyleMedia :: IsGObject obj => obj -> IO StyleMedia
-castToStyleMedia = castTo gTypeStyleMedia "StyleMedia"
-
+  typeGType _ = gTypeStyleMedia
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StyleMedia\"]" gTypeStyleMedia :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
@@ -20878,18 +17985,12 @@ instance FromJSVal StyleSheet where
 
 class IsGObject o => IsStyleSheet o
 toStyleSheet :: IsStyleSheet o => o -> StyleSheet
-toStyleSheet = unsafeCastGObject . toGObject
+toStyleSheet = StyleSheet . coerce
 
 instance IsStyleSheet StyleSheet
 instance IsGObject StyleSheet where
-  toGObject = GObject . unStyleSheet
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StyleSheet . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStyleSheet :: IsGObject obj => obj -> IO StyleSheet
-castToStyleSheet = castTo gTypeStyleSheet "StyleSheet"
-
+  typeGType _ = gTypeStyleSheet
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StyleSheet\"]" gTypeStyleSheet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
@@ -20917,14 +18018,8 @@ instance FromJSVal StyleSheetList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject StyleSheetList where
-  toGObject = GObject . unStyleSheetList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = StyleSheetList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToStyleSheetList :: IsGObject obj => obj -> IO StyleSheetList
-castToStyleSheetList = castTo gTypeStyleSheetList "StyleSheetList"
-
+  typeGType _ = gTypeStyleSheetList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"StyleSheetList\"]" gTypeStyleSheetList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
@@ -20952,14 +18047,8 @@ instance FromJSVal SubtleCrypto where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject SubtleCrypto where
-  toGObject = GObject . unSubtleCrypto
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = SubtleCrypto . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToSubtleCrypto :: IsGObject obj => obj -> IO SubtleCrypto
-castToSubtleCrypto = castTo gTypeSubtleCrypto "SubtleCrypto"
-
+  typeGType _ = gTypeSubtleCrypto
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Text".
@@ -20993,21 +18082,15 @@ instance FromJSVal Text where
 
 class IsCharacterData o => IsText o
 toText :: IsText o => o -> Text
-toText = unsafeCastGObject . toGObject
+toText = Text . coerce
 
 instance IsText Text
 instance IsCharacterData Text
 instance IsNode Text
 instance IsEventTarget Text
 instance IsGObject Text where
-  toGObject = GObject . unText
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Text . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToText :: IsGObject obj => obj -> IO Text
-castToText = castTo gTypeText "Text"
-
+  typeGType _ = gTypeText
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Text\"]" gTypeText :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextEvent".
@@ -21041,14 +18124,8 @@ instance FromJSVal TextEvent where
 instance IsUIEvent TextEvent
 instance IsEvent TextEvent
 instance IsGObject TextEvent where
-  toGObject = GObject . unTextEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextEvent :: IsGObject obj => obj -> IO TextEvent
-castToTextEvent = castTo gTypeTextEvent "TextEvent"
-
+  typeGType _ = gTypeTextEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
@@ -21076,14 +18153,8 @@ instance FromJSVal TextMetrics where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TextMetrics where
-  toGObject = GObject . unTextMetrics
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextMetrics . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextMetrics :: IsGObject obj => obj -> IO TextMetrics
-castToTextMetrics = castTo gTypeTextMetrics "TextMetrics"
-
+  typeGType _ = gTypeTextMetrics
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrack".
@@ -21115,14 +18186,8 @@ instance FromJSVal TextTrack where
 
 instance IsEventTarget TextTrack
 instance IsGObject TextTrack where
-  toGObject = GObject . unTextTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextTrack :: IsGObject obj => obj -> IO TextTrack
-castToTextTrack = castTo gTypeTextTrack "TextTrack"
-
+  typeGType _ = gTypeTextTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCue".
@@ -21154,19 +18219,13 @@ instance FromJSVal TextTrackCue where
 
 class IsEventTarget o => IsTextTrackCue o
 toTextTrackCue :: IsTextTrackCue o => o -> TextTrackCue
-toTextTrackCue = unsafeCastGObject . toGObject
+toTextTrackCue = TextTrackCue . coerce
 
 instance IsTextTrackCue TextTrackCue
 instance IsEventTarget TextTrackCue
 instance IsGObject TextTrackCue where
-  toGObject = GObject . unTextTrackCue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextTrackCue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextTrackCue :: IsGObject obj => obj -> IO TextTrackCue
-castToTextTrackCue = castTo gTypeTextTrackCue "TextTrackCue"
-
+  typeGType _ = gTypeTextTrackCue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
@@ -21194,14 +18253,8 @@ instance FromJSVal TextTrackCueList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TextTrackCueList where
-  toGObject = GObject . unTextTrackCueList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextTrackCueList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextTrackCueList :: IsGObject obj => obj -> IO TextTrackCueList
-castToTextTrackCueList = castTo gTypeTextTrackCueList "TextTrackCueList"
-
+  typeGType _ = gTypeTextTrackCueList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackList".
@@ -21233,14 +18286,8 @@ instance FromJSVal TextTrackList where
 
 instance IsEventTarget TextTrackList
 instance IsGObject TextTrackList where
-  toGObject = GObject . unTextTrackList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TextTrackList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTextTrackList :: IsGObject obj => obj -> IO TextTrackList
-castToTextTrackList = castTo gTypeTextTrackList "TextTrackList"
-
+  typeGType _ = gTypeTextTrackList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
@@ -21268,14 +18315,8 @@ instance FromJSVal TimeRanges where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TimeRanges where
-  toGObject = GObject . unTimeRanges
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TimeRanges . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTimeRanges :: IsGObject obj => obj -> IO TimeRanges
-castToTimeRanges = castTo gTypeTimeRanges "TimeRanges"
-
+  typeGType _ = gTypeTimeRanges
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TimeRanges\"]" gTypeTimeRanges :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Touch".
@@ -21303,14 +18344,8 @@ instance FromJSVal Touch where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject Touch where
-  toGObject = GObject . unTouch
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Touch . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTouch :: IsGObject obj => obj -> IO Touch
-castToTouch = castTo gTypeTouch "Touch"
-
+  typeGType _ = gTypeTouch
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TouchEvent".
@@ -21344,14 +18379,8 @@ instance FromJSVal TouchEvent where
 instance IsUIEvent TouchEvent
 instance IsEvent TouchEvent
 instance IsGObject TouchEvent where
-  toGObject = GObject . unTouchEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TouchEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTouchEvent :: IsGObject obj => obj -> IO TouchEvent
-castToTouchEvent = castTo gTypeTouchEvent "TouchEvent"
-
+  typeGType _ = gTypeTouchEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TouchList".
@@ -21379,14 +18408,8 @@ instance FromJSVal TouchList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TouchList where
-  toGObject = GObject . unTouchList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TouchList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTouchList :: IsGObject obj => obj -> IO TouchList
-castToTouchList = castTo gTypeTouchList "TouchList"
-
+  typeGType _ = gTypeTouchList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TrackEvent".
@@ -21418,14 +18441,8 @@ instance FromJSVal TrackEvent where
 
 instance IsEvent TrackEvent
 instance IsGObject TrackEvent where
-  toGObject = GObject . unTrackEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TrackEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTrackEvent :: IsGObject obj => obj -> IO TrackEvent
-castToTrackEvent = castTo gTypeTrackEvent "TrackEvent"
-
+  typeGType _ = gTypeTrackEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TransitionEvent".
@@ -21457,14 +18474,8 @@ instance FromJSVal TransitionEvent where
 
 instance IsEvent TransitionEvent
 instance IsGObject TransitionEvent where
-  toGObject = GObject . unTransitionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TransitionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTransitionEvent :: IsGObject obj => obj -> IO TransitionEvent
-castToTransitionEvent = castTo gTypeTransitionEvent "TransitionEvent"
-
+  typeGType _ = gTypeTransitionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
@@ -21492,14 +18503,8 @@ instance FromJSVal TreeWalker where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TreeWalker where
-  toGObject = GObject . unTreeWalker
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TreeWalker . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTreeWalker :: IsGObject obj => obj -> IO TreeWalker
-castToTreeWalker = castTo gTypeTreeWalker "TreeWalker"
-
+  typeGType _ = gTypeTreeWalker
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TreeWalker\"]" gTypeTreeWalker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TypeConversions".
@@ -21527,14 +18532,8 @@ instance FromJSVal TypeConversions where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject TypeConversions where
-  toGObject = GObject . unTypeConversions
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = TypeConversions . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToTypeConversions :: IsGObject obj => obj -> IO TypeConversions
-castToTypeConversions = castTo gTypeTypeConversions "TypeConversions"
-
+  typeGType _ = gTypeTypeConversions
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"TypeConversions\"]" gTypeTypeConversions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UIEvent".
@@ -21566,19 +18565,13 @@ instance FromJSVal UIEvent where
 
 class IsEvent o => IsUIEvent o
 toUIEvent :: IsUIEvent o => o -> UIEvent
-toUIEvent = unsafeCastGObject . toGObject
+toUIEvent = UIEvent . coerce
 
 instance IsUIEvent UIEvent
 instance IsEvent UIEvent
 instance IsGObject UIEvent where
-  toGObject = GObject . unUIEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = UIEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToUIEvent :: IsGObject obj => obj -> IO UIEvent
-castToUIEvent = castTo gTypeUIEvent "UIEvent"
-
+  typeGType _ = gTypeUIEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"UIEvent\"]" gTypeUIEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UIRequestEvent".
@@ -21612,14 +18605,8 @@ instance FromJSVal UIRequestEvent where
 instance IsUIEvent UIRequestEvent
 instance IsEvent UIRequestEvent
 instance IsGObject UIRequestEvent where
-  toGObject = GObject . unUIRequestEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = UIRequestEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToUIRequestEvent :: IsGObject obj => obj -> IO UIRequestEvent
-castToUIRequestEvent = castTo gTypeUIRequestEvent "UIRequestEvent"
-
+  typeGType _ = gTypeUIRequestEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"UIRequestEvent\"]" gTypeUIRequestEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.URL".
@@ -21647,14 +18634,8 @@ instance FromJSVal URL where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject URL where
-  toGObject = GObject . unURL
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = URL . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToURL :: IsGObject obj => obj -> IO URL
-castToURL = castTo gTypeURL "URL"
-
+  typeGType _ = gTypeURL
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"URL\"]" gTypeURL :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.URLUtils".
@@ -21682,14 +18663,8 @@ instance FromJSVal URLUtils where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject URLUtils where
-  toGObject = GObject . unURLUtils
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = URLUtils . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToURLUtils :: IsGObject obj => obj -> IO URLUtils
-castToURLUtils = castTo gTypeURLUtils "URLUtils"
-
+  typeGType _ = gTypeURLUtils
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"URLUtils\"]" gTypeURLUtils :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
@@ -21717,14 +18692,8 @@ instance FromJSVal UserMessageHandler where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject UserMessageHandler where
-  toGObject = GObject . unUserMessageHandler
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = UserMessageHandler . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToUserMessageHandler :: IsGObject obj => obj -> IO UserMessageHandler
-castToUserMessageHandler = castTo gTypeUserMessageHandler "UserMessageHandler"
-
+  typeGType _ = gTypeUserMessageHandler
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
@@ -21752,14 +18721,8 @@ instance FromJSVal UserMessageHandlersNamespace where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject UserMessageHandlersNamespace where
-  toGObject = GObject . unUserMessageHandlersNamespace
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = UserMessageHandlersNamespace . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToUserMessageHandlersNamespace :: IsGObject obj => obj -> IO UserMessageHandlersNamespace
-castToUserMessageHandlersNamespace = castTo gTypeUserMessageHandlersNamespace "UserMessageHandlersNamespace"
-
+  typeGType _ = gTypeUserMessageHandlersNamespace
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTCue".
@@ -21793,14 +18756,8 @@ instance FromJSVal VTTCue where
 instance IsTextTrackCue VTTCue
 instance IsEventTarget VTTCue
 instance IsGObject VTTCue where
-  toGObject = GObject . unVTTCue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VTTCue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVTTCue :: IsGObject obj => obj -> IO VTTCue
-castToVTTCue = castTo gTypeVTTCue "VTTCue"
-
+  typeGType _ = gTypeVTTCue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
@@ -21828,14 +18785,8 @@ instance FromJSVal VTTRegion where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject VTTRegion where
-  toGObject = GObject . unVTTRegion
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VTTRegion . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVTTRegion :: IsGObject obj => obj -> IO VTTRegion
-castToVTTRegion = castTo gTypeVTTRegion "VTTRegion"
-
+  typeGType _ = gTypeVTTRegion
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
@@ -21863,14 +18814,8 @@ instance FromJSVal VTTRegionList where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject VTTRegionList where
-  toGObject = GObject . unVTTRegionList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VTTRegionList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVTTRegionList :: IsGObject obj => obj -> IO VTTRegionList
-castToVTTRegionList = castTo gTypeVTTRegionList "VTTRegionList"
-
+  typeGType _ = gTypeVTTRegionList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
@@ -21898,14 +18843,8 @@ instance FromJSVal ValidityState where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject ValidityState where
-  toGObject = GObject . unValidityState
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = ValidityState . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToValidityState :: IsGObject obj => obj -> IO ValidityState
-castToValidityState = castTo gTypeValidityState "ValidityState"
-
+  typeGType _ = gTypeValidityState
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ValidityState\"]" gTypeValidityState :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
@@ -21933,14 +18872,8 @@ instance FromJSVal VideoPlaybackQuality where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject VideoPlaybackQuality where
-  toGObject = GObject . unVideoPlaybackQuality
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VideoPlaybackQuality . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVideoPlaybackQuality :: IsGObject obj => obj -> IO VideoPlaybackQuality
-castToVideoPlaybackQuality = castTo gTypeVideoPlaybackQuality "VideoPlaybackQuality"
-
+  typeGType _ = gTypeVideoPlaybackQuality
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoStreamTrack".
@@ -21974,14 +18907,8 @@ instance FromJSVal VideoStreamTrack where
 instance IsMediaStreamTrack VideoStreamTrack
 instance IsEventTarget VideoStreamTrack
 instance IsGObject VideoStreamTrack where
-  toGObject = GObject . unVideoStreamTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VideoStreamTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVideoStreamTrack :: IsGObject obj => obj -> IO VideoStreamTrack
-castToVideoStreamTrack = castTo gTypeVideoStreamTrack "VideoStreamTrack"
-
+  typeGType _ = gTypeVideoStreamTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VideoStreamTrack\"]" gTypeVideoStreamTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
@@ -22009,14 +18936,8 @@ instance FromJSVal VideoTrack where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject VideoTrack where
-  toGObject = GObject . unVideoTrack
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VideoTrack . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVideoTrack :: IsGObject obj => obj -> IO VideoTrack
-castToVideoTrack = castTo gTypeVideoTrack "VideoTrack"
-
+  typeGType _ = gTypeVideoTrack
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrackList".
@@ -22048,14 +18969,8 @@ instance FromJSVal VideoTrackList where
 
 instance IsEventTarget VideoTrackList
 instance IsGObject VideoTrackList where
-  toGObject = GObject . unVideoTrackList
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = VideoTrackList . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToVideoTrackList :: IsGObject obj => obj -> IO VideoTrackList
-castToVideoTrackList = castTo gTypeVideoTrackList "VideoTrackList"
-
+  typeGType _ = gTypeVideoTrackList
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WaveShaperNode".
@@ -22089,14 +19004,8 @@ instance FromJSVal WaveShaperNode where
 instance IsAudioNode WaveShaperNode
 instance IsEventTarget WaveShaperNode
 instance IsGObject WaveShaperNode where
-  toGObject = GObject . unWaveShaperNode
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WaveShaperNode . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWaveShaperNode :: IsGObject obj => obj -> IO WaveShaperNode
-castToWaveShaperNode = castTo gTypeWaveShaperNode "WaveShaperNode"
-
+  typeGType _ = gTypeWaveShaperNode
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGL2RenderingContext".
@@ -22130,14 +19039,8 @@ instance FromJSVal WebGL2RenderingContext where
 instance IsWebGLRenderingContextBase WebGL2RenderingContext
 instance IsCanvasRenderingContext WebGL2RenderingContext
 instance IsGObject WebGL2RenderingContext where
-  toGObject = GObject . unWebGL2RenderingContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGL2RenderingContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGL2RenderingContext :: IsGObject obj => obj -> IO WebGL2RenderingContext
-castToWebGL2RenderingContext = castTo gTypeWebGL2RenderingContext "WebGL2RenderingContext"
-
+  typeGType _ = gTypeWebGL2RenderingContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
@@ -22165,14 +19068,8 @@ instance FromJSVal WebGLActiveInfo where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLActiveInfo where
-  toGObject = GObject . unWebGLActiveInfo
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLActiveInfo . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLActiveInfo :: IsGObject obj => obj -> IO WebGLActiveInfo
-castToWebGLActiveInfo = castTo gTypeWebGLActiveInfo "WebGLActiveInfo"
-
+  typeGType _ = gTypeWebGLActiveInfo
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
@@ -22200,14 +19097,8 @@ instance FromJSVal WebGLBuffer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLBuffer where
-  toGObject = GObject . unWebGLBuffer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLBuffer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLBuffer :: IsGObject obj => obj -> IO WebGLBuffer
-castToWebGLBuffer = castTo gTypeWebGLBuffer "WebGLBuffer"
-
+  typeGType _ = gTypeWebGLBuffer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
@@ -22235,14 +19126,8 @@ instance FromJSVal WebGLCompressedTextureATC where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTextureATC where
-  toGObject = GObject . unWebGLCompressedTextureATC
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLCompressedTextureATC . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLCompressedTextureATC :: IsGObject obj => obj -> IO WebGLCompressedTextureATC
-castToWebGLCompressedTextureATC = castTo gTypeWebGLCompressedTextureATC "WebGLCompressedTextureATC"
-
+  typeGType _ = gTypeWebGLCompressedTextureATC
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
@@ -22270,14 +19155,8 @@ instance FromJSVal WebGLCompressedTexturePVRTC where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTexturePVRTC where
-  toGObject = GObject . unWebGLCompressedTexturePVRTC
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLCompressedTexturePVRTC . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLCompressedTexturePVRTC :: IsGObject obj => obj -> IO WebGLCompressedTexturePVRTC
-castToWebGLCompressedTexturePVRTC = castTo gTypeWebGLCompressedTexturePVRTC "WebGLCompressedTexturePVRTC"
-
+  typeGType _ = gTypeWebGLCompressedTexturePVRTC
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
@@ -22305,14 +19184,8 @@ instance FromJSVal WebGLCompressedTextureS3TC where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLCompressedTextureS3TC where
-  toGObject = GObject . unWebGLCompressedTextureS3TC
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLCompressedTextureS3TC . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLCompressedTextureS3TC :: IsGObject obj => obj -> IO WebGLCompressedTextureS3TC
-castToWebGLCompressedTextureS3TC = castTo gTypeWebGLCompressedTextureS3TC "WebGLCompressedTextureS3TC"
-
+  typeGType _ = gTypeWebGLCompressedTextureS3TC
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
@@ -22340,14 +19213,8 @@ instance FromJSVal WebGLContextAttributes where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLContextAttributes where
-  toGObject = GObject . unWebGLContextAttributes
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLContextAttributes . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLContextAttributes :: IsGObject obj => obj -> IO WebGLContextAttributes
-castToWebGLContextAttributes = castTo gTypeWebGLContextAttributes "WebGLContextAttributes"
-
+  typeGType _ = gTypeWebGLContextAttributes
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextEvent".
@@ -22379,14 +19246,8 @@ instance FromJSVal WebGLContextEvent where
 
 instance IsEvent WebGLContextEvent
 instance IsGObject WebGLContextEvent where
-  toGObject = GObject . unWebGLContextEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLContextEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLContextEvent :: IsGObject obj => obj -> IO WebGLContextEvent
-castToWebGLContextEvent = castTo gTypeWebGLContextEvent "WebGLContextEvent"
-
+  typeGType _ = gTypeWebGLContextEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
@@ -22414,14 +19275,8 @@ instance FromJSVal WebGLDebugRendererInfo where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDebugRendererInfo where
-  toGObject = GObject . unWebGLDebugRendererInfo
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLDebugRendererInfo . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLDebugRendererInfo :: IsGObject obj => obj -> IO WebGLDebugRendererInfo
-castToWebGLDebugRendererInfo = castTo gTypeWebGLDebugRendererInfo "WebGLDebugRendererInfo"
-
+  typeGType _ = gTypeWebGLDebugRendererInfo
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
@@ -22449,14 +19304,8 @@ instance FromJSVal WebGLDebugShaders where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDebugShaders where
-  toGObject = GObject . unWebGLDebugShaders
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLDebugShaders . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLDebugShaders :: IsGObject obj => obj -> IO WebGLDebugShaders
-castToWebGLDebugShaders = castTo gTypeWebGLDebugShaders "WebGLDebugShaders"
-
+  typeGType _ = gTypeWebGLDebugShaders
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
@@ -22484,14 +19333,8 @@ instance FromJSVal WebGLDepthTexture where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDepthTexture where
-  toGObject = GObject . unWebGLDepthTexture
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLDepthTexture . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLDepthTexture :: IsGObject obj => obj -> IO WebGLDepthTexture
-castToWebGLDepthTexture = castTo gTypeWebGLDepthTexture "WebGLDepthTexture"
-
+  typeGType _ = gTypeWebGLDepthTexture
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
@@ -22519,14 +19362,8 @@ instance FromJSVal WebGLDrawBuffers where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLDrawBuffers where
-  toGObject = GObject . unWebGLDrawBuffers
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLDrawBuffers . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLDrawBuffers :: IsGObject obj => obj -> IO WebGLDrawBuffers
-castToWebGLDrawBuffers = castTo gTypeWebGLDrawBuffers "WebGLDrawBuffers"
-
+  typeGType _ = gTypeWebGLDrawBuffers
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
@@ -22554,14 +19391,8 @@ instance FromJSVal WebGLFramebuffer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLFramebuffer where
-  toGObject = GObject . unWebGLFramebuffer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLFramebuffer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLFramebuffer :: IsGObject obj => obj -> IO WebGLFramebuffer
-castToWebGLFramebuffer = castTo gTypeWebGLFramebuffer "WebGLFramebuffer"
-
+  typeGType _ = gTypeWebGLFramebuffer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
@@ -22589,14 +19420,8 @@ instance FromJSVal WebGLLoseContext where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLLoseContext where
-  toGObject = GObject . unWebGLLoseContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLLoseContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLLoseContext :: IsGObject obj => obj -> IO WebGLLoseContext
-castToWebGLLoseContext = castTo gTypeWebGLLoseContext "WebGLLoseContext"
-
+  typeGType _ = gTypeWebGLLoseContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
@@ -22624,14 +19449,8 @@ instance FromJSVal WebGLProgram where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLProgram where
-  toGObject = GObject . unWebGLProgram
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLProgram . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLProgram :: IsGObject obj => obj -> IO WebGLProgram
-castToWebGLProgram = castTo gTypeWebGLProgram "WebGLProgram"
-
+  typeGType _ = gTypeWebGLProgram
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
@@ -22659,14 +19478,8 @@ instance FromJSVal WebGLQuery where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLQuery where
-  toGObject = GObject . unWebGLQuery
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLQuery . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLQuery :: IsGObject obj => obj -> IO WebGLQuery
-castToWebGLQuery = castTo gTypeWebGLQuery "WebGLQuery"
-
+  typeGType _ = gTypeWebGLQuery
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
@@ -22694,14 +19507,8 @@ instance FromJSVal WebGLRenderbuffer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLRenderbuffer where
-  toGObject = GObject . unWebGLRenderbuffer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLRenderbuffer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLRenderbuffer :: IsGObject obj => obj -> IO WebGLRenderbuffer
-castToWebGLRenderbuffer = castTo gTypeWebGLRenderbuffer "WebGLRenderbuffer"
-
+  typeGType _ = gTypeWebGLRenderbuffer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContext".
@@ -22735,14 +19542,8 @@ instance FromJSVal WebGLRenderingContext where
 instance IsWebGLRenderingContextBase WebGLRenderingContext
 instance IsCanvasRenderingContext WebGLRenderingContext
 instance IsGObject WebGLRenderingContext where
-  toGObject = GObject . unWebGLRenderingContext
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLRenderingContext . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLRenderingContext :: IsGObject obj => obj -> IO WebGLRenderingContext
-castToWebGLRenderingContext = castTo gTypeWebGLRenderingContext "WebGLRenderingContext"
-
+  typeGType _ = gTypeWebGLRenderingContext
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContextBase".
@@ -22774,19 +19575,13 @@ instance FromJSVal WebGLRenderingContextBase where
 
 class IsCanvasRenderingContext o => IsWebGLRenderingContextBase o
 toWebGLRenderingContextBase :: IsWebGLRenderingContextBase o => o -> WebGLRenderingContextBase
-toWebGLRenderingContextBase = unsafeCastGObject . toGObject
+toWebGLRenderingContextBase = WebGLRenderingContextBase . coerce
 
 instance IsWebGLRenderingContextBase WebGLRenderingContextBase
 instance IsCanvasRenderingContext WebGLRenderingContextBase
 instance IsGObject WebGLRenderingContextBase where
-  toGObject = GObject . unWebGLRenderingContextBase
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLRenderingContextBase . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLRenderingContextBase :: IsGObject obj => obj -> IO WebGLRenderingContextBase
-castToWebGLRenderingContextBase = castTo gTypeWebGLRenderingContextBase "WebGLRenderingContextBase"
-
+  typeGType _ = gTypeWebGLRenderingContextBase
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
@@ -22814,14 +19609,8 @@ instance FromJSVal WebGLSampler where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLSampler where
-  toGObject = GObject . unWebGLSampler
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLSampler . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLSampler :: IsGObject obj => obj -> IO WebGLSampler
-castToWebGLSampler = castTo gTypeWebGLSampler "WebGLSampler"
-
+  typeGType _ = gTypeWebGLSampler
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
@@ -22849,14 +19638,8 @@ instance FromJSVal WebGLShader where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLShader where
-  toGObject = GObject . unWebGLShader
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLShader . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLShader :: IsGObject obj => obj -> IO WebGLShader
-castToWebGLShader = castTo gTypeWebGLShader "WebGLShader"
-
+  typeGType _ = gTypeWebGLShader
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
@@ -22884,14 +19667,8 @@ instance FromJSVal WebGLShaderPrecisionFormat where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLShaderPrecisionFormat where
-  toGObject = GObject . unWebGLShaderPrecisionFormat
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLShaderPrecisionFormat . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLShaderPrecisionFormat :: IsGObject obj => obj -> IO WebGLShaderPrecisionFormat
-castToWebGLShaderPrecisionFormat = castTo gTypeWebGLShaderPrecisionFormat "WebGLShaderPrecisionFormat"
-
+  typeGType _ = gTypeWebGLShaderPrecisionFormat
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
@@ -22919,14 +19696,8 @@ instance FromJSVal WebGLSync where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLSync where
-  toGObject = GObject . unWebGLSync
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLSync . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLSync :: IsGObject obj => obj -> IO WebGLSync
-castToWebGLSync = castTo gTypeWebGLSync "WebGLSync"
-
+  typeGType _ = gTypeWebGLSync
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
@@ -22954,14 +19725,8 @@ instance FromJSVal WebGLTexture where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLTexture where
-  toGObject = GObject . unWebGLTexture
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLTexture . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLTexture :: IsGObject obj => obj -> IO WebGLTexture
-castToWebGLTexture = castTo gTypeWebGLTexture "WebGLTexture"
-
+  typeGType _ = gTypeWebGLTexture
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
@@ -22989,14 +19754,8 @@ instance FromJSVal WebGLTransformFeedback where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLTransformFeedback where
-  toGObject = GObject . unWebGLTransformFeedback
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLTransformFeedback . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLTransformFeedback :: IsGObject obj => obj -> IO WebGLTransformFeedback
-castToWebGLTransformFeedback = castTo gTypeWebGLTransformFeedback "WebGLTransformFeedback"
-
+  typeGType _ = gTypeWebGLTransformFeedback
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
@@ -23024,14 +19783,8 @@ instance FromJSVal WebGLUniformLocation where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLUniformLocation where
-  toGObject = GObject . unWebGLUniformLocation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLUniformLocation . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLUniformLocation :: IsGObject obj => obj -> IO WebGLUniformLocation
-castToWebGLUniformLocation = castTo gTypeWebGLUniformLocation "WebGLUniformLocation"
-
+  typeGType _ = gTypeWebGLUniformLocation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
@@ -23059,14 +19812,8 @@ instance FromJSVal WebGLVertexArrayObject where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLVertexArrayObject where
-  toGObject = GObject . unWebGLVertexArrayObject
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLVertexArrayObject . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLVertexArrayObject :: IsGObject obj => obj -> IO WebGLVertexArrayObject
-castToWebGLVertexArrayObject = castTo gTypeWebGLVertexArrayObject "WebGLVertexArrayObject"
-
+  typeGType _ = gTypeWebGLVertexArrayObject
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
@@ -23094,14 +19841,8 @@ instance FromJSVal WebGLVertexArrayObjectOES where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebGLVertexArrayObjectOES where
-  toGObject = GObject . unWebGLVertexArrayObjectOES
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebGLVertexArrayObjectOES . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebGLVertexArrayObjectOES :: IsGObject obj => obj -> IO WebGLVertexArrayObjectOES
-castToWebGLVertexArrayObjectOES = castTo gTypeWebGLVertexArrayObjectOES "WebGLVertexArrayObjectOES"
-
+  typeGType _ = gTypeWebGLVertexArrayObjectOES
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEvent".
@@ -23133,14 +19874,8 @@ instance FromJSVal WebKitAnimationEvent where
 
 instance IsEvent WebKitAnimationEvent
 instance IsGObject WebKitAnimationEvent where
-  toGObject = GObject . unWebKitAnimationEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitAnimationEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitAnimationEvent :: IsGObject obj => obj -> IO WebKitAnimationEvent
-castToWebKitAnimationEvent = castTo gTypeWebKitAnimationEvent "WebKitAnimationEvent"
-
+  typeGType _ = gTypeWebKitAnimationEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSFilterValue".
@@ -23174,14 +19909,8 @@ instance FromJSVal WebKitCSSFilterValue where
 instance IsCSSValueList WebKitCSSFilterValue
 instance IsCSSValue WebKitCSSFilterValue
 instance IsGObject WebKitCSSFilterValue where
-  toGObject = GObject . unWebKitCSSFilterValue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitCSSFilterValue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitCSSFilterValue :: IsGObject obj => obj -> IO WebKitCSSFilterValue
-castToWebKitCSSFilterValue = castTo gTypeWebKitCSSFilterValue "WebKitCSSFilterValue"
-
+  typeGType _ = gTypeWebKitCSSFilterValue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitCSSFilterValue\"]" gTypeWebKitCSSFilterValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
@@ -23209,14 +19938,8 @@ instance FromJSVal WebKitCSSMatrix where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitCSSMatrix where
-  toGObject = GObject . unWebKitCSSMatrix
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitCSSMatrix . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitCSSMatrix :: IsGObject obj => obj -> IO WebKitCSSMatrix
-castToWebKitCSSMatrix = castTo gTypeWebKitCSSMatrix "WebKitCSSMatrix"
-
+  typeGType _ = gTypeWebKitCSSMatrix
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSRegionRule".
@@ -23248,14 +19971,8 @@ instance FromJSVal WebKitCSSRegionRule where
 
 instance IsCSSRule WebKitCSSRegionRule
 instance IsGObject WebKitCSSRegionRule where
-  toGObject = GObject . unWebKitCSSRegionRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitCSSRegionRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitCSSRegionRule :: IsGObject obj => obj -> IO WebKitCSSRegionRule
-castToWebKitCSSRegionRule = castTo gTypeWebKitCSSRegionRule "WebKitCSSRegionRule"
-
+  typeGType _ = gTypeWebKitCSSRegionRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSTransformValue".
@@ -23289,14 +20006,8 @@ instance FromJSVal WebKitCSSTransformValue where
 instance IsCSSValueList WebKitCSSTransformValue
 instance IsCSSValue WebKitCSSTransformValue
 instance IsGObject WebKitCSSTransformValue where
-  toGObject = GObject . unWebKitCSSTransformValue
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitCSSTransformValue . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitCSSTransformValue :: IsGObject obj => obj -> IO WebKitCSSTransformValue
-castToWebKitCSSTransformValue = castTo gTypeWebKitCSSTransformValue "WebKitCSSTransformValue"
-
+  typeGType _ = gTypeWebKitCSSTransformValue
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitCSSTransformValue\"]" gTypeWebKitCSSTransformValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSViewportRule".
@@ -23328,14 +20039,8 @@ instance FromJSVal WebKitCSSViewportRule where
 
 instance IsCSSRule WebKitCSSViewportRule
 instance IsGObject WebKitCSSViewportRule where
-  toGObject = GObject . unWebKitCSSViewportRule
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitCSSViewportRule . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitCSSViewportRule :: IsGObject obj => obj -> IO WebKitCSSViewportRule
-castToWebKitCSSViewportRule = castTo gTypeWebKitCSSViewportRule "WebKitCSSViewportRule"
-
+  typeGType _ = gTypeWebKitCSSViewportRule
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamedFlow".
@@ -23367,14 +20072,8 @@ instance FromJSVal WebKitNamedFlow where
 
 instance IsEventTarget WebKitNamedFlow
 instance IsGObject WebKitNamedFlow where
-  toGObject = GObject . unWebKitNamedFlow
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitNamedFlow . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitNamedFlow :: IsGObject obj => obj -> IO WebKitNamedFlow
-castToWebKitNamedFlow = castTo gTypeWebKitNamedFlow "WebKitNamedFlow"
-
+  typeGType _ = gTypeWebKitNamedFlow
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitNamedFlow\"]" gTypeWebKitNamedFlow :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
@@ -23402,14 +20101,8 @@ instance FromJSVal WebKitNamespace where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitNamespace where
-  toGObject = GObject . unWebKitNamespace
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitNamespace . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitNamespace :: IsGObject obj => obj -> IO WebKitNamespace
-castToWebKitNamespace = castTo gTypeWebKitNamespace "WebKitNamespace"
-
+  typeGType _ = gTypeWebKitNamespace
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent".
@@ -23441,14 +20134,8 @@ instance FromJSVal WebKitPlaybackTargetAvailabilityEvent where
 
 instance IsEvent WebKitPlaybackTargetAvailabilityEvent
 instance IsGObject WebKitPlaybackTargetAvailabilityEvent where
-  toGObject = GObject . unWebKitPlaybackTargetAvailabilityEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitPlaybackTargetAvailabilityEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitPlaybackTargetAvailabilityEvent :: IsGObject obj => obj -> IO WebKitPlaybackTargetAvailabilityEvent
-castToWebKitPlaybackTargetAvailabilityEvent = castTo gTypeWebKitPlaybackTargetAvailabilityEvent "WebKitPlaybackTargetAvailabilityEvent"
-
+  typeGType _ = gTypeWebKitPlaybackTargetAvailabilityEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
@@ -23476,14 +20163,8 @@ instance FromJSVal WebKitPoint where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WebKitPoint where
-  toGObject = GObject . unWebKitPoint
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitPoint . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitPoint :: IsGObject obj => obj -> IO WebKitPoint
-castToWebKitPoint = castTo gTypeWebKitPoint "WebKitPoint"
-
+  typeGType _ = gTypeWebKitPoint
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitTransitionEvent".
@@ -23515,14 +20196,8 @@ instance FromJSVal WebKitTransitionEvent where
 
 instance IsEvent WebKitTransitionEvent
 instance IsGObject WebKitTransitionEvent where
-  toGObject = GObject . unWebKitTransitionEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebKitTransitionEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebKitTransitionEvent :: IsGObject obj => obj -> IO WebKitTransitionEvent
-castToWebKitTransitionEvent = castTo gTypeWebKitTransitionEvent "WebKitTransitionEvent"
-
+  typeGType _ = gTypeWebKitTransitionEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebSocket".
@@ -23554,14 +20229,8 @@ instance FromJSVal WebSocket where
 
 instance IsEventTarget WebSocket
 instance IsGObject WebSocket where
-  toGObject = GObject . unWebSocket
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WebSocket . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWebSocket :: IsGObject obj => obj -> IO WebSocket
-castToWebSocket = castTo gTypeWebSocket "WebSocket"
-
+  typeGType _ = gTypeWebSocket
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WheelEvent".
@@ -23597,14 +20266,8 @@ instance IsMouseEvent WheelEvent
 instance IsUIEvent WheelEvent
 instance IsEvent WheelEvent
 instance IsGObject WheelEvent where
-  toGObject = GObject . unWheelEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WheelEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWheelEvent :: IsGObject obj => obj -> IO WheelEvent
-castToWheelEvent = castTo gTypeWheelEvent "WheelEvent"
-
+  typeGType _ = gTypeWheelEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Window".
@@ -23636,14 +20299,8 @@ instance FromJSVal Window where
 
 instance IsEventTarget Window
 instance IsGObject Window where
-  toGObject = GObject . unWindow
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Window . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWindow :: IsGObject obj => obj -> IO Window
-castToWindow = castTo gTypeWindow "Window"
-
+  typeGType _ = gTypeWindow
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Window\"]" gTypeWindow :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WindowBase64".
@@ -23671,14 +20328,8 @@ instance FromJSVal WindowBase64 where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WindowBase64 where
-  toGObject = GObject . unWindowBase64
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WindowBase64 . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWindowBase64 :: IsGObject obj => obj -> IO WindowBase64
-castToWindowBase64 = castTo gTypeWindowBase64 "WindowBase64"
-
+  typeGType _ = gTypeWindowBase64
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WindowBase64\"]" gTypeWindowBase64 :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WindowTimers".
@@ -23706,14 +20357,8 @@ instance FromJSVal WindowTimers where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WindowTimers where
-  toGObject = GObject . unWindowTimers
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WindowTimers . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWindowTimers :: IsGObject obj => obj -> IO WindowTimers
-castToWindowTimers = castTo gTypeWindowTimers "WindowTimers"
-
+  typeGType _ = gTypeWindowTimers
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WindowTimers\"]" gTypeWindowTimers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Worker".
@@ -23745,14 +20390,8 @@ instance FromJSVal Worker where
 
 instance IsEventTarget Worker
 instance IsGObject Worker where
-  toGObject = GObject . unWorker
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = Worker . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWorker :: IsGObject obj => obj -> IO Worker
-castToWorker = castTo gTypeWorker "Worker"
-
+  typeGType _ = gTypeWorker
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerGlobalScope".
@@ -23784,19 +20423,13 @@ instance FromJSVal WorkerGlobalScope where
 
 class IsEventTarget o => IsWorkerGlobalScope o
 toWorkerGlobalScope :: IsWorkerGlobalScope o => o -> WorkerGlobalScope
-toWorkerGlobalScope = unsafeCastGObject . toGObject
+toWorkerGlobalScope = WorkerGlobalScope . coerce
 
 instance IsWorkerGlobalScope WorkerGlobalScope
 instance IsEventTarget WorkerGlobalScope
 instance IsGObject WorkerGlobalScope where
-  toGObject = GObject . unWorkerGlobalScope
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WorkerGlobalScope . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWorkerGlobalScope :: IsGObject obj => obj -> IO WorkerGlobalScope
-castToWorkerGlobalScope = castTo gTypeWorkerGlobalScope "WorkerGlobalScope"
-
+  typeGType _ = gTypeWorkerGlobalScope
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
@@ -23824,14 +20457,8 @@ instance FromJSVal WorkerLocation where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WorkerLocation where
-  toGObject = GObject . unWorkerLocation
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WorkerLocation . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWorkerLocation :: IsGObject obj => obj -> IO WorkerLocation
-castToWorkerLocation = castTo gTypeWorkerLocation "WorkerLocation"
-
+  typeGType _ = gTypeWorkerLocation
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
@@ -23859,14 +20486,8 @@ instance FromJSVal WorkerNavigator where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject WorkerNavigator where
-  toGObject = GObject . unWorkerNavigator
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = WorkerNavigator . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToWorkerNavigator :: IsGObject obj => obj -> IO WorkerNavigator
-castToWorkerNavigator = castTo gTypeWorkerNavigator "WorkerNavigator"
-
+  typeGType _ = gTypeWorkerNavigator
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequest".
@@ -23898,14 +20519,8 @@ instance FromJSVal XMLHttpRequest where
 
 instance IsEventTarget XMLHttpRequest
 instance IsGObject XMLHttpRequest where
-  toGObject = GObject . unXMLHttpRequest
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XMLHttpRequest . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXMLHttpRequest :: IsGObject obj => obj -> IO XMLHttpRequest
-castToXMLHttpRequest = castTo gTypeXMLHttpRequest "XMLHttpRequest"
-
+  typeGType _ = gTypeXMLHttpRequest
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestProgressEvent".
@@ -23939,14 +20554,8 @@ instance FromJSVal XMLHttpRequestProgressEvent where
 instance IsProgressEvent XMLHttpRequestProgressEvent
 instance IsEvent XMLHttpRequestProgressEvent
 instance IsGObject XMLHttpRequestProgressEvent where
-  toGObject = GObject . unXMLHttpRequestProgressEvent
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XMLHttpRequestProgressEvent . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXMLHttpRequestProgressEvent :: IsGObject obj => obj -> IO XMLHttpRequestProgressEvent
-castToXMLHttpRequestProgressEvent = castTo gTypeXMLHttpRequestProgressEvent "XMLHttpRequestProgressEvent"
-
+  typeGType _ = gTypeXMLHttpRequestProgressEvent
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestUpload".
@@ -23978,14 +20587,8 @@ instance FromJSVal XMLHttpRequestUpload where
 
 instance IsEventTarget XMLHttpRequestUpload
 instance IsGObject XMLHttpRequestUpload where
-  toGObject = GObject . unXMLHttpRequestUpload
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XMLHttpRequestUpload . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXMLHttpRequestUpload :: IsGObject obj => obj -> IO XMLHttpRequestUpload
-castToXMLHttpRequestUpload = castTo gTypeXMLHttpRequestUpload "XMLHttpRequestUpload"
-
+  typeGType _ = gTypeXMLHttpRequestUpload
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
@@ -24013,14 +20616,8 @@ instance FromJSVal XMLSerializer where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XMLSerializer where
-  toGObject = GObject . unXMLSerializer
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XMLSerializer . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXMLSerializer :: IsGObject obj => obj -> IO XMLSerializer
-castToXMLSerializer = castTo gTypeXMLSerializer "XMLSerializer"
-
+  typeGType _ = gTypeXMLSerializer
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
@@ -24048,14 +20645,8 @@ instance FromJSVal XPathEvaluator where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathEvaluator where
-  toGObject = GObject . unXPathEvaluator
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XPathEvaluator . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXPathEvaluator :: IsGObject obj => obj -> IO XPathEvaluator
-castToXPathEvaluator = castTo gTypeXPathEvaluator "XPathEvaluator"
-
+  typeGType _ = gTypeXPathEvaluator
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
@@ -24083,14 +20674,8 @@ instance FromJSVal XPathExpression where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathExpression where
-  toGObject = GObject . unXPathExpression
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XPathExpression . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXPathExpression :: IsGObject obj => obj -> IO XPathExpression
-castToXPathExpression = castTo gTypeXPathExpression "XPathExpression"
-
+  typeGType _ = gTypeXPathExpression
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XPathExpression\"]" gTypeXPathExpression :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
@@ -24118,14 +20703,8 @@ instance FromJSVal XPathNSResolver where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathNSResolver where
-  toGObject = GObject . unXPathNSResolver
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XPathNSResolver . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXPathNSResolver :: IsGObject obj => obj -> IO XPathNSResolver
-castToXPathNSResolver = castTo gTypeXPathNSResolver "XPathNSResolver"
-
+  typeGType _ = gTypeXPathNSResolver
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XPathNSResolver\"]" gTypeXPathNSResolver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
@@ -24153,14 +20732,8 @@ instance FromJSVal XPathResult where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XPathResult where
-  toGObject = GObject . unXPathResult
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XPathResult . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXPathResult :: IsGObject obj => obj -> IO XPathResult
-castToXPathResult = castTo gTypeXPathResult "XPathResult"
-
+  typeGType _ = gTypeXPathResult
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
@@ -24188,13 +20761,7 @@ instance FromJSVal XSLTProcessor where
   {-# INLINE fromJSVal #-}
 
 instance IsGObject XSLTProcessor where
-  toGObject = GObject . unXSLTProcessor
-  {-# INLINE toGObject #-}
-  unsafeCastGObject = XSLTProcessor . unGObject
-  {-# INLINE unsafeCastGObject #-}
-
-castToXSLTProcessor :: IsGObject obj => obj -> IO XSLTProcessor
-castToXSLTProcessor = castTo gTypeXSLTProcessor "XSLTProcessor"
-
+  typeGType _ = gTypeXSLTProcessor
+  {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor :: GType
 

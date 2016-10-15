@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGMatrix
         skewYUnchecked, js_setA, setA, js_getA, getA, js_setB, setB,
         js_getB, getB, js_setC, setC, js_getC, getC, js_setD, setD,
         js_getD, getD, js_setE, setE, js_getE, getE, js_setF, setF,
-        js_getF, getF, SVGMatrix, castToSVGMatrix, gTypeSVGMatrix)
+        js_getF, getF, SVGMatrix(..), gTypeSVGMatrix)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

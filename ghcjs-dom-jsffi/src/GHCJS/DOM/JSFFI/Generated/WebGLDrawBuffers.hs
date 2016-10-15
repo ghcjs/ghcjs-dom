@@ -18,8 +18,8 @@ module GHCJS.DOM.JSFFI.Generated.WebGLDrawBuffers
         pattern DRAW_BUFFER12_WEBGL, pattern DRAW_BUFFER13_WEBGL,
         pattern DRAW_BUFFER14_WEBGL, pattern DRAW_BUFFER15_WEBGL,
         pattern MAX_COLOR_ATTACHMENTS_WEBGL,
-        pattern MAX_DRAW_BUFFERS_WEBGL, WebGLDrawBuffers,
-        castToWebGLDrawBuffers, gTypeWebGLDrawBuffers)
+        pattern MAX_DRAW_BUFFERS_WEBGL, WebGLDrawBuffers(..),
+        gTypeWebGLDrawBuffers)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

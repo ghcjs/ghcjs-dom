@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MemoryInfo
        (js_getUsedJSHeapSize, getUsedJSHeapSize, js_getTotalJSHeapSize,
-        getTotalJSHeapSize, MemoryInfo, castToMemoryInfo, gTypeMemoryInfo)
+        getTotalJSHeapSize, MemoryInfo(..), gTypeMemoryInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

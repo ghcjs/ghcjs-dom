@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedRect
        (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedRect,
-        castToSVGAnimatedRect, gTypeSVGAnimatedRect)
+        getAnimVal, getAnimValUnchecked, SVGAnimatedRect(..),
+        gTypeSVGAnimatedRect)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

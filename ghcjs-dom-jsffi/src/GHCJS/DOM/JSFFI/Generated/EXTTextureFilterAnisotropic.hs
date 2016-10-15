@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.EXTTextureFilterAnisotropic
        (pattern TEXTURE_MAX_ANISOTROPY_EXT,
         pattern MAX_TEXTURE_MAX_ANISOTROPY_EXT,
-        EXTTextureFilterAnisotropic, castToEXTTextureFilterAnisotropic,
-        gTypeEXTTextureFilterAnisotropic)
+        EXTTextureFilterAnisotropic(..), gTypeEXTTextureFilterAnisotropic)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

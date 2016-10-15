@@ -15,8 +15,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLImageElement
         js_getWidth, getWidth, js_getComplete, getComplete, js_setLowsrc,
         setLowsrc, js_getLowsrc, getLowsrc, js_getNaturalHeight,
         getNaturalHeight, js_getNaturalWidth, getNaturalWidth, js_getX,
-        getX, js_getY, getY, HTMLImageElement, castToHTMLImageElement,
-        gTypeHTMLImageElement)
+        getX, js_getY, getY, HTMLImageElement(..), gTypeHTMLImageElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

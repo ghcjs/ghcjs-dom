@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.FormData
-       (js_newFormData, newFormData, js_append, append, FormData,
-        castToFormData, gTypeFormData)
+       (js_newFormData, newFormData, js_append, append, FormData(..),
+        gTypeFormData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

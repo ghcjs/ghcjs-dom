@@ -11,8 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransformList
         createSVGTransformFromMatrix_,
         createSVGTransformFromMatrixUnchecked, js_consolidate, consolidate,
         consolidate_, consolidateUnchecked, js_getNumberOfItems,
-        getNumberOfItems, SVGTransformList, castToSVGTransformList,
-        gTypeSVGTransformList)
+        getNumberOfItems, SVGTransformList(..), gTypeSVGTransformList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

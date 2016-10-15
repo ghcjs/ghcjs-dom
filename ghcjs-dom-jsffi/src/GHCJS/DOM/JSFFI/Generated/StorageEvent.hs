@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.StorageEvent
         js_getOldValue, getOldValue, getOldValueUnchecked, js_getNewValue,
         getNewValue, getNewValueUnchecked, js_getUrl, getUrl,
         js_getStorageArea, getStorageArea, getStorageAreaUnchecked,
-        StorageEvent, castToStorageEvent, gTypeStorageEvent)
+        StorageEvent(..), gTypeStorageEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

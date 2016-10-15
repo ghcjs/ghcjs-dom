@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.4.1.1
+version: 0.5.0.0
 cabal-version: >=1.24
 build-type: Simple
 license: MIT
@@ -36,12 +36,12 @@ library
     buildable: True
 
     if (impl(ghcjs) && flag(jsffi))
-        build-depends: ghcjs-dom-jsffi ==0.4.1.1
+        build-depends: ghcjs-dom-jsffi ==0.5.0.0
     else
         if flag(webkit)
-            build-depends: ghcjs-dom-webkit ==0.4.1.0
+            build-depends: ghcjs-dom-webkit ==0.5.0.0
         else
-            build-depends: ghcjs-dom-jsaddle ==0.4.1.0
+            build-depends: ghcjs-dom-jsaddle ==0.5.0.0
 
     reexported-modules:
             GHCJS.DOM

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Geoposition
        (js_getCoords, getCoords, getCoordsUnchecked, js_getTimestamp,
-        getTimestamp, Geoposition, castToGeoposition, gTypeGeoposition)
+        getTimestamp, Geoposition(..), gTypeGeoposition)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

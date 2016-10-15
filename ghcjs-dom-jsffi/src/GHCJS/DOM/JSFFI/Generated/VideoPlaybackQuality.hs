@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.VideoPlaybackQuality
         getTotalVideoFrames, js_getDroppedVideoFrames,
         getDroppedVideoFrames, js_getCorruptedVideoFrames,
         getCorruptedVideoFrames, js_getTotalFrameDelay, getTotalFrameDelay,
-        VideoPlaybackQuality, castToVideoPlaybackQuality,
-        gTypeVideoPlaybackQuality)
+        VideoPlaybackQuality(..), gTypeVideoPlaybackQuality)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

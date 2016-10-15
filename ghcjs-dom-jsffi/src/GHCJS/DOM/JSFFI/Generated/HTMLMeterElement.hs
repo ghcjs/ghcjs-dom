@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMeterElement
         js_getMin, getMin, js_setMax, setMax, js_getMax, getMax, js_setLow,
         setLow, js_getLow, getLow, js_setHigh, setHigh, js_getHigh,
         getHigh, js_setOptimum, setOptimum, js_getOptimum, getOptimum,
-        js_getLabels, getLabels, getLabelsUnchecked, HTMLMeterElement,
-        castToHTMLMeterElement, gTypeHTMLMeterElement)
+        js_getLabels, getLabels, getLabelsUnchecked, HTMLMeterElement(..),
+        gTypeHTMLMeterElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

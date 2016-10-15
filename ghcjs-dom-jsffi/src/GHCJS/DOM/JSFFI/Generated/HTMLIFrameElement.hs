@@ -14,8 +14,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLIFrameElement
         js_getSrcdoc, getSrcdoc, js_setWidth, setWidth, js_getWidth,
         getWidth, js_getContentDocument, getContentDocument,
         getContentDocumentUnchecked, js_getContentWindow, getContentWindow,
-        getContentWindowUnchecked, HTMLIFrameElement,
-        castToHTMLIFrameElement, gTypeHTMLIFrameElement)
+        getContentWindowUnchecked, HTMLIFrameElement(..),
+        gTypeHTMLIFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

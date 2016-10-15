@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaSource
         js_getActiveSourceBuffers, getActiveSourceBuffers,
         getActiveSourceBuffersUnchecked, js_setDuration, setDuration,
         js_getDuration, getDuration, js_getReadyState, getReadyState,
-        MediaSource, castToMediaSource, gTypeMediaSource)
+        MediaSource(..), gTypeMediaSource)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

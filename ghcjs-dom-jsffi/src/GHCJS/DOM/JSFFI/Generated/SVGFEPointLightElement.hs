@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEPointLightElement
        (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getZ, getZ, getZUnchecked, SVGFEPointLightElement,
-        castToSVGFEPointLightElement, gTypeSVGFEPointLightElement)
+        js_getZ, getZ, getZUnchecked, SVGFEPointLightElement(..),
+        gTypeSVGFEPointLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

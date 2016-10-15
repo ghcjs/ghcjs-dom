@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.TextTrackList
        (js_item, item, item_, itemUnchecked, js_getTrackById,
         getTrackById, getTrackById_, getTrackByIdUnchecked, js_getLength,
-        getLength, addTrack, change, removeTrack, TextTrackList,
-        castToTextTrackList, gTypeTextTrackList)
+        getLength, addTrack, change, removeTrack, TextTrackList(..),
+        gTypeTextTrackList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

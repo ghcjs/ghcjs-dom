@@ -11,8 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
         js_getIntercept, getIntercept, getInterceptUnchecked,
         js_getAmplitude, getAmplitude, getAmplitudeUnchecked,
         js_getExponent, getExponent, getExponentUnchecked, js_getOffset,
-        getOffset, getOffsetUnchecked, SVGComponentTransferFunctionElement,
-        castToSVGComponentTransferFunctionElement,
+        getOffset, getOffsetUnchecked,
+        SVGComponentTransferFunctionElement(..),
         gTypeSVGComponentTransferFunctionElement,
         IsSVGComponentTransferFunctionElement,
         toSVGComponentTransferFunctionElement)

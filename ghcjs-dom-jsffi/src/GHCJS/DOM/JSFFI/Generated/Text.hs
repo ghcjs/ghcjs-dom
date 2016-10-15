@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.Text
        (js_newText, newText, js_splitText, splitText, splitText_,
         splitTextUnchecked, js_replaceWholeText, replaceWholeText,
         replaceWholeText_, replaceWholeTextUnchecked, js_getWholeText,
-        getWholeText, Text, castToText, gTypeText, IsText, toText)
+        getWholeText, Text(..), gTypeText, IsText, toText)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

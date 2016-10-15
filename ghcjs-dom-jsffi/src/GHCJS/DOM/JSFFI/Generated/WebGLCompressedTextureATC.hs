@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLCompressedTextureATC
        (pattern COMPRESSED_RGB_ATC_WEBGL,
         pattern COMPRESSED_RGBA_ATC_EXPLICIT_ALPHA_WEBGL,
         pattern COMPRESSED_RGBA_ATC_INTERPOLATED_ALPHA_WEBGL,
-        WebGLCompressedTextureATC, castToWebGLCompressedTextureATC,
-        gTypeWebGLCompressedTextureATC)
+        WebGLCompressedTextureATC(..), gTypeWebGLCompressedTextureATC)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSFontFaceRule
-       (js_getStyle, getStyle, getStyleUnchecked, CSSFontFaceRule,
-        castToCSSFontFaceRule, gTypeCSSFontFaceRule)
+       (js_getStyle, getStyle, getStyleUnchecked, CSSFontFaceRule(..),
+        gTypeCSSFontFaceRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -21,8 +21,8 @@ module GHCJS.DOM.JSFFI.Generated.Navigator
         js_getProductSub, getProductSub, js_getVendor, getVendor,
         js_getVendorSub, getVendorSub, js_getCookieEnabled,
         getCookieEnabled, js_getOnLine, getOnLine,
-        js_getHardwareConcurrency, getHardwareConcurrency, Navigator,
-        castToNavigator, gTypeNavigator)
+        js_getHardwareConcurrency, getHardwareConcurrency, Navigator(..),
+        gTypeNavigator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

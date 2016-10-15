@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.CharacterData
         substringDataUnchecked, js_appendData, appendData, js_insertData,
         insertData, js_deleteData, deleteData, js_replaceData, replaceData,
         js_setData, setData, js_getData, getData, getDataUnchecked,
-        js_getLength, getLength, CharacterData, castToCharacterData,
-        gTypeCharacterData, IsCharacterData, toCharacterData)
+        js_getLength, getLength, CharacterData(..), gTypeCharacterData,
+        IsCharacterData, toCharacterData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

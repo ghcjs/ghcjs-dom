@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
         setSrc, js_getSrc, getSrc, js_setType, setType, js_getType,
         getType, js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
         getCrossOrigin, js_setNonce, setNonce, js_getNonce, getNonce,
-        HTMLScriptElement, castToHTMLScriptElement, gTypeHTMLScriptElement)
+        HTMLScriptElement(..), gTypeHTMLScriptElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

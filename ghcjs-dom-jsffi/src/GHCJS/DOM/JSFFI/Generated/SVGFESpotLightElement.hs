@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFESpotLightElement
         getPointsAtZUnchecked, js_getSpecularExponent, getSpecularExponent,
         getSpecularExponentUnchecked, js_getLimitingConeAngle,
         getLimitingConeAngle, getLimitingConeAngleUnchecked,
-        SVGFESpotLightElement, castToSVGFESpotLightElement,
-        gTypeSVGFESpotLightElement)
+        SVGFESpotLightElement(..), gTypeSVGFESpotLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

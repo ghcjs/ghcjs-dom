@@ -3,9 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
        (js_close, close, js_importScripts, importScripts, js_getSelf,
         getSelf, getSelfUnchecked, js_getLocation, getLocation,
         getLocationUnchecked, error, offline, online, js_getNavigator,
-        getNavigator, getNavigatorUnchecked, WorkerGlobalScope,
-        castToWorkerGlobalScope, gTypeWorkerGlobalScope,
-        IsWorkerGlobalScope, toWorkerGlobalScope)
+        getNavigator, getNavigatorUnchecked, WorkerGlobalScope(..),
+        gTypeWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

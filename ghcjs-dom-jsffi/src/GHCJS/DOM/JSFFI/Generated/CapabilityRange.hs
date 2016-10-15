@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CapabilityRange
        (js_getMax, getMax, js_getMin, getMin, js_getSupported,
-        getSupported, CapabilityRange, castToCapabilityRange,
-        gTypeCapabilityRange)
+        getSupported, CapabilityRange(..), gTypeCapabilityRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

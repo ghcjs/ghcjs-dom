@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.DataTransferItem
        (js_getAsString, getAsString, js_getAsFile, getAsFile, getAsFile_,
         getAsFileUnchecked, js_getKind, getKind, js_getType, getType,
-        DataTransferItem, castToDataTransferItem, gTypeDataTransferItem)
+        DataTransferItem(..), gTypeDataTransferItem)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

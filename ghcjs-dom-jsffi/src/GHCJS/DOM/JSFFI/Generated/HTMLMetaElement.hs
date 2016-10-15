@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMetaElement
        (js_setContent, setContent, js_getContent, getContent,
         js_setHttpEquiv, setHttpEquiv, js_getHttpEquiv, getHttpEquiv,
         js_setName, setName, js_getName, getName, js_setScheme, setScheme,
-        js_getScheme, getScheme, HTMLMetaElement, castToHTMLMetaElement,
-        gTypeHTMLMetaElement)
+        js_getScheme, getScheme, HTMLMetaElement(..), gTypeHTMLMetaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

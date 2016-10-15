@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.TouchEvent
         getTargetTouchesUnchecked, js_getChangedTouches, getChangedTouches,
         getChangedTouchesUnchecked, js_getCtrlKey, getCtrlKey,
         js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
-        js_getMetaKey, getMetaKey, TouchEvent, castToTouchEvent,
-        gTypeTouchEvent)
+        js_getMetaKey, getMetaKey, TouchEvent(..), gTypeTouchEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

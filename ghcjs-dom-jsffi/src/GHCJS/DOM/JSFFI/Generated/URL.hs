@@ -6,8 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.URL
         js_createObjectURLSource, createObjectURLSource,
         createObjectURLSource_, createObjectURLSourceUnchecked,
         js_createObjectURLStream, createObjectURLStream,
-        createObjectURLStream_, createObjectURLStreamUnchecked, URL,
-        castToURL, gTypeURL)
+        createObjectURLStream_, createObjectURLStreamUnchecked, URL(..),
+        gTypeURL)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -10,8 +10,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGFETurbulenceElement
         getBaseFrequencyYUnchecked, js_getNumOctaves, getNumOctaves,
         getNumOctavesUnchecked, js_getSeed, getSeed, getSeedUnchecked,
         js_getStitchTiles, getStitchTiles, getStitchTilesUnchecked,
-        js_getType, getType, getTypeUnchecked, SVGFETurbulenceElement,
-        castToSVGFETurbulenceElement, gTypeSVGFETurbulenceElement)
+        js_getType, getType, getTypeUnchecked, SVGFETurbulenceElement(..),
+        gTypeSVGFETurbulenceElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

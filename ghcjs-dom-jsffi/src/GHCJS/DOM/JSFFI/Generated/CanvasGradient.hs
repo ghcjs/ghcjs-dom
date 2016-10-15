@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CanvasGradient
-       (js_addColorStop, addColorStop, CanvasGradient,
-        castToCanvasGradient, gTypeCanvasGradient)
+       (js_addColorStop, addColorStop, CanvasGradient(..),
+        gTypeCanvasGradient)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

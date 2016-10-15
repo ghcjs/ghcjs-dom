@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Storage
        (js_key, key, key_, keyUnchecked, js_getItem, getItem, getItem_,
         getItemUnchecked, js_setItem, setItem, js_removeItem, removeItem,
-        js_clear, clear, js_getLength, getLength, Storage, castToStorage,
+        js_clear, clear, js_getLength, getLength, Storage(..),
         gTypeStorage)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

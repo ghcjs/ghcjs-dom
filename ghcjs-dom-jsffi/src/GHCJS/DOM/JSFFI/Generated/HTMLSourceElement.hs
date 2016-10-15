@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLSourceElement
        (js_setSrc, setSrc, js_getSrc, getSrc, js_setType, setType,
         js_getType, getType, js_setMedia, setMedia, js_getMedia, getMedia,
-        HTMLSourceElement, castToHTMLSourceElement, gTypeHTMLSourceElement)
+        HTMLSourceElement(..), gTypeHTMLSourceElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

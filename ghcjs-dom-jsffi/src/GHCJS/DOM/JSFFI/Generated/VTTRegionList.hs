@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.VTTRegionList
        (js_item, item, item_, itemUnchecked, js_getRegionById,
         getRegionById, getRegionById_, getRegionByIdUnchecked,
-        js_getLength, getLength, VTTRegionList, castToVTTRegionList,
-        gTypeVTTRegionList)
+        js_getLength, getLength, VTTRegionList(..), gTypeVTTRegionList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -55,8 +55,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLMediaElement
         webKitCurrentPlaybackTargetIsWirelessChanged,
         webKitPlaybackTargetAvailabilityChanged, js_setSrcObject,
         setSrcObject, js_getSrcObject, getSrcObject, getSrcObjectUnchecked,
-        HTMLMediaElement, castToHTMLMediaElement, gTypeHTMLMediaElement,
-        IsHTMLMediaElement, toHTMLMediaElement)
+        HTMLMediaElement(..), gTypeHTMLMediaElement, IsHTMLMediaElement,
+        toHTMLMediaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

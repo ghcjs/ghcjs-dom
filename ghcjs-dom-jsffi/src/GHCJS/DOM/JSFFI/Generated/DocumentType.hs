@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.DocumentType
         getNotationsUnchecked, js_getPublicId, getPublicId,
         getPublicIdUnchecked, js_getSystemId, getSystemId,
         getSystemIdUnchecked, js_getInternalSubset, getInternalSubset,
-        getInternalSubsetUnchecked, DocumentType, castToDocumentType,
-        gTypeDocumentType)
+        getInternalSubsetUnchecked, DocumentType(..), gTypeDocumentType)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

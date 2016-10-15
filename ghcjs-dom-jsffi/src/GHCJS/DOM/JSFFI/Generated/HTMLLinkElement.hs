@@ -9,8 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
         getSizesUnchecked, js_setTarget, setTarget, js_getTarget,
         getTarget, js_setType, setType, js_getType, getType, js_getSheet,
         getSheet, getSheetUnchecked, js_getRelList, getRelList,
-        getRelListUnchecked, HTMLLinkElement, castToHTMLLinkElement,
-        gTypeHTMLLinkElement)
+        getRelListUnchecked, HTMLLinkElement(..), gTypeHTMLLinkElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

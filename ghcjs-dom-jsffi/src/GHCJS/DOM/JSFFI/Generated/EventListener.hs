@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.EventListener
-       (js_handleEvent, handleEvent, EventListener, castToEventListener,
+       (js_handleEvent, handleEvent, EventListener(..),
         gTypeEventListener)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

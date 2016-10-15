@@ -18,8 +18,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLSelectElement
         getValueUnchecked, js_getWillValidate, getWillValidate,
         js_getValidity, getValidity, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, HTMLSelectElement,
-        castToHTMLSelectElement, gTypeHTMLSelectElement)
+        getLabels, getLabelsUnchecked, HTMLSelectElement(..),
+        gTypeHTMLSelectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

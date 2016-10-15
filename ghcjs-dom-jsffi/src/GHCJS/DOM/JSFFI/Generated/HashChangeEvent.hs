@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HashChangeEvent
        (js_initHashChangeEvent, initHashChangeEvent, js_getOldURL,
-        getOldURL, js_getNewURL, getNewURL, HashChangeEvent,
-        castToHashChangeEvent, gTypeHashChangeEvent)
+        getOldURL, js_getNewURL, getNewURL, HashChangeEvent(..),
+        gTypeHashChangeEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

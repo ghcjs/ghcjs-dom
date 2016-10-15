@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.ClientRect
        (js_getTop, getTop, js_getRight, getRight, js_getBottom, getBottom,
         js_getLeft, getLeft, js_getWidth, getWidth, js_getHeight,
-        getHeight, ClientRect, castToClientRect, gTypeClientRect)
+        getHeight, ClientRect(..), gTypeClientRect)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

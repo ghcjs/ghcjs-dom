@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGStringList
         insertItemBefore, insertItemBefore_, js_replaceItem, replaceItem,
         replaceItem_, js_removeItem, removeItem, removeItem_,
         js_appendItem, appendItem, appendItem_, js_getNumberOfItems,
-        getNumberOfItems, SVGStringList, castToSVGStringList,
-        gTypeSVGStringList)
+        getNumberOfItems, SVGStringList(..), gTypeSVGStringList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

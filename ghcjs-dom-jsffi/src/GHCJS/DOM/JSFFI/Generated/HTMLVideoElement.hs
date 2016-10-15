@@ -19,8 +19,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLVideoElement
         js_getWebkitDecodedFrameCount, getWebkitDecodedFrameCount,
         js_getWebkitDroppedFrameCount, getWebkitDroppedFrameCount,
         js_getWebkitPresentationMode, getWebkitPresentationMode,
-        webKitPresentationModeChanged, HTMLVideoElement,
-        castToHTMLVideoElement, gTypeHTMLVideoElement)
+        webKitPresentationModeChanged, HTMLVideoElement(..),
+        gTypeHTMLVideoElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGImageElement
         js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
         getHeightUnchecked, js_getPreserveAspectRatio,
         getPreserveAspectRatio, getPreserveAspectRatioUnchecked,
-        SVGImageElement, castToSVGImageElement, gTypeSVGImageElement)
+        SVGImageElement(..), gTypeSVGImageElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

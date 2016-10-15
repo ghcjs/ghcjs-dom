@@ -8,8 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCDataChannel
         js_getId, getId, js_getReadyState, getReadyState,
         js_getBufferedAmount, getBufferedAmount, js_setBinaryType,
         setBinaryType, js_getBinaryType, getBinaryType, open, error,
-        closeEvent, message, RTCDataChannel, castToRTCDataChannel,
-        gTypeRTCDataChannel)
+        closeEvent, message, RTCDataChannel(..), gTypeRTCDataChannel)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLUListElement
        (js_setCompact, setCompact, js_getCompact, getCompact, js_setType,
-        setType, js_getType, getType, HTMLUListElement,
-        castToHTMLUListElement, gTypeHTMLUListElement)
+        setType, js_getType, getType, HTMLUListElement(..),
+        gTypeHTMLUListElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

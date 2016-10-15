@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGURIReference
-       (js_getHref, getHref, getHrefUnchecked, SVGURIReference,
-        castToSVGURIReference, gTypeSVGURIReference)
+       (js_getHref, getHref, getHrefUnchecked, SVGURIReference(..),
+        gTypeSVGURIReference)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

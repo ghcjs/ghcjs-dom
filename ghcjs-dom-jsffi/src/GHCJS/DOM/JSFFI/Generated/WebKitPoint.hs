@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.WebKitPoint
        (js_newWebKitPoint, newWebKitPoint, js_newWebKitPoint',
         newWebKitPoint', js_setX, setX, js_getX, getX, js_setY, setY,
-        js_getY, getY, WebKitPoint, castToWebKitPoint, gTypeWebKitPoint)
+        js_getY, getY, WebKitPoint(..), gTypeWebKitPoint)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

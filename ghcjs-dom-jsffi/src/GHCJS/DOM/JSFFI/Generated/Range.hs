@@ -29,8 +29,7 @@ module GHCJS.DOM.JSFFI.Generated.Range
         js_getEndContainer, getEndContainer, getEndContainerUnchecked,
         js_getEndOffset, getEndOffset, js_getCollapsed, getCollapsed,
         js_getCommonAncestorContainer, getCommonAncestorContainer,
-        getCommonAncestorContainerUnchecked, Range, castToRange,
-        gTypeRange)
+        getCommonAncestorContainerUnchecked, Range(..), gTypeRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

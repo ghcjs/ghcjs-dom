@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.NodeIterator
         getFilter, getFilterUnchecked, js_getExpandEntityReferences,
         getExpandEntityReferences, js_getReferenceNode, getReferenceNode,
         getReferenceNodeUnchecked, js_getPointerBeforeReferenceNode,
-        getPointerBeforeReferenceNode, NodeIterator, castToNodeIterator,
-        gTypeNodeIterator)
+        getPointerBeforeReferenceNode, NodeIterator(..), gTypeNodeIterator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLHtmlElement
        (js_setVersion, setVersion, js_getVersion, getVersion,
         js_setManifest, setManifest, js_getManifest, getManifest,
-        HTMLHtmlElement, castToHTMLHtmlElement, gTypeHTMLHtmlElement)
+        HTMLHtmlElement(..), gTypeHTMLHtmlElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

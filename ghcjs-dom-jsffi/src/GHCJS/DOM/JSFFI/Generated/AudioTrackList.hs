@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.AudioTrackList
        (js_item, item, item_, itemUnchecked, js_getTrackById,
         getTrackById, getTrackById_, getTrackByIdUnchecked, js_getLength,
-        getLength, change, addTrack, removeTrack, AudioTrackList,
-        castToAudioTrackList, gTypeAudioTrackList)
+        getLength, change, addTrack, removeTrack, AudioTrackList(..),
+        gTypeAudioTrackList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

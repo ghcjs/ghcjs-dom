@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.AnalyserNode
         setMaxDecibels, js_getMaxDecibels, getMaxDecibels,
         js_setSmoothingTimeConstant, setSmoothingTimeConstant,
         js_getSmoothingTimeConstant, getSmoothingTimeConstant,
-        AnalyserNode, castToAnalyserNode, gTypeAnalyserNode)
+        AnalyserNode(..), gTypeAnalyserNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

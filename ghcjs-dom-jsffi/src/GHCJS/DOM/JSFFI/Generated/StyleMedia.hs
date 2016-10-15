@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.StyleMedia
        (js_matchMedium, matchMedium, matchMedium_, js_getType, getType,
-        StyleMedia, castToStyleMedia, gTypeStyleMedia)
+        StyleMedia(..), gTypeStyleMedia)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

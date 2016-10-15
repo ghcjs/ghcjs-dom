@@ -37,7 +37,7 @@ module GHCJS.DOM.JSFFI.Generated.InternalSettings
         setBackgroundShouldExtendBeyondPage,
         js_setScrollingTreeIncludesFrames, setScrollingTreeIncludesFrames,
         js_setMinimumTimerInterval, setMinimumTimerInterval,
-        InternalSettings, castToInternalSettings, gTypeInternalSettings)
+        InternalSettings(..), gTypeInternalSettings)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

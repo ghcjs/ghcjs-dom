@@ -9,8 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
         js_getValue, getValue, getValueUnchecked, js_getWillValidate,
         getWillValidate, js_getValidity, getValidity, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, HTMLOutputElement,
-        castToHTMLOutputElement, gTypeHTMLOutputElement)
+        getLabels, getLabelsUnchecked, HTMLOutputElement(..),
+        gTypeHTMLOutputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

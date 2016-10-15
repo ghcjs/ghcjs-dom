@@ -9,8 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.VTTRegion
         js_setViewportAnchorX, setViewportAnchorX, js_getViewportAnchorX,
         getViewportAnchorX, js_setViewportAnchorY, setViewportAnchorY,
         js_getViewportAnchorY, getViewportAnchorY, js_setScroll, setScroll,
-        js_getScroll, getScroll, VTTRegion, castToVTTRegion,
-        gTypeVTTRegion)
+        js_getScroll, getScroll, VTTRegion(..), gTypeVTTRegion)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

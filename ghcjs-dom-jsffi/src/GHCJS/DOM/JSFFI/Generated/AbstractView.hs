@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.AbstractView
        (js_getDocument, getDocument, getDocumentUnchecked,
         js_getStyleMedia, getStyleMedia, getStyleMediaUnchecked,
-        AbstractView, castToAbstractView, gTypeAbstractView)
+        AbstractView(..), gTypeAbstractView)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

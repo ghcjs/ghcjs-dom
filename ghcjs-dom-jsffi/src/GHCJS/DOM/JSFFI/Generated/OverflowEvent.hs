@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.OverflowEvent
        (pattern HORIZONTAL, pattern VERTICAL, pattern BOTH, js_getOrient,
         getOrient, js_getHorizontalOverflow, getHorizontalOverflow,
-        js_getVerticalOverflow, getVerticalOverflow, OverflowEvent,
-        castToOverflowEvent, gTypeOverflowEvent)
+        js_getVerticalOverflow, getVerticalOverflow, OverflowEvent(..),
+        gTypeOverflowEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

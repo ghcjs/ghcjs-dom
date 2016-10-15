@@ -10,8 +10,8 @@ module GHCJS.DOM.JSFFI.Generated.AudioBufferSourceNode
         js_setLoop, setLoop, js_getLoop, getLoop, js_setLoopStart,
         setLoopStart, js_getLoopStart, getLoopStart, js_setLoopEnd,
         setLoopEnd, js_getLoopEnd, getLoopEnd, js_setLooping, setLooping,
-        js_getLooping, getLooping, ended, AudioBufferSourceNode,
-        castToAudioBufferSourceNode, gTypeAudioBufferSourceNode)
+        js_getLooping, getLooping, ended, AudioBufferSourceNode(..),
+        gTypeAudioBufferSourceNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

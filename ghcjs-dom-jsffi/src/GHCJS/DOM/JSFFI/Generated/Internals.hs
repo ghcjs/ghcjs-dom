@@ -225,7 +225,7 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         pattern LAYER_TREE_INCLUDES_CONTENT_LAYERS, js_getSettings,
         getSettings, getSettingsUnchecked, js_getWorkerThreadCount,
         getWorkerThreadCount, js_getConsoleProfiles, getConsoleProfiles,
-        Internals, castToInternals, gTypeInternals)
+        Internals(..), gTypeInternals)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

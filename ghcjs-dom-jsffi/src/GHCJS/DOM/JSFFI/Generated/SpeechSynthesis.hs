@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
        (js_speak, speak, js_cancel, cancel, js_pause, pause, js_resume,
         resume, js_getVoices, getVoices, getVoices_, js_getPending,
         getPending, js_getSpeaking, getSpeaking, js_getPaused, getPaused,
-        SpeechSynthesis, castToSpeechSynthesis, gTypeSpeechSynthesis)
+        SpeechSynthesis(..), gTypeSpeechSynthesis)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

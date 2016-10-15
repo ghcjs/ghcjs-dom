@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPaint
         pattern SVG_PAINTTYPE_URI_RGBCOLOR,
         pattern SVG_PAINTTYPE_URI_RGBCOLOR_ICCCOLOR,
         pattern SVG_PAINTTYPE_URI, js_getPaintType, getPaintType,
-        js_getUri, getUri, SVGPaint, castToSVGPaint, gTypeSVGPaint)
+        js_getUri, getUri, SVGPaint(..), gTypeSVGPaint)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

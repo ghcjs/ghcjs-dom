@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLModElement
        (js_setCite, setCite, js_getCite, getCite, js_setDateTime,
-        setDateTime, js_getDateTime, getDateTime, HTMLModElement,
-        castToHTMLModElement, gTypeHTMLModElement)
+        setDateTime, js_getDateTime, getDateTime, HTMLModElement(..),
+        gTypeHTMLModElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

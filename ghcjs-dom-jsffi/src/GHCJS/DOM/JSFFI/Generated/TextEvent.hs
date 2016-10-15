@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.TextEvent
-       (js_initTextEvent, initTextEvent, js_getData, getData, TextEvent,
-        castToTextEvent, gTypeTextEvent)
+       (js_initTextEvent, initTextEvent, js_getData, getData,
+        TextEvent(..), gTypeTextEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

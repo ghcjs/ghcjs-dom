@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFETileElement
-       (js_getIn1, getIn1, getIn1Unchecked, SVGFETileElement,
-        castToSVGFETileElement, gTypeSVGFETileElement)
+       (js_getIn1, getIn1, getIn1Unchecked, SVGFETileElement(..),
+        gTypeSVGFETileElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

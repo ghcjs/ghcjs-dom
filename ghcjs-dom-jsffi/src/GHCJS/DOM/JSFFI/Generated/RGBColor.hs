@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RGBColor
        (js_getRed, getRed, getRedUnchecked, js_getGreen, getGreen,
-        getGreenUnchecked, js_getBlue, getBlue, getBlueUnchecked, RGBColor,
-        castToRGBColor, gTypeRGBColor)
+        getGreenUnchecked, js_getBlue, getBlue, getBlueUnchecked,
+        RGBColor(..), gTypeRGBColor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.CSSPageRule
        (js_setSelectorText, setSelectorText, js_getSelectorText,
         getSelectorText, getSelectorTextUnchecked, js_getStyle, getStyle,
-        getStyleUnchecked, CSSPageRule, castToCSSPageRule,
-        gTypeCSSPageRule)
+        getStyleUnchecked, CSSPageRule(..), gTypeCSSPageRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

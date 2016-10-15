@@ -15,8 +15,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextContentElement
         pattern LENGTHADJUST_SPACING,
         pattern LENGTHADJUST_SPACINGANDGLYPHS, js_getTextLength,
         getTextLength, getTextLengthUnchecked, js_getLengthAdjust,
-        getLengthAdjust, getLengthAdjustUnchecked, SVGTextContentElement,
-        castToSVGTextContentElement, gTypeSVGTextContentElement,
+        getLengthAdjust, getLengthAdjustUnchecked,
+        SVGTextContentElement(..), gTypeSVGTextContentElement,
         IsSVGTextContentElement, toSVGTextContentElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

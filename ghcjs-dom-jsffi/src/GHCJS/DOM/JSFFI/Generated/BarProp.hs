@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.BarProp
-       (js_getVisible, getVisible, BarProp, castToBarProp, gTypeBarProp)
-       where
+       (js_getVisible, getVisible, BarProp(..), gTypeBarProp) where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)

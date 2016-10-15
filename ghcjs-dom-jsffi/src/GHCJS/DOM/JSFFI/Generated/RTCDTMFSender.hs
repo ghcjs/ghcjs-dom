@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCDTMFSender
        (js_insertDTMF, insertDTMF, js_getCanInsertDTMF, getCanInsertDTMF,
         js_getTrack, getTrack, getTrackUnchecked, js_getToneBuffer,
         getToneBuffer, js_getDuration, getDuration, js_getInterToneGap,
-        getInterToneGap, toneChange, RTCDTMFSender, castToRTCDTMFSender,
-        gTypeRTCDTMFSender)
+        getInterToneGap, toneChange, RTCDTMFSender(..), gTypeRTCDTMFSender)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

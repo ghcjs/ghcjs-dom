@@ -6,8 +6,8 @@ module GHCJS.DOM.JSFFI.Generated.BiquadFilterNode
         js_setType, setType, js_getType, getType, js_getFrequency,
         getFrequency, getFrequencyUnchecked, js_getDetune, getDetune,
         getDetuneUnchecked, js_getQ, getQ, getQUnchecked, js_getGain,
-        getGain, getGainUnchecked, BiquadFilterNode,
-        castToBiquadFilterNode, gTypeBiquadFilterNode)
+        getGain, getGainUnchecked, BiquadFilterNode(..),
+        gTypeBiquadFilterNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

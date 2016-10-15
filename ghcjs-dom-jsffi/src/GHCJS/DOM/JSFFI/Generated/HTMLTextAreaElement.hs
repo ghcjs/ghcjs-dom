@@ -27,8 +27,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         js_getSelectionDirection, getSelectionDirection, js_setAutocorrect,
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, getAutocapitalizeUnchecked, HTMLTextAreaElement,
-        castToHTMLTextAreaElement, gTypeHTMLTextAreaElement)
+        getAutocapitalize, getAutocapitalizeUnchecked,
+        HTMLTextAreaElement(..), gTypeHTMLTextAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

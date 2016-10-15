@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedPreserveAspectRatio
        (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedPreserveAspectRatio,
-        castToSVGAnimatedPreserveAspectRatio,
+        getAnimVal, getAnimValUnchecked,
+        SVGAnimatedPreserveAspectRatio(..),
         gTypeSVGAnimatedPreserveAspectRatio)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

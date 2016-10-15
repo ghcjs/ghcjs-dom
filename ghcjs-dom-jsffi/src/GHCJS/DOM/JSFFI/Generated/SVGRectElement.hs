@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGRectElement
        (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
         js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
         getHeightUnchecked, js_getRx, getRx, getRxUnchecked, js_getRy,
-        getRy, getRyUnchecked, SVGRectElement, castToSVGRectElement,
-        gTypeSVGRectElement)
+        getRy, getRyUnchecked, SVGRectElement(..), gTypeSVGRectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

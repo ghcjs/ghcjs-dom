@@ -117,8 +117,8 @@ module GHCJS.DOM.JSFFI.Generated.Document
         js_getVisibilityState, getVisibilityState, js_getHidden, getHidden,
         js_getSecurityPolicy, getSecurityPolicy,
         getSecurityPolicyUnchecked, js_getCurrentScript, getCurrentScript,
-        getCurrentScriptUnchecked, js_getOrigin, getOrigin, Document,
-        castToDocument, gTypeDocument, IsDocument, toDocument)
+        getCurrentScriptUnchecked, js_getOrigin, getOrigin, Document(..),
+        gTypeDocument, IsDocument, toDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

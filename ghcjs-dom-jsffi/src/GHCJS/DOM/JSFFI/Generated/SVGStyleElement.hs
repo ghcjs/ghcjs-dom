@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGStyleElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
         js_setType, setType, js_getType, getType, js_setMedia, setMedia,
         js_getMedia, getMedia, js_setTitle, setTitle, js_getTitle,
-        getTitle, SVGStyleElement, castToSVGStyleElement,
-        gTypeSVGStyleElement)
+        getTitle, SVGStyleElement(..), gTypeSVGStyleElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

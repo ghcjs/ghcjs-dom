@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGLinearGradientElement
        (js_getX1, getX1, getX1Unchecked, js_getY1, getY1, getY1Unchecked,
         js_getX2, getX2, getX2Unchecked, js_getY2, getY2, getY2Unchecked,
-        SVGLinearGradientElement, castToSVGLinearGradientElement,
-        gTypeSVGLinearGradientElement)
+        SVGLinearGradientElement(..), gTypeSVGLinearGradientElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.WaveShaperNode
        (js_setCurve, setCurve, js_getCurve, getCurve, getCurveUnchecked,
         js_setOversample, setOversample, js_getOversample, getOversample,
-        WaveShaperNode, castToWaveShaperNode, gTypeWaveShaperNode)
+        WaveShaperNode(..), gTypeWaveShaperNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

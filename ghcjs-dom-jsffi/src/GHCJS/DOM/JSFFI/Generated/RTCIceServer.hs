@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RTCIceServer
        (js_getUrls, getUrls, js_getUsername, getUsername,
-        js_getCredential, getCredential, RTCIceServer, castToRTCIceServer,
+        js_getCredential, getCredential, RTCIceServer(..),
         gTypeRTCIceServer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

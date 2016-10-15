@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLFontElement
        (js_setColor, setColor, js_getColor, getColor, js_setFace, setFace,
         js_getFace, getFace, js_setSize, setSize, js_getSize, getSize,
-        HTMLFontElement, castToHTMLFontElement, gTypeHTMLFontElement)
+        HTMLFontElement(..), gTypeHTMLFontElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

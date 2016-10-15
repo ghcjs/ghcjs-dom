@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.WorkerLocation
        (js_toString, toString, toString_, js_getHref, getHref,
         js_getProtocol, getProtocol, js_getHost, getHost, js_getHostname,
         getHostname, js_getPort, getPort, js_getPathname, getPathname,
-        js_getSearch, getSearch, js_getHash, getHash, WorkerLocation,
-        castToWorkerLocation, gTypeWorkerLocation)
+        js_getSearch, getSearch, js_getHash, getHash, WorkerLocation(..),
+        gTypeWorkerLocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.CSSSupportsRule
        (js_insertRule, insertRule, insertRule_, js_deleteRule, deleteRule,
         js_getCssRules, getCssRules, getCssRulesUnchecked,
-        js_getConditionText, getConditionText, CSSSupportsRule,
-        castToCSSSupportsRule, gTypeCSSSupportsRule)
+        js_getConditionText, getConditionText, CSSSupportsRule(..),
+        gTypeCSSSupportsRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

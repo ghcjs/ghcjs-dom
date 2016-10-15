@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.DOMTokenList
        (js_item, item, item_, itemUnchecked, js_contains, contains,
         contains_, js_add, add, js_remove, remove, js_toggle, toggle,
         toggle_, js_toString, toString, toString_, js_getLength, getLength,
-        DOMTokenList, castToDOMTokenList, gTypeDOMTokenList,
-        IsDOMTokenList, toDOMTokenList)
+        DOMTokenList(..), gTypeDOMTokenList, IsDOMTokenList,
+        toDOMTokenList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

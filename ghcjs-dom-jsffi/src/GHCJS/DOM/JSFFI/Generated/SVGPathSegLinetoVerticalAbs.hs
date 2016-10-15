@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoVerticalAbs
-       (js_setY, setY, js_getY, getY, SVGPathSegLinetoVerticalAbs,
-        castToSVGPathSegLinetoVerticalAbs,
+       (js_setY, setY, js_getY, getY, SVGPathSegLinetoVerticalAbs(..),
         gTypeSVGPathSegLinetoVerticalAbs)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

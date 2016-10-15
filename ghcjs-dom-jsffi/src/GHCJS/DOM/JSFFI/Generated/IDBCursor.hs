@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBCursor
         js_continue, continue, js_delete, delete, delete_, deleteUnchecked,
         js_getSource, getSource, getSourceUnchecked, js_getDirection,
         getDirection, js_getKey, getKey, js_getPrimaryKey, getPrimaryKey,
-        IDBCursor, castToIDBCursor, gTypeIDBCursor, IsIDBCursor,
-        toIDBCursor)
+        IDBCursor(..), gTypeIDBCursor, IsIDBCursor, toIDBCursor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

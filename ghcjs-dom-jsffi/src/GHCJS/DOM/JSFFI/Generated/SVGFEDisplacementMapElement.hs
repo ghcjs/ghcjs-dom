@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDisplacementMapElement
         getScaleUnchecked, js_getXChannelSelector, getXChannelSelector,
         getXChannelSelectorUnchecked, js_getYChannelSelector,
         getYChannelSelector, getYChannelSelectorUnchecked,
-        SVGFEDisplacementMapElement, castToSVGFEDisplacementMapElement,
-        gTypeSVGFEDisplacementMapElement)
+        SVGFEDisplacementMapElement(..), gTypeSVGFEDisplacementMapElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

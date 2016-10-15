@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaStreamAudioSourceNode
        (js_getMediaStream, getMediaStream, getMediaStreamUnchecked,
-        MediaStreamAudioSourceNode, castToMediaStreamAudioSourceNode,
-        gTypeMediaStreamAudioSourceNode)
+        MediaStreamAudioSourceNode(..), gTypeMediaStreamAudioSourceNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

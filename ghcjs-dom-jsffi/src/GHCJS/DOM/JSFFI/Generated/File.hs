@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.File
        (js_getName, getName, js_getLastModifiedDate, getLastModifiedDate,
-        getLastModifiedDateUnchecked, File, castToFile, gTypeFile)
+        getLastModifiedDateUnchecked, File(..), gTypeFile)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

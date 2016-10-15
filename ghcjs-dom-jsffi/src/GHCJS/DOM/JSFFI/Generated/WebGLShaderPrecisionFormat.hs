@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLShaderPrecisionFormat
        (js_getRangeMin, getRangeMin, js_getRangeMax, getRangeMax,
-        js_getPrecision, getPrecision, WebGLShaderPrecisionFormat,
-        castToWebGLShaderPrecisionFormat, gTypeWebGLShaderPrecisionFormat)
+        js_getPrecision, getPrecision, WebGLShaderPrecisionFormat(..),
+        gTypeWebGLShaderPrecisionFormat)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -17,8 +17,8 @@ module GHCJS.DOM.JSFFI.Generated.InspectorFrontendHost
         sendMessageToBackend, js_unbufferedLog, unbufferedLog,
         js_isUnderTest, isUnderTest, isUnderTest_, js_beep, beep,
         js_canInspectWorkers, canInspectWorkers, canInspectWorkers_,
-        js_canSaveAs, canSaveAs, canSaveAs_, InspectorFrontendHost,
-        castToInspectorFrontendHost, gTypeInspectorFrontendHost)
+        js_canSaveAs, canSaveAs, canSaveAs_, InspectorFrontendHost(..),
+        gTypeInspectorFrontendHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.Counter
        (js_getIdentifier, getIdentifier, js_getListStyle, getListStyle,
-        js_getSeparator, getSeparator, Counter, castToCounter,
-        gTypeCounter)
+        js_getSeparator, getSeparator, Counter(..), gTypeCounter)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

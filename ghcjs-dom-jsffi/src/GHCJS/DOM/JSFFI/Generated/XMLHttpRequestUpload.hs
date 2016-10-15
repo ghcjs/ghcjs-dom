@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.XMLHttpRequestUpload
        (abort, error, load, loadEnd, loadStart, progress,
-        XMLHttpRequestUpload, castToXMLHttpRequestUpload,
-        gTypeXMLHttpRequestUpload)
+        XMLHttpRequestUpload(..), gTypeXMLHttpRequestUpload)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

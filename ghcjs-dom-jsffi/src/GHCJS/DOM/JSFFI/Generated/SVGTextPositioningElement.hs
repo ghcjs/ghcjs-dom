@@ -3,9 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextPositioningElement
        (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
         js_getDx, getDx, getDxUnchecked, js_getDy, getDy, getDyUnchecked,
         js_getRotate, getRotate, getRotateUnchecked,
-        SVGTextPositioningElement, castToSVGTextPositioningElement,
-        gTypeSVGTextPositioningElement, IsSVGTextPositioningElement,
-        toSVGTextPositioningElement)
+        SVGTextPositioningElement(..), gTypeSVGTextPositioningElement,
+        IsSVGTextPositioningElement, toSVGTextPositioningElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

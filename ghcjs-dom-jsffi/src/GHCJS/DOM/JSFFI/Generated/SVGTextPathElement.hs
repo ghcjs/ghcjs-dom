@@ -8,8 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextPathElement
         pattern TEXTPATH_SPACINGTYPE_EXACT, js_getStartOffset,
         getStartOffset, getStartOffsetUnchecked, js_getMethod, getMethod,
         getMethodUnchecked, js_getSpacing, getSpacing, getSpacingUnchecked,
-        SVGTextPathElement, castToSVGTextPathElement,
-        gTypeSVGTextPathElement)
+        SVGTextPathElement(..), gTypeSVGTextPathElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

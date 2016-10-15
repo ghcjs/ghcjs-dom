@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.OESTextureHalfFloat
-       (pattern HALF_FLOAT_OES, OESTextureHalfFloat,
-        castToOESTextureHalfFloat, gTypeOESTextureHalfFloat)
+       (pattern HALF_FLOAT_OES, OESTextureHalfFloat(..),
+        gTypeOESTextureHalfFloat)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

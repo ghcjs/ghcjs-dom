@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AudioDestinationNode
-       (js_getMaxChannelCount, getMaxChannelCount, AudioDestinationNode,
-        castToAudioDestinationNode, gTypeAudioDestinationNode)
+       (js_getMaxChannelCount, getMaxChannelCount,
+        AudioDestinationNode(..), gTypeAudioDestinationNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

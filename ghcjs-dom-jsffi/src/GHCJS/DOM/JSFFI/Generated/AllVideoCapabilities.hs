@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.AllVideoCapabilities
         getHeightUnchecked, js_getFrameRate, getFrameRate,
         getFrameRateUnchecked, js_getAspectRatio, getAspectRatio,
         getAspectRatioUnchecked, js_getFacingMode, getFacingMode,
-        AllVideoCapabilities, castToAllVideoCapabilities,
-        gTypeAllVideoCapabilities)
+        AllVideoCapabilities(..), gTypeAllVideoCapabilities)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

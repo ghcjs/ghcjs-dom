@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.PositionError
        (pattern PERMISSION_DENIED, pattern POSITION_UNAVAILABLE,
         pattern TIMEOUT, js_getCode, getCode, js_getMessage, getMessage,
-        PositionError, castToPositionError, gTypePositionError)
+        PositionError(..), gTypePositionError)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

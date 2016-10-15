@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
         getAlign, js_setHeight, setHeight, js_getHeight, getHeight,
         js_setName, setName, js_getName, getName, js_setSrc, setSrc,
         js_getSrc, getSrc, js_setType, setType, js_getType, getType,
-        js_setWidth, setWidth, js_getWidth, getWidth, HTMLEmbedElement,
-        castToHTMLEmbedElement, gTypeHTMLEmbedElement)
+        js_setWidth, setWidth, js_getWidth, getWidth, HTMLEmbedElement(..),
+        gTypeHTMLEmbedElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

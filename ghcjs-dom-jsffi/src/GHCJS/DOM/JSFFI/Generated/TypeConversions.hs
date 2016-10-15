@@ -31,8 +31,8 @@ module GHCJS.DOM.JSFFI.Generated.TypeConversions
         getTestUnsignedShort, js_setTestEnforceRangeUnsignedShort,
         setTestEnforceRangeUnsignedShort,
         js_getTestEnforceRangeUnsignedShort,
-        getTestEnforceRangeUnsignedShort, TypeConversions,
-        castToTypeConversions, gTypeTypeConversions)
+        getTestEnforceRangeUnsignedShort, TypeConversions(..),
+        gTypeTypeConversions)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

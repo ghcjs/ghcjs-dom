@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.StyleSheetList
        (js_item, item, item_, itemUnchecked, js__get, _get, _get_,
-        _getUnchecked, js_getLength, getLength, StyleSheetList,
-        castToStyleSheetList, gTypeStyleSheetList)
+        _getUnchecked, js_getLength, getLength, StyleSheetList(..),
+        gTypeStyleSheetList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

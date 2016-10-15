@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLParagraphElement
        (js_setAlign, setAlign, js_getAlign, getAlign,
-        HTMLParagraphElement, castToHTMLParagraphElement,
-        gTypeHTMLParagraphElement)
+        HTMLParagraphElement(..), gTypeHTMLParagraphElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

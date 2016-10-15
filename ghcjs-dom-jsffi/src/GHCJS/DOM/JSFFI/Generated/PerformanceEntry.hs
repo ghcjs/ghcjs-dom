@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.PerformanceEntry
        (js_getName, getName, js_getEntryType, getEntryType,
         js_getStartTime, getStartTime, js_getDuration, getDuration,
-        PerformanceEntry, castToPerformanceEntry, gTypePerformanceEntry,
-        IsPerformanceEntry, toPerformanceEntry)
+        PerformanceEntry(..), gTypePerformanceEntry, IsPerformanceEntry,
+        toPerformanceEntry)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

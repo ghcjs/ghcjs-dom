@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.FileReader
         js_abort, abort, pattern EMPTY, pattern LOADING, pattern DONE,
         js_getReadyState, getReadyState, js_getResult, getResult,
         js_getError, getError, getErrorUnchecked, loadStart, progress,
-        load, abortEvent, error, loadEnd, FileReader, castToFileReader,
-        gTypeFileReader)
+        load, abortEvent, error, loadEnd, FileReader(..), gTypeFileReader)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

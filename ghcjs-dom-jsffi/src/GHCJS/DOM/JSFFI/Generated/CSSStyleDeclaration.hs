@@ -12,8 +12,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSStyleDeclaration
         js_isPropertyImplicit, isPropertyImplicit, isPropertyImplicit_,
         js_setCssText, setCssText, js_getCssText, getCssText,
         getCssTextUnchecked, js_getLength, getLength, js_getParentRule,
-        getParentRule, getParentRuleUnchecked, CSSStyleDeclaration,
-        castToCSSStyleDeclaration, gTypeCSSStyleDeclaration)
+        getParentRule, getParentRuleUnchecked, CSSStyleDeclaration(..),
+        gTypeCSSStyleDeclaration)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

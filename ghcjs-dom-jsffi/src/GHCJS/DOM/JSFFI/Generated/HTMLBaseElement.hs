@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLBaseElement
        (js_setHref, setHref, js_getHref, getHref, getHrefUnchecked,
-        js_setTarget, setTarget, js_getTarget, getTarget, HTMLBaseElement,
-        castToHTMLBaseElement, gTypeHTMLBaseElement)
+        js_setTarget, setTarget, js_getTarget, getTarget,
+        HTMLBaseElement(..), gTypeHTMLBaseElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

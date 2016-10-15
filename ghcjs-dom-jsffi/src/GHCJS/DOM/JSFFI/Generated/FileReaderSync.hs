@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.FileReaderSync
         readAsArrayBuffer, readAsArrayBuffer_, readAsArrayBufferUnchecked,
         js_readAsBinaryString, readAsBinaryString, readAsBinaryString_,
         js_readAsText, readAsText, readAsText_, js_readAsDataURL,
-        readAsDataURL, readAsDataURL_, FileReaderSync,
-        castToFileReaderSync, gTypeFileReaderSync)
+        readAsDataURL, readAsDataURL_, FileReaderSync(..),
+        gTypeFileReaderSync)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

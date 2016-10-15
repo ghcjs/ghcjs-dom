@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.WebGLDebugShaders
        (js_getTranslatedShaderSource, getTranslatedShaderSource,
         getTranslatedShaderSource_, getTranslatedShaderSourceUnchecked,
-        WebGLDebugShaders, castToWebGLDebugShaders, gTypeWebGLDebugShaders)
+        WebGLDebugShaders(..), gTypeWebGLDebugShaders)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

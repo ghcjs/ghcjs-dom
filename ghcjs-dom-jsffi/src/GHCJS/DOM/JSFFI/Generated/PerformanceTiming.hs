@@ -15,8 +15,7 @@ module GHCJS.DOM.JSFFI.Generated.PerformanceTiming
         getDomContentLoadedEventStart, js_getDomContentLoadedEventEnd,
         getDomContentLoadedEventEnd, js_getDomComplete, getDomComplete,
         js_getLoadEventStart, getLoadEventStart, js_getLoadEventEnd,
-        getLoadEventEnd, PerformanceTiming, castToPerformanceTiming,
-        gTypePerformanceTiming)
+        getLoadEventEnd, PerformanceTiming(..), gTypePerformanceTiming)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

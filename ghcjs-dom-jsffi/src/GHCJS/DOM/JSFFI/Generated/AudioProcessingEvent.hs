@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.AudioProcessingEvent
        (js_getPlaybackTime, getPlaybackTime, js_getInputBuffer,
         getInputBuffer, getInputBufferUnchecked, js_getOutputBuffer,
-        getOutputBuffer, getOutputBufferUnchecked, AudioProcessingEvent,
-        castToAudioProcessingEvent, gTypeAudioProcessingEvent)
+        getOutputBuffer, getOutputBufferUnchecked,
+        AudioProcessingEvent(..), gTypeAudioProcessingEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

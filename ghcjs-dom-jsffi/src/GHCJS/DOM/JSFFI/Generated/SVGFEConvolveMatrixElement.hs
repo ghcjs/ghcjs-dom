@@ -14,8 +14,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEConvolveMatrixElement
         js_getKernelUnitLengthY, getKernelUnitLengthY,
         getKernelUnitLengthYUnchecked, js_getPreserveAlpha,
         getPreserveAlpha, getPreserveAlphaUnchecked,
-        SVGFEConvolveMatrixElement, castToSVGFEConvolveMatrixElement,
-        gTypeSVGFEConvolveMatrixElement)
+        SVGFEConvolveMatrixElement(..), gTypeSVGFEConvolveMatrixElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

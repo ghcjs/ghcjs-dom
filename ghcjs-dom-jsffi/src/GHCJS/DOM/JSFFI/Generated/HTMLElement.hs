@@ -19,8 +19,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         js_getContentEditable, getContentEditable,
         getContentEditableUnchecked, js_getIsContentEditable,
         getIsContentEditable, js_setSpellcheck, setSpellcheck,
-        js_getSpellcheck, getSpellcheck, HTMLElement, castToHTMLElement,
-        gTypeHTMLElement, IsHTMLElement, toHTMLElement)
+        js_getSpellcheck, getSpellcheck, HTMLElement(..), gTypeHTMLElement,
+        IsHTMLElement, toHTMLElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

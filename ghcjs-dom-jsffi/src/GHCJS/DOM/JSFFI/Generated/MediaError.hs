@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.MediaError
        (pattern MEDIA_ERR_ABORTED, pattern MEDIA_ERR_NETWORK,
         pattern MEDIA_ERR_DECODE, pattern MEDIA_ERR_SRC_NOT_SUPPORTED,
-        pattern MEDIA_ERR_ENCRYPTED, js_getCode, getCode, MediaError,
-        castToMediaError, gTypeMediaError)
+        pattern MEDIA_ERR_ENCRYPTED, js_getCode, getCode, MediaError(..),
+        gTypeMediaError)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

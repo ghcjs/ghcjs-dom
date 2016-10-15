@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaTrackConstraints
        (js_getMandatory, getMandatory, getMandatoryUnchecked,
-        js_getOptional, getOptional, MediaTrackConstraints,
-        castToMediaTrackConstraints, gTypeMediaTrackConstraints)
+        js_getOptional, getOptional, MediaTrackConstraints(..),
+        gTypeMediaTrackConstraints)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

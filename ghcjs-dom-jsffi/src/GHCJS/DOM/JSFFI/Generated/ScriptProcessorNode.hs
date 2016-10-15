@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ScriptProcessorNode
        (audioProcess, js_getBufferSize, getBufferSize,
-        ScriptProcessorNode, castToScriptProcessorNode,
-        gTypeScriptProcessorNode)
+        ScriptProcessorNode(..), gTypeScriptProcessorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

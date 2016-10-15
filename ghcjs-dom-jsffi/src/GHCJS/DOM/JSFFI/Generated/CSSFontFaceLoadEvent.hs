@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.CSSFontFaceLoadEvent
        (js_getFontface, getFontface, getFontfaceUnchecked, js_getError,
-        getError, getErrorUnchecked, CSSFontFaceLoadEvent,
-        castToCSSFontFaceLoadEvent, gTypeCSSFontFaceLoadEvent)
+        getError, getErrorUnchecked, CSSFontFaceLoadEvent(..),
+        gTypeCSSFontFaceLoadEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

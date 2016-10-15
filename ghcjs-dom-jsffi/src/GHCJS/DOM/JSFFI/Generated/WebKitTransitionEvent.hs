@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.WebKitTransitionEvent
        (js_getPropertyName, getPropertyName, js_getElapsedTime,
         getElapsedTime, js_getPseudoElement, getPseudoElement,
-        WebKitTransitionEvent, castToWebKitTransitionEvent,
-        gTypeWebKitTransitionEvent)
+        WebKitTransitionEvent(..), gTypeWebKitTransitionEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.TimeRanges
        (js_start, start, start_, js_end, end, end_, js_getLength,
-        getLength, TimeRanges, castToTimeRanges, gTypeTimeRanges)
+        getLength, TimeRanges(..), gTypeTimeRanges)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

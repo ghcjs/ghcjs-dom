@@ -11,8 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.MouseEvent
         getX, js_getY, getY, js_getFromElement, getFromElement,
         getFromElementUnchecked, js_getToElement, getToElement,
         getToElementUnchecked, js_getDataTransfer, getDataTransfer,
-        getDataTransferUnchecked, MouseEvent, castToMouseEvent,
-        gTypeMouseEvent, IsMouseEvent, toMouseEvent)
+        getDataTransferUnchecked, MouseEvent(..), gTypeMouseEvent,
+        IsMouseEvent, toMouseEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -20,8 +20,8 @@ module GHCJS.DOM.JSFFI.Generated.WebKitCSSMatrix
         getM32, js_setM33, setM33, js_getM33, getM33, js_setM34, setM34,
         js_getM34, getM34, js_setM41, setM41, js_getM41, getM41, js_setM42,
         setM42, js_getM42, getM42, js_setM43, setM43, js_getM43, getM43,
-        js_setM44, setM44, js_getM44, getM44, WebKitCSSMatrix,
-        castToWebKitCSSMatrix, gTypeWebKitCSSMatrix)
+        js_setM44, setM44, js_getM44, getM44, WebKitCSSMatrix(..),
+        gTypeWebKitCSSMatrix)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

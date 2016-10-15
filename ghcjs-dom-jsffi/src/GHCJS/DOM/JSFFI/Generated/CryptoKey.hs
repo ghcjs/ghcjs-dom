@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.CryptoKey
        (js_getType, getType, js_getExtractable, getExtractable,
         js_getAlgorithm, getAlgorithm, getAlgorithmUnchecked, js_getUsages,
-        getUsages, CryptoKey, castToCryptoKey, gTypeCryptoKey)
+        getUsages, CryptoKey(..), gTypeCryptoKey)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

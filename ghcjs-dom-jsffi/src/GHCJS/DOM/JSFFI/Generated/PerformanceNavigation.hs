@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.PerformanceNavigation
        (pattern TYPE_NAVIGATE, pattern TYPE_RELOAD,
         pattern TYPE_BACK_FORWARD, pattern TYPE_RESERVED, js_getType,
         getType, js_getRedirectCount, getRedirectCount,
-        PerformanceNavigation, castToPerformanceNavigation,
-        gTypePerformanceNavigation)
+        PerformanceNavigation(..), gTypePerformanceNavigation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

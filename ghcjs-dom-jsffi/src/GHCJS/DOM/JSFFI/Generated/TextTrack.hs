@@ -9,8 +9,8 @@ module GHCJS.DOM.JSFFI.Generated.TextTrack
         js_getMode, getMode, js_getCues, getCues, getCuesUnchecked,
         js_getActiveCues, getActiveCues, getActiveCuesUnchecked, cueChange,
         js_getRegions, getRegions, getRegionsUnchecked, js_getSourceBuffer,
-        getSourceBuffer, getSourceBufferUnchecked, TextTrack,
-        castToTextTrack, gTypeTextTrack)
+        getSourceBuffer, getSourceBufferUnchecked, TextTrack(..),
+        gTypeTextTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

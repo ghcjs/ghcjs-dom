@@ -16,7 +16,7 @@ module GHCJS.DOM.JSFFI.Generated.Selection
         getBaseNode, getBaseNodeUnchecked, js_getBaseOffset, getBaseOffset,
         js_getExtentNode, getExtentNode, getExtentNodeUnchecked,
         js_getExtentOffset, getExtentOffset, js_getType, getType,
-        Selection, castToSelection, gTypeSelection)
+        Selection(..), gTypeSelection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

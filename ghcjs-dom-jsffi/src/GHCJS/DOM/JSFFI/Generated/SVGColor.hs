@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGColor
         pattern SVG_COLORTYPE_UNKNOWN, pattern SVG_COLORTYPE_RGBCOLOR,
         pattern SVG_COLORTYPE_RGBCOLOR_ICCCOLOR,
         pattern SVG_COLORTYPE_CURRENTCOLOR, js_getColorType, getColorType,
-        js_getRgbColor, getRgbColor, getRgbColorUnchecked, SVGColor,
-        castToSVGColor, gTypeSVGColor, IsSVGColor, toSVGColor)
+        js_getRgbColor, getRgbColor, getRgbColorUnchecked, SVGColor(..),
+        gTypeSVGColor, IsSVGColor, toSVGColor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

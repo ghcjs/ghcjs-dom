@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.Coordinates
         getAccuracy, js_getAltitudeAccuracy, getAltitudeAccuracy,
         getAltitudeAccuracyUnchecked, js_getHeading, getHeading,
         getHeadingUnchecked, js_getSpeed, getSpeed, getSpeedUnchecked,
-        Coordinates, castToCoordinates, gTypeCoordinates)
+        Coordinates(..), gTypeCoordinates)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

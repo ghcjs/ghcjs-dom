@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.DeviceMotionEvent
         getAccelerationIncludingGravity,
         getAccelerationIncludingGravityUnchecked, js_getRotationRate,
         getRotationRate, getRotationRateUnchecked, js_getInterval,
-        getInterval, DeviceMotionEvent, castToDeviceMotionEvent,
-        gTypeDeviceMotionEvent)
+        getInterval, DeviceMotionEvent(..), gTypeDeviceMotionEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

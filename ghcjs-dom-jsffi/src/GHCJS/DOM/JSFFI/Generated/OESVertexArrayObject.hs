@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.OESVertexArrayObject
         js_deleteVertexArrayOES, deleteVertexArrayOES, js_isVertexArrayOES,
         isVertexArrayOES, isVertexArrayOES_, js_bindVertexArrayOES,
         bindVertexArrayOES, pattern VERTEX_ARRAY_BINDING_OES,
-        OESVertexArrayObject, castToOESVertexArrayObject,
-        gTypeOESVertexArrayObject)
+        OESVertexArrayObject(..), gTypeOESVertexArrayObject)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

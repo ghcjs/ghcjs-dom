@@ -224,8 +224,8 @@ module GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
         pattern COMPRESSED_SRGB8_ALPHA8_ETC2_EAC,
         pattern TEXTURE_IMMUTABLE_FORMAT, pattern MAX_ELEMENT_INDEX,
         pattern NUM_SAMPLE_COUNTS, pattern TEXTURE_IMMUTABLE_LEVELS,
-        pattern TIMEOUT_IGNORED, WebGL2RenderingContext,
-        castToWebGL2RenderingContext, gTypeWebGL2RenderingContext)
+        pattern TIMEOUT_IGNORED, WebGL2RenderingContext(..),
+        gTypeWebGL2RenderingContext)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

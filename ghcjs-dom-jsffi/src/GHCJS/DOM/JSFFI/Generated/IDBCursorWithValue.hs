@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.IDBCursorWithValue
-       (js_getValue, getValue, IDBCursorWithValue,
-        castToIDBCursorWithValue, gTypeIDBCursorWithValue)
+       (js_getValue, getValue, IDBCursorWithValue(..),
+        gTypeIDBCursorWithValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

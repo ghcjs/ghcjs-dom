@@ -20,8 +20,8 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
         getIceGatheringState, js_getIceConnectionState,
         getIceConnectionState, negotiationNeeded, iceCandidate,
         signalingStateChange, addStreamEvent, removeStreamEvent,
-        iceConnectionStateChange, dataChannel, RTCPeerConnection,
-        castToRTCPeerConnection, gTypeRTCPeerConnection)
+        iceConnectionStateChange, dataChannel, RTCPeerConnection(..),
+        gTypeRTCPeerConnection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

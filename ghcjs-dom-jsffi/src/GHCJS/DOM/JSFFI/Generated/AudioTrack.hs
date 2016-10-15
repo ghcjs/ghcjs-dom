@@ -4,7 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioTrack
         js_getLabel, getLabel, js_setLanguage, setLanguage, js_getLanguage,
         getLanguage, js_setEnabled, setEnabled, js_getEnabled, getEnabled,
         js_getSourceBuffer, getSourceBuffer, getSourceBufferUnchecked,
-        AudioTrack, castToAudioTrack, gTypeAudioTrack)
+        AudioTrack(..), gTypeAudioTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

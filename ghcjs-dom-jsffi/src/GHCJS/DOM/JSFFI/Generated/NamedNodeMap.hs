@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.NamedNodeMap
         js_setNamedItemNS, setNamedItemNS, setNamedItemNS_,
         setNamedItemNSUnchecked, js_removeNamedItemNS, removeNamedItemNS,
         removeNamedItemNS_, removeNamedItemNSUnchecked, js_getLength,
-        getLength, NamedNodeMap, castToNamedNodeMap, gTypeNamedNodeMap)
+        getLength, NamedNodeMap(..), gTypeNamedNodeMap)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

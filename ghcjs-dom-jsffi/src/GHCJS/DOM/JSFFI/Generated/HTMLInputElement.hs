@@ -54,8 +54,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLInputElement
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
         getAutocapitalize, getAutocapitalizeUnchecked, js_setCapture,
-        setCapture, js_getCapture, getCapture, HTMLInputElement,
-        castToHTMLInputElement, gTypeHTMLInputElement)
+        setCapture, js_getCapture, getCapture, HTMLInputElement(..),
+        gTypeHTMLInputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

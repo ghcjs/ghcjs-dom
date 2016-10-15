@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.ProcessingInstruction
        (js_getTarget, getTarget, getTargetUnchecked, js_getSheet,
-        getSheet, getSheetUnchecked, ProcessingInstruction,
-        castToProcessingInstruction, gTypeProcessingInstruction)
+        getSheet, getSheetUnchecked, ProcessingInstruction(..),
+        gTypeProcessingInstruction)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

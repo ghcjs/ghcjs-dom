@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.BeforeUnloadEvent
        (js_setReturnValue, setReturnValue, js_getReturnValue,
-        getReturnValue, BeforeUnloadEvent, castToBeforeUnloadEvent,
-        gTypeBeforeUnloadEvent)
+        getReturnValue, BeforeUnloadEvent(..), gTypeBeforeUnloadEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

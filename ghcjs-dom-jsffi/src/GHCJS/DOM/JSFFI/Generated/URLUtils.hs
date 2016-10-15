@@ -11,8 +11,8 @@ module GHCJS.DOM.JSFFI.Generated.URLUtils
         getPort, getPortUnchecked, js_setPathname, setPathname,
         js_getPathname, getPathname, getPathnameUnchecked, js_setSearch,
         setSearch, js_getSearch, getSearch, getSearchUnchecked, js_setHash,
-        setHash, js_getHash, getHash, getHashUnchecked, URLUtils,
-        castToURLUtils, gTypeURLUtils)
+        setHash, js_getHash, getHash, getHashUnchecked, URLUtils(..),
+        gTypeURLUtils)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

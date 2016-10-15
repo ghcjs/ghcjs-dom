@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.MutationEvent
         pattern ADDITION, pattern REMOVAL, js_getRelatedNode,
         getRelatedNode, getRelatedNodeUnchecked, js_getPrevValue,
         getPrevValue, js_getNewValue, getNewValue, js_getAttrName,
-        getAttrName, js_getAttrChange, getAttrChange, MutationEvent,
-        castToMutationEvent, gTypeMutationEvent)
+        getAttrName, js_getAttrChange, getAttrChange, MutationEvent(..),
+        gTypeMutationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

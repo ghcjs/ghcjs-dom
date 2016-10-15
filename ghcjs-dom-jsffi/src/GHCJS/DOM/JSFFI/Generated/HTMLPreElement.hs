@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLPreElement
        (js_setWidth, setWidth, js_getWidth, getWidth, js_setWrap, setWrap,
-        js_getWrap, getWrap, HTMLPreElement, castToHTMLPreElement,
-        gTypeHTMLPreElement)
+        js_getWrap, getWrap, HTMLPreElement(..), gTypeHTMLPreElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

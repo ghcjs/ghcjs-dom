@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SQLResultSetRowList
        (js_item, item, item_, js_getLength, getLength,
-        SQLResultSetRowList, castToSQLResultSetRowList,
-        gTypeSQLResultSetRowList)
+        SQLResultSetRowList(..), gTypeSQLResultSetRowList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

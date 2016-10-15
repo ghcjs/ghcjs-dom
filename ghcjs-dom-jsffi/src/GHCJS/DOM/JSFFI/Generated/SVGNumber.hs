@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGNumber
-       (js_setValue, setValue, js_getValue, getValue, SVGNumber,
-        castToSVGNumber, gTypeSVGNumber)
+       (js_setValue, setValue, js_getValue, getValue, SVGNumber(..),
+        gTypeSVGNumber)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

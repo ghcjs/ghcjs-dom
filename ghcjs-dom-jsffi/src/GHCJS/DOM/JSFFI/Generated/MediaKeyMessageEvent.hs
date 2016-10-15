@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeyMessageEvent
        (js_getMessage, getMessage, getMessageUnchecked,
-        js_getDestinationURL, getDestinationURL, MediaKeyMessageEvent,
-        castToMediaKeyMessageEvent, gTypeMediaKeyMessageEvent)
+        js_getDestinationURL, getDestinationURL, MediaKeyMessageEvent(..),
+        gTypeMediaKeyMessageEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

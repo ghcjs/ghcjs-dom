@@ -20,7 +20,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAnchorElement
         js_getSearch, getSearch, getSearchUnchecked, js_getOrigin,
         getOrigin, getOriginUnchecked, js_setText, setText, js_getText,
         getText, js_getRelList, getRelList, getRelListUnchecked,
-        HTMLAnchorElement, castToHTMLAnchorElement, gTypeHTMLAnchorElement)
+        HTMLAnchorElement(..), gTypeHTMLAnchorElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RTCIceCandidateEvent
        (js_getCandidate, getCandidate, getCandidateUnchecked,
-        RTCIceCandidateEvent, castToRTCIceCandidateEvent,
-        gTypeRTCIceCandidateEvent)
+        RTCIceCandidateEvent(..), gTypeRTCIceCandidateEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

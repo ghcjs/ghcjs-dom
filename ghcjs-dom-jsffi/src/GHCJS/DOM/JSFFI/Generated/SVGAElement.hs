@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAElement
-       (js_getTarget, getTarget, getTargetUnchecked, SVGAElement,
-        castToSVGAElement, gTypeSVGAElement)
+       (js_getTarget, getTarget, getTargetUnchecked, SVGAElement(..),
+        gTypeSVGAElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

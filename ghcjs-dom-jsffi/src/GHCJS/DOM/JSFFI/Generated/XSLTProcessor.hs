@@ -8,7 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.XSLTProcessor
         js_getParameter, getParameter, getParameter_,
         getParameterUnchecked, js_removeParameter, removeParameter,
         js_clearParameters, clearParameters, js_reset, reset,
-        XSLTProcessor, castToXSLTProcessor, gTypeXSLTProcessor)
+        XSLTProcessor(..), gTypeXSLTProcessor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

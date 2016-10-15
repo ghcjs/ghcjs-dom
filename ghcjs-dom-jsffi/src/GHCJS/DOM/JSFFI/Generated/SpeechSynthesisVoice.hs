@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SpeechSynthesisVoice
        (js_getVoiceURI, getVoiceURI, js_getName, getName, js_getLang,
         getLang, js_getLocalService, getLocalService, js_getDefault,
-        getDefault, SpeechSynthesisVoice, castToSpeechSynthesisVoice,
-        gTypeSpeechSynthesisVoice)
+        getDefault, SpeechSynthesisVoice(..), gTypeSpeechSynthesisVoice)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

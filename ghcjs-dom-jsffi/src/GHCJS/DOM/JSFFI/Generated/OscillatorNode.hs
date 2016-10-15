@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.OscillatorNode
         pattern PLAYING_STATE, pattern FINISHED_STATE, js_setType, setType,
         js_getType, getType, js_getPlaybackState, getPlaybackState,
         js_getFrequency, getFrequency, getFrequencyUnchecked, js_getDetune,
-        getDetune, getDetuneUnchecked, ended, OscillatorNode,
-        castToOscillatorNode, gTypeOscillatorNode)
+        getDetune, getDetuneUnchecked, ended, OscillatorNode(..),
+        gTypeOscillatorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

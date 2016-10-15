@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.OfflineAudioCompletionEvent
        (js_getRenderedBuffer, getRenderedBuffer,
-        getRenderedBufferUnchecked, OfflineAudioCompletionEvent,
-        castToOfflineAudioCompletionEvent,
+        getRenderedBufferUnchecked, OfflineAudioCompletionEvent(..),
         gTypeOfflineAudioCompletionEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaSourceStates
         getHeightUnchecked, js_getFrameRate, getFrameRate,
         getFrameRateUnchecked, js_getAspectRatio, getAspectRatio,
         getAspectRatioUnchecked, js_getFacingMode, getFacingMode,
-        js_getVolume, getVolume, getVolumeUnchecked, MediaSourceStates,
-        castToMediaSourceStates, gTypeMediaSourceStates)
+        js_getVolume, getVolume, getVolumeUnchecked, MediaSourceStates(..),
+        gTypeMediaSourceStates)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DelayNode
-       (js_getDelayTime, getDelayTime, getDelayTimeUnchecked, DelayNode,
-        castToDelayNode, gTypeDelayNode)
+       (js_getDelayTime, getDelayTime, getDelayTimeUnchecked,
+        DelayNode(..), gTypeDelayNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

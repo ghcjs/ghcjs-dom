@@ -17,8 +17,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFormElement
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
         getAutocapitalize, getAutocapitalizeUnchecked, autocomplete,
-        autocompleteerror, HTMLFormElement, castToHTMLFormElement,
-        gTypeHTMLFormElement)
+        autocompleteerror, HTMLFormElement(..), gTypeHTMLFormElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
         getSrclang, js_setLabel, setLabel, js_getLabel, getLabel,
         js_setDefault, setDefault, js_getDefault, getDefault,
         js_getReadyState, getReadyState, js_getTrack, getTrack,
-        getTrackUnchecked, HTMLTrackElement, castToHTMLTrackElement,
-        gTypeHTMLTrackElement)
+        getTrackUnchecked, HTMLTrackElement(..), gTypeHTMLTrackElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEBlendElement
         pattern SVG_FEBLEND_MODE_DARKEN, pattern SVG_FEBLEND_MODE_LIGHTEN,
         js_getIn1, getIn1, getIn1Unchecked, js_getIn2, getIn2,
         getIn2Unchecked, js_getMode, getMode, getModeUnchecked,
-        SVGFEBlendElement, castToSVGFEBlendElement, gTypeSVGFEBlendElement)
+        SVGFEBlendElement(..), gTypeSVGFEBlendElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

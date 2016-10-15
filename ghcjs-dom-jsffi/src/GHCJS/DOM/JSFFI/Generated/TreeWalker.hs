@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.TreeWalker
         getFilter, getFilterUnchecked, js_getExpandEntityReferences,
         getExpandEntityReferences, js_setCurrentNode, setCurrentNode,
         js_getCurrentNode, getCurrentNode, getCurrentNodeUnchecked,
-        TreeWalker, castToTreeWalker, gTypeTreeWalker)
+        TreeWalker(..), gTypeTreeWalker)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

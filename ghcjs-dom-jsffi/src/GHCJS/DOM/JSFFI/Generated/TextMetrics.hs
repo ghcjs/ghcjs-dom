@@ -1,8 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.TextMetrics
-       (js_getWidth, getWidth, TextMetrics, castToTextMetrics,
-        gTypeTextMetrics)
-       where
+       (js_getWidth, getWidth, TextMetrics(..), gTypeTextMetrics) where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)

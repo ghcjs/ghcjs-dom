@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedNumber
        (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
-        js_getAnimVal, getAnimVal, SVGAnimatedNumber,
-        castToSVGAnimatedNumber, gTypeSVGAnimatedNumber)
+        js_getAnimVal, getAnimVal, SVGAnimatedNumber(..),
+        gTypeSVGAnimatedNumber)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

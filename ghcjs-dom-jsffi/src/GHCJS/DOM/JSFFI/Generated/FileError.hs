@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.FileError
         pattern NO_MODIFICATION_ALLOWED_ERR, pattern INVALID_STATE_ERR,
         pattern SYNTAX_ERR, pattern INVALID_MODIFICATION_ERR,
         pattern QUOTA_EXCEEDED_ERR, pattern TYPE_MISMATCH_ERR,
-        pattern PATH_EXISTS_ERR, js_getCode, getCode, FileError,
-        castToFileError, gTypeFileError)
+        pattern PATH_EXISTS_ERR, js_getCode, getCode, FileError(..),
+        gTypeFileError)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

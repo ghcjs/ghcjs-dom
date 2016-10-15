@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGZoomEvent
         js_getPreviousTranslate, getPreviousTranslate,
         getPreviousTranslateUnchecked, js_getNewScale, getNewScale,
         js_getNewTranslate, getNewTranslate, getNewTranslateUnchecked,
-        SVGZoomEvent, castToSVGZoomEvent, gTypeSVGZoomEvent)
+        SVGZoomEvent(..), gTypeSVGZoomEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

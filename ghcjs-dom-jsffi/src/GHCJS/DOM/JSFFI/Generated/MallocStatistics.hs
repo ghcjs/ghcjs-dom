@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.MallocStatistics
        (js_getReservedVMBytes, getReservedVMBytes, js_getCommittedVMBytes,
         getCommittedVMBytes, js_getFreeListBytes, getFreeListBytes,
-        MallocStatistics, castToMallocStatistics, gTypeMallocStatistics)
+        MallocStatistics(..), gTypeMallocStatistics)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

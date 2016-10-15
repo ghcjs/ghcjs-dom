@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.SVGZoomAndPan
        (pattern SVG_ZOOMANDPAN_UNKNOWN, pattern SVG_ZOOMANDPAN_DISABLE,
         pattern SVG_ZOOMANDPAN_MAGNIFY, js_setZoomAndPan, setZoomAndPan,
-        js_getZoomAndPan, getZoomAndPan, SVGZoomAndPan,
-        castToSVGZoomAndPan, gTypeSVGZoomAndPan)
+        js_getZoomAndPan, getZoomAndPan, SVGZoomAndPan(..),
+        gTypeSVGZoomAndPan)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

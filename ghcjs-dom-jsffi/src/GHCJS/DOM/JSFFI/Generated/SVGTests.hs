@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGTests
         getRequiredFeaturesUnchecked, js_getRequiredExtensions,
         getRequiredExtensions, getRequiredExtensionsUnchecked,
         js_getSystemLanguage, getSystemLanguage,
-        getSystemLanguageUnchecked, SVGTests, castToSVGTests,
-        gTypeSVGTests)
+        getSystemLanguageUnchecked, SVGTests(..), gTypeSVGTests)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

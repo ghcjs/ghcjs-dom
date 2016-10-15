@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.WebGLContextAttributes
         setPremultipliedAlpha, js_getPremultipliedAlpha,
         getPremultipliedAlpha, js_setPreserveDrawingBuffer,
         setPreserveDrawingBuffer, js_getPreserveDrawingBuffer,
-        getPreserveDrawingBuffer, WebGLContextAttributes,
-        castToWebGLContextAttributes, gTypeWebGLContextAttributes)
+        getPreserveDrawingBuffer, WebGLContextAttributes(..),
+        gTypeWebGLContextAttributes)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

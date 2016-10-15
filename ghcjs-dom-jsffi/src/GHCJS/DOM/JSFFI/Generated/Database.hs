@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Database
        (js_changeVersion, changeVersion, js_transaction, transaction,
         js_readTransaction, readTransaction, js_getVersion, getVersion,
-        Database, castToDatabase, gTypeDatabase)
+        Database(..), gTypeDatabase)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

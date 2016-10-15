@@ -9,8 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.Location
         getPathname, js_setSearch, setSearch, js_getSearch, getSearch,
         js_setHash, setHash, js_getHash, getHash, js_getOrigin, getOrigin,
         js_getAncestorOrigins, getAncestorOrigins,
-        getAncestorOriginsUnchecked, Location, castToLocation,
-        gTypeLocation)
+        getAncestorOriginsUnchecked, Location(..), gTypeLocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

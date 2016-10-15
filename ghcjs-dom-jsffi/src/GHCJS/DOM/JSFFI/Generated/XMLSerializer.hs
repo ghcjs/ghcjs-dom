@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.XMLSerializer
        (js_newXMLSerializer, newXMLSerializer, js_serializeToString,
-        serializeToString, serializeToString_, XMLSerializer,
-        castToXMLSerializer, gTypeXMLSerializer)
+        serializeToString, serializeToString_, XMLSerializer(..),
+        gTypeXMLSerializer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

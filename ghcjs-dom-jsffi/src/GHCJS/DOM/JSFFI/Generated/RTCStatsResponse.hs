@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RTCStatsResponse
        (js_result, result, result_, js_namedItem, namedItem, namedItem_,
-        namedItemUnchecked, RTCStatsResponse, castToRTCStatsResponse,
-        gTypeRTCStatsResponse)
+        namedItemUnchecked, RTCStatsResponse(..), gTypeRTCStatsResponse)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

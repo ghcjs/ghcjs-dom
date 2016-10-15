@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedEnumeration
        (js_setBaseVal, setBaseVal, js_getBaseVal, getBaseVal,
-        js_getAnimVal, getAnimVal, SVGAnimatedEnumeration,
-        castToSVGAnimatedEnumeration, gTypeSVGAnimatedEnumeration)
+        js_getAnimVal, getAnimVal, SVGAnimatedEnumeration(..),
+        gTypeSVGAnimatedEnumeration)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.CSSStyleSheet
         js_addRule, addRule, addRule_, js_removeRule, removeRule,
         js_getOwnerRule, getOwnerRule, getOwnerRuleUnchecked,
         js_getCssRules, getCssRules, getCssRulesUnchecked, js_getRules,
-        getRules, getRulesUnchecked, CSSStyleSheet, castToCSSStyleSheet,
-        gTypeCSSStyleSheet)
+        getRules, getRulesUnchecked, CSSStyleSheet(..), gTypeCSSStyleSheet)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

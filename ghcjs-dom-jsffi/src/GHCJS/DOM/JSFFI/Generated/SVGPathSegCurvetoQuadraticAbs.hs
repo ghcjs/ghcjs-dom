@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegCurvetoQuadraticAbs
        (js_setX, setX, js_getX, getX, js_setY, setY, js_getY, getY,
         js_setX1, setX1, js_getX1, getX1, js_setY1, setY1, js_getY1, getY1,
-        SVGPathSegCurvetoQuadraticAbs, castToSVGPathSegCurvetoQuadraticAbs,
+        SVGPathSegCurvetoQuadraticAbs(..),
         gTypeSVGPathSegCurvetoQuadraticAbs)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeys
        (js_newMediaKeys, newMediaKeys, js_createSession, createSession,
         createSession_, createSessionUnchecked, js_isTypeSupported,
         isTypeSupported, isTypeSupported_, js_getKeySystem, getKeySystem,
-        MediaKeys, castToMediaKeys, gTypeMediaKeys)
+        MediaKeys(..), gTypeMediaKeys)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

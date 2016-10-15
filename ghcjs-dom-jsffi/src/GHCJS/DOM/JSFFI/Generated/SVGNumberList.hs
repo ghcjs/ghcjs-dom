@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGNumberList
         replaceItem, replaceItem_, replaceItemUnchecked, js_removeItem,
         removeItem, removeItem_, removeItemUnchecked, js_appendItem,
         appendItem, appendItem_, appendItemUnchecked, js_getNumberOfItems,
-        getNumberOfItems, SVGNumberList, castToSVGNumberList,
-        gTypeSVGNumberList)
+        getNumberOfItems, SVGNumberList(..), gTypeSVGNumberList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

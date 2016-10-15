@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.UIEvent
         getViewUnchecked, js_getDetail, getDetail, js_getKeyCode,
         getKeyCode, js_getCharCode, getCharCode, js_getLayerX, getLayerX,
         js_getLayerY, getLayerY, js_getPageX, getPageX, js_getPageY,
-        getPageY, js_getWhich, getWhich, UIEvent, castToUIEvent,
-        gTypeUIEvent, IsUIEvent, toUIEvent)
+        getPageY, js_getWhich, getWhich, UIEvent(..), gTypeUIEvent,
+        IsUIEvent, toUIEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

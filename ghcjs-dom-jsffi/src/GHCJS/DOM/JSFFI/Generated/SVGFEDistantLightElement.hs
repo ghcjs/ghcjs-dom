@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEDistantLightElement
        (js_getAzimuth, getAzimuth, getAzimuthUnchecked, js_getElevation,
-        getElevation, getElevationUnchecked, SVGFEDistantLightElement,
-        castToSVGFEDistantLightElement, gTypeSVGFEDistantLightElement)
+        getElevation, getElevationUnchecked, SVGFEDistantLightElement(..),
+        gTypeSVGFEDistantLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.XPathEvaluator
         createExpression, createExpression_, createExpressionUnchecked,
         js_createNSResolver, createNSResolver, createNSResolver_,
         createNSResolverUnchecked, js_evaluate, evaluate, evaluate_,
-        evaluateUnchecked, XPathEvaluator, castToXPathEvaluator,
-        gTypeXPathEvaluator)
+        evaluateUnchecked, XPathEvaluator(..), gTypeXPathEvaluator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

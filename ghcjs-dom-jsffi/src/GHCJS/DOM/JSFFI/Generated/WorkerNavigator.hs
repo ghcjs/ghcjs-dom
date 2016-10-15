@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WorkerNavigator
         getWebkitPersistentStorage, getWebkitPersistentStorageUnchecked,
         js_getAppName, getAppName, js_getAppVersion, getAppVersion,
         js_getPlatform, getPlatform, js_getUserAgent, getUserAgent,
-        js_getOnLine, getOnLine, WorkerNavigator, castToWorkerNavigator,
-        gTypeWorkerNavigator)
+        js_getOnLine, getOnLine, WorkerNavigator(..), gTypeWorkerNavigator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

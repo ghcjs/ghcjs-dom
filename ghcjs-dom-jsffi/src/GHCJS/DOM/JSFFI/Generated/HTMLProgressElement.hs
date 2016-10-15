@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLProgressElement
        (js_setValue, setValue, js_getValue, getValue, js_setMax, setMax,
         js_getMax, getMax, js_getPosition, getPosition, js_getLabels,
-        getLabels, getLabelsUnchecked, HTMLProgressElement,
-        castToHTMLProgressElement, gTypeHTMLProgressElement)
+        getLabels, getLabelsUnchecked, HTMLProgressElement(..),
+        gTypeHTMLProgressElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

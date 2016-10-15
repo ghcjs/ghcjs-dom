@@ -23,8 +23,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
         getExternalDeviceType, js_setControlsDependOnPageScaleFactor,
         setControlsDependOnPageScaleFactor,
         js_getControlsDependOnPageScaleFactor,
-        getControlsDependOnPageScaleFactor, MediaControlsHost,
-        castToMediaControlsHost, gTypeMediaControlsHost)
+        getControlsDependOnPageScaleFactor, MediaControlsHost(..),
+        gTypeMediaControlsHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

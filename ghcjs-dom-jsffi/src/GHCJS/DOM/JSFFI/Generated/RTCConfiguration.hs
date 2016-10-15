@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.RTCConfiguration
        (js_getIceServers, getIceServers, js_getIceTransports,
         getIceTransports, js_getRequestIdentity, getRequestIdentity,
-        RTCConfiguration, castToRTCConfiguration, gTypeRTCConfiguration)
+        RTCConfiguration(..), gTypeRTCConfiguration)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

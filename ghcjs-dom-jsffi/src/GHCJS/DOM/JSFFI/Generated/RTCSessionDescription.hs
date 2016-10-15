@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.RTCSessionDescription
        (js_newRTCSessionDescription, newRTCSessionDescription, js_setType,
         setType, js_getType, getType, js_setSdp, setSdp, js_getSdp, getSdp,
-        RTCSessionDescription, castToRTCSessionDescription,
-        gTypeRTCSessionDescription)
+        RTCSessionDescription(..), gTypeRTCSessionDescription)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

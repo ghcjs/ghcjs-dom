@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLCollection
        (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
         namedItem_, namedItemUnchecked, js_getLength, getLength,
-        HTMLCollection, castToHTMLCollection, gTypeHTMLCollection,
-        IsHTMLCollection, toHTMLCollection)
+        HTMLCollection(..), gTypeHTMLCollection, IsHTMLCollection,
+        toHTMLCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

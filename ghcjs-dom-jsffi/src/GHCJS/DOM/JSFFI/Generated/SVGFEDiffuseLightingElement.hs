@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDiffuseLightingElement
         js_getKernelUnitLengthX, getKernelUnitLengthX,
         getKernelUnitLengthXUnchecked, js_getKernelUnitLengthY,
         getKernelUnitLengthY, getKernelUnitLengthYUnchecked,
-        SVGFEDiffuseLightingElement, castToSVGFEDiffuseLightingElement,
-        gTypeSVGFEDiffuseLightingElement)
+        SVGFEDiffuseLightingElement(..), gTypeSVGFEDiffuseLightingElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

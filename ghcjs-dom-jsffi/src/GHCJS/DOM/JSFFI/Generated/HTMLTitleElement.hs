@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTitleElement
        (js_setText, setText, js_getText, getText, getTextUnchecked,
-        HTMLTitleElement, castToHTMLTitleElement, gTypeHTMLTitleElement)
+        HTMLTitleElement(..), gTypeHTMLTitleElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

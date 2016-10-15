@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLLIElement
        (js_setType, setType, js_getType, getType, js_setValue, setValue,
-        js_getValue, getValue, HTMLLIElement, castToHTMLLIElement,
-        gTypeHTMLLIElement)
+        js_getValue, getValue, HTMLLIElement(..), gTypeHTMLLIElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

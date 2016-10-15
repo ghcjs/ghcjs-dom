@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.EventSource
        (js_newEventSource, newEventSource, js_close, close,
         pattern CONNECTING, pattern OPEN, pattern CLOSED, js_getUrl,
         getUrl, js_getWithCredentials, getWithCredentials,
-        js_getReadyState, getReadyState, open, message, error, EventSource,
-        castToEventSource, gTypeEventSource)
+        js_getReadyState, getReadyState, open, message, error,
+        EventSource(..), gTypeEventSource)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

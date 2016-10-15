@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFESpecularLightingElement
         getSurfaceScale, getSurfaceScaleUnchecked, js_getSpecularConstant,
         getSpecularConstant, getSpecularConstantUnchecked,
         js_getSpecularExponent, getSpecularExponent,
-        getSpecularExponentUnchecked, SVGFESpecularLightingElement,
-        castToSVGFESpecularLightingElement,
+        getSpecularExponentUnchecked, SVGFESpecularLightingElement(..),
         gTypeSVGFESpecularLightingElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

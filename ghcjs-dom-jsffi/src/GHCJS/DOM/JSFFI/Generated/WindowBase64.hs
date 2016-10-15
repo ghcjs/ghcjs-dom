@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WindowBase64
-       (js_atob, atob, atob_, js_btoa, btoa, btoa_, WindowBase64,
-        castToWindowBase64, gTypeWindowBase64)
+       (js_atob, atob, atob_, js_btoa, btoa, btoa_, WindowBase64(..),
+        gTypeWindowBase64)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

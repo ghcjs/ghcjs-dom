@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaKeyEvent
         js_getInitData, getInitData, getInitDataUnchecked, js_getMessage,
         getMessage, getMessageUnchecked, js_getDefaultURL, getDefaultURL,
         js_getErrorCode, getErrorCode, getErrorCodeUnchecked,
-        js_getSystemCode, getSystemCode, MediaKeyEvent,
-        castToMediaKeyEvent, gTypeMediaKeyEvent)
+        js_getSystemCode, getSystemCode, MediaKeyEvent(..),
+        gTypeMediaKeyEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

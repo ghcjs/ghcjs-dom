@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.DataTransfer
         js_setEffectAllowed, setEffectAllowed, js_getEffectAllowed,
         getEffectAllowed, js_getTypes, getTypes, getTypesUnchecked,
         js_getFiles, getFiles, getFilesUnchecked, js_getItems, getItems,
-        getItemsUnchecked, DataTransfer, castToDataTransfer,
-        gTypeDataTransfer)
+        getItemsUnchecked, DataTransfer(..), gTypeDataTransfer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

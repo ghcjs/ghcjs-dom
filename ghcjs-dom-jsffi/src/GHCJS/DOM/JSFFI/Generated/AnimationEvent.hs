@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.AnimationEvent
        (js_getAnimationName, getAnimationName, js_getElapsedTime,
-        getElapsedTime, AnimationEvent, castToAnimationEvent,
-        gTypeAnimationEvent)
+        getElapsedTime, AnimationEvent(..), gTypeAnimationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

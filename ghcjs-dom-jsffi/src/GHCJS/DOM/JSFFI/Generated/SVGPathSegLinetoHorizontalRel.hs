@@ -1,7 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegLinetoHorizontalRel
-       (js_setX, setX, js_getX, getX, SVGPathSegLinetoHorizontalRel,
-        castToSVGPathSegLinetoHorizontalRel,
+       (js_setX, setX, js_getX, getX, SVGPathSegLinetoHorizontalRel(..),
         gTypeSVGPathSegLinetoHorizontalRel)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

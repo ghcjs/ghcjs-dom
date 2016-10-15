@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.SVGUnitTypes
        (pattern SVG_UNIT_TYPE_UNKNOWN,
         pattern SVG_UNIT_TYPE_USERSPACEONUSE,
-        pattern SVG_UNIT_TYPE_OBJECTBOUNDINGBOX, SVGUnitTypes,
-        castToSVGUnitTypes, gTypeSVGUnitTypes)
+        pattern SVG_UNIT_TYPE_OBJECTBOUNDINGBOX, SVGUnitTypes(..),
+        gTypeSVGUnitTypes)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

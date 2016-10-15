@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.WheelEvent
         js_getWheelDeltaX, getWheelDeltaX, js_getWheelDeltaY,
         getWheelDeltaY, js_getWheelDelta, getWheelDelta,
         js_getWebkitDirectionInvertedFromDevice,
-        getWebkitDirectionInvertedFromDevice, WheelEvent, castToWheelEvent,
+        getWebkitDirectionInvertedFromDevice, WheelEvent(..),
         gTypeWheelEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

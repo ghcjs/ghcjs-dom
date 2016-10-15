@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.PerformanceResourceTiming
         js_getConnectStart, getConnectStart, js_getConnectEnd,
         getConnectEnd, js_getSecureConnectionStart,
         getSecureConnectionStart, js_getRequestStart, getRequestStart,
-        js_getResponseEnd, getResponseEnd, PerformanceResourceTiming,
-        castToPerformanceResourceTiming, gTypePerformanceResourceTiming)
+        js_getResponseEnd, getResponseEnd, PerformanceResourceTiming(..),
+        gTypePerformanceResourceTiming)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

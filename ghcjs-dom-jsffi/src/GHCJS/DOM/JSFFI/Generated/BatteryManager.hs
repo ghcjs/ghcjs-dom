@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.BatteryManager
        (js_getCharging, getCharging, js_getChargingTime, getChargingTime,
         js_getDischargingTime, getDischargingTime, js_getLevel, getLevel,
         chargingChange, chargingTimeChange, dischargingTimeChange,
-        levelChange, BatteryManager, castToBatteryManager,
-        gTypeBatteryManager)
+        levelChange, BatteryManager(..), gTypeBatteryManager)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

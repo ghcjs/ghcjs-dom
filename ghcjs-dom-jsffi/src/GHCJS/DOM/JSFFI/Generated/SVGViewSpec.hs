@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGViewSpec
         js_getPreserveAspectRatioString, getPreserveAspectRatioString,
         js_getTransformString, getTransformString, js_getViewTargetString,
         getViewTargetString, js_setZoomAndPan, setZoomAndPan,
-        js_getZoomAndPan, getZoomAndPan, SVGViewSpec, castToSVGViewSpec,
-        gTypeSVGViewSpec)
+        js_getZoomAndPan, getZoomAndPan, SVGViewSpec(..), gTypeSVGViewSpec)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

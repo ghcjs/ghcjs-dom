@@ -39,8 +39,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGSVGElement
         getUseCurrentView, js_getCurrentView, getCurrentView,
         getCurrentViewUnchecked, js_setCurrentScale, setCurrentScale,
         js_getCurrentScale, getCurrentScale, js_getCurrentTranslate,
-        getCurrentTranslate, getCurrentTranslateUnchecked, SVGSVGElement,
-        castToSVGSVGElement, gTypeSVGSVGElement)
+        getCurrentTranslate, getCurrentTranslateUnchecked,
+        SVGSVGElement(..), gTypeSVGSVGElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

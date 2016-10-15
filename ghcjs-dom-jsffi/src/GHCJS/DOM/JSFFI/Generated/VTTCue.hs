@@ -7,8 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.VTTCue
         getLine, js_setPosition, setPosition, js_getPosition, getPosition,
         js_setSize, setSize, js_getSize, getSize, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setText, setText, js_getText, getText,
-        js_setRegionId, setRegionId, js_getRegionId, getRegionId, VTTCue,
-        castToVTTCue, gTypeVTTCue)
+        js_setRegionId, setRegionId, js_getRegionId, getRegionId,
+        VTTCue(..), gTypeVTTCue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitCSSViewportRule
-       (js_getStyle, getStyle, getStyleUnchecked, WebKitCSSViewportRule,
-        castToWebKitCSSViewportRule, gTypeWebKitCSSViewportRule)
+       (js_getStyle, getStyle, getStyleUnchecked,
+        WebKitCSSViewportRule(..), gTypeWebKitCSSViewportRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

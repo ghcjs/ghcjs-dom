@@ -5,8 +5,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEMorphologyElement
         pattern SVG_MORPHOLOGY_OPERATOR_DILATE, js_getIn1, getIn1,
         getIn1Unchecked, js_getOperator, getOperator, getOperatorUnchecked,
         js_getRadiusX, getRadiusX, getRadiusXUnchecked, js_getRadiusY,
-        getRadiusY, getRadiusYUnchecked, SVGFEMorphologyElement,
-        castToSVGFEMorphologyElement, gTypeSVGFEMorphologyElement)
+        getRadiusY, getRadiusYUnchecked, SVGFEMorphologyElement(..),
+        gTypeSVGFEMorphologyElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGPathSegArcAbs
         js_setAngle, setAngle, js_getAngle, getAngle, js_setLargeArcFlag,
         setLargeArcFlag, js_getLargeArcFlag, getLargeArcFlag,
         js_setSweepFlag, setSweepFlag, js_getSweepFlag, getSweepFlag,
-        SVGPathSegArcAbs, castToSVGPathSegArcAbs, gTypeSVGPathSegArcAbs)
+        SVGPathSegArcAbs(..), gTypeSVGPathSegArcAbs)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

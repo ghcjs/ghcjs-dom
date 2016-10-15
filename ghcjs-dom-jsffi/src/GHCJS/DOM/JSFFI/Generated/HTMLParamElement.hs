@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLParamElement
        (js_setName, setName, js_getName, getName, js_setType, setType,
         js_getType, getType, js_setValue, setValue, js_getValue, getValue,
         js_setValueType, setValueType, js_getValueType, getValueType,
-        HTMLParamElement, castToHTMLParamElement, gTypeHTMLParamElement)
+        HTMLParamElement(..), gTypeHTMLParamElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

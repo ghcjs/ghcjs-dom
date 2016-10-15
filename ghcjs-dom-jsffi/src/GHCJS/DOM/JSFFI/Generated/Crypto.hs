@@ -2,7 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.Crypto
        (js_getRandomValues, getRandomValues, getRandomValues_,
         getRandomValuesUnchecked, js_getWebkitSubtle, getWebkitSubtle,
-        getWebkitSubtleUnchecked, Crypto, castToCrypto, gTypeCrypto)
+        getWebkitSubtleUnchecked, Crypto(..), gTypeCrypto)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

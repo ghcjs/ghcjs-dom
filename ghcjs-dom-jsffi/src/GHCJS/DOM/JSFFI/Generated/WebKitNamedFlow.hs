@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.WebKitNamedFlow
         getRegions_, getRegionsUnchecked, js_getContent, getContent,
         getContent_, getContentUnchecked, js_getName, getName,
         js_getOverset, getOverset, js_getFirstEmptyRegionIndex,
-        getFirstEmptyRegionIndex, WebKitNamedFlow, castToWebKitNamedFlow,
+        getFirstEmptyRegionIndex, WebKitNamedFlow(..),
         gTypeWebKitNamedFlow)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

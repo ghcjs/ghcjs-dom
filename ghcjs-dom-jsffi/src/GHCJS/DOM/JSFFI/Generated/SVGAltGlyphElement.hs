@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGAltGlyphElement
        (js_setGlyphRef, setGlyphRef, js_getGlyphRef, getGlyphRef,
         js_setFormat, setFormat, js_getFormat, getFormat,
-        SVGAltGlyphElement, castToSVGAltGlyphElement,
-        gTypeSVGAltGlyphElement)
+        SVGAltGlyphElement(..), gTypeSVGAltGlyphElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

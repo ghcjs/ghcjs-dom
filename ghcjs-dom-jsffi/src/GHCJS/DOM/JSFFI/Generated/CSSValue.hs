@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.CSSValue
        (pattern CSS_INHERIT, pattern CSS_PRIMITIVE_VALUE,
         pattern CSS_VALUE_LIST, pattern CSS_CUSTOM, js_setCssText,
         setCssText, js_getCssText, getCssText, getCssTextUnchecked,
-        js_getCssValueType, getCssValueType, CSSValue, castToCSSValue,
-        gTypeCSSValue, IsCSSValue, toCSSValue)
+        js_getCssValueType, getCssValueType, CSSValue(..), gTypeCSSValue,
+        IsCSSValue, toCSSValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SQLTransaction
-       (js_executeSql, executeSql, SQLTransaction, castToSQLTransaction,
+       (js_executeSql, executeSql, SQLTransaction(..),
         gTypeSQLTransaction)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

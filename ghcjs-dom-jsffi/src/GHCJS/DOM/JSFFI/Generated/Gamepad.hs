@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.Gamepad
        (js_getId, getId, js_getIndex, getIndex, js_getConnected,
         getConnected, js_getTimestamp, getTimestamp, js_getMapping,
         getMapping, js_getAxes, getAxes, js_getButtons, getButtons,
-        Gamepad, castToGamepad, gTypeGamepad)
+        Gamepad(..), gTypeGamepad)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

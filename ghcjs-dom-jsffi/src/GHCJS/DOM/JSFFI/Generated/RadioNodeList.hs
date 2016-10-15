@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.RadioNodeList
        (js__get, _get, _get_, _getUnchecked, js_setValue, setValue,
-        js_getValue, getValue, RadioNodeList, castToRadioNodeList,
-        gTypeRadioNodeList)
+        js_getValue, getValue, RadioNodeList(..), gTypeRadioNodeList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

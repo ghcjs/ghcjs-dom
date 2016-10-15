@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGRadialGradientElement
        (js_getCx, getCx, getCxUnchecked, js_getCy, getCy, getCyUnchecked,
         js_getR, getR, getRUnchecked, js_getFx, getFx, getFxUnchecked,
         js_getFy, getFy, getFyUnchecked, js_getFr, getFr, getFrUnchecked,
-        SVGRadialGradientElement, castToSVGRadialGradientElement,
-        gTypeSVGRadialGradientElement)
+        SVGRadialGradientElement(..), gTypeSVGRadialGradientElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

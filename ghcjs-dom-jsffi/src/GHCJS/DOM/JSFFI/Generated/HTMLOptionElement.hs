@@ -6,7 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOptionElement
         js_getDefaultSelected, getDefaultSelected, js_setSelected,
         setSelected, js_getSelected, getSelected, js_setValue, setValue,
         js_getValue, getValue, js_setText, setText, js_getText, getText,
-        js_getIndex, getIndex, HTMLOptionElement, castToHTMLOptionElement,
+        js_getIndex, getIndex, HTMLOptionElement(..),
         gTypeHTMLOptionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

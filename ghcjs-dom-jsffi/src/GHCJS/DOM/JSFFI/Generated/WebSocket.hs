@@ -9,7 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.WebSocket
         js_getProtocol, getProtocol, getProtocolUnchecked,
         js_getExtensions, getExtensions, getExtensionsUnchecked,
         js_setBinaryType, setBinaryType, js_getBinaryType, getBinaryType,
-        WebSocket, castToWebSocket, gTypeWebSocket)
+        WebSocket(..), gTypeWebSocket)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

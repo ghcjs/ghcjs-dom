@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.FontLoader
        (js_checkFont, checkFont, checkFont_, js_loadFont, loadFont,
         js_notifyWhenFontsReady, notifyWhenFontsReady, loading,
         loadingDone, loadStart, load, error, js_getLoading, getLoading,
-        FontLoader, castToFontLoader, gTypeFontLoader)
+        FontLoader(..), gTypeFontLoader)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

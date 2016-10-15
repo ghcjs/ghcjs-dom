@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableColElement
         js_getCh, getCh, js_setChOff, setChOff, js_getChOff, getChOff,
         js_setSpan, setSpan, js_getSpan, getSpan, js_setVAlign, setVAlign,
         js_getVAlign, getVAlign, js_setWidth, setWidth, js_getWidth,
-        getWidth, HTMLTableColElement, castToHTMLTableColElement,
-        gTypeHTMLTableColElement)
+        getWidth, HTMLTableColElement(..), gTypeHTMLTableColElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

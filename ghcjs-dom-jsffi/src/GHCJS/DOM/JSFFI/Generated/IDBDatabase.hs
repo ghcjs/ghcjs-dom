@@ -7,7 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.IDBDatabase
         transaction'Unchecked, js_close, close, js_getName, getName,
         js_getVersion, getVersion, js_getObjectStoreNames,
         getObjectStoreNames, getObjectStoreNamesUnchecked, abort, error,
-        versionChange, IDBDatabase, castToIDBDatabase, gTypeIDBDatabase)
+        versionChange, IDBDatabase(..), gTypeIDBDatabase)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

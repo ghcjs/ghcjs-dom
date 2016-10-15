@@ -2,8 +2,7 @@
 module GHCJS.DOM.JSFFI.Generated.SVGFEOffsetElement
        (js_getIn1, getIn1, getIn1Unchecked, js_getDx, getDx,
         getDxUnchecked, js_getDy, getDy, getDyUnchecked,
-        SVGFEOffsetElement, castToSVGFEOffsetElement,
-        gTypeSVGFEOffsetElement)
+        SVGFEOffsetElement(..), gTypeSVGFEOffsetElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

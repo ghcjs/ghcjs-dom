@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.DeviceOrientationEvent
        (js_initDeviceOrientationEvent, initDeviceOrientationEvent,
         js_getAlpha, getAlpha, js_getBeta, getBeta, js_getGamma, getGamma,
-        js_getAbsolute, getAbsolute, DeviceOrientationEvent,
-        castToDeviceOrientationEvent, gTypeDeviceOrientationEvent)
+        js_getAbsolute, getAbsolute, DeviceOrientationEvent(..),
+        gTypeDeviceOrientationEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

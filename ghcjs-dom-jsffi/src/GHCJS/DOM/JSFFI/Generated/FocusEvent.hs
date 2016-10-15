@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.FocusEvent
        (js_getRelatedTarget, getRelatedTarget, getRelatedTargetUnchecked,
-        FocusEvent, castToFocusEvent, gTypeFocusEvent)
+        FocusEvent(..), gTypeFocusEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

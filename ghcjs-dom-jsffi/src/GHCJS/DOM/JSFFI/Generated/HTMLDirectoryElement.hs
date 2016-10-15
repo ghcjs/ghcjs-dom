@@ -1,8 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLDirectoryElement
        (js_setCompact, setCompact, js_getCompact, getCompact,
-        HTMLDirectoryElement, castToHTMLDirectoryElement,
-        gTypeHTMLDirectoryElement)
+        HTMLDirectoryElement(..), gTypeHTMLDirectoryElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

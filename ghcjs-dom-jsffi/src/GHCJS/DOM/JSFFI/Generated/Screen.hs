@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.Screen
        (js_getHeight, getHeight, js_getWidth, getWidth, js_getColorDepth,
         getColorDepth, js_getPixelDepth, getPixelDepth, js_getAvailLeft,
         getAvailLeft, js_getAvailTop, getAvailTop, js_getAvailHeight,
-        getAvailHeight, js_getAvailWidth, getAvailWidth, Screen,
-        castToScreen, gTypeScreen)
+        getAvailHeight, js_getAvailWidth, getAvailWidth, Screen(..),
+        gTypeScreen)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

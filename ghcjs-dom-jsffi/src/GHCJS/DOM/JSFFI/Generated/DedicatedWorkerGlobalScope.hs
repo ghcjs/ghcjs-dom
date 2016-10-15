@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DedicatedWorkerGlobalScope
-       (js_postMessage, postMessage, message, DedicatedWorkerGlobalScope,
-        castToDedicatedWorkerGlobalScope, gTypeDedicatedWorkerGlobalScope)
+       (js_postMessage, postMessage, message,
+        DedicatedWorkerGlobalScope(..), gTypeDedicatedWorkerGlobalScope)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

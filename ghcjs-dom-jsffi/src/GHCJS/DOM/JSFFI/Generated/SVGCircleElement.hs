@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.SVGCircleElement
        (js_getCx, getCx, getCxUnchecked, js_getCy, getCy, getCyUnchecked,
-        js_getR, getR, getRUnchecked, SVGCircleElement,
-        castToSVGCircleElement, gTypeSVGCircleElement)
+        js_getR, getR, getRUnchecked, SVGCircleElement(..),
+        gTypeSVGCircleElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

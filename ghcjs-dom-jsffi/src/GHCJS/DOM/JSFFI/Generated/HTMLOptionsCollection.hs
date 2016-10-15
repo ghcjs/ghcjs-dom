@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOptionsCollection
         js_addBefore, addBefore, js_add, add, js_remove, remove,
         js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
         getSelectedIndex, js_setLength, setLength, js_getLength, getLength,
-        HTMLOptionsCollection, castToHTMLOptionsCollection,
-        gTypeHTMLOptionsCollection)
+        HTMLOptionsCollection(..), gTypeHTMLOptionsCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

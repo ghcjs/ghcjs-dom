@@ -5,7 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.ReadableStream
         js_pipeTo, pipeTo, pipeTo_, pipeToUnchecked, js_pipeThrough,
         pipeThrough, pipeThrough_, pipeThroughUnchecked, js_getState,
         getState, js_getClosed, getClosed, getClosedUnchecked, js_getReady,
-        getReady, getReadyUnchecked, ReadableStream, castToReadableStream,
+        getReady, getReadyUnchecked, ReadableStream(..),
         gTypeReadableStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)

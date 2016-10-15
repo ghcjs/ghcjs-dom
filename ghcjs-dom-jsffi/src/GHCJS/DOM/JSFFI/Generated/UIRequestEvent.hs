@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.UIRequestEvent
-       (js_getReceiver, getReceiver, getReceiverUnchecked, UIRequestEvent,
-        castToUIRequestEvent, gTypeUIRequestEvent)
+       (js_getReceiver, getReceiver, getReceiverUnchecked,
+        UIRequestEvent(..), gTypeUIRequestEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

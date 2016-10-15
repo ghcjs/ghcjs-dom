@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.DataCue
        (js_newDataCue, newDataCue, js_newDataCue', newDataCue',
         js_setData, setData, js_getData, getData, getDataUnchecked,
         js_setValue, setValue, js_getValue, getValue, js_getType, getType,
-        DataCue, castToDataCue, gTypeDataCue)
+        DataCue(..), gTypeDataCue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

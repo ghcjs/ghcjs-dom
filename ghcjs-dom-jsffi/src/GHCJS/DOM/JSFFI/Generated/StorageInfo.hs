@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.StorageInfo
        (js_queryUsageAndQuota, queryUsageAndQuota, js_requestQuota,
-        requestQuota, pattern TEMPORARY, pattern PERSISTENT, StorageInfo,
-        castToStorageInfo, gTypeStorageInfo)
+        requestQuota, pattern TEMPORARY, pattern PERSISTENT,
+        StorageInfo(..), gTypeStorageInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitNamespace
        (js_getMessageHandlers, getMessageHandlers,
-        getMessageHandlersUnchecked, WebKitNamespace,
-        castToWebKitNamespace, gTypeWebKitNamespace)
+        getMessageHandlersUnchecked, WebKitNamespace(..),
+        gTypeWebKitNamespace)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

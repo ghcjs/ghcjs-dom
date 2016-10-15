@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOptGroupElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_setLabel, setLabel, js_getLabel, getLabel, HTMLOptGroupElement,
-        castToHTMLOptGroupElement, gTypeHTMLOptGroupElement)
+        js_setLabel, setLabel, js_getLabel, getLabel,
+        HTMLOptGroupElement(..), gTypeHTMLOptGroupElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

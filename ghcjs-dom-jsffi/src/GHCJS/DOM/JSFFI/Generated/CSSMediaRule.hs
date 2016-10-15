@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.CSSMediaRule
        (js_insertRule, insertRule, insertRule_, js_deleteRule, deleteRule,
         js_getMedia, getMedia, getMediaUnchecked, js_getCssRules,
-        getCssRules, getCssRulesUnchecked, CSSMediaRule,
-        castToCSSMediaRule, gTypeCSSMediaRule)
+        getCssRules, getCssRulesUnchecked, CSSMediaRule(..),
+        gTypeCSSMediaRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

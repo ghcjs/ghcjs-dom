@@ -3,8 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.ScriptProfileNode
        (js_children, children, children_, js_getId, getId,
         js_getFunctionName, getFunctionName, js_getUrl, getUrl,
         js_getLineNumber, getLineNumber, js_getColumnNumber,
-        getColumnNumber, ScriptProfileNode, castToScriptProfileNode,
-        gTypeScriptProfileNode)
+        getColumnNumber, ScriptProfileNode(..), gTypeScriptProfileNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

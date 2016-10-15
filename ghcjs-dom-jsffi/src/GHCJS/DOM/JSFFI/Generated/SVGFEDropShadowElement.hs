@@ -4,8 +4,8 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEDropShadowElement
         getIn1Unchecked, js_getDx, getDx, getDxUnchecked, js_getDy, getDy,
         getDyUnchecked, js_getStdDeviationX, getStdDeviationX,
         getStdDeviationXUnchecked, js_getStdDeviationY, getStdDeviationY,
-        getStdDeviationYUnchecked, SVGFEDropShadowElement,
-        castToSVGFEDropShadowElement, gTypeSVGFEDropShadowElement)
+        getStdDeviationYUnchecked, SVGFEDropShadowElement(..),
+        gTypeSVGFEDropShadowElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

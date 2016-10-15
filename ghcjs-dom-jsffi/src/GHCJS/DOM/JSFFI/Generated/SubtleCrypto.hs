@@ -8,8 +8,7 @@ module GHCJS.DOM.JSFFI.Generated.SubtleCrypto
         importKey, importKey_, importKeyUnchecked, js_exportKey, exportKey,
         exportKey_, exportKeyUnchecked, js_wrapKey, wrapKey, wrapKey_,
         wrapKeyUnchecked, js_unwrapKey, unwrapKey, unwrapKey_,
-        unwrapKeyUnchecked, SubtleCrypto, castToSubtleCrypto,
-        gTypeSubtleCrypto)
+        unwrapKeyUnchecked, SubtleCrypto(..), gTypeSubtleCrypto)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

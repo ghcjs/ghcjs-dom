@@ -3,6 +3,7 @@ module GHCJS.DOM.EventTargetClosures
        (EventName(..), SaferEventListener(..), unsafeEventName, eventListenerNew, eventListenerNewSync, eventListenerNewAsync, eventListenerRelease) where
 
 import Control.Applicative ((<$>))
+import Control.Monad ((>=>))
 import GHCJS.Types
 import GHCJS.Foreign.Callback.Internal
 import GHCJS.Foreign.Callback
@@ -25,13 +26,13 @@ unsafeEventName :: DOMString -> EventName t e
 unsafeEventName = EventName
 
 eventListenerNew :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNew callback = (EventListener . jsval) <$> syncCallback1 ContinueAsync (callback . unsafeCastGObject . GObject)
+eventListenerNew callback = (EventListener . jsval) <$> syncCallback1 ContinueAsync (fromJSValUnchecked >=> callback)
 
 eventListenerNewSync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewSync callback = (EventListener . jsval) <$> syncCallback1 ThrowWouldBlock (callback . unsafeCastGObject . GObject)
+eventListenerNewSync callback = (EventListener . jsval) <$> syncCallback1 ThrowWouldBlock (fromJSValUnchecked >=> callback)
 
 eventListenerNewAsync :: IsEvent event => (event -> IO ()) -> IO EventListener
-eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (callback . unsafeCastGObject . GObject)
+eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (fromJSValUnchecked >=> callback)
 
 eventListenerRelease :: EventListener -> IO ()
 eventListenerRelease (EventListener ref) = releaseCallback (Callback ref)

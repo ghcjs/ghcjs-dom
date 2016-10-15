@@ -6,8 +6,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGFEGaussianBlurElement
         js_getStdDeviationX, getStdDeviationX, getStdDeviationXUnchecked,
         js_getStdDeviationY, getStdDeviationY, getStdDeviationYUnchecked,
         js_getEdgeMode, getEdgeMode, getEdgeModeUnchecked,
-        SVGFEGaussianBlurElement, castToSVGFEGaussianBlurElement,
-        gTypeSVGFEGaussianBlurElement)
+        SVGFEGaussianBlurElement(..), gTypeSVGFEGaussianBlurElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

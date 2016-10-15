@@ -4,8 +4,7 @@ module GHCJS.DOM.JSFFI.Generated.VideoTrack
         js_getLabel, getLabel, js_setLanguage, setLanguage, js_getLanguage,
         getLanguage, js_setSelected, setSelected, js_getSelected,
         getSelected, js_getSourceBuffer, getSourceBuffer,
-        getSourceBufferUnchecked, VideoTrack, castToVideoTrack,
-        gTypeVideoTrack)
+        getSourceBufferUnchecked, VideoTrack(..), gTypeVideoTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

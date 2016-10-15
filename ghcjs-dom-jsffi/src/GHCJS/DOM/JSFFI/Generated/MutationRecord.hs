@@ -8,8 +8,8 @@ module GHCJS.DOM.JSFFI.Generated.MutationRecord
         getNextSiblingUnchecked, js_getAttributeName, getAttributeName,
         getAttributeNameUnchecked, js_getAttributeNamespace,
         getAttributeNamespace, getAttributeNamespaceUnchecked,
-        js_getOldValue, getOldValue, getOldValueUnchecked, MutationRecord,
-        castToMutationRecord, gTypeMutationRecord)
+        js_getOldValue, getOldValue, getOldValueUnchecked,
+        MutationRecord(..), gTypeMutationRecord)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -1,8 +1,8 @@
 {-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Generated.DOMStringList
        (js_item, item, item_, itemUnchecked, js_contains, contains,
-        contains_, js_getLength, getLength, DOMStringList,
-        castToDOMStringList, gTypeDOMStringList)
+        contains_, js_getLength, getLength, DOMStringList(..),
+        gTypeDOMStringList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

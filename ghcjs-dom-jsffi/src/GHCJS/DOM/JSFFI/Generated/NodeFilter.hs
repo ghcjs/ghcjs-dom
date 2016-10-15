@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.NodeFilter
         pattern SHOW_ENTITY, pattern SHOW_PROCESSING_INSTRUCTION,
         pattern SHOW_COMMENT, pattern SHOW_DOCUMENT,
         pattern SHOW_DOCUMENT_TYPE, pattern SHOW_DOCUMENT_FRAGMENT,
-        pattern SHOW_NOTATION, NodeFilter, castToNodeFilter,
-        gTypeNodeFilter)
+        pattern SHOW_NOTATION, NodeFilter(..), gTypeNodeFilter)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

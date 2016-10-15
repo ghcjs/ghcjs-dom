@@ -3,7 +3,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLHRElement
        (js_setAlign, setAlign, js_getAlign, getAlign, js_setNoShade,
         setNoShade, js_getNoShade, getNoShade, js_setSize, setSize,
         js_getSize, getSize, js_setWidth, setWidth, js_getWidth, getWidth,
-        HTMLHRElement, castToHTMLHRElement, gTypeHTMLHRElement)
+        HTMLHRElement(..), gTypeHTMLHRElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

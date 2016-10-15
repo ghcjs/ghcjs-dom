@@ -5,8 +5,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableSectionElement
         getAlign, js_setCh, setCh, js_getCh, getCh, js_setChOff, setChOff,
         js_getChOff, getChOff, js_setVAlign, setVAlign, js_getVAlign,
         getVAlign, js_getRows, getRows, getRowsUnchecked,
-        HTMLTableSectionElement, castToHTMLTableSectionElement,
-        gTypeHTMLTableSectionElement)
+        HTMLTableSectionElement(..), gTypeHTMLTableSectionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

@@ -2,8 +2,8 @@
 module GHCJS.DOM.JSFFI.Generated.SVGFitToViewBox
        (js_getViewBox, getViewBox, getViewBoxUnchecked,
         js_getPreserveAspectRatio, getPreserveAspectRatio,
-        getPreserveAspectRatioUnchecked, SVGFitToViewBox,
-        castToSVGFitToViewBox, gTypeSVGFitToViewBox)
+        getPreserveAspectRatioUnchecked, SVGFitToViewBox(..),
+        gTypeSVGFitToViewBox)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)

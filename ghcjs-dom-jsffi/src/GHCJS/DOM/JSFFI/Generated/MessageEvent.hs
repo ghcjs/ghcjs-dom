@@ -3,8 +3,8 @@ module GHCJS.DOM.JSFFI.Generated.MessageEvent
        (js_initMessageEvent, initMessageEvent, js_webkitInitMessageEvent,
         webkitInitMessageEvent, js_getOrigin, getOrigin, js_getLastEventId,
         getLastEventId, js_getSource, getSource, getSourceUnchecked,
-        js_getData, getData, js_getPorts, getPorts, MessageEvent,
-        castToMessageEvent, gTypeMessageEvent)
+        js_getData, getData, js_getPorts, getPorts, MessageEvent(..),
+        gTypeMessageEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import Data.Typeable (Typeable)
