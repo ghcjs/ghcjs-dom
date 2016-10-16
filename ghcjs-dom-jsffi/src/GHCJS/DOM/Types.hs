@@ -1,4 +1,6 @@
-{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances, RankNTypes, ImplicitParams, FlexibleContexts, ScopedTypeVariables #-}
+{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances, RankNTypes, FlexibleContexts, ScopedTypeVariables #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, KindSignatures #-}
 module GHCJS.DOM.Types (
 
   -- * JavaScript Context and Monad
@@ -680,9 +682,18 @@ import GHCJS.Foreign.Callback.Internal (Callback(..))
 import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
-import GHC.Stack (HasCallStack)
 import Data.Coerce (coerce, Coercible)
 import Data.Monoid ((<>))
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 
 -- | Identifies a JavaScript execution context.
 --   When using GHCJS this is just '()' since their is only one context.
@@ -767,8 +778,8 @@ typeInstanceIsA o (GType t) = typeInstanceIsA' o t
 -- > castTo Element x >>= \case
 -- >     Nothing      -> error "Was not an element"
 -- >     Just element -> ...
-castTo :: forall obj obj'. (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM (Maybe obj')
-castTo constructor obj = do
+castTo :: forall obj obj' m. (IsGObject obj, IsGObject obj', MonadJSM m) => (JSVal -> obj') -> obj -> m (Maybe obj')
+castTo constructor obj = liftJSM $ do
   let gtype = typeGType (undefined :: obj')
       jsval = coerce obj
   if typeInstanceIsA jsval gtype
@@ -779,8 +790,8 @@ castTo constructor obj = do
 --   result and the message should be clear (uses HasCallStack).
 --
 -- > element <- unsafeCastTo Element x
-unsafeCastTo :: forall obj obj'. (HasCallStack, IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM obj'
-unsafeCastTo constructor obj = do
+unsafeCastTo :: forall obj obj' m. (HasCallStack, IsGObject obj, IsGObject obj', MonadJSM m) => (JSVal -> obj') -> obj -> m obj'
+unsafeCastTo constructor obj = liftJSM $ do
   let gtype = typeGType (undefined :: obj')
       jsval = coerce obj
   if typeInstanceIsA jsval gtype
@@ -795,8 +806,8 @@ unsafeCastTo constructor obj = do
 --   will probably crash later on in some unpredictable way.
 --
 -- > element <- uncheckedCastTo Element x
-uncheckedCastTo :: (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> JSM obj'
-uncheckedCastTo constructor obj = return . constructor $ coerce obj
+uncheckedCastTo :: (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> obj'
+uncheckedCastTo constructor = constructor . coerce
 
 -- | Determine if this is an instance of a particular type
 --
