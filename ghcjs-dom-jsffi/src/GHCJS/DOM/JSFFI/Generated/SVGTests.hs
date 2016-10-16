@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTests
        (js_hasExtension, hasExtension, hasExtension_,
         js_getRequiredFeatures, getRequiredFeatures,
-        getRequiredFeaturesUnchecked, js_getRequiredExtensions,
-        getRequiredExtensions, getRequiredExtensionsUnchecked,
-        js_getSystemLanguage, getSystemLanguage,
+        getRequiredFeaturesUnsafe, getRequiredFeaturesUnchecked,
+        js_getRequiredExtensions, getRequiredExtensions,
+        getRequiredExtensionsUnsafe, getRequiredExtensionsUnchecked,
+        js_getSystemLanguage, getSystemLanguage, getSystemLanguageUnsafe,
         getSystemLanguageUnchecked, SVGTests(..), gTypeSVGTests)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"hasExtension\"]($2) ? 1 : 0)" js_hasExtension ::
@@ -51,6 +68,14 @@ getRequiredFeatures self
   = liftIO (nullableToMaybe <$> (js_getRequiredFeatures (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
+getRequiredFeaturesUnsafe ::
+                          (MonadIO m, HasCallStack) => SVGTests -> m SVGStringList
+getRequiredFeaturesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRequiredFeatures (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
 getRequiredFeaturesUnchecked ::
                              (MonadIO m) => SVGTests -> m SVGStringList
 getRequiredFeaturesUnchecked self
@@ -67,6 +92,14 @@ getRequiredExtensions self
   = liftIO (nullableToMaybe <$> (js_getRequiredExtensions (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
+getRequiredExtensionsUnsafe ::
+                            (MonadIO m, HasCallStack) => SVGTests -> m SVGStringList
+getRequiredExtensionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRequiredExtensions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
 getRequiredExtensionsUnchecked ::
                                (MonadIO m) => SVGTests -> m SVGStringList
 getRequiredExtensionsUnchecked self
@@ -81,6 +114,14 @@ getSystemLanguage ::
                   (MonadIO m) => SVGTests -> m (Maybe SVGStringList)
 getSystemLanguage self
   = liftIO (nullableToMaybe <$> (js_getSystemLanguage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 
+getSystemLanguageUnsafe ::
+                        (MonadIO m, HasCallStack) => SVGTests -> m SVGStringList
+getSystemLanguageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSystemLanguage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 
 getSystemLanguageUnchecked ::

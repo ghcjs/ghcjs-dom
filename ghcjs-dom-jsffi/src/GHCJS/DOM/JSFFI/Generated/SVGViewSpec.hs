@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGViewSpec
-       (js_getTransform, getTransform, getTransformUnchecked,
-        js_getViewTarget, getViewTarget, getViewTargetUnchecked,
-        js_getViewBoxString, getViewBoxString,
-        js_getPreserveAspectRatioString, getPreserveAspectRatioString,
-        js_getTransformString, getTransformString, js_getViewTargetString,
-        getViewTargetString, js_setZoomAndPan, setZoomAndPan,
-        js_getZoomAndPan, getZoomAndPan, SVGViewSpec(..), gTypeSVGViewSpec)
+       (js_getTransform, getTransform, getTransformUnsafe,
+        getTransformUnchecked, js_getViewTarget, getViewTarget,
+        getViewTargetUnsafe, getViewTargetUnchecked, js_getViewBoxString,
+        getViewBoxString, js_getPreserveAspectRatioString,
+        getPreserveAspectRatioString, js_getTransformString,
+        getTransformString, js_getViewTargetString, getViewTargetString,
+        js_setZoomAndPan, setZoomAndPan, js_getZoomAndPan, getZoomAndPan,
+        SVGViewSpec(..), gTypeSVGViewSpec)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"transform\"]"
         js_getTransform :: SVGViewSpec -> IO (Nullable SVGTransformList)
@@ -33,6 +50,14 @@ getTransform ::
              (MonadIO m) => SVGViewSpec -> m (Maybe SVGTransformList)
 getTransform self
   = liftIO (nullableToMaybe <$> (js_getTransform (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transform Mozilla SVGViewSpec.transform documentation> 
+getTransformUnsafe ::
+                   (MonadIO m, HasCallStack) => SVGViewSpec -> m SVGTransformList
+getTransformUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTransform (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transform Mozilla SVGViewSpec.transform documentation> 
 getTransformUnchecked ::
@@ -47,6 +72,14 @@ foreign import javascript unsafe "$1[\"viewTarget\"]"
 getViewTarget :: (MonadIO m) => SVGViewSpec -> m (Maybe SVGElement)
 getViewTarget self
   = liftIO (nullableToMaybe <$> (js_getViewTarget (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTarget Mozilla SVGViewSpec.viewTarget documentation> 
+getViewTargetUnsafe ::
+                    (MonadIO m, HasCallStack) => SVGViewSpec -> m SVGElement
+getViewTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getViewTarget (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTarget Mozilla SVGViewSpec.viewTarget documentation> 
 getViewTargetUnchecked ::

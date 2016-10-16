@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
         js_setCharset, setCharset, js_getCharset, getCharset, js_setHref,
@@ -6,12 +11,14 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
         js_getHreflang, getHreflang, js_setMedia, setMedia, js_getMedia,
         getMedia, js_setRel, setRel, js_getRel, getRel, js_setRev, setRev,
         js_getRev, getRev, js_setSizes, setSizes, js_getSizes, getSizes,
-        getSizesUnchecked, js_setTarget, setTarget, js_getTarget,
-        getTarget, js_setType, setType, js_getType, getType, js_getSheet,
-        getSheet, getSheetUnchecked, js_getRelList, getRelList,
-        getRelListUnchecked, HTMLLinkElement(..), gTypeHTMLLinkElement)
+        getSizesUnsafe, getSizesUnchecked, js_setTarget, setTarget,
+        js_getTarget, getTarget, js_setType, setType, js_getType, getType,
+        js_getSheet, getSheet, getSheetUnsafe, getSheetUnchecked,
+        js_getRelList, getRelList, getRelListUnsafe, getRelListUnchecked,
+        HTMLLinkElement(..), gTypeHTMLLinkElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         js_setDisabled :: HTMLLinkElement -> Bool -> IO ()
@@ -160,6 +177,15 @@ getSizes ::
 getSizes self = liftIO (nullableToMaybe <$> (js_getSizes (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
+getSizesUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 HTMLLinkElement -> m DOMSettableTokenList
+getSizesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSizes (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
 getSizesUnchecked ::
                   (MonadIO m) => HTMLLinkElement -> m DOMSettableTokenList
 getSizesUnchecked self
@@ -205,6 +231,14 @@ getSheet :: (MonadIO m) => HTMLLinkElement -> m (Maybe StyleSheet)
 getSheet self = liftIO (nullableToMaybe <$> (js_getSheet (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
+getSheetUnsafe ::
+               (MonadIO m, HasCallStack) => HTMLLinkElement -> m StyleSheet
+getSheetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSheet (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
 getSheetUnchecked :: (MonadIO m) => HTMLLinkElement -> m StyleSheet
 getSheetUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getSheet (self)))
@@ -217,6 +251,14 @@ getRelList ::
            (MonadIO m) => HTMLLinkElement -> m (Maybe DOMTokenList)
 getRelList self
   = liftIO (nullableToMaybe <$> (js_getRelList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.relList Mozilla HTMLLinkElement.relList documentation> 
+getRelListUnsafe ::
+                 (MonadIO m, HasCallStack) => HTMLLinkElement -> m DOMTokenList
+getRelListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRelList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.relList Mozilla HTMLLinkElement.relList documentation> 
 getRelListUnchecked ::

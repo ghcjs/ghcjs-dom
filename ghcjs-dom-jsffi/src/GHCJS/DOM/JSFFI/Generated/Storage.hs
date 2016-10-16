@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Storage
-       (js_key, key, key_, keyUnchecked, js_getItem, getItem, getItem_,
-        getItemUnchecked, js_setItem, setItem, js_removeItem, removeItem,
-        js_clear, clear, js_getLength, getLength, Storage(..),
-        gTypeStorage)
+       (js_key, key, key_, keyUnsafe, keyUnchecked, js_getItem, getItem,
+        getItem_, getItemUnsafe, getItemUnchecked, js_setItem, setItem,
+        js_removeItem, removeItem, js_clear, clear, js_getLength,
+        getLength, Storage(..), gTypeStorage)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"key\"]($2)" js_key ::
         Storage -> Word -> IO (Nullable JSString)
@@ -35,6 +51,15 @@ key self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 key_ :: (MonadIO m) => Storage -> Word -> m ()
 key_ self index = liftIO (void (js_key (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
+keyUnsafe ::
+          (MonadIO m, HasCallStack, FromJSString result) =>
+            Storage -> Word -> m result
+keyUnsafe self index
+  = liftIO
+      ((fromMaybeJSString <$> (js_key (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 keyUnchecked ::
@@ -57,6 +82,15 @@ getItem self key
 getItem_ :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
 getItem_ self key
   = liftIO (void (js_getItem (self) (toJSString key)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
+getItemUnsafe ::
+              (MonadIO m, ToJSString key, HasCallStack, FromJSString result) =>
+                Storage -> key -> m result
+getItemUnsafe self key
+  = liftIO
+      ((fromMaybeJSString <$> (js_getItem (self) (toJSString key))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
 getItemUnchecked ::

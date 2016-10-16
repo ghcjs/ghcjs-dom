@@ -1,20 +1,29 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.URLUtils
        (js_toString, toString, toString_, js_setHref, setHref, js_getHref,
         getHref, js_getOrigin, getOrigin, js_setProtocol, setProtocol,
-        js_getProtocol, getProtocol, getProtocolUnchecked, js_setUsername,
-        setUsername, js_getUsername, getUsername, getUsernameUnchecked,
+        js_getProtocol, getProtocol, getProtocolUnsafe,
+        getProtocolUnchecked, js_setUsername, setUsername, js_getUsername,
+        getUsername, getUsernameUnsafe, getUsernameUnchecked,
         js_setPassword, setPassword, js_getPassword, getPassword,
-        getPasswordUnchecked, js_setHost, setHost, js_getHost, getHost,
-        getHostUnchecked, js_setHostname, setHostname, js_getHostname,
-        getHostname, getHostnameUnchecked, js_setPort, setPort, js_getPort,
-        getPort, getPortUnchecked, js_setPathname, setPathname,
-        js_getPathname, getPathname, getPathnameUnchecked, js_setSearch,
-        setSearch, js_getSearch, getSearch, getSearchUnchecked, js_setHash,
-        setHash, js_getHash, getHash, getHashUnchecked, URLUtils(..),
-        gTypeURLUtils)
+        getPasswordUnsafe, getPasswordUnchecked, js_setHost, setHost,
+        js_getHost, getHost, getHostUnsafe, getHostUnchecked,
+        js_setHostname, setHostname, js_getHostname, getHostname,
+        getHostnameUnsafe, getHostnameUnchecked, js_setPort, setPort,
+        js_getPort, getPort, getPortUnsafe, getPortUnchecked,
+        js_setPathname, setPathname, js_getPathname, getPathname,
+        getPathnameUnsafe, getPathnameUnchecked, js_setSearch, setSearch,
+        js_getSearch, getSearch, getSearchUnsafe, getSearchUnchecked,
+        js_setHash, setHash, js_getHash, getHash, getHashUnsafe,
+        getHashUnchecked, URLUtils(..), gTypeURLUtils)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +39,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"toString\"]()" js_toString
         :: URLUtils -> IO JSString
@@ -84,6 +103,15 @@ getProtocol self
   = liftIO (fromMaybeJSString <$> (js_getProtocol (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.protocol Mozilla URLUtils.protocol documentation> 
+getProtocolUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    URLUtils -> m result
+getProtocolUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getProtocol (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.protocol Mozilla URLUtils.protocol documentation> 
 getProtocolUnchecked ::
                      (MonadIO m, FromJSString result) => URLUtils -> m result
 getProtocolUnchecked self
@@ -106,6 +134,15 @@ getUsername ::
             (MonadIO m, FromJSString result) => URLUtils -> m (Maybe result)
 getUsername self
   = liftIO (fromMaybeJSString <$> (js_getUsername (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.username Mozilla URLUtils.username documentation> 
+getUsernameUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    URLUtils -> m result
+getUsernameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getUsername (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.username Mozilla URLUtils.username documentation> 
 getUsernameUnchecked ::
@@ -132,6 +169,15 @@ getPassword self
   = liftIO (fromMaybeJSString <$> (js_getPassword (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
+getPasswordUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    URLUtils -> m result
+getPasswordUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPassword (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.password Mozilla URLUtils.password documentation> 
 getPasswordUnchecked ::
                      (MonadIO m, FromJSString result) => URLUtils -> m result
 getPasswordUnchecked self
@@ -152,6 +198,15 @@ foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
 getHost ::
         (MonadIO m, FromJSString result) => URLUtils -> m (Maybe result)
 getHost self = liftIO (fromMaybeJSString <$> (js_getHost (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.host Mozilla URLUtils.host documentation> 
+getHostUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                URLUtils -> m result
+getHostUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHost (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.host Mozilla URLUtils.host documentation> 
 getHostUnchecked ::
@@ -178,6 +233,15 @@ getHostname self
   = liftIO (fromMaybeJSString <$> (js_getHostname (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
+getHostnameUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    URLUtils -> m result
+getHostnameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHostname (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hostname Mozilla URLUtils.hostname documentation> 
 getHostnameUnchecked ::
                      (MonadIO m, FromJSString result) => URLUtils -> m result
 getHostnameUnchecked self
@@ -198,6 +262,15 @@ foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
 getPort ::
         (MonadIO m, FromJSString result) => URLUtils -> m (Maybe result)
 getPort self = liftIO (fromMaybeJSString <$> (js_getPort (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.port Mozilla URLUtils.port documentation> 
+getPortUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                URLUtils -> m result
+getPortUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPort (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.port Mozilla URLUtils.port documentation> 
 getPortUnchecked ::
@@ -224,6 +297,15 @@ getPathname self
   = liftIO (fromMaybeJSString <$> (js_getPathname (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname Mozilla URLUtils.pathname documentation> 
+getPathnameUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    URLUtils -> m result
+getPathnameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPathname (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.pathname Mozilla URLUtils.pathname documentation> 
 getPathnameUnchecked ::
                      (MonadIO m, FromJSString result) => URLUtils -> m result
 getPathnameUnchecked self
@@ -248,6 +330,15 @@ getSearch self
   = liftIO (fromMaybeJSString <$> (js_getSearch (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
+getSearchUnsafe ::
+                (MonadIO m, HasCallStack, FromJSString result) =>
+                  URLUtils -> m result
+getSearchUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getSearch (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.search Mozilla URLUtils.search documentation> 
 getSearchUnchecked ::
                    (MonadIO m, FromJSString result) => URLUtils -> m result
 getSearchUnchecked self
@@ -268,6 +359,15 @@ foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
 getHash ::
         (MonadIO m, FromJSString result) => URLUtils -> m (Maybe result)
 getHash self = liftIO (fromMaybeJSString <$> (js_getHash (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash Mozilla URLUtils.hash documentation> 
+getHashUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                URLUtils -> m result
+getHashUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHash (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLUtils.hash Mozilla URLUtils.hash documentation> 
 getHashUnchecked ::

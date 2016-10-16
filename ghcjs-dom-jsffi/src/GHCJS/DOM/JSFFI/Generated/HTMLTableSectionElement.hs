@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableSectionElement
-       (js_insertRow, insertRow, insertRow_, insertRowUnchecked,
-        js_deleteRow, deleteRow, js_setAlign, setAlign, js_getAlign,
-        getAlign, js_setCh, setCh, js_getCh, getCh, js_setChOff, setChOff,
-        js_getChOff, getChOff, js_setVAlign, setVAlign, js_getVAlign,
-        getVAlign, js_getRows, getRows, getRowsUnchecked,
-        HTMLTableSectionElement(..), gTypeHTMLTableSectionElement)
+       (js_insertRow, insertRow, insertRow_, insertRowUnsafe,
+        insertRowUnchecked, js_deleteRow, deleteRow, js_setAlign, setAlign,
+        js_getAlign, getAlign, js_setCh, setCh, js_getCh, getCh,
+        js_setChOff, setChOff, js_getChOff, getChOff, js_setVAlign,
+        setVAlign, js_getVAlign, getVAlign, js_getRows, getRows,
+        getRowsUnsafe, getRowsUnchecked, HTMLTableSectionElement(..),
+        gTypeHTMLTableSectionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
         js_insertRow ::
@@ -38,6 +55,15 @@ insertRow self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
 insertRow_ :: (MonadIO m) => HTMLTableSectionElement -> Int -> m ()
 insertRow_ self index = liftIO (void (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
+insertRowUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  HTMLTableSectionElement -> Int -> m HTMLElement
+insertRowUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_insertRow (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
 insertRowUnchecked ::
@@ -132,6 +158,15 @@ foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
 getRows ::
         (MonadIO m) => HTMLTableSectionElement -> m (Maybe HTMLCollection)
 getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.rows Mozilla HTMLTableSectionElement.rows documentation> 
+getRowsUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                HTMLTableSectionElement -> m HTMLCollection
+getRowsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRows (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.rows Mozilla HTMLTableSectionElement.rows documentation> 
 getRowsUnchecked ::

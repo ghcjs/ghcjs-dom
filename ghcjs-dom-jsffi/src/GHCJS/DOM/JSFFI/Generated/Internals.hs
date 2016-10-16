@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Internals
        (js_address, address, address_, js_nodeNeedsStyleRecalc,
         nodeNeedsStyleRecalc, nodeNeedsStyleRecalc_, js_description,
@@ -16,17 +21,20 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         js_computedStyleIncludingVisitedInfo,
         computedStyleIncludingVisitedInfo,
         computedStyleIncludingVisitedInfo_,
+        computedStyleIncludingVisitedInfoUnsafe,
         computedStyleIncludingVisitedInfoUnchecked, js_ensureShadowRoot,
-        ensureShadowRoot, ensureShadowRoot_, ensureShadowRootUnchecked,
-        js_createShadowRoot, createShadowRoot, createShadowRoot_,
+        ensureShadowRoot, ensureShadowRoot_, ensureShadowRootUnsafe,
+        ensureShadowRootUnchecked, js_createShadowRoot, createShadowRoot,
+        createShadowRoot_, createShadowRootUnsafe,
         createShadowRootUnchecked, js_shadowRoot, shadowRoot, shadowRoot_,
-        shadowRootUnchecked, js_shadowRootType, shadowRootType,
-        shadowRootType_, js_includerFor, includerFor, includerFor_,
-        includerForUnchecked, js_shadowPseudoId, shadowPseudoId,
-        shadowPseudoId_, js_setShadowPseudoId, setShadowPseudoId,
-        js_treeScopeRootNode, treeScopeRootNode, treeScopeRootNode_,
+        shadowRootUnsafe, shadowRootUnchecked, js_shadowRootType,
+        shadowRootType, shadowRootType_, js_includerFor, includerFor,
+        includerFor_, includerForUnsafe, includerForUnchecked,
+        js_shadowPseudoId, shadowPseudoId, shadowPseudoId_,
+        js_setShadowPseudoId, setShadowPseudoId, js_treeScopeRootNode,
+        treeScopeRootNode, treeScopeRootNode_, treeScopeRootNodeUnsafe,
         treeScopeRootNodeUnchecked, js_parentTreeScope, parentTreeScope,
-        parentTreeScope_, parentTreeScopeUnchecked,
+        parentTreeScope_, parentTreeScopeUnsafe, parentTreeScopeUnchecked,
         js_lastSpatialNavigationCandidateCount,
         lastSpatialNavigationCandidateCount,
         lastSpatialNavigationCandidateCount_, js_numberOfActiveAnimations,
@@ -53,13 +61,15 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         js_setFormControlStateOfPreviousHistoryItem,
         setFormControlStateOfPreviousHistoryItem, js_absoluteCaretBounds,
         absoluteCaretBounds, absoluteCaretBounds_,
-        absoluteCaretBoundsUnchecked, js_boundingBox, boundingBox,
-        boundingBox_, boundingBoxUnchecked, js_inspectorHighlightRects,
+        absoluteCaretBoundsUnsafe, absoluteCaretBoundsUnchecked,
+        js_boundingBox, boundingBox, boundingBox_, boundingBoxUnsafe,
+        boundingBoxUnchecked, js_inspectorHighlightRects,
         inspectorHighlightRects, inspectorHighlightRects_,
-        inspectorHighlightRectsUnchecked, js_inspectorHighlightObject,
-        inspectorHighlightObject, inspectorHighlightObject_,
-        js_markerCountForNode, markerCountForNode, markerCountForNode_,
-        js_markerRangeForNode, markerRangeForNode, markerRangeForNode_,
+        inspectorHighlightRectsUnsafe, inspectorHighlightRectsUnchecked,
+        js_inspectorHighlightObject, inspectorHighlightObject,
+        inspectorHighlightObject_, js_markerCountForNode,
+        markerCountForNode, markerCountForNode_, js_markerRangeForNode,
+        markerRangeForNode, markerRangeForNode_, markerRangeForNodeUnsafe,
         markerRangeForNodeUnchecked, js_markerDescriptionForNode,
         markerDescriptionForNode, markerDescriptionForNode_,
         js_addTextMatchMarker, addTextMatchMarker,
@@ -76,14 +86,15 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         countMatchesForText, countMatchesForText_, js_paintControlTints,
         paintControlTints, js_scrollElementToRect, scrollElementToRect,
         js_rangeFromLocationAndLength, rangeFromLocationAndLength,
-        rangeFromLocationAndLength_, rangeFromLocationAndLengthUnchecked,
-        js_locationFromRange, locationFromRange, locationFromRange_,
-        js_lengthFromRange, lengthFromRange, lengthFromRange_,
-        js_rangeAsText, rangeAsText, rangeAsText_, js_subrange, subrange,
-        subrange_, subrangeUnchecked,
-        js_rangeForDictionaryLookupAtLocation,
+        rangeFromLocationAndLength_, rangeFromLocationAndLengthUnsafe,
+        rangeFromLocationAndLengthUnchecked, js_locationFromRange,
+        locationFromRange, locationFromRange_, js_lengthFromRange,
+        lengthFromRange, lengthFromRange_, js_rangeAsText, rangeAsText,
+        rangeAsText_, js_subrange, subrange, subrange_, subrangeUnsafe,
+        subrangeUnchecked, js_rangeForDictionaryLookupAtLocation,
         rangeForDictionaryLookupAtLocation,
         rangeForDictionaryLookupAtLocation_,
+        rangeForDictionaryLookupAtLocationUnsafe,
         rangeForDictionaryLookupAtLocationUnchecked,
         js_setDelegatesScrolling, setDelegatesScrolling,
         js_lastSpellCheckRequestSequence, lastSpellCheckRequestSequence,
@@ -95,13 +106,13 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         wheelEventHandlerCount, wheelEventHandlerCount_,
         js_touchEventHandlerCount, touchEventHandlerCount,
         touchEventHandlerCount_, js_nodesFromRect, nodesFromRect,
-        nodesFromRect_, nodesFromRectUnchecked, js_parserMetaData,
-        parserMetaData, parserMetaData_, js_updateEditorUINowIfScheduled,
-        updateEditorUINowIfScheduled, js_hasSpellingMarker,
-        hasSpellingMarker, hasSpellingMarker_, js_hasGrammarMarker,
-        hasGrammarMarker, hasGrammarMarker_, js_hasAutocorrectedMarker,
-        hasAutocorrectedMarker, hasAutocorrectedMarker_,
-        js_setContinuousSpellCheckingEnabled,
+        nodesFromRect_, nodesFromRectUnsafe, nodesFromRectUnchecked,
+        js_parserMetaData, parserMetaData, parserMetaData_,
+        js_updateEditorUINowIfScheduled, updateEditorUINowIfScheduled,
+        js_hasSpellingMarker, hasSpellingMarker, hasSpellingMarker_,
+        js_hasGrammarMarker, hasGrammarMarker, hasGrammarMarker_,
+        js_hasAutocorrectedMarker, hasAutocorrectedMarker,
+        hasAutocorrectedMarker_, js_setContinuousSpellCheckingEnabled,
         setContinuousSpellCheckingEnabled,
         js_setAutomaticQuoteSubstitutionEnabled,
         setAutomaticQuoteSubstitutionEnabled,
@@ -123,8 +134,8 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         js_mainThreadScrollingReasons, mainThreadScrollingReasons,
         mainThreadScrollingReasons_, js_nonFastScrollableRects,
         nonFastScrollableRects, nonFastScrollableRects_,
-        nonFastScrollableRectsUnchecked, js_repaintRectsAsText,
-        repaintRectsAsText, repaintRectsAsText_,
+        nonFastScrollableRectsUnsafe, nonFastScrollableRectsUnchecked,
+        js_repaintRectsAsText, repaintRectsAsText, repaintRectsAsText_,
         js_garbageCollectDocumentResources,
         garbageCollectDocumentResources, js_allowRoundingHacks,
         allowRoundingHacks, js_insertAuthorCSS, insertAuthorCSS,
@@ -135,7 +146,8 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         numberOfLiveDocuments_, js_consoleMessageArgumentCounts,
         consoleMessageArgumentCounts, consoleMessageArgumentCounts_,
         js_openDummyInspectorFrontend, openDummyInspectorFrontend,
-        openDummyInspectorFrontend_, openDummyInspectorFrontendUnchecked,
+        openDummyInspectorFrontend_, openDummyInspectorFrontendUnsafe,
+        openDummyInspectorFrontendUnchecked,
         js_closeDummyInspectorFrontend, closeDummyInspectorFrontend,
         js_setJavaScriptProfilingEnabled, setJavaScriptProfilingEnabled,
         js_setInspectorIsUnderTest, setInspectorIsUnderTest,
@@ -162,9 +174,10 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         js_removeURLSchemeRegisteredAsBypassingContentSecurityPolicy,
         removeURLSchemeRegisteredAsBypassingContentSecurityPolicy,
         js_mallocStatistics, mallocStatistics, mallocStatistics_,
-        mallocStatisticsUnchecked, js_typeConversions, typeConversions,
-        typeConversions_, typeConversionsUnchecked, js_memoryInfo,
-        memoryInfo, memoryInfo_, memoryInfoUnchecked,
+        mallocStatisticsUnsafe, mallocStatisticsUnchecked,
+        js_typeConversions, typeConversions, typeConversions_,
+        typeConversionsUnsafe, typeConversionsUnchecked, js_memoryInfo,
+        memoryInfo, memoryInfo_, memoryInfoUnsafe, memoryInfoUnchecked,
         js_getReferencedFilePaths, getReferencedFilePaths,
         getReferencedFilePaths_, js_startTrackingRepaints,
         startTrackingRepaints, js_stopTrackingRepaints,
@@ -177,8 +190,9 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         markerTextForListItem, markerTextForListItem_,
         js_toolTipFromElement, toolTipFromElement, toolTipFromElement_,
         js_deserializeBuffer, deserializeBuffer, deserializeBuffer_,
-        deserializeBufferUnchecked, js_serializeObject, serializeObject,
-        serializeObject_, serializeObjectUnchecked,
+        deserializeBufferUnsafe, deserializeBufferUnchecked,
+        js_serializeObject, serializeObject, serializeObject_,
+        serializeObjectUnsafe, serializeObjectUnchecked,
         js_setUsesOverlayScrollbars, setUsesOverlayScrollbars,
         js_forceReload, forceReload, js_simulateAudioInterruption,
         simulateAudioInterruption, js_mediaElementHasCharacteristic,
@@ -192,42 +206,44 @@ module GHCJS.DOM.JSFFI.Generated.Internals
         js_setPrimaryAudioTrackLanguageOverride,
         setPrimaryAudioTrackLanguageOverride, js_setCaptionDisplayMode,
         setCaptionDisplayMode, js_createTimeRanges, createTimeRanges,
-        createTimeRanges_, createTimeRangesUnchecked,
-        js_closestTimeToTimeRanges, closestTimeToTimeRanges,
-        closestTimeToTimeRanges_, js_isSelectPopupVisible,
-        isSelectPopupVisible, isSelectPopupVisible_, js_isVibrating,
-        isVibrating, isVibrating_,
+        createTimeRanges_, createTimeRangesUnsafe,
+        createTimeRangesUnchecked, js_closestTimeToTimeRanges,
+        closestTimeToTimeRanges, closestTimeToTimeRanges_,
+        js_isSelectPopupVisible, isSelectPopupVisible,
+        isSelectPopupVisible_, js_isVibrating, isVibrating, isVibrating_,
         js_isPluginUnavailabilityIndicatorObscured,
         isPluginUnavailabilityIndicatorObscured,
         isPluginUnavailabilityIndicatorObscured_, js_isPluginSnapshotted,
         isPluginSnapshotted, isPluginSnapshotted_, js_selectionBounds,
-        selectionBounds, selectionBounds_, selectionBoundsUnchecked,
-        js_initializeMockMediaSource, initializeMockMediaSource,
-        js_bufferedSamplesForTrackID, bufferedSamplesForTrackID,
-        bufferedSamplesForTrackID_, js_beginMediaSessionInterruption,
-        beginMediaSessionInterruption, js_endMediaSessionInterruption,
-        endMediaSessionInterruption, js_applicationWillEnterForeground,
-        applicationWillEnterForeground, js_applicationWillEnterBackground,
-        applicationWillEnterBackground, js_setMediaSessionRestrictions,
-        setMediaSessionRestrictions, js_postRemoteControlCommand,
-        postRemoteControlCommand, js_simulateSystemSleep,
-        simulateSystemSleep, js_simulateSystemWake, simulateSystemWake,
-        js_elementIsBlockingDisplaySleep, elementIsBlockingDisplaySleep,
-        elementIsBlockingDisplaySleep_, js_installMockPageOverlay,
-        installMockPageOverlay, js_pageOverlayLayerTreeAsText,
-        pageOverlayLayerTreeAsText, pageOverlayLayerTreeAsText_,
-        js_setPageMuted, setPageMuted, js_isPagePlayingAudio,
-        isPagePlayingAudio, isPagePlayingAudio_,
+        selectionBounds, selectionBounds_, selectionBoundsUnsafe,
+        selectionBoundsUnchecked, js_initializeMockMediaSource,
+        initializeMockMediaSource, js_bufferedSamplesForTrackID,
+        bufferedSamplesForTrackID, bufferedSamplesForTrackID_,
+        js_beginMediaSessionInterruption, beginMediaSessionInterruption,
+        js_endMediaSessionInterruption, endMediaSessionInterruption,
+        js_applicationWillEnterForeground, applicationWillEnterForeground,
+        js_applicationWillEnterBackground, applicationWillEnterBackground,
+        js_setMediaSessionRestrictions, setMediaSessionRestrictions,
+        js_postRemoteControlCommand, postRemoteControlCommand,
+        js_simulateSystemSleep, simulateSystemSleep, js_simulateSystemWake,
+        simulateSystemWake, js_elementIsBlockingDisplaySleep,
+        elementIsBlockingDisplaySleep, elementIsBlockingDisplaySleep_,
+        js_installMockPageOverlay, installMockPageOverlay,
+        js_pageOverlayLayerTreeAsText, pageOverlayLayerTreeAsText,
+        pageOverlayLayerTreeAsText_, js_setPageMuted, setPageMuted,
+        js_isPagePlayingAudio, isPagePlayingAudio, isPagePlayingAudio_,
         pattern LAYER_TREE_INCLUDES_VISIBLE_RECTS,
         pattern LAYER_TREE_INCLUDES_TILE_CACHES,
         pattern LAYER_TREE_INCLUDES_REPAINT_RECTS,
         pattern LAYER_TREE_INCLUDES_PAINTING_PHASES,
         pattern LAYER_TREE_INCLUDES_CONTENT_LAYERS, js_getSettings,
-        getSettings, getSettingsUnchecked, js_getWorkerThreadCount,
-        getWorkerThreadCount, js_getConsoleProfiles, getConsoleProfiles,
-        Internals(..), gTypeInternals)
+        getSettings, getSettingsUnsafe, getSettingsUnchecked,
+        js_getWorkerThreadCount, getWorkerThreadCount,
+        js_getConsoleProfiles, getConsoleProfiles, Internals(..),
+        gTypeInternals)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -243,6 +259,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"address\"]($2)" js_address
         :: Internals -> Nullable Node -> IO JSString
@@ -468,6 +494,17 @@ computedStyleIncludingVisitedInfo_ self node
             (maybeToNullable (fmap toNode node))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.computedStyleIncludingVisitedInfo Mozilla Internals.computedStyleIncludingVisitedInfo documentation> 
+computedStyleIncludingVisitedInfoUnsafe ::
+                                        (MonadIO m, IsNode node, HasCallStack) =>
+                                          Internals -> Maybe node -> m CSSStyleDeclaration
+computedStyleIncludingVisitedInfoUnsafe self node
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_computedStyleIncludingVisitedInfo (self)
+             (maybeToNullable (fmap toNode node))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.computedStyleIncludingVisitedInfo Mozilla Internals.computedStyleIncludingVisitedInfo documentation> 
 computedStyleIncludingVisitedInfoUnchecked ::
                                            (MonadIO m, IsNode node) =>
                                              Internals -> Maybe node -> m CSSStyleDeclaration
@@ -499,6 +536,17 @@ ensureShadowRoot_ self host
       (void
          (js_ensureShadowRoot (self)
             (maybeToNullable (fmap toElement host))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.ensureShadowRoot Mozilla Internals.ensureShadowRoot documentation> 
+ensureShadowRootUnsafe ::
+                       (MonadIO m, IsElement host, HasCallStack) =>
+                         Internals -> Maybe host -> m Node
+ensureShadowRootUnsafe self host
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_ensureShadowRoot (self)
+             (maybeToNullable (fmap toElement host))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.ensureShadowRoot Mozilla Internals.ensureShadowRoot documentation> 
 ensureShadowRootUnchecked ::
@@ -533,6 +581,17 @@ createShadowRoot_ self host
             (maybeToNullable (fmap toElement host))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createShadowRoot Mozilla Internals.createShadowRoot documentation> 
+createShadowRootUnsafe ::
+                       (MonadIO m, IsElement host, HasCallStack) =>
+                         Internals -> Maybe host -> m Node
+createShadowRootUnsafe self host
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createShadowRoot (self)
+             (maybeToNullable (fmap toElement host))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createShadowRoot Mozilla Internals.createShadowRoot documentation> 
 createShadowRootUnchecked ::
                           (MonadIO m, IsElement host) => Internals -> Maybe host -> m Node
 createShadowRootUnchecked self host
@@ -561,6 +620,16 @@ shadowRoot_ self host
   = liftIO
       (void
          (js_shadowRoot (self) (maybeToNullable (fmap toElement host))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shadowRoot Mozilla Internals.shadowRoot documentation> 
+shadowRootUnsafe ::
+                 (MonadIO m, IsElement host, HasCallStack) =>
+                   Internals -> Maybe host -> m Node
+shadowRootUnsafe self host
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_shadowRoot (self) (maybeToNullable (fmap toElement host))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.shadowRoot Mozilla Internals.shadowRoot documentation> 
 shadowRootUnchecked ::
@@ -609,6 +678,16 @@ includerFor_ ::
 includerFor_ self node
   = liftIO
       (void (js_includerFor (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.includerFor Mozilla Internals.includerFor documentation> 
+includerForUnsafe ::
+                  (MonadIO m, IsNode node, HasCallStack) =>
+                    Internals -> Maybe node -> m Element
+includerForUnsafe self node
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_includerFor (self) (maybeToNullable (fmap toNode node))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.includerFor Mozilla Internals.includerFor documentation> 
 includerForUnchecked ::
@@ -677,6 +756,16 @@ treeScopeRootNode_ self node
          (js_treeScopeRootNode (self) (maybeToNullable (fmap toNode node))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.treeScopeRootNode Mozilla Internals.treeScopeRootNode documentation> 
+treeScopeRootNodeUnsafe ::
+                        (MonadIO m, IsNode node, HasCallStack) =>
+                          Internals -> Maybe node -> m Node
+treeScopeRootNodeUnsafe self node
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_treeScopeRootNode (self) (maybeToNullable (fmap toNode node))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.treeScopeRootNode Mozilla Internals.treeScopeRootNode documentation> 
 treeScopeRootNodeUnchecked ::
                            (MonadIO m, IsNode node) => Internals -> Maybe node -> m Node
 treeScopeRootNodeUnchecked self node
@@ -704,6 +793,16 @@ parentTreeScope_ self node
   = liftIO
       (void
          (js_parentTreeScope (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.parentTreeScope Mozilla Internals.parentTreeScope documentation> 
+parentTreeScopeUnsafe ::
+                      (MonadIO m, IsNode node, HasCallStack) =>
+                        Internals -> Maybe node -> m Node
+parentTreeScopeUnsafe self node
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_parentTreeScope (self) (maybeToNullable (fmap toNode node))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.parentTreeScope Mozilla Internals.parentTreeScope documentation> 
 parentTreeScopeUnchecked ::
@@ -1002,6 +1101,14 @@ absoluteCaretBounds_ self
   = liftIO (void (js_absoluteCaretBounds (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.absoluteCaretBounds Mozilla Internals.absoluteCaretBounds documentation> 
+absoluteCaretBoundsUnsafe ::
+                          (MonadIO m, HasCallStack) => Internals -> m ClientRect
+absoluteCaretBoundsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_absoluteCaretBounds (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.absoluteCaretBounds Mozilla Internals.absoluteCaretBounds documentation> 
 absoluteCaretBoundsUnchecked ::
                              (MonadIO m) => Internals -> m ClientRect
 absoluteCaretBoundsUnchecked self
@@ -1031,6 +1138,16 @@ boundingBox_ self element
          (js_boundingBox (self) (maybeToNullable (fmap toElement element))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.boundingBox Mozilla Internals.boundingBox documentation> 
+boundingBoxUnsafe ::
+                  (MonadIO m, IsElement element, HasCallStack) =>
+                    Internals -> Maybe element -> m ClientRect
+boundingBoxUnsafe self element
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_boundingBox (self) (maybeToNullable (fmap toElement element))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.boundingBox Mozilla Internals.boundingBox documentation> 
 boundingBoxUnchecked ::
                      (MonadIO m, IsElement element) =>
                        Internals -> Maybe element -> m ClientRect
@@ -1053,6 +1170,14 @@ inspectorHighlightRects self
 inspectorHighlightRects_ :: (MonadIO m) => Internals -> m ()
 inspectorHighlightRects_ self
   = liftIO (void (js_inspectorHighlightRects (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.inspectorHighlightRects Mozilla Internals.inspectorHighlightRects documentation> 
+inspectorHighlightRectsUnsafe ::
+                              (MonadIO m, HasCallStack) => Internals -> m ClientRectList
+inspectorHighlightRectsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_inspectorHighlightRects (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.inspectorHighlightRects Mozilla Internals.inspectorHighlightRects documentation> 
 inspectorHighlightRectsUnchecked ::
@@ -1126,6 +1251,18 @@ markerRangeForNode_ self node markerType index
          (js_markerRangeForNode (self) (maybeToNullable (fmap toNode node))
             (toJSString markerType)
             index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerRangeForNode Mozilla Internals.markerRangeForNode documentation> 
+markerRangeForNodeUnsafe ::
+                         (MonadIO m, IsNode node, ToJSString markerType, HasCallStack) =>
+                           Internals -> Maybe node -> markerType -> Word -> m Range
+markerRangeForNodeUnsafe self node markerType index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_markerRangeForNode (self) (maybeToNullable (fmap toNode node))
+             (toJSString markerType)
+             index))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.markerRangeForNode Mozilla Internals.markerRangeForNode documentation> 
 markerRangeForNodeUnchecked ::
@@ -1401,6 +1538,20 @@ rangeFromLocationAndLength_ self scope rangeLocation rangeLength
             rangeLength))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeFromLocationAndLength Mozilla Internals.rangeFromLocationAndLength documentation> 
+rangeFromLocationAndLengthUnsafe ::
+                                 (MonadIO m, IsElement scope, HasCallStack) =>
+                                   Internals -> Maybe scope -> Int -> Int -> m Range
+rangeFromLocationAndLengthUnsafe self scope rangeLocation
+  rangeLength
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_rangeFromLocationAndLength (self)
+             (maybeToNullable (fmap toElement scope))
+             rangeLocation
+             rangeLength))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeFromLocationAndLength Mozilla Internals.rangeFromLocationAndLength documentation> 
 rangeFromLocationAndLengthUnchecked ::
                                     (MonadIO m, IsElement scope) =>
                                       Internals -> Maybe scope -> Int -> Int -> m Range
@@ -1501,6 +1652,17 @@ subrange_ self range rangeLocation rangeLength
             rangeLength))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.subrange Mozilla Internals.subrange documentation> 
+subrangeUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 Internals -> Maybe Range -> Int -> Int -> m Range
+subrangeUnsafe self range rangeLocation rangeLength
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_subrange (self) (maybeToNullable range) rangeLocation
+             rangeLength))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.subrange Mozilla Internals.subrange documentation> 
 subrangeUnchecked ::
                   (MonadIO m) => Internals -> Maybe Range -> Int -> Int -> m Range
 subrangeUnchecked self range rangeLocation rangeLength
@@ -1527,6 +1689,16 @@ rangeForDictionaryLookupAtLocation_ ::
                                     (MonadIO m) => Internals -> Int -> Int -> m ()
 rangeForDictionaryLookupAtLocation_ self x y
   = liftIO (void (js_rangeForDictionaryLookupAtLocation (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeForDictionaryLookupAtLocation Mozilla Internals.rangeForDictionaryLookupAtLocation documentation> 
+rangeForDictionaryLookupAtLocationUnsafe ::
+                                         (MonadIO m, HasCallStack) =>
+                                           Internals -> Int -> Int -> m Range
+rangeForDictionaryLookupAtLocationUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_rangeForDictionaryLookupAtLocation (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.rangeForDictionaryLookupAtLocation Mozilla Internals.rangeForDictionaryLookupAtLocation documentation> 
 rangeForDictionaryLookupAtLocationUnchecked ::
@@ -1689,6 +1861,32 @@ nodesFromRect_ self document x y topPadding rightPadding
             ignoreClipping
             allowShadowContent
             allowChildFrameContent))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nodesFromRect Mozilla Internals.nodesFromRect documentation> 
+nodesFromRectUnsafe ::
+                    (MonadIO m, IsDocument document, HasCallStack) =>
+                      Internals ->
+                        Maybe document ->
+                          Int ->
+                            Int ->
+                              Word -> Word -> Word -> Word -> Bool -> Bool -> Bool -> m NodeList
+nodesFromRectUnsafe self document x y topPadding rightPadding
+  bottomPadding leftPadding ignoreClipping allowShadowContent
+  allowChildFrameContent
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_nodesFromRect (self)
+             (maybeToNullable (fmap toDocument document))
+             x
+             y
+             topPadding
+             rightPadding
+             bottomPadding
+             leftPadding
+             ignoreClipping
+             allowShadowContent
+             allowChildFrameContent))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nodesFromRect Mozilla Internals.nodesFromRect documentation> 
 nodesFromRectUnchecked ::
@@ -1971,6 +2169,14 @@ nonFastScrollableRects_ self
   = liftIO (void (js_nonFastScrollableRects (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nonFastScrollableRects Mozilla Internals.nonFastScrollableRects documentation> 
+nonFastScrollableRectsUnsafe ::
+                             (MonadIO m, HasCallStack) => Internals -> m ClientRectList
+nonFastScrollableRectsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_nonFastScrollableRects (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.nonFastScrollableRects Mozilla Internals.nonFastScrollableRects documentation> 
 nonFastScrollableRectsUnchecked ::
                                 (MonadIO m) => Internals -> m ClientRectList
 nonFastScrollableRectsUnchecked self
@@ -2116,6 +2322,16 @@ openDummyInspectorFrontend_ ::
 openDummyInspectorFrontend_ self url
   = liftIO
       (void (js_openDummyInspectorFrontend (self) (toJSString url)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.openDummyInspectorFrontend Mozilla Internals.openDummyInspectorFrontend documentation> 
+openDummyInspectorFrontendUnsafe ::
+                                 (MonadIO m, ToJSString url, HasCallStack) =>
+                                   Internals -> url -> m Window
+openDummyInspectorFrontendUnsafe self url
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_openDummyInspectorFrontend (self) (toJSString url)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.openDummyInspectorFrontend Mozilla Internals.openDummyInspectorFrontend documentation> 
 openDummyInspectorFrontendUnchecked ::
@@ -2454,6 +2670,14 @@ mallocStatistics_ :: (MonadIO m) => Internals -> m ()
 mallocStatistics_ self = liftIO (void (js_mallocStatistics (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.mallocStatistics Mozilla Internals.mallocStatistics documentation> 
+mallocStatisticsUnsafe ::
+                       (MonadIO m, HasCallStack) => Internals -> m MallocStatistics
+mallocStatisticsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_mallocStatistics (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.mallocStatistics Mozilla Internals.mallocStatistics documentation> 
 mallocStatisticsUnchecked ::
                           (MonadIO m) => Internals -> m MallocStatistics
 mallocStatisticsUnchecked self
@@ -2474,6 +2698,14 @@ typeConversions_ :: (MonadIO m) => Internals -> m ()
 typeConversions_ self = liftIO (void (js_typeConversions (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.typeConversions Mozilla Internals.typeConversions documentation> 
+typeConversionsUnsafe ::
+                      (MonadIO m, HasCallStack) => Internals -> m TypeConversions
+typeConversionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_typeConversions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.typeConversions Mozilla Internals.typeConversions documentation> 
 typeConversionsUnchecked ::
                          (MonadIO m) => Internals -> m TypeConversions
 typeConversionsUnchecked self
@@ -2491,6 +2723,14 @@ memoryInfo self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.memoryInfo Mozilla Internals.memoryInfo documentation> 
 memoryInfo_ :: (MonadIO m) => Internals -> m ()
 memoryInfo_ self = liftIO (void (js_memoryInfo (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.memoryInfo Mozilla Internals.memoryInfo documentation> 
+memoryInfoUnsafe ::
+                 (MonadIO m, HasCallStack) => Internals -> m MemoryInfo
+memoryInfoUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_memoryInfo (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.memoryInfo Mozilla Internals.memoryInfo documentation> 
 memoryInfoUnchecked :: (MonadIO m) => Internals -> m MemoryInfo
@@ -2644,6 +2884,17 @@ deserializeBuffer_ self buffer
             (maybeToNullable (fmap toArrayBuffer buffer))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.deserializeBuffer Mozilla Internals.deserializeBuffer documentation> 
+deserializeBufferUnsafe ::
+                        (MonadIO m, IsArrayBuffer buffer, HasCallStack) =>
+                          Internals -> Maybe buffer -> m SerializedScriptValue
+deserializeBufferUnsafe self buffer
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_deserializeBuffer (self)
+             (maybeToNullable (fmap toArrayBuffer buffer))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.deserializeBuffer Mozilla Internals.deserializeBuffer documentation> 
 deserializeBufferUnchecked ::
                            (MonadIO m, IsArrayBuffer buffer) =>
                              Internals -> Maybe buffer -> m SerializedScriptValue
@@ -2677,6 +2928,17 @@ serializeObject_ self obj
       (void
          (js_serializeObject (self)
             (maybeToNullable (fmap toSerializedScriptValue obj))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.serializeObject Mozilla Internals.serializeObject documentation> 
+serializeObjectUnsafe ::
+                      (MonadIO m, IsSerializedScriptValue obj, HasCallStack) =>
+                        Internals -> Maybe obj -> m ArrayBuffer
+serializeObjectUnsafe self obj
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_serializeObject (self)
+             (maybeToNullable (fmap toSerializedScriptValue obj))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.serializeObject Mozilla Internals.serializeObject documentation> 
 serializeObjectUnchecked ::
@@ -2863,6 +3125,19 @@ createTimeRanges_ self startTimes endTimes
             (maybeToNullable (fmap toFloat32Array endTimes))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createTimeRanges Mozilla Internals.createTimeRanges documentation> 
+createTimeRangesUnsafe ::
+                       (MonadIO m, IsFloat32Array startTimes, IsFloat32Array endTimes,
+                        HasCallStack) =>
+                         Internals -> Maybe startTimes -> Maybe endTimes -> m TimeRanges
+createTimeRangesUnsafe self startTimes endTimes
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createTimeRanges (self)
+             (maybeToNullable (fmap toFloat32Array startTimes))
+             (maybeToNullable (fmap toFloat32Array endTimes))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.createTimeRanges Mozilla Internals.createTimeRanges documentation> 
 createTimeRangesUnchecked ::
                           (MonadIO m, IsFloat32Array startTimes, IsFloat32Array endTimes) =>
                             Internals -> Maybe startTimes -> Maybe endTimes -> m TimeRanges
@@ -2983,6 +3258,14 @@ selectionBounds self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.selectionBounds Mozilla Internals.selectionBounds documentation> 
 selectionBounds_ :: (MonadIO m) => Internals -> m ()
 selectionBounds_ self = liftIO (void (js_selectionBounds (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.selectionBounds Mozilla Internals.selectionBounds documentation> 
+selectionBoundsUnsafe ::
+                      (MonadIO m, HasCallStack) => Internals -> m ClientRect
+selectionBoundsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_selectionBounds (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.selectionBounds Mozilla Internals.selectionBounds documentation> 
 selectionBoundsUnchecked ::
@@ -3182,6 +3465,14 @@ getSettings ::
             (MonadIO m) => Internals -> m (Maybe InternalSettings)
 getSettings self
   = liftIO (nullableToMaybe <$> (js_getSettings (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.settings Mozilla Internals.settings documentation> 
+getSettingsUnsafe ::
+                  (MonadIO m, HasCallStack) => Internals -> m InternalSettings
+getSettingsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSettings (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Internals.settings Mozilla Internals.settings documentation> 
 getSettingsUnchecked ::

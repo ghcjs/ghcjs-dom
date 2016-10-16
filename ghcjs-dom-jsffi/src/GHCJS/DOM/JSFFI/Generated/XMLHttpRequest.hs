@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
        (js_newXMLHttpRequest, newXMLHttpRequest, js_open, open,
         js_setRequestHeader, setRequestHeader, js_send, send, js_abort,
         abort, js_getAllResponseHeaders, getAllResponseHeaders,
-        getAllResponseHeaders_, getAllResponseHeadersUnchecked,
-        js_getResponseHeader, getResponseHeader, getResponseHeader_,
+        getAllResponseHeaders_, getAllResponseHeadersUnsafe,
+        getAllResponseHeadersUnchecked, js_getResponseHeader,
+        getResponseHeader, getResponseHeader_, getResponseHeaderUnsafe,
         getResponseHeaderUnchecked, js_overrideMimeType, overrideMimeType,
         pattern UNSENT, pattern OPENED, pattern HEADERS_RECEIVED,
         pattern LOADING, pattern DONE, abortEvent, error, load, loadEnd,
@@ -12,15 +18,17 @@ module GHCJS.DOM.JSFFI.Generated.XMLHttpRequest
         setTimeout, js_getTimeout, getTimeout, js_getReadyState,
         getReadyState, js_setWithCredentials, setWithCredentials,
         js_getWithCredentials, getWithCredentials, js_getUpload, getUpload,
-        getUploadUnchecked, js_getResponseText, getResponseText,
-        getResponseTextUnchecked, js_getResponseXML, getResponseXML,
+        getUploadUnsafe, getUploadUnchecked, js_getResponseText,
+        getResponseText, getResponseTextUnsafe, getResponseTextUnchecked,
+        js_getResponseXML, getResponseXML, getResponseXMLUnsafe,
         getResponseXMLUnchecked, js_setResponseType, setResponseType,
         js_getResponseType, getResponseType, js_getResponse, getResponse,
-        getResponseUnchecked, js_getStatus, getStatus, js_getStatusText,
-        getStatusText, js_getResponseURL, getResponseURL,
+        getResponseUnsafe, getResponseUnchecked, js_getStatus, getStatus,
+        js_getStatusText, getStatusText, js_getResponseURL, getResponseURL,
         XMLHttpRequest(..), gTypeXMLHttpRequest)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -36,6 +44,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"XMLHttpRequest\"]()"
         js_newXMLHttpRequest :: IO XMLHttpRequest
@@ -103,6 +121,15 @@ getAllResponseHeaders_ self
   = liftIO (void (js_getAllResponseHeaders (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getAllResponseHeaders Mozilla XMLHttpRequest.getAllResponseHeaders documentation> 
+getAllResponseHeadersUnsafe ::
+                            (MonadIO m, HasCallStack, FromJSString result) =>
+                              XMLHttpRequest -> m result
+getAllResponseHeadersUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAllResponseHeaders (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getAllResponseHeaders Mozilla XMLHttpRequest.getAllResponseHeaders documentation> 
 getAllResponseHeadersUnchecked ::
                                (MonadIO m, FromJSString result) => XMLHttpRequest -> m result
 getAllResponseHeadersUnchecked self
@@ -128,6 +155,17 @@ getResponseHeader_ ::
                    (MonadIO m, ToJSString header) => XMLHttpRequest -> header -> m ()
 getResponseHeader_ self header
   = liftIO (void (js_getResponseHeader (self) (toJSString header)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getResponseHeader Mozilla XMLHttpRequest.getResponseHeader documentation> 
+getResponseHeaderUnsafe ::
+                        (MonadIO m, ToJSString header, HasCallStack,
+                         FromJSString result) =>
+                          XMLHttpRequest -> header -> m result
+getResponseHeaderUnsafe self header
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getResponseHeader (self) (toJSString header)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getResponseHeader Mozilla XMLHttpRequest.getResponseHeader documentation> 
 getResponseHeaderUnchecked ::
@@ -231,6 +269,15 @@ getUpload ::
 getUpload self = liftIO (nullableToMaybe <$> (js_getUpload (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.upload Mozilla XMLHttpRequest.upload documentation> 
+getUploadUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  XMLHttpRequest -> m XMLHttpRequestUpload
+getUploadUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getUpload (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.upload Mozilla XMLHttpRequest.upload documentation> 
 getUploadUnchecked ::
                    (MonadIO m) => XMLHttpRequest -> m XMLHttpRequestUpload
 getUploadUnchecked self
@@ -247,6 +294,15 @@ getResponseText self
   = liftIO (fromMaybeJSString <$> (js_getResponseText (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseText Mozilla XMLHttpRequest.responseText documentation> 
+getResponseTextUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        XMLHttpRequest -> m result
+getResponseTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getResponseText (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseText Mozilla XMLHttpRequest.responseText documentation> 
 getResponseTextUnchecked ::
                          (MonadIO m, FromJSString result) => XMLHttpRequest -> m result
 getResponseTextUnchecked self
@@ -261,6 +317,14 @@ getResponseXML ::
                (MonadIO m) => XMLHttpRequest -> m (Maybe Document)
 getResponseXML self
   = liftIO (nullableToMaybe <$> (js_getResponseXML (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseXML Mozilla XMLHttpRequest.responseXML documentation> 
+getResponseXMLUnsafe ::
+                     (MonadIO m, HasCallStack) => XMLHttpRequest -> m Document
+getResponseXMLUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getResponseXML (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseXML Mozilla XMLHttpRequest.responseXML documentation> 
 getResponseXMLUnchecked ::
@@ -294,6 +358,14 @@ foreign import javascript unsafe "$1[\"response\"]" js_getResponse
 getResponse :: (MonadIO m) => XMLHttpRequest -> m (Maybe GObject)
 getResponse self
   = liftIO (nullableToMaybe <$> (js_getResponse (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.response Mozilla XMLHttpRequest.response documentation> 
+getResponseUnsafe ::
+                  (MonadIO m, HasCallStack) => XMLHttpRequest -> m GObject
+getResponseUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getResponse (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.response Mozilla XMLHttpRequest.response documentation> 
 getResponseUnchecked :: (MonadIO m) => XMLHttpRequest -> m GObject

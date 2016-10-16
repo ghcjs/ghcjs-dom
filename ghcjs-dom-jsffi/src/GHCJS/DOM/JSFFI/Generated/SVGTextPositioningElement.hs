@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTextPositioningElement
-       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getDx, getDx, getDxUnchecked, js_getDy, getDy, getDyUnchecked,
-        js_getRotate, getRotate, getRotateUnchecked,
+       (js_getX, getX, getXUnsafe, getXUnchecked, js_getY, getY,
+        getYUnsafe, getYUnchecked, js_getDx, getDx, getDxUnsafe,
+        getDxUnchecked, js_getDy, getDy, getDyUnsafe, getDyUnchecked,
+        js_getRotate, getRotate, getRotateUnsafe, getRotateUnchecked,
         SVGTextPositioningElement(..), gTypeSVGTextPositioningElement,
         IsSVGTextPositioningElement, toSVGTextPositioningElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGTextPositioningElement -> IO (Nullable SVGAnimatedLengthList)
@@ -33,6 +50,15 @@ getX ::
 getX self
   = liftIO
       (nullableToMaybe <$> (js_getX (toSVGTextPositioningElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.x Mozilla SVGTextPositioningElement.x documentation> 
+getXUnsafe ::
+           (MonadIO m, IsSVGTextPositioningElement self, HasCallStack) =>
+             self -> m SVGAnimatedLengthList
+getXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getX (toSVGTextPositioningElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.x Mozilla SVGTextPositioningElement.x documentation> 
 getXUnchecked ::
@@ -55,6 +81,15 @@ getY self
       (nullableToMaybe <$> (js_getY (toSVGTextPositioningElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.y Mozilla SVGTextPositioningElement.y documentation> 
+getYUnsafe ::
+           (MonadIO m, IsSVGTextPositioningElement self, HasCallStack) =>
+             self -> m SVGAnimatedLengthList
+getYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getY (toSVGTextPositioningElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.y Mozilla SVGTextPositioningElement.y documentation> 
 getYUnchecked ::
               (MonadIO m, IsSVGTextPositioningElement self) =>
                 self -> m SVGAnimatedLengthList
@@ -73,6 +108,16 @@ getDx ::
 getDx self
   = liftIO
       (nullableToMaybe <$> (js_getDx (toSVGTextPositioningElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dx Mozilla SVGTextPositioningElement.dx documentation> 
+getDxUnsafe ::
+            (MonadIO m, IsSVGTextPositioningElement self, HasCallStack) =>
+              self -> m SVGAnimatedLengthList
+getDxUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getDx (toSVGTextPositioningElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dx Mozilla SVGTextPositioningElement.dx documentation> 
 getDxUnchecked ::
@@ -95,6 +140,16 @@ getDy self
       (nullableToMaybe <$> (js_getDy (toSVGTextPositioningElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dy Mozilla SVGTextPositioningElement.dy documentation> 
+getDyUnsafe ::
+            (MonadIO m, IsSVGTextPositioningElement self, HasCallStack) =>
+              self -> m SVGAnimatedLengthList
+getDyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getDy (toSVGTextPositioningElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.dy Mozilla SVGTextPositioningElement.dy documentation> 
 getDyUnchecked ::
                (MonadIO m, IsSVGTextPositioningElement self) =>
                  self -> m SVGAnimatedLengthList
@@ -114,6 +169,16 @@ getRotate self
   = liftIO
       (nullableToMaybe <$>
          (js_getRotate (toSVGTextPositioningElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.rotate Mozilla SVGTextPositioningElement.rotate documentation> 
+getRotateUnsafe ::
+                (MonadIO m, IsSVGTextPositioningElement self, HasCallStack) =>
+                  self -> m SVGAnimatedNumberList
+getRotateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getRotate (toSVGTextPositioningElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPositioningElement.rotate Mozilla SVGTextPositioningElement.rotate documentation> 
 getRotateUnchecked ::

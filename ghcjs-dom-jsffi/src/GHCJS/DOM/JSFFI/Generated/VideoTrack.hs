@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.VideoTrack
        (js_getId, getId, js_setKind, setKind, js_getKind, getKind,
         js_getLabel, getLabel, js_setLanguage, setLanguage, js_getLanguage,
         getLanguage, js_setSelected, setSelected, js_getSelected,
         getSelected, js_getSourceBuffer, getSourceBuffer,
-        getSourceBufferUnchecked, VideoTrack(..), gTypeVideoTrack)
+        getSourceBufferUnsafe, getSourceBufferUnchecked, VideoTrack(..),
+        gTypeVideoTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"id\"]" js_getId ::
         VideoTrack -> IO JSString
@@ -93,6 +110,14 @@ getSourceBuffer ::
                 (MonadIO m) => VideoTrack -> m (Maybe SourceBuffer)
 getSourceBuffer self
   = liftIO (nullableToMaybe <$> (js_getSourceBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.sourceBuffer Mozilla VideoTrack.sourceBuffer documentation> 
+getSourceBufferUnsafe ::
+                      (MonadIO m, HasCallStack) => VideoTrack -> m SourceBuffer
+getSourceBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSourceBuffer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.sourceBuffer Mozilla VideoTrack.sourceBuffer documentation> 
 getSourceBufferUnchecked ::

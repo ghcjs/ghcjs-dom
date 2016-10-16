@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedTransformList
-       (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedTransformList(..),
-        gTypeSVGAnimatedTransformList)
+       (js_getBaseVal, getBaseVal, getBaseValUnsafe, getBaseValUnchecked,
+        js_getAnimVal, getAnimVal, getAnimValUnsafe, getAnimValUnchecked,
+        SVGAnimatedTransformList(..), gTypeSVGAnimatedTransformList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +26,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         SVGAnimatedTransformList -> IO (Nullable SVGTransformList)
@@ -30,6 +46,15 @@ getBaseVal ::
              SVGAnimatedTransformList -> m (Maybe SVGTransformList)
 getBaseVal self
   = liftIO (nullableToMaybe <$> (js_getBaseVal (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.baseVal Mozilla SVGAnimatedTransformList.baseVal documentation> 
+getBaseValUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGAnimatedTransformList -> m SVGTransformList
+getBaseValUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBaseVal (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.baseVal Mozilla SVGAnimatedTransformList.baseVal documentation> 
 getBaseValUnchecked ::
@@ -46,6 +71,15 @@ getAnimVal ::
              SVGAnimatedTransformList -> m (Maybe SVGTransformList)
 getAnimVal self
   = liftIO (nullableToMaybe <$> (js_getAnimVal (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.animVal Mozilla SVGAnimatedTransformList.animVal documentation> 
+getAnimValUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGAnimatedTransformList -> m SVGTransformList
+getAnimValUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAnimVal (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedTransformList.animVal Mozilla SVGAnimatedTransformList.animVal documentation> 
 getAnimValUnchecked ::

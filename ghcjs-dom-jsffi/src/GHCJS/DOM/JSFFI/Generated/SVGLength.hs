@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGLength
        (js_newValueSpecifiedUnits, newValueSpecifiedUnits,
         js_convertToSpecifiedUnits, convertToSpecifiedUnits,
@@ -12,10 +17,11 @@ module GHCJS.DOM.JSFFI.Generated.SVGLength
         js_setValueInSpecifiedUnits, setValueInSpecifiedUnits,
         js_getValueInSpecifiedUnits, getValueInSpecifiedUnits,
         js_setValueAsString, setValueAsString, js_getValueAsString,
-        getValueAsString, getValueAsStringUnchecked, SVGLength(..),
-        gTypeSVGLength)
+        getValueAsString, getValueAsStringUnsafe,
+        getValueAsStringUnchecked, SVGLength(..), gTypeSVGLength)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -31,6 +37,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"newValueSpecifiedUnits\"]($2,\n$3)" js_newValueSpecifiedUnits
@@ -119,6 +135,15 @@ getValueAsString ::
                  (MonadIO m, FromJSString result) => SVGLength -> m (Maybe result)
 getValueAsString self
   = liftIO (fromMaybeJSString <$> (js_getValueAsString (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
+getValueAsStringUnsafe ::
+                       (MonadIO m, HasCallStack, FromJSString result) =>
+                         SVGLength -> m result
+getValueAsStringUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValueAsString (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
 getValueAsStringUnchecked ::

@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLAnchorElement
        (js_toString, toString, toString_, js_setCharset, setCharset,
         js_getCharset, getCharset, js_setCoords, setCoords, js_getCoords,
@@ -10,19 +15,23 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAnchorElement
         js_setRev, setRev, js_getRev, getRev, js_setShape, setShape,
         js_getShape, getShape, js_setTarget, setTarget, js_getTarget,
         getTarget, js_setType, setType, js_getType, getType, js_setHash,
-        setHash, js_getHash, getHash, getHashUnchecked, js_setHost,
-        setHost, js_getHost, getHost, getHostUnchecked, js_setHostname,
-        setHostname, js_getHostname, getHostname, getHostnameUnchecked,
+        setHash, js_getHash, getHash, getHashUnsafe, getHashUnchecked,
+        js_setHost, setHost, js_getHost, getHost, getHostUnsafe,
+        getHostUnchecked, js_setHostname, setHostname, js_getHostname,
+        getHostname, getHostnameUnsafe, getHostnameUnchecked,
         js_setPathname, setPathname, js_getPathname, getPathname,
-        getPathnameUnchecked, js_setPort, setPort, js_getPort, getPort,
-        getPortUnchecked, js_setProtocol, setProtocol, js_getProtocol,
-        getProtocol, getProtocolUnchecked, js_setSearch, setSearch,
-        js_getSearch, getSearch, getSearchUnchecked, js_getOrigin,
-        getOrigin, getOriginUnchecked, js_setText, setText, js_getText,
-        getText, js_getRelList, getRelList, getRelListUnchecked,
+        getPathnameUnsafe, getPathnameUnchecked, js_setPort, setPort,
+        js_getPort, getPort, getPortUnsafe, getPortUnchecked,
+        js_setProtocol, setProtocol, js_getProtocol, getProtocol,
+        getProtocolUnsafe, getProtocolUnchecked, js_setSearch, setSearch,
+        js_getSearch, getSearch, getSearchUnsafe, getSearchUnchecked,
+        js_getOrigin, getOrigin, getOriginUnsafe, getOriginUnchecked,
+        js_setText, setText, js_getText, getText, js_getRelList,
+        getRelList, getRelListUnsafe, getRelListUnchecked,
         HTMLAnchorElement(..), gTypeHTMLAnchorElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -38,6 +47,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"toString\"]()" js_toString
         :: HTMLAnchorElement -> IO JSString
@@ -267,6 +286,15 @@ getHash ::
 getHash self = liftIO (fromMaybeJSString <$> (js_getHash (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hash Mozilla HTMLAnchorElement.hash documentation> 
+getHashUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                HTMLAnchorElement -> m result
+getHashUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHash (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hash Mozilla HTMLAnchorElement.hash documentation> 
 getHashUnchecked ::
                  (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getHashUnchecked self
@@ -289,6 +317,15 @@ getHost ::
         (MonadIO m, FromJSString result) =>
           HTMLAnchorElement -> m (Maybe result)
 getHost self = liftIO (fromMaybeJSString <$> (js_getHost (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.host Mozilla HTMLAnchorElement.host documentation> 
+getHostUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                HTMLAnchorElement -> m result
+getHostUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHost (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.host Mozilla HTMLAnchorElement.host documentation> 
 getHostUnchecked ::
@@ -317,6 +354,15 @@ getHostname self
   = liftIO (fromMaybeJSString <$> (js_getHostname (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hostname Mozilla HTMLAnchorElement.hostname documentation> 
+getHostnameUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    HTMLAnchorElement -> m result
+getHostnameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHostname (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hostname Mozilla HTMLAnchorElement.hostname documentation> 
 getHostnameUnchecked ::
                      (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getHostnameUnchecked self
@@ -343,6 +389,15 @@ getPathname self
   = liftIO (fromMaybeJSString <$> (js_getPathname (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.pathname Mozilla HTMLAnchorElement.pathname documentation> 
+getPathnameUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    HTMLAnchorElement -> m result
+getPathnameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPathname (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.pathname Mozilla HTMLAnchorElement.pathname documentation> 
 getPathnameUnchecked ::
                      (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getPathnameUnchecked self
@@ -365,6 +420,15 @@ getPort ::
         (MonadIO m, FromJSString result) =>
           HTMLAnchorElement -> m (Maybe result)
 getPort self = liftIO (fromMaybeJSString <$> (js_getPort (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.port Mozilla HTMLAnchorElement.port documentation> 
+getPortUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                HTMLAnchorElement -> m result
+getPortUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPort (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.port Mozilla HTMLAnchorElement.port documentation> 
 getPortUnchecked ::
@@ -393,6 +457,15 @@ getProtocol self
   = liftIO (fromMaybeJSString <$> (js_getProtocol (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.protocol Mozilla HTMLAnchorElement.protocol documentation> 
+getProtocolUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    HTMLAnchorElement -> m result
+getProtocolUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getProtocol (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.protocol Mozilla HTMLAnchorElement.protocol documentation> 
 getProtocolUnchecked ::
                      (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getProtocolUnchecked self
@@ -419,6 +492,15 @@ getSearch self
   = liftIO (fromMaybeJSString <$> (js_getSearch (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.search Mozilla HTMLAnchorElement.search documentation> 
+getSearchUnsafe ::
+                (MonadIO m, HasCallStack, FromJSString result) =>
+                  HTMLAnchorElement -> m result
+getSearchUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getSearch (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.search Mozilla HTMLAnchorElement.search documentation> 
 getSearchUnchecked ::
                    (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getSearchUnchecked self
@@ -433,6 +515,15 @@ getOrigin ::
             HTMLAnchorElement -> m (Maybe result)
 getOrigin self
   = liftIO (fromMaybeJSString <$> (js_getOrigin (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.origin Mozilla HTMLAnchorElement.origin documentation> 
+getOriginUnsafe ::
+                (MonadIO m, HasCallStack, FromJSString result) =>
+                  HTMLAnchorElement -> m result
+getOriginUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getOrigin (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.origin Mozilla HTMLAnchorElement.origin documentation> 
 getOriginUnchecked ::
@@ -464,6 +555,14 @@ getRelList ::
            (MonadIO m) => HTMLAnchorElement -> m (Maybe DOMTokenList)
 getRelList self
   = liftIO (nullableToMaybe <$> (js_getRelList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.relList Mozilla HTMLAnchorElement.relList documentation> 
+getRelListUnsafe ::
+                 (MonadIO m, HasCallStack) => HTMLAnchorElement -> m DOMTokenList
+getRelListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRelList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.relList Mozilla HTMLAnchorElement.relList documentation> 
 getRelListUnchecked ::

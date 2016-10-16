@@ -1,19 +1,28 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTransformList
        (js_clear, clear, js_initialize, initialize, initialize_,
-        initializeUnchecked, js_getItem, getItem, getItem_,
-        getItemUnchecked, js_insertItemBefore, insertItemBefore,
-        insertItemBefore_, insertItemBeforeUnchecked, js_replaceItem,
-        replaceItem, replaceItem_, replaceItemUnchecked, js_removeItem,
-        removeItem, removeItem_, removeItemUnchecked, js_appendItem,
-        appendItem, appendItem_, appendItemUnchecked,
+        initializeUnsafe, initializeUnchecked, js_getItem, getItem,
+        getItem_, getItemUnsafe, getItemUnchecked, js_insertItemBefore,
+        insertItemBefore, insertItemBefore_, insertItemBeforeUnsafe,
+        insertItemBeforeUnchecked, js_replaceItem, replaceItem,
+        replaceItem_, replaceItemUnsafe, replaceItemUnchecked,
+        js_removeItem, removeItem, removeItem_, removeItemUnsafe,
+        removeItemUnchecked, js_appendItem, appendItem, appendItem_,
+        appendItemUnsafe, appendItemUnchecked,
         js_createSVGTransformFromMatrix, createSVGTransformFromMatrix,
-        createSVGTransformFromMatrix_,
+        createSVGTransformFromMatrix_, createSVGTransformFromMatrixUnsafe,
         createSVGTransformFromMatrixUnchecked, js_consolidate, consolidate,
-        consolidate_, consolidateUnchecked, js_getNumberOfItems,
-        getNumberOfItems, SVGTransformList(..), gTypeSVGTransformList)
+        consolidate_, consolidateUnsafe, consolidateUnchecked,
+        js_getNumberOfItems, getNumberOfItems, SVGTransformList(..),
+        gTypeSVGTransformList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -29,6 +38,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         SVGTransformList -> IO ()
@@ -57,6 +76,16 @@ initialize_ self item
   = liftIO (void (js_initialize (self) (maybeToNullable item)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.initialize Mozilla SVGTransformList.initialize documentation> 
+initializeUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGTransformList -> Maybe SVGTransform -> m SVGTransform
+initializeUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_initialize (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.initialize Mozilla SVGTransformList.initialize documentation> 
 initializeUnchecked ::
                     (MonadIO m) =>
                       SVGTransformList -> Maybe SVGTransform -> m SVGTransform
@@ -77,6 +106,15 @@ getItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.getItem Mozilla SVGTransformList.getItem documentation> 
 getItem_ :: (MonadIO m) => SVGTransformList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.getItem Mozilla SVGTransformList.getItem documentation> 
+getItemUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGTransformList -> Word -> m SVGTransform
+getItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_getItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.getItem Mozilla SVGTransformList.getItem documentation> 
 getItemUnchecked ::
@@ -106,6 +144,16 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO
       (void (js_insertItemBefore (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.insertItemBefore Mozilla SVGTransformList.insertItemBefore documentation> 
+insertItemBeforeUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGTransformList -> Maybe SVGTransform -> Word -> m SVGTransform
+insertItemBeforeUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_insertItemBefore (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.insertItemBefore Mozilla SVGTransformList.insertItemBefore documentation> 
 insertItemBeforeUnchecked ::
@@ -140,6 +188,16 @@ replaceItem_ self item index
       (void (js_replaceItem (self) (maybeToNullable item) index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.replaceItem Mozilla SVGTransformList.replaceItem documentation> 
+replaceItemUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    SVGTransformList -> Maybe SVGTransform -> Word -> m SVGTransform
+replaceItemUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_replaceItem (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.replaceItem Mozilla SVGTransformList.replaceItem documentation> 
 replaceItemUnchecked ::
                      (MonadIO m) =>
                        SVGTransformList -> Maybe SVGTransform -> Word -> m SVGTransform
@@ -161,6 +219,15 @@ removeItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
 removeItem_ :: (MonadIO m) => SVGTransformList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
+removeItemUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGTransformList -> Word -> m SVGTransform
+removeItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_removeItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
 removeItemUnchecked ::
@@ -187,6 +254,16 @@ appendItem_ ::
             (MonadIO m) => SVGTransformList -> Maybe SVGTransform -> m ()
 appendItem_ self item
   = liftIO (void (js_appendItem (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.appendItem Mozilla SVGTransformList.appendItem documentation> 
+appendItemUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGTransformList -> Maybe SVGTransform -> m SVGTransform
+appendItemUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_appendItem (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.appendItem Mozilla SVGTransformList.appendItem documentation> 
 appendItemUnchecked ::
@@ -221,6 +298,16 @@ createSVGTransformFromMatrix_ self matrix
          (js_createSVGTransformFromMatrix (self) (maybeToNullable matrix)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.createSVGTransformFromMatrix Mozilla SVGTransformList.createSVGTransformFromMatrix documentation> 
+createSVGTransformFromMatrixUnsafe ::
+                                   (MonadIO m, HasCallStack) =>
+                                     SVGTransformList -> Maybe SVGMatrix -> m SVGTransform
+createSVGTransformFromMatrixUnsafe self matrix
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGTransformFromMatrix (self) (maybeToNullable matrix)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.createSVGTransformFromMatrix Mozilla SVGTransformList.createSVGTransformFromMatrix documentation> 
 createSVGTransformFromMatrixUnchecked ::
                                       (MonadIO m) =>
                                         SVGTransformList -> Maybe SVGMatrix -> m SVGTransform
@@ -241,6 +328,14 @@ consolidate self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
 consolidate_ :: (MonadIO m) => SVGTransformList -> m ()
 consolidate_ self = liftIO (void (js_consolidate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
+consolidateUnsafe ::
+                  (MonadIO m, HasCallStack) => SVGTransformList -> m SVGTransform
+consolidateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_consolidate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
 consolidateUnchecked ::

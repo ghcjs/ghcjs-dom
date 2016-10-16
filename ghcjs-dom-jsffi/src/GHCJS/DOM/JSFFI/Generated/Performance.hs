@@ -1,20 +1,29 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Performance
        (js_webkitGetEntries, webkitGetEntries, webkitGetEntries_,
-        webkitGetEntriesUnchecked, js_webkitGetEntriesByType,
-        webkitGetEntriesByType, webkitGetEntriesByType_,
+        webkitGetEntriesUnsafe, webkitGetEntriesUnchecked,
+        js_webkitGetEntriesByType, webkitGetEntriesByType,
+        webkitGetEntriesByType_, webkitGetEntriesByTypeUnsafe,
         webkitGetEntriesByTypeUnchecked, js_webkitGetEntriesByName,
         webkitGetEntriesByName, webkitGetEntriesByName_,
-        webkitGetEntriesByNameUnchecked, js_webkitClearResourceTimings,
-        webkitClearResourceTimings, js_webkitSetResourceTimingBufferSize,
+        webkitGetEntriesByNameUnsafe, webkitGetEntriesByNameUnchecked,
+        js_webkitClearResourceTimings, webkitClearResourceTimings,
+        js_webkitSetResourceTimingBufferSize,
         webkitSetResourceTimingBufferSize, js_webkitMark, webkitMark,
         js_webkitClearMarks, webkitClearMarks, js_webkitMeasure,
         webkitMeasure, js_webkitClearMeasures, webkitClearMeasures, js_now,
-        now, now_, js_getNavigation, getNavigation, getNavigationUnchecked,
-        js_getTiming, getTiming, getTimingUnchecked,
-        webKitResourceTimingBufferFull, Performance(..), gTypePerformance)
+        now, now_, js_getNavigation, getNavigation, getNavigationUnsafe,
+        getNavigationUnchecked, js_getTiming, getTiming, getTimingUnsafe,
+        getTimingUnchecked, webKitResourceTimingBufferFull,
+        Performance(..), gTypePerformance)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +39,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"webkitGetEntries\"]()"
         js_webkitGetEntries ::
@@ -44,6 +63,14 @@ webkitGetEntries self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
 webkitGetEntries_ :: (MonadIO m) => Performance -> m ()
 webkitGetEntries_ self = liftIO (void (js_webkitGetEntries (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
+webkitGetEntriesUnsafe ::
+                       (MonadIO m, HasCallStack) => Performance -> m PerformanceEntryList
+webkitGetEntriesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_webkitGetEntries (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntries Mozilla Performance.webkitGetEntries documentation> 
 webkitGetEntriesUnchecked ::
@@ -72,6 +99,16 @@ webkitGetEntriesByType_ ::
 webkitGetEntriesByType_ self entryType
   = liftIO
       (void (js_webkitGetEntriesByType (self) (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByType Mozilla Performance.webkitGetEntriesByType documentation> 
+webkitGetEntriesByTypeUnsafe ::
+                             (MonadIO m, ToJSString entryType, HasCallStack) =>
+                               Performance -> entryType -> m PerformanceEntryList
+webkitGetEntriesByTypeUnsafe self entryType
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_webkitGetEntriesByType (self) (toJSString entryType)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByType Mozilla Performance.webkitGetEntriesByType documentation> 
 webkitGetEntriesByTypeUnchecked ::
@@ -107,6 +144,17 @@ webkitGetEntriesByName_ self name entryType
       (void
          (js_webkitGetEntriesByName (self) (toJSString name)
             (toJSString entryType)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByName Mozilla Performance.webkitGetEntriesByName documentation> 
+webkitGetEntriesByNameUnsafe ::
+                             (MonadIO m, ToJSString name, ToJSString entryType, HasCallStack) =>
+                               Performance -> name -> entryType -> m PerformanceEntryList
+webkitGetEntriesByNameUnsafe self name entryType
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_webkitGetEntriesByName (self) (toJSString name)
+             (toJSString entryType)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.webkitGetEntriesByName Mozilla Performance.webkitGetEntriesByName documentation> 
 webkitGetEntriesByNameUnchecked ::
@@ -203,6 +251,14 @@ getNavigation self
   = liftIO (nullableToMaybe <$> (js_getNavigation (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.navigation Mozilla Performance.navigation documentation> 
+getNavigationUnsafe ::
+                    (MonadIO m, HasCallStack) => Performance -> m PerformanceNavigation
+getNavigationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNavigation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.navigation Mozilla Performance.navigation documentation> 
 getNavigationUnchecked ::
                        (MonadIO m) => Performance -> m PerformanceNavigation
 getNavigationUnchecked self
@@ -215,6 +271,14 @@ foreign import javascript unsafe "$1[\"timing\"]" js_getTiming ::
 getTiming ::
           (MonadIO m) => Performance -> m (Maybe PerformanceTiming)
 getTiming self = liftIO (nullableToMaybe <$> (js_getTiming (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.timing Mozilla Performance.timing documentation> 
+getTimingUnsafe ::
+                (MonadIO m, HasCallStack) => Performance -> m PerformanceTiming
+getTimingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTiming (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.timing Mozilla Performance.timing documentation> 
 getTimingUnchecked ::

@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLCollection
-       (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
-        namedItem_, namedItemUnchecked, js_getLength, getLength,
-        HTMLCollection(..), gTypeHTMLCollection, IsHTMLCollection,
-        toHTMLCollection)
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js_namedItem,
+        namedItem, namedItem_, namedItemUnsafe, namedItemUnchecked,
+        js_getLength, getLength, HTMLCollection(..), gTypeHTMLCollection,
+        IsHTMLCollection, toHTMLCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         HTMLCollection -> Word -> IO (Nullable Node)
@@ -37,6 +53,15 @@ item self index
 item_ :: (MonadIO m, IsHTMLCollection self) => self -> Word -> m ()
 item_ self index
   = liftIO (void (js_item (toHTMLCollection self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
+itemUnsafe ::
+           (MonadIO m, IsHTMLCollection self, HasCallStack) =>
+             self -> Word -> m Node
+itemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_item (toHTMLCollection self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
 itemUnchecked ::
@@ -65,6 +90,17 @@ namedItem_ ::
 namedItem_ self name
   = liftIO
       (void (js_namedItem (toHTMLCollection self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
+namedItemUnsafe ::
+                (MonadIO m, IsHTMLCollection self, ToJSString name,
+                 HasCallStack) =>
+                  self -> name -> m Node
+namedItemUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_namedItem (toHTMLCollection self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
 namedItemUnchecked ::

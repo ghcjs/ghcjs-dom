@@ -1,25 +1,33 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTextContentElement
        (js_getNumberOfChars, getNumberOfChars, getNumberOfChars_,
         js_getComputedTextLength, getComputedTextLength,
         getComputedTextLength_, js_getSubStringLength, getSubStringLength,
         getSubStringLength_, js_getStartPositionOfChar,
         getStartPositionOfChar, getStartPositionOfChar_,
-        getStartPositionOfCharUnchecked, js_getEndPositionOfChar,
-        getEndPositionOfChar, getEndPositionOfChar_,
+        getStartPositionOfCharUnsafe, getStartPositionOfCharUnchecked,
+        js_getEndPositionOfChar, getEndPositionOfChar,
+        getEndPositionOfChar_, getEndPositionOfCharUnsafe,
         getEndPositionOfCharUnchecked, js_getExtentOfChar, getExtentOfChar,
-        getExtentOfChar_, getExtentOfCharUnchecked, js_getRotationOfChar,
-        getRotationOfChar, getRotationOfChar_, js_getCharNumAtPosition,
-        getCharNumAtPosition, getCharNumAtPosition_, js_selectSubString,
-        selectSubString, pattern LENGTHADJUST_UNKNOWN,
-        pattern LENGTHADJUST_SPACING,
+        getExtentOfChar_, getExtentOfCharUnsafe, getExtentOfCharUnchecked,
+        js_getRotationOfChar, getRotationOfChar, getRotationOfChar_,
+        js_getCharNumAtPosition, getCharNumAtPosition,
+        getCharNumAtPosition_, js_selectSubString, selectSubString,
+        pattern LENGTHADJUST_UNKNOWN, pattern LENGTHADJUST_SPACING,
         pattern LENGTHADJUST_SPACINGANDGLYPHS, js_getTextLength,
-        getTextLength, getTextLengthUnchecked, js_getLengthAdjust,
-        getLengthAdjust, getLengthAdjustUnchecked,
-        SVGTextContentElement(..), gTypeSVGTextContentElement,
-        IsSVGTextContentElement, toSVGTextContentElement)
+        getTextLength, getTextLengthUnsafe, getTextLengthUnchecked,
+        js_getLengthAdjust, getLengthAdjust, getLengthAdjustUnsafe,
+        getLengthAdjustUnchecked, SVGTextContentElement(..),
+        gTypeSVGTextContentElement, IsSVGTextContentElement,
+        toSVGTextContentElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -35,6 +43,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getNumberOfChars\"]()"
         js_getNumberOfChars :: SVGTextContentElement -> IO Int
@@ -113,6 +131,16 @@ getStartPositionOfChar_ self offset
          (js_getStartPositionOfChar (toSVGTextContentElement self) offset))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getStartPositionOfChar Mozilla SVGTextContentElement.getStartPositionOfChar documentation> 
+getStartPositionOfCharUnsafe ::
+                             (MonadIO m, IsSVGTextContentElement self, HasCallStack) =>
+                               self -> Word -> m SVGPoint
+getStartPositionOfCharUnsafe self offset
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getStartPositionOfChar (toSVGTextContentElement self) offset))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getStartPositionOfChar Mozilla SVGTextContentElement.getStartPositionOfChar documentation> 
 getStartPositionOfCharUnchecked ::
                                 (MonadIO m, IsSVGTextContentElement self) =>
                                   self -> Word -> m SVGPoint
@@ -143,6 +171,16 @@ getEndPositionOfChar_ self offset
          (js_getEndPositionOfChar (toSVGTextContentElement self) offset))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getEndPositionOfChar Mozilla SVGTextContentElement.getEndPositionOfChar documentation> 
+getEndPositionOfCharUnsafe ::
+                           (MonadIO m, IsSVGTextContentElement self, HasCallStack) =>
+                             self -> Word -> m SVGPoint
+getEndPositionOfCharUnsafe self offset
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getEndPositionOfChar (toSVGTextContentElement self) offset))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getEndPositionOfChar Mozilla SVGTextContentElement.getEndPositionOfChar documentation> 
 getEndPositionOfCharUnchecked ::
                               (MonadIO m, IsSVGTextContentElement self) =>
                                 self -> Word -> m SVGPoint
@@ -170,6 +208,16 @@ getExtentOfChar_ ::
 getExtentOfChar_ self offset
   = liftIO
       (void (js_getExtentOfChar (toSVGTextContentElement self) offset))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getExtentOfChar Mozilla SVGTextContentElement.getExtentOfChar documentation> 
+getExtentOfCharUnsafe ::
+                      (MonadIO m, IsSVGTextContentElement self, HasCallStack) =>
+                        self -> Word -> m SVGRect
+getExtentOfCharUnsafe self offset
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getExtentOfChar (toSVGTextContentElement self) offset))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getExtentOfChar Mozilla SVGTextContentElement.getExtentOfChar documentation> 
 getExtentOfCharUnchecked ::
@@ -250,6 +298,16 @@ getTextLength self
          (js_getTextLength (toSVGTextContentElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.textLength Mozilla SVGTextContentElement.textLength documentation> 
+getTextLengthUnsafe ::
+                    (MonadIO m, IsSVGTextContentElement self, HasCallStack) =>
+                      self -> m SVGAnimatedLength
+getTextLengthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getTextLength (toSVGTextContentElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.textLength Mozilla SVGTextContentElement.textLength documentation> 
 getTextLengthUnchecked ::
                        (MonadIO m, IsSVGTextContentElement self) =>
                          self -> m SVGAnimatedLength
@@ -270,6 +328,16 @@ getLengthAdjust self
   = liftIO
       (nullableToMaybe <$>
          (js_getLengthAdjust (toSVGTextContentElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.lengthAdjust Mozilla SVGTextContentElement.lengthAdjust documentation> 
+getLengthAdjustUnsafe ::
+                      (MonadIO m, IsSVGTextContentElement self, HasCallStack) =>
+                        self -> m SVGAnimatedEnumeration
+getLengthAdjustUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getLengthAdjust (toSVGTextContentElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.lengthAdjust Mozilla SVGTextContentElement.lengthAdjust documentation> 
 getLengthAdjustUnchecked ::

@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTransform
        (js_setMatrix, setMatrix, js_setTranslate, setTranslate,
         js_setScale, setScale, js_setRotate, setRotate, js_setSkewX,
@@ -6,10 +11,12 @@ module GHCJS.DOM.JSFFI.Generated.SVGTransform
         pattern SVG_TRANSFORM_MATRIX, pattern SVG_TRANSFORM_TRANSLATE,
         pattern SVG_TRANSFORM_SCALE, pattern SVG_TRANSFORM_ROTATE,
         pattern SVG_TRANSFORM_SKEWX, pattern SVG_TRANSFORM_SKEWY,
-        js_getType, getType, js_getMatrix, getMatrix, getMatrixUnchecked,
-        js_getAngle, getAngle, SVGTransform(..), gTypeSVGTransform)
+        js_getType, getType, js_getMatrix, getMatrix, getMatrixUnsafe,
+        getMatrixUnchecked, js_getAngle, getAngle, SVGTransform(..),
+        gTypeSVGTransform)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setMatrix\"]($2)"
         js_setMatrix :: SVGTransform -> Nullable SVGMatrix -> IO ()
@@ -92,6 +109,14 @@ foreign import javascript unsafe "$1[\"matrix\"]" js_getMatrix ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
 getMatrix :: (MonadIO m) => SVGTransform -> m (Maybe SVGMatrix)
 getMatrix self = liftIO (nullableToMaybe <$> (js_getMatrix (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
+getMatrixUnsafe ::
+                (MonadIO m, HasCallStack) => SVGTransform -> m SVGMatrix
+getMatrixUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMatrix (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.matrix Mozilla SVGTransform.matrix documentation> 
 getMatrixUnchecked :: (MonadIO m) => SVGTransform -> m SVGMatrix

@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.OESVertexArrayObject
        (js_createVertexArrayOES, createVertexArrayOES,
-        createVertexArrayOES_, createVertexArrayOESUnchecked,
-        js_deleteVertexArrayOES, deleteVertexArrayOES, js_isVertexArrayOES,
-        isVertexArrayOES, isVertexArrayOES_, js_bindVertexArrayOES,
-        bindVertexArrayOES, pattern VERTEX_ARRAY_BINDING_OES,
-        OESVertexArrayObject(..), gTypeOESVertexArrayObject)
+        createVertexArrayOES_, createVertexArrayOESUnsafe,
+        createVertexArrayOESUnchecked, js_deleteVertexArrayOES,
+        deleteVertexArrayOES, js_isVertexArrayOES, isVertexArrayOES,
+        isVertexArrayOES_, js_bindVertexArrayOES, bindVertexArrayOES,
+        pattern VERTEX_ARRAY_BINDING_OES, OESVertexArrayObject(..),
+        gTypeOESVertexArrayObject)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"createVertexArrayOES\"]()"
         js_createVertexArrayOES ::
@@ -40,6 +57,15 @@ createVertexArrayOES_ ::
                       (MonadIO m) => OESVertexArrayObject -> m ()
 createVertexArrayOES_ self
   = liftIO (void (js_createVertexArrayOES (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.createVertexArrayOES Mozilla OESVertexArrayObject.createVertexArrayOES documentation> 
+createVertexArrayOESUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             OESVertexArrayObject -> m WebGLVertexArrayObjectOES
+createVertexArrayOESUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createVertexArrayOES (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OESVertexArrayObject.createVertexArrayOES Mozilla OESVertexArrayObject.createVertexArrayOES documentation> 
 createVertexArrayOESUnchecked ::

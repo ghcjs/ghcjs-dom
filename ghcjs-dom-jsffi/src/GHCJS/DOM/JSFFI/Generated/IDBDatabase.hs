@@ -1,15 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBDatabase
        (js_createObjectStore, createObjectStore, createObjectStore_,
-        createObjectStoreUnchecked, js_deleteObjectStore,
-        deleteObjectStore, js_transaction, transaction, transaction_,
-        transactionUnchecked, js_transaction', transaction', transaction'_,
+        createObjectStoreUnsafe, createObjectStoreUnchecked,
+        js_deleteObjectStore, deleteObjectStore, js_transaction,
+        transaction, transaction_, transactionUnsafe, transactionUnchecked,
+        js_transaction', transaction', transaction'_, transaction'Unsafe,
         transaction'Unchecked, js_close, close, js_getName, getName,
         js_getVersion, getVersion, js_getObjectStoreNames,
-        getObjectStoreNames, getObjectStoreNamesUnchecked, abort, error,
-        versionChange, IDBDatabase(..), gTypeIDBDatabase)
+        getObjectStoreNames, getObjectStoreNamesUnsafe,
+        getObjectStoreNamesUnchecked, abort, error, versionChange,
+        IDBDatabase(..), gTypeIDBDatabase)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"createObjectStore\"]($2, $3)" js_createObjectStore ::
@@ -50,6 +68,17 @@ createObjectStore_ self name options
       (void
          (js_createObjectStore (self) (toJSString name)
             (maybeToNullable (fmap toDictionary options))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.createObjectStore Mozilla IDBDatabase.createObjectStore documentation> 
+createObjectStoreUnsafe ::
+                        (MonadIO m, ToJSString name, IsDictionary options, HasCallStack) =>
+                          IDBDatabase -> name -> Maybe options -> m IDBObjectStore
+createObjectStoreUnsafe self name options
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createObjectStore (self) (toJSString name)
+             (maybeToNullable (fmap toDictionary options))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.createObjectStore Mozilla IDBDatabase.createObjectStore documentation> 
 createObjectStoreUnchecked ::
@@ -93,6 +122,16 @@ transaction_ self storeName mode
          (js_transaction (self) (toJSString storeName) (toJSString mode)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
+transactionUnsafe ::
+                  (MonadIO m, ToJSString storeName, ToJSString mode, HasCallStack) =>
+                    IDBDatabase -> storeName -> mode -> m IDBTransaction
+transactionUnsafe self storeName mode
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_transaction (self) (toJSString storeName) (toJSString mode)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 transactionUnchecked ::
                      (MonadIO m, ToJSString storeName, ToJSString mode) =>
                        IDBDatabase -> storeName -> mode -> m IDBTransaction
@@ -126,6 +165,19 @@ transaction'_ self storeNames mode
          (toJSVal storeNames >>=
             \ storeNames' -> js_transaction' (self) storeNames'
             (toJSString mode)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
+transaction'Unsafe ::
+                   (MonadIO m, ToJSString storeNames, ToJSString mode,
+                    HasCallStack) =>
+                     IDBDatabase -> [storeNames] -> mode -> m IDBTransaction
+transaction'Unsafe self storeNames mode
+  = liftIO
+      ((nullableToMaybe <$>
+          (toJSVal storeNames >>=
+             \ storeNames' -> js_transaction' (self) storeNames'
+             (toJSString mode)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.transaction Mozilla IDBDatabase.transaction documentation> 
 transaction'Unchecked ::
@@ -169,6 +221,14 @@ getObjectStoreNames ::
                     (MonadIO m) => IDBDatabase -> m (Maybe DOMStringList)
 getObjectStoreNames self
   = liftIO (nullableToMaybe <$> (js_getObjectStoreNames (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 
+getObjectStoreNamesUnsafe ::
+                          (MonadIO m, HasCallStack) => IDBDatabase -> m DOMStringList
+getObjectStoreNamesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getObjectStoreNames (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 
 getObjectStoreNamesUnchecked ::

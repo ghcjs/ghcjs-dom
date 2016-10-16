@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AudioBuffer
        (js_getChannelData, getChannelData, getChannelData_,
-        getChannelDataUnchecked, js_getLength, getLength, js_getDuration,
-        getDuration, js_getSampleRate, getSampleRate, js_setGain, setGain,
-        js_getGain, getGain, js_getNumberOfChannels, getNumberOfChannels,
-        AudioBuffer(..), gTypeAudioBuffer)
+        getChannelDataUnsafe, getChannelDataUnchecked, js_getLength,
+        getLength, js_getDuration, getDuration, js_getSampleRate,
+        getSampleRate, js_setGain, setGain, js_getGain, getGain,
+        js_getNumberOfChannels, getNumberOfChannels, AudioBuffer(..),
+        gTypeAudioBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getChannelData\"]($2)"
         js_getChannelData ::
@@ -38,6 +55,14 @@ getChannelData self channelIndex
 getChannelData_ :: (MonadIO m) => AudioBuffer -> Word -> m ()
 getChannelData_ self channelIndex
   = liftIO (void (js_getChannelData (self) channelIndex))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.getChannelData Mozilla AudioBuffer.getChannelData documentation> 
+getChannelDataUnsafe ::
+                     (MonadIO m, HasCallStack) => AudioBuffer -> Word -> m Float32Array
+getChannelDataUnsafe self channelIndex
+  = liftIO
+      ((nullableToMaybe <$> (js_getChannelData (self) channelIndex)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.getChannelData Mozilla AudioBuffer.getChannelData documentation> 
 getChannelDataUnchecked ::

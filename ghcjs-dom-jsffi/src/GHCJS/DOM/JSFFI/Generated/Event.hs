@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Event
        (js_stopPropagation, stopPropagation, js_preventDefault,
         preventDefault, js_initEvent, initEvent,
@@ -9,18 +14,21 @@ module GHCJS.DOM.JSFFI.Generated.Event
         pattern MOUSEDRAG, pattern CLICK, pattern DBLCLICK,
         pattern KEYDOWN, pattern KEYUP, pattern KEYPRESS, pattern DRAGDROP,
         pattern FOCUS, pattern BLUR, pattern SELECT, pattern CHANGE,
-        js_getType, getType, js_getTarget, getTarget, getTargetUnchecked,
-        js_getCurrentTarget, getCurrentTarget, getCurrentTargetUnchecked,
+        js_getType, getType, js_getTarget, getTarget, getTargetUnsafe,
+        getTargetUnchecked, js_getCurrentTarget, getCurrentTarget,
+        getCurrentTargetUnsafe, getCurrentTargetUnchecked,
         js_getEventPhase, getEventPhase, js_getBubbles, getBubbles,
         js_getCancelable, getCancelable, js_getTimeStamp, getTimeStamp,
         js_getDefaultPrevented, getDefaultPrevented, js_getSrcElement,
-        getSrcElement, getSrcElementUnchecked, js_setReturnValue,
-        setReturnValue, js_getReturnValue, getReturnValue,
-        js_setCancelBubble, setCancelBubble, js_getCancelBubble,
-        getCancelBubble, js_getClipboardData, getClipboardData,
+        getSrcElement, getSrcElementUnsafe, getSrcElementUnchecked,
+        js_setReturnValue, setReturnValue, js_getReturnValue,
+        getReturnValue, js_setCancelBubble, setCancelBubble,
+        js_getCancelBubble, getCancelBubble, js_getClipboardData,
+        getClipboardData, getClipboardDataUnsafe,
         getClipboardDataUnchecked, Event(..), gTypeEvent, IsEvent, toEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -35,6 +43,16 @@ import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"stopPropagation\"]()"
         js_stopPropagation :: Event -> IO ()
@@ -111,6 +129,14 @@ getTarget self
   = liftIO (nullableToMaybe <$> (js_getTarget (toEvent self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
+getTargetUnsafe ::
+                (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
+getTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTarget (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
 getTargetUnchecked ::
                    (MonadIO m, IsEvent self) => self -> m EventTarget
 getTargetUnchecked self
@@ -125,6 +151,14 @@ getCurrentTarget ::
                  (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
 getCurrentTarget self
   = liftIO (nullableToMaybe <$> (js_getCurrentTarget (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
+getCurrentTargetUnsafe ::
+                       (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
+getCurrentTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCurrentTarget (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
 getCurrentTargetUnchecked ::
@@ -181,6 +215,14 @@ getSrcElement self
   = liftIO (nullableToMaybe <$> (js_getSrcElement (toEvent self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
+getSrcElementUnsafe ::
+                    (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
+getSrcElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSrcElement (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
 getSrcElementUnchecked ::
                        (MonadIO m, IsEvent self) => self -> m EventTarget
 getSrcElementUnchecked self
@@ -226,6 +268,14 @@ getClipboardData ::
                  (MonadIO m, IsEvent self) => self -> m (Maybe DataTransfer)
 getClipboardData self
   = liftIO (nullableToMaybe <$> (js_getClipboardData (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
+getClipboardDataUnsafe ::
+                       (MonadIO m, IsEvent self, HasCallStack) => self -> m DataTransfer
+getClipboardDataUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClipboardData (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
 getClipboardDataUnchecked ::

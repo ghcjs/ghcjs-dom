@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGZoomEvent
-       (js_getZoomRectScreen, getZoomRectScreen,
+       (js_getZoomRectScreen, getZoomRectScreen, getZoomRectScreenUnsafe,
         getZoomRectScreenUnchecked, js_getPreviousScale, getPreviousScale,
         js_getPreviousTranslate, getPreviousTranslate,
-        getPreviousTranslateUnchecked, js_getNewScale, getNewScale,
-        js_getNewTranslate, getNewTranslate, getNewTranslateUnchecked,
-        SVGZoomEvent(..), gTypeSVGZoomEvent)
+        getPreviousTranslateUnsafe, getPreviousTranslateUnchecked,
+        js_getNewScale, getNewScale, js_getNewTranslate, getNewTranslate,
+        getNewTranslateUnsafe, getNewTranslateUnchecked, SVGZoomEvent(..),
+        gTypeSVGZoomEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"zoomRectScreen\"]"
         js_getZoomRectScreen :: SVGZoomEvent -> IO (Nullable SVGRect)
@@ -32,6 +49,14 @@ getZoomRectScreen ::
                   (MonadIO m) => SVGZoomEvent -> m (Maybe SVGRect)
 getZoomRectScreen self
   = liftIO (nullableToMaybe <$> (js_getZoomRectScreen (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.zoomRectScreen Mozilla SVGZoomEvent.zoomRectScreen documentation> 
+getZoomRectScreenUnsafe ::
+                        (MonadIO m, HasCallStack) => SVGZoomEvent -> m SVGRect
+getZoomRectScreenUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getZoomRectScreen (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.zoomRectScreen Mozilla SVGZoomEvent.zoomRectScreen documentation> 
 getZoomRectScreenUnchecked ::
@@ -57,6 +82,14 @@ getPreviousTranslate self
   = liftIO (nullableToMaybe <$> (js_getPreviousTranslate (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.previousTranslate Mozilla SVGZoomEvent.previousTranslate documentation> 
+getPreviousTranslateUnsafe ::
+                           (MonadIO m, HasCallStack) => SVGZoomEvent -> m SVGPoint
+getPreviousTranslateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreviousTranslate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.previousTranslate Mozilla SVGZoomEvent.previousTranslate documentation> 
 getPreviousTranslateUnchecked ::
                               (MonadIO m) => SVGZoomEvent -> m SVGPoint
 getPreviousTranslateUnchecked self
@@ -78,6 +111,14 @@ getNewTranslate ::
                 (MonadIO m) => SVGZoomEvent -> m (Maybe SVGPoint)
 getNewTranslate self
   = liftIO (nullableToMaybe <$> (js_getNewTranslate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.newTranslate Mozilla SVGZoomEvent.newTranslate documentation> 
+getNewTranslateUnsafe ::
+                      (MonadIO m, HasCallStack) => SVGZoomEvent -> m SVGPoint
+getNewTranslateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNewTranslate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomEvent.newTranslate Mozilla SVGZoomEvent.newTranslate documentation> 
 getNewTranslateUnchecked ::

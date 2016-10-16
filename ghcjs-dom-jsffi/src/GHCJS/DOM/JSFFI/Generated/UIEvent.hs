@@ -1,6 +1,11 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.UIEvent
-       (js_initUIEvent, initUIEvent, js_getView, getView,
+       (js_initUIEvent, initUIEvent, js_getView, getView, getViewUnsafe,
         getViewUnchecked, js_getDetail, getDetail, js_getKeyCode,
         getKeyCode, js_getCharCode, getCharCode, js_getLayerX, getLayerX,
         js_getLayerY, getLayerY, js_getPageX, getPageX, js_getPageY,
@@ -8,6 +13,7 @@ module GHCJS.DOM.JSFFI.Generated.UIEvent
         IsUIEvent, toUIEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +28,16 @@ import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)" js_initUIEvent ::
@@ -46,6 +62,14 @@ foreign import javascript unsafe "$1[\"view\"]" js_getView ::
 getView :: (MonadIO m, IsUIEvent self) => self -> m (Maybe Window)
 getView self
   = liftIO (nullableToMaybe <$> (js_getView (toUIEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
+getViewUnsafe ::
+              (MonadIO m, IsUIEvent self, HasCallStack) => self -> m Window
+getViewUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getView (toUIEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
 getViewUnchecked :: (MonadIO m, IsUIEvent self) => self -> m Window

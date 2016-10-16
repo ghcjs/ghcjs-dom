@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEPointLightElement
-       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getZ, getZ, getZUnchecked, SVGFEPointLightElement(..),
+       (js_getX, getX, getXUnsafe, getXUnchecked, js_getY, getY,
+        getYUnsafe, getYUnchecked, js_getZ, getZ, getZUnsafe,
+        getZUnchecked, SVGFEPointLightElement(..),
         gTypeSVGFEPointLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGFEPointLightElement -> IO (Nullable SVGAnimatedNumber)
@@ -29,6 +46,15 @@ getX ::
      (MonadIO m) =>
        SVGFEPointLightElement -> m (Maybe SVGAnimatedNumber)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.x Mozilla SVGFEPointLightElement.x documentation> 
+getXUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFEPointLightElement -> m SVGAnimatedNumber
+getXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.x Mozilla SVGFEPointLightElement.x documentation> 
 getXUnchecked ::
@@ -46,6 +72,15 @@ getY ::
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.y Mozilla SVGFEPointLightElement.y documentation> 
+getYUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFEPointLightElement -> m SVGAnimatedNumber
+getYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.y Mozilla SVGFEPointLightElement.y documentation> 
 getYUnchecked ::
               (MonadIO m) => SVGFEPointLightElement -> m SVGAnimatedNumber
 getYUnchecked self
@@ -59,6 +94,15 @@ getZ ::
      (MonadIO m) =>
        SVGFEPointLightElement -> m (Maybe SVGAnimatedNumber)
 getZ self = liftIO (nullableToMaybe <$> (js_getZ (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.z Mozilla SVGFEPointLightElement.z documentation> 
+getZUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFEPointLightElement -> m SVGAnimatedNumber
+getZUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getZ (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement.z Mozilla SVGFEPointLightElement.z documentation> 
 getZUnchecked ::

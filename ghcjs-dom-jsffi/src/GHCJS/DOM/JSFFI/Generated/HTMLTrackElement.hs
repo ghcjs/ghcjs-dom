@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
        (pattern NONE, pattern LOADING, pattern LOADED, pattern ERROR,
         js_setKind, setKind, js_getKind, getKind, js_setSrc, setSrc,
@@ -6,9 +11,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
         getSrclang, js_setLabel, setLabel, js_getLabel, getLabel,
         js_setDefault, setDefault, js_getDefault, getDefault,
         js_getReadyState, getReadyState, js_getTrack, getTrack,
-        getTrackUnchecked, HTMLTrackElement(..), gTypeHTMLTrackElement)
+        getTrackUnsafe, getTrackUnchecked, HTMLTrackElement(..),
+        gTypeHTMLTrackElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern NONE = 0
 pattern LOADING = 1
 pattern LOADED = 2
@@ -121,6 +138,14 @@ foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
 getTrack :: (MonadIO m) => HTMLTrackElement -> m (Maybe TextTrack)
 getTrack self = liftIO (nullableToMaybe <$> (js_getTrack (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
+getTrackUnsafe ::
+               (MonadIO m, HasCallStack) => HTMLTrackElement -> m TextTrack
+getTrackUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTrack (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
 getTrackUnchecked :: (MonadIO m) => HTMLTrackElement -> m TextTrack

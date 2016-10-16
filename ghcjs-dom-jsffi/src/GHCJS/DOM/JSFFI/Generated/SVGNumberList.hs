@@ -1,15 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGNumberList
        (js_clear, clear, js_initialize, initialize, initialize_,
-        initializeUnchecked, js_getItem, getItem, getItem_,
-        getItemUnchecked, js_insertItemBefore, insertItemBefore,
-        insertItemBefore_, insertItemBeforeUnchecked, js_replaceItem,
-        replaceItem, replaceItem_, replaceItemUnchecked, js_removeItem,
-        removeItem, removeItem_, removeItemUnchecked, js_appendItem,
-        appendItem, appendItem_, appendItemUnchecked, js_getNumberOfItems,
+        initializeUnsafe, initializeUnchecked, js_getItem, getItem,
+        getItem_, getItemUnsafe, getItemUnchecked, js_insertItemBefore,
+        insertItemBefore, insertItemBefore_, insertItemBeforeUnsafe,
+        insertItemBeforeUnchecked, js_replaceItem, replaceItem,
+        replaceItem_, replaceItemUnsafe, replaceItemUnchecked,
+        js_removeItem, removeItem, removeItem_, removeItemUnsafe,
+        removeItemUnchecked, js_appendItem, appendItem, appendItem_,
+        appendItemUnsafe, appendItemUnchecked, js_getNumberOfItems,
         getNumberOfItems, SVGNumberList(..), gTypeSVGNumberList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         SVGNumberList -> IO ()
@@ -52,6 +70,16 @@ initialize_ self item
   = liftIO (void (js_initialize (self) (maybeToNullable item)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
+initializeUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGNumberList -> Maybe SVGNumber -> m SVGNumber
+initializeUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_initialize (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
 initializeUnchecked ::
                     (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m SVGNumber
 initializeUnchecked self item
@@ -71,6 +99,14 @@ getItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
 getItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
+getItemUnsafe ::
+              (MonadIO m, HasCallStack) => SVGNumberList -> Word -> m SVGNumber
+getItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_getItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
 getItemUnchecked ::
@@ -98,6 +134,16 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO
       (void (js_insertItemBefore (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.insertItemBefore Mozilla SVGNumberList.insertItemBefore documentation> 
+insertItemBeforeUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGNumberList -> Maybe SVGNumber -> Word -> m SVGNumber
+insertItemBeforeUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_insertItemBefore (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.insertItemBefore Mozilla SVGNumberList.insertItemBefore documentation> 
 insertItemBeforeUnchecked ::
@@ -130,6 +176,16 @@ replaceItem_ self item index
       (void (js_replaceItem (self) (maybeToNullable item) index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.replaceItem Mozilla SVGNumberList.replaceItem documentation> 
+replaceItemUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    SVGNumberList -> Maybe SVGNumber -> Word -> m SVGNumber
+replaceItemUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_replaceItem (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.replaceItem Mozilla SVGNumberList.replaceItem documentation> 
 replaceItemUnchecked ::
                      (MonadIO m) =>
                        SVGNumberList -> Maybe SVGNumber -> Word -> m SVGNumber
@@ -150,6 +206,14 @@ removeItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
 removeItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
+removeItemUnsafe ::
+                 (MonadIO m, HasCallStack) => SVGNumberList -> Word -> m SVGNumber
+removeItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_removeItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
 removeItemUnchecked ::
@@ -175,6 +239,16 @@ appendItem_ ::
             (MonadIO m) => SVGNumberList -> Maybe SVGNumber -> m ()
 appendItem_ self item
   = liftIO (void (js_appendItem (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
+appendItemUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGNumberList -> Maybe SVGNumber -> m SVGNumber
+appendItemUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_appendItem (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
 appendItemUnchecked ::

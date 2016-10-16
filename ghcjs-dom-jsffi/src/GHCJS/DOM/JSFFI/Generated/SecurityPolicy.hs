@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SecurityPolicy
        (js_allowsConnectionTo, allowsConnectionTo, allowsConnectionTo_,
         js_allowsFontFrom, allowsFontFrom, allowsFontFrom_,
@@ -13,10 +18,11 @@ module GHCJS.DOM.JSFFI.Generated.SecurityPolicy
         js_getAllowsEval, getAllowsEval, js_getAllowsInlineScript,
         getAllowsInlineScript, js_getAllowsInlineStyle,
         getAllowsInlineStyle, js_getIsActive, getIsActive,
-        js_getReportURIs, getReportURIs, getReportURIsUnchecked,
-        SecurityPolicy(..), gTypeSecurityPolicy)
+        js_getReportURIs, getReportURIs, getReportURIsUnsafe,
+        getReportURIsUnchecked, SecurityPolicy(..), gTypeSecurityPolicy)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -32,6 +38,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"allowsConnectionTo\"]($2) ? 1 : 0)" js_allowsConnectionTo ::
@@ -232,6 +248,14 @@ getReportURIs ::
               (MonadIO m) => SecurityPolicy -> m (Maybe DOMStringList)
 getReportURIs self
   = liftIO (nullableToMaybe <$> (js_getReportURIs (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.reportURIs Mozilla SecurityPolicy.reportURIs documentation> 
+getReportURIsUnsafe ::
+                    (MonadIO m, HasCallStack) => SecurityPolicy -> m DOMStringList
+getReportURIsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getReportURIs (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicy.reportURIs Mozilla SecurityPolicy.reportURIs documentation> 
 getReportURIsUnchecked ::

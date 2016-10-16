@@ -1,15 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.URL
        (js_newURL, newURL, js_newURL', newURL', js_newURL'', newURL'',
         js_createObjectURL, createObjectURL, createObjectURL_,
-        createObjectURLUnchecked, js_revokeObjectURL, revokeObjectURL,
-        js_createObjectURLSource, createObjectURLSource,
-        createObjectURLSource_, createObjectURLSourceUnchecked,
+        createObjectURLUnsafe, createObjectURLUnchecked,
+        js_revokeObjectURL, revokeObjectURL, js_createObjectURLSource,
+        createObjectURLSource, createObjectURLSource_,
+        createObjectURLSourceUnsafe, createObjectURLSourceUnchecked,
         js_createObjectURLStream, createObjectURLStream,
-        createObjectURLStream_, createObjectURLStreamUnchecked, URL(..),
-        gTypeURL)
+        createObjectURLStream_, createObjectURLStreamUnsafe,
+        createObjectURLStreamUnchecked, URL(..), gTypeURL)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"URL\"]($1)"
         js_newURL :: JSString -> IO URL
@@ -74,6 +91,16 @@ createObjectURL_ self blob
          (js_createObjectURL (self) (maybeToNullable (fmap toBlob blob))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
+createObjectURLUnsafe ::
+                      (MonadIO m, IsBlob blob, HasCallStack, FromJSString result) =>
+                        URL -> Maybe blob -> m result
+createObjectURLUnsafe self blob
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_createObjectURL (self) (maybeToNullable (fmap toBlob blob))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLUnchecked ::
                          (MonadIO m, IsBlob blob, FromJSString result) =>
                            URL -> Maybe blob -> m result
@@ -112,6 +139,16 @@ createObjectURLSource_ self source
       (void (js_createObjectURLSource (self) (maybeToNullable source)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
+createObjectURLSourceUnsafe ::
+                            (MonadIO m, HasCallStack, FromJSString result) =>
+                              URL -> Maybe MediaSource -> m result
+createObjectURLSourceUnsafe self source
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_createObjectURLSource (self) (maybeToNullable source)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLSourceUnchecked ::
                                (MonadIO m, FromJSString result) =>
                                  URL -> Maybe MediaSource -> m result
@@ -139,6 +176,16 @@ createObjectURLStream_ ::
 createObjectURLStream_ self stream
   = liftIO
       (void (js_createObjectURLStream (self) (maybeToNullable stream)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
+createObjectURLStreamUnsafe ::
+                            (MonadIO m, HasCallStack, FromJSString result) =>
+                              URL -> Maybe MediaStream -> m result
+createObjectURLStreamUnsafe self stream
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_createObjectURLStream (self) (maybeToNullable stream)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLStreamUnchecked ::

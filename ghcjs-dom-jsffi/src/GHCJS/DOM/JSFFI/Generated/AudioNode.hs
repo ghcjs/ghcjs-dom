@@ -1,16 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AudioNode
        (js_connect, connect, js_connectParam, connectParam, js_disconnect,
-        disconnect, js_getContext, getContext, getContextUnchecked,
-        js_getNumberOfInputs, getNumberOfInputs, js_getNumberOfOutputs,
-        getNumberOfOutputs, js_setChannelCount, setChannelCount,
-        js_getChannelCount, getChannelCount, js_setChannelCountMode,
-        setChannelCountMode, js_getChannelCountMode, getChannelCountMode,
+        disconnect, js_getContext, getContext, getContextUnsafe,
+        getContextUnchecked, js_getNumberOfInputs, getNumberOfInputs,
+        js_getNumberOfOutputs, getNumberOfOutputs, js_setChannelCount,
+        setChannelCount, js_getChannelCount, getChannelCount,
+        js_setChannelCountMode, setChannelCountMode,
+        js_getChannelCountMode, getChannelCountMode,
         js_setChannelInterpretation, setChannelInterpretation,
         js_getChannelInterpretation, getChannelInterpretation,
         AudioNode(..), gTypeAudioNode, IsAudioNode, toAudioNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"connect\"]($2, $3, $4)"
         js_connect ::
@@ -71,6 +88,15 @@ getContext ::
            (MonadIO m, IsAudioNode self) => self -> m (Maybe AudioContext)
 getContext self
   = liftIO (nullableToMaybe <$> (js_getContext (toAudioNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
+getContextUnsafe ::
+                 (MonadIO m, IsAudioNode self, HasCallStack) =>
+                   self -> m AudioContext
+getContextUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getContext (toAudioNode self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
 getContextUnchecked ::

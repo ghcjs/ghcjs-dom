@@ -1,13 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.FileReaderSync
        (js_newFileReaderSync, newFileReaderSync, js_readAsArrayBuffer,
-        readAsArrayBuffer, readAsArrayBuffer_, readAsArrayBufferUnchecked,
-        js_readAsBinaryString, readAsBinaryString, readAsBinaryString_,
-        js_readAsText, readAsText, readAsText_, js_readAsDataURL,
-        readAsDataURL, readAsDataURL_, FileReaderSync(..),
-        gTypeFileReaderSync)
+        readAsArrayBuffer, readAsArrayBuffer_, readAsArrayBufferUnsafe,
+        readAsArrayBufferUnchecked, js_readAsBinaryString,
+        readAsBinaryString, readAsBinaryString_, js_readAsText, readAsText,
+        readAsText_, js_readAsDataURL, readAsDataURL, readAsDataURL_,
+        FileReaderSync(..), gTypeFileReaderSync)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"FileReaderSync\"]()"
         js_newFileReaderSync :: IO FileReaderSync
@@ -51,6 +67,16 @@ readAsArrayBuffer_ self blob
   = liftIO
       (void
          (js_readAsArrayBuffer (self) (maybeToNullable (fmap toBlob blob))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsArrayBuffer Mozilla FileReaderSync.readAsArrayBuffer documentation> 
+readAsArrayBufferUnsafe ::
+                        (MonadIO m, IsBlob blob, HasCallStack) =>
+                          FileReaderSync -> Maybe blob -> m ArrayBuffer
+readAsArrayBufferUnsafe self blob
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_readAsArrayBuffer (self) (maybeToNullable (fmap toBlob blob))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsArrayBuffer Mozilla FileReaderSync.readAsArrayBuffer documentation> 
 readAsArrayBufferUnchecked ::

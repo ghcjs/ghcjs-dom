@@ -1,28 +1,36 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLElement
        (js_insertAdjacentElement, insertAdjacentElement,
-        insertAdjacentElement_, insertAdjacentElementUnchecked,
-        js_insertAdjacentHTML, insertAdjacentHTML, js_insertAdjacentText,
-        insertAdjacentText, js_click, click, js_setTitle, setTitle,
-        js_getTitle, getTitle, js_setLang, setLang, js_getLang, getLang,
-        js_setTranslate, setTranslate, js_getTranslate, getTranslate,
-        js_setDir, setDir, js_getDir, getDir, js_setTabIndex, setTabIndex,
-        js_getTabIndex, getTabIndex, js_setDraggable, setDraggable,
-        js_getDraggable, getDraggable, js_setWebkitdropzone,
-        setWebkitdropzone, js_getWebkitdropzone, getWebkitdropzone,
-        js_setHidden, setHidden, js_getHidden, getHidden, js_setAccessKey,
-        setAccessKey, js_getAccessKey, getAccessKey, js_setInnerText,
-        setInnerText, js_getInnerText, getInnerText, getInnerTextUnchecked,
-        js_setOuterText, setOuterText, js_getOuterText, getOuterText,
+        insertAdjacentElement_, insertAdjacentElementUnsafe,
+        insertAdjacentElementUnchecked, js_insertAdjacentHTML,
+        insertAdjacentHTML, js_insertAdjacentText, insertAdjacentText,
+        js_click, click, js_setTitle, setTitle, js_getTitle, getTitle,
+        js_setLang, setLang, js_getLang, getLang, js_setTranslate,
+        setTranslate, js_getTranslate, getTranslate, js_setDir, setDir,
+        js_getDir, getDir, js_setTabIndex, setTabIndex, js_getTabIndex,
+        getTabIndex, js_setDraggable, setDraggable, js_getDraggable,
+        getDraggable, js_setWebkitdropzone, setWebkitdropzone,
+        js_getWebkitdropzone, getWebkitdropzone, js_setHidden, setHidden,
+        js_getHidden, getHidden, js_setAccessKey, setAccessKey,
+        js_getAccessKey, getAccessKey, js_setInnerText, setInnerText,
+        js_getInnerText, getInnerText, getInnerTextUnsafe,
+        getInnerTextUnchecked, js_setOuterText, setOuterText,
+        js_getOuterText, getOuterText, getOuterTextUnsafe,
         getOuterTextUnchecked, js_getChildren, getChildren,
-        getChildrenUnchecked, js_setContentEditable, setContentEditable,
-        js_getContentEditable, getContentEditable,
-        getContentEditableUnchecked, js_getIsContentEditable,
-        getIsContentEditable, js_setSpellcheck, setSpellcheck,
-        js_getSpellcheck, getSpellcheck, HTMLElement(..), gTypeHTMLElement,
-        IsHTMLElement, toHTMLElement)
+        getChildrenUnsafe, getChildrenUnchecked, js_setContentEditable,
+        setContentEditable, js_getContentEditable, getContentEditable,
+        getContentEditableUnsafe, getContentEditableUnchecked,
+        js_getIsContentEditable, getIsContentEditable, js_setSpellcheck,
+        setSpellcheck, js_getSpellcheck, getSpellcheck, HTMLElement(..),
+        gTypeHTMLElement, IsHTMLElement, toHTMLElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -38,6 +46,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"insertAdjacentElement\"]($2,\n$3)" js_insertAdjacentElement
@@ -66,6 +84,18 @@ insertAdjacentElement_ self where' element
       (void
          (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
             (maybeToNullable (fmap toElement element))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
+insertAdjacentElementUnsafe ::
+                            (MonadIO m, IsHTMLElement self, ToJSString where',
+                             IsElement element, HasCallStack) =>
+                              self -> where' -> Maybe element -> m Element
+insertAdjacentElementUnsafe self where' element
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
+             (maybeToNullable (fmap toElement element))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
 insertAdjacentElementUnchecked ::
@@ -301,6 +331,16 @@ getInnerText self
       (fromMaybeJSString <$> (js_getInnerText (toHTMLElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
+getInnerTextUnsafe ::
+                   (MonadIO m, IsHTMLElement self, HasCallStack,
+                    FromJSString result) =>
+                     self -> m result
+getInnerTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getInnerText (toHTMLElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 getInnerTextUnchecked ::
                       (MonadIO m, IsHTMLElement self, FromJSString result) =>
                         self -> m result
@@ -332,6 +372,16 @@ getOuterText self
       (fromMaybeJSString <$> (js_getOuterText (toHTMLElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
+getOuterTextUnsafe ::
+                   (MonadIO m, IsHTMLElement self, HasCallStack,
+                    FromJSString result) =>
+                     self -> m result
+getOuterTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getOuterText (toHTMLElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 getOuterTextUnchecked ::
                       (MonadIO m, IsHTMLElement self, FromJSString result) =>
                         self -> m result
@@ -349,6 +399,15 @@ getChildren ::
 getChildren self
   = liftIO
       (nullableToMaybe <$> (js_getChildren (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
+getChildrenUnsafe ::
+                  (MonadIO m, IsHTMLElement self, HasCallStack) =>
+                    self -> m HTMLCollection
+getChildrenUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getChildren (toHTMLElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
 getChildrenUnchecked ::
@@ -380,6 +439,17 @@ getContentEditable self
   = liftIO
       (fromMaybeJSString <$>
          (js_getContentEditable (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
+getContentEditableUnsafe ::
+                         (MonadIO m, IsHTMLElement self, HasCallStack,
+                          FromJSString result) =>
+                           self -> m result
+getContentEditableUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getContentEditable (toHTMLElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 getContentEditableUnchecked ::

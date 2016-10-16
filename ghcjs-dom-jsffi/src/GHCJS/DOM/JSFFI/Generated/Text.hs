@@ -1,11 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Text
        (js_newText, newText, js_splitText, splitText, splitText_,
-        splitTextUnchecked, js_replaceWholeText, replaceWholeText,
-        replaceWholeText_, replaceWholeTextUnchecked, js_getWholeText,
-        getWholeText, Text(..), gTypeText, IsText, toText)
+        splitTextUnsafe, splitTextUnchecked, js_replaceWholeText,
+        replaceWholeText, replaceWholeText_, replaceWholeTextUnsafe,
+        replaceWholeTextUnchecked, js_getWholeText, getWholeText, Text(..),
+        gTypeText, IsText, toText)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"Text\"]($1)"
         js_newText :: JSString -> IO Text
@@ -42,6 +59,14 @@ splitText self offset
 splitText_ :: (MonadIO m, IsText self) => self -> Word -> m ()
 splitText_ self offset
   = liftIO (void (js_splitText (toText self) offset))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.splitText Mozilla Text.splitText documentation> 
+splitTextUnsafe ::
+                (MonadIO m, IsText self, HasCallStack) => self -> Word -> m Text
+splitTextUnsafe self offset
+  = liftIO
+      ((nullableToMaybe <$> (js_splitText (toText self) offset)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.splitText Mozilla Text.splitText documentation> 
 splitTextUnchecked ::
@@ -70,6 +95,16 @@ replaceWholeText_ ::
 replaceWholeText_ self content
   = liftIO
       (void (js_replaceWholeText (toText self) (toJSString content)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.replaceWholeText Mozilla Text.replaceWholeText documentation> 
+replaceWholeTextUnsafe ::
+                       (MonadIO m, IsText self, ToJSString content, HasCallStack) =>
+                         self -> content -> m Text
+replaceWholeTextUnsafe self content
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_replaceWholeText (toText self) (toJSString content)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.replaceWholeText Mozilla Text.replaceWholeText documentation> 
 replaceWholeTextUnchecked ::

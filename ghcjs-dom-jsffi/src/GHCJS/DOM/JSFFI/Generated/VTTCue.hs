@@ -1,16 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.VTTCue
        (js_newVTTCue, newVTTCue, js_getCueAsHTML, getCueAsHTML,
-        getCueAsHTML_, getCueAsHTMLUnchecked, js_setVertical, setVertical,
-        js_getVertical, getVertical, js_setSnapToLines, setSnapToLines,
-        js_getSnapToLines, getSnapToLines, js_setLine, setLine, js_getLine,
-        getLine, js_setPosition, setPosition, js_getPosition, getPosition,
+        getCueAsHTML_, getCueAsHTMLUnsafe, getCueAsHTMLUnchecked,
+        js_setVertical, setVertical, js_getVertical, getVertical,
+        js_setSnapToLines, setSnapToLines, js_getSnapToLines,
+        getSnapToLines, js_setLine, setLine, js_getLine, getLine,
+        js_setPosition, setPosition, js_getPosition, getPosition,
         js_setSize, setSize, js_getSize, getSize, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setText, setText, js_getText, getText,
         js_setRegionId, setRegionId, js_getRegionId, getRegionId,
         VTTCue(..), gTypeVTTCue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"VTTCue\"]($1, $2, $3)" js_newVTTCue ::
@@ -49,6 +66,14 @@ getCueAsHTML self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
 getCueAsHTML_ :: (MonadIO m) => VTTCue -> m ()
 getCueAsHTML_ self = liftIO (void (js_getCueAsHTML (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
+getCueAsHTMLUnsafe ::
+                   (MonadIO m, HasCallStack) => VTTCue -> m DocumentFragment
+getCueAsHTMLUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCueAsHTML (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
 getCueAsHTMLUnchecked ::

@@ -1,25 +1,32 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSPrimitiveValue
        (js_setFloatValue, setFloatValue, js_getFloatValue, getFloatValue,
         getFloatValue_, js_setStringValue, setStringValue,
         js_getStringValue, getStringValue, getStringValue_,
         js_getCounterValue, getCounterValue, getCounterValue_,
-        getCounterValueUnchecked, js_getRectValue, getRectValue,
-        getRectValue_, getRectValueUnchecked, js_getRGBColorValue,
-        getRGBColorValue, getRGBColorValue_, getRGBColorValueUnchecked,
-        pattern CSS_UNKNOWN, pattern CSS_NUMBER, pattern CSS_PERCENTAGE,
-        pattern CSS_EMS, pattern CSS_EXS, pattern CSS_PX, pattern CSS_CM,
-        pattern CSS_MM, pattern CSS_IN, pattern CSS_PT, pattern CSS_PC,
-        pattern CSS_DEG, pattern CSS_RAD, pattern CSS_GRAD, pattern CSS_MS,
-        pattern CSS_S, pattern CSS_HZ, pattern CSS_KHZ,
-        pattern CSS_DIMENSION, pattern CSS_STRING, pattern CSS_URI,
-        pattern CSS_IDENT, pattern CSS_ATTR, pattern CSS_COUNTER,
-        pattern CSS_RECT, pattern CSS_RGBCOLOR, pattern CSS_VW,
-        pattern CSS_VH, pattern CSS_VMIN, pattern CSS_VMAX,
+        getCounterValueUnsafe, getCounterValueUnchecked, js_getRectValue,
+        getRectValue, getRectValue_, getRectValueUnsafe,
+        getRectValueUnchecked, js_getRGBColorValue, getRGBColorValue,
+        getRGBColorValue_, getRGBColorValueUnsafe,
+        getRGBColorValueUnchecked, pattern CSS_UNKNOWN, pattern CSS_NUMBER,
+        pattern CSS_PERCENTAGE, pattern CSS_EMS, pattern CSS_EXS,
+        pattern CSS_PX, pattern CSS_CM, pattern CSS_MM, pattern CSS_IN,
+        pattern CSS_PT, pattern CSS_PC, pattern CSS_DEG, pattern CSS_RAD,
+        pattern CSS_GRAD, pattern CSS_MS, pattern CSS_S, pattern CSS_HZ,
+        pattern CSS_KHZ, pattern CSS_DIMENSION, pattern CSS_STRING,
+        pattern CSS_URI, pattern CSS_IDENT, pattern CSS_ATTR,
+        pattern CSS_COUNTER, pattern CSS_RECT, pattern CSS_RGBCOLOR,
+        pattern CSS_VW, pattern CSS_VH, pattern CSS_VMIN, pattern CSS_VMAX,
         js_getPrimitiveType, getPrimitiveType, CSSPrimitiveValue(..),
         gTypeCSSPrimitiveValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -35,6 +42,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setFloatValue\"]($2, $3)"
         js_setFloatValue :: CSSPrimitiveValue -> Word -> Float -> IO ()
@@ -97,6 +114,14 @@ getCounterValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getCounterValue_ self = liftIO (void (js_getCounterValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getCounterValue Mozilla CSSPrimitiveValue.getCounterValue documentation> 
+getCounterValueUnsafe ::
+                      (MonadIO m, HasCallStack) => CSSPrimitiveValue -> m Counter
+getCounterValueUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCounterValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getCounterValue Mozilla CSSPrimitiveValue.getCounterValue documentation> 
 getCounterValueUnchecked ::
                          (MonadIO m) => CSSPrimitiveValue -> m Counter
 getCounterValueUnchecked self
@@ -116,6 +141,14 @@ getRectValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getRectValue_ self = liftIO (void (js_getRectValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRectValue Mozilla CSSPrimitiveValue.getRectValue documentation> 
+getRectValueUnsafe ::
+                   (MonadIO m, HasCallStack) => CSSPrimitiveValue -> m Rect
+getRectValueUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRectValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRectValue Mozilla CSSPrimitiveValue.getRectValue documentation> 
 getRectValueUnchecked :: (MonadIO m) => CSSPrimitiveValue -> m Rect
 getRectValueUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRectValue (self)))
@@ -132,6 +165,14 @@ getRGBColorValue self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRGBColorValue Mozilla CSSPrimitiveValue.getRGBColorValue documentation> 
 getRGBColorValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getRGBColorValue_ self = liftIO (void (js_getRGBColorValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRGBColorValue Mozilla CSSPrimitiveValue.getRGBColorValue documentation> 
+getRGBColorValueUnsafe ::
+                       (MonadIO m, HasCallStack) => CSSPrimitiveValue -> m RGBColor
+getRGBColorValueUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRGBColorValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRGBColorValue Mozilla CSSPrimitiveValue.getRGBColorValue documentation> 
 getRGBColorValueUnchecked ::

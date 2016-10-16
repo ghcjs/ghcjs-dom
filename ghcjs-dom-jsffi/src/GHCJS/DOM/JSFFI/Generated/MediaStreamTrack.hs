@@ -1,18 +1,26 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaStreamTrack
        (js_getSources, getSources, js_getConstraints, getConstraints,
-        getConstraints_, getConstraintsUnchecked, js_states, states,
-        states_, statesUnchecked, js_getCapabilities, getCapabilities,
-        getCapabilities_, getCapabilitiesUnchecked, js_applyConstraints,
-        applyConstraints, js_clone, clone, clone_, cloneUnchecked, js_stop,
-        stop, js_getKind, getKind, js_getId, getId, js_getLabel, getLabel,
-        js_setEnabled, setEnabled, js_getEnabled, getEnabled, js_getMuted,
-        getMuted, mute, unmute, js_get_readonly, get_readonly,
-        js_getRemote, getRemote, js_getReadyState, getReadyState, started,
-        ended, overConstrained, MediaStreamTrack(..),
-        gTypeMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack)
+        getConstraints_, getConstraintsUnsafe, getConstraintsUnchecked,
+        js_states, states, states_, statesUnsafe, statesUnchecked,
+        js_getCapabilities, getCapabilities, getCapabilities_,
+        getCapabilitiesUnsafe, getCapabilitiesUnchecked,
+        js_applyConstraints, applyConstraints, js_clone, clone, clone_,
+        cloneUnsafe, cloneUnchecked, js_stop, stop, js_getKind, getKind,
+        js_getId, getId, js_getLabel, getLabel, js_setEnabled, setEnabled,
+        js_getEnabled, getEnabled, js_getMuted, getMuted, mute, unmute,
+        js_get_readonly, get_readonly, js_getRemote, getRemote,
+        js_getReadyState, getReadyState, started, ended, overConstrained,
+        MediaStreamTrack(..), gTypeMediaStreamTrack, IsMediaStreamTrack,
+        toMediaStreamTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +36,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getSources\"]($2)"
         js_getSources ::
@@ -62,6 +80,16 @@ getConstraints_ self
   = liftIO (void (js_getConstraints (toMediaStreamTrack self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getConstraints Mozilla MediaStreamTrack.getConstraints documentation> 
+getConstraintsUnsafe ::
+                     (MonadIO m, IsMediaStreamTrack self, HasCallStack) =>
+                       self -> m MediaTrackConstraints
+getConstraintsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getConstraints (toMediaStreamTrack self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getConstraints Mozilla MediaStreamTrack.getConstraints documentation> 
 getConstraintsUnchecked ::
                         (MonadIO m, IsMediaStreamTrack self) =>
                           self -> m MediaTrackConstraints
@@ -84,6 +112,15 @@ states self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.states Mozilla MediaStreamTrack.states documentation> 
 states_ :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
 states_ self = liftIO (void (js_states (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.states Mozilla MediaStreamTrack.states documentation> 
+statesUnsafe ::
+             (MonadIO m, IsMediaStreamTrack self, HasCallStack) =>
+               self -> m MediaSourceStates
+statesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_states (toMediaStreamTrack self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.states Mozilla MediaStreamTrack.states documentation> 
 statesUnchecked ::
@@ -111,6 +148,16 @@ getCapabilities_ ::
                  (MonadIO m, IsMediaStreamTrack self) => self -> m ()
 getCapabilities_ self
   = liftIO (void (js_getCapabilities (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getCapabilities Mozilla MediaStreamTrack.getCapabilities documentation> 
+getCapabilitiesUnsafe ::
+                      (MonadIO m, IsMediaStreamTrack self, HasCallStack) =>
+                        self -> m MediaStreamCapabilities
+getCapabilitiesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getCapabilities (toMediaStreamTrack self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getCapabilities Mozilla MediaStreamTrack.getCapabilities documentation> 
 getCapabilitiesUnchecked ::
@@ -147,6 +194,15 @@ clone self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
 clone_ :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
 clone_ self = liftIO (void (js_clone (toMediaStreamTrack self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
+cloneUnsafe ::
+            (MonadIO m, IsMediaStreamTrack self, HasCallStack) =>
+              self -> m MediaStreamTrack
+cloneUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_clone (toMediaStreamTrack self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
 cloneUnchecked ::

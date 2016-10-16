@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOptionsCollection
-       (js_namedItem, namedItem, namedItem_, namedItemUnchecked,
-        js_addBefore, addBefore, js_add, add, js_remove, remove,
-        js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
-        getSelectedIndex, js_setLength, setLength, js_getLength, getLength,
-        HTMLOptionsCollection(..), gTypeHTMLOptionsCollection)
+       (js_namedItem, namedItem, namedItem_, namedItemUnsafe,
+        namedItemUnchecked, js_addBefore, addBefore, js_add, add,
+        js_remove, remove, js_setSelectedIndex, setSelectedIndex,
+        js_getSelectedIndex, getSelectedIndex, js_setLength, setLength,
+        js_getLength, getLength, HTMLOptionsCollection(..),
+        gTypeHTMLOptionsCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"namedItem\"]($2)"
         js_namedItem ::
@@ -41,6 +58,15 @@ namedItem_ ::
              HTMLOptionsCollection -> name -> m ()
 namedItem_ self name
   = liftIO (void (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.namedItem Mozilla HTMLOptionsCollection.namedItem documentation> 
+namedItemUnsafe ::
+                (MonadIO m, ToJSString name, HasCallStack) =>
+                  HTMLOptionsCollection -> name -> m Node
+namedItemUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_namedItem (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.namedItem Mozilla HTMLOptionsCollection.namedItem documentation> 
 namedItemUnchecked ::

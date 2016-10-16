@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.TouchEvent
        (js_initTouchEvent, initTouchEvent, js_getTouches, getTouches,
-        getTouchesUnchecked, js_getTargetTouches, getTargetTouches,
+        getTouchesUnsafe, getTouchesUnchecked, js_getTargetTouches,
+        getTargetTouches, getTargetTouchesUnsafe,
         getTargetTouchesUnchecked, js_getChangedTouches, getChangedTouches,
-        getChangedTouchesUnchecked, js_getCtrlKey, getCtrlKey,
-        js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
+        getChangedTouchesUnsafe, getChangedTouchesUnchecked, js_getCtrlKey,
+        getCtrlKey, js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
         js_getMetaKey, getMetaKey, TouchEvent(..), gTypeTouchEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initTouchEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14)"
@@ -71,6 +88,14 @@ getTouches self
   = liftIO (nullableToMaybe <$> (js_getTouches (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.touches Mozilla TouchEvent.touches documentation> 
+getTouchesUnsafe ::
+                 (MonadIO m, HasCallStack) => TouchEvent -> m TouchList
+getTouchesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTouches (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.touches Mozilla TouchEvent.touches documentation> 
 getTouchesUnchecked :: (MonadIO m) => TouchEvent -> m TouchList
 getTouchesUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getTouches (self)))
@@ -83,6 +108,14 @@ getTargetTouches ::
                  (MonadIO m) => TouchEvent -> m (Maybe TouchList)
 getTargetTouches self
   = liftIO (nullableToMaybe <$> (js_getTargetTouches (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.targetTouches Mozilla TouchEvent.targetTouches documentation> 
+getTargetTouchesUnsafe ::
+                       (MonadIO m, HasCallStack) => TouchEvent -> m TouchList
+getTargetTouchesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTargetTouches (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.targetTouches Mozilla TouchEvent.targetTouches documentation> 
 getTargetTouchesUnchecked ::
@@ -99,6 +132,14 @@ getChangedTouches ::
                   (MonadIO m) => TouchEvent -> m (Maybe TouchList)
 getChangedTouches self
   = liftIO (nullableToMaybe <$> (js_getChangedTouches (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.changedTouches Mozilla TouchEvent.changedTouches documentation> 
+getChangedTouchesUnsafe ::
+                        (MonadIO m, HasCallStack) => TouchEvent -> m TouchList
+getChangedTouchesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getChangedTouches (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.changedTouches Mozilla TouchEvent.changedTouches documentation> 
 getChangedTouchesUnchecked ::

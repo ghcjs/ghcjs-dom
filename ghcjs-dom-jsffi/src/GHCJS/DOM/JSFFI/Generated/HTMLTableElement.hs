@@ -1,28 +1,37 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableElement
-       (js_createTHead, createTHead, createTHead_, createTHeadUnchecked,
-        js_deleteTHead, deleteTHead, js_createTFoot, createTFoot,
-        createTFoot_, createTFootUnchecked, js_deleteTFoot, deleteTFoot,
-        js_createTBody, createTBody, createTBody_, createTBodyUnchecked,
+       (js_createTHead, createTHead, createTHead_, createTHeadUnsafe,
+        createTHeadUnchecked, js_deleteTHead, deleteTHead, js_createTFoot,
+        createTFoot, createTFoot_, createTFootUnsafe, createTFootUnchecked,
+        js_deleteTFoot, deleteTFoot, js_createTBody, createTBody,
+        createTBody_, createTBodyUnsafe, createTBodyUnchecked,
         js_createCaption, createCaption, createCaption_,
-        createCaptionUnchecked, js_deleteCaption, deleteCaption,
-        js_insertRow, insertRow, insertRow_, insertRowUnchecked,
-        js_deleteRow, deleteRow, js_setCaption, setCaption, js_getCaption,
-        getCaption, getCaptionUnchecked, js_setTHead, setTHead,
-        js_getTHead, getTHead, getTHeadUnchecked, js_setTFoot, setTFoot,
-        js_getTFoot, getTFoot, getTFootUnchecked, js_getRows, getRows,
-        getRowsUnchecked, js_getTBodies, getTBodies, getTBodiesUnchecked,
-        js_setAlign, setAlign, js_getAlign, getAlign, js_setBgColor,
-        setBgColor, js_getBgColor, getBgColor, js_setBorder, setBorder,
-        js_getBorder, getBorder, js_setCellPadding, setCellPadding,
-        js_getCellPadding, getCellPadding, js_setCellSpacing,
-        setCellSpacing, js_getCellSpacing, getCellSpacing, js_setFrame,
-        setFrame, js_getFrame, getFrame, js_setRules, setRules,
-        js_getRules, getRules, js_setSummary, setSummary, js_getSummary,
-        getSummary, js_setWidth, setWidth, js_getWidth, getWidth,
-        HTMLTableElement(..), gTypeHTMLTableElement)
+        createCaptionUnsafe, createCaptionUnchecked, js_deleteCaption,
+        deleteCaption, js_insertRow, insertRow, insertRow_,
+        insertRowUnsafe, insertRowUnchecked, js_deleteRow, deleteRow,
+        js_setCaption, setCaption, js_getCaption, getCaption,
+        getCaptionUnsafe, getCaptionUnchecked, js_setTHead, setTHead,
+        js_getTHead, getTHead, getTHeadUnsafe, getTHeadUnchecked,
+        js_setTFoot, setTFoot, js_getTFoot, getTFoot, getTFootUnsafe,
+        getTFootUnchecked, js_getRows, getRows, getRowsUnsafe,
+        getRowsUnchecked, js_getTBodies, getTBodies, getTBodiesUnsafe,
+        getTBodiesUnchecked, js_setAlign, setAlign, js_getAlign, getAlign,
+        js_setBgColor, setBgColor, js_getBgColor, getBgColor, js_setBorder,
+        setBorder, js_getBorder, getBorder, js_setCellPadding,
+        setCellPadding, js_getCellPadding, getCellPadding,
+        js_setCellSpacing, setCellSpacing, js_getCellSpacing,
+        getCellSpacing, js_setFrame, setFrame, js_getFrame, getFrame,
+        js_setRules, setRules, js_getRules, getRules, js_setSummary,
+        setSummary, js_getSummary, getSummary, js_setWidth, setWidth,
+        js_getWidth, getWidth, HTMLTableElement(..), gTypeHTMLTableElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -38,6 +47,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"createTHead\"]()"
         js_createTHead :: HTMLTableElement -> IO (Nullable HTMLElement)
@@ -51,6 +70,14 @@ createTHead self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
 createTHead_ :: (MonadIO m) => HTMLTableElement -> m ()
 createTHead_ self = liftIO (void (js_createTHead (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
+createTHeadUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
+createTHeadUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createTHead (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
 createTHeadUnchecked ::
@@ -79,6 +106,14 @@ createTFoot_ :: (MonadIO m) => HTMLTableElement -> m ()
 createTFoot_ self = liftIO (void (js_createTFoot (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
+createTFootUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
+createTFootUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createTFoot (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
 createTFootUnchecked ::
                      (MonadIO m) => HTMLTableElement -> m HTMLElement
 createTFootUnchecked self
@@ -105,6 +140,14 @@ createTBody_ :: (MonadIO m) => HTMLTableElement -> m ()
 createTBody_ self = liftIO (void (js_createTBody (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
+createTBodyUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
+createTBodyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createTBody (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
 createTBodyUnchecked ::
                      (MonadIO m) => HTMLTableElement -> m HTMLElement
 createTBodyUnchecked self
@@ -122,6 +165,14 @@ createCaption self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
 createCaption_ :: (MonadIO m) => HTMLTableElement -> m ()
 createCaption_ self = liftIO (void (js_createCaption (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
+createCaptionUnsafe ::
+                    (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
+createCaptionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createCaption (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
 createCaptionUnchecked ::
@@ -149,6 +200,15 @@ insertRow self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
 insertRow_ :: (MonadIO m) => HTMLTableElement -> Int -> m ()
 insertRow_ self index = liftIO (void (js_insertRow (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
+insertRowUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  HTMLTableElement -> Int -> m HTMLElement
+insertRowUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_insertRow (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
 insertRowUnchecked ::
@@ -186,6 +246,15 @@ getCaption self
   = liftIO (nullableToMaybe <$> (js_getCaption (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
+getCaptionUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   HTMLTableElement -> m HTMLTableCaptionElement
+getCaptionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCaption (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 getCaptionUnchecked ::
                     (MonadIO m) => HTMLTableElement -> m HTMLTableCaptionElement
 getCaptionUnchecked self
@@ -209,6 +278,15 @@ getTHead ::
          (MonadIO m) =>
            HTMLTableElement -> m (Maybe HTMLTableSectionElement)
 getTHead self = liftIO (nullableToMaybe <$> (js_getTHead (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
+getTHeadUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 HTMLTableElement -> m HTMLTableSectionElement
+getTHeadUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTHead (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 getTHeadUnchecked ::
@@ -236,6 +314,15 @@ getTFoot ::
 getTFoot self = liftIO (nullableToMaybe <$> (js_getTFoot (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
+getTFootUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 HTMLTableElement -> m HTMLTableSectionElement
+getTFootUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTFoot (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 getTFootUnchecked ::
                   (MonadIO m) => HTMLTableElement -> m HTMLTableSectionElement
 getTFootUnchecked self
@@ -248,6 +335,14 @@ foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
 getRows ::
         (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
 getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
+getRowsUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLCollection
+getRowsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRows (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
 getRowsUnchecked ::
@@ -263,6 +358,14 @@ getTBodies ::
            (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
 getTBodies self
   = liftIO (nullableToMaybe <$> (js_getTBodies (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
+getTBodiesUnsafe ::
+                 (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLCollection
+getTBodiesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTBodies (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
 getTBodiesUnchecked ::

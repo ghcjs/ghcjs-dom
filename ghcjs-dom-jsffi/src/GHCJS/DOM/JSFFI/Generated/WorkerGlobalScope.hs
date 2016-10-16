@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
        (js_close, close, js_importScripts, importScripts, js_getSelf,
-        getSelf, getSelfUnchecked, js_getLocation, getLocation,
-        getLocationUnchecked, error, offline, online, js_getNavigator,
-        getNavigator, getNavigatorUnchecked, WorkerGlobalScope(..),
+        getSelf, getSelfUnsafe, getSelfUnchecked, js_getLocation,
+        getLocation, getLocationUnsafe, getLocationUnchecked, error,
+        offline, online, js_getNavigator, getNavigator, getNavigatorUnsafe,
+        getNavigatorUnchecked, WorkerGlobalScope(..),
         gTypeWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
         WorkerGlobalScope -> IO ()
@@ -51,6 +68,15 @@ getSelf self
       (nullableToMaybe <$> (js_getSelf (toWorkerGlobalScope self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
+getSelfUnsafe ::
+              (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
+                self -> m WorkerGlobalScope
+getSelfUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSelf (toWorkerGlobalScope self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
 getSelfUnchecked ::
                  (MonadIO m, IsWorkerGlobalScope self) =>
                    self -> m WorkerGlobalScope
@@ -69,6 +95,15 @@ getLocation ::
 getLocation self
   = liftIO
       (nullableToMaybe <$> (js_getLocation (toWorkerGlobalScope self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
+getLocationUnsafe ::
+                  (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
+                    self -> m WorkerLocation
+getLocationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocation (toWorkerGlobalScope self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
 getLocationUnchecked ::
@@ -107,6 +142,15 @@ getNavigator ::
 getNavigator self
   = liftIO
       (nullableToMaybe <$> (js_getNavigator (toWorkerGlobalScope self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
+getNavigatorUnsafe ::
+                   (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
+                     self -> m WorkerNavigator
+getNavigatorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNavigator (toWorkerGlobalScope self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
 getNavigatorUnchecked ::

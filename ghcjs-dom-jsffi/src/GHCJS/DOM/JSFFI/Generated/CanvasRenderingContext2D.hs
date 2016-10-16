@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
        (js_save, save, js_restore, restore, js_scale, scale, js_rotate,
         rotate, js_translate, translate, js_transform, transform,
         js_setTransform, setTransform, js_createLinearGradient,
         createLinearGradient, createLinearGradient_,
-        createLinearGradientUnchecked, js_createRadialGradient,
-        createRadialGradient, createRadialGradient_,
+        createLinearGradientUnsafe, createLinearGradientUnchecked,
+        js_createRadialGradient, createRadialGradient,
+        createRadialGradient_, createRadialGradientUnsafe,
         createRadialGradientUnchecked, js_setLineDash, setLineDash,
         js_getLineDash, getLineDash, getLineDash_, js_clearRect, clearRect,
         js_fillRect, fillRect, js_beginPath, beginPath, js_closePath,
@@ -18,20 +24,21 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         js_isPointInStrokePath, isPointInStrokePath, isPointInStrokePath_,
         js_isPointInPath, isPointInPath, isPointInPath_,
         js_isPointInStroke, isPointInStroke, isPointInStroke_,
-        js_measureText, measureText, measureText_, measureTextUnchecked,
-        js_setAlpha, setAlpha, js_setCompositeOperation,
-        setCompositeOperation, js_setLineWidthFunction,
-        setLineWidthFunction, js_setLineCapFunction, setLineCapFunction,
-        js_setLineJoinFunction, setLineJoinFunction,
-        js_setMiterLimitFunction, setMiterLimitFunction, js_clearShadow,
-        clearShadow, js_fillText, fillText, js_strokeText, strokeText,
-        js_setStrokeColor, setStrokeColor, js_setStrokeColorGray,
-        setStrokeColorGray, js_setStrokeColorRGB, setStrokeColorRGB,
-        js_setStrokeColorCYMK, setStrokeColorCYMK, js_setFillColor,
-        setFillColor, js_setFillColorGray, setFillColorGray,
-        js_setFillColorRGB, setFillColorRGB, js_setFillColorCYMK,
-        setFillColorCYMK, js_strokeRect, strokeRect, js_drawImage,
-        drawImage, js_drawImageScaled, drawImageScaled, js_drawImagePart,
+        js_measureText, measureText, measureText_, measureTextUnsafe,
+        measureTextUnchecked, js_setAlpha, setAlpha,
+        js_setCompositeOperation, setCompositeOperation,
+        js_setLineWidthFunction, setLineWidthFunction,
+        js_setLineCapFunction, setLineCapFunction, js_setLineJoinFunction,
+        setLineJoinFunction, js_setMiterLimitFunction,
+        setMiterLimitFunction, js_clearShadow, clearShadow, js_fillText,
+        fillText, js_strokeText, strokeText, js_setStrokeColor,
+        setStrokeColor, js_setStrokeColorGray, setStrokeColorGray,
+        js_setStrokeColorRGB, setStrokeColorRGB, js_setStrokeColorCYMK,
+        setStrokeColorCYMK, js_setFillColor, setFillColor,
+        js_setFillColorGray, setFillColorGray, js_setFillColorRGB,
+        setFillColorRGB, js_setFillColorCYMK, setFillColorCYMK,
+        js_strokeRect, strokeRect, js_drawImage, drawImage,
+        js_drawImageScaled, drawImageScaled, js_drawImagePart,
         drawImagePart, js_drawImageFromCanvas, drawImageFromCanvas,
         js_drawImageFromCanvasScaled, drawImageFromCanvasScaled,
         js_drawImageFromCanvasPart, drawImageFromCanvasPart,
@@ -45,32 +52,37 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         webkitPutImageDataHD, js_webkitPutImageDataHDDirty,
         webkitPutImageDataHDDirty, js_createPatternFromCanvas,
         createPatternFromCanvas, createPatternFromCanvas_,
-        createPatternFromCanvasUnchecked, js_createPattern, createPattern,
-        createPattern_, createPatternUnchecked, js_createImageData,
-        createImageData, createImageData_, createImageDataUnchecked,
-        js_createImageDataSize, createImageDataSize, createImageDataSize_,
-        createImageDataSizeUnchecked, js_getImageData, getImageData,
-        getImageData_, getImageDataUnchecked, js_webkitGetImageDataHD,
+        createPatternFromCanvasUnsafe, createPatternFromCanvasUnchecked,
+        js_createPattern, createPattern, createPattern_,
+        createPatternUnsafe, createPatternUnchecked, js_createImageData,
+        createImageData, createImageData_, createImageDataUnsafe,
+        createImageDataUnchecked, js_createImageDataSize,
+        createImageDataSize, createImageDataSize_,
+        createImageDataSizeUnsafe, createImageDataSizeUnchecked,
+        js_getImageData, getImageData, getImageData_, getImageDataUnsafe,
+        getImageDataUnchecked, js_webkitGetImageDataHD,
         webkitGetImageDataHD, webkitGetImageDataHD_,
-        webkitGetImageDataHDUnchecked, js_drawFocusIfNeeded,
-        drawFocusIfNeeded, js_drawFocusIfNeededPath, drawFocusIfNeededPath,
-        js_setGlobalAlpha, setGlobalAlpha, js_getGlobalAlpha,
-        getGlobalAlpha, js_setGlobalCompositeOperation,
+        webkitGetImageDataHDUnsafe, webkitGetImageDataHDUnchecked,
+        js_drawFocusIfNeeded, drawFocusIfNeeded, js_drawFocusIfNeededPath,
+        drawFocusIfNeededPath, js_setGlobalAlpha, setGlobalAlpha,
+        js_getGlobalAlpha, getGlobalAlpha, js_setGlobalCompositeOperation,
         setGlobalCompositeOperation, js_getGlobalCompositeOperation,
-        getGlobalCompositeOperation, getGlobalCompositeOperationUnchecked,
-        js_setLineWidth, setLineWidth, js_getLineWidth, getLineWidth,
-        js_setLineCap, setLineCap, js_getLineCap, getLineCap,
+        getGlobalCompositeOperation, getGlobalCompositeOperationUnsafe,
+        getGlobalCompositeOperationUnchecked, js_setLineWidth,
+        setLineWidth, js_getLineWidth, getLineWidth, js_setLineCap,
+        setLineCap, js_getLineCap, getLineCap, getLineCapUnsafe,
         getLineCapUnchecked, js_setLineJoin, setLineJoin, js_getLineJoin,
-        getLineJoin, getLineJoinUnchecked, js_setMiterLimit, setMiterLimit,
-        js_getMiterLimit, getMiterLimit, js_setShadowOffsetX,
-        setShadowOffsetX, js_getShadowOffsetX, getShadowOffsetX,
-        js_setShadowOffsetY, setShadowOffsetY, js_getShadowOffsetY,
-        getShadowOffsetY, js_setShadowBlur, setShadowBlur,
-        js_getShadowBlur, getShadowBlur, js_setShadowColor, setShadowColor,
-        js_getShadowColor, getShadowColor, getShadowColorUnchecked,
+        getLineJoin, getLineJoinUnsafe, getLineJoinUnchecked,
+        js_setMiterLimit, setMiterLimit, js_getMiterLimit, getMiterLimit,
+        js_setShadowOffsetX, setShadowOffsetX, js_getShadowOffsetX,
+        getShadowOffsetX, js_setShadowOffsetY, setShadowOffsetY,
+        js_getShadowOffsetY, getShadowOffsetY, js_setShadowBlur,
+        setShadowBlur, js_getShadowBlur, getShadowBlur, js_setShadowColor,
+        setShadowColor, js_getShadowColor, getShadowColor,
+        getShadowColorUnsafe, getShadowColorUnchecked,
         js_setLineDashOffset, setLineDashOffset, js_getLineDashOffset,
         getLineDashOffset, js_setWebkitLineDash, setWebkitLineDash,
-        js_getWebkitLineDash, getWebkitLineDash,
+        js_getWebkitLineDash, getWebkitLineDash, getWebkitLineDashUnsafe,
         getWebkitLineDashUnchecked, js_setWebkitLineDashOffset,
         setWebkitLineDashOffset, js_getWebkitLineDashOffset,
         getWebkitLineDashOffset, js_setFont, setFont, js_getFont, getFont,
@@ -78,8 +90,9 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         js_setTextBaseline, setTextBaseline, js_getTextBaseline,
         getTextBaseline, js_setDirection, setDirection, js_getDirection,
         getDirection, js_setStrokeStyle, setStrokeStyle, js_getStrokeStyle,
-        getStrokeStyle, getStrokeStyleUnchecked, js_setFillStyle,
-        setFillStyle, js_getFillStyle, getFillStyle, getFillStyleUnchecked,
+        getStrokeStyle, getStrokeStyleUnsafe, getStrokeStyleUnchecked,
+        js_setFillStyle, setFillStyle, js_getFillStyle, getFillStyle,
+        getFillStyleUnsafe, getFillStyleUnchecked,
         js_getWebkitBackingStorePixelRatio,
         getWebkitBackingStorePixelRatio, js_setWebkitImageSmoothingEnabled,
         setWebkitImageSmoothingEnabled, js_getWebkitImageSmoothingEnabled,
@@ -87,6 +100,7 @@ module GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
         gTypeCanvasRenderingContext2D)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -102,6 +116,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"save\"]()" js_save ::
         CanvasRenderingContext2D -> IO ()
@@ -190,6 +214,16 @@ createLinearGradient_ self x0 y0 x1 y1
   = liftIO (void (js_createLinearGradient (self) x0 y0 x1 y1))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createLinearGradient Mozilla CanvasRenderingContext2D.createLinearGradient documentation> 
+createLinearGradientUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             CanvasRenderingContext2D ->
+                               Float -> Float -> Float -> Float -> m CanvasGradient
+createLinearGradientUnsafe self x0 y0 x1 y1
+  = liftIO
+      ((nullableToMaybe <$> (js_createLinearGradient (self) x0 y0 x1 y1))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createLinearGradient Mozilla CanvasRenderingContext2D.createLinearGradient documentation> 
 createLinearGradientUnchecked ::
                               (MonadIO m) =>
                                 CanvasRenderingContext2D ->
@@ -226,6 +260,18 @@ createRadialGradient_ ::
                           Float -> Float -> Float -> Float -> Float -> Float -> m ()
 createRadialGradient_ self x0 y0 r0 x1 y1 r1
   = liftIO (void (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createRadialGradient Mozilla CanvasRenderingContext2D.createRadialGradient documentation> 
+createRadialGradientUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             CanvasRenderingContext2D ->
+                               Float ->
+                                 Float -> Float -> Float -> Float -> Float -> m CanvasGradient
+createRadialGradientUnsafe self x0 y0 r0 x1 y1 r1
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createRadialGradient (self) x0 y0 r0 x1 y1 r1))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createRadialGradient Mozilla CanvasRenderingContext2D.createRadialGradient documentation> 
 createRadialGradientUnchecked ::
@@ -542,6 +588,15 @@ measureText_ ::
                CanvasRenderingContext2D -> text -> m ()
 measureText_ self text
   = liftIO (void (js_measureText (self) (toJSString text)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.measureText Mozilla CanvasRenderingContext2D.measureText documentation> 
+measureTextUnsafe ::
+                  (MonadIO m, ToJSString text, HasCallStack) =>
+                    CanvasRenderingContext2D -> text -> m TextMetrics
+measureTextUnsafe self text
+  = liftIO
+      ((nullableToMaybe <$> (js_measureText (self) (toJSString text)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.measureText Mozilla CanvasRenderingContext2D.measureText documentation> 
 measureTextUnchecked ::
@@ -1109,6 +1164,18 @@ createPatternFromCanvas_ self canvas repetitionType
             (toMaybeJSString repetitionType)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPatternFromCanvasUnsafe ::
+                              (MonadIO m, ToJSString repetitionType, HasCallStack) =>
+                                CanvasRenderingContext2D ->
+                                  Maybe HTMLCanvasElement -> Maybe repetitionType -> m CanvasPattern
+createPatternFromCanvasUnsafe self canvas repetitionType
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createPatternFromCanvas (self) (maybeToNullable canvas)
+             (toMaybeJSString repetitionType)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPatternFromCanvasUnchecked ::
                                  (MonadIO m, ToJSString repetitionType) =>
                                    CanvasRenderingContext2D ->
@@ -1150,6 +1217,18 @@ createPattern_ self image repetitionType
             (toMaybeJSString repetitionType)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
+createPatternUnsafe ::
+                    (MonadIO m, ToJSString repetitionType, HasCallStack) =>
+                      CanvasRenderingContext2D ->
+                        Maybe HTMLImageElement -> Maybe repetitionType -> m CanvasPattern
+createPatternUnsafe self image repetitionType
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createPattern (self) (maybeToNullable image)
+             (toMaybeJSString repetitionType)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPatternUnchecked ::
                        (MonadIO m, ToJSString repetitionType) =>
                          CanvasRenderingContext2D ->
@@ -1182,6 +1261,16 @@ createImageData_ self imagedata
       (void (js_createImageData (self) (maybeToNullable imagedata)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageDataUnsafe ::
+                      (MonadIO m, HasCallStack) =>
+                        CanvasRenderingContext2D -> Maybe ImageData -> m ImageData
+createImageDataUnsafe self imagedata
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createImageData (self) (maybeToNullable imagedata)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
 createImageDataUnchecked ::
                          (MonadIO m) =>
                            CanvasRenderingContext2D -> Maybe ImageData -> m ImageData
@@ -1208,6 +1297,15 @@ createImageDataSize_ ::
                      (MonadIO m) => CanvasRenderingContext2D -> Float -> Float -> m ()
 createImageDataSize_ self sw sh
   = liftIO (void (js_createImageDataSize (self) sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
+createImageDataSizeUnsafe ::
+                          (MonadIO m, HasCallStack) =>
+                            CanvasRenderingContext2D -> Float -> Float -> m ImageData
+createImageDataSizeUnsafe self sw sh
+  = liftIO
+      ((nullableToMaybe <$> (js_createImageDataSize (self) sw sh)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createImageData Mozilla CanvasRenderingContext2D.createImageData documentation> 
 createImageDataSizeUnchecked ::
@@ -1238,6 +1336,16 @@ getImageData_ ::
                   Float -> Float -> Float -> Float -> m ()
 getImageData_ self sx sy sw sh
   = liftIO (void (js_getImageData (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getImageData Mozilla CanvasRenderingContext2D.getImageData documentation> 
+getImageDataUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     CanvasRenderingContext2D ->
+                       Float -> Float -> Float -> Float -> m ImageData
+getImageDataUnsafe self sx sy sw sh
+  = liftIO
+      ((nullableToMaybe <$> (js_getImageData (self) sx sy sw sh)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.getImageData Mozilla CanvasRenderingContext2D.getImageData documentation> 
 getImageDataUnchecked ::
@@ -1271,6 +1379,16 @@ webkitGetImageDataHD_ ::
                           Float -> Float -> Float -> Float -> m ()
 webkitGetImageDataHD_ self sx sy sw sh
   = liftIO (void (js_webkitGetImageDataHD (self) sx sy sw sh))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitGetImageDataHD Mozilla CanvasRenderingContext2D.webkitGetImageDataHD documentation> 
+webkitGetImageDataHDUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             CanvasRenderingContext2D ->
+                               Float -> Float -> Float -> Float -> m ImageData
+webkitGetImageDataHDUnsafe self sx sy sw sh
+  = liftIO
+      ((nullableToMaybe <$> (js_webkitGetImageDataHD (self) sx sy sw sh))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitGetImageDataHD Mozilla CanvasRenderingContext2D.webkitGetImageDataHD documentation> 
 webkitGetImageDataHDUnchecked ::
@@ -1351,6 +1469,15 @@ getGlobalCompositeOperation self
       (fromMaybeJSString <$> (js_getGlobalCompositeOperation (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.globalCompositeOperation Mozilla CanvasRenderingContext2D.globalCompositeOperation documentation> 
+getGlobalCompositeOperationUnsafe ::
+                                  (MonadIO m, HasCallStack, FromJSString result) =>
+                                    CanvasRenderingContext2D -> m result
+getGlobalCompositeOperationUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getGlobalCompositeOperation (self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.globalCompositeOperation Mozilla CanvasRenderingContext2D.globalCompositeOperation documentation> 
 getGlobalCompositeOperationUnchecked ::
                                      (MonadIO m, FromJSString result) =>
                                        CanvasRenderingContext2D -> m result
@@ -1396,6 +1523,15 @@ getLineCap self
   = liftIO (fromMaybeJSString <$> (js_getLineCap (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
+getLineCapUnsafe ::
+                 (MonadIO m, HasCallStack, FromJSString result) =>
+                   CanvasRenderingContext2D -> m result
+getLineCapUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getLineCap (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
 getLineCapUnchecked ::
                     (MonadIO m, FromJSString result) =>
                       CanvasRenderingContext2D -> m result
@@ -1422,6 +1558,15 @@ getLineJoin ::
               CanvasRenderingContext2D -> m (Maybe result)
 getLineJoin self
   = liftIO (fromMaybeJSString <$> (js_getLineJoin (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
+getLineJoinUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    CanvasRenderingContext2D -> m result
+getLineJoinUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getLineJoin (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
 getLineJoinUnchecked ::
@@ -1515,6 +1660,15 @@ getShadowColor self
   = liftIO (fromMaybeJSString <$> (js_getShadowColor (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.shadowColor Mozilla CanvasRenderingContext2D.shadowColor documentation> 
+getShadowColorUnsafe ::
+                     (MonadIO m, HasCallStack, FromJSString result) =>
+                       CanvasRenderingContext2D -> m result
+getShadowColorUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getShadowColor (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.shadowColor Mozilla CanvasRenderingContext2D.shadowColor documentation> 
 getShadowColorUnchecked ::
                         (MonadIO m, FromJSString result) =>
                           CanvasRenderingContext2D -> m result
@@ -1560,6 +1714,14 @@ getWebkitLineDash ::
                   (MonadIO m) => CanvasRenderingContext2D -> m (Maybe Array)
 getWebkitLineDash self
   = liftIO (nullableToMaybe <$> (js_getWebkitLineDash (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitLineDash Mozilla CanvasRenderingContext2D.webkitLineDash documentation> 
+getWebkitLineDashUnsafe ::
+                        (MonadIO m, HasCallStack) => CanvasRenderingContext2D -> m Array
+getWebkitLineDashUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitLineDash (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitLineDash Mozilla CanvasRenderingContext2D.webkitLineDash documentation> 
 getWebkitLineDashUnchecked ::
@@ -1689,6 +1851,15 @@ getStrokeStyle self
   = liftIO (nullableToMaybe <$> (js_getStrokeStyle (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.strokeStyle Mozilla CanvasRenderingContext2D.strokeStyle documentation> 
+getStrokeStyleUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       CanvasRenderingContext2D -> m CanvasStyle
+getStrokeStyleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStrokeStyle (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.strokeStyle Mozilla CanvasRenderingContext2D.strokeStyle documentation> 
 getStrokeStyleUnchecked ::
                         (MonadIO m) => CanvasRenderingContext2D -> m CanvasStyle
 getStrokeStyleUnchecked self
@@ -1716,6 +1887,15 @@ getFillStyle ::
              (MonadIO m) => CanvasRenderingContext2D -> m (Maybe CanvasStyle)
 getFillStyle self
   = liftIO (nullableToMaybe <$> (js_getFillStyle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fillStyle Mozilla CanvasRenderingContext2D.fillStyle documentation> 
+getFillStyleUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     CanvasRenderingContext2D -> m CanvasStyle
+getFillStyleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFillStyle (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fillStyle Mozilla CanvasRenderingContext2D.fillStyle documentation> 
 getFillStyleUnchecked ::

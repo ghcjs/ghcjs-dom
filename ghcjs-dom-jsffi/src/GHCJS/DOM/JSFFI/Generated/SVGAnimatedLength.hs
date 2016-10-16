@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedLength
-       (js_getBaseVal, getBaseVal, getBaseValUnchecked, js_getAnimVal,
-        getAnimVal, getAnimValUnchecked, SVGAnimatedLength(..),
-        gTypeSVGAnimatedLength)
+       (js_getBaseVal, getBaseVal, getBaseValUnsafe, getBaseValUnchecked,
+        js_getAnimVal, getAnimVal, getAnimValUnsafe, getAnimValUnchecked,
+        SVGAnimatedLength(..), gTypeSVGAnimatedLength)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +26,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         SVGAnimatedLength -> IO (Nullable SVGLength)
@@ -29,6 +45,14 @@ getBaseVal ::
            (MonadIO m) => SVGAnimatedLength -> m (Maybe SVGLength)
 getBaseVal self
   = liftIO (nullableToMaybe <$> (js_getBaseVal (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength.baseVal Mozilla SVGAnimatedLength.baseVal documentation> 
+getBaseValUnsafe ::
+                 (MonadIO m, HasCallStack) => SVGAnimatedLength -> m SVGLength
+getBaseValUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBaseVal (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength.baseVal Mozilla SVGAnimatedLength.baseVal documentation> 
 getBaseValUnchecked ::
@@ -44,6 +68,14 @@ getAnimVal ::
            (MonadIO m) => SVGAnimatedLength -> m (Maybe SVGLength)
 getAnimVal self
   = liftIO (nullableToMaybe <$> (js_getAnimVal (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength.animVal Mozilla SVGAnimatedLength.animVal documentation> 
+getAnimValUnsafe ::
+                 (MonadIO m, HasCallStack) => SVGAnimatedLength -> m SVGLength
+getAnimValUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAnimVal (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedLength.animVal Mozilla SVGAnimatedLength.animVal documentation> 
 getAnimValUnchecked ::

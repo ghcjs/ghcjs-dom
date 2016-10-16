@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEDistantLightElement
-       (js_getAzimuth, getAzimuth, getAzimuthUnchecked, js_getElevation,
-        getElevation, getElevationUnchecked, SVGFEDistantLightElement(..),
+       (js_getAzimuth, getAzimuth, getAzimuthUnsafe, getAzimuthUnchecked,
+        js_getElevation, getElevation, getElevationUnsafe,
+        getElevationUnchecked, SVGFEDistantLightElement(..),
         gTypeSVGFEDistantLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"azimuth\"]" js_getAzimuth ::
         SVGFEDistantLightElement -> IO (Nullable SVGAnimatedNumber)
@@ -30,6 +47,15 @@ getAzimuth ::
              SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
 getAzimuth self
   = liftIO (nullableToMaybe <$> (js_getAzimuth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
+getAzimuthUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEDistantLightElement -> m SVGAnimatedNumber
+getAzimuthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAzimuth (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.azimuth Mozilla SVGFEDistantLightElement.azimuth documentation> 
 getAzimuthUnchecked ::
@@ -47,6 +73,15 @@ getElevation ::
                SVGFEDistantLightElement -> m (Maybe SVGAnimatedNumber)
 getElevation self
   = liftIO (nullableToMaybe <$> (js_getElevation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
+getElevationUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     SVGFEDistantLightElement -> m SVGAnimatedNumber
+getElevationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getElevation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 
 getElevationUnchecked ::

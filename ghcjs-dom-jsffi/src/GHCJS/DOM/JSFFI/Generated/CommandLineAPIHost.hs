@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
        (js_clearConsoleMessages, clearConsoleMessages, js_copyText,
         copyText, js_inspect, inspect, js_inspectedObject, inspectedObject,
         inspectedObject_, js_getEventListeners, getEventListeners,
-        getEventListeners_, getEventListenersUnchecked, js_databaseId,
-        databaseId, databaseId_, js_storageId, storageId, storageId_,
-        CommandLineAPIHost(..), gTypeCommandLineAPIHost)
+        getEventListeners_, getEventListenersUnsafe,
+        getEventListenersUnchecked, js_databaseId, databaseId, databaseId_,
+        js_storageId, storageId, storageId_, CommandLineAPIHost(..),
+        gTypeCommandLineAPIHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clearConsoleMessages\"]()"
         js_clearConsoleMessages :: CommandLineAPIHost -> IO ()
@@ -83,6 +100,16 @@ getEventListeners_ self node
   = liftIO
       (void
          (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
+getEventListenersUnsafe ::
+                        (MonadIO m, IsNode node, HasCallStack) =>
+                          CommandLineAPIHost -> Maybe node -> m Array
+getEventListenersUnsafe self node
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getEventListeners (self) (maybeToNullable (fmap toNode node))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
 getEventListenersUnchecked ::

@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeySession
        (js_update, update, js_close, close, js_getError, getError,
-        getErrorUnchecked, js_getKeySystem, getKeySystem, js_getSessionId,
-        getSessionId, webKitKeyAdded, webKitKeyError, webKitKeyMessage,
-        MediaKeySession(..), gTypeMediaKeySession)
+        getErrorUnsafe, getErrorUnchecked, js_getKeySystem, getKeySystem,
+        js_getSessionId, getSessionId, webKitKeyAdded, webKitKeyError,
+        webKitKeyMessage, MediaKeySession(..), gTypeMediaKeySession)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"update\"]($2)" js_update ::
         MediaKeySession -> Nullable Uint8Array -> IO ()
@@ -47,6 +63,14 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 getError ::
          (MonadIO m) => MediaKeySession -> m (Maybe MediaKeyError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
+getErrorUnsafe ::
+               (MonadIO m, HasCallStack) => MediaKeySession -> m MediaKeyError
+getErrorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getError (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
 getErrorUnchecked ::

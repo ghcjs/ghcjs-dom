@@ -1,20 +1,26 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaController
        (js_newMediaController, newMediaController, js_play, play,
         js_pause, pause, js_unpause, unpause, js_getBuffered, getBuffered,
-        getBufferedUnchecked, js_getSeekable, getSeekable,
-        getSeekableUnchecked, js_getDuration, getDuration,
-        js_setCurrentTime, setCurrentTime, js_getCurrentTime,
-        getCurrentTime, js_getPaused, getPaused, js_getPlayed, getPlayed,
-        getPlayedUnchecked, js_getPlaybackState, getPlaybackState,
-        js_setDefaultPlaybackRate, setDefaultPlaybackRate,
-        js_getDefaultPlaybackRate, getDefaultPlaybackRate,
-        js_setPlaybackRate, setPlaybackRate, js_getPlaybackRate,
-        getPlaybackRate, js_setVolume, setVolume, js_getVolume, getVolume,
-        js_setMuted, setMuted, js_getMuted, getMuted, MediaController(..),
-        gTypeMediaController)
+        getBufferedUnsafe, getBufferedUnchecked, js_getSeekable,
+        getSeekable, getSeekableUnsafe, getSeekableUnchecked,
+        js_getDuration, getDuration, js_setCurrentTime, setCurrentTime,
+        js_getCurrentTime, getCurrentTime, js_getPaused, getPaused,
+        js_getPlayed, getPlayed, getPlayedUnsafe, getPlayedUnchecked,
+        js_getPlaybackState, getPlaybackState, js_setDefaultPlaybackRate,
+        setDefaultPlaybackRate, js_getDefaultPlaybackRate,
+        getDefaultPlaybackRate, js_setPlaybackRate, setPlaybackRate,
+        js_getPlaybackRate, getPlaybackRate, js_setVolume, setVolume,
+        js_getVolume, getVolume, js_setMuted, setMuted, js_getMuted,
+        getMuted, MediaController(..), gTypeMediaController)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +36,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"MediaController\"]()" js_newMediaController ::
@@ -70,6 +86,14 @@ getBuffered self
   = liftIO (nullableToMaybe <$> (js_getBuffered (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.buffered Mozilla MediaController.buffered documentation> 
+getBufferedUnsafe ::
+                  (MonadIO m, HasCallStack) => MediaController -> m TimeRanges
+getBufferedUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBuffered (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.buffered Mozilla MediaController.buffered documentation> 
 getBufferedUnchecked ::
                      (MonadIO m) => MediaController -> m TimeRanges
 getBufferedUnchecked self
@@ -83,6 +107,14 @@ getSeekable ::
             (MonadIO m) => MediaController -> m (Maybe TimeRanges)
 getSeekable self
   = liftIO (nullableToMaybe <$> (js_getSeekable (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.seekable Mozilla MediaController.seekable documentation> 
+getSeekableUnsafe ::
+                  (MonadIO m, HasCallStack) => MediaController -> m TimeRanges
+getSeekableUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSeekable (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.seekable Mozilla MediaController.seekable documentation> 
 getSeekableUnchecked ::
@@ -124,6 +156,14 @@ foreign import javascript unsafe "$1[\"played\"]" js_getPlayed ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
 getPlayed :: (MonadIO m) => MediaController -> m (Maybe TimeRanges)
 getPlayed self = liftIO (nullableToMaybe <$> (js_getPlayed (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
+getPlayedUnsafe ::
+                (MonadIO m, HasCallStack) => MediaController -> m TimeRanges
+getPlayedUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPlayed (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.played Mozilla MediaController.played documentation> 
 getPlayedUnchecked ::

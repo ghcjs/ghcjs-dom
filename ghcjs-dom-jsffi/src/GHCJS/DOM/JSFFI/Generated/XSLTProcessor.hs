@@ -1,16 +1,24 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.XSLTProcessor
        (js_newXSLTProcessor, newXSLTProcessor, js_importStylesheet,
         importStylesheet, js_transformToFragment, transformToFragment,
-        transformToFragment_, transformToFragmentUnchecked,
-        js_transformToDocument, transformToDocument, transformToDocument_,
-        transformToDocumentUnchecked, js_setParameter, setParameter,
-        js_getParameter, getParameter, getParameter_,
-        getParameterUnchecked, js_removeParameter, removeParameter,
-        js_clearParameters, clearParameters, js_reset, reset,
-        XSLTProcessor(..), gTypeXSLTProcessor)
+        transformToFragment_, transformToFragmentUnsafe,
+        transformToFragmentUnchecked, js_transformToDocument,
+        transformToDocument, transformToDocument_,
+        transformToDocumentUnsafe, transformToDocumentUnchecked,
+        js_setParameter, setParameter, js_getParameter, getParameter,
+        getParameter_, getParameterUnsafe, getParameterUnchecked,
+        js_removeParameter, removeParameter, js_clearParameters,
+        clearParameters, js_reset, reset, XSLTProcessor(..),
+        gTypeXSLTProcessor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"XSLTProcessor\"]()"
         js_newXSLTProcessor :: IO XSLTProcessor
@@ -76,6 +94,18 @@ transformToFragment_ self source docVal
             (maybeToNullable (fmap toDocument docVal))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
+transformToFragmentUnsafe ::
+                          (MonadIO m, IsNode source, IsDocument docVal, HasCallStack) =>
+                            XSLTProcessor -> Maybe source -> Maybe docVal -> m DocumentFragment
+transformToFragmentUnsafe self source docVal
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_transformToFragment (self)
+             (maybeToNullable (fmap toNode source))
+             (maybeToNullable (fmap toDocument docVal))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToFragment Mozilla XSLTProcessor.transformToFragment documentation> 
 transformToFragmentUnchecked ::
                              (MonadIO m, IsNode source, IsDocument docVal) =>
                                XSLTProcessor -> Maybe source -> Maybe docVal -> m DocumentFragment
@@ -108,6 +138,17 @@ transformToDocument_ self source
       (void
          (js_transformToDocument (self)
             (maybeToNullable (fmap toNode source))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
+transformToDocumentUnsafe ::
+                          (MonadIO m, IsNode source, HasCallStack) =>
+                            XSLTProcessor -> Maybe source -> m Document
+transformToDocumentUnsafe self source
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_transformToDocument (self)
+             (maybeToNullable (fmap toNode source))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.transformToDocument Mozilla XSLTProcessor.transformToDocument documentation> 
 transformToDocumentUnchecked ::
@@ -158,6 +199,18 @@ getParameter_ self namespaceURI localName
       (void
          (js_getParameter (self) (toJSString namespaceURI)
             (toJSString localName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
+getParameterUnsafe ::
+                   (MonadIO m, ToJSString namespaceURI, ToJSString localName,
+                    HasCallStack, FromJSString result) =>
+                     XSLTProcessor -> namespaceURI -> localName -> m result
+getParameterUnsafe self namespaceURI localName
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getParameter (self) (toJSString namespaceURI)
+             (toJSString localName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.getParameter Mozilla XSLTProcessor.getParameter documentation> 
 getParameterUnchecked ::

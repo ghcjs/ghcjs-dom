@@ -1,14 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
        (js_getSVGDocument, getSVGDocument, getSVGDocument_,
-        getSVGDocumentUnchecked, js_setAlign, setAlign, js_getAlign,
-        getAlign, js_setHeight, setHeight, js_getHeight, getHeight,
-        js_setName, setName, js_getName, getName, js_setSrc, setSrc,
-        js_getSrc, getSrc, js_setType, setType, js_getType, getType,
-        js_setWidth, setWidth, js_getWidth, getWidth, HTMLEmbedElement(..),
-        gTypeHTMLEmbedElement)
+        getSVGDocumentUnsafe, getSVGDocumentUnchecked, js_setAlign,
+        setAlign, js_getAlign, getAlign, js_setHeight, setHeight,
+        js_getHeight, getHeight, js_setName, setName, js_getName, getName,
+        js_setSrc, setSrc, js_getSrc, getSrc, js_setType, setType,
+        js_getType, getType, js_setWidth, setWidth, js_getWidth, getWidth,
+        HTMLEmbedElement(..), gTypeHTMLEmbedElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
         js_getSVGDocument :: HTMLEmbedElement -> IO (Nullable SVGDocument)
@@ -37,6 +53,14 @@ getSVGDocument self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
 getSVGDocument_ :: (MonadIO m) => HTMLEmbedElement -> m ()
 getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
+getSVGDocumentUnsafe ::
+                     (MonadIO m, HasCallStack) => HTMLEmbedElement -> m SVGDocument
+getSVGDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSVGDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
 getSVGDocumentUnchecked ::

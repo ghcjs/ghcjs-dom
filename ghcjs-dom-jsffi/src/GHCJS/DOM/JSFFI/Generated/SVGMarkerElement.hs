@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGMarkerElement
        (js_setOrientToAuto, setOrientToAuto, js_setOrientToAngle,
         setOrientToAngle, pattern SVG_MARKERUNITS_UNKNOWN,
@@ -6,15 +11,18 @@ module GHCJS.DOM.JSFFI.Generated.SVGMarkerElement
         pattern SVG_MARKERUNITS_STROKEWIDTH,
         pattern SVG_MARKER_ORIENT_UNKNOWN, pattern SVG_MARKER_ORIENT_AUTO,
         pattern SVG_MARKER_ORIENT_ANGLE, js_getRefX, getRefX,
-        getRefXUnchecked, js_getRefY, getRefY, getRefYUnchecked,
-        js_getMarkerUnits, getMarkerUnits, getMarkerUnitsUnchecked,
-        js_getMarkerWidth, getMarkerWidth, getMarkerWidthUnchecked,
-        js_getMarkerHeight, getMarkerHeight, getMarkerHeightUnchecked,
-        js_getOrientType, getOrientType, getOrientTypeUnchecked,
-        js_getOrientAngle, getOrientAngle, getOrientAngleUnchecked,
+        getRefXUnsafe, getRefXUnchecked, js_getRefY, getRefY,
+        getRefYUnsafe, getRefYUnchecked, js_getMarkerUnits, getMarkerUnits,
+        getMarkerUnitsUnsafe, getMarkerUnitsUnchecked, js_getMarkerWidth,
+        getMarkerWidth, getMarkerWidthUnsafe, getMarkerWidthUnchecked,
+        js_getMarkerHeight, getMarkerHeight, getMarkerHeightUnsafe,
+        getMarkerHeightUnchecked, js_getOrientType, getOrientType,
+        getOrientTypeUnsafe, getOrientTypeUnchecked, js_getOrientAngle,
+        getOrientAngle, getOrientAngleUnsafe, getOrientAngleUnchecked,
         SVGMarkerElement(..), gTypeSVGMarkerElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +38,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setOrientToAuto\"]()"
         js_setOrientToAuto :: SVGMarkerElement -> IO ()
@@ -63,6 +81,15 @@ getRefX ::
 getRefX self = liftIO (nullableToMaybe <$> (js_getRefX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refX Mozilla SVGMarkerElement.refX documentation> 
+getRefXUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGMarkerElement -> m SVGAnimatedLength
+getRefXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRefX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refX Mozilla SVGMarkerElement.refX documentation> 
 getRefXUnchecked ::
                  (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
 getRefXUnchecked self
@@ -75,6 +102,15 @@ foreign import javascript unsafe "$1[\"refY\"]" js_getRefY ::
 getRefY ::
         (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getRefY self = liftIO (nullableToMaybe <$> (js_getRefY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refY Mozilla SVGMarkerElement.refY documentation> 
+getRefYUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGMarkerElement -> m SVGAnimatedLength
+getRefYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRefY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refY Mozilla SVGMarkerElement.refY documentation> 
 getRefYUnchecked ::
@@ -91,6 +127,15 @@ getMarkerUnits ::
                (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedEnumeration)
 getMarkerUnits self
   = liftIO (nullableToMaybe <$> (js_getMarkerUnits (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerUnits Mozilla SVGMarkerElement.markerUnits documentation> 
+getMarkerUnitsUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       SVGMarkerElement -> m SVGAnimatedEnumeration
+getMarkerUnitsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMarkerUnits (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerUnits Mozilla SVGMarkerElement.markerUnits documentation> 
 getMarkerUnitsUnchecked ::
@@ -110,6 +155,15 @@ getMarkerWidth self
   = liftIO (nullableToMaybe <$> (js_getMarkerWidth (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerWidth Mozilla SVGMarkerElement.markerWidth documentation> 
+getMarkerWidthUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       SVGMarkerElement -> m SVGAnimatedLength
+getMarkerWidthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMarkerWidth (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerWidth Mozilla SVGMarkerElement.markerWidth documentation> 
 getMarkerWidthUnchecked ::
                         (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
 getMarkerWidthUnchecked self
@@ -125,6 +179,15 @@ getMarkerHeight ::
                 (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedLength)
 getMarkerHeight self
   = liftIO (nullableToMaybe <$> (js_getMarkerHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerHeight Mozilla SVGMarkerElement.markerHeight documentation> 
+getMarkerHeightUnsafe ::
+                      (MonadIO m, HasCallStack) =>
+                        SVGMarkerElement -> m SVGAnimatedLength
+getMarkerHeightUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMarkerHeight (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.markerHeight Mozilla SVGMarkerElement.markerHeight documentation> 
 getMarkerHeightUnchecked ::
@@ -144,6 +207,15 @@ getOrientType self
   = liftIO (nullableToMaybe <$> (js_getOrientType (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientType Mozilla SVGMarkerElement.orientType documentation> 
+getOrientTypeUnsafe ::
+                    (MonadIO m, HasCallStack) =>
+                      SVGMarkerElement -> m SVGAnimatedEnumeration
+getOrientTypeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOrientType (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientType Mozilla SVGMarkerElement.orientType documentation> 
 getOrientTypeUnchecked ::
                        (MonadIO m) => SVGMarkerElement -> m SVGAnimatedEnumeration
 getOrientTypeUnchecked self
@@ -158,6 +230,14 @@ getOrientAngle ::
                (MonadIO m) => SVGMarkerElement -> m (Maybe SVGAnimatedAngle)
 getOrientAngle self
   = liftIO (nullableToMaybe <$> (js_getOrientAngle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientAngle Mozilla SVGMarkerElement.orientAngle documentation> 
+getOrientAngleUnsafe ::
+                     (MonadIO m, HasCallStack) => SVGMarkerElement -> m SVGAnimatedAngle
+getOrientAngleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOrientAngle (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.orientAngle Mozilla SVGMarkerElement.orientAngle documentation> 
 getOrientAngleUnchecked ::

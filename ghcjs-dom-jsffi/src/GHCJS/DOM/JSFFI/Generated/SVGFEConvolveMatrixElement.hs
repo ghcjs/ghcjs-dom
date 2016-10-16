@@ -1,22 +1,32 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEConvolveMatrixElement
        (pattern SVG_EDGEMODE_UNKNOWN, pattern SVG_EDGEMODE_DUPLICATE,
         pattern SVG_EDGEMODE_WRAP, pattern SVG_EDGEMODE_NONE, js_getIn1,
-        getIn1, getIn1Unchecked, js_getOrderX, getOrderX,
-        getOrderXUnchecked, js_getOrderY, getOrderY, getOrderYUnchecked,
-        js_getKernelMatrix, getKernelMatrix, getKernelMatrixUnchecked,
-        js_getDivisor, getDivisor, getDivisorUnchecked, js_getBias,
-        getBias, getBiasUnchecked, js_getTargetX, getTargetX,
-        getTargetXUnchecked, js_getTargetY, getTargetY,
-        getTargetYUnchecked, js_getEdgeMode, getEdgeMode,
+        getIn1, getIn1Unsafe, getIn1Unchecked, js_getOrderX, getOrderX,
+        getOrderXUnsafe, getOrderXUnchecked, js_getOrderY, getOrderY,
+        getOrderYUnsafe, getOrderYUnchecked, js_getKernelMatrix,
+        getKernelMatrix, getKernelMatrixUnsafe, getKernelMatrixUnchecked,
+        js_getDivisor, getDivisor, getDivisorUnsafe, getDivisorUnchecked,
+        js_getBias, getBias, getBiasUnsafe, getBiasUnchecked,
+        js_getTargetX, getTargetX, getTargetXUnsafe, getTargetXUnchecked,
+        js_getTargetY, getTargetY, getTargetYUnsafe, getTargetYUnchecked,
+        js_getEdgeMode, getEdgeMode, getEdgeModeUnsafe,
         getEdgeModeUnchecked, js_getKernelUnitLengthX,
-        getKernelUnitLengthX, getKernelUnitLengthXUnchecked,
-        js_getKernelUnitLengthY, getKernelUnitLengthY,
+        getKernelUnitLengthX, getKernelUnitLengthXUnsafe,
+        getKernelUnitLengthXUnchecked, js_getKernelUnitLengthY,
+        getKernelUnitLengthY, getKernelUnitLengthYUnsafe,
         getKernelUnitLengthYUnchecked, js_getPreserveAlpha,
-        getPreserveAlpha, getPreserveAlphaUnchecked,
-        SVGFEConvolveMatrixElement(..), gTypeSVGFEConvolveMatrixElement)
+        getPreserveAlpha, getPreserveAlphaUnsafe,
+        getPreserveAlphaUnchecked, SVGFEConvolveMatrixElement(..),
+        gTypeSVGFEConvolveMatrixElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -32,6 +42,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern SVG_EDGEMODE_UNKNOWN = 0
 pattern SVG_EDGEMODE_DUPLICATE = 1
 pattern SVG_EDGEMODE_WRAP = 2
@@ -45,6 +65,15 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.in1 Mozilla SVGFEConvolveMatrixElement.in1 documentation> 
+getIn1Unsafe ::
+             (MonadIO m, HasCallStack) =>
+               SVGFEConvolveMatrixElement -> m SVGAnimatedString
+getIn1Unsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIn1 (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.in1 Mozilla SVGFEConvolveMatrixElement.in1 documentation> 
 getIn1Unchecked ::
@@ -62,6 +91,15 @@ getOrderX ::
 getOrderX self = liftIO (nullableToMaybe <$> (js_getOrderX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderX Mozilla SVGFEConvolveMatrixElement.orderX documentation> 
+getOrderXUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
+getOrderXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOrderX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderX Mozilla SVGFEConvolveMatrixElement.orderX documentation> 
 getOrderXUnchecked ::
                    (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
 getOrderXUnchecked self
@@ -75,6 +113,15 @@ getOrderY ::
           (MonadIO m) =>
             SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
 getOrderY self = liftIO (nullableToMaybe <$> (js_getOrderY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderY Mozilla SVGFEConvolveMatrixElement.orderY documentation> 
+getOrderYUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
+getOrderYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOrderY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.orderY Mozilla SVGFEConvolveMatrixElement.orderY documentation> 
 getOrderYUnchecked ::
@@ -92,6 +139,15 @@ getKernelMatrix ::
                   SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumberList)
 getKernelMatrix self
   = liftIO (nullableToMaybe <$> (js_getKernelMatrix (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelMatrix Mozilla SVGFEConvolveMatrixElement.kernelMatrix documentation> 
+getKernelMatrixUnsafe ::
+                      (MonadIO m, HasCallStack) =>
+                        SVGFEConvolveMatrixElement -> m SVGAnimatedNumberList
+getKernelMatrixUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getKernelMatrix (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelMatrix Mozilla SVGFEConvolveMatrixElement.kernelMatrix documentation> 
 getKernelMatrixUnchecked ::
@@ -112,6 +168,15 @@ getDivisor self
   = liftIO (nullableToMaybe <$> (js_getDivisor (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.divisor Mozilla SVGFEConvolveMatrixElement.divisor documentation> 
+getDivisorUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
+getDivisorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDivisor (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.divisor Mozilla SVGFEConvolveMatrixElement.divisor documentation> 
 getDivisorUnchecked ::
                     (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
 getDivisorUnchecked self
@@ -125,6 +190,15 @@ getBias ::
         (MonadIO m) =>
           SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedNumber)
 getBias self = liftIO (nullableToMaybe <$> (js_getBias (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.bias Mozilla SVGFEConvolveMatrixElement.bias documentation> 
+getBiasUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
+getBiasUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBias (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.bias Mozilla SVGFEConvolveMatrixElement.bias documentation> 
 getBiasUnchecked ::
@@ -143,6 +217,15 @@ getTargetX self
   = liftIO (nullableToMaybe <$> (js_getTargetX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetX Mozilla SVGFEConvolveMatrixElement.targetX documentation> 
+getTargetXUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
+getTargetXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTargetX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetX Mozilla SVGFEConvolveMatrixElement.targetX documentation> 
 getTargetXUnchecked ::
                     (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
 getTargetXUnchecked self
@@ -157,6 +240,15 @@ getTargetY ::
              SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedInteger)
 getTargetY self
   = liftIO (nullableToMaybe <$> (js_getTargetY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetY Mozilla SVGFEConvolveMatrixElement.targetY documentation> 
+getTargetYUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
+getTargetYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTargetY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.targetY Mozilla SVGFEConvolveMatrixElement.targetY documentation> 
 getTargetYUnchecked ::
@@ -174,6 +266,15 @@ getEdgeMode ::
               SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedEnumeration)
 getEdgeMode self
   = liftIO (nullableToMaybe <$> (js_getEdgeMode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.edgeMode Mozilla SVGFEConvolveMatrixElement.edgeMode documentation> 
+getEdgeModeUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    SVGFEConvolveMatrixElement -> m SVGAnimatedEnumeration
+getEdgeModeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getEdgeMode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.edgeMode Mozilla SVGFEConvolveMatrixElement.edgeMode documentation> 
 getEdgeModeUnchecked ::
@@ -194,6 +295,15 @@ getKernelUnitLengthX self
   = liftIO (nullableToMaybe <$> (js_getKernelUnitLengthX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthX Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthX documentation> 
+getKernelUnitLengthXUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
+getKernelUnitLengthXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getKernelUnitLengthX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthX Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthX documentation> 
 getKernelUnitLengthXUnchecked ::
                               (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
 getKernelUnitLengthXUnchecked self
@@ -212,6 +322,15 @@ getKernelUnitLengthY self
   = liftIO (nullableToMaybe <$> (js_getKernelUnitLengthY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthY Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthY documentation> 
+getKernelUnitLengthYUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
+getKernelUnitLengthYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getKernelUnitLengthY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.kernelUnitLengthY Mozilla SVGFEConvolveMatrixElement.kernelUnitLengthY documentation> 
 getKernelUnitLengthYUnchecked ::
                               (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
 getKernelUnitLengthYUnchecked self
@@ -228,6 +347,15 @@ getPreserveAlpha ::
                    SVGFEConvolveMatrixElement -> m (Maybe SVGAnimatedBoolean)
 getPreserveAlpha self
   = liftIO (nullableToMaybe <$> (js_getPreserveAlpha (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.preserveAlpha Mozilla SVGFEConvolveMatrixElement.preserveAlpha documentation> 
+getPreserveAlphaUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGFEConvolveMatrixElement -> m SVGAnimatedBoolean
+getPreserveAlphaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreserveAlpha (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement.preserveAlpha Mozilla SVGFEConvolveMatrixElement.preserveAlpha documentation> 
 getPreserveAlphaUnchecked ::

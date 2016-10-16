@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WaveShaperNode
-       (js_setCurve, setCurve, js_getCurve, getCurve, getCurveUnchecked,
-        js_setOversample, setOversample, js_getOversample, getOversample,
-        WaveShaperNode(..), gTypeWaveShaperNode)
+       (js_setCurve, setCurve, js_getCurve, getCurve, getCurveUnsafe,
+        getCurveUnchecked, js_setOversample, setOversample,
+        js_getOversample, getOversample, WaveShaperNode(..),
+        gTypeWaveShaperNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"curve\"] = $2;" js_setCurve
         :: WaveShaperNode -> Nullable Float32Array -> IO ()
@@ -38,6 +55,14 @@ foreign import javascript unsafe "$1[\"curve\"]" js_getCurve ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.curve Mozilla WaveShaperNode.curve documentation> 
 getCurve :: (MonadIO m) => WaveShaperNode -> m (Maybe Float32Array)
 getCurve self = liftIO (nullableToMaybe <$> (js_getCurve (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.curve Mozilla WaveShaperNode.curve documentation> 
+getCurveUnsafe ::
+               (MonadIO m, HasCallStack) => WaveShaperNode -> m Float32Array
+getCurveUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCurve (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.curve Mozilla WaveShaperNode.curve documentation> 
 getCurveUnchecked ::

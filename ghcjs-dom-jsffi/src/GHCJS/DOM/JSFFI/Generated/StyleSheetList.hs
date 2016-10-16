@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.StyleSheetList
-       (js_item, item, item_, itemUnchecked, js__get, _get, _get_,
-        _getUnchecked, js_getLength, getLength, StyleSheetList(..),
-        gTypeStyleSheetList)
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js__get, _get,
+        _get_, _getUnsafe, _getUnchecked, js_getLength, getLength,
+        StyleSheetList(..), gTypeStyleSheetList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +26,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         StyleSheetList -> Word -> IO (Nullable StyleSheet)
@@ -33,6 +49,14 @@ item self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.item Mozilla StyleSheetList.item documentation> 
 item_ :: (MonadIO m) => StyleSheetList -> Word -> m ()
 item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.item Mozilla StyleSheetList.item documentation> 
+itemUnsafe ::
+           (MonadIO m, HasCallStack) => StyleSheetList -> Word -> m StyleSheet
+itemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_item (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList.item Mozilla StyleSheetList.item documentation> 
 itemUnchecked ::
@@ -54,6 +78,15 @@ _get self name
 _get_ ::
       (MonadIO m, ToJSString name) => StyleSheetList -> name -> m ()
 _get_ self name = liftIO (void (js__get (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList._get Mozilla StyleSheetList._get documentation> 
+_getUnsafe ::
+           (MonadIO m, ToJSString name, HasCallStack) =>
+             StyleSheetList -> name -> m CSSStyleSheet
+_getUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js__get (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList._get Mozilla StyleSheetList._get documentation> 
 _getUnchecked ::

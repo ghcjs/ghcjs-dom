@@ -1,15 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableRowElement
-       (js_insertCell, insertCell, insertCell_, insertCellUnchecked,
-        js_deleteCell, deleteCell, js_getRowIndex, getRowIndex,
-        js_getSectionRowIndex, getSectionRowIndex, js_getCells, getCells,
-        getCellsUnchecked, js_setAlign, setAlign, js_getAlign, getAlign,
-        js_setBgColor, setBgColor, js_getBgColor, getBgColor, js_setCh,
-        setCh, js_getCh, getCh, js_setChOff, setChOff, js_getChOff,
-        getChOff, js_setVAlign, setVAlign, js_getVAlign, getVAlign,
-        HTMLTableRowElement(..), gTypeHTMLTableRowElement)
+       (js_insertCell, insertCell, insertCell_, insertCellUnsafe,
+        insertCellUnchecked, js_deleteCell, deleteCell, js_getRowIndex,
+        getRowIndex, js_getSectionRowIndex, getSectionRowIndex,
+        js_getCells, getCells, getCellsUnsafe, getCellsUnchecked,
+        js_setAlign, setAlign, js_getAlign, getAlign, js_setBgColor,
+        setBgColor, js_getBgColor, getBgColor, js_setCh, setCh, js_getCh,
+        getCh, js_setChOff, setChOff, js_getChOff, getChOff, js_setVAlign,
+        setVAlign, js_getVAlign, getVAlign, HTMLTableRowElement(..),
+        gTypeHTMLTableRowElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"insertCell\"]($2)"
         js_insertCell ::
@@ -39,6 +56,15 @@ insertCell self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
 insertCell_ :: (MonadIO m) => HTMLTableRowElement -> Int -> m ()
 insertCell_ self index = liftIO (void (js_insertCell (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
+insertCellUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   HTMLTableRowElement -> Int -> m HTMLElement
+insertCellUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_insertCell (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.insertCell Mozilla HTMLTableRowElement.insertCell documentation> 
 insertCellUnchecked ::
@@ -75,6 +101,15 @@ foreign import javascript unsafe "$1[\"cells\"]" js_getCells ::
 getCells ::
          (MonadIO m) => HTMLTableRowElement -> m (Maybe HTMLCollection)
 getCells self = liftIO (nullableToMaybe <$> (js_getCells (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.cells Mozilla HTMLTableRowElement.cells documentation> 
+getCellsUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 HTMLTableRowElement -> m HTMLCollection
+getCellsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCells (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.cells Mozilla HTMLTableRowElement.cells documentation> 
 getCellsUnchecked ::

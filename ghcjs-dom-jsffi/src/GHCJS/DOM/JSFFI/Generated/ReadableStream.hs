@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.ReadableStream
        (js_newReadableStream, newReadableStream, js_read, read, read_,
-        readUnchecked, js_cancel, cancel, cancel_, cancelUnchecked,
-        js_pipeTo, pipeTo, pipeTo_, pipeToUnchecked, js_pipeThrough,
-        pipeThrough, pipeThrough_, pipeThroughUnchecked, js_getState,
-        getState, js_getClosed, getClosed, getClosedUnchecked, js_getReady,
-        getReady, getReadyUnchecked, ReadableStream(..),
-        gTypeReadableStream)
+        readUnsafe, readUnchecked, js_cancel, cancel, cancel_,
+        cancelUnsafe, cancelUnchecked, js_pipeTo, pipeTo, pipeTo_,
+        pipeToUnsafe, pipeToUnchecked, js_pipeThrough, pipeThrough,
+        pipeThrough_, pipeThroughUnsafe, pipeThroughUnchecked, js_getState,
+        getState, js_getClosed, getClosed, getClosedUnsafe,
+        getClosedUnchecked, js_getReady, getReady, getReadyUnsafe,
+        getReadyUnchecked, ReadableStream(..), gTypeReadableStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"ReadableStream\"]($1)" js_newReadableStream ::
@@ -46,6 +63,14 @@ read_ :: (MonadIO m) => ReadableStream -> m ()
 read_ self = liftIO (void (js_read (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.read Mozilla ReadableStream.read documentation> 
+readUnsafe ::
+           (MonadIO m, HasCallStack) => ReadableStream -> m GObject
+readUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_read (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.read Mozilla ReadableStream.read documentation> 
 readUnchecked :: (MonadIO m) => ReadableStream -> m GObject
 readUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_read (self)))
@@ -66,6 +91,15 @@ cancel_ ::
         (MonadIO m, ToJSString reason) => ReadableStream -> reason -> m ()
 cancel_ self reason
   = liftIO (void (js_cancel (self) (toJSString reason)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
+cancelUnsafe ::
+             (MonadIO m, ToJSString reason, HasCallStack) =>
+               ReadableStream -> reason -> m Promise
+cancelUnsafe self reason
+  = liftIO
+      ((nullableToMaybe <$> (js_cancel (self) (toJSString reason))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
 cancelUnchecked ::
@@ -92,6 +126,15 @@ pipeTo_ self streams options
   = liftIO (void (js_pipeTo (self) streams options))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
+pipeToUnsafe ::
+             (MonadIO m, HasCallStack) =>
+               ReadableStream -> JSVal -> JSVal -> m Promise
+pipeToUnsafe self streams options
+  = liftIO
+      ((nullableToMaybe <$> (js_pipeTo (self) streams options)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
 pipeToUnchecked ::
                 (MonadIO m) => ReadableStream -> JSVal -> JSVal -> m Promise
 pipeToUnchecked self streams options
@@ -114,6 +157,15 @@ pipeThrough_ ::
              (MonadIO m) => ReadableStream -> JSVal -> JSVal -> m ()
 pipeThrough_ self dest options
   = liftIO (void (js_pipeThrough (self) dest options))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
+pipeThroughUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    ReadableStream -> JSVal -> JSVal -> m GObject
+pipeThroughUnsafe self dest options
+  = liftIO
+      ((nullableToMaybe <$> (js_pipeThrough (self) dest options)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
 pipeThroughUnchecked ::
@@ -140,6 +192,14 @@ getClosed :: (MonadIO m) => ReadableStream -> m (Maybe Promise)
 getClosed self = liftIO (nullableToMaybe <$> (js_getClosed (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.closed Mozilla ReadableStream.closed documentation> 
+getClosedUnsafe ::
+                (MonadIO m, HasCallStack) => ReadableStream -> m Promise
+getClosedUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClosed (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.closed Mozilla ReadableStream.closed documentation> 
 getClosedUnchecked :: (MonadIO m) => ReadableStream -> m Promise
 getClosedUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getClosed (self)))
@@ -150,6 +210,14 @@ foreign import javascript unsafe "$1[\"ready\"]" js_getReady ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.ready Mozilla ReadableStream.ready documentation> 
 getReady :: (MonadIO m) => ReadableStream -> m (Maybe Promise)
 getReady self = liftIO (nullableToMaybe <$> (js_getReady (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.ready Mozilla ReadableStream.ready documentation> 
+getReadyUnsafe ::
+               (MonadIO m, HasCallStack) => ReadableStream -> m Promise
+getReadyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getReady (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.ready Mozilla ReadableStream.ready documentation> 
 getReadyUnchecked :: (MonadIO m) => ReadableStream -> m Promise

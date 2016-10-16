@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.TextTrack
        (js_addCue, addCue, js_removeCue, removeCue, js_addRegion,
         addRegion, js_removeRegion, removeRegion, js_getId, getId,
@@ -6,13 +11,15 @@ module GHCJS.DOM.JSFFI.Generated.TextTrack
         js_setLanguage, setLanguage, js_getLanguage, getLanguage,
         js_getInBandMetadataTrackDispatchType,
         getInBandMetadataTrackDispatchType, js_setMode, setMode,
-        js_getMode, getMode, js_getCues, getCues, getCuesUnchecked,
-        js_getActiveCues, getActiveCues, getActiveCuesUnchecked, cueChange,
-        js_getRegions, getRegions, getRegionsUnchecked, js_getSourceBuffer,
-        getSourceBuffer, getSourceBufferUnchecked, TextTrack(..),
-        gTypeTextTrack)
+        js_getMode, getMode, js_getCues, getCues, getCuesUnsafe,
+        getCuesUnchecked, js_getActiveCues, getActiveCues,
+        getActiveCuesUnsafe, getActiveCuesUnchecked, cueChange,
+        js_getRegions, getRegions, getRegionsUnsafe, getRegionsUnchecked,
+        js_getSourceBuffer, getSourceBuffer, getSourceBufferUnsafe,
+        getSourceBufferUnchecked, TextTrack(..), gTypeTextTrack)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +35,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"addCue\"]($2)" js_addCue ::
         TextTrack -> Nullable TextTrackCue -> IO ()
@@ -145,6 +162,14 @@ getCues :: (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
 getCues self = liftIO (nullableToMaybe <$> (js_getCues (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
+getCuesUnsafe ::
+              (MonadIO m, HasCallStack) => TextTrack -> m TextTrackCueList
+getCuesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCues (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
 getCuesUnchecked :: (MonadIO m) => TextTrack -> m TextTrackCueList
 getCuesUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getCues (self)))
@@ -157,6 +182,14 @@ getActiveCues ::
               (MonadIO m) => TextTrack -> m (Maybe TextTrackCueList)
 getActiveCues self
   = liftIO (nullableToMaybe <$> (js_getActiveCues (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.activeCues Mozilla TextTrack.activeCues documentation> 
+getActiveCuesUnsafe ::
+                    (MonadIO m, HasCallStack) => TextTrack -> m TextTrackCueList
+getActiveCuesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getActiveCues (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.activeCues Mozilla TextTrack.activeCues documentation> 
 getActiveCuesUnchecked ::
@@ -177,6 +210,14 @@ getRegions self
   = liftIO (nullableToMaybe <$> (js_getRegions (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.regions Mozilla TextTrack.regions documentation> 
+getRegionsUnsafe ::
+                 (MonadIO m, HasCallStack) => TextTrack -> m VTTRegionList
+getRegionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRegions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.regions Mozilla TextTrack.regions documentation> 
 getRegionsUnchecked :: (MonadIO m) => TextTrack -> m VTTRegionList
 getRegionsUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRegions (self)))
@@ -189,6 +230,14 @@ getSourceBuffer ::
                 (MonadIO m) => TextTrack -> m (Maybe SourceBuffer)
 getSourceBuffer self
   = liftIO (nullableToMaybe <$> (js_getSourceBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.sourceBuffer Mozilla TextTrack.sourceBuffer documentation> 
+getSourceBufferUnsafe ::
+                      (MonadIO m, HasCallStack) => TextTrack -> m SourceBuffer
+getSourceBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSourceBuffer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.sourceBuffer Mozilla TextTrack.sourceBuffer documentation> 
 getSourceBufferUnchecked ::

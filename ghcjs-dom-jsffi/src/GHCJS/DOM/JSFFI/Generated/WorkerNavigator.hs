@@ -1,13 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerNavigator
        (js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
+        getWebkitTemporaryStorageUnsafe,
         getWebkitTemporaryStorageUnchecked, js_getWebkitPersistentStorage,
-        getWebkitPersistentStorage, getWebkitPersistentStorageUnchecked,
-        js_getAppName, getAppName, js_getAppVersion, getAppVersion,
-        js_getPlatform, getPlatform, js_getUserAgent, getUserAgent,
-        js_getOnLine, getOnLine, WorkerNavigator(..), gTypeWorkerNavigator)
+        getWebkitPersistentStorage, getWebkitPersistentStorageUnsafe,
+        getWebkitPersistentStorageUnchecked, js_getAppName, getAppName,
+        js_getAppVersion, getAppVersion, js_getPlatform, getPlatform,
+        js_getUserAgent, getUserAgent, js_getOnLine, getOnLine,
+        WorkerNavigator(..), gTypeWorkerNavigator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
         js_getWebkitTemporaryStorage ::
@@ -34,6 +52,14 @@ getWebkitTemporaryStorage ::
 getWebkitTemporaryStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitTemporaryStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
+getWebkitTemporaryStorageUnsafe ::
+                                (MonadIO m, HasCallStack) => WorkerNavigator -> m StorageQuota
+getWebkitTemporaryStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitTemporaryStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
 getWebkitTemporaryStorageUnchecked ::
@@ -53,6 +79,14 @@ getWebkitPersistentStorage ::
 getWebkitPersistentStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitPersistentStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 
+getWebkitPersistentStorageUnsafe ::
+                                 (MonadIO m, HasCallStack) => WorkerNavigator -> m StorageQuota
+getWebkitPersistentStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitPersistentStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 
 getWebkitPersistentStorageUnchecked ::

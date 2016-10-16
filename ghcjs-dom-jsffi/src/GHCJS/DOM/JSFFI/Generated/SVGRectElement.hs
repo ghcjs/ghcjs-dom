@@ -1,11 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGRectElement
-       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
-        getHeightUnchecked, js_getRx, getRx, getRxUnchecked, js_getRy,
-        getRy, getRyUnchecked, SVGRectElement(..), gTypeSVGRectElement)
+       (js_getX, getX, getXUnsafe, getXUnchecked, js_getY, getY,
+        getYUnsafe, getYUnchecked, js_getWidth, getWidth, getWidthUnsafe,
+        getWidthUnchecked, js_getHeight, getHeight, getHeightUnsafe,
+        getHeightUnchecked, js_getRx, getRx, getRxUnsafe, getRxUnchecked,
+        js_getRy, getRy, getRyUnsafe, getRyUnchecked, SVGRectElement(..),
+        gTypeSVGRectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGRectElement -> IO (Nullable SVGAnimatedLength)
@@ -29,6 +47,14 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX ::
      (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.x Mozilla SVGRectElement.x documentation> 
+getXUnsafe ::
+           (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.x Mozilla SVGRectElement.x documentation> 
 getXUnchecked ::
@@ -45,6 +71,14 @@ getY ::
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.y Mozilla SVGRectElement.y documentation> 
+getYUnsafe ::
+           (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.y Mozilla SVGRectElement.y documentation> 
 getYUnchecked ::
               (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
 getYUnchecked self
@@ -57,6 +91,14 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth ::
          (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.width Mozilla SVGRectElement.width documentation> 
+getWidthUnsafe ::
+               (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getWidthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWidth (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.width Mozilla SVGRectElement.width documentation> 
 getWidthUnchecked ::
@@ -73,6 +115,14 @@ getHeight ::
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.height Mozilla SVGRectElement.height documentation> 
+getHeightUnsafe ::
+                (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getHeightUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHeight (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.height Mozilla SVGRectElement.height documentation> 
 getHeightUnchecked ::
                    (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
 getHeightUnchecked self
@@ -87,6 +137,14 @@ getRx ::
 getRx self = liftIO (nullableToMaybe <$> (js_getRx (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.rx Mozilla SVGRectElement.rx documentation> 
+getRxUnsafe ::
+            (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getRxUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRx (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.rx Mozilla SVGRectElement.rx documentation> 
 getRxUnchecked ::
                (MonadIO m) => SVGRectElement -> m SVGAnimatedLength
 getRxUnchecked self
@@ -99,6 +157,14 @@ foreign import javascript unsafe "$1[\"ry\"]" js_getRy ::
 getRy ::
       (MonadIO m) => SVGRectElement -> m (Maybe SVGAnimatedLength)
 getRy self = liftIO (nullableToMaybe <$> (js_getRy (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.ry Mozilla SVGRectElement.ry documentation> 
+getRyUnsafe ::
+            (MonadIO m, HasCallStack) => SVGRectElement -> m SVGAnimatedLength
+getRyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRy (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRectElement.ry Mozilla SVGRectElement.ry documentation> 
 getRyUnchecked ::

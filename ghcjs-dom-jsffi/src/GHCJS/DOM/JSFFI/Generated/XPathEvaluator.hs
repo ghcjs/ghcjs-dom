@@ -1,12 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.XPathEvaluator
        (js_newXPathEvaluator, newXPathEvaluator, js_createExpression,
-        createExpression, createExpression_, createExpressionUnchecked,
-        js_createNSResolver, createNSResolver, createNSResolver_,
+        createExpression, createExpression_, createExpressionUnsafe,
+        createExpressionUnchecked, js_createNSResolver, createNSResolver,
+        createNSResolver_, createNSResolverUnsafe,
         createNSResolverUnchecked, js_evaluate, evaluate, evaluate_,
-        evaluateUnchecked, XPathEvaluator(..), gTypeXPathEvaluator)
+        evaluateUnsafe, evaluateUnchecked, XPathEvaluator(..),
+        gTypeXPathEvaluator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"XPathEvaluator\"]()"
         js_newXPathEvaluator :: IO XPathEvaluator
@@ -58,6 +76,18 @@ createExpression_ self expression resolver
             (maybeToNullable resolver)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createExpression Mozilla XPathEvaluator.createExpression documentation> 
+createExpressionUnsafe ::
+                       (MonadIO m, ToJSString expression, HasCallStack) =>
+                         XPathEvaluator ->
+                           expression -> Maybe XPathNSResolver -> m XPathExpression
+createExpressionUnsafe self expression resolver
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createExpression (self) (toJSString expression)
+             (maybeToNullable resolver)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createExpression Mozilla XPathEvaluator.createExpression documentation> 
 createExpressionUnchecked ::
                           (MonadIO m, ToJSString expression) =>
                             XPathEvaluator ->
@@ -91,6 +121,17 @@ createNSResolver_ self nodeResolver
       (void
          (js_createNSResolver (self)
             (maybeToNullable (fmap toNode nodeResolver))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createNSResolver Mozilla XPathEvaluator.createNSResolver documentation> 
+createNSResolverUnsafe ::
+                       (MonadIO m, IsNode nodeResolver, HasCallStack) =>
+                         XPathEvaluator -> Maybe nodeResolver -> m XPathNSResolver
+createNSResolverUnsafe self nodeResolver
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createNSResolver (self)
+             (maybeToNullable (fmap toNode nodeResolver))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.createNSResolver Mozilla XPathEvaluator.createNSResolver documentation> 
 createNSResolverUnchecked ::
@@ -142,6 +183,24 @@ evaluate_ self expression contextNode resolver type' inResult
             (maybeToNullable resolver)
             type'
             (maybeToNullable inResult)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.evaluate Mozilla XPathEvaluator.evaluate documentation> 
+evaluateUnsafe ::
+               (MonadIO m, ToJSString expression, IsNode contextNode,
+                HasCallStack) =>
+                 XPathEvaluator ->
+                   expression ->
+                     Maybe contextNode ->
+                       Maybe XPathNSResolver -> Word -> Maybe XPathResult -> m XPathResult
+evaluateUnsafe self expression contextNode resolver type' inResult
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_evaluate (self) (toJSString expression)
+             (maybeToNullable (fmap toNode contextNode))
+             (maybeToNullable resolver)
+             type'
+             (maybeToNullable inResult)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator.evaluate Mozilla XPathEvaluator.evaluate documentation> 
 evaluateUnchecked ::

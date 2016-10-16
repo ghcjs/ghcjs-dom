@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.DocumentFragment
        (js_newDocumentFragment, newDocumentFragment, js_querySelector,
-        querySelector, querySelector_, querySelectorUnchecked,
-        js_querySelectorAll, querySelectorAll, querySelectorAll_,
+        querySelector, querySelector_, querySelectorUnsafe,
+        querySelectorUnchecked, js_querySelectorAll, querySelectorAll,
+        querySelectorAll_, querySelectorAllUnsafe,
         querySelectorAllUnchecked, DocumentFragment(..),
         gTypeDocumentFragment)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"DocumentFragment\"]()" js_newDocumentFragment ::
@@ -52,6 +69,16 @@ querySelector_ self selectors
   = liftIO (void (js_querySelector (self) (toJSString selectors)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
+querySelectorUnsafe ::
+                    (MonadIO m, ToJSString selectors, HasCallStack) =>
+                      DocumentFragment -> selectors -> m Element
+querySelectorUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelector (self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelector Mozilla DocumentFragment.querySelector documentation> 
 querySelectorUnchecked ::
                        (MonadIO m, ToJSString selectors) =>
                          DocumentFragment -> selectors -> m Element
@@ -79,6 +106,16 @@ querySelectorAll_ ::
                     DocumentFragment -> selectors -> m ()
 querySelectorAll_ self selectors
   = liftIO (void (js_querySelectorAll (self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
+querySelectorAllUnsafe ::
+                       (MonadIO m, ToJSString selectors, HasCallStack) =>
+                         DocumentFragment -> selectors -> m NodeList
+querySelectorAllUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelectorAll (self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment.querySelectorAll Mozilla DocumentFragment.querySelectorAll documentation> 
 querySelectorAllUnchecked ::

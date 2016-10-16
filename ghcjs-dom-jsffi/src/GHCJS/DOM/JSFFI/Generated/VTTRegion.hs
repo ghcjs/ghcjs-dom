@@ -1,17 +1,24 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.VTTRegion
        (js_newVTTRegion, newVTTRegion, js_getTrack, getTrack,
-        getTrackUnchecked, js_setId, setId, js_getId, getId, js_setWidth,
-        setWidth, js_getWidth, getWidth, js_setHeight, setHeight,
-        js_getHeight, getHeight, js_setRegionAnchorX, setRegionAnchorX,
-        js_getRegionAnchorX, getRegionAnchorX, js_setRegionAnchorY,
-        setRegionAnchorY, js_getRegionAnchorY, getRegionAnchorY,
-        js_setViewportAnchorX, setViewportAnchorX, js_getViewportAnchorX,
-        getViewportAnchorX, js_setViewportAnchorY, setViewportAnchorY,
-        js_getViewportAnchorY, getViewportAnchorY, js_setScroll, setScroll,
-        js_getScroll, getScroll, VTTRegion(..), gTypeVTTRegion)
+        getTrackUnsafe, getTrackUnchecked, js_setId, setId, js_getId,
+        getId, js_setWidth, setWidth, js_getWidth, getWidth, js_setHeight,
+        setHeight, js_getHeight, getHeight, js_setRegionAnchorX,
+        setRegionAnchorX, js_getRegionAnchorX, getRegionAnchorX,
+        js_setRegionAnchorY, setRegionAnchorY, js_getRegionAnchorY,
+        getRegionAnchorY, js_setViewportAnchorX, setViewportAnchorX,
+        js_getViewportAnchorX, getViewportAnchorX, js_setViewportAnchorY,
+        setViewportAnchorY, js_getViewportAnchorY, getViewportAnchorY,
+        js_setScroll, setScroll, js_getScroll, getScroll, VTTRegion(..),
+        gTypeVTTRegion)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"VTTRegion\"]()"
         js_newVTTRegion :: IO VTTRegion
@@ -41,6 +58,14 @@ foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
 getTrack :: (MonadIO m) => VTTRegion -> m (Maybe TextTrack)
 getTrack self = liftIO (nullableToMaybe <$> (js_getTrack (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
+getTrackUnsafe ::
+               (MonadIO m, HasCallStack) => VTTRegion -> m TextTrack
+getTrackUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTrack (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
 getTrackUnchecked :: (MonadIO m) => VTTRegion -> m TextTrack

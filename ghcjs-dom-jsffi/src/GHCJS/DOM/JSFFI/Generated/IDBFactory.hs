@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBFactory
-       (js_open, open, open_, openUnchecked, js_deleteDatabase,
-        deleteDatabase, deleteDatabase_, deleteDatabaseUnchecked, js_cmp,
-        cmp, cmp_, IDBFactory(..), gTypeIDBFactory)
+       (js_open, open, open_, openUnsafe, openUnchecked,
+        js_deleteDatabase, deleteDatabase, deleteDatabase_,
+        deleteDatabaseUnsafe, deleteDatabaseUnchecked, js_cmp, cmp, cmp_,
+        IDBFactory(..), gTypeIDBFactory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3)" js_open ::
         IDBFactory -> JSString -> Double -> IO (Nullable IDBOpenDBRequest)
@@ -40,6 +57,16 @@ open_ ::
 open_ self name version
   = liftIO
       (void (js_open (self) (toJSString name) (fromIntegral version)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
+openUnsafe ::
+           (MonadIO m, ToJSString name, HasCallStack) =>
+             IDBFactory -> name -> Word64 -> m IDBOpenDBRequest
+openUnsafe self name version
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_open (self) (toJSString name) (fromIntegral version)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
 openUnchecked ::
@@ -67,6 +94,15 @@ deleteDatabase_ ::
                 (MonadIO m, ToJSString name) => IDBFactory -> name -> m ()
 deleteDatabase_ self name
   = liftIO (void (js_deleteDatabase (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
+deleteDatabaseUnsafe ::
+                     (MonadIO m, ToJSString name, HasCallStack) =>
+                       IDBFactory -> name -> m IDBOpenDBRequest
+deleteDatabaseUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_deleteDatabase (self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
 deleteDatabaseUnchecked ::

@@ -1,12 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGImageElement
-       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
+       (js_getX, getX, getXUnsafe, getXUnchecked, js_getY, getY,
+        getYUnsafe, getYUnchecked, js_getWidth, getWidth, getWidthUnsafe,
+        getWidthUnchecked, js_getHeight, getHeight, getHeightUnsafe,
         getHeightUnchecked, js_getPreserveAspectRatio,
-        getPreserveAspectRatio, getPreserveAspectRatioUnchecked,
-        SVGImageElement(..), gTypeSVGImageElement)
+        getPreserveAspectRatio, getPreserveAspectRatioUnsafe,
+        getPreserveAspectRatioUnchecked, SVGImageElement(..),
+        gTypeSVGImageElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGImageElement -> IO (Nullable SVGAnimatedLength)
@@ -30,6 +48,14 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX ::
      (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.x Mozilla SVGImageElement.x documentation> 
+getXUnsafe ::
+           (MonadIO m, HasCallStack) => SVGImageElement -> m SVGAnimatedLength
+getXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.x Mozilla SVGImageElement.x documentation> 
 getXUnchecked ::
@@ -46,6 +72,14 @@ getY ::
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.y Mozilla SVGImageElement.y documentation> 
+getYUnsafe ::
+           (MonadIO m, HasCallStack) => SVGImageElement -> m SVGAnimatedLength
+getYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.y Mozilla SVGImageElement.y documentation> 
 getYUnchecked ::
               (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getYUnchecked self
@@ -60,6 +94,14 @@ getWidth ::
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.width Mozilla SVGImageElement.width documentation> 
+getWidthUnsafe ::
+               (MonadIO m, HasCallStack) => SVGImageElement -> m SVGAnimatedLength
+getWidthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWidth (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.width Mozilla SVGImageElement.width documentation> 
 getWidthUnchecked ::
                   (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getWidthUnchecked self
@@ -72,6 +114,14 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight ::
           (MonadIO m) => SVGImageElement -> m (Maybe SVGAnimatedLength)
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.height Mozilla SVGImageElement.height documentation> 
+getHeightUnsafe ::
+                (MonadIO m, HasCallStack) => SVGImageElement -> m SVGAnimatedLength
+getHeightUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHeight (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.height Mozilla SVGImageElement.height documentation> 
 getHeightUnchecked ::
@@ -89,6 +139,15 @@ getPreserveAspectRatio ::
                          SVGImageElement -> m (Maybe SVGAnimatedPreserveAspectRatio)
 getPreserveAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getPreserveAspectRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.preserveAspectRatio Mozilla SVGImageElement.preserveAspectRatio documentation> 
+getPreserveAspectRatioUnsafe ::
+                             (MonadIO m, HasCallStack) =>
+                               SVGImageElement -> m SVGAnimatedPreserveAspectRatio
+getPreserveAspectRatioUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreserveAspectRatio (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.preserveAspectRatio Mozilla SVGImageElement.preserveAspectRatio documentation> 
 getPreserveAspectRatioUnchecked ::

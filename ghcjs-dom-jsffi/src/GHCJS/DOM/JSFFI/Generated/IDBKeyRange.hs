@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBKeyRange
-       (js_only, only, only_, onlyUnchecked, js_lowerBound, lowerBound,
-        lowerBound_, lowerBoundUnchecked, js_upperBound, upperBound,
-        upperBound_, upperBoundUnchecked, js_bound, bound, bound_,
+       (js_only, only, only_, onlyUnsafe, onlyUnchecked, js_lowerBound,
+        lowerBound, lowerBound_, lowerBoundUnsafe, lowerBoundUnchecked,
+        js_upperBound, upperBound, upperBound_, upperBoundUnsafe,
+        upperBoundUnchecked, js_bound, bound, bound_, boundUnsafe,
         boundUnchecked, js_getLower, getLower, js_getUpper, getUpper,
         js_getLowerOpen, getLowerOpen, js_getUpperOpen, getUpperOpen,
         IDBKeyRange(..), gTypeIDBKeyRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"only\"]($2)" js_only ::
         IDBKeyRange -> JSVal -> IO (Nullable IDBKeyRange)
@@ -36,6 +53,14 @@ only self value
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
 only_ :: (MonadIO m) => IDBKeyRange -> JSVal -> m ()
 only_ self value = liftIO (void (js_only (self) value))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
+onlyUnsafe ::
+           (MonadIO m, HasCallStack) => IDBKeyRange -> JSVal -> m IDBKeyRange
+onlyUnsafe self value
+  = liftIO
+      ((nullableToMaybe <$> (js_only (self) value)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
 onlyUnchecked ::
@@ -60,6 +85,15 @@ lowerBound_ self lower open
   = liftIO (void (js_lowerBound (self) lower open))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
+lowerBoundUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   IDBKeyRange -> JSVal -> Bool -> m IDBKeyRange
+lowerBoundUnsafe self lower open
+  = liftIO
+      ((nullableToMaybe <$> (js_lowerBound (self) lower open)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
 lowerBoundUnchecked ::
                     (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m IDBKeyRange
 lowerBoundUnchecked self lower open
@@ -81,6 +115,15 @@ upperBound self upper open
 upperBound_ :: (MonadIO m) => IDBKeyRange -> JSVal -> Bool -> m ()
 upperBound_ self upper open
   = liftIO (void (js_upperBound (self) upper open))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
+upperBoundUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   IDBKeyRange -> JSVal -> Bool -> m IDBKeyRange
+upperBoundUnsafe self upper open
+  = liftIO
+      ((nullableToMaybe <$> (js_upperBound (self) upper open)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
 upperBoundUnchecked ::
@@ -110,6 +153,16 @@ bound_ ::
          IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> m ()
 bound_ self lower upper lowerOpen upperOpen
   = liftIO (void (js_bound (self) lower upper lowerOpen upperOpen))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
+boundUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> m IDBKeyRange
+boundUnsafe self lower upper lowerOpen upperOpen
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_bound (self) lower upper lowerOpen upperOpen))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
 boundUnchecked ::

@@ -1,18 +1,25 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLKeygenElement
        (js_checkValidity, checkValidity, checkValidity_,
         js_setCustomValidity, setCustomValidity, js_setAutofocus,
         setAutofocus, js_getAutofocus, getAutofocus, js_setChallenge,
         setChallenge, js_getChallenge, getChallenge, js_setDisabled,
         setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
-        getFormUnchecked, js_setKeytype, setKeytype, js_getKeytype,
-        getKeytype, js_setName, setName, js_getName, getName, js_getType,
-        getType, js_getWillValidate, getWillValidate, js_getValidity,
-        getValidity, getValidityUnchecked, js_getValidationMessage,
-        getValidationMessage, js_getLabels, getLabels, getLabelsUnchecked,
-        HTMLKeygenElement(..), gTypeHTMLKeygenElement)
+        getFormUnsafe, getFormUnchecked, js_setKeytype, setKeytype,
+        js_getKeytype, getKeytype, js_setName, setName, js_getName,
+        getName, js_getType, getType, js_getWillValidate, getWillValidate,
+        js_getValidity, getValidity, getValidityUnsafe,
+        getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnsafe,
+        getLabelsUnchecked, HTMLKeygenElement(..), gTypeHTMLKeygenElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +35,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
@@ -107,6 +124,14 @@ getForm ::
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.form Mozilla HTMLKeygenElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLKeygenElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.form Mozilla HTMLKeygenElement.form documentation> 
 getFormUnchecked ::
                  (MonadIO m) => HTMLKeygenElement -> m HTMLFormElement
 getFormUnchecked self
@@ -170,6 +195,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.validity Mozilla HTMLKeygenElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLKeygenElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.validity Mozilla HTMLKeygenElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLKeygenElement -> m ValidityState
 getValidityUnchecked self
@@ -190,6 +223,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLKeygenElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLKeygenElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement.labels Mozilla HTMLKeygenElement.labels documentation> 
 getLabelsUnchecked ::

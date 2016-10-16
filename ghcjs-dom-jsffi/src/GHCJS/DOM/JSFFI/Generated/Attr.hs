@@ -1,11 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Attr
-       (js_getName, getName, getNameUnchecked, js_getSpecified,
-        getSpecified, js_setValue, setValue, js_getValue, getValue,
-        getValueUnchecked, js_getOwnerElement, getOwnerElement,
-        getOwnerElementUnchecked, js_getIsId, getIsId, Attr(..), gTypeAttr)
+       (js_getName, getName, getNameUnsafe, getNameUnchecked,
+        js_getSpecified, getSpecified, js_setValue, setValue, js_getValue,
+        getValue, getValueUnsafe, getValueUnchecked, js_getOwnerElement,
+        getOwnerElement, getOwnerElementUnsafe, getOwnerElementUnchecked,
+        js_getIsId, getIsId, Attr(..), gTypeAttr)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         Attr -> IO (Nullable JSString)
@@ -29,6 +46,14 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 getName ::
         (MonadIO m, FromJSString result) => Attr -> m (Maybe result)
 getName self = liftIO (fromMaybeJSString <$> (js_getName (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
+getNameUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
+getNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getName (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 getNameUnchecked ::
@@ -61,6 +86,14 @@ getValue ::
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
+getValueUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
+getValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
 getValueUnchecked ::
                   (MonadIO m, FromJSString result) => Attr -> m result
 getValueUnchecked self
@@ -73,6 +106,14 @@ foreign import javascript unsafe "$1[\"ownerElement\"]"
 getOwnerElement :: (MonadIO m) => Attr -> m (Maybe Element)
 getOwnerElement self
   = liftIO (nullableToMaybe <$> (js_getOwnerElement (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
+getOwnerElementUnsafe ::
+                      (MonadIO m, HasCallStack) => Attr -> m Element
+getOwnerElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOwnerElement (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
 getOwnerElementUnchecked :: (MonadIO m) => Attr -> m Element

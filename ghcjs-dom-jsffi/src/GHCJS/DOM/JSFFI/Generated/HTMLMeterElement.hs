@@ -1,13 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLMeterElement
        (js_setValue, setValue, js_getValue, getValue, js_setMin, setMin,
         js_getMin, getMin, js_setMax, setMax, js_getMax, getMax, js_setLow,
         setLow, js_getLow, getLow, js_setHigh, setHigh, js_getHigh,
         getHigh, js_setOptimum, setOptimum, js_getOptimum, getOptimum,
-        js_getLabels, getLabels, getLabelsUnchecked, HTMLMeterElement(..),
-        gTypeHTMLMeterElement)
+        js_getLabels, getLabels, getLabelsUnsafe, getLabelsUnchecked,
+        HTMLMeterElement(..), gTypeHTMLMeterElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: HTMLMeterElement -> Double -> IO ()
@@ -114,6 +130,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLMeterElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLMeterElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.labels Mozilla HTMLMeterElement.labels documentation> 
 getLabelsUnchecked :: (MonadIO m) => HTMLMeterElement -> m NodeList

@@ -1,20 +1,27 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SourceBuffer
        (js_appendBuffer, appendBuffer, js_appendBufferView,
         appendBufferView, js_abort, abort, js_remove, remove, js_setMode,
         setMode, js_getMode, getMode, js_getUpdating, getUpdating,
-        js_getBuffered, getBuffered, getBufferedUnchecked,
-        js_setTimestampOffset, setTimestampOffset, js_getTimestampOffset,
-        getTimestampOffset, js_getAudioTracks, getAudioTracks,
-        getAudioTracksUnchecked, js_getVideoTracks, getVideoTracks,
+        js_getBuffered, getBuffered, getBufferedUnsafe,
+        getBufferedUnchecked, js_setTimestampOffset, setTimestampOffset,
+        js_getTimestampOffset, getTimestampOffset, js_getAudioTracks,
+        getAudioTracks, getAudioTracksUnsafe, getAudioTracksUnchecked,
+        js_getVideoTracks, getVideoTracks, getVideoTracksUnsafe,
         getVideoTracksUnchecked, js_getTextTracks, getTextTracks,
-        getTextTracksUnchecked, js_setAppendWindowStart,
-        setAppendWindowStart, js_getAppendWindowStart,
-        getAppendWindowStart, js_setAppendWindowEnd, setAppendWindowEnd,
-        js_getAppendWindowEnd, getAppendWindowEnd, SourceBuffer(..),
-        gTypeSourceBuffer)
+        getTextTracksUnsafe, getTextTracksUnchecked,
+        js_setAppendWindowStart, setAppendWindowStart,
+        js_getAppendWindowStart, getAppendWindowStart,
+        js_setAppendWindowEnd, setAppendWindowEnd, js_getAppendWindowEnd,
+        getAppendWindowEnd, SourceBuffer(..), gTypeSourceBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +37,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"appendBuffer\"]($2)"
         js_appendBuffer :: SourceBuffer -> Nullable ArrayBuffer -> IO ()
@@ -100,6 +117,14 @@ getBuffered self
   = liftIO (nullableToMaybe <$> (js_getBuffered (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 
+getBufferedUnsafe ::
+                  (MonadIO m, HasCallStack) => SourceBuffer -> m TimeRanges
+getBufferedUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBuffered (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 
 getBufferedUnchecked :: (MonadIO m) => SourceBuffer -> m TimeRanges
 getBufferedUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBuffered (self)))
@@ -129,6 +154,14 @@ getAudioTracks self
   = liftIO (nullableToMaybe <$> (js_getAudioTracks (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.audioTracks Mozilla SourceBuffer.audioTracks documentation> 
+getAudioTracksUnsafe ::
+                     (MonadIO m, HasCallStack) => SourceBuffer -> m AudioTrackList
+getAudioTracksUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAudioTracks (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.audioTracks Mozilla SourceBuffer.audioTracks documentation> 
 getAudioTracksUnchecked ::
                         (MonadIO m) => SourceBuffer -> m AudioTrackList
 getAudioTracksUnchecked self
@@ -145,6 +178,14 @@ getVideoTracks self
   = liftIO (nullableToMaybe <$> (js_getVideoTracks (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.videoTracks Mozilla SourceBuffer.videoTracks documentation> 
+getVideoTracksUnsafe ::
+                     (MonadIO m, HasCallStack) => SourceBuffer -> m VideoTrackList
+getVideoTracksUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getVideoTracks (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.videoTracks Mozilla SourceBuffer.videoTracks documentation> 
 getVideoTracksUnchecked ::
                         (MonadIO m) => SourceBuffer -> m VideoTrackList
 getVideoTracksUnchecked self
@@ -159,6 +200,14 @@ getTextTracks ::
               (MonadIO m) => SourceBuffer -> m (Maybe TextTrackList)
 getTextTracks self
   = liftIO (nullableToMaybe <$> (js_getTextTracks (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.textTracks Mozilla SourceBuffer.textTracks documentation> 
+getTextTracksUnsafe ::
+                    (MonadIO m, HasCallStack) => SourceBuffer -> m TextTrackList
+getTextTracksUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTextTracks (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.textTracks Mozilla SourceBuffer.textTracks documentation> 
 getTextTracksUnchecked ::

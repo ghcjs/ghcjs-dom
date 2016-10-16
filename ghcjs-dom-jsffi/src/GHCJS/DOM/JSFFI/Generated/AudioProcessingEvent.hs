@@ -1,11 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AudioProcessingEvent
        (js_getPlaybackTime, getPlaybackTime, js_getInputBuffer,
-        getInputBuffer, getInputBufferUnchecked, js_getOutputBuffer,
-        getOutputBuffer, getOutputBufferUnchecked,
-        AudioProcessingEvent(..), gTypeAudioProcessingEvent)
+        getInputBuffer, getInputBufferUnsafe, getInputBufferUnchecked,
+        js_getOutputBuffer, getOutputBuffer, getOutputBufferUnsafe,
+        getOutputBufferUnchecked, AudioProcessingEvent(..),
+        gTypeAudioProcessingEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"playbackTime\"]"
         js_getPlaybackTime :: AudioProcessingEvent -> IO Double
@@ -40,6 +57,14 @@ getInputBuffer self
   = liftIO (nullableToMaybe <$> (js_getInputBuffer (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.inputBuffer Mozilla AudioProcessingEvent.inputBuffer documentation> 
+getInputBufferUnsafe ::
+                     (MonadIO m, HasCallStack) => AudioProcessingEvent -> m AudioBuffer
+getInputBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getInputBuffer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.inputBuffer Mozilla AudioProcessingEvent.inputBuffer documentation> 
 getInputBufferUnchecked ::
                         (MonadIO m) => AudioProcessingEvent -> m AudioBuffer
 getInputBufferUnchecked self
@@ -55,6 +80,14 @@ getOutputBuffer ::
                 (MonadIO m) => AudioProcessingEvent -> m (Maybe AudioBuffer)
 getOutputBuffer self
   = liftIO (nullableToMaybe <$> (js_getOutputBuffer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.outputBuffer Mozilla AudioProcessingEvent.outputBuffer documentation> 
+getOutputBufferUnsafe ::
+                      (MonadIO m, HasCallStack) => AudioProcessingEvent -> m AudioBuffer
+getOutputBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOutputBuffer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.outputBuffer Mozilla AudioProcessingEvent.outputBuffer documentation> 
 getOutputBufferUnchecked ::

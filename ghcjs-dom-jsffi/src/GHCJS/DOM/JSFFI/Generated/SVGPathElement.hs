@@ -1,80 +1,107 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPathElement
        (js_getTotalLength, getTotalLength, getTotalLength_,
         js_getPointAtLength, getPointAtLength, getPointAtLength_,
-        getPointAtLengthUnchecked, js_getPathSegAtLength,
-        getPathSegAtLength, getPathSegAtLength_,
+        getPointAtLengthUnsafe, getPointAtLengthUnchecked,
+        js_getPathSegAtLength, getPathSegAtLength, getPathSegAtLength_,
         js_createSVGPathSegClosePath, createSVGPathSegClosePath,
-        createSVGPathSegClosePath_, createSVGPathSegClosePathUnchecked,
-        js_createSVGPathSegMovetoAbs, createSVGPathSegMovetoAbs,
-        createSVGPathSegMovetoAbs_, createSVGPathSegMovetoAbsUnchecked,
-        js_createSVGPathSegMovetoRel, createSVGPathSegMovetoRel,
-        createSVGPathSegMovetoRel_, createSVGPathSegMovetoRelUnchecked,
-        js_createSVGPathSegLinetoAbs, createSVGPathSegLinetoAbs,
-        createSVGPathSegLinetoAbs_, createSVGPathSegLinetoAbsUnchecked,
-        js_createSVGPathSegLinetoRel, createSVGPathSegLinetoRel,
-        createSVGPathSegLinetoRel_, createSVGPathSegLinetoRelUnchecked,
+        createSVGPathSegClosePath_, createSVGPathSegClosePathUnsafe,
+        createSVGPathSegClosePathUnchecked, js_createSVGPathSegMovetoAbs,
+        createSVGPathSegMovetoAbs, createSVGPathSegMovetoAbs_,
+        createSVGPathSegMovetoAbsUnsafe,
+        createSVGPathSegMovetoAbsUnchecked, js_createSVGPathSegMovetoRel,
+        createSVGPathSegMovetoRel, createSVGPathSegMovetoRel_,
+        createSVGPathSegMovetoRelUnsafe,
+        createSVGPathSegMovetoRelUnchecked, js_createSVGPathSegLinetoAbs,
+        createSVGPathSegLinetoAbs, createSVGPathSegLinetoAbs_,
+        createSVGPathSegLinetoAbsUnsafe,
+        createSVGPathSegLinetoAbsUnchecked, js_createSVGPathSegLinetoRel,
+        createSVGPathSegLinetoRel, createSVGPathSegLinetoRel_,
+        createSVGPathSegLinetoRelUnsafe,
+        createSVGPathSegLinetoRelUnchecked,
         js_createSVGPathSegCurvetoCubicAbs,
         createSVGPathSegCurvetoCubicAbs, createSVGPathSegCurvetoCubicAbs_,
+        createSVGPathSegCurvetoCubicAbsUnsafe,
         createSVGPathSegCurvetoCubicAbsUnchecked,
         js_createSVGPathSegCurvetoCubicRel,
         createSVGPathSegCurvetoCubicRel, createSVGPathSegCurvetoCubicRel_,
+        createSVGPathSegCurvetoCubicRelUnsafe,
         createSVGPathSegCurvetoCubicRelUnchecked,
         js_createSVGPathSegCurvetoQuadraticAbs,
         createSVGPathSegCurvetoQuadraticAbs,
         createSVGPathSegCurvetoQuadraticAbs_,
+        createSVGPathSegCurvetoQuadraticAbsUnsafe,
         createSVGPathSegCurvetoQuadraticAbsUnchecked,
         js_createSVGPathSegCurvetoQuadraticRel,
         createSVGPathSegCurvetoQuadraticRel,
         createSVGPathSegCurvetoQuadraticRel_,
+        createSVGPathSegCurvetoQuadraticRelUnsafe,
         createSVGPathSegCurvetoQuadraticRelUnchecked,
         js_createSVGPathSegArcAbs, createSVGPathSegArcAbs,
-        createSVGPathSegArcAbs_, createSVGPathSegArcAbsUnchecked,
-        js_createSVGPathSegArcRel, createSVGPathSegArcRel,
-        createSVGPathSegArcRel_, createSVGPathSegArcRelUnchecked,
+        createSVGPathSegArcAbs_, createSVGPathSegArcAbsUnsafe,
+        createSVGPathSegArcAbsUnchecked, js_createSVGPathSegArcRel,
+        createSVGPathSegArcRel, createSVGPathSegArcRel_,
+        createSVGPathSegArcRelUnsafe, createSVGPathSegArcRelUnchecked,
         js_createSVGPathSegLinetoHorizontalAbs,
         createSVGPathSegLinetoHorizontalAbs,
         createSVGPathSegLinetoHorizontalAbs_,
+        createSVGPathSegLinetoHorizontalAbsUnsafe,
         createSVGPathSegLinetoHorizontalAbsUnchecked,
         js_createSVGPathSegLinetoHorizontalRel,
         createSVGPathSegLinetoHorizontalRel,
         createSVGPathSegLinetoHorizontalRel_,
+        createSVGPathSegLinetoHorizontalRelUnsafe,
         createSVGPathSegLinetoHorizontalRelUnchecked,
         js_createSVGPathSegLinetoVerticalAbs,
         createSVGPathSegLinetoVerticalAbs,
         createSVGPathSegLinetoVerticalAbs_,
+        createSVGPathSegLinetoVerticalAbsUnsafe,
         createSVGPathSegLinetoVerticalAbsUnchecked,
         js_createSVGPathSegLinetoVerticalRel,
         createSVGPathSegLinetoVerticalRel,
         createSVGPathSegLinetoVerticalRel_,
+        createSVGPathSegLinetoVerticalRelUnsafe,
         createSVGPathSegLinetoVerticalRelUnchecked,
         js_createSVGPathSegCurvetoCubicSmoothAbs,
         createSVGPathSegCurvetoCubicSmoothAbs,
         createSVGPathSegCurvetoCubicSmoothAbs_,
+        createSVGPathSegCurvetoCubicSmoothAbsUnsafe,
         createSVGPathSegCurvetoCubicSmoothAbsUnchecked,
         js_createSVGPathSegCurvetoCubicSmoothRel,
         createSVGPathSegCurvetoCubicSmoothRel,
         createSVGPathSegCurvetoCubicSmoothRel_,
+        createSVGPathSegCurvetoCubicSmoothRelUnsafe,
         createSVGPathSegCurvetoCubicSmoothRelUnchecked,
         js_createSVGPathSegCurvetoQuadraticSmoothAbs,
         createSVGPathSegCurvetoQuadraticSmoothAbs,
         createSVGPathSegCurvetoQuadraticSmoothAbs_,
+        createSVGPathSegCurvetoQuadraticSmoothAbsUnsafe,
         createSVGPathSegCurvetoQuadraticSmoothAbsUnchecked,
         js_createSVGPathSegCurvetoQuadraticSmoothRel,
         createSVGPathSegCurvetoQuadraticSmoothRel,
         createSVGPathSegCurvetoQuadraticSmoothRel_,
+        createSVGPathSegCurvetoQuadraticSmoothRelUnsafe,
         createSVGPathSegCurvetoQuadraticSmoothRelUnchecked,
-        js_getPathLength, getPathLength, getPathLengthUnchecked,
-        js_getPathSegList, getPathSegList, getPathSegListUnchecked,
+        js_getPathLength, getPathLength, getPathLengthUnsafe,
+        getPathLengthUnchecked, js_getPathSegList, getPathSegList,
+        getPathSegListUnsafe, getPathSegListUnchecked,
         js_getNormalizedPathSegList, getNormalizedPathSegList,
-        getNormalizedPathSegListUnchecked, js_getAnimatedPathSegList,
-        getAnimatedPathSegList, getAnimatedPathSegListUnchecked,
+        getNormalizedPathSegListUnsafe, getNormalizedPathSegListUnchecked,
+        js_getAnimatedPathSegList, getAnimatedPathSegList,
+        getAnimatedPathSegListUnsafe, getAnimatedPathSegListUnchecked,
         js_getAnimatedNormalizedPathSegList,
         getAnimatedNormalizedPathSegList,
+        getAnimatedNormalizedPathSegListUnsafe,
         getAnimatedNormalizedPathSegListUnchecked, SVGPathElement(..),
         gTypeSVGPathElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -90,6 +117,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getTotalLength\"]()"
         js_getTotalLength :: SVGPathElement -> IO Float
@@ -117,6 +154,14 @@ getPointAtLength self distance
 getPointAtLength_ :: (MonadIO m) => SVGPathElement -> Float -> m ()
 getPointAtLength_ self distance
   = liftIO (void (js_getPointAtLength (self) distance))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.getPointAtLength Mozilla SVGPathElement.getPointAtLength documentation> 
+getPointAtLengthUnsafe ::
+                       (MonadIO m, HasCallStack) => SVGPathElement -> Float -> m SVGPoint
+getPointAtLengthUnsafe self distance
+  = liftIO
+      ((nullableToMaybe <$> (js_getPointAtLength (self) distance)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.getPointAtLength Mozilla SVGPathElement.getPointAtLength documentation> 
 getPointAtLengthUnchecked ::
@@ -158,6 +203,15 @@ createSVGPathSegClosePath_ self
   = liftIO (void (js_createSVGPathSegClosePath (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegClosePath Mozilla SVGPathElement.createSVGPathSegClosePath documentation> 
+createSVGPathSegClosePathUnsafe ::
+                                (MonadIO m, HasCallStack) =>
+                                  SVGPathElement -> m SVGPathSegClosePath
+createSVGPathSegClosePathUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createSVGPathSegClosePath (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegClosePath Mozilla SVGPathElement.createSVGPathSegClosePath documentation> 
 createSVGPathSegClosePathUnchecked ::
                                    (MonadIO m) => SVGPathElement -> m SVGPathSegClosePath
 createSVGPathSegClosePathUnchecked self
@@ -184,6 +238,15 @@ createSVGPathSegMovetoAbs_ ::
                            (MonadIO m) => SVGPathElement -> Float -> Float -> m ()
 createSVGPathSegMovetoAbs_ self x y
   = liftIO (void (js_createSVGPathSegMovetoAbs (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegMovetoAbs Mozilla SVGPathElement.createSVGPathSegMovetoAbs documentation> 
+createSVGPathSegMovetoAbsUnsafe ::
+                                (MonadIO m, HasCallStack) =>
+                                  SVGPathElement -> Float -> Float -> m SVGPathSegMovetoAbs
+createSVGPathSegMovetoAbsUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$> (js_createSVGPathSegMovetoAbs (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegMovetoAbs Mozilla SVGPathElement.createSVGPathSegMovetoAbs documentation> 
 createSVGPathSegMovetoAbsUnchecked ::
@@ -215,6 +278,15 @@ createSVGPathSegMovetoRel_ self x y
   = liftIO (void (js_createSVGPathSegMovetoRel (self) x y))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegMovetoRel Mozilla SVGPathElement.createSVGPathSegMovetoRel documentation> 
+createSVGPathSegMovetoRelUnsafe ::
+                                (MonadIO m, HasCallStack) =>
+                                  SVGPathElement -> Float -> Float -> m SVGPathSegMovetoRel
+createSVGPathSegMovetoRelUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$> (js_createSVGPathSegMovetoRel (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegMovetoRel Mozilla SVGPathElement.createSVGPathSegMovetoRel documentation> 
 createSVGPathSegMovetoRelUnchecked ::
                                    (MonadIO m) =>
                                      SVGPathElement -> Float -> Float -> m SVGPathSegMovetoRel
@@ -244,6 +316,15 @@ createSVGPathSegLinetoAbs_ self x y
   = liftIO (void (js_createSVGPathSegLinetoAbs (self) x y))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoAbs Mozilla SVGPathElement.createSVGPathSegLinetoAbs documentation> 
+createSVGPathSegLinetoAbsUnsafe ::
+                                (MonadIO m, HasCallStack) =>
+                                  SVGPathElement -> Float -> Float -> m SVGPathSegLinetoAbs
+createSVGPathSegLinetoAbsUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$> (js_createSVGPathSegLinetoAbs (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoAbs Mozilla SVGPathElement.createSVGPathSegLinetoAbs documentation> 
 createSVGPathSegLinetoAbsUnchecked ::
                                    (MonadIO m) =>
                                      SVGPathElement -> Float -> Float -> m SVGPathSegLinetoAbs
@@ -271,6 +352,15 @@ createSVGPathSegLinetoRel_ ::
                            (MonadIO m) => SVGPathElement -> Float -> Float -> m ()
 createSVGPathSegLinetoRel_ self x y
   = liftIO (void (js_createSVGPathSegLinetoRel (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoRel Mozilla SVGPathElement.createSVGPathSegLinetoRel documentation> 
+createSVGPathSegLinetoRelUnsafe ::
+                                (MonadIO m, HasCallStack) =>
+                                  SVGPathElement -> Float -> Float -> m SVGPathSegLinetoRel
+createSVGPathSegLinetoRelUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$> (js_createSVGPathSegLinetoRel (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoRel Mozilla SVGPathElement.createSVGPathSegLinetoRel documentation> 
 createSVGPathSegLinetoRelUnchecked ::
@@ -312,6 +402,21 @@ createSVGPathSegCurvetoCubicAbs_ ::
 createSVGPathSegCurvetoCubicAbs_ self x y x1 y1 x2 y2
   = liftIO
       (void (js_createSVGPathSegCurvetoCubicAbs (self) x y x1 y1 x2 y2))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicAbs Mozilla SVGPathElement.createSVGPathSegCurvetoCubicAbs documentation> 
+createSVGPathSegCurvetoCubicAbsUnsafe ::
+                                      (MonadIO m, HasCallStack) =>
+                                        SVGPathElement ->
+                                          Float ->
+                                            Float ->
+                                              Float ->
+                                                Float ->
+                                                  Float -> Float -> m SVGPathSegCurvetoCubicAbs
+createSVGPathSegCurvetoCubicAbsUnsafe self x y x1 y1 x2 y2
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoCubicAbs (self) x y x1 y1 x2 y2))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicAbs Mozilla SVGPathElement.createSVGPathSegCurvetoCubicAbs documentation> 
 createSVGPathSegCurvetoCubicAbsUnchecked ::
@@ -360,6 +465,21 @@ createSVGPathSegCurvetoCubicRel_ self x y x1 y1 x2 y2
       (void (js_createSVGPathSegCurvetoCubicRel (self) x y x1 y1 x2 y2))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicRel Mozilla SVGPathElement.createSVGPathSegCurvetoCubicRel documentation> 
+createSVGPathSegCurvetoCubicRelUnsafe ::
+                                      (MonadIO m, HasCallStack) =>
+                                        SVGPathElement ->
+                                          Float ->
+                                            Float ->
+                                              Float ->
+                                                Float ->
+                                                  Float -> Float -> m SVGPathSegCurvetoCubicRel
+createSVGPathSegCurvetoCubicRelUnsafe self x y x1 y1 x2 y2
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoCubicRel (self) x y x1 y1 x2 y2))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicRel Mozilla SVGPathElement.createSVGPathSegCurvetoCubicRel documentation> 
 createSVGPathSegCurvetoCubicRelUnchecked ::
                                          (MonadIO m) =>
                                            SVGPathElement ->
@@ -403,6 +523,19 @@ createSVGPathSegCurvetoQuadraticAbs_ self x y x1 y1
       (void (js_createSVGPathSegCurvetoQuadraticAbs (self) x y x1 y1))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticAbs Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticAbs documentation> 
+createSVGPathSegCurvetoQuadraticAbsUnsafe ::
+                                          (MonadIO m, HasCallStack) =>
+                                            SVGPathElement ->
+                                              Float ->
+                                                Float ->
+                                                  Float -> Float -> m SVGPathSegCurvetoQuadraticAbs
+createSVGPathSegCurvetoQuadraticAbsUnsafe self x y x1 y1
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoQuadraticAbs (self) x y x1 y1))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticAbs Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticAbs documentation> 
 createSVGPathSegCurvetoQuadraticAbsUnchecked ::
                                              (MonadIO m) =>
                                                SVGPathElement ->
@@ -443,6 +576,19 @@ createSVGPathSegCurvetoQuadraticRel_ ::
 createSVGPathSegCurvetoQuadraticRel_ self x y x1 y1
   = liftIO
       (void (js_createSVGPathSegCurvetoQuadraticRel (self) x y x1 y1))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticRel Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticRel documentation> 
+createSVGPathSegCurvetoQuadraticRelUnsafe ::
+                                          (MonadIO m, HasCallStack) =>
+                                            SVGPathElement ->
+                                              Float ->
+                                                Float ->
+                                                  Float -> Float -> m SVGPathSegCurvetoQuadraticRel
+createSVGPathSegCurvetoQuadraticRelUnsafe self x y x1 y1
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoQuadraticRel (self) x y x1 y1))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticRel Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticRel documentation> 
 createSVGPathSegCurvetoQuadraticRelUnchecked ::
@@ -490,6 +636,21 @@ createSVGPathSegArcAbs_ self x y r1 r2 angle largeArcFlag sweepFlag
       (void
          (js_createSVGPathSegArcAbs (self) x y r1 r2 angle largeArcFlag
             sweepFlag))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegArcAbs Mozilla SVGPathElement.createSVGPathSegArcAbs documentation> 
+createSVGPathSegArcAbsUnsafe ::
+                             (MonadIO m, HasCallStack) =>
+                               SVGPathElement ->
+                                 Float ->
+                                   Float ->
+                                     Float -> Float -> Float -> Bool -> Bool -> m SVGPathSegArcAbs
+createSVGPathSegArcAbsUnsafe self x y r1 r2 angle largeArcFlag
+  sweepFlag
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegArcAbs (self) x y r1 r2 angle largeArcFlag
+             sweepFlag))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegArcAbs Mozilla SVGPathElement.createSVGPathSegArcAbs documentation> 
 createSVGPathSegArcAbsUnchecked ::
@@ -541,6 +702,21 @@ createSVGPathSegArcRel_ self x y r1 r2 angle largeArcFlag sweepFlag
             sweepFlag))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegArcRel Mozilla SVGPathElement.createSVGPathSegArcRel documentation> 
+createSVGPathSegArcRelUnsafe ::
+                             (MonadIO m, HasCallStack) =>
+                               SVGPathElement ->
+                                 Float ->
+                                   Float ->
+                                     Float -> Float -> Float -> Bool -> Bool -> m SVGPathSegArcRel
+createSVGPathSegArcRelUnsafe self x y r1 r2 angle largeArcFlag
+  sweepFlag
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegArcRel (self) x y r1 r2 angle largeArcFlag
+             sweepFlag))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegArcRel Mozilla SVGPathElement.createSVGPathSegArcRel documentation> 
 createSVGPathSegArcRelUnchecked ::
                                 (MonadIO m) =>
                                   SVGPathElement ->
@@ -578,6 +754,17 @@ createSVGPathSegLinetoHorizontalAbs_ self x
   = liftIO (void (js_createSVGPathSegLinetoHorizontalAbs (self) x))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoHorizontalAbs Mozilla SVGPathElement.createSVGPathSegLinetoHorizontalAbs documentation> 
+createSVGPathSegLinetoHorizontalAbsUnsafe ::
+                                          (MonadIO m, HasCallStack) =>
+                                            SVGPathElement ->
+                                              Float -> m SVGPathSegLinetoHorizontalAbs
+createSVGPathSegLinetoHorizontalAbsUnsafe self x
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegLinetoHorizontalAbs (self) x))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoHorizontalAbs Mozilla SVGPathElement.createSVGPathSegLinetoHorizontalAbs documentation> 
 createSVGPathSegLinetoHorizontalAbsUnchecked ::
                                              (MonadIO m) =>
                                                SVGPathElement ->
@@ -608,6 +795,17 @@ createSVGPathSegLinetoHorizontalRel_ ::
                                      (MonadIO m) => SVGPathElement -> Float -> m ()
 createSVGPathSegLinetoHorizontalRel_ self x
   = liftIO (void (js_createSVGPathSegLinetoHorizontalRel (self) x))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoHorizontalRel Mozilla SVGPathElement.createSVGPathSegLinetoHorizontalRel documentation> 
+createSVGPathSegLinetoHorizontalRelUnsafe ::
+                                          (MonadIO m, HasCallStack) =>
+                                            SVGPathElement ->
+                                              Float -> m SVGPathSegLinetoHorizontalRel
+createSVGPathSegLinetoHorizontalRelUnsafe self x
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegLinetoHorizontalRel (self) x))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoHorizontalRel Mozilla SVGPathElement.createSVGPathSegLinetoHorizontalRel documentation> 
 createSVGPathSegLinetoHorizontalRelUnchecked ::
@@ -641,6 +839,16 @@ createSVGPathSegLinetoVerticalAbs_ self y
   = liftIO (void (js_createSVGPathSegLinetoVerticalAbs (self) y))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoVerticalAbs Mozilla SVGPathElement.createSVGPathSegLinetoVerticalAbs documentation> 
+createSVGPathSegLinetoVerticalAbsUnsafe ::
+                                        (MonadIO m, HasCallStack) =>
+                                          SVGPathElement -> Float -> m SVGPathSegLinetoVerticalAbs
+createSVGPathSegLinetoVerticalAbsUnsafe self y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegLinetoVerticalAbs (self) y))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoVerticalAbs Mozilla SVGPathElement.createSVGPathSegLinetoVerticalAbs documentation> 
 createSVGPathSegLinetoVerticalAbsUnchecked ::
                                            (MonadIO m) =>
                                              SVGPathElement ->
@@ -670,6 +878,16 @@ createSVGPathSegLinetoVerticalRel_ ::
                                    (MonadIO m) => SVGPathElement -> Float -> m ()
 createSVGPathSegLinetoVerticalRel_ self y
   = liftIO (void (js_createSVGPathSegLinetoVerticalRel (self) y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoVerticalRel Mozilla SVGPathElement.createSVGPathSegLinetoVerticalRel documentation> 
+createSVGPathSegLinetoVerticalRelUnsafe ::
+                                        (MonadIO m, HasCallStack) =>
+                                          SVGPathElement -> Float -> m SVGPathSegLinetoVerticalRel
+createSVGPathSegLinetoVerticalRelUnsafe self y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegLinetoVerticalRel (self) y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegLinetoVerticalRel Mozilla SVGPathElement.createSVGPathSegLinetoVerticalRel documentation> 
 createSVGPathSegLinetoVerticalRelUnchecked ::
@@ -709,6 +927,20 @@ createSVGPathSegCurvetoCubicSmoothAbs_ ::
 createSVGPathSegCurvetoCubicSmoothAbs_ self x y x2 y2
   = liftIO
       (void (js_createSVGPathSegCurvetoCubicSmoothAbs (self) x y x2 y2))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicSmoothAbs Mozilla SVGPathElement.createSVGPathSegCurvetoCubicSmoothAbs documentation> 
+createSVGPathSegCurvetoCubicSmoothAbsUnsafe ::
+                                            (MonadIO m, HasCallStack) =>
+                                              SVGPathElement ->
+                                                Float ->
+                                                  Float ->
+                                                    Float ->
+                                                      Float -> m SVGPathSegCurvetoCubicSmoothAbs
+createSVGPathSegCurvetoCubicSmoothAbsUnsafe self x y x2 y2
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoCubicSmoothAbs (self) x y x2 y2))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicSmoothAbs Mozilla SVGPathElement.createSVGPathSegCurvetoCubicSmoothAbs documentation> 
 createSVGPathSegCurvetoCubicSmoothAbsUnchecked ::
@@ -753,6 +985,20 @@ createSVGPathSegCurvetoCubicSmoothRel_ self x y x2 y2
       (void (js_createSVGPathSegCurvetoCubicSmoothRel (self) x y x2 y2))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicSmoothRel Mozilla SVGPathElement.createSVGPathSegCurvetoCubicSmoothRel documentation> 
+createSVGPathSegCurvetoCubicSmoothRelUnsafe ::
+                                            (MonadIO m, HasCallStack) =>
+                                              SVGPathElement ->
+                                                Float ->
+                                                  Float ->
+                                                    Float ->
+                                                      Float -> m SVGPathSegCurvetoCubicSmoothRel
+createSVGPathSegCurvetoCubicSmoothRelUnsafe self x y x2 y2
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoCubicSmoothRel (self) x y x2 y2))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoCubicSmoothRel Mozilla SVGPathElement.createSVGPathSegCurvetoCubicSmoothRel documentation> 
 createSVGPathSegCurvetoCubicSmoothRelUnchecked ::
                                                (MonadIO m) =>
                                                  SVGPathElement ->
@@ -789,6 +1035,18 @@ createSVGPathSegCurvetoQuadraticSmoothAbs_ ::
 createSVGPathSegCurvetoQuadraticSmoothAbs_ self x y
   = liftIO
       (void (js_createSVGPathSegCurvetoQuadraticSmoothAbs (self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothAbs Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothAbs documentation> 
+createSVGPathSegCurvetoQuadraticSmoothAbsUnsafe ::
+                                                (MonadIO m, HasCallStack) =>
+                                                  SVGPathElement ->
+                                                    Float ->
+                                                      Float -> m SVGPathSegCurvetoQuadraticSmoothAbs
+createSVGPathSegCurvetoQuadraticSmoothAbsUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoQuadraticSmoothAbs (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothAbs Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothAbs documentation> 
 createSVGPathSegCurvetoQuadraticSmoothAbsUnchecked ::
@@ -828,6 +1086,18 @@ createSVGPathSegCurvetoQuadraticSmoothRel_ self x y
       (void (js_createSVGPathSegCurvetoQuadraticSmoothRel (self) x y))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothRel Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothRel documentation> 
+createSVGPathSegCurvetoQuadraticSmoothRelUnsafe ::
+                                                (MonadIO m, HasCallStack) =>
+                                                  SVGPathElement ->
+                                                    Float ->
+                                                      Float -> m SVGPathSegCurvetoQuadraticSmoothRel
+createSVGPathSegCurvetoQuadraticSmoothRelUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSVGPathSegCurvetoQuadraticSmoothRel (self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothRel Mozilla SVGPathElement.createSVGPathSegCurvetoQuadraticSmoothRel documentation> 
 createSVGPathSegCurvetoQuadraticSmoothRelUnchecked ::
                                                    (MonadIO m) =>
                                                      SVGPathElement ->
@@ -850,6 +1120,14 @@ getPathLength self
   = liftIO (nullableToMaybe <$> (js_getPathLength (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathLength Mozilla SVGPathElement.pathLength documentation> 
+getPathLengthUnsafe ::
+                    (MonadIO m, HasCallStack) => SVGPathElement -> m SVGAnimatedNumber
+getPathLengthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPathLength (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathLength Mozilla SVGPathElement.pathLength documentation> 
 getPathLengthUnchecked ::
                        (MonadIO m) => SVGPathElement -> m SVGAnimatedNumber
 getPathLengthUnchecked self
@@ -863,6 +1141,14 @@ getPathSegList ::
                (MonadIO m) => SVGPathElement -> m (Maybe SVGPathSegList)
 getPathSegList self
   = liftIO (nullableToMaybe <$> (js_getPathSegList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathSegList Mozilla SVGPathElement.pathSegList documentation> 
+getPathSegListUnsafe ::
+                     (MonadIO m, HasCallStack) => SVGPathElement -> m SVGPathSegList
+getPathSegListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPathSegList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathSegList Mozilla SVGPathElement.pathSegList documentation> 
 getPathSegListUnchecked ::
@@ -880,6 +1166,14 @@ getNormalizedPathSegList ::
                          (MonadIO m) => SVGPathElement -> m (Maybe SVGPathSegList)
 getNormalizedPathSegList self
   = liftIO (nullableToMaybe <$> (js_getNormalizedPathSegList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.normalizedPathSegList Mozilla SVGPathElement.normalizedPathSegList documentation> 
+getNormalizedPathSegListUnsafe ::
+                               (MonadIO m, HasCallStack) => SVGPathElement -> m SVGPathSegList
+getNormalizedPathSegListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNormalizedPathSegList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.normalizedPathSegList Mozilla SVGPathElement.normalizedPathSegList documentation> 
 getNormalizedPathSegListUnchecked ::
@@ -900,6 +1194,14 @@ getAnimatedPathSegList self
   = liftIO (nullableToMaybe <$> (js_getAnimatedPathSegList (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.animatedPathSegList Mozilla SVGPathElement.animatedPathSegList documentation> 
+getAnimatedPathSegListUnsafe ::
+                             (MonadIO m, HasCallStack) => SVGPathElement -> m SVGPathSegList
+getAnimatedPathSegListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAnimatedPathSegList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.animatedPathSegList Mozilla SVGPathElement.animatedPathSegList documentation> 
 getAnimatedPathSegListUnchecked ::
                                 (MonadIO m) => SVGPathElement -> m SVGPathSegList
 getAnimatedPathSegListUnchecked self
@@ -917,6 +1219,15 @@ getAnimatedNormalizedPathSegList ::
 getAnimatedNormalizedPathSegList self
   = liftIO
       (nullableToMaybe <$> (js_getAnimatedNormalizedPathSegList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.animatedNormalizedPathSegList Mozilla SVGPathElement.animatedNormalizedPathSegList documentation> 
+getAnimatedNormalizedPathSegListUnsafe ::
+                                       (MonadIO m, HasCallStack) =>
+                                         SVGPathElement -> m SVGPathSegList
+getAnimatedNormalizedPathSegListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAnimatedNormalizedPathSegList (self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.animatedNormalizedPathSegList Mozilla SVGPathElement.animatedNormalizedPathSegList documentation> 
 getAnimatedNormalizedPathSegListUnchecked ::

@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeys
        (js_newMediaKeys, newMediaKeys, js_createSession, createSession,
-        createSession_, createSessionUnchecked, js_isTypeSupported,
-        isTypeSupported, isTypeSupported_, js_getKeySystem, getKeySystem,
-        MediaKeys(..), gTypeMediaKeys)
+        createSession_, createSessionUnsafe, createSessionUnchecked,
+        js_isTypeSupported, isTypeSupported, isTypeSupported_,
+        js_getKeySystem, getKeySystem, MediaKeys(..), gTypeMediaKeys)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"WebKitMediaKeys\"]($1)" js_newMediaKeys ::
@@ -56,6 +72,18 @@ createSession_ self type' initData
       (void
          (js_createSession (self) (toJSString type')
             (maybeToNullable (fmap toUint8Array initData))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.createSession Mozilla WebKitMediaKeys.createSession documentation> 
+createSessionUnsafe ::
+                    (MonadIO m, ToJSString type', IsUint8Array initData,
+                     HasCallStack) =>
+                      MediaKeys -> type' -> Maybe initData -> m MediaKeySession
+createSessionUnsafe self type' initData
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createSession (self) (toJSString type')
+             (maybeToNullable (fmap toUint8Array initData))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.createSession Mozilla WebKitMediaKeys.createSession documentation> 
 createSessionUnchecked ::

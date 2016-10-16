@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AudioBufferSourceNode
        (js_start, start, js_stop, stop, js_noteOn, noteOn, js_noteGrainOn,
         noteGrainOn, js_noteOff, noteOff, pattern UNSCHEDULED_STATE,
         pattern SCHEDULED_STATE, pattern PLAYING_STATE,
         pattern FINISHED_STATE, js_setBuffer, setBuffer, js_getBuffer,
-        getBuffer, getBufferUnchecked, js_getPlaybackState,
-        getPlaybackState, js_getGain, getGain, getGainUnchecked,
-        js_getPlaybackRate, getPlaybackRate, getPlaybackRateUnchecked,
+        getBuffer, getBufferUnsafe, getBufferUnchecked,
+        js_getPlaybackState, getPlaybackState, js_getGain, getGain,
+        getGainUnsafe, getGainUnchecked, js_getPlaybackRate,
+        getPlaybackRate, getPlaybackRateUnsafe, getPlaybackRateUnchecked,
         js_setLoop, setLoop, js_getLoop, getLoop, js_setLoopStart,
         setLoopStart, js_getLoopStart, getLoopStart, js_setLoopEnd,
         setLoopEnd, js_getLoopEnd, getLoopEnd, js_setLooping, setLooping,
@@ -14,6 +20,7 @@ module GHCJS.DOM.JSFFI.Generated.AudioBufferSourceNode
         gTypeAudioBufferSourceNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -29,6 +36,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"start\"]($2, $3, $4)"
         js_start ::
@@ -96,6 +113,14 @@ getBuffer ::
 getBuffer self = liftIO (nullableToMaybe <$> (js_getBuffer (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
+getBufferUnsafe ::
+                (MonadIO m, HasCallStack) => AudioBufferSourceNode -> m AudioBuffer
+getBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBuffer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
 getBufferUnchecked ::
                    (MonadIO m) => AudioBufferSourceNode -> m AudioBuffer
 getBufferUnchecked self
@@ -117,6 +142,14 @@ getGain ::
 getGain self = liftIO (nullableToMaybe <$> (js_getGain (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.gain Mozilla AudioBufferSourceNode.gain documentation> 
+getGainUnsafe ::
+              (MonadIO m, HasCallStack) => AudioBufferSourceNode -> m AudioParam
+getGainUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getGain (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.gain Mozilla AudioBufferSourceNode.gain documentation> 
 getGainUnchecked ::
                  (MonadIO m) => AudioBufferSourceNode -> m AudioParam
 getGainUnchecked self
@@ -131,6 +164,14 @@ getPlaybackRate ::
                 (MonadIO m) => AudioBufferSourceNode -> m (Maybe AudioParam)
 getPlaybackRate self
   = liftIO (nullableToMaybe <$> (js_getPlaybackRate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackRate Mozilla AudioBufferSourceNode.playbackRate documentation> 
+getPlaybackRateUnsafe ::
+                      (MonadIO m, HasCallStack) => AudioBufferSourceNode -> m AudioParam
+getPlaybackRateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPlaybackRate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackRate Mozilla AudioBufferSourceNode.playbackRate documentation> 
 getPlaybackRateUnchecked ::

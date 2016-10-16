@@ -1,20 +1,27 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MouseEvent
        (js_initMouseEvent, initMouseEvent, js_getScreenX, getScreenX,
         js_getScreenY, getScreenY, js_getClientX, getClientX,
         js_getClientY, getClientY, js_getCtrlKey, getCtrlKey,
         js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
         js_getMetaKey, getMetaKey, js_getButton, getButton,
-        js_getRelatedTarget, getRelatedTarget, getRelatedTargetUnchecked,
-        js_getMovementX, getMovementX, js_getMovementY, getMovementY,
-        js_getOffsetX, getOffsetX, js_getOffsetY, getOffsetY, js_getX,
-        getX, js_getY, getY, js_getFromElement, getFromElement,
+        js_getRelatedTarget, getRelatedTarget, getRelatedTargetUnsafe,
+        getRelatedTargetUnchecked, js_getMovementX, getMovementX,
+        js_getMovementY, getMovementY, js_getOffsetX, getOffsetX,
+        js_getOffsetY, getOffsetY, js_getX, getX, js_getY, getY,
+        js_getFromElement, getFromElement, getFromElementUnsafe,
         getFromElementUnchecked, js_getToElement, getToElement,
-        getToElementUnchecked, js_getDataTransfer, getDataTransfer,
-        getDataTransferUnchecked, MouseEvent(..), gTypeMouseEvent,
-        IsMouseEvent, toMouseEvent)
+        getToElementUnsafe, getToElementUnchecked, js_getDataTransfer,
+        getDataTransfer, getDataTransferUnsafe, getDataTransferUnchecked,
+        MouseEvent(..), gTypeMouseEvent, IsMouseEvent, toMouseEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -29,6 +36,16 @@ import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16)"
@@ -155,6 +172,15 @@ getRelatedTarget self
       (nullableToMaybe <$> (js_getRelatedTarget (toMouseEvent self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.relatedTarget Mozilla MouseEvent.relatedTarget documentation> 
+getRelatedTargetUnsafe ::
+                       (MonadIO m, IsMouseEvent self, HasCallStack) =>
+                         self -> m EventTarget
+getRelatedTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRelatedTarget (toMouseEvent self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.relatedTarget Mozilla MouseEvent.relatedTarget documentation> 
 getRelatedTargetUnchecked ::
                           (MonadIO m, IsMouseEvent self) => self -> m EventTarget
 getRelatedTargetUnchecked self
@@ -215,6 +241,14 @@ getFromElement self
       (nullableToMaybe <$> (js_getFromElement (toMouseEvent self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.fromElement Mozilla MouseEvent.fromElement documentation> 
+getFromElementUnsafe ::
+                     (MonadIO m, IsMouseEvent self, HasCallStack) => self -> m Node
+getFromElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFromElement (toMouseEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.fromElement Mozilla MouseEvent.fromElement documentation> 
 getFromElementUnchecked ::
                         (MonadIO m, IsMouseEvent self) => self -> m Node
 getFromElementUnchecked self
@@ -233,6 +267,14 @@ getToElement self
       (nullableToMaybe <$> (js_getToElement (toMouseEvent self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.toElement Mozilla MouseEvent.toElement documentation> 
+getToElementUnsafe ::
+                   (MonadIO m, IsMouseEvent self, HasCallStack) => self -> m Node
+getToElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getToElement (toMouseEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.toElement Mozilla MouseEvent.toElement documentation> 
 getToElementUnchecked ::
                       (MonadIO m, IsMouseEvent self) => self -> m Node
 getToElementUnchecked self
@@ -249,6 +291,15 @@ getDataTransfer ::
 getDataTransfer self
   = liftIO
       (nullableToMaybe <$> (js_getDataTransfer (toMouseEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.dataTransfer Mozilla MouseEvent.dataTransfer documentation> 
+getDataTransferUnsafe ::
+                      (MonadIO m, IsMouseEvent self, HasCallStack) =>
+                        self -> m DataTransfer
+getDataTransferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDataTransfer (toMouseEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.dataTransfer Mozilla MouseEvent.dataTransfer documentation> 
 getDataTransferUnchecked ::

@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaSourceStates
        (js_getSourceType, getSourceType, js_getSourceId, getSourceId,
-        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
-        getHeightUnchecked, js_getFrameRate, getFrameRate,
+        js_getWidth, getWidth, getWidthUnsafe, getWidthUnchecked,
+        js_getHeight, getHeight, getHeightUnsafe, getHeightUnchecked,
+        js_getFrameRate, getFrameRate, getFrameRateUnsafe,
         getFrameRateUnchecked, js_getAspectRatio, getAspectRatio,
-        getAspectRatioUnchecked, js_getFacingMode, getFacingMode,
-        js_getVolume, getVolume, getVolumeUnchecked, MediaSourceStates(..),
-        gTypeMediaSourceStates)
+        getAspectRatioUnsafe, getAspectRatioUnchecked, js_getFacingMode,
+        getFacingMode, js_getVolume, getVolume, getVolumeUnsafe,
+        getVolumeUnchecked, MediaSourceStates(..), gTypeMediaSourceStates)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"sourceType\"]"
         js_getSourceType :: MediaSourceStates -> IO JSVal
@@ -52,6 +69,14 @@ getWidth self
   = liftIO ((js_getWidth (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.width Mozilla MediaSourceStates.width documentation> 
+getWidthUnsafe ::
+               (MonadIO m, HasCallStack) => MediaSourceStates -> m Word
+getWidthUnsafe self
+  = liftIO
+      (((js_getWidth (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.width Mozilla MediaSourceStates.width documentation> 
 getWidthUnchecked :: (MonadIO m) => MediaSourceStates -> m Word
 getWidthUnchecked self
   = liftIO ((js_getWidth (self)) >>= fromJSValUnchecked)
@@ -63,6 +88,14 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight :: (MonadIO m) => MediaSourceStates -> m (Maybe Word)
 getHeight self
   = liftIO ((js_getHeight (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.height Mozilla MediaSourceStates.height documentation> 
+getHeightUnsafe ::
+                (MonadIO m, HasCallStack) => MediaSourceStates -> m Word
+getHeightUnsafe self
+  = liftIO
+      (((js_getHeight (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.height Mozilla MediaSourceStates.height documentation> 
 getHeightUnchecked :: (MonadIO m) => MediaSourceStates -> m Word
@@ -78,6 +111,14 @@ getFrameRate self
   = liftIO ((js_getFrameRate (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.frameRate Mozilla MediaSourceStates.frameRate documentation> 
+getFrameRateUnsafe ::
+                   (MonadIO m, HasCallStack) => MediaSourceStates -> m Float
+getFrameRateUnsafe self
+  = liftIO
+      (((js_getFrameRate (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.frameRate Mozilla MediaSourceStates.frameRate documentation> 
 getFrameRateUnchecked ::
                       (MonadIO m) => MediaSourceStates -> m Float
 getFrameRateUnchecked self
@@ -91,6 +132,14 @@ getAspectRatio ::
                (MonadIO m) => MediaSourceStates -> m (Maybe Float)
 getAspectRatio self
   = liftIO ((js_getAspectRatio (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.aspectRatio Mozilla MediaSourceStates.aspectRatio documentation> 
+getAspectRatioUnsafe ::
+                     (MonadIO m, HasCallStack) => MediaSourceStates -> m Float
+getAspectRatioUnsafe self
+  = liftIO
+      (((js_getAspectRatio (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.aspectRatio Mozilla MediaSourceStates.aspectRatio documentation> 
 getAspectRatioUnchecked ::
@@ -114,6 +163,14 @@ foreign import javascript unsafe "$1[\"volume\"]" js_getVolume ::
 getVolume :: (MonadIO m) => MediaSourceStates -> m (Maybe Word)
 getVolume self
   = liftIO ((js_getVolume (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.volume Mozilla MediaSourceStates.volume documentation> 
+getVolumeUnsafe ::
+                (MonadIO m, HasCallStack) => MediaSourceStates -> m Word
+getVolumeUnsafe self
+  = liftIO
+      (((js_getVolume (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSourceStates.volume Mozilla MediaSourceStates.volume documentation> 
 getVolumeUnchecked :: (MonadIO m) => MediaSourceStates -> m Word

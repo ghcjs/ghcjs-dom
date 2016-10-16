@@ -1,9 +1,15 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.DelayNode
-       (js_getDelayTime, getDelayTime, getDelayTimeUnchecked,
-        DelayNode(..), gTypeDelayNode)
+       (js_getDelayTime, getDelayTime, getDelayTimeUnsafe,
+        getDelayTimeUnchecked, DelayNode(..), gTypeDelayNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -19,6 +25,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"delayTime\"]"
         js_getDelayTime :: DelayNode -> IO (Nullable AudioParam)
@@ -27,6 +43,14 @@ foreign import javascript unsafe "$1[\"delayTime\"]"
 getDelayTime :: (MonadIO m) => DelayNode -> m (Maybe AudioParam)
 getDelayTime self
   = liftIO (nullableToMaybe <$> (js_getDelayTime (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode.delayTime Mozilla DelayNode.delayTime documentation> 
+getDelayTimeUnsafe ::
+                   (MonadIO m, HasCallStack) => DelayNode -> m AudioParam
+getDelayTimeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDelayTime (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DelayNode.delayTime Mozilla DelayNode.delayTime documentation> 
 getDelayTimeUnchecked :: (MonadIO m) => DelayNode -> m AudioParam

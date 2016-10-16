@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
        (js_checkValidity, checkValidity, checkValidity_,
         js_setCustomValidity, setCustomValidity, js_getSVGDocument,
-        getSVGDocument, getSVGDocument_, getSVGDocumentUnchecked,
-        js_getForm, getForm, getFormUnchecked, js_setCode, setCode,
-        js_getCode, getCode, js_setAlign, setAlign, js_getAlign, getAlign,
-        js_setArchive, setArchive, js_getArchive, getArchive, js_setBorder,
-        setBorder, js_getBorder, getBorder, js_setCodeBase, setCodeBase,
+        getSVGDocument, getSVGDocument_, getSVGDocumentUnsafe,
+        getSVGDocumentUnchecked, js_getForm, getForm, getFormUnsafe,
+        getFormUnchecked, js_setCode, setCode, js_getCode, getCode,
+        js_setAlign, setAlign, js_getAlign, getAlign, js_setArchive,
+        setArchive, js_getArchive, getArchive, js_setBorder, setBorder,
+        js_getBorder, getBorder, js_setCodeBase, setCodeBase,
         js_getCodeBase, getCodeBase, js_setCodeType, setCodeType,
         js_getCodeType, getCodeType, js_setData, setData, js_getData,
         getData, js_setDeclare, setDeclare, js_getDeclare, getDeclare,
@@ -17,12 +23,14 @@ module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
         setUseMap, js_getUseMap, getUseMap, js_setVspace, setVspace,
         js_getVspace, getVspace, js_setWidth, setWidth, js_getWidth,
         getWidth, js_getWillValidate, getWillValidate, js_getValidity,
-        getValidity, getValidityUnchecked, js_getValidationMessage,
-        getValidationMessage, js_getContentDocument, getContentDocument,
-        getContentDocumentUnchecked, HTMLObjectElement(..),
-        gTypeHTMLObjectElement)
+        getValidity, getValidityUnsafe, getValidityUnchecked,
+        js_getValidationMessage, getValidationMessage,
+        js_getContentDocument, getContentDocument,
+        getContentDocumentUnsafe, getContentDocumentUnchecked,
+        HTMLObjectElement(..), gTypeHTMLObjectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -38,6 +46,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
@@ -76,6 +94,14 @@ getSVGDocument_ :: (MonadIO m) => HTMLObjectElement -> m ()
 getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 
+getSVGDocumentUnsafe ::
+                     (MonadIO m, HasCallStack) => HTMLObjectElement -> m SVGDocument
+getSVGDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSVGDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 
 getSVGDocumentUnchecked ::
                         (MonadIO m) => HTMLObjectElement -> m SVGDocument
 getSVGDocumentUnchecked self
@@ -89,6 +115,14 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLObjectElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.form Mozilla HTMLObjectElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLObjectElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.form Mozilla HTMLObjectElement.form documentation> 
 getFormUnchecked ::
@@ -369,6 +403,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validity Mozilla HTMLObjectElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLObjectElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.validity Mozilla HTMLObjectElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLObjectElement -> m ValidityState
 getValidityUnchecked self
@@ -392,6 +434,14 @@ getContentDocument ::
                    (MonadIO m) => HTMLObjectElement -> m (Maybe Document)
 getContentDocument self
   = liftIO (nullableToMaybe <$> (js_getContentDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.contentDocument Mozilla HTMLObjectElement.contentDocument documentation> 
+getContentDocumentUnsafe ::
+                         (MonadIO m, HasCallStack) => HTMLObjectElement -> m Document
+getContentDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getContentDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.contentDocument Mozilla HTMLObjectElement.contentDocument documentation> 
 getContentDocumentUnchecked ::

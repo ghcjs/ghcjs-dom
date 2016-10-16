@@ -1,15 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGGradientElement
        (pattern SVG_SPREADMETHOD_UNKNOWN, pattern SVG_SPREADMETHOD_PAD,
         pattern SVG_SPREADMETHOD_REFLECT, pattern SVG_SPREADMETHOD_REPEAT,
-        js_getGradientUnits, getGradientUnits, getGradientUnitsUnchecked,
-        js_getGradientTransform, getGradientTransform,
+        js_getGradientUnits, getGradientUnits, getGradientUnitsUnsafe,
+        getGradientUnitsUnchecked, js_getGradientTransform,
+        getGradientTransform, getGradientTransformUnsafe,
         getGradientTransformUnchecked, js_getSpreadMethod, getSpreadMethod,
-        getSpreadMethodUnchecked, SVGGradientElement(..),
-        gTypeSVGGradientElement, IsSVGGradientElement,
-        toSVGGradientElement)
+        getSpreadMethodUnsafe, getSpreadMethodUnchecked,
+        SVGGradientElement(..), gTypeSVGGradientElement,
+        IsSVGGradientElement, toSVGGradientElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern SVG_SPREADMETHOD_UNKNOWN = 0
 pattern SVG_SPREADMETHOD_PAD = 1
 pattern SVG_SPREADMETHOD_REFLECT = 2
@@ -42,6 +59,16 @@ getGradientUnits self
   = liftIO
       (nullableToMaybe <$>
          (js_getGradientUnits (toSVGGradientElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientUnits Mozilla SVGGradientElement.gradientUnits documentation> 
+getGradientUnitsUnsafe ::
+                       (MonadIO m, IsSVGGradientElement self, HasCallStack) =>
+                         self -> m SVGAnimatedEnumeration
+getGradientUnitsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getGradientUnits (toSVGGradientElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientUnits Mozilla SVGGradientElement.gradientUnits documentation> 
 getGradientUnitsUnchecked ::
@@ -66,6 +93,16 @@ getGradientTransform self
          (js_getGradientTransform (toSVGGradientElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientTransform Mozilla SVGGradientElement.gradientTransform documentation> 
+getGradientTransformUnsafe ::
+                           (MonadIO m, IsSVGGradientElement self, HasCallStack) =>
+                             self -> m SVGAnimatedTransformList
+getGradientTransformUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getGradientTransform (toSVGGradientElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.gradientTransform Mozilla SVGGradientElement.gradientTransform documentation> 
 getGradientTransformUnchecked ::
                               (MonadIO m, IsSVGGradientElement self) =>
                                 self -> m SVGAnimatedTransformList
@@ -86,6 +123,16 @@ getSpreadMethod self
   = liftIO
       (nullableToMaybe <$>
          (js_getSpreadMethod (toSVGGradientElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.spreadMethod Mozilla SVGGradientElement.spreadMethod documentation> 
+getSpreadMethodUnsafe ::
+                      (MonadIO m, IsSVGGradientElement self, HasCallStack) =>
+                        self -> m SVGAnimatedEnumeration
+getSpreadMethodUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getSpreadMethod (toSVGGradientElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGradientElement.spreadMethod Mozilla SVGGradientElement.spreadMethod documentation> 
 getSpreadMethodUnchecked ::

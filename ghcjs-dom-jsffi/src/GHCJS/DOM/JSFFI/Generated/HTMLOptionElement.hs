@@ -1,15 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOptionElement
        (js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_getForm, getForm, getFormUnchecked, js_setLabel, setLabel,
-        js_getLabel, getLabel, js_setDefaultSelected, setDefaultSelected,
-        js_getDefaultSelected, getDefaultSelected, js_setSelected,
-        setSelected, js_getSelected, getSelected, js_setValue, setValue,
-        js_getValue, getValue, js_setText, setText, js_getText, getText,
-        js_getIndex, getIndex, HTMLOptionElement(..),
+        js_getForm, getForm, getFormUnsafe, getFormUnchecked, js_setLabel,
+        setLabel, js_getLabel, getLabel, js_setDefaultSelected,
+        setDefaultSelected, js_getDefaultSelected, getDefaultSelected,
+        js_setSelected, setSelected, js_getSelected, getSelected,
+        js_setValue, setValue, js_getValue, getValue, js_setText, setText,
+        js_getText, getText, js_getIndex, getIndex, HTMLOptionElement(..),
         gTypeHTMLOptionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"disabled\"] = $2;"
         js_setDisabled :: HTMLOptionElement -> Bool -> IO ()
@@ -47,6 +63,14 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLOptionElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.form Mozilla HTMLOptionElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLOptionElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.form Mozilla HTMLOptionElement.form documentation> 
 getFormUnchecked ::

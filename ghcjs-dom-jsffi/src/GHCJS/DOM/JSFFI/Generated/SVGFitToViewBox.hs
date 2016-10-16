@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFitToViewBox
-       (js_getViewBox, getViewBox, getViewBoxUnchecked,
+       (js_getViewBox, getViewBox, getViewBoxUnsafe, getViewBoxUnchecked,
         js_getPreserveAspectRatio, getPreserveAspectRatio,
-        getPreserveAspectRatioUnchecked, SVGFitToViewBox(..),
-        gTypeSVGFitToViewBox)
+        getPreserveAspectRatioUnsafe, getPreserveAspectRatioUnchecked,
+        SVGFitToViewBox(..), gTypeSVGFitToViewBox)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"viewBox\"]" js_getViewBox ::
         SVGFitToViewBox -> IO (Nullable SVGAnimatedRect)
@@ -30,6 +46,14 @@ getViewBox ::
            (MonadIO m) => SVGFitToViewBox -> m (Maybe SVGAnimatedRect)
 getViewBox self
   = liftIO (nullableToMaybe <$> (js_getViewBox (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
+getViewBoxUnsafe ::
+                 (MonadIO m, HasCallStack) => SVGFitToViewBox -> m SVGAnimatedRect
+getViewBoxUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getViewBox (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.viewBox Mozilla SVGFitToViewBox.viewBox documentation> 
 getViewBoxUnchecked ::
@@ -47,6 +71,15 @@ getPreserveAspectRatio ::
                          SVGFitToViewBox -> m (Maybe SVGAnimatedPreserveAspectRatio)
 getPreserveAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getPreserveAspectRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
+getPreserveAspectRatioUnsafe ::
+                             (MonadIO m, HasCallStack) =>
+                               SVGFitToViewBox -> m SVGAnimatedPreserveAspectRatio
+getPreserveAspectRatioUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreserveAspectRatio (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFitToViewBox.preserveAspectRatio Mozilla SVGFitToViewBox.preserveAspectRatio documentation> 
 getPreserveAspectRatioUnchecked ::

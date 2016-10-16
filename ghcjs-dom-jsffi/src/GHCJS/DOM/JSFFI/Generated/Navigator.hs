@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Navigator
        (js_getGamepads, getGamepads, getGamepads_, js_webkitGetUserMedia,
         webkitGetUserMedia, js_registerProtocolHandler,
@@ -8,23 +13,27 @@ module GHCJS.DOM.JSFFI.Generated.Navigator
         js_vibratePattern, vibratePattern, vibratePattern_, js_vibrate,
         vibrate, vibrate_, js_javaEnabled, javaEnabled, javaEnabled_,
         js_getStorageUpdates, getStorageUpdates, js_getWebkitBattery,
-        getWebkitBattery, getWebkitBatteryUnchecked, js_getGeolocation,
-        getGeolocation, getGeolocationUnchecked,
+        getWebkitBattery, getWebkitBatteryUnsafe,
+        getWebkitBatteryUnchecked, js_getGeolocation, getGeolocation,
+        getGeolocationUnsafe, getGeolocationUnchecked,
         js_getWebkitTemporaryStorage, getWebkitTemporaryStorage,
+        getWebkitTemporaryStorageUnsafe,
         getWebkitTemporaryStorageUnchecked, js_getWebkitPersistentStorage,
-        getWebkitPersistentStorage, getWebkitPersistentStorageUnchecked,
-        js_getAppCodeName, getAppCodeName, js_getAppName, getAppName,
-        js_getAppVersion, getAppVersion, js_getLanguage, getLanguage,
-        js_getUserAgent, getUserAgent, js_getPlatform, getPlatform,
-        js_getPlugins, getPlugins, getPluginsUnchecked, js_getMimeTypes,
-        getMimeTypes, getMimeTypesUnchecked, js_getProduct, getProduct,
-        js_getProductSub, getProductSub, js_getVendor, getVendor,
-        js_getVendorSub, getVendorSub, js_getCookieEnabled,
-        getCookieEnabled, js_getOnLine, getOnLine,
+        getWebkitPersistentStorage, getWebkitPersistentStorageUnsafe,
+        getWebkitPersistentStorageUnchecked, js_getAppCodeName,
+        getAppCodeName, js_getAppName, getAppName, js_getAppVersion,
+        getAppVersion, js_getLanguage, getLanguage, js_getUserAgent,
+        getUserAgent, js_getPlatform, getPlatform, js_getPlugins,
+        getPlugins, getPluginsUnsafe, getPluginsUnchecked, js_getMimeTypes,
+        getMimeTypes, getMimeTypesUnsafe, getMimeTypesUnchecked,
+        js_getProduct, getProduct, js_getProductSub, getProductSub,
+        js_getVendor, getVendor, js_getVendorSub, getVendorSub,
+        js_getCookieEnabled, getCookieEnabled, js_getOnLine, getOnLine,
         js_getHardwareConcurrency, getHardwareConcurrency, Navigator(..),
         gTypeNavigator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -40,6 +49,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getGamepads\"]()"
         js_getGamepads :: Navigator -> IO JSVal
@@ -186,6 +205,14 @@ getWebkitBattery self
   = liftIO (nullableToMaybe <$> (js_getWebkitBattery (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitBattery Mozilla Navigator.webkitBattery documentation> 
+getWebkitBatteryUnsafe ::
+                       (MonadIO m, HasCallStack) => Navigator -> m BatteryManager
+getWebkitBatteryUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitBattery (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitBattery Mozilla Navigator.webkitBattery documentation> 
 getWebkitBatteryUnchecked ::
                           (MonadIO m) => Navigator -> m BatteryManager
 getWebkitBatteryUnchecked self
@@ -199,6 +226,14 @@ foreign import javascript unsafe "$1[\"geolocation\"]"
 getGeolocation :: (MonadIO m) => Navigator -> m (Maybe Geolocation)
 getGeolocation self
   = liftIO (nullableToMaybe <$> (js_getGeolocation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.geolocation Mozilla Navigator.geolocation documentation> 
+getGeolocationUnsafe ::
+                     (MonadIO m, HasCallStack) => Navigator -> m Geolocation
+getGeolocationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getGeolocation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.geolocation Mozilla Navigator.geolocation documentation> 
 getGeolocationUnchecked ::
@@ -219,6 +254,14 @@ getWebkitTemporaryStorage self
       (nullableToMaybe <$> (js_getWebkitTemporaryStorage (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitTemporaryStorage Mozilla Navigator.webkitTemporaryStorage documentation> 
+getWebkitTemporaryStorageUnsafe ::
+                                (MonadIO m, HasCallStack) => Navigator -> m StorageQuota
+getWebkitTemporaryStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitTemporaryStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitTemporaryStorage Mozilla Navigator.webkitTemporaryStorage documentation> 
 getWebkitTemporaryStorageUnchecked ::
                                    (MonadIO m) => Navigator -> m StorageQuota
 getWebkitTemporaryStorageUnchecked self
@@ -236,6 +279,14 @@ getWebkitPersistentStorage ::
 getWebkitPersistentStorage self
   = liftIO
       (nullableToMaybe <$> (js_getWebkitPersistentStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitPersistentStorage Mozilla Navigator.webkitPersistentStorage documentation> 
+getWebkitPersistentStorageUnsafe ::
+                                 (MonadIO m, HasCallStack) => Navigator -> m StorageQuota
+getWebkitPersistentStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitPersistentStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitPersistentStorage Mozilla Navigator.webkitPersistentStorage documentation> 
 getWebkitPersistentStorageUnchecked ::
@@ -307,6 +358,14 @@ getPlugins self
   = liftIO (nullableToMaybe <$> (js_getPlugins (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.plugins Mozilla Navigator.plugins documentation> 
+getPluginsUnsafe ::
+                 (MonadIO m, HasCallStack) => Navigator -> m PluginArray
+getPluginsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPlugins (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.plugins Mozilla Navigator.plugins documentation> 
 getPluginsUnchecked :: (MonadIO m) => Navigator -> m PluginArray
 getPluginsUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getPlugins (self)))
@@ -318,6 +377,14 @@ foreign import javascript unsafe "$1[\"mimeTypes\"]"
 getMimeTypes :: (MonadIO m) => Navigator -> m (Maybe MimeTypeArray)
 getMimeTypes self
   = liftIO (nullableToMaybe <$> (js_getMimeTypes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mimeTypes Mozilla Navigator.mimeTypes documentation> 
+getMimeTypesUnsafe ::
+                   (MonadIO m, HasCallStack) => Navigator -> m MimeTypeArray
+getMimeTypesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMimeTypes (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mimeTypes Mozilla Navigator.mimeTypes documentation> 
 getMimeTypesUnchecked ::

@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSKeyframesRule
        (js_insertRule, insertRule, js_appendRule, appendRule,
         js_deleteRule, deleteRule, js_findRule, findRule, findRule_,
-        findRuleUnchecked, js__get, _get, _get_, _getUnchecked, js_setName,
-        setName, js_getName, getName, getNameUnchecked, js_getCssRules,
-        getCssRules, getCssRulesUnchecked, CSSKeyframesRule(..),
-        gTypeCSSKeyframesRule)
+        findRuleUnsafe, findRuleUnchecked, js__get, _get, _get_,
+        _getUnsafe, _getUnchecked, js_setName, setName, js_getName,
+        getName, getNameUnsafe, getNameUnchecked, js_getCssRules,
+        getCssRules, getCssRulesUnsafe, getCssRulesUnchecked,
+        CSSKeyframesRule(..), gTypeCSSKeyframesRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"insertRule\"]($2)"
         js_insertRule :: CSSKeyframesRule -> JSString -> IO ()
@@ -69,6 +86,15 @@ findRule_ self key
   = liftIO (void (js_findRule (self) (toJSString key)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.findRule Mozilla CSSKeyframesRule.findRule documentation> 
+findRuleUnsafe ::
+               (MonadIO m, ToJSString key, HasCallStack) =>
+                 CSSKeyframesRule -> key -> m CSSKeyframeRule
+findRuleUnsafe self key
+  = liftIO
+      ((nullableToMaybe <$> (js_findRule (self) (toJSString key))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.findRule Mozilla CSSKeyframesRule.findRule documentation> 
 findRuleUnchecked ::
                   (MonadIO m, ToJSString key) =>
                     CSSKeyframesRule -> key -> m CSSKeyframeRule
@@ -90,6 +116,15 @@ _get self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule._get Mozilla CSSKeyframesRule._get documentation> 
 _get_ :: (MonadIO m) => CSSKeyframesRule -> Word -> m ()
 _get_ self index = liftIO (void (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule._get Mozilla CSSKeyframesRule._get documentation> 
+_getUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             CSSKeyframesRule -> Word -> m CSSKeyframeRule
+_getUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js__get (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule._get Mozilla CSSKeyframesRule._get documentation> 
 _getUnchecked ::
@@ -116,6 +151,15 @@ getName ::
 getName self = liftIO (fromMaybeJSString <$> (js_getName (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
+getNameUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                CSSKeyframesRule -> m result
+getNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getName (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
 getNameUnchecked ::
                  (MonadIO m, FromJSString result) => CSSKeyframesRule -> m result
 getNameUnchecked self
@@ -129,6 +173,14 @@ getCssRules ::
             (MonadIO m) => CSSKeyframesRule -> m (Maybe CSSRuleList)
 getCssRules self
   = liftIO (nullableToMaybe <$> (js_getCssRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.cssRules Mozilla CSSKeyframesRule.cssRules documentation> 
+getCssRulesUnsafe ::
+                  (MonadIO m, HasCallStack) => CSSKeyframesRule -> m CSSRuleList
+getCssRulesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCssRules (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.cssRules Mozilla CSSKeyframesRule.cssRules documentation> 
 getCssRulesUnchecked ::

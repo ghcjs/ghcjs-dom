@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSValue
        (pattern CSS_INHERIT, pattern CSS_PRIMITIVE_VALUE,
         pattern CSS_VALUE_LIST, pattern CSS_CUSTOM, js_setCssText,
-        setCssText, js_getCssText, getCssText, getCssTextUnchecked,
-        js_getCssValueType, getCssValueType, CSSValue(..), gTypeCSSValue,
-        IsCSSValue, toCSSValue)
+        setCssText, js_getCssText, getCssText, getCssTextUnsafe,
+        getCssTextUnchecked, js_getCssValueType, getCssValueType,
+        CSSValue(..), gTypeCSSValue, IsCSSValue, toCSSValue)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern CSS_INHERIT = 0
 pattern CSS_PRIMITIVE_VALUE = 1
 pattern CSS_VALUE_LIST = 2
@@ -46,6 +62,15 @@ getCssText ::
              self -> m (Maybe result)
 getCssText self
   = liftIO (fromMaybeJSString <$> (js_getCssText (toCSSValue self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssText Mozilla CSSValue.cssText documentation> 
+getCssTextUnsafe ::
+                 (MonadIO m, IsCSSValue self, HasCallStack, FromJSString result) =>
+                   self -> m result
+getCssTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCssText (toCSSValue self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssText Mozilla CSSValue.cssText documentation> 
 getCssTextUnchecked ::

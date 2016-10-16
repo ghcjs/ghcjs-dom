@@ -1,15 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.NodeIterator
-       (js_nextNode, nextNode, nextNode_, nextNodeUnchecked,
-        js_previousNode, previousNode, previousNode_,
-        previousNodeUnchecked, js_detach, detach, js_getRoot, getRoot,
-        getRootUnchecked, js_getWhatToShow, getWhatToShow, js_getFilter,
-        getFilter, getFilterUnchecked, js_getExpandEntityReferences,
+       (js_nextNode, nextNode, nextNode_, nextNodeUnsafe,
+        nextNodeUnchecked, js_previousNode, previousNode, previousNode_,
+        previousNodeUnsafe, previousNodeUnchecked, js_detach, detach,
+        js_getRoot, getRoot, getRootUnsafe, getRootUnchecked,
+        js_getWhatToShow, getWhatToShow, js_getFilter, getFilter,
+        getFilterUnsafe, getFilterUnchecked, js_getExpandEntityReferences,
         getExpandEntityReferences, js_getReferenceNode, getReferenceNode,
-        getReferenceNodeUnchecked, js_getPointerBeforeReferenceNode,
-        getPointerBeforeReferenceNode, NodeIterator(..), gTypeNodeIterator)
+        getReferenceNodeUnsafe, getReferenceNodeUnchecked,
+        js_getPointerBeforeReferenceNode, getPointerBeforeReferenceNode,
+        NodeIterator(..), gTypeNodeIterator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"nextNode\"]()" js_nextNode
         :: NodeIterator -> IO (Nullable Node)
@@ -36,6 +54,14 @@ nextNode self = liftIO (nullableToMaybe <$> (js_nextNode (self)))
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
 nextNode_ :: (MonadIO m) => NodeIterator -> m ()
 nextNode_ self = liftIO (void (js_nextNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
+nextNodeUnsafe ::
+               (MonadIO m, HasCallStack) => NodeIterator -> m Node
+nextNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_nextNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
 nextNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
@@ -53,6 +79,14 @@ previousNode self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
 previousNode_ :: (MonadIO m) => NodeIterator -> m ()
 previousNode_ self = liftIO (void (js_previousNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
+previousNodeUnsafe ::
+                   (MonadIO m, HasCallStack) => NodeIterator -> m Node
+previousNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_previousNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
 previousNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
@@ -74,6 +108,14 @@ getRoot :: (MonadIO m) => NodeIterator -> m (Maybe Node)
 getRoot self = liftIO (nullableToMaybe <$> (js_getRoot (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.root Mozilla NodeIterator.root documentation> 
+getRootUnsafe ::
+              (MonadIO m, HasCallStack) => NodeIterator -> m Node
+getRootUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRoot (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.root Mozilla NodeIterator.root documentation> 
 getRootUnchecked :: (MonadIO m) => NodeIterator -> m Node
 getRootUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRoot (self)))
@@ -91,6 +133,14 @@ foreign import javascript unsafe "$1[\"filter\"]" js_getFilter ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.filter Mozilla NodeIterator.filter documentation> 
 getFilter :: (MonadIO m) => NodeIterator -> m (Maybe NodeFilter)
 getFilter self = liftIO (nullableToMaybe <$> (js_getFilter (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.filter Mozilla NodeIterator.filter documentation> 
+getFilterUnsafe ::
+                (MonadIO m, HasCallStack) => NodeIterator -> m NodeFilter
+getFilterUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFilter (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.filter Mozilla NodeIterator.filter documentation> 
 getFilterUnchecked :: (MonadIO m) => NodeIterator -> m NodeFilter
@@ -113,6 +163,14 @@ foreign import javascript unsafe "$1[\"referenceNode\"]"
 getReferenceNode :: (MonadIO m) => NodeIterator -> m (Maybe Node)
 getReferenceNode self
   = liftIO (nullableToMaybe <$> (js_getReferenceNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.referenceNode Mozilla NodeIterator.referenceNode documentation> 
+getReferenceNodeUnsafe ::
+                       (MonadIO m, HasCallStack) => NodeIterator -> m Node
+getReferenceNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getReferenceNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.referenceNode Mozilla NodeIterator.referenceNode documentation> 
 getReferenceNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node

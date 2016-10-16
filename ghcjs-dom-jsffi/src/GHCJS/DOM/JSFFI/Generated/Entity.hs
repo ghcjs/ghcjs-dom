@@ -1,10 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Entity
-       (js_getPublicId, getPublicId, getPublicIdUnchecked, js_getSystemId,
-        getSystemId, getSystemIdUnchecked, js_getNotationName,
-        getNotationName, getNotationNameUnchecked, Entity(..), gTypeEntity)
+       (js_getPublicId, getPublicId, getPublicIdUnsafe,
+        getPublicIdUnchecked, js_getSystemId, getSystemId,
+        getSystemIdUnsafe, getSystemIdUnchecked, js_getNotationName,
+        getNotationName, getNotationNameUnsafe, getNotationNameUnchecked,
+        Entity(..), gTypeEntity)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"publicId\"]" js_getPublicId
         :: Entity -> IO (Nullable JSString)
@@ -29,6 +47,15 @@ getPublicId ::
             (MonadIO m, FromJSString result) => Entity -> m (Maybe result)
 getPublicId self
   = liftIO (fromMaybeJSString <$> (js_getPublicId (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.publicId Mozilla Entity.publicId documentation> 
+getPublicIdUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    Entity -> m result
+getPublicIdUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPublicId (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.publicId Mozilla Entity.publicId documentation> 
 getPublicIdUnchecked ::
@@ -46,6 +73,15 @@ getSystemId self
   = liftIO (fromMaybeJSString <$> (js_getSystemId (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.systemId Mozilla Entity.systemId documentation> 
+getSystemIdUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    Entity -> m result
+getSystemIdUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getSystemId (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.systemId Mozilla Entity.systemId documentation> 
 getSystemIdUnchecked ::
                      (MonadIO m, FromJSString result) => Entity -> m result
 getSystemIdUnchecked self
@@ -59,6 +95,15 @@ getNotationName ::
                 (MonadIO m, FromJSString result) => Entity -> m (Maybe result)
 getNotationName self
   = liftIO (fromMaybeJSString <$> (js_getNotationName (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.notationName Mozilla Entity.notationName documentation> 
+getNotationNameUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        Entity -> m result
+getNotationNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getNotationName (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Entity.notationName Mozilla Entity.notationName documentation> 
 getNotationNameUnchecked ::

@@ -1,109 +1,141 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Document
        (js_newDocument, newDocument, js_createElement, createElement,
-        createElement_, createElementUnchecked, js_createDocumentFragment,
-        createDocumentFragment, createDocumentFragment_,
+        createElement_, createElementUnsafe, createElementUnchecked,
+        js_createDocumentFragment, createDocumentFragment,
+        createDocumentFragment_, createDocumentFragmentUnsafe,
         createDocumentFragmentUnchecked, js_createTextNode, createTextNode,
-        createTextNode_, createTextNodeUnchecked, js_createComment,
-        createComment, createComment_, createCommentUnchecked,
-        js_createCDATASection, createCDATASection, createCDATASection_,
+        createTextNode_, createTextNodeUnsafe, createTextNodeUnchecked,
+        js_createComment, createComment, createComment_,
+        createCommentUnsafe, createCommentUnchecked, js_createCDATASection,
+        createCDATASection, createCDATASection_, createCDATASectionUnsafe,
         createCDATASectionUnchecked, js_createProcessingInstruction,
         createProcessingInstruction, createProcessingInstruction_,
+        createProcessingInstructionUnsafe,
         createProcessingInstructionUnchecked, js_createAttribute,
-        createAttribute, createAttribute_, createAttributeUnchecked,
-        js_createEntityReference, createEntityReference,
-        createEntityReference_, createEntityReferenceUnchecked,
+        createAttribute, createAttribute_, createAttributeUnsafe,
+        createAttributeUnchecked, js_createEntityReference,
+        createEntityReference, createEntityReference_,
+        createEntityReferenceUnsafe, createEntityReferenceUnchecked,
         js_getElementsByTagName, getElementsByTagName,
-        getElementsByTagName_, getElementsByTagNameUnchecked,
-        js_importNode, importNode, importNode_, importNodeUnchecked,
+        getElementsByTagName_, getElementsByTagNameUnsafe,
+        getElementsByTagNameUnchecked, js_importNode, importNode,
+        importNode_, importNodeUnsafe, importNodeUnchecked,
         js_createElementNS, createElementNS, createElementNS_,
-        createElementNSUnchecked, js_createAttributeNS, createAttributeNS,
-        createAttributeNS_, createAttributeNSUnchecked,
+        createElementNSUnsafe, createElementNSUnchecked,
+        js_createAttributeNS, createAttributeNS, createAttributeNS_,
+        createAttributeNSUnsafe, createAttributeNSUnchecked,
         js_getElementsByTagNameNS, getElementsByTagNameNS,
-        getElementsByTagNameNS_, getElementsByTagNameNSUnchecked,
-        js_getElementById, getElementById, getElementById_,
-        getElementByIdUnchecked, js_adoptNode, adoptNode, adoptNode_,
+        getElementsByTagNameNS_, getElementsByTagNameNSUnsafe,
+        getElementsByTagNameNSUnchecked, js_getElementById, getElementById,
+        getElementById_, getElementByIdUnsafe, getElementByIdUnchecked,
+        js_adoptNode, adoptNode, adoptNode_, adoptNodeUnsafe,
         adoptNodeUnchecked, js_createEvent, createEvent, createEvent_,
-        createEventUnchecked, js_createRange, createRange, createRange_,
-        createRangeUnchecked, js_createNodeIterator, createNodeIterator,
-        createNodeIterator_, createNodeIteratorUnchecked,
+        createEventUnsafe, createEventUnchecked, js_createRange,
+        createRange, createRange_, createRangeUnsafe, createRangeUnchecked,
+        js_createNodeIterator, createNodeIterator, createNodeIterator_,
+        createNodeIteratorUnsafe, createNodeIteratorUnchecked,
         js_createTreeWalker, createTreeWalker, createTreeWalker_,
-        createTreeWalkerUnchecked, js_getOverrideStyle, getOverrideStyle,
-        getOverrideStyle_, getOverrideStyleUnchecked, js_createExpression,
-        createExpression, createExpression_, createExpressionUnchecked,
+        createTreeWalkerUnsafe, createTreeWalkerUnchecked,
+        js_getOverrideStyle, getOverrideStyle, getOverrideStyle_,
+        getOverrideStyleUnsafe, getOverrideStyleUnchecked,
+        js_createExpression, createExpression, createExpression_,
+        createExpressionUnsafe, createExpressionUnchecked,
         js_createNSResolver, createNSResolver, createNSResolver_,
-        createNSResolverUnchecked, js_evaluate, evaluate, evaluate_,
-        evaluateUnchecked, js_execCommand, execCommand, execCommand_,
-        js_queryCommandEnabled, queryCommandEnabled, queryCommandEnabled_,
-        js_queryCommandIndeterm, queryCommandIndeterm,
-        queryCommandIndeterm_, js_queryCommandState, queryCommandState,
-        queryCommandState_, js_queryCommandSupported,
+        createNSResolverUnsafe, createNSResolverUnchecked, js_evaluate,
+        evaluate, evaluate_, evaluateUnsafe, evaluateUnchecked,
+        js_execCommand, execCommand, execCommand_, js_queryCommandEnabled,
+        queryCommandEnabled, queryCommandEnabled_, js_queryCommandIndeterm,
+        queryCommandIndeterm, queryCommandIndeterm_, js_queryCommandState,
+        queryCommandState, queryCommandState_, js_queryCommandSupported,
         queryCommandSupported, queryCommandSupported_,
         js_queryCommandValue, queryCommandValue, queryCommandValue_,
         js_getElementsByName, getElementsByName, getElementsByName_,
-        getElementsByNameUnchecked, js_elementFromPoint, elementFromPoint,
-        elementFromPoint_, elementFromPointUnchecked,
+        getElementsByNameUnsafe, getElementsByNameUnchecked,
+        js_elementFromPoint, elementFromPoint, elementFromPoint_,
+        elementFromPointUnsafe, elementFromPointUnchecked,
         js_caretRangeFromPoint, caretRangeFromPoint, caretRangeFromPoint_,
-        caretRangeFromPointUnchecked, js_getSelection, getSelection,
-        getSelection_, getSelectionUnchecked, js_getCSSCanvasContext,
-        getCSSCanvasContext, getCSSCanvasContext_,
+        caretRangeFromPointUnsafe, caretRangeFromPointUnchecked,
+        js_getSelection, getSelection, getSelection_, getSelectionUnsafe,
+        getSelectionUnchecked, js_getCSSCanvasContext, getCSSCanvasContext,
+        getCSSCanvasContext_, getCSSCanvasContextUnsafe,
         getCSSCanvasContextUnchecked, js_getElementsByClassName,
         getElementsByClassName, getElementsByClassName_,
-        getElementsByClassNameUnchecked, js_hasFocus, hasFocus, hasFocus_,
-        js_querySelector, querySelector, querySelector_,
-        querySelectorUnchecked, js_querySelectorAll, querySelectorAll,
-        querySelectorAll_, querySelectorAllUnchecked,
+        getElementsByClassNameUnsafe, getElementsByClassNameUnchecked,
+        js_hasFocus, hasFocus, hasFocus_, js_querySelector, querySelector,
+        querySelector_, querySelectorUnsafe, querySelectorUnchecked,
+        js_querySelectorAll, querySelectorAll, querySelectorAll_,
+        querySelectorAllUnsafe, querySelectorAllUnchecked,
         js_webkitCancelFullScreen, webkitCancelFullScreen,
         js_webkitExitFullscreen, webkitExitFullscreen, js_exitPointerLock,
         exitPointerLock, js_webkitGetNamedFlows, webkitGetNamedFlows,
-        webkitGetNamedFlows_, webkitGetNamedFlowsUnchecked, js_createTouch,
-        createTouch, createTouch_, createTouchUnchecked,
+        webkitGetNamedFlows_, webkitGetNamedFlowsUnsafe,
+        webkitGetNamedFlowsUnchecked, js_createTouch, createTouch,
+        createTouch_, createTouchUnsafe, createTouchUnchecked,
         js_createTouchList, createTouchList, createTouchList_,
-        createTouchListUnchecked, js_getDoctype, getDoctype,
-        getDoctypeUnchecked, js_getImplementation, getImplementation,
+        createTouchListUnsafe, createTouchListUnchecked, js_getDoctype,
+        getDoctype, getDoctypeUnsafe, getDoctypeUnchecked,
+        js_getImplementation, getImplementation, getImplementationUnsafe,
         getImplementationUnchecked, js_getDocumentElement,
-        getDocumentElement, getDocumentElementUnchecked,
-        js_getInputEncoding, getInputEncoding, getInputEncodingUnchecked,
-        js_getXmlEncoding, getXmlEncoding, getXmlEncodingUnchecked,
-        js_setXmlVersion, setXmlVersion, js_getXmlVersion, getXmlVersion,
+        getDocumentElement, getDocumentElementUnsafe,
+        getDocumentElementUnchecked, js_getInputEncoding, getInputEncoding,
+        getInputEncodingUnsafe, getInputEncodingUnchecked,
+        js_getXmlEncoding, getXmlEncoding, getXmlEncodingUnsafe,
+        getXmlEncodingUnchecked, js_setXmlVersion, setXmlVersion,
+        js_getXmlVersion, getXmlVersion, getXmlVersionUnsafe,
         getXmlVersionUnchecked, js_setXmlStandalone, setXmlStandalone,
         js_getXmlStandalone, getXmlStandalone, js_getDocumentURI,
-        getDocumentURI, getDocumentURIUnchecked, js_getDefaultView,
-        getDefaultView, getDefaultViewUnchecked, js_getStyleSheets,
-        getStyleSheets, getStyleSheetsUnchecked, js_getContentType,
+        getDocumentURI, getDocumentURIUnsafe, getDocumentURIUnchecked,
+        js_getDefaultView, getDefaultView, getDefaultViewUnsafe,
+        getDefaultViewUnchecked, js_getStyleSheets, getStyleSheets,
+        getStyleSheetsUnsafe, getStyleSheetsUnchecked, js_getContentType,
         getContentType, js_setTitle, setTitle, js_getTitle, getTitle,
-        getTitleUnchecked, js_getReferrer, getReferrer, js_setDomain,
-        setDomain, js_getDomain, getDomain, getDomainUnchecked, js_getURL,
-        getURL, js_setCookie, setCookie, js_getCookie, getCookie,
-        getCookieUnchecked, js_setBody, setBody, js_getBody, getBody,
-        getBodyUnchecked, js_getHead, getHead, getHeadUnchecked,
-        js_getImages, getImages, getImagesUnchecked, js_getApplets,
-        getApplets, getAppletsUnchecked, js_getLinks, getLinks,
-        getLinksUnchecked, js_getForms, getForms, getFormsUnchecked,
-        js_getAnchors, getAnchors, getAnchorsUnchecked, js_getLastModified,
-        getLastModified, js_setLocation, setLocation, js_getLocation,
-        getLocation, getLocationUnchecked, js_setCharset, setCharset,
-        js_getCharset, getCharset, getCharsetUnchecked,
-        js_getDefaultCharset, getDefaultCharset,
+        getTitleUnsafe, getTitleUnchecked, js_getReferrer, getReferrer,
+        js_setDomain, setDomain, js_getDomain, getDomain, getDomainUnsafe,
+        getDomainUnchecked, js_getURL, getURL, js_setCookie, setCookie,
+        js_getCookie, getCookie, getCookieUnsafe, getCookieUnchecked,
+        js_setBody, setBody, js_getBody, getBody, getBodyUnsafe,
+        getBodyUnchecked, js_getHead, getHead, getHeadUnsafe,
+        getHeadUnchecked, js_getImages, getImages, getImagesUnsafe,
+        getImagesUnchecked, js_getApplets, getApplets, getAppletsUnsafe,
+        getAppletsUnchecked, js_getLinks, getLinks, getLinksUnsafe,
+        getLinksUnchecked, js_getForms, getForms, getFormsUnsafe,
+        getFormsUnchecked, js_getAnchors, getAnchors, getAnchorsUnsafe,
+        getAnchorsUnchecked, js_getLastModified, getLastModified,
+        js_setLocation, setLocation, js_getLocation, getLocation,
+        getLocationUnsafe, getLocationUnchecked, js_setCharset, setCharset,
+        js_getCharset, getCharset, getCharsetUnsafe, getCharsetUnchecked,
+        js_getDefaultCharset, getDefaultCharset, getDefaultCharsetUnsafe,
         getDefaultCharsetUnchecked, js_getReadyState, getReadyState,
-        getReadyStateUnchecked, js_getCharacterSet, getCharacterSet,
-        getCharacterSetUnchecked, js_getPreferredStylesheetSet,
-        getPreferredStylesheetSet, getPreferredStylesheetSetUnchecked,
-        js_setSelectedStylesheetSet, setSelectedStylesheetSet,
-        js_getSelectedStylesheetSet, getSelectedStylesheetSet,
+        getReadyStateUnsafe, getReadyStateUnchecked, js_getCharacterSet,
+        getCharacterSet, getCharacterSetUnsafe, getCharacterSetUnchecked,
+        js_getPreferredStylesheetSet, getPreferredStylesheetSet,
+        getPreferredStylesheetSetUnsafe,
+        getPreferredStylesheetSetUnchecked, js_setSelectedStylesheetSet,
+        setSelectedStylesheetSet, js_getSelectedStylesheetSet,
+        getSelectedStylesheetSet, getSelectedStylesheetSetUnsafe,
         getSelectedStylesheetSetUnchecked, js_getActiveElement,
-        getActiveElement, getActiveElementUnchecked, js_getCompatMode,
-        getCompatMode, js_getWebkitIsFullScreen, getWebkitIsFullScreen,
+        getActiveElement, getActiveElementUnsafe,
+        getActiveElementUnchecked, js_getCompatMode, getCompatMode,
+        js_getWebkitIsFullScreen, getWebkitIsFullScreen,
         js_getWebkitFullScreenKeyboardInputAllowed,
         getWebkitFullScreenKeyboardInputAllowed,
         js_getWebkitCurrentFullScreenElement,
         getWebkitCurrentFullScreenElement,
+        getWebkitCurrentFullScreenElementUnsafe,
         getWebkitCurrentFullScreenElementUnchecked,
         js_getWebkitFullscreenEnabled, getWebkitFullscreenEnabled,
         js_getWebkitFullscreenElement, getWebkitFullscreenElement,
+        getWebkitFullscreenElementUnsafe,
         getWebkitFullscreenElementUnchecked, js_getPointerLockElement,
-        getPointerLockElement, getPointerLockElementUnchecked, js_getFonts,
-        getFonts, getFontsUnchecked, abort, blur, change, click,
+        getPointerLockElement, getPointerLockElementUnsafe,
+        getPointerLockElementUnchecked, js_getFonts, getFonts,
+        getFontsUnsafe, getFontsUnchecked, abort, blur, change, click,
         contextMenu, dblClick, drag, dragEnd, dragEnter, dragLeave,
         dragOver, dragStart, drop, error, focus, input, invalid, keyDown,
         keyPress, keyUp, load, mouseDown, mouseEnter, mouseLeave,
@@ -115,12 +147,13 @@ module GHCJS.DOM.JSFFI.Generated.Document
         pointerlockerror, securitypolicyviolation, webKitWillRevealBottom,
         webKitWillRevealLeft, webKitWillRevealRight, webKitWillRevealTop,
         js_getVisibilityState, getVisibilityState, js_getHidden, getHidden,
-        js_getSecurityPolicy, getSecurityPolicy,
+        js_getSecurityPolicy, getSecurityPolicy, getSecurityPolicyUnsafe,
         getSecurityPolicyUnchecked, js_getCurrentScript, getCurrentScript,
-        getCurrentScriptUnchecked, js_getOrigin, getOrigin, Document(..),
-        gTypeDocument, IsDocument, toDocument)
+        getCurrentScriptUnsafe, getCurrentScriptUnchecked, js_getOrigin,
+        getOrigin, Document(..), gTypeDocument, IsDocument, toDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -136,6 +169,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"Document\"]()"
         js_newDocument :: IO Document
@@ -167,6 +210,16 @@ createElement_ self tagName
          (js_createElement (toDocument self) (toMaybeJSString tagName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement Mozilla Document.createElement documentation> 
+createElementUnsafe ::
+                    (MonadIO m, IsDocument self, ToJSString tagName, HasCallStack) =>
+                      self -> Maybe tagName -> m Element
+createElementUnsafe self tagName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createElement (toDocument self) (toMaybeJSString tagName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement Mozilla Document.createElement documentation> 
 createElementUnchecked ::
                        (MonadIO m, IsDocument self, ToJSString tagName) =>
                          self -> Maybe tagName -> m Element
@@ -191,6 +244,16 @@ createDocumentFragment_ ::
                         (MonadIO m, IsDocument self) => self -> m ()
 createDocumentFragment_ self
   = liftIO (void (js_createDocumentFragment (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createDocumentFragment Mozilla Document.createDocumentFragment documentation> 
+createDocumentFragmentUnsafe ::
+                             (MonadIO m, IsDocument self, HasCallStack) =>
+                               self -> m DocumentFragment
+createDocumentFragmentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createDocumentFragment (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createDocumentFragment Mozilla Document.createDocumentFragment documentation> 
 createDocumentFragmentUnchecked ::
@@ -219,6 +282,16 @@ createTextNode_ ::
 createTextNode_ self data'
   = liftIO
       (void (js_createTextNode (toDocument self) (toJSString data')))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTextNode Mozilla Document.createTextNode documentation> 
+createTextNodeUnsafe ::
+                     (MonadIO m, IsDocument self, ToJSString data', HasCallStack) =>
+                       self -> data' -> m Text
+createTextNodeUnsafe self data'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createTextNode (toDocument self) (toJSString data')))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTextNode Mozilla Document.createTextNode documentation> 
 createTextNodeUnchecked ::
@@ -250,6 +323,16 @@ createComment_ self data'
       (void (js_createComment (toDocument self) (toJSString data')))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createComment Mozilla Document.createComment documentation> 
+createCommentUnsafe ::
+                    (MonadIO m, IsDocument self, ToJSString data', HasCallStack) =>
+                      self -> data' -> m Comment
+createCommentUnsafe self data'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createComment (toDocument self) (toJSString data')))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createComment Mozilla Document.createComment documentation> 
 createCommentUnchecked ::
                        (MonadIO m, IsDocument self, ToJSString data') =>
                          self -> data' -> m Comment
@@ -278,6 +361,16 @@ createCDATASection_ ::
 createCDATASection_ self data'
   = liftIO
       (void (js_createCDATASection (toDocument self) (toJSString data')))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCDATASection Mozilla Document.createCDATASection documentation> 
+createCDATASectionUnsafe ::
+                         (MonadIO m, IsDocument self, ToJSString data', HasCallStack) =>
+                           self -> data' -> m CDATASection
+createCDATASectionUnsafe self data'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createCDATASection (toDocument self) (toJSString data')))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCDATASection Mozilla Document.createCDATASection documentation> 
 createCDATASectionUnchecked ::
@@ -319,6 +412,19 @@ createProcessingInstruction_ self target data'
             (toJSString data')))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createProcessingInstruction Mozilla Document.createProcessingInstruction documentation> 
+createProcessingInstructionUnsafe ::
+                                  (MonadIO m, IsDocument self, ToJSString target, ToJSString data',
+                                   HasCallStack) =>
+                                    self -> target -> data' -> m ProcessingInstruction
+createProcessingInstructionUnsafe self target data'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createProcessingInstruction (toDocument self)
+             (toJSString target)
+             (toJSString data')))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createProcessingInstruction Mozilla Document.createProcessingInstruction documentation> 
 createProcessingInstructionUnchecked ::
                                      (MonadIO m, IsDocument self, ToJSString target,
                                       ToJSString data') =>
@@ -349,6 +455,16 @@ createAttribute_ ::
 createAttribute_ self name
   = liftIO
       (void (js_createAttribute (toDocument self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttribute Mozilla Document.createAttribute documentation> 
+createAttributeUnsafe ::
+                      (MonadIO m, IsDocument self, ToJSString name, HasCallStack) =>
+                        self -> name -> m Attr
+createAttributeUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createAttribute (toDocument self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttribute Mozilla Document.createAttribute documentation> 
 createAttributeUnchecked ::
@@ -382,6 +498,16 @@ createEntityReference_ self name
          (js_createEntityReference (toDocument self) (toJSString name)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEntityReference Mozilla Document.createEntityReference documentation> 
+createEntityReferenceUnsafe ::
+                            (MonadIO m, IsDocument self, ToJSString name, HasCallStack) =>
+                              self -> name -> m EntityReference
+createEntityReferenceUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createEntityReference (toDocument self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEntityReference Mozilla Document.createEntityReference documentation> 
 createEntityReferenceUnchecked ::
                                (MonadIO m, IsDocument self, ToJSString name) =>
                                  self -> name -> m EntityReference
@@ -411,6 +537,16 @@ getElementsByTagName_ self tagname
   = liftIO
       (void
          (js_getElementsByTagName (toDocument self) (toJSString tagname)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagName Mozilla Document.getElementsByTagName documentation> 
+getElementsByTagNameUnsafe ::
+                           (MonadIO m, IsDocument self, ToJSString tagname, HasCallStack) =>
+                             self -> tagname -> m NodeList
+getElementsByTagNameUnsafe self tagname
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByTagName (toDocument self) (toJSString tagname)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagName Mozilla Document.getElementsByTagName documentation> 
 getElementsByTagNameUnchecked ::
@@ -446,6 +582,18 @@ importNode_ self importedNode deep
          (js_importNode (toDocument self)
             (maybeToNullable (fmap toNode importedNode))
             deep))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.importNode Mozilla Document.importNode documentation> 
+importNodeUnsafe ::
+                 (MonadIO m, IsDocument self, IsNode importedNode, HasCallStack) =>
+                   self -> Maybe importedNode -> Bool -> m Node
+importNodeUnsafe self importedNode deep
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_importNode (toDocument self)
+             (maybeToNullable (fmap toNode importedNode))
+             deep))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.importNode Mozilla Document.importNode documentation> 
 importNodeUnchecked ::
@@ -489,6 +637,19 @@ createElementNS_ self namespaceURI qualifiedName
             (toMaybeJSString qualifiedName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElementNS Mozilla Document.createElementNS documentation> 
+createElementNSUnsafe ::
+                      (MonadIO m, IsDocument self, ToJSString namespaceURI,
+                       ToJSString qualifiedName, HasCallStack) =>
+                        self -> Maybe namespaceURI -> Maybe qualifiedName -> m Element
+createElementNSUnsafe self namespaceURI qualifiedName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createElementNS (toDocument self)
+             (toMaybeJSString namespaceURI)
+             (toMaybeJSString qualifiedName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElementNS Mozilla Document.createElementNS documentation> 
 createElementNSUnchecked ::
                          (MonadIO m, IsDocument self, ToJSString namespaceURI,
                           ToJSString qualifiedName) =>
@@ -528,6 +689,19 @@ createAttributeNS_ self namespaceURI qualifiedName
          (js_createAttributeNS (toDocument self)
             (toMaybeJSString namespaceURI)
             (toMaybeJSString qualifiedName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttributeNS Mozilla Document.createAttributeNS documentation> 
+createAttributeNSUnsafe ::
+                        (MonadIO m, IsDocument self, ToJSString namespaceURI,
+                         ToJSString qualifiedName, HasCallStack) =>
+                          self -> Maybe namespaceURI -> Maybe qualifiedName -> m Attr
+createAttributeNSUnsafe self namespaceURI qualifiedName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createAttributeNS (toDocument self)
+             (toMaybeJSString namespaceURI)
+             (toMaybeJSString qualifiedName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttributeNS Mozilla Document.createAttributeNS documentation> 
 createAttributeNSUnchecked ::
@@ -571,6 +745,19 @@ getElementsByTagNameNS_ self namespaceURI localName
             (toJSString localName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagNameNS Mozilla Document.getElementsByTagNameNS documentation> 
+getElementsByTagNameNSUnsafe ::
+                             (MonadIO m, IsDocument self, ToJSString namespaceURI,
+                              ToJSString localName, HasCallStack) =>
+                               self -> Maybe namespaceURI -> localName -> m NodeList
+getElementsByTagNameNSUnsafe self namespaceURI localName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByTagNameNS (toDocument self)
+             (toMaybeJSString namespaceURI)
+             (toJSString localName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagNameNS Mozilla Document.getElementsByTagNameNS documentation> 
 getElementsByTagNameNSUnchecked ::
                                 (MonadIO m, IsDocument self, ToJSString namespaceURI,
                                  ToJSString localName) =>
@@ -601,6 +788,16 @@ getElementById_ ::
 getElementById_ self elementId
   = liftIO
       (void (js_getElementById (toDocument self) (toJSString elementId)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementById Mozilla Document.getElementById documentation> 
+getElementByIdUnsafe ::
+                     (MonadIO m, IsDocument self, ToJSString elementId, HasCallStack) =>
+                       self -> elementId -> m Element
+getElementByIdUnsafe self elementId
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementById (toDocument self) (toJSString elementId)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementById Mozilla Document.getElementById documentation> 
 getElementByIdUnchecked ::
@@ -635,6 +832,17 @@ adoptNode_ self source
             (maybeToNullable (fmap toNode source))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
+adoptNodeUnsafe ::
+                (MonadIO m, IsDocument self, IsNode source, HasCallStack) =>
+                  self -> Maybe source -> m Node
+adoptNodeUnsafe self source
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_adoptNode (toDocument self)
+             (maybeToNullable (fmap toNode source))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
 adoptNodeUnchecked ::
                    (MonadIO m, IsDocument self, IsNode source) =>
                      self -> Maybe source -> m Node
@@ -665,6 +873,16 @@ createEvent_ self eventType
       (void (js_createEvent (toDocument self) (toJSString eventType)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEvent Mozilla Document.createEvent documentation> 
+createEventUnsafe ::
+                  (MonadIO m, IsDocument self, ToJSString eventType, HasCallStack) =>
+                    self -> eventType -> m Event
+createEventUnsafe self eventType
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createEvent (toDocument self) (toJSString eventType)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEvent Mozilla Document.createEvent documentation> 
 createEventUnchecked ::
                      (MonadIO m, IsDocument self, ToJSString eventType) =>
                        self -> eventType -> m Event
@@ -686,6 +904,14 @@ createRange self
 createRange_ :: (MonadIO m, IsDocument self) => self -> m ()
 createRange_ self
   = liftIO (void (js_createRange (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createRange Mozilla Document.createRange documentation> 
+createRangeUnsafe ::
+                  (MonadIO m, IsDocument self, HasCallStack) => self -> m Range
+createRangeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createRange (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createRange Mozilla Document.createRange documentation> 
 createRangeUnchecked ::
@@ -730,6 +956,22 @@ createNodeIterator_ self root whatToShow filter
             whatToShow
             (maybeToNullable filter)
             expandEntityReferences))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNodeIterator Mozilla Document.createNodeIterator documentation> 
+createNodeIteratorUnsafe ::
+                         (MonadIO m, IsDocument self, IsNode root, HasCallStack) =>
+                           self ->
+                             Maybe root -> Word -> Maybe NodeFilter -> Bool -> m NodeIterator
+createNodeIteratorUnsafe self root whatToShow filter
+  expandEntityReferences
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createNodeIterator (toDocument self)
+             (maybeToNullable (fmap toNode root))
+             whatToShow
+             (maybeToNullable filter)
+             expandEntityReferences))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNodeIterator Mozilla Document.createNodeIterator documentation> 
 createNodeIteratorUnchecked ::
@@ -782,6 +1024,22 @@ createTreeWalker_ self root whatToShow filter
             expandEntityReferences))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTreeWalker Mozilla Document.createTreeWalker documentation> 
+createTreeWalkerUnsafe ::
+                       (MonadIO m, IsDocument self, IsNode root, HasCallStack) =>
+                         self ->
+                           Maybe root -> Word -> Maybe NodeFilter -> Bool -> m TreeWalker
+createTreeWalkerUnsafe self root whatToShow filter
+  expandEntityReferences
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createTreeWalker (toDocument self)
+             (maybeToNullable (fmap toNode root))
+             whatToShow
+             (maybeToNullable filter)
+             expandEntityReferences))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTreeWalker Mozilla Document.createTreeWalker documentation> 
 createTreeWalkerUnchecked ::
                           (MonadIO m, IsDocument self, IsNode root) =>
                             self ->
@@ -827,6 +1085,19 @@ getOverrideStyle_ self element pseudoElement
             (toJSString pseudoElement)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getOverrideStyle Mozilla Document.getOverrideStyle documentation> 
+getOverrideStyleUnsafe ::
+                       (MonadIO m, IsDocument self, IsElement element,
+                        ToJSString pseudoElement, HasCallStack) =>
+                         self -> Maybe element -> pseudoElement -> m CSSStyleDeclaration
+getOverrideStyleUnsafe self element pseudoElement
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getOverrideStyle (toDocument self)
+             (maybeToNullable (fmap toElement element))
+             (toJSString pseudoElement)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getOverrideStyle Mozilla Document.getOverrideStyle documentation> 
 getOverrideStyleUnchecked ::
                           (MonadIO m, IsDocument self, IsElement element,
                            ToJSString pseudoElement) =>
@@ -866,6 +1137,18 @@ createExpression_ self expression resolver
             (maybeToNullable resolver)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createExpression Mozilla Document.createExpression documentation> 
+createExpressionUnsafe ::
+                       (MonadIO m, IsDocument self, ToJSString expression,
+                        HasCallStack) =>
+                         self -> expression -> Maybe XPathNSResolver -> m XPathExpression
+createExpressionUnsafe self expression resolver
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createExpression (toDocument self) (toJSString expression)
+             (maybeToNullable resolver)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createExpression Mozilla Document.createExpression documentation> 
 createExpressionUnchecked ::
                           (MonadIO m, IsDocument self, ToJSString expression) =>
                             self -> expression -> Maybe XPathNSResolver -> m XPathExpression
@@ -898,6 +1181,17 @@ createNSResolver_ self nodeResolver
       (void
          (js_createNSResolver (toDocument self)
             (maybeToNullable (fmap toNode nodeResolver))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNSResolver Mozilla Document.createNSResolver documentation> 
+createNSResolverUnsafe ::
+                       (MonadIO m, IsDocument self, IsNode nodeResolver, HasCallStack) =>
+                         self -> Maybe nodeResolver -> m XPathNSResolver
+createNSResolverUnsafe self nodeResolver
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createNSResolver (toDocument self)
+             (maybeToNullable (fmap toNode nodeResolver))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createNSResolver Mozilla Document.createNSResolver documentation> 
 createNSResolverUnchecked ::
@@ -951,6 +1245,24 @@ evaluate_ self expression contextNode resolver type' inResult
             (maybeToNullable resolver)
             type'
             (maybeToNullable inResult)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.evaluate Mozilla Document.evaluate documentation> 
+evaluateUnsafe ::
+               (MonadIO m, IsDocument self, ToJSString expression,
+                IsNode contextNode, HasCallStack) =>
+                 self ->
+                   expression ->
+                     Maybe contextNode ->
+                       Maybe XPathNSResolver -> Word -> Maybe XPathResult -> m XPathResult
+evaluateUnsafe self expression contextNode resolver type' inResult
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_evaluate (toDocument self) (toJSString expression)
+             (maybeToNullable (fmap toNode contextNode))
+             (maybeToNullable resolver)
+             type'
+             (maybeToNullable inResult)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.evaluate Mozilla Document.evaluate documentation> 
 evaluateUnchecked ::
@@ -1126,6 +1438,17 @@ getElementsByName_ self elementName
          (js_getElementsByName (toDocument self) (toJSString elementName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByName Mozilla Document.getElementsByName documentation> 
+getElementsByNameUnsafe ::
+                        (MonadIO m, IsDocument self, ToJSString elementName,
+                         HasCallStack) =>
+                          self -> elementName -> m NodeList
+getElementsByNameUnsafe self elementName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByName (toDocument self) (toJSString elementName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByName Mozilla Document.getElementsByName documentation> 
 getElementsByNameUnchecked ::
                            (MonadIO m, IsDocument self, ToJSString elementName) =>
                              self -> elementName -> m NodeList
@@ -1151,6 +1474,15 @@ elementFromPoint_ ::
                   (MonadIO m, IsDocument self) => self -> Int -> Int -> m ()
 elementFromPoint_ self x y
   = liftIO (void (js_elementFromPoint (toDocument self) x y))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementFromPoint Mozilla Document.elementFromPoint documentation> 
+elementFromPointUnsafe ::
+                       (MonadIO m, IsDocument self, HasCallStack) =>
+                         self -> Int -> Int -> m Element
+elementFromPointUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$> (js_elementFromPoint (toDocument self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.elementFromPoint Mozilla Document.elementFromPoint documentation> 
 elementFromPointUnchecked ::
@@ -1180,6 +1512,16 @@ caretRangeFromPoint_ self x y
   = liftIO (void (js_caretRangeFromPoint (toDocument self) x y))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.caretRangeFromPoint Mozilla Document.caretRangeFromPoint documentation> 
+caretRangeFromPointUnsafe ::
+                          (MonadIO m, IsDocument self, HasCallStack) =>
+                            self -> Int -> Int -> m Range
+caretRangeFromPointUnsafe self x y
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_caretRangeFromPoint (toDocument self) x y))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.caretRangeFromPoint Mozilla Document.caretRangeFromPoint documentation> 
 caretRangeFromPointUnchecked ::
                              (MonadIO m, IsDocument self) => self -> Int -> Int -> m Range
 caretRangeFromPointUnchecked self x y
@@ -1200,6 +1542,14 @@ getSelection self
 getSelection_ :: (MonadIO m, IsDocument self) => self -> m ()
 getSelection_ self
   = liftIO (void (js_getSelection (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getSelection Mozilla Document.getSelection documentation> 
+getSelectionUnsafe ::
+                   (MonadIO m, IsDocument self, HasCallStack) => self -> m Selection
+getSelectionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSelection (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getSelection Mozilla Document.getSelection documentation> 
 getSelectionUnchecked ::
@@ -1244,6 +1594,20 @@ getCSSCanvasContext_ self contextId name width height
             height))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getCSSCanvasContext Mozilla Document.getCSSCanvasContext documentation> 
+getCSSCanvasContextUnsafe ::
+                          (MonadIO m, IsDocument self, ToJSString contextId, ToJSString name,
+                           HasCallStack) =>
+                            self -> contextId -> name -> Int -> Int -> m CanvasRenderingContext
+getCSSCanvasContextUnsafe self contextId name width height
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getCSSCanvasContext (toDocument self) (toJSString contextId)
+             (toJSString name)
+             width
+             height))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getCSSCanvasContext Mozilla Document.getCSSCanvasContext documentation> 
 getCSSCanvasContextUnchecked ::
                              (MonadIO m, IsDocument self, ToJSString contextId,
                               ToJSString name) =>
@@ -1277,6 +1641,16 @@ getElementsByClassName_ self tagname
   = liftIO
       (void
          (js_getElementsByClassName (toDocument self) (toJSString tagname)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByClassName Mozilla Document.getElementsByClassName documentation> 
+getElementsByClassNameUnsafe ::
+                             (MonadIO m, IsDocument self, ToJSString tagname, HasCallStack) =>
+                               self -> tagname -> m NodeList
+getElementsByClassNameUnsafe self tagname
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByClassName (toDocument self) (toJSString tagname)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByClassName Mozilla Document.getElementsByClassName documentation> 
 getElementsByClassNameUnchecked ::
@@ -1319,6 +1693,16 @@ querySelector_ self selectors
       (void (js_querySelector (toDocument self) (toJSString selectors)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelector Mozilla Document.querySelector documentation> 
+querySelectorUnsafe ::
+                    (MonadIO m, IsDocument self, ToJSString selectors, HasCallStack) =>
+                      self -> selectors -> m Element
+querySelectorUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelector (toDocument self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelector Mozilla Document.querySelector documentation> 
 querySelectorUnchecked ::
                        (MonadIO m, IsDocument self, ToJSString selectors) =>
                          self -> selectors -> m Element
@@ -1348,6 +1732,16 @@ querySelectorAll_ self selectors
   = liftIO
       (void
          (js_querySelectorAll (toDocument self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll Mozilla Document.querySelectorAll documentation> 
+querySelectorAllUnsafe ::
+                       (MonadIO m, IsDocument self, ToJSString selectors, HasCallStack) =>
+                         self -> selectors -> m NodeList
+querySelectorAllUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelectorAll (toDocument self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll Mozilla Document.querySelectorAll documentation> 
 querySelectorAllUnchecked ::
@@ -1401,6 +1795,15 @@ webkitGetNamedFlows_ ::
                      (MonadIO m, IsDocument self) => self -> m ()
 webkitGetNamedFlows_ self
   = liftIO (void (js_webkitGetNamedFlows (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitGetNamedFlows Mozilla Document.webkitGetNamedFlows documentation> 
+webkitGetNamedFlowsUnsafe ::
+                          (MonadIO m, IsDocument self, HasCallStack) =>
+                            self -> m DOMNamedFlowCollection
+webkitGetNamedFlowsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_webkitGetNamedFlows (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitGetNamedFlows Mozilla Document.webkitGetNamedFlows documentation> 
 webkitGetNamedFlowsUnchecked ::
@@ -1472,6 +1875,31 @@ createTouch_ self window target identifier pageX pageY screenX
             webkitForce))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouch Mozilla Document.createTouch documentation> 
+createTouchUnsafe ::
+                  (MonadIO m, IsDocument self, IsEventTarget target, HasCallStack) =>
+                    self ->
+                      Maybe Window ->
+                        Maybe target ->
+                          Int ->
+                            Int -> Int -> Int -> Int -> Int -> Int -> Float -> Float -> m Touch
+createTouchUnsafe self window target identifier pageX pageY screenX
+  screenY webkitRadiusX webkitRadiusY webkitRotationAngle webkitForce
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createTouch (toDocument self) (maybeToNullable window)
+             (maybeToNullable (fmap toEventTarget target))
+             identifier
+             pageX
+             pageY
+             screenX
+             screenY
+             webkitRadiusX
+             webkitRadiusY
+             webkitRotationAngle
+             webkitForce))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouch Mozilla Document.createTouch documentation> 
 createTouchUnchecked ::
                      (MonadIO m, IsDocument self, IsEventTarget target) =>
                        self ->
@@ -1512,6 +1940,14 @@ createTouchList_ self
   = liftIO (void (js_createTouchList (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouchList Mozilla Document.createTouchList documentation> 
+createTouchListUnsafe ::
+                      (MonadIO m, IsDocument self, HasCallStack) => self -> m TouchList
+createTouchListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createTouchList (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createTouchList Mozilla Document.createTouchList documentation> 
 createTouchListUnchecked ::
                          (MonadIO m, IsDocument self) => self -> m TouchList
 createTouchListUnchecked self
@@ -1527,6 +1963,15 @@ getDoctype ::
            (MonadIO m, IsDocument self) => self -> m (Maybe DocumentType)
 getDoctype self
   = liftIO (nullableToMaybe <$> (js_getDoctype (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.doctype Mozilla Document.doctype documentation> 
+getDoctypeUnsafe ::
+                 (MonadIO m, IsDocument self, HasCallStack) =>
+                   self -> m DocumentType
+getDoctypeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDoctype (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.doctype Mozilla Document.doctype documentation> 
 getDoctypeUnchecked ::
@@ -1546,6 +1991,15 @@ getImplementation self
       (nullableToMaybe <$> (js_getImplementation (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.implementation Mozilla Document.implementation documentation> 
+getImplementationUnsafe ::
+                        (MonadIO m, IsDocument self, HasCallStack) =>
+                          self -> m DOMImplementation
+getImplementationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getImplementation (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.implementation Mozilla Document.implementation documentation> 
 getImplementationUnchecked ::
                            (MonadIO m, IsDocument self) => self -> m DOMImplementation
 getImplementationUnchecked self
@@ -1562,6 +2016,14 @@ getDocumentElement ::
 getDocumentElement self
   = liftIO
       (nullableToMaybe <$> (js_getDocumentElement (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentElement Mozilla Document.documentElement documentation> 
+getDocumentElementUnsafe ::
+                         (MonadIO m, IsDocument self, HasCallStack) => self -> m Element
+getDocumentElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDocumentElement (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentElement Mozilla Document.documentElement documentation> 
 getDocumentElementUnchecked ::
@@ -1583,6 +2045,15 @@ getInputEncoding self
       (fromMaybeJSString <$> (js_getInputEncoding (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.inputEncoding Mozilla Document.inputEncoding documentation> 
+getInputEncodingUnsafe ::
+                       (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                         self -> m result
+getInputEncodingUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getInputEncoding (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.inputEncoding Mozilla Document.inputEncoding documentation> 
 getInputEncodingUnchecked ::
                           (MonadIO m, IsDocument self, FromJSString result) =>
                             self -> m result
@@ -1601,6 +2072,15 @@ getXmlEncoding ::
 getXmlEncoding self
   = liftIO
       (fromMaybeJSString <$> (js_getXmlEncoding (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlEncoding Mozilla Document.xmlEncoding documentation> 
+getXmlEncodingUnsafe ::
+                     (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                       self -> m result
+getXmlEncodingUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getXmlEncoding (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlEncoding Mozilla Document.xmlEncoding documentation> 
 getXmlEncodingUnchecked ::
@@ -1631,6 +2111,15 @@ getXmlVersion ::
 getXmlVersion self
   = liftIO
       (fromMaybeJSString <$> (js_getXmlVersion (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
+getXmlVersionUnsafe ::
+                    (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                      self -> m result
+getXmlVersionUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getXmlVersion (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 
 getXmlVersionUnchecked ::
@@ -1670,6 +2159,15 @@ getDocumentURI self
       (fromMaybeJSString <$> (js_getDocumentURI (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
+getDocumentURIUnsafe ::
+                     (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                       self -> m result
+getDocumentURIUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDocumentURI (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.documentURI Mozilla Document.documentURI documentation> 
 getDocumentURIUnchecked ::
                         (MonadIO m, IsDocument self, FromJSString result) =>
                           self -> m result
@@ -1689,6 +2187,14 @@ getDefaultView self
       (nullableToMaybe <$> (js_getDefaultView (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultView Mozilla Document.defaultView documentation> 
+getDefaultViewUnsafe ::
+                     (MonadIO m, IsDocument self, HasCallStack) => self -> m Window
+getDefaultViewUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDefaultView (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultView Mozilla Document.defaultView documentation> 
 getDefaultViewUnchecked ::
                         (MonadIO m, IsDocument self) => self -> m Window
 getDefaultViewUnchecked self
@@ -1705,6 +2211,15 @@ getStyleSheets ::
 getStyleSheets self
   = liftIO
       (nullableToMaybe <$> (js_getStyleSheets (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.styleSheets Mozilla Document.styleSheets documentation> 
+getStyleSheetsUnsafe ::
+                     (MonadIO m, IsDocument self, HasCallStack) =>
+                       self -> m StyleSheetList
+getStyleSheetsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyleSheets (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.styleSheets Mozilla Document.styleSheets documentation> 
 getStyleSheetsUnchecked ::
@@ -1745,6 +2260,15 @@ getTitle self
   = liftIO (fromMaybeJSString <$> (js_getTitle (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
+getTitleUnsafe ::
+               (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                 self -> m result
+getTitleUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getTitle (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
 getTitleUnchecked ::
                   (MonadIO m, IsDocument self, FromJSString result) =>
                     self -> m result
@@ -1781,6 +2305,15 @@ getDomain ::
             self -> m (Maybe result)
 getDomain self
   = liftIO (fromMaybeJSString <$> (js_getDomain (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
+getDomainUnsafe ::
+                (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                  self -> m result
+getDomainUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDomain (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
 getDomainUnchecked ::
@@ -1821,6 +2354,15 @@ getCookie self
   = liftIO (fromMaybeJSString <$> (js_getCookie (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
+getCookieUnsafe ::
+                (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                  self -> m result
+getCookieUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCookie (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 getCookieUnchecked ::
                    (MonadIO m, IsDocument self, FromJSString result) =>
                      self -> m result
@@ -1850,6 +2392,14 @@ getBody self
   = liftIO (nullableToMaybe <$> (js_getBody (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
+getBodyUnsafe ::
+              (MonadIO m, IsDocument self, HasCallStack) => self -> m HTMLElement
+getBodyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBody (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
 getBodyUnchecked ::
                  (MonadIO m, IsDocument self) => self -> m HTMLElement
 getBodyUnchecked self
@@ -1864,6 +2414,15 @@ getHead ::
         (MonadIO m, IsDocument self) => self -> m (Maybe HTMLHeadElement)
 getHead self
   = liftIO (nullableToMaybe <$> (js_getHead (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.head Mozilla Document.head documentation> 
+getHeadUnsafe ::
+              (MonadIO m, IsDocument self, HasCallStack) =>
+                self -> m HTMLHeadElement
+getHeadUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHead (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.head Mozilla Document.head documentation> 
 getHeadUnchecked ::
@@ -1882,6 +2441,15 @@ getImages self
   = liftIO (nullableToMaybe <$> (js_getImages (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.images Mozilla Document.images documentation> 
+getImagesUnsafe ::
+                (MonadIO m, IsDocument self, HasCallStack) =>
+                  self -> m HTMLCollection
+getImagesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getImages (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.images Mozilla Document.images documentation> 
 getImagesUnchecked ::
                    (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getImagesUnchecked self
@@ -1896,6 +2464,15 @@ getApplets ::
            (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getApplets self
   = liftIO (nullableToMaybe <$> (js_getApplets (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.applets Mozilla Document.applets documentation> 
+getAppletsUnsafe ::
+                 (MonadIO m, IsDocument self, HasCallStack) =>
+                   self -> m HTMLCollection
+getAppletsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getApplets (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.applets Mozilla Document.applets documentation> 
 getAppletsUnchecked ::
@@ -1914,6 +2491,15 @@ getLinks self
   = liftIO (nullableToMaybe <$> (js_getLinks (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.links Mozilla Document.links documentation> 
+getLinksUnsafe ::
+               (MonadIO m, IsDocument self, HasCallStack) =>
+                 self -> m HTMLCollection
+getLinksUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLinks (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.links Mozilla Document.links documentation> 
 getLinksUnchecked ::
                   (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getLinksUnchecked self
@@ -1930,6 +2516,15 @@ getForms self
   = liftIO (nullableToMaybe <$> (js_getForms (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.forms Mozilla Document.forms documentation> 
+getFormsUnsafe ::
+               (MonadIO m, IsDocument self, HasCallStack) =>
+                 self -> m HTMLCollection
+getFormsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForms (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.forms Mozilla Document.forms documentation> 
 getFormsUnchecked ::
                   (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getFormsUnchecked self
@@ -1944,6 +2539,15 @@ getAnchors ::
            (MonadIO m, IsDocument self) => self -> m (Maybe HTMLCollection)
 getAnchors self
   = liftIO (nullableToMaybe <$> (js_getAnchors (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.anchors Mozilla Document.anchors documentation> 
+getAnchorsUnsafe ::
+                 (MonadIO m, IsDocument self, HasCallStack) =>
+                   self -> m HTMLCollection
+getAnchorsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAnchors (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.anchors Mozilla Document.anchors documentation> 
 getAnchorsUnchecked ::
@@ -1981,6 +2585,14 @@ getLocation self
   = liftIO (nullableToMaybe <$> (js_getLocation (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.location Mozilla Document.location documentation> 
+getLocationUnsafe ::
+                  (MonadIO m, IsDocument self, HasCallStack) => self -> m Location
+getLocationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocation (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.location Mozilla Document.location documentation> 
 getLocationUnchecked ::
                      (MonadIO m, IsDocument self) => self -> m Location
 getLocationUnchecked self
@@ -2008,6 +2620,15 @@ getCharset self
   = liftIO (fromMaybeJSString <$> (js_getCharset (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
+getCharsetUnsafe ::
+                 (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                   self -> m result
+getCharsetUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCharset (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
 getCharsetUnchecked ::
                     (MonadIO m, IsDocument self, FromJSString result) =>
                       self -> m result
@@ -2026,6 +2647,15 @@ getDefaultCharset ::
 getDefaultCharset self
   = liftIO
       (fromMaybeJSString <$> (js_getDefaultCharset (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultCharset Mozilla Document.defaultCharset documentation> 
+getDefaultCharsetUnsafe ::
+                        (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                          self -> m result
+getDefaultCharsetUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDefaultCharset (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.defaultCharset Mozilla Document.defaultCharset documentation> 
 getDefaultCharsetUnchecked ::
@@ -2048,6 +2678,15 @@ getReadyState self
       (fromMaybeJSString <$> (js_getReadyState (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.readyState Mozilla Document.readyState documentation> 
+getReadyStateUnsafe ::
+                    (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                      self -> m result
+getReadyStateUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getReadyState (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.readyState Mozilla Document.readyState documentation> 
 getReadyStateUnchecked ::
                        (MonadIO m, IsDocument self, FromJSString result) =>
                          self -> m result
@@ -2066,6 +2705,15 @@ getCharacterSet ::
 getCharacterSet self
   = liftIO
       (fromMaybeJSString <$> (js_getCharacterSet (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.characterSet Mozilla Document.characterSet documentation> 
+getCharacterSetUnsafe ::
+                      (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                        self -> m result
+getCharacterSetUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCharacterSet (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.characterSet Mozilla Document.characterSet documentation> 
 getCharacterSetUnchecked ::
@@ -2087,6 +2735,16 @@ getPreferredStylesheetSet self
   = liftIO
       (fromMaybeJSString <$>
          (js_getPreferredStylesheetSet (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.preferredStylesheetSet Mozilla Document.preferredStylesheetSet documentation> 
+getPreferredStylesheetSetUnsafe ::
+                                (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                                  self -> m result
+getPreferredStylesheetSetUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getPreferredStylesheetSet (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.preferredStylesheetSet Mozilla Document.preferredStylesheetSet documentation> 
 getPreferredStylesheetSetUnchecked ::
@@ -2123,6 +2781,16 @@ getSelectedStylesheetSet self
          (js_getSelectedStylesheetSet (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
+getSelectedStylesheetSetUnsafe ::
+                               (MonadIO m, IsDocument self, HasCallStack, FromJSString result) =>
+                                 self -> m result
+getSelectedStylesheetSetUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getSelectedStylesheetSet (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 
 getSelectedStylesheetSetUnchecked ::
                                   (MonadIO m, IsDocument self, FromJSString result) =>
                                     self -> m result
@@ -2140,6 +2808,14 @@ getActiveElement ::
 getActiveElement self
   = liftIO
       (nullableToMaybe <$> (js_getActiveElement (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.activeElement Mozilla Document.activeElement documentation> 
+getActiveElementUnsafe ::
+                       (MonadIO m, IsDocument self, HasCallStack) => self -> m Element
+getActiveElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getActiveElement (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.activeElement Mozilla Document.activeElement documentation> 
 getActiveElementUnchecked ::
@@ -2194,6 +2870,16 @@ getWebkitCurrentFullScreenElement self
          (js_getWebkitCurrentFullScreenElement (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCurrentFullScreenElement Mozilla Document.webkitCurrentFullScreenElement documentation> 
+getWebkitCurrentFullScreenElementUnsafe ::
+                                        (MonadIO m, IsDocument self, HasCallStack) =>
+                                          self -> m Element
+getWebkitCurrentFullScreenElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getWebkitCurrentFullScreenElement (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitCurrentFullScreenElement Mozilla Document.webkitCurrentFullScreenElement documentation> 
 getWebkitCurrentFullScreenElementUnchecked ::
                                            (MonadIO m, IsDocument self) => self -> m Element
 getWebkitCurrentFullScreenElementUnchecked self
@@ -2223,6 +2909,15 @@ getWebkitFullscreenElement self
          (js_getWebkitFullscreenElement (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenElement Mozilla Document.webkitFullscreenElement documentation> 
+getWebkitFullscreenElementUnsafe ::
+                                 (MonadIO m, IsDocument self, HasCallStack) => self -> m Element
+getWebkitFullscreenElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getWebkitFullscreenElement (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.webkitFullscreenElement Mozilla Document.webkitFullscreenElement documentation> 
 getWebkitFullscreenElementUnchecked ::
                                     (MonadIO m, IsDocument self) => self -> m Element
 getWebkitFullscreenElementUnchecked self
@@ -2241,6 +2936,14 @@ getPointerLockElement self
       (nullableToMaybe <$> (js_getPointerLockElement (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.pointerLockElement Mozilla Document.pointerLockElement documentation> 
+getPointerLockElementUnsafe ::
+                            (MonadIO m, IsDocument self, HasCallStack) => self -> m Element
+getPointerLockElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPointerLockElement (toDocument self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.pointerLockElement Mozilla Document.pointerLockElement documentation> 
 getPointerLockElementUnchecked ::
                                (MonadIO m, IsDocument self) => self -> m Element
 getPointerLockElementUnchecked self
@@ -2256,6 +2959,14 @@ getFonts ::
          (MonadIO m, IsDocument self) => self -> m (Maybe FontLoader)
 getFonts self
   = liftIO (nullableToMaybe <$> (js_getFonts (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.fonts Mozilla Document.fonts documentation> 
+getFontsUnsafe ::
+               (MonadIO m, IsDocument self, HasCallStack) => self -> m FontLoader
+getFontsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFonts (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.fonts Mozilla Document.fonts documentation> 
 getFontsUnchecked ::
@@ -2591,6 +3302,15 @@ getSecurityPolicy self
       (nullableToMaybe <$> (js_getSecurityPolicy (toDocument self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.securityPolicy Mozilla Document.securityPolicy documentation> 
+getSecurityPolicyUnsafe ::
+                        (MonadIO m, IsDocument self, HasCallStack) =>
+                          self -> m SecurityPolicy
+getSecurityPolicyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSecurityPolicy (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.securityPolicy Mozilla Document.securityPolicy documentation> 
 getSecurityPolicyUnchecked ::
                            (MonadIO m, IsDocument self) => self -> m SecurityPolicy
 getSecurityPolicyUnchecked self
@@ -2607,6 +3327,15 @@ getCurrentScript ::
 getCurrentScript self
   = liftIO
       (nullableToMaybe <$> (js_getCurrentScript (toDocument self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.currentScript Mozilla Document.currentScript documentation> 
+getCurrentScriptUnsafe ::
+                       (MonadIO m, IsDocument self, HasCallStack) =>
+                         self -> m HTMLScriptElement
+getCurrentScriptUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCurrentScript (toDocument self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.currentScript Mozilla Document.currentScript documentation> 
 getCurrentScriptUnchecked ::

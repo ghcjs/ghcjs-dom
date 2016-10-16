@@ -1,13 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.DynamicsCompressorNode
-       (js_getThreshold, getThreshold, getThresholdUnchecked, js_getKnee,
-        getKnee, getKneeUnchecked, js_getRatio, getRatio,
+       (js_getThreshold, getThreshold, getThresholdUnsafe,
+        getThresholdUnchecked, js_getKnee, getKnee, getKneeUnsafe,
+        getKneeUnchecked, js_getRatio, getRatio, getRatioUnsafe,
         getRatioUnchecked, js_getReduction, getReduction,
-        getReductionUnchecked, js_getAttack, getAttack, getAttackUnchecked,
-        js_getRelease, getRelease, getReleaseUnchecked,
-        DynamicsCompressorNode(..), gTypeDynamicsCompressorNode)
+        getReductionUnsafe, getReductionUnchecked, js_getAttack, getAttack,
+        getAttackUnsafe, getAttackUnchecked, js_getRelease, getRelease,
+        getReleaseUnsafe, getReleaseUnchecked, DynamicsCompressorNode(..),
+        gTypeDynamicsCompressorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"threshold\"]"
         js_getThreshold ::
@@ -33,6 +51,14 @@ getThreshold ::
              (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
 getThreshold self
   = liftIO (nullableToMaybe <$> (js_getThreshold (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.threshold Mozilla DynamicsCompressorNode.threshold documentation> 
+getThresholdUnsafe ::
+                   (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getThresholdUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getThreshold (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.threshold Mozilla DynamicsCompressorNode.threshold documentation> 
 getThresholdUnchecked ::
@@ -49,6 +75,14 @@ getKnee ::
 getKnee self = liftIO (nullableToMaybe <$> (js_getKnee (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.knee Mozilla DynamicsCompressorNode.knee documentation> 
+getKneeUnsafe ::
+              (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getKneeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getKnee (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.knee Mozilla DynamicsCompressorNode.knee documentation> 
 getKneeUnchecked ::
                  (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getKneeUnchecked self
@@ -61,6 +95,14 @@ foreign import javascript unsafe "$1[\"ratio\"]" js_getRatio ::
 getRatio ::
          (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
 getRatio self = liftIO (nullableToMaybe <$> (js_getRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.ratio Mozilla DynamicsCompressorNode.ratio documentation> 
+getRatioUnsafe ::
+               (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getRatioUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRatio (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.ratio Mozilla DynamicsCompressorNode.ratio documentation> 
 getRatioUnchecked ::
@@ -79,6 +121,14 @@ getReduction self
   = liftIO (nullableToMaybe <$> (js_getReduction (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.reduction Mozilla DynamicsCompressorNode.reduction documentation> 
+getReductionUnsafe ::
+                   (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getReductionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getReduction (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.reduction Mozilla DynamicsCompressorNode.reduction documentation> 
 getReductionUnchecked ::
                       (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getReductionUnchecked self
@@ -91,6 +141,14 @@ foreign import javascript unsafe "$1[\"attack\"]" js_getAttack ::
 getAttack ::
           (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
 getAttack self = liftIO (nullableToMaybe <$> (js_getAttack (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.attack Mozilla DynamicsCompressorNode.attack documentation> 
+getAttackUnsafe ::
+                (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getAttackUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAttack (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.attack Mozilla DynamicsCompressorNode.attack documentation> 
 getAttackUnchecked ::
@@ -106,6 +164,14 @@ getRelease ::
            (MonadIO m) => DynamicsCompressorNode -> m (Maybe AudioParam)
 getRelease self
   = liftIO (nullableToMaybe <$> (js_getRelease (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.release Mozilla DynamicsCompressorNode.release documentation> 
+getReleaseUnsafe ::
+                 (MonadIO m, HasCallStack) => DynamicsCompressorNode -> m AudioParam
+getReleaseUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRelease (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.release Mozilla DynamicsCompressorNode.release documentation> 
 getReleaseUnchecked ::

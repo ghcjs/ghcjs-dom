@@ -1,24 +1,35 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBObjectStore
-       (js_put, put, put_, putUnchecked, js_add, add, add_, addUnchecked,
-        js_deleteRange, deleteRange, deleteRange_, deleteRangeUnchecked,
-        js_delete, delete, delete_, deleteUnchecked, js_getRange, getRange,
-        getRange_, getRangeUnchecked, js_get, get, get_, getUnchecked,
-        js_clear, clear, clear_, clearUnchecked, js_openCursorRange,
-        openCursorRange, openCursorRange_, openCursorRangeUnchecked,
-        js_openCursor, openCursor, openCursor_, openCursorUnchecked,
-        js_createIndex', createIndex', createIndex'_,
-        createIndex'Unchecked, js_createIndex, createIndex, createIndex_,
-        createIndexUnchecked, js_index, index, index_, indexUnchecked,
+       (js_put, put, put_, putUnsafe, putUnchecked, js_add, add, add_,
+        addUnsafe, addUnchecked, js_deleteRange, deleteRange, deleteRange_,
+        deleteRangeUnsafe, deleteRangeUnchecked, js_delete, delete,
+        delete_, deleteUnsafe, deleteUnchecked, js_getRange, getRange,
+        getRange_, getRangeUnsafe, getRangeUnchecked, js_get, get, get_,
+        getUnsafe, getUnchecked, js_clear, clear, clear_, clearUnsafe,
+        clearUnchecked, js_openCursorRange, openCursorRange,
+        openCursorRange_, openCursorRangeUnsafe, openCursorRangeUnchecked,
+        js_openCursor, openCursor, openCursor_, openCursorUnsafe,
+        openCursorUnchecked, js_createIndex', createIndex', createIndex'_,
+        createIndex'Unsafe, createIndex'Unchecked, js_createIndex,
+        createIndex, createIndex_, createIndexUnsafe, createIndexUnchecked,
+        js_index, index, index_, indexUnsafe, indexUnchecked,
         js_deleteIndex, deleteIndex, js_countRange, countRange,
-        countRange_, countRangeUnchecked, js_count, count, count_,
-        countUnchecked, js_getName, getName, getNameUnchecked,
-        js_getKeyPath, getKeyPath, getKeyPathUnchecked, js_getIndexNames,
-        getIndexNames, getIndexNamesUnchecked, js_getTransaction,
-        getTransaction, getTransactionUnchecked, js_getAutoIncrement,
-        getAutoIncrement, IDBObjectStore(..), gTypeIDBObjectStore)
+        countRange_, countRangeUnsafe, countRangeUnchecked, js_count,
+        count, count_, countUnsafe, countUnchecked, js_getName, getName,
+        getNameUnsafe, getNameUnchecked, js_getKeyPath, getKeyPath,
+        getKeyPathUnsafe, getKeyPathUnchecked, js_getIndexNames,
+        getIndexNames, getIndexNamesUnsafe, getIndexNamesUnchecked,
+        js_getTransaction, getTransaction, getTransactionUnsafe,
+        getTransactionUnchecked, js_getAutoIncrement, getAutoIncrement,
+        IDBObjectStore(..), gTypeIDBObjectStore)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -34,6 +45,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"put\"]($2, $3)" js_put ::
         IDBObjectStore -> JSVal -> JSVal -> IO (Nullable IDBRequest)
@@ -48,6 +69,15 @@ put self value key
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
 put_ :: (MonadIO m) => IDBObjectStore -> JSVal -> JSVal -> m ()
 put_ self value key = liftIO (void (js_put (self) value key))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
+putUnsafe ::
+          (MonadIO m, HasCallStack) =>
+            IDBObjectStore -> JSVal -> JSVal -> m IDBRequest
+putUnsafe self value key
+  = liftIO
+      ((nullableToMaybe <$> (js_put (self) value key)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
 putUnchecked ::
@@ -68,6 +98,15 @@ add self value key
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
 add_ :: (MonadIO m) => IDBObjectStore -> JSVal -> JSVal -> m ()
 add_ self value key = liftIO (void (js_add (self) value key))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
+addUnsafe ::
+          (MonadIO m, HasCallStack) =>
+            IDBObjectStore -> JSVal -> JSVal -> m IDBRequest
+addUnsafe self value key
+  = liftIO
+      ((nullableToMaybe <$> (js_add (self) value key)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
 addUnchecked ::
@@ -95,6 +134,16 @@ deleteRange_ self keyRange
   = liftIO (void (js_deleteRange (self) (maybeToNullable keyRange)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
+deleteRangeUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
+deleteRangeUnsafe self keyRange
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_deleteRange (self) (maybeToNullable keyRange)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
 deleteRangeUnchecked ::
                      (MonadIO m) => IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
 deleteRangeUnchecked self keyRange
@@ -114,6 +163,15 @@ delete self key
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
 delete_ :: (MonadIO m) => IDBObjectStore -> JSVal -> m ()
 delete_ self key = liftIO (void (js_delete (self) key))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
+deleteUnsafe ::
+             (MonadIO m, HasCallStack) =>
+               IDBObjectStore -> JSVal -> m IDBRequest
+deleteUnsafe self key
+  = liftIO
+      ((nullableToMaybe <$> (js_delete (self) key)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
 deleteUnchecked ::
@@ -139,6 +197,15 @@ getRange_ self key
   = liftIO (void (js_getRange (self) (maybeToNullable key)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
+getRangeUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
+getRangeUnsafe self key
+  = liftIO
+      ((nullableToMaybe <$> (js_getRange (self) (maybeToNullable key)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
 getRangeUnchecked ::
                   (MonadIO m) => IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
 getRangeUnchecked self key
@@ -159,6 +226,15 @@ get_ :: (MonadIO m) => IDBObjectStore -> JSVal -> m ()
 get_ self key = liftIO (void (js_get (self) key))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
+getUnsafe ::
+          (MonadIO m, HasCallStack) =>
+            IDBObjectStore -> JSVal -> m IDBRequest
+getUnsafe self key
+  = liftIO
+      ((nullableToMaybe <$> (js_get (self) key)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
 getUnchecked ::
              (MonadIO m) => IDBObjectStore -> JSVal -> m IDBRequest
 getUnchecked self key
@@ -174,6 +250,14 @@ clear self = liftIO (nullableToMaybe <$> (js_clear (self)))
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.clear Mozilla IDBObjectStore.clear documentation> 
 clear_ :: (MonadIO m) => IDBObjectStore -> m ()
 clear_ self = liftIO (void (js_clear (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.clear Mozilla IDBObjectStore.clear documentation> 
+clearUnsafe ::
+            (MonadIO m, HasCallStack) => IDBObjectStore -> m IDBRequest
+clearUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_clear (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.clear Mozilla IDBObjectStore.clear documentation> 
 clearUnchecked :: (MonadIO m) => IDBObjectStore -> m IDBRequest
@@ -207,6 +291,17 @@ openCursorRange_ self range direction
             (toJSString direction)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
+openCursorRangeUnsafe ::
+                      (MonadIO m, ToJSString direction, HasCallStack) =>
+                        IDBObjectStore -> Maybe IDBKeyRange -> direction -> m IDBRequest
+openCursorRangeUnsafe self range direction
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_openCursorRange (self) (maybeToNullable range)
+             (toJSString direction)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
 openCursorRangeUnchecked ::
                          (MonadIO m, ToJSString direction) =>
                            IDBObjectStore -> Maybe IDBKeyRange -> direction -> m IDBRequest
@@ -235,6 +330,16 @@ openCursor_ ::
               IDBObjectStore -> JSVal -> direction -> m ()
 openCursor_ self key direction
   = liftIO (void (js_openCursor (self) key (toJSString direction)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
+openCursorUnsafe ::
+                 (MonadIO m, ToJSString direction, HasCallStack) =>
+                   IDBObjectStore -> JSVal -> direction -> m IDBRequest
+openCursorUnsafe self key direction
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_openCursor (self) key (toJSString direction)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.openCursor Mozilla IDBObjectStore.openCursor documentation> 
 openCursorUnchecked ::
@@ -274,6 +379,19 @@ createIndex'_ self name keyPath options
          (toJSVal keyPath >>=
             \ keyPath' -> js_createIndex' (self) (toJSString name) keyPath'
             (maybeToNullable (fmap toDictionary options))))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
+createIndex'Unsafe ::
+                   (MonadIO m, ToJSString name, ToJSString keyPath,
+                    IsDictionary options, HasCallStack) =>
+                     IDBObjectStore -> name -> [keyPath] -> Maybe options -> m IDBIndex
+createIndex'Unsafe self name keyPath options
+  = liftIO
+      ((nullableToMaybe <$>
+          (toJSVal keyPath >>=
+             \ keyPath' -> js_createIndex' (self) (toJSString name) keyPath'
+             (maybeToNullable (fmap toDictionary options))))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
 createIndex'Unchecked ::
@@ -317,6 +435,18 @@ createIndex_ self name keyPath options
             (maybeToNullable (fmap toDictionary options))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
+createIndexUnsafe ::
+                  (MonadIO m, ToJSString name, ToJSString keyPath,
+                   IsDictionary options, HasCallStack) =>
+                    IDBObjectStore -> name -> keyPath -> Maybe options -> m IDBIndex
+createIndexUnsafe self name keyPath options
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createIndex (self) (toJSString name) (toJSString keyPath)
+             (maybeToNullable (fmap toDictionary options))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.createIndex Mozilla IDBObjectStore.createIndex documentation> 
 createIndexUnchecked ::
                      (MonadIO m, ToJSString name, ToJSString keyPath,
                       IsDictionary options) =>
@@ -342,6 +472,15 @@ index_ ::
        (MonadIO m, ToJSString name) => IDBObjectStore -> name -> m ()
 index_ self name
   = liftIO (void (js_index (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.index Mozilla IDBObjectStore.index documentation> 
+indexUnsafe ::
+            (MonadIO m, ToJSString name, HasCallStack) =>
+              IDBObjectStore -> name -> m IDBIndex
+indexUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_index (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.index Mozilla IDBObjectStore.index documentation> 
 indexUnchecked ::
@@ -381,6 +520,16 @@ countRange_ self range
   = liftIO (void (js_countRange (self) (maybeToNullable range)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
+countRangeUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
+countRangeUnsafe self range
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_countRange (self) (maybeToNullable range)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
 countRangeUnchecked ::
                     (MonadIO m) => IDBObjectStore -> Maybe IDBKeyRange -> m IDBRequest
 countRangeUnchecked self range
@@ -401,6 +550,15 @@ count_ :: (MonadIO m) => IDBObjectStore -> JSVal -> m ()
 count_ self key = liftIO (void (js_count (self) key))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
+countUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              IDBObjectStore -> JSVal -> m IDBRequest
+countUnsafe self key
+  = liftIO
+      ((nullableToMaybe <$> (js_count (self) key)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
 countUnchecked ::
                (MonadIO m) => IDBObjectStore -> JSVal -> m IDBRequest
 countUnchecked self key
@@ -414,6 +572,15 @@ getName ::
         (MonadIO m, FromJSString result) =>
           IDBObjectStore -> m (Maybe result)
 getName self = liftIO (fromMaybeJSString <$> (js_getName (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
+getNameUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                IDBObjectStore -> m result
+getNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getName (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
 getNameUnchecked ::
@@ -430,6 +597,14 @@ getKeyPath self
   = liftIO (nullableToMaybe <$> (js_getKeyPath (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.keyPath Mozilla IDBObjectStore.keyPath documentation> 
+getKeyPathUnsafe ::
+                 (MonadIO m, HasCallStack) => IDBObjectStore -> m IDBAny
+getKeyPathUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getKeyPath (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.keyPath Mozilla IDBObjectStore.keyPath documentation> 
 getKeyPathUnchecked :: (MonadIO m) => IDBObjectStore -> m IDBAny
 getKeyPathUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getKeyPath (self)))
@@ -442,6 +617,14 @@ getIndexNames ::
               (MonadIO m) => IDBObjectStore -> m (Maybe DOMStringList)
 getIndexNames self
   = liftIO (nullableToMaybe <$> (js_getIndexNames (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.indexNames Mozilla IDBObjectStore.indexNames documentation> 
+getIndexNamesUnsafe ::
+                    (MonadIO m, HasCallStack) => IDBObjectStore -> m DOMStringList
+getIndexNamesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIndexNames (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.indexNames Mozilla IDBObjectStore.indexNames documentation> 
 getIndexNamesUnchecked ::
@@ -457,6 +640,14 @@ getTransaction ::
                (MonadIO m) => IDBObjectStore -> m (Maybe IDBTransaction)
 getTransaction self
   = liftIO (nullableToMaybe <$> (js_getTransaction (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.transaction Mozilla IDBObjectStore.transaction documentation> 
+getTransactionUnsafe ::
+                     (MonadIO m, HasCallStack) => IDBObjectStore -> m IDBTransaction
+getTransactionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTransaction (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.transaction Mozilla IDBObjectStore.transaction documentation> 
 getTransactionUnchecked ::

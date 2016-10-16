@@ -1,14 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.DeviceMotionEvent
        (js_initDeviceMotionEvent, initDeviceMotionEvent,
-        js_getAcceleration, getAcceleration, getAccelerationUnchecked,
-        js_getAccelerationIncludingGravity,
+        js_getAcceleration, getAcceleration, getAccelerationUnsafe,
+        getAccelerationUnchecked, js_getAccelerationIncludingGravity,
         getAccelerationIncludingGravity,
+        getAccelerationIncludingGravityUnsafe,
         getAccelerationIncludingGravityUnchecked, js_getRotationRate,
-        getRotationRate, getRotationRateUnchecked, js_getInterval,
-        getInterval, DeviceMotionEvent(..), gTypeDeviceMotionEvent)
+        getRotationRate, getRotationRateUnsafe, getRotationRateUnchecked,
+        js_getInterval, getInterval, DeviceMotionEvent(..),
+        gTypeDeviceMotionEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initDeviceMotionEvent\"]($2,\n$3, $4, $5, $6, $7, $8)"
@@ -69,6 +87,14 @@ getAcceleration self
   = liftIO (nullableToMaybe <$> (js_getAcceleration (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.acceleration Mozilla DeviceMotionEvent.acceleration documentation> 
+getAccelerationUnsafe ::
+                      (MonadIO m, HasCallStack) => DeviceMotionEvent -> m Acceleration
+getAccelerationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAcceleration (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.acceleration Mozilla DeviceMotionEvent.acceleration documentation> 
 getAccelerationUnchecked ::
                          (MonadIO m) => DeviceMotionEvent -> m Acceleration
 getAccelerationUnchecked self
@@ -88,6 +114,15 @@ getAccelerationIncludingGravity self
       (nullableToMaybe <$> (js_getAccelerationIncludingGravity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.accelerationIncludingGravity Mozilla DeviceMotionEvent.accelerationIncludingGravity documentation> 
+getAccelerationIncludingGravityUnsafe ::
+                                      (MonadIO m, HasCallStack) =>
+                                        DeviceMotionEvent -> m Acceleration
+getAccelerationIncludingGravityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAccelerationIncludingGravity (self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.accelerationIncludingGravity Mozilla DeviceMotionEvent.accelerationIncludingGravity documentation> 
 getAccelerationIncludingGravityUnchecked ::
                                          (MonadIO m) => DeviceMotionEvent -> m Acceleration
 getAccelerationIncludingGravityUnchecked self
@@ -104,6 +139,14 @@ getRotationRate ::
                 (MonadIO m) => DeviceMotionEvent -> m (Maybe RotationRate)
 getRotationRate self
   = liftIO (nullableToMaybe <$> (js_getRotationRate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.rotationRate Mozilla DeviceMotionEvent.rotationRate documentation> 
+getRotationRateUnsafe ::
+                      (MonadIO m, HasCallStack) => DeviceMotionEvent -> m RotationRate
+getRotationRateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRotationRate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.rotationRate Mozilla DeviceMotionEvent.rotationRate documentation> 
 getRotationRateUnchecked ::

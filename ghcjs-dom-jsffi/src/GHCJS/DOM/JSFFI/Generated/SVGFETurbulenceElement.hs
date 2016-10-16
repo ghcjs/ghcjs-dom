@@ -1,19 +1,27 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFETurbulenceElement
        (pattern SVG_TURBULENCE_TYPE_UNKNOWN,
         pattern SVG_TURBULENCE_TYPE_FRACTALNOISE,
         pattern SVG_TURBULENCE_TYPE_TURBULENCE,
         pattern SVG_STITCHTYPE_UNKNOWN, pattern SVG_STITCHTYPE_STITCH,
         pattern SVG_STITCHTYPE_NOSTITCH, js_getBaseFrequencyX,
-        getBaseFrequencyX, getBaseFrequencyXUnchecked,
-        js_getBaseFrequencyY, getBaseFrequencyY,
+        getBaseFrequencyX, getBaseFrequencyXUnsafe,
+        getBaseFrequencyXUnchecked, js_getBaseFrequencyY,
+        getBaseFrequencyY, getBaseFrequencyYUnsafe,
         getBaseFrequencyYUnchecked, js_getNumOctaves, getNumOctaves,
-        getNumOctavesUnchecked, js_getSeed, getSeed, getSeedUnchecked,
-        js_getStitchTiles, getStitchTiles, getStitchTilesUnchecked,
-        js_getType, getType, getTypeUnchecked, SVGFETurbulenceElement(..),
+        getNumOctavesUnsafe, getNumOctavesUnchecked, js_getSeed, getSeed,
+        getSeedUnsafe, getSeedUnchecked, js_getStitchTiles, getStitchTiles,
+        getStitchTilesUnsafe, getStitchTilesUnchecked, js_getType, getType,
+        getTypeUnsafe, getTypeUnchecked, SVGFETurbulenceElement(..),
         gTypeSVGFETurbulenceElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -29,6 +37,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern SVG_TURBULENCE_TYPE_UNKNOWN = 0
 pattern SVG_TURBULENCE_TYPE_FRACTALNOISE = 1
 pattern SVG_TURBULENCE_TYPE_TURBULENCE = 2
@@ -46,6 +64,15 @@ getBaseFrequencyX ::
                     SVGFETurbulenceElement -> m (Maybe SVGAnimatedNumber)
 getBaseFrequencyX self
   = liftIO (nullableToMaybe <$> (js_getBaseFrequencyX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyX Mozilla SVGFETurbulenceElement.baseFrequencyX documentation> 
+getBaseFrequencyXUnsafe ::
+                        (MonadIO m, HasCallStack) =>
+                          SVGFETurbulenceElement -> m SVGAnimatedNumber
+getBaseFrequencyXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBaseFrequencyX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyX Mozilla SVGFETurbulenceElement.baseFrequencyX documentation> 
 getBaseFrequencyXUnchecked ::
@@ -66,6 +93,15 @@ getBaseFrequencyY self
   = liftIO (nullableToMaybe <$> (js_getBaseFrequencyY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyY Mozilla SVGFETurbulenceElement.baseFrequencyY documentation> 
+getBaseFrequencyYUnsafe ::
+                        (MonadIO m, HasCallStack) =>
+                          SVGFETurbulenceElement -> m SVGAnimatedNumber
+getBaseFrequencyYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBaseFrequencyY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.baseFrequencyY Mozilla SVGFETurbulenceElement.baseFrequencyY documentation> 
 getBaseFrequencyYUnchecked ::
                            (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getBaseFrequencyYUnchecked self
@@ -84,6 +120,15 @@ getNumOctaves self
   = liftIO (nullableToMaybe <$> (js_getNumOctaves (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
+getNumOctavesUnsafe ::
+                    (MonadIO m, HasCallStack) =>
+                      SVGFETurbulenceElement -> m SVGAnimatedInteger
+getNumOctavesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNumOctaves (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
 getNumOctavesUnchecked ::
                        (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedInteger
 getNumOctavesUnchecked self
@@ -97,6 +142,15 @@ getSeed ::
         (MonadIO m) =>
           SVGFETurbulenceElement -> m (Maybe SVGAnimatedNumber)
 getSeed self = liftIO (nullableToMaybe <$> (js_getSeed (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
+getSeedUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGFETurbulenceElement -> m SVGAnimatedNumber
+getSeedUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSeed (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
 getSeedUnchecked ::
@@ -116,6 +170,15 @@ getStitchTiles self
   = liftIO (nullableToMaybe <$> (js_getStitchTiles (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.stitchTiles Mozilla SVGFETurbulenceElement.stitchTiles documentation> 
+getStitchTilesUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       SVGFETurbulenceElement -> m SVGAnimatedEnumeration
+getStitchTilesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStitchTiles (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.stitchTiles Mozilla SVGFETurbulenceElement.stitchTiles documentation> 
 getStitchTilesUnchecked ::
                         (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedEnumeration
 getStitchTilesUnchecked self
@@ -130,6 +193,15 @@ getType ::
         (MonadIO m) =>
           SVGFETurbulenceElement -> m (Maybe SVGAnimatedEnumeration)
 getType self = liftIO (nullableToMaybe <$> (js_getType (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.type Mozilla SVGFETurbulenceElement.type documentation> 
+getTypeUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                SVGFETurbulenceElement -> m SVGAnimatedEnumeration
+getTypeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getType (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.type Mozilla SVGFETurbulenceElement.type documentation> 
 getTypeUnchecked ::

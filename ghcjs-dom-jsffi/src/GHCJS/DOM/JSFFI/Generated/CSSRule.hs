@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSRule
        (pattern UNKNOWN_RULE, pattern STYLE_RULE, pattern CHARSET_RULE,
         pattern IMPORT_RULE, pattern MEDIA_RULE, pattern FONT_FACE_RULE,
@@ -6,13 +11,15 @@ module GHCJS.DOM.JSFFI.Generated.CSSRule
         pattern SUPPORTS_RULE, pattern WEBKIT_VIEWPORT_RULE,
         pattern WEBKIT_REGION_RULE, pattern WEBKIT_KEYFRAMES_RULE,
         pattern WEBKIT_KEYFRAME_RULE, js_getType, getType, js_setCssText,
-        setCssText, js_getCssText, getCssText, getCssTextUnchecked,
-        js_getParentStyleSheet, getParentStyleSheet,
-        getParentStyleSheetUnchecked, js_getParentRule, getParentRule,
+        setCssText, js_getCssText, getCssText, getCssTextUnsafe,
+        getCssTextUnchecked, js_getParentStyleSheet, getParentStyleSheet,
+        getParentStyleSheetUnsafe, getParentStyleSheetUnchecked,
+        js_getParentRule, getParentRule, getParentRuleUnsafe,
         getParentRuleUnchecked, CSSRule(..), gTypeCSSRule, IsCSSRule,
         toCSSRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +35,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern UNKNOWN_RULE = 0
 pattern STYLE_RULE = 1
 pattern CHARSET_RULE = 2
@@ -71,6 +88,15 @@ getCssText self
   = liftIO (fromMaybeJSString <$> (js_getCssText (toCSSRule self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
+getCssTextUnsafe ::
+                 (MonadIO m, IsCSSRule self, HasCallStack, FromJSString result) =>
+                   self -> m result
+getCssTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCssText (toCSSRule self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
 getCssTextUnchecked ::
                     (MonadIO m, IsCSSRule self, FromJSString result) =>
                       self -> m result
@@ -89,6 +115,15 @@ getParentStyleSheet self
       (nullableToMaybe <$> (js_getParentStyleSheet (toCSSRule self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
+getParentStyleSheetUnsafe ::
+                          (MonadIO m, IsCSSRule self, HasCallStack) =>
+                            self -> m CSSStyleSheet
+getParentStyleSheetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getParentStyleSheet (toCSSRule self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
 getParentStyleSheetUnchecked ::
                              (MonadIO m, IsCSSRule self) => self -> m CSSStyleSheet
 getParentStyleSheetUnchecked self
@@ -104,6 +139,14 @@ getParentRule ::
               (MonadIO m, IsCSSRule self) => self -> m (Maybe CSSRule)
 getParentRule self
   = liftIO (nullableToMaybe <$> (js_getParentRule (toCSSRule self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
+getParentRuleUnsafe ::
+                    (MonadIO m, IsCSSRule self, HasCallStack) => self -> m CSSRule
+getParentRuleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getParentRule (toCSSRule self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 
 getParentRuleUnchecked ::

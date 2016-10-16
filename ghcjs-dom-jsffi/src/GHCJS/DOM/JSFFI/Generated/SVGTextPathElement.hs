@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGTextPathElement
        (pattern TEXTPATH_METHODTYPE_UNKNOWN,
         pattern TEXTPATH_METHODTYPE_ALIGN,
@@ -6,11 +11,13 @@ module GHCJS.DOM.JSFFI.Generated.SVGTextPathElement
         pattern TEXTPATH_SPACINGTYPE_UNKNOWN,
         pattern TEXTPATH_SPACINGTYPE_AUTO,
         pattern TEXTPATH_SPACINGTYPE_EXACT, js_getStartOffset,
-        getStartOffset, getStartOffsetUnchecked, js_getMethod, getMethod,
-        getMethodUnchecked, js_getSpacing, getSpacing, getSpacingUnchecked,
+        getStartOffset, getStartOffsetUnsafe, getStartOffsetUnchecked,
+        js_getMethod, getMethod, getMethodUnsafe, getMethodUnchecked,
+        js_getSpacing, getSpacing, getSpacingUnsafe, getSpacingUnchecked,
         SVGTextPathElement(..), gTypeSVGTextPathElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern TEXTPATH_METHODTYPE_UNKNOWN = 0
 pattern TEXTPATH_METHODTYPE_ALIGN = 1
 pattern TEXTPATH_METHODTYPE_STRETCH = 2
@@ -44,6 +61,15 @@ getStartOffset self
   = liftIO (nullableToMaybe <$> (js_getStartOffset (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 
+getStartOffsetUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       SVGTextPathElement -> m SVGAnimatedLength
+getStartOffsetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStartOffset (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 
 getStartOffsetUnchecked ::
                         (MonadIO m) => SVGTextPathElement -> m SVGAnimatedLength
 getStartOffsetUnchecked self
@@ -60,6 +86,15 @@ getMethod ::
 getMethod self = liftIO (nullableToMaybe <$> (js_getMethod (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
+getMethodUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  SVGTextPathElement -> m SVGAnimatedEnumeration
+getMethodUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMethod (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
 getMethodUnchecked ::
                    (MonadIO m) => SVGTextPathElement -> m SVGAnimatedEnumeration
 getMethodUnchecked self
@@ -74,6 +109,15 @@ getSpacing ::
              SVGTextPathElement -> m (Maybe SVGAnimatedEnumeration)
 getSpacing self
   = liftIO (nullableToMaybe <$> (js_getSpacing (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 
+getSpacingUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGTextPathElement -> m SVGAnimatedEnumeration
+getSpacingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSpacing (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 
 getSpacingUnchecked ::

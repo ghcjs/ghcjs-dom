@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.XPathNSResolver
        (js_lookupNamespaceURI, lookupNamespaceURI, lookupNamespaceURI_,
-        lookupNamespaceURIUnchecked, XPathNSResolver(..),
-        gTypeXPathNSResolver)
+        lookupNamespaceURIUnsafe, lookupNamespaceURIUnchecked,
+        XPathNSResolver(..), gTypeXPathNSResolver)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +26,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         js_lookupNamespaceURI ::
@@ -39,6 +55,17 @@ lookupNamespaceURI_ ::
                     (MonadIO m, ToJSString prefix) => XPathNSResolver -> prefix -> m ()
 lookupNamespaceURI_ self prefix
   = liftIO (void (js_lookupNamespaceURI (self) (toJSString prefix)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver.lookupNamespaceURI Mozilla XPathNSResolver.lookupNamespaceURI documentation> 
+lookupNamespaceURIUnsafe ::
+                         (MonadIO m, ToJSString prefix, HasCallStack,
+                          FromJSString result) =>
+                           XPathNSResolver -> prefix -> m result
+lookupNamespaceURIUnsafe self prefix
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_lookupNamespaceURI (self) (toJSString prefix)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathNSResolver.lookupNamespaceURI Mozilla XPathNSResolver.lookupNamespaceURI documentation> 
 lookupNamespaceURIUnchecked ::

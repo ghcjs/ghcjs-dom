@@ -1,21 +1,30 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSStyleDeclaration
        (js_getPropertyValue, getPropertyValue, getPropertyValue_,
-        getPropertyValueUnchecked, js_getPropertyCSSValue,
-        getPropertyCSSValue, getPropertyCSSValue_,
-        getPropertyCSSValueUnchecked, js_removeProperty, removeProperty,
-        removeProperty_, removePropertyUnchecked, js_getPropertyPriority,
-        getPropertyPriority, getPropertyPriority_,
-        getPropertyPriorityUnchecked, js_setProperty, setProperty, js_item,
-        item, item_, js_getPropertyShorthand, getPropertyShorthand,
-        getPropertyShorthand_, getPropertyShorthandUnchecked,
-        js_isPropertyImplicit, isPropertyImplicit, isPropertyImplicit_,
-        js_setCssText, setCssText, js_getCssText, getCssText,
-        getCssTextUnchecked, js_getLength, getLength, js_getParentRule,
-        getParentRule, getParentRuleUnchecked, CSSStyleDeclaration(..),
-        gTypeCSSStyleDeclaration)
+        getPropertyValueUnsafe, getPropertyValueUnchecked,
+        js_getPropertyCSSValue, getPropertyCSSValue, getPropertyCSSValue_,
+        getPropertyCSSValueUnsafe, getPropertyCSSValueUnchecked,
+        js_removeProperty, removeProperty, removeProperty_,
+        removePropertyUnsafe, removePropertyUnchecked,
+        js_getPropertyPriority, getPropertyPriority, getPropertyPriority_,
+        getPropertyPriorityUnsafe, getPropertyPriorityUnchecked,
+        js_setProperty, setProperty, js_item, item, item_,
+        js_getPropertyShorthand, getPropertyShorthand,
+        getPropertyShorthand_, getPropertyShorthandUnsafe,
+        getPropertyShorthandUnchecked, js_isPropertyImplicit,
+        isPropertyImplicit, isPropertyImplicit_, js_setCssText, setCssText,
+        js_getCssText, getCssText, getCssTextUnsafe, getCssTextUnchecked,
+        js_getLength, getLength, js_getParentRule, getParentRule,
+        getParentRuleUnsafe, getParentRuleUnchecked,
+        CSSStyleDeclaration(..), gTypeCSSStyleDeclaration)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -31,6 +40,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getPropertyValue\"]($2)"
         js_getPropertyValue ::
@@ -52,6 +71,17 @@ getPropertyValue_ ::
 getPropertyValue_ self propertyName
   = liftIO
       (void (js_getPropertyValue (self) (toJSString propertyName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyValue Mozilla CSSStyleDeclaration.getPropertyValue documentation> 
+getPropertyValueUnsafe ::
+                       (MonadIO m, ToJSString propertyName, HasCallStack,
+                        FromJSString result) =>
+                         CSSStyleDeclaration -> propertyName -> m result
+getPropertyValueUnsafe self propertyName
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getPropertyValue (self) (toJSString propertyName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyValue Mozilla CSSStyleDeclaration.getPropertyValue documentation> 
 getPropertyValueUnchecked ::
@@ -84,6 +114,16 @@ getPropertyCSSValue_ self propertyName
       (void (js_getPropertyCSSValue (self) (toJSString propertyName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyCSSValue Mozilla CSSStyleDeclaration.getPropertyCSSValue documentation> 
+getPropertyCSSValueUnsafe ::
+                          (MonadIO m, ToJSString propertyName, HasCallStack) =>
+                            CSSStyleDeclaration -> propertyName -> m CSSValue
+getPropertyCSSValueUnsafe self propertyName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getPropertyCSSValue (self) (toJSString propertyName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyCSSValue Mozilla CSSStyleDeclaration.getPropertyCSSValue documentation> 
 getPropertyCSSValueUnchecked ::
                              (MonadIO m, ToJSString propertyName) =>
                                CSSStyleDeclaration -> propertyName -> m CSSValue
@@ -114,6 +154,17 @@ removeProperty_ self propertyName
       (void (js_removeProperty (self) (toJSString propertyName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.removeProperty Mozilla CSSStyleDeclaration.removeProperty documentation> 
+removePropertyUnsafe ::
+                     (MonadIO m, ToJSString propertyName, HasCallStack,
+                      FromJSString result) =>
+                       CSSStyleDeclaration -> propertyName -> m result
+removePropertyUnsafe self propertyName
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_removeProperty (self) (toJSString propertyName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.removeProperty Mozilla CSSStyleDeclaration.removeProperty documentation> 
 removePropertyUnchecked ::
                         (MonadIO m, ToJSString propertyName, FromJSString result) =>
                           CSSStyleDeclaration -> propertyName -> m result
@@ -142,6 +193,17 @@ getPropertyPriority_ ::
 getPropertyPriority_ self propertyName
   = liftIO
       (void (js_getPropertyPriority (self) (toJSString propertyName)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyPriority Mozilla CSSStyleDeclaration.getPropertyPriority documentation> 
+getPropertyPriorityUnsafe ::
+                          (MonadIO m, ToJSString propertyName, HasCallStack,
+                           FromJSString result) =>
+                            CSSStyleDeclaration -> propertyName -> m result
+getPropertyPriorityUnsafe self propertyName
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getPropertyPriority (self) (toJSString propertyName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyPriority Mozilla CSSStyleDeclaration.getPropertyPriority documentation> 
 getPropertyPriorityUnchecked ::
@@ -204,6 +266,17 @@ getPropertyShorthand_ self propertyName
       (void (js_getPropertyShorthand (self) (toJSString propertyName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyShorthand Mozilla CSSStyleDeclaration.getPropertyShorthand documentation> 
+getPropertyShorthandUnsafe ::
+                           (MonadIO m, ToJSString propertyName, HasCallStack,
+                            FromJSString result) =>
+                             CSSStyleDeclaration -> propertyName -> m result
+getPropertyShorthandUnsafe self propertyName
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getPropertyShorthand (self) (toJSString propertyName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.getPropertyShorthand Mozilla CSSStyleDeclaration.getPropertyShorthand documentation> 
 getPropertyShorthandUnchecked ::
                               (MonadIO m, ToJSString propertyName, FromJSString result) =>
                                 CSSStyleDeclaration -> propertyName -> m result
@@ -252,6 +325,15 @@ getCssText self
   = liftIO (fromMaybeJSString <$> (js_getCssText (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
+getCssTextUnsafe ::
+                 (MonadIO m, HasCallStack, FromJSString result) =>
+                   CSSStyleDeclaration -> m result
+getCssTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCssText (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
 getCssTextUnchecked ::
                     (MonadIO m, FromJSString result) => CSSStyleDeclaration -> m result
 getCssTextUnchecked self
@@ -272,6 +354,14 @@ getParentRule ::
               (MonadIO m) => CSSStyleDeclaration -> m (Maybe CSSRule)
 getParentRule self
   = liftIO (nullableToMaybe <$> (js_getParentRule (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.parentRule Mozilla CSSStyleDeclaration.parentRule documentation> 
+getParentRuleUnsafe ::
+                    (MonadIO m, HasCallStack) => CSSStyleDeclaration -> m CSSRule
+getParentRuleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getParentRule (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.parentRule Mozilla CSSStyleDeclaration.parentRule documentation> 
 getParentRuleUnchecked ::

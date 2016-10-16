@@ -1,12 +1,19 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.StorageEvent
        (js_initStorageEvent, initStorageEvent, js_getKey, getKey,
-        js_getOldValue, getOldValue, getOldValueUnchecked, js_getNewValue,
-        getNewValue, getNewValueUnchecked, js_getUrl, getUrl,
-        js_getStorageArea, getStorageArea, getStorageAreaUnchecked,
-        StorageEvent(..), gTypeStorageEvent)
+        js_getOldValue, getOldValue, getOldValueUnsafe,
+        getOldValueUnchecked, js_getNewValue, getNewValue,
+        getNewValueUnsafe, getNewValueUnchecked, js_getUrl, getUrl,
+        js_getStorageArea, getStorageArea, getStorageAreaUnsafe,
+        getStorageAreaUnchecked, StorageEvent(..), gTypeStorageEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +29,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initStorageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
@@ -76,6 +93,15 @@ getOldValue self
   = liftIO (fromMaybeJSString <$> (js_getOldValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.oldValue Mozilla StorageEvent.oldValue documentation> 
+getOldValueUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    StorageEvent -> m result
+getOldValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getOldValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.oldValue Mozilla StorageEvent.oldValue documentation> 
 getOldValueUnchecked ::
                      (MonadIO m, FromJSString result) => StorageEvent -> m result
 getOldValueUnchecked self
@@ -90,6 +116,15 @@ getNewValue ::
               StorageEvent -> m (Maybe result)
 getNewValue self
   = liftIO (fromMaybeJSString <$> (js_getNewValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.newValue Mozilla StorageEvent.newValue documentation> 
+getNewValueUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    StorageEvent -> m result
+getNewValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getNewValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.newValue Mozilla StorageEvent.newValue documentation> 
 getNewValueUnchecked ::
@@ -112,6 +147,14 @@ foreign import javascript unsafe "$1[\"storageArea\"]"
 getStorageArea :: (MonadIO m) => StorageEvent -> m (Maybe Storage)
 getStorageArea self
   = liftIO (nullableToMaybe <$> (js_getStorageArea (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.storageArea Mozilla StorageEvent.storageArea documentation> 
+getStorageAreaUnsafe ::
+                     (MonadIO m, HasCallStack) => StorageEvent -> m Storage
+getStorageAreaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStorageArea (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.storageArea Mozilla StorageEvent.storageArea documentation> 
 getStorageAreaUnchecked :: (MonadIO m) => StorageEvent -> m Storage

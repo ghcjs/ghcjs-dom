@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CryptoKeyPair
-       (js_getPublicKey, getPublicKey, getPublicKeyUnchecked,
-        js_getPrivateKey, getPrivateKey, getPrivateKeyUnchecked,
-        CryptoKeyPair(..), gTypeCryptoKeyPair)
+       (js_getPublicKey, getPublicKey, getPublicKeyUnsafe,
+        getPublicKeyUnchecked, js_getPrivateKey, getPrivateKey,
+        getPrivateKeyUnsafe, getPrivateKeyUnchecked, CryptoKeyPair(..),
+        gTypeCryptoKeyPair)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"publicKey\"]"
         js_getPublicKey :: CryptoKeyPair -> IO (Nullable CryptoKey)
@@ -28,6 +45,14 @@ foreign import javascript unsafe "$1[\"publicKey\"]"
 getPublicKey :: (MonadIO m) => CryptoKeyPair -> m (Maybe CryptoKey)
 getPublicKey self
   = liftIO (nullableToMaybe <$> (js_getPublicKey (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair.publicKey Mozilla CryptoKeyPair.publicKey documentation> 
+getPublicKeyUnsafe ::
+                   (MonadIO m, HasCallStack) => CryptoKeyPair -> m CryptoKey
+getPublicKeyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPublicKey (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair.publicKey Mozilla CryptoKeyPair.publicKey documentation> 
 getPublicKeyUnchecked ::
@@ -43,6 +68,14 @@ getPrivateKey ::
               (MonadIO m) => CryptoKeyPair -> m (Maybe CryptoKey)
 getPrivateKey self
   = liftIO (nullableToMaybe <$> (js_getPrivateKey (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair.privateKey Mozilla CryptoKeyPair.privateKey documentation> 
+getPrivateKeyUnsafe ::
+                    (MonadIO m, HasCallStack) => CryptoKeyPair -> m CryptoKey
+getPrivateKeyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPrivateKey (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair.privateKey Mozilla CryptoKeyPair.privateKey documentation> 
 getPrivateKeyUnchecked ::

@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.RTCStatsReport
        (js_stat, stat, stat_, js_names, names, names_, js_getTimestamp,
-        getTimestamp, getTimestampUnchecked, js_getId, getId, js_getType,
-        getType, js_getLocal, getLocal, getLocalUnchecked, js_getRemote,
-        getRemote, getRemoteUnchecked, RTCStatsReport(..),
-        gTypeRTCStatsReport)
+        getTimestamp, getTimestampUnsafe, getTimestampUnchecked, js_getId,
+        getId, js_getType, getType, js_getLocal, getLocal, getLocalUnsafe,
+        getLocalUnchecked, js_getRemote, getRemote, getRemoteUnsafe,
+        getRemoteUnchecked, RTCStatsReport(..), gTypeRTCStatsReport)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"stat\"]($2)" js_stat ::
         RTCStatsReport -> JSString -> IO JSString
@@ -59,6 +75,14 @@ getTimestamp self
   = liftIO (nullableToMaybe <$> (js_getTimestamp (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.timestamp Mozilla RTCStatsReport.timestamp documentation> 
+getTimestampUnsafe ::
+                   (MonadIO m, HasCallStack) => RTCStatsReport -> m Date
+getTimestampUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTimestamp (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.timestamp Mozilla RTCStatsReport.timestamp documentation> 
 getTimestampUnchecked :: (MonadIO m) => RTCStatsReport -> m Date
 getTimestampUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getTimestamp (self)))
@@ -88,6 +112,14 @@ getLocal ::
 getLocal self = liftIO (nullableToMaybe <$> (js_getLocal (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.local Mozilla RTCStatsReport.local documentation> 
+getLocalUnsafe ::
+               (MonadIO m, HasCallStack) => RTCStatsReport -> m RTCStatsReport
+getLocalUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocal (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.local Mozilla RTCStatsReport.local documentation> 
 getLocalUnchecked ::
                   (MonadIO m) => RTCStatsReport -> m RTCStatsReport
 getLocalUnchecked self
@@ -100,6 +132,14 @@ foreign import javascript unsafe "$1[\"remote\"]" js_getRemote ::
 getRemote ::
           (MonadIO m) => RTCStatsReport -> m (Maybe RTCStatsReport)
 getRemote self = liftIO (nullableToMaybe <$> (js_getRemote (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.remote Mozilla RTCStatsReport.remote documentation> 
+getRemoteUnsafe ::
+                (MonadIO m, HasCallStack) => RTCStatsReport -> m RTCStatsReport
+getRemoteUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRemote (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCStatsReport.remote Mozilla RTCStatsReport.remote documentation> 
 getRemoteUnchecked ::

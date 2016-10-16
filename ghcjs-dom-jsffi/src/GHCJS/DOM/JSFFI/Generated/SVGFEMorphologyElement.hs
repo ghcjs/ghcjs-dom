@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEMorphologyElement
        (js_setRadius, setRadius, pattern SVG_MORPHOLOGY_OPERATOR_UNKNOWN,
         pattern SVG_MORPHOLOGY_OPERATOR_ERODE,
         pattern SVG_MORPHOLOGY_OPERATOR_DILATE, js_getIn1, getIn1,
-        getIn1Unchecked, js_getOperator, getOperator, getOperatorUnchecked,
-        js_getRadiusX, getRadiusX, getRadiusXUnchecked, js_getRadiusY,
-        getRadiusY, getRadiusYUnchecked, SVGFEMorphologyElement(..),
+        getIn1Unsafe, getIn1Unchecked, js_getOperator, getOperator,
+        getOperatorUnsafe, getOperatorUnchecked, js_getRadiusX, getRadiusX,
+        getRadiusXUnsafe, getRadiusXUnchecked, js_getRadiusY, getRadiusY,
+        getRadiusYUnsafe, getRadiusYUnchecked, SVGFEMorphologyElement(..),
         gTypeSVGFEMorphologyElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setRadius\"]($2, $3)"
         js_setRadius :: SVGFEMorphologyElement -> Float -> Float -> IO ()
@@ -47,6 +64,15 @@ getIn1 ::
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.in1 Mozilla SVGFEMorphologyElement.in1 documentation> 
+getIn1Unsafe ::
+             (MonadIO m, HasCallStack) =>
+               SVGFEMorphologyElement -> m SVGAnimatedString
+getIn1Unsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIn1 (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.in1 Mozilla SVGFEMorphologyElement.in1 documentation> 
 getIn1Unchecked ::
                 (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedString
 getIn1Unchecked self
@@ -61,6 +87,15 @@ getOperator ::
               SVGFEMorphologyElement -> m (Maybe SVGAnimatedEnumeration)
 getOperator self
   = liftIO (nullableToMaybe <$> (js_getOperator (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.operator Mozilla SVGFEMorphologyElement.operator documentation> 
+getOperatorUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    SVGFEMorphologyElement -> m SVGAnimatedEnumeration
+getOperatorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOperator (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.operator Mozilla SVGFEMorphologyElement.operator documentation> 
 getOperatorUnchecked ::
@@ -79,6 +114,15 @@ getRadiusX self
   = liftIO (nullableToMaybe <$> (js_getRadiusX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusX Mozilla SVGFEMorphologyElement.radiusX documentation> 
+getRadiusXUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEMorphologyElement -> m SVGAnimatedNumber
+getRadiusXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRadiusX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusX Mozilla SVGFEMorphologyElement.radiusX documentation> 
 getRadiusXUnchecked ::
                     (MonadIO m) => SVGFEMorphologyElement -> m SVGAnimatedNumber
 getRadiusXUnchecked self
@@ -93,6 +137,15 @@ getRadiusY ::
              SVGFEMorphologyElement -> m (Maybe SVGAnimatedNumber)
 getRadiusY self
   = liftIO (nullableToMaybe <$> (js_getRadiusY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusY Mozilla SVGFEMorphologyElement.radiusY documentation> 
+getRadiusYUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGFEMorphologyElement -> m SVGAnimatedNumber
+getRadiusYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRadiusY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement.radiusY Mozilla SVGFEMorphologyElement.radiusY documentation> 
 getRadiusYUnchecked ::

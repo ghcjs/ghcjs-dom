@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLAreaElement
        (js_setAlt, setAlt, js_getAlt, getAlt, js_setCoords, setCoords,
         js_getCoords, getCoords, js_setHref, setHref, js_getHref, getHref,
@@ -9,9 +14,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLAreaElement
         js_getHost, getHost, js_getHostname, getHostname, js_getPathname,
         getPathname, js_getPort, getPort, js_getProtocol, getProtocol,
         js_getSearch, getSearch, js_getRelList, getRelList,
-        getRelListUnchecked, HTMLAreaElement(..), gTypeHTMLAreaElement)
+        getRelListUnsafe, getRelListUnchecked, HTMLAreaElement(..),
+        gTypeHTMLAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"alt\"] = $2;" js_setAlt ::
         HTMLAreaElement -> JSString -> IO ()
@@ -221,6 +238,14 @@ getRelList ::
            (MonadIO m) => HTMLAreaElement -> m (Maybe DOMTokenList)
 getRelList self
   = liftIO (nullableToMaybe <$> (js_getRelList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.relList Mozilla HTMLAreaElement.relList documentation> 
+getRelListUnsafe ::
+                 (MonadIO m, HasCallStack) => HTMLAreaElement -> m DOMTokenList
+getRelListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRelList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.relList Mozilla HTMLAreaElement.relList documentation> 
 getRelListUnchecked ::

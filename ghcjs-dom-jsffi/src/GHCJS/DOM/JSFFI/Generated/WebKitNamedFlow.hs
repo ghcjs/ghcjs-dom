@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitNamedFlow
        (js_getRegionsByContent, getRegionsByContent, getRegionsByContent_,
-        getRegionsByContentUnchecked, js_getRegions, getRegions,
-        getRegions_, getRegionsUnchecked, js_getContent, getContent,
-        getContent_, getContentUnchecked, js_getName, getName,
+        getRegionsByContentUnsafe, getRegionsByContentUnchecked,
+        js_getRegions, getRegions, getRegions_, getRegionsUnsafe,
+        getRegionsUnchecked, js_getContent, getContent, getContent_,
+        getContentUnsafe, getContentUnchecked, js_getName, getName,
         js_getOverset, getOverset, js_getFirstEmptyRegionIndex,
         getFirstEmptyRegionIndex, WebKitNamedFlow(..),
         gTypeWebKitNamedFlow)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getRegionsByContent\"]($2)"
         js_getRegionsByContent ::
@@ -50,6 +67,17 @@ getRegionsByContent_ self contentNode
             (maybeToNullable (fmap toNode contentNode))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegionsByContent Mozilla WebKitNamedFlow.getRegionsByContent documentation> 
+getRegionsByContentUnsafe ::
+                          (MonadIO m, IsNode contentNode, HasCallStack) =>
+                            WebKitNamedFlow -> Maybe contentNode -> m NodeList
+getRegionsByContentUnsafe self contentNode
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getRegionsByContent (self)
+             (maybeToNullable (fmap toNode contentNode))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegionsByContent Mozilla WebKitNamedFlow.getRegionsByContent documentation> 
 getRegionsByContentUnchecked ::
                              (MonadIO m, IsNode contentNode) =>
                                WebKitNamedFlow -> Maybe contentNode -> m NodeList
@@ -72,6 +100,14 @@ getRegions_ :: (MonadIO m) => WebKitNamedFlow -> m ()
 getRegions_ self = liftIO (void (js_getRegions (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegions Mozilla WebKitNamedFlow.getRegions documentation> 
+getRegionsUnsafe ::
+                 (MonadIO m, HasCallStack) => WebKitNamedFlow -> m NodeList
+getRegionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRegions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getRegions Mozilla WebKitNamedFlow.getRegions documentation> 
 getRegionsUnchecked :: (MonadIO m) => WebKitNamedFlow -> m NodeList
 getRegionsUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRegions (self)))
@@ -87,6 +123,14 @@ getContent self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
 getContent_ :: (MonadIO m) => WebKitNamedFlow -> m ()
 getContent_ self = liftIO (void (js_getContent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
+getContentUnsafe ::
+                 (MonadIO m, HasCallStack) => WebKitNamedFlow -> m NodeList
+getContentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getContent (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlow.getContent Mozilla WebKitNamedFlow.getContent documentation> 
 getContentUnchecked :: (MonadIO m) => WebKitNamedFlow -> m NodeList

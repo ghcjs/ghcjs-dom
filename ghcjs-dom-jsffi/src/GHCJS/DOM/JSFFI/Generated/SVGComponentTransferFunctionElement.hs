@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
        (pattern SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY,
@@ -6,18 +11,21 @@ module GHCJS.DOM.JSFFI.Generated.SVGComponentTransferFunctionElement
         pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR,
         pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA, js_getType, getType,
-        getTypeUnchecked, js_getTableValues, getTableValues,
-        getTableValuesUnchecked, js_getSlope, getSlope, getSlopeUnchecked,
-        js_getIntercept, getIntercept, getInterceptUnchecked,
-        js_getAmplitude, getAmplitude, getAmplitudeUnchecked,
-        js_getExponent, getExponent, getExponentUnchecked, js_getOffset,
-        getOffset, getOffsetUnchecked,
+        getTypeUnsafe, getTypeUnchecked, js_getTableValues, getTableValues,
+        getTableValuesUnsafe, getTableValuesUnchecked, js_getSlope,
+        getSlope, getSlopeUnsafe, getSlopeUnchecked, js_getIntercept,
+        getIntercept, getInterceptUnsafe, getInterceptUnchecked,
+        js_getAmplitude, getAmplitude, getAmplitudeUnsafe,
+        getAmplitudeUnchecked, js_getExponent, getExponent,
+        getExponentUnsafe, getExponentUnchecked, js_getOffset, getOffset,
+        getOffsetUnsafe, getOffsetUnchecked,
         SVGComponentTransferFunctionElement(..),
         gTypeSVGComponentTransferFunctionElement,
         IsSVGComponentTransferFunctionElement,
         toSVGComponentTransferFunctionElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -33,6 +41,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN = 0
 pattern SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY = 1
 pattern SVG_FECOMPONENTTRANSFER_TYPE_TABLE = 2
@@ -52,6 +70,17 @@ getType self
   = liftIO
       (nullableToMaybe <$>
          (js_getType (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
+getTypeUnsafe ::
+              (MonadIO m, IsSVGComponentTransferFunctionElement self,
+               HasCallStack) =>
+                self -> m SVGAnimatedEnumeration
+getTypeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getType (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
 getTypeUnchecked ::
@@ -77,6 +106,17 @@ getTableValues self
          (js_getTableValues (toSVGComponentTransferFunctionElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.tableValues Mozilla SVGComponentTransferFunctionElement.tableValues documentation> 
+getTableValuesUnsafe ::
+                     (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                      HasCallStack) =>
+                       self -> m SVGAnimatedNumberList
+getTableValuesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getTableValues (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.tableValues Mozilla SVGComponentTransferFunctionElement.tableValues documentation> 
 getTableValuesUnchecked ::
                         (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
                           self -> m SVGAnimatedNumberList
@@ -97,6 +137,17 @@ getSlope self
   = liftIO
       (nullableToMaybe <$>
          (js_getSlope (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
+getSlopeUnsafe ::
+               (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                HasCallStack) =>
+                 self -> m SVGAnimatedNumber
+getSlopeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getSlope (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
 getSlopeUnchecked ::
@@ -122,6 +173,17 @@ getIntercept self
          (js_getIntercept (toSVGComponentTransferFunctionElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.intercept Mozilla SVGComponentTransferFunctionElement.intercept documentation> 
+getInterceptUnsafe ::
+                   (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                    HasCallStack) =>
+                     self -> m SVGAnimatedNumber
+getInterceptUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getIntercept (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.intercept Mozilla SVGComponentTransferFunctionElement.intercept documentation> 
 getInterceptUnchecked ::
                       (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
                         self -> m SVGAnimatedNumber
@@ -143,6 +205,17 @@ getAmplitude self
   = liftIO
       (nullableToMaybe <$>
          (js_getAmplitude (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.amplitude Mozilla SVGComponentTransferFunctionElement.amplitude documentation> 
+getAmplitudeUnsafe ::
+                   (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                    HasCallStack) =>
+                     self -> m SVGAnimatedNumber
+getAmplitudeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getAmplitude (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.amplitude Mozilla SVGComponentTransferFunctionElement.amplitude documentation> 
 getAmplitudeUnchecked ::
@@ -168,6 +241,17 @@ getExponent self
          (js_getExponent (toSVGComponentTransferFunctionElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
+getExponentUnsafe ::
+                  (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                   HasCallStack) =>
+                    self -> m SVGAnimatedNumber
+getExponentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getExponent (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
 getExponentUnchecked ::
                      (MonadIO m, IsSVGComponentTransferFunctionElement self) =>
                        self -> m SVGAnimatedNumber
@@ -188,6 +272,17 @@ getOffset self
   = liftIO
       (nullableToMaybe <$>
          (js_getOffset (toSVGComponentTransferFunctionElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 
+getOffsetUnsafe ::
+                (MonadIO m, IsSVGComponentTransferFunctionElement self,
+                 HasCallStack) =>
+                  self -> m SVGAnimatedNumber
+getOffsetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getOffset (toSVGComponentTransferFunctionElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 
 getOffsetUnchecked ::

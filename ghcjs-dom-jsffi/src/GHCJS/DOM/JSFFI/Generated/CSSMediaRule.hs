@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSMediaRule
        (js_insertRule, insertRule, insertRule_, js_deleteRule, deleteRule,
-        js_getMedia, getMedia, getMediaUnchecked, js_getCssRules,
-        getCssRules, getCssRulesUnchecked, CSSMediaRule(..),
-        gTypeCSSMediaRule)
+        js_getMedia, getMedia, getMediaUnsafe, getMediaUnchecked,
+        js_getCssRules, getCssRules, getCssRulesUnsafe,
+        getCssRulesUnchecked, CSSMediaRule(..), gTypeCSSMediaRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"insertRule\"]($2, $3)"
         js_insertRule :: CSSMediaRule -> JSString -> Word -> IO Word
@@ -54,6 +70,14 @@ getMedia :: (MonadIO m) => CSSMediaRule -> m (Maybe MediaList)
 getMedia self = liftIO (nullableToMaybe <$> (js_getMedia (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
+getMediaUnsafe ::
+               (MonadIO m, HasCallStack) => CSSMediaRule -> m MediaList
+getMediaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMedia (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
 getMediaUnchecked :: (MonadIO m) => CSSMediaRule -> m MediaList
 getMediaUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getMedia (self)))
@@ -65,6 +89,14 @@ foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
 getCssRules :: (MonadIO m) => CSSMediaRule -> m (Maybe CSSRuleList)
 getCssRules self
   = liftIO (nullableToMaybe <$> (js_getCssRules (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.cssRules Mozilla CSSMediaRule.cssRules documentation> 
+getCssRulesUnsafe ::
+                  (MonadIO m, HasCallStack) => CSSMediaRule -> m CSSRuleList
+getCssRulesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCssRules (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.cssRules Mozilla CSSMediaRule.cssRules documentation> 
 getCssRulesUnchecked ::

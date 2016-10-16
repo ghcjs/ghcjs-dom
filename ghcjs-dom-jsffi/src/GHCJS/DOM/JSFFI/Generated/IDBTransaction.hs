@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBTransaction
-       (js_objectStore, objectStore, objectStore_, objectStoreUnchecked,
-        js_abort, abort, js_getMode, getMode, js_getDb, getDb,
-        getDbUnchecked, js_getError, getError, getErrorUnchecked,
-        abortEvent, complete, error, IDBTransaction(..),
-        gTypeIDBTransaction)
+       (js_objectStore, objectStore, objectStore_, objectStoreUnsafe,
+        objectStoreUnchecked, js_abort, abort, js_getMode, getMode,
+        js_getDb, getDb, getDbUnsafe, getDbUnchecked, js_getError,
+        getError, getErrorUnsafe, getErrorUnchecked, abortEvent, complete,
+        error, IDBTransaction(..), gTypeIDBTransaction)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"objectStore\"]($2)"
         js_objectStore ::
@@ -40,6 +56,15 @@ objectStore_ ::
              (MonadIO m, ToJSString name) => IDBTransaction -> name -> m ()
 objectStore_ self name
   = liftIO (void (js_objectStore (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
+objectStoreUnsafe ::
+                  (MonadIO m, ToJSString name, HasCallStack) =>
+                    IDBTransaction -> name -> m IDBObjectStore
+objectStoreUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_objectStore (self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
 objectStoreUnchecked ::
@@ -73,6 +98,14 @@ getDb :: (MonadIO m) => IDBTransaction -> m (Maybe IDBDatabase)
 getDb self = liftIO (nullableToMaybe <$> (js_getDb (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
+getDbUnsafe ::
+            (MonadIO m, HasCallStack) => IDBTransaction -> m IDBDatabase
+getDbUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDb (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
 getDbUnchecked :: (MonadIO m) => IDBTransaction -> m IDBDatabase
 getDbUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getDb (self)))
@@ -83,6 +116,14 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
 getError :: (MonadIO m) => IDBTransaction -> m (Maybe DOMError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
+getErrorUnsafe ::
+               (MonadIO m, HasCallStack) => IDBTransaction -> m DOMError
+getErrorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getError (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 
 getErrorUnchecked :: (MonadIO m) => IDBTransaction -> m DOMError

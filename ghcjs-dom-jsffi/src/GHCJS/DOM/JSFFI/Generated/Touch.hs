@@ -1,15 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Touch
        (js_getClientX, getClientX, js_getClientY, getClientY,
         js_getScreenX, getScreenX, js_getScreenY, getScreenY, js_getPageX,
         getPageX, js_getPageY, getPageY, js_getTarget, getTarget,
-        getTargetUnchecked, js_getIdentifier, getIdentifier,
-        js_getWebkitRadiusX, getWebkitRadiusX, js_getWebkitRadiusY,
-        getWebkitRadiusY, js_getWebkitRotationAngle,
+        getTargetUnsafe, getTargetUnchecked, js_getIdentifier,
+        getIdentifier, js_getWebkitRadiusX, getWebkitRadiusX,
+        js_getWebkitRadiusY, getWebkitRadiusY, js_getWebkitRotationAngle,
         getWebkitRotationAngle, js_getWebkitForce, getWebkitForce,
         Touch(..), gTypeTouch)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clientX\"]" js_getClientX ::
         Touch -> IO Int
@@ -74,6 +90,14 @@ foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
 getTarget :: (MonadIO m) => Touch -> m (Maybe EventTarget)
 getTarget self = liftIO (nullableToMaybe <$> (js_getTarget (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
+getTargetUnsafe ::
+                (MonadIO m, HasCallStack) => Touch -> m EventTarget
+getTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTarget (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 
 getTargetUnchecked :: (MonadIO m) => Touch -> m EventTarget

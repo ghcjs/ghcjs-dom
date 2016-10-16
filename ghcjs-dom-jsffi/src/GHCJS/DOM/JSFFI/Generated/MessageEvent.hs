@@ -1,12 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MessageEvent
        (js_initMessageEvent, initMessageEvent, js_webkitInitMessageEvent,
         webkitInitMessageEvent, js_getOrigin, getOrigin, js_getLastEventId,
-        getLastEventId, js_getSource, getSource, getSourceUnchecked,
-        js_getData, getData, js_getPorts, getPorts, MessageEvent(..),
-        gTypeMessageEvent)
+        getLastEventId, js_getSource, getSource, getSourceUnsafe,
+        getSourceUnchecked, js_getData, getData, js_getPorts, getPorts,
+        MessageEvent(..), gTypeMessageEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -22,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"initMessageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
@@ -110,6 +126,14 @@ foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.source Mozilla MessageEvent.source documentation> 
 getSource :: (MonadIO m) => MessageEvent -> m (Maybe EventTarget)
 getSource self = liftIO (nullableToMaybe <$> (js_getSource (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.source Mozilla MessageEvent.source documentation> 
+getSourceUnsafe ::
+                (MonadIO m, HasCallStack) => MessageEvent -> m EventTarget
+getSourceUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSource (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.source Mozilla MessageEvent.source documentation> 
 getSourceUnchecked :: (MonadIO m) => MessageEvent -> m EventTarget

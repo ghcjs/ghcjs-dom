@@ -1,15 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimationElement
        (js_getStartTime, getStartTime, getStartTime_, js_getCurrentTime,
         getCurrentTime, getCurrentTime_, js_getSimpleDuration,
         getSimpleDuration, getSimpleDuration_, js_beginElement,
         beginElement, js_beginElementAt, beginElementAt, js_endElement,
         endElement, js_endElementAt, endElementAt, js_getTargetElement,
-        getTargetElement, getTargetElementUnchecked,
-        SVGAnimationElement(..), gTypeSVGAnimationElement,
-        IsSVGAnimationElement, toSVGAnimationElement)
+        getTargetElement, getTargetElementUnsafe,
+        getTargetElementUnchecked, SVGAnimationElement(..),
+        gTypeSVGAnimationElement, IsSVGAnimationElement,
+        toSVGAnimationElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getStartTime\"]()"
         js_getStartTime :: SVGAnimationElement -> IO Float
@@ -119,6 +136,16 @@ getTargetElement self
   = liftIO
       (nullableToMaybe <$>
          (js_getTargetElement (toSVGAnimationElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
+getTargetElementUnsafe ::
+                       (MonadIO m, IsSVGAnimationElement self, HasCallStack) =>
+                         self -> m SVGElement
+getTargetElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getTargetElement (toSVGAnimationElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
 getTargetElementUnchecked ::

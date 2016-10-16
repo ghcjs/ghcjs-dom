@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.FileReader
        (js_newFileReader, newFileReader, js_readAsArrayBuffer,
         readAsArrayBuffer, js_readAsBinaryString, readAsBinaryString,
         js_readAsText, readAsText, js_readAsDataURL, readAsDataURL,
         js_abort, abort, pattern EMPTY, pattern LOADING, pattern DONE,
         js_getReadyState, getReadyState, js_getResult, getResult,
-        js_getError, getError, getErrorUnchecked, loadStart, progress,
-        load, abortEvent, error, loadEnd, FileReader(..), gTypeFileReader)
+        js_getError, getError, getErrorUnsafe, getErrorUnchecked,
+        loadStart, progress, load, abortEvent, error, loadEnd,
+        FileReader(..), gTypeFileReader)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"FileReader\"]()"
         js_newFileReader :: IO FileReader
@@ -104,6 +121,14 @@ foreign import javascript unsafe "$1[\"error\"]" js_getError ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
 getError :: (MonadIO m) => FileReader -> m (Maybe FileError)
 getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
+getErrorUnsafe ::
+               (MonadIO m, HasCallStack) => FileReader -> m FileError
+getErrorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getError (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.error Mozilla FileReader.error documentation> 
 getErrorUnchecked :: (MonadIO m) => FileReader -> m FileError

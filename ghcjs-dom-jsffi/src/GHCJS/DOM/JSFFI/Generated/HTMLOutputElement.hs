@@ -1,18 +1,25 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
        (js_checkValidity, checkValidity, checkValidity_,
         js_setCustomValidity, setCustomValidity, js_getHtmlFor, getHtmlFor,
-        getHtmlForUnchecked, js_getForm, getForm, getFormUnchecked,
-        js_setName, setName, js_getName, getName, js_getType, getType,
-        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
-        getDefaultValue, getDefaultValueUnchecked, js_setValue, setValue,
-        js_getValue, getValue, getValueUnchecked, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity, getValidityUnchecked,
-        js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, HTMLOutputElement(..),
-        gTypeHTMLOutputElement)
+        getHtmlForUnsafe, getHtmlForUnchecked, js_getForm, getForm,
+        getFormUnsafe, getFormUnchecked, js_setName, setName, js_getName,
+        getName, js_getType, getType, js_setDefaultValue, setDefaultValue,
+        js_getDefaultValue, getDefaultValue, getDefaultValueUnsafe,
+        getDefaultValueUnchecked, js_setValue, setValue, js_getValue,
+        getValue, getValueUnsafe, getValueUnchecked, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity, getValidityUnsafe,
+        getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnsafe,
+        getLabelsUnchecked, HTMLOutputElement(..), gTypeHTMLOutputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +35,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
@@ -62,6 +79,15 @@ getHtmlFor self
   = liftIO (nullableToMaybe <$> (js_getHtmlFor (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.htmlFor Mozilla HTMLOutputElement.htmlFor documentation> 
+getHtmlForUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   HTMLOutputElement -> m DOMSettableTokenList
+getHtmlForUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHtmlFor (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.htmlFor Mozilla HTMLOutputElement.htmlFor documentation> 
 getHtmlForUnchecked ::
                     (MonadIO m) => HTMLOutputElement -> m DOMSettableTokenList
 getHtmlForUnchecked self
@@ -74,6 +100,14 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLOutputElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.form Mozilla HTMLOutputElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLOutputElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.form Mozilla HTMLOutputElement.form documentation> 
 getFormUnchecked ::
@@ -127,6 +161,15 @@ getDefaultValue self
   = liftIO (fromMaybeJSString <$> (js_getDefaultValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
+getDefaultValueUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        HTMLOutputElement -> m result
+getDefaultValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDefaultValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 getDefaultValueUnchecked ::
                          (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
 getDefaultValueUnchecked self
@@ -153,6 +196,15 @@ getValue ::
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
+getValueUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) =>
+                 HTMLOutputElement -> m result
+getValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 getValueUnchecked ::
                   (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
 getValueUnchecked self
@@ -175,6 +227,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validity Mozilla HTMLOutputElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLOutputElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validity Mozilla HTMLOutputElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLOutputElement -> m ValidityState
 getValidityUnchecked self
@@ -195,6 +255,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLOutputElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLOutputElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.labels Mozilla HTMLOutputElement.labels documentation> 
 getLabelsUnchecked ::

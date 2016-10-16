@@ -1,15 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPointList
        (js_clear, clear, js_initialize, initialize, initialize_,
-        initializeUnchecked, js_getItem, getItem, getItem_,
-        getItemUnchecked, js_insertItemBefore, insertItemBefore,
-        insertItemBefore_, insertItemBeforeUnchecked, js_replaceItem,
-        replaceItem, replaceItem_, replaceItemUnchecked, js_removeItem,
-        removeItem, removeItem_, removeItemUnchecked, js_appendItem,
-        appendItem, appendItem_, appendItemUnchecked, js_getNumberOfItems,
+        initializeUnsafe, initializeUnchecked, js_getItem, getItem,
+        getItem_, getItemUnsafe, getItemUnchecked, js_insertItemBefore,
+        insertItemBefore, insertItemBefore_, insertItemBeforeUnsafe,
+        insertItemBeforeUnchecked, js_replaceItem, replaceItem,
+        replaceItem_, replaceItemUnsafe, replaceItemUnchecked,
+        js_removeItem, removeItem, removeItem_, removeItemUnsafe,
+        removeItemUnchecked, js_appendItem, appendItem, appendItem_,
+        appendItemUnsafe, appendItemUnchecked, js_getNumberOfItems,
         getNumberOfItems, SVGPointList(..), gTypeSVGPointList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         SVGPointList -> IO ()
@@ -51,6 +69,16 @@ initialize_ self item
   = liftIO (void (js_initialize (self) (maybeToNullable item)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.initialize Mozilla SVGPointList.initialize documentation> 
+initializeUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGPointList -> Maybe SVGPoint -> m SVGPoint
+initializeUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_initialize (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.initialize Mozilla SVGPointList.initialize documentation> 
 initializeUnchecked ::
                     (MonadIO m) => SVGPointList -> Maybe SVGPoint -> m SVGPoint
 initializeUnchecked self item
@@ -70,6 +98,14 @@ getItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.getItem Mozilla SVGPointList.getItem documentation> 
 getItem_ :: (MonadIO m) => SVGPointList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.getItem Mozilla SVGPointList.getItem documentation> 
+getItemUnsafe ::
+              (MonadIO m, HasCallStack) => SVGPointList -> Word -> m SVGPoint
+getItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_getItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.getItem Mozilla SVGPointList.getItem documentation> 
 getItemUnchecked ::
@@ -96,6 +132,16 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO
       (void (js_insertItemBefore (self) (maybeToNullable item) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.insertItemBefore Mozilla SVGPointList.insertItemBefore documentation> 
+insertItemBeforeUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGPointList -> Maybe SVGPoint -> Word -> m SVGPoint
+insertItemBeforeUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_insertItemBefore (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.insertItemBefore Mozilla SVGPointList.insertItemBefore documentation> 
 insertItemBeforeUnchecked ::
@@ -126,6 +172,16 @@ replaceItem_ self item index
       (void (js_replaceItem (self) (maybeToNullable item) index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.replaceItem Mozilla SVGPointList.replaceItem documentation> 
+replaceItemUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    SVGPointList -> Maybe SVGPoint -> Word -> m SVGPoint
+replaceItemUnsafe self item index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_replaceItem (self) (maybeToNullable item) index))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.replaceItem Mozilla SVGPointList.replaceItem documentation> 
 replaceItemUnchecked ::
                      (MonadIO m) => SVGPointList -> Maybe SVGPoint -> Word -> m SVGPoint
 replaceItemUnchecked self item index
@@ -145,6 +201,14 @@ removeItem self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.removeItem Mozilla SVGPointList.removeItem documentation> 
 removeItem_ :: (MonadIO m) => SVGPointList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.removeItem Mozilla SVGPointList.removeItem documentation> 
+removeItemUnsafe ::
+                 (MonadIO m, HasCallStack) => SVGPointList -> Word -> m SVGPoint
+removeItemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_removeItem (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.removeItem Mozilla SVGPointList.removeItem documentation> 
 removeItemUnchecked ::
@@ -169,6 +233,16 @@ appendItem_ ::
             (MonadIO m) => SVGPointList -> Maybe SVGPoint -> m ()
 appendItem_ self item
   = liftIO (void (js_appendItem (self) (maybeToNullable item)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.appendItem Mozilla SVGPointList.appendItem documentation> 
+appendItemUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   SVGPointList -> Maybe SVGPoint -> m SVGPoint
+appendItemUnsafe self item
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_appendItem (self) (maybeToNullable item)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.appendItem Mozilla SVGPointList.appendItem documentation> 
 appendItemUnchecked ::

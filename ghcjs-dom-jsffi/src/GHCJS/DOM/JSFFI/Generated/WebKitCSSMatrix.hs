@@ -1,29 +1,36 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WebKitCSSMatrix
        (js_newWebKitCSSMatrix, newWebKitCSSMatrix, js_setMatrixValue,
-        setMatrixValue, js_multiply, multiply, multiply_,
-        multiplyUnchecked, js_inverse, inverse, inverse_, inverseUnchecked,
-        js_translate, translate, translate_, translateUnchecked, js_scale,
-        scale, scale_, scaleUnchecked, js_rotate, rotate, rotate_,
-        rotateUnchecked, js_rotateAxisAngle, rotateAxisAngle,
-        rotateAxisAngle_, rotateAxisAngleUnchecked, js_skewX, skewX,
-        skewX_, skewXUnchecked, js_skewY, skewY, skewY_, skewYUnchecked,
-        js_toString, toString, toString_, js_setA, setA, js_getA, getA,
-        js_setB, setB, js_getB, getB, js_setC, setC, js_getC, getC,
-        js_setD, setD, js_getD, getD, js_setE, setE, js_getE, getE,
-        js_setF, setF, js_getF, getF, js_setM11, setM11, js_getM11, getM11,
-        js_setM12, setM12, js_getM12, getM12, js_setM13, setM13, js_getM13,
-        getM13, js_setM14, setM14, js_getM14, getM14, js_setM21, setM21,
-        js_getM21, getM21, js_setM22, setM22, js_getM22, getM22, js_setM23,
-        setM23, js_getM23, getM23, js_setM24, setM24, js_getM24, getM24,
-        js_setM31, setM31, js_getM31, getM31, js_setM32, setM32, js_getM32,
-        getM32, js_setM33, setM33, js_getM33, getM33, js_setM34, setM34,
-        js_getM34, getM34, js_setM41, setM41, js_getM41, getM41, js_setM42,
-        setM42, js_getM42, getM42, js_setM43, setM43, js_getM43, getM43,
-        js_setM44, setM44, js_getM44, getM44, WebKitCSSMatrix(..),
-        gTypeWebKitCSSMatrix)
+        setMatrixValue, js_multiply, multiply, multiply_, multiplyUnsafe,
+        multiplyUnchecked, js_inverse, inverse, inverse_, inverseUnsafe,
+        inverseUnchecked, js_translate, translate, translate_,
+        translateUnsafe, translateUnchecked, js_scale, scale, scale_,
+        scaleUnsafe, scaleUnchecked, js_rotate, rotate, rotate_,
+        rotateUnsafe, rotateUnchecked, js_rotateAxisAngle, rotateAxisAngle,
+        rotateAxisAngle_, rotateAxisAngleUnsafe, rotateAxisAngleUnchecked,
+        js_skewX, skewX, skewX_, skewXUnsafe, skewXUnchecked, js_skewY,
+        skewY, skewY_, skewYUnsafe, skewYUnchecked, js_toString, toString,
+        toString_, js_setA, setA, js_getA, getA, js_setB, setB, js_getB,
+        getB, js_setC, setC, js_getC, getC, js_setD, setD, js_getD, getD,
+        js_setE, setE, js_getE, getE, js_setF, setF, js_getF, getF,
+        js_setM11, setM11, js_getM11, getM11, js_setM12, setM12, js_getM12,
+        getM12, js_setM13, setM13, js_getM13, getM13, js_setM14, setM14,
+        js_getM14, getM14, js_setM21, setM21, js_getM21, getM21, js_setM22,
+        setM22, js_getM22, getM22, js_setM23, setM23, js_getM23, getM23,
+        js_setM24, setM24, js_getM24, getM24, js_setM31, setM31, js_getM31,
+        getM31, js_setM32, setM32, js_getM32, getM32, js_setM33, setM33,
+        js_getM33, getM33, js_setM34, setM34, js_getM34, getM34, js_setM41,
+        setM41, js_getM41, getM41, js_setM42, setM42, js_getM42, getM42,
+        js_setM43, setM43, js_getM43, getM43, js_setM44, setM44, js_getM44,
+        getM44, WebKitCSSMatrix(..), gTypeWebKitCSSMatrix)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -39,6 +46,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"WebKitCSSMatrix\"]($1)" js_newWebKitCSSMatrix ::
@@ -81,6 +98,16 @@ multiply_ self secondMatrix
   = liftIO (void (js_multiply (self) (maybeToNullable secondMatrix)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.multiply Mozilla WebKitCSSMatrix.multiply documentation> 
+multiplyUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 WebKitCSSMatrix -> Maybe WebKitCSSMatrix -> m WebKitCSSMatrix
+multiplyUnsafe self secondMatrix
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_multiply (self) (maybeToNullable secondMatrix)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.multiply Mozilla WebKitCSSMatrix.multiply documentation> 
 multiplyUnchecked ::
                   (MonadIO m) =>
                     WebKitCSSMatrix -> Maybe WebKitCSSMatrix -> m WebKitCSSMatrix
@@ -100,6 +127,14 @@ inverse self = liftIO (nullableToMaybe <$> (js_inverse (self)))
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.inverse Mozilla WebKitCSSMatrix.inverse documentation> 
 inverse_ :: (MonadIO m) => WebKitCSSMatrix -> m ()
 inverse_ self = liftIO (void (js_inverse (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.inverse Mozilla WebKitCSSMatrix.inverse documentation> 
+inverseUnsafe ::
+              (MonadIO m, HasCallStack) => WebKitCSSMatrix -> m WebKitCSSMatrix
+inverseUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_inverse (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.inverse Mozilla WebKitCSSMatrix.inverse documentation> 
 inverseUnchecked ::
@@ -125,6 +160,15 @@ translate_ ::
            (MonadIO m) =>
              WebKitCSSMatrix -> Double -> Double -> Double -> m ()
 translate_ self x y z = liftIO (void (js_translate (self) x y z))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.translate Mozilla WebKitCSSMatrix.translate documentation> 
+translateUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  WebKitCSSMatrix -> Double -> Double -> Double -> m WebKitCSSMatrix
+translateUnsafe self x y z
+  = liftIO
+      ((nullableToMaybe <$> (js_translate (self) x y z)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.translate Mozilla WebKitCSSMatrix.translate documentation> 
 translateUnchecked ::
@@ -156,6 +200,15 @@ scale_ self scaleX scaleY scaleZ
   = liftIO (void (js_scale (self) scaleX scaleY scaleZ))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.scale Mozilla WebKitCSSMatrix.scale documentation> 
+scaleUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              WebKitCSSMatrix -> Double -> Double -> Double -> m WebKitCSSMatrix
+scaleUnsafe self scaleX scaleY scaleZ
+  = liftIO
+      ((nullableToMaybe <$> (js_scale (self) scaleX scaleY scaleZ)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.scale Mozilla WebKitCSSMatrix.scale documentation> 
 scaleUnchecked ::
                (MonadIO m) =>
                  WebKitCSSMatrix -> Double -> Double -> Double -> m WebKitCSSMatrix
@@ -183,6 +236,15 @@ rotate_ ::
           WebKitCSSMatrix -> Double -> Double -> Double -> m ()
 rotate_ self rotX rotY rotZ
   = liftIO (void (js_rotate (self) rotX rotY rotZ))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotate Mozilla WebKitCSSMatrix.rotate documentation> 
+rotateUnsafe ::
+             (MonadIO m, HasCallStack) =>
+               WebKitCSSMatrix -> Double -> Double -> Double -> m WebKitCSSMatrix
+rotateUnsafe self rotX rotY rotZ
+  = liftIO
+      ((nullableToMaybe <$> (js_rotate (self) rotX rotY rotZ)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotate Mozilla WebKitCSSMatrix.rotate documentation> 
 rotateUnchecked ::
@@ -215,6 +277,16 @@ rotateAxisAngle_ self x y z angle
   = liftIO (void (js_rotateAxisAngle (self) x y z angle))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotateAxisAngle Mozilla WebKitCSSMatrix.rotateAxisAngle documentation> 
+rotateAxisAngleUnsafe ::
+                      (MonadIO m, HasCallStack) =>
+                        WebKitCSSMatrix ->
+                          Double -> Double -> Double -> Double -> m WebKitCSSMatrix
+rotateAxisAngleUnsafe self x y z angle
+  = liftIO
+      ((nullableToMaybe <$> (js_rotateAxisAngle (self) x y z angle)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.rotateAxisAngle Mozilla WebKitCSSMatrix.rotateAxisAngle documentation> 
 rotateAxisAngleUnchecked ::
                          (MonadIO m) =>
                            WebKitCSSMatrix ->
@@ -239,6 +311,15 @@ skewX_ :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
 skewX_ self angle = liftIO (void (js_skewX (self) angle))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewX Mozilla WebKitCSSMatrix.skewX documentation> 
+skewXUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              WebKitCSSMatrix -> Double -> m WebKitCSSMatrix
+skewXUnsafe self angle
+  = liftIO
+      ((nullableToMaybe <$> (js_skewX (self) angle)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewX Mozilla WebKitCSSMatrix.skewX documentation> 
 skewXUnchecked ::
                (MonadIO m) => WebKitCSSMatrix -> Double -> m WebKitCSSMatrix
 skewXUnchecked self angle
@@ -257,6 +338,15 @@ skewY self angle
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewY Mozilla WebKitCSSMatrix.skewY documentation> 
 skewY_ :: (MonadIO m) => WebKitCSSMatrix -> Double -> m ()
 skewY_ self angle = liftIO (void (js_skewY (self) angle))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewY Mozilla WebKitCSSMatrix.skewY documentation> 
+skewYUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              WebKitCSSMatrix -> Double -> m WebKitCSSMatrix
+skewYUnsafe self angle
+  = liftIO
+      ((nullableToMaybe <$> (js_skewY (self) angle)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.skewY Mozilla WebKitCSSMatrix.skewY documentation> 
 skewYUnchecked ::

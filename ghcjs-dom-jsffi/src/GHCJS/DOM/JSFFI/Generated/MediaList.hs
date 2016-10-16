@@ -1,11 +1,18 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaList
-       (js_item, item, item_, itemUnchecked, js_deleteMedium,
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js_deleteMedium,
         deleteMedium, js_appendMedium, appendMedium, js_setMediaText,
-        setMediaText, js_getMediaText, getMediaText, getMediaTextUnchecked,
-        js_getLength, getLength, MediaList(..), gTypeMediaList)
+        setMediaText, js_getMediaText, getMediaText, getMediaTextUnsafe,
+        getMediaTextUnchecked, js_getLength, getLength, MediaList(..),
+        gTypeMediaList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +28,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         MediaList -> Word -> IO (Nullable JSString)
@@ -35,6 +52,15 @@ item self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
 item_ :: (MonadIO m) => MediaList -> Word -> m ()
 item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
+itemUnsafe ::
+           (MonadIO m, HasCallStack, FromJSString result) =>
+             MediaList -> Word -> m result
+itemUnsafe self index
+  = liftIO
+      ((fromMaybeJSString <$> (js_item (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
 itemUnchecked ::
@@ -77,6 +103,15 @@ getMediaText ::
              (MonadIO m, FromJSString result) => MediaList -> m (Maybe result)
 getMediaText self
   = liftIO (fromMaybeJSString <$> (js_getMediaText (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
+getMediaTextUnsafe ::
+                   (MonadIO m, HasCallStack, FromJSString result) =>
+                     MediaList -> m result
+getMediaTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getMediaText (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
 getMediaTextUnchecked ::

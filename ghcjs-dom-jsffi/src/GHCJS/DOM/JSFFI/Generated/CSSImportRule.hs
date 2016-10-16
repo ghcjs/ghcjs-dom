@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSImportRule
-       (js_getHref, getHref, getHrefUnchecked, js_getMedia, getMedia,
-        getMediaUnchecked, js_getStyleSheet, getStyleSheet,
-        getStyleSheetUnchecked, CSSImportRule(..), gTypeCSSImportRule)
+       (js_getHref, getHref, getHrefUnsafe, getHrefUnchecked, js_getMedia,
+        getMedia, getMediaUnsafe, getMediaUnchecked, js_getStyleSheet,
+        getStyleSheet, getStyleSheetUnsafe, getStyleSheetUnchecked,
+        CSSImportRule(..), gTypeCSSImportRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
         CSSImportRule -> IO (Nullable JSString)
@@ -29,6 +46,15 @@ getHref ::
         (MonadIO m, FromJSString result) =>
           CSSImportRule -> m (Maybe result)
 getHref self = liftIO (fromMaybeJSString <$> (js_getHref (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.href Mozilla CSSImportRule.href documentation> 
+getHrefUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                CSSImportRule -> m result
+getHrefUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHref (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.href Mozilla CSSImportRule.href documentation> 
 getHrefUnchecked ::
@@ -44,6 +70,14 @@ getMedia :: (MonadIO m) => CSSImportRule -> m (Maybe MediaList)
 getMedia self = liftIO (nullableToMaybe <$> (js_getMedia (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.media Mozilla CSSImportRule.media documentation> 
+getMediaUnsafe ::
+               (MonadIO m, HasCallStack) => CSSImportRule -> m MediaList
+getMediaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMedia (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.media Mozilla CSSImportRule.media documentation> 
 getMediaUnchecked :: (MonadIO m) => CSSImportRule -> m MediaList
 getMediaUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getMedia (self)))
@@ -56,6 +90,14 @@ getStyleSheet ::
               (MonadIO m) => CSSImportRule -> m (Maybe CSSStyleSheet)
 getStyleSheet self
   = liftIO (nullableToMaybe <$> (js_getStyleSheet (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.styleSheet Mozilla CSSImportRule.styleSheet documentation> 
+getStyleSheetUnsafe ::
+                    (MonadIO m, HasCallStack) => CSSImportRule -> m CSSStyleSheet
+getStyleSheetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyleSheet (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.styleSheet Mozilla CSSImportRule.styleSheet documentation> 
 getStyleSheetUnchecked ::

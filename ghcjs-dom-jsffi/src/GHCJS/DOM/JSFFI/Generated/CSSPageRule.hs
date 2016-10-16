@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CSSPageRule
        (js_setSelectorText, setSelectorText, js_getSelectorText,
-        getSelectorText, getSelectorTextUnchecked, js_getStyle, getStyle,
-        getStyleUnchecked, CSSPageRule(..), gTypeCSSPageRule)
+        getSelectorText, getSelectorTextUnsafe, getSelectorTextUnchecked,
+        js_getStyle, getStyle, getStyleUnsafe, getStyleUnchecked,
+        CSSPageRule(..), gTypeCSSPageRule)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
         js_setSelectorText :: CSSPageRule -> Nullable JSString -> IO ()
@@ -40,6 +57,15 @@ getSelectorText self
   = liftIO (fromMaybeJSString <$> (js_getSelectorText (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
+getSelectorTextUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        CSSPageRule -> m result
+getSelectorTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getSelectorText (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.selectorText Mozilla CSSPageRule.selectorText documentation> 
 getSelectorTextUnchecked ::
                          (MonadIO m, FromJSString result) => CSSPageRule -> m result
 getSelectorTextUnchecked self
@@ -53,6 +79,14 @@ foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
 getStyle ::
          (MonadIO m) => CSSPageRule -> m (Maybe CSSStyleDeclaration)
 getStyle self = liftIO (nullableToMaybe <$> (js_getStyle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.style Mozilla CSSPageRule.style documentation> 
+getStyleUnsafe ::
+               (MonadIO m, HasCallStack) => CSSPageRule -> m CSSStyleDeclaration
+getStyleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyle (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.style Mozilla CSSPageRule.style documentation> 
 getStyleUnchecked ::

@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeyEvent
        (js_getKeySystem, getKeySystem, js_getSessionId, getSessionId,
-        js_getInitData, getInitData, getInitDataUnchecked, js_getMessage,
-        getMessage, getMessageUnchecked, js_getDefaultURL, getDefaultURL,
-        js_getErrorCode, getErrorCode, getErrorCodeUnchecked,
-        js_getSystemCode, getSystemCode, MediaKeyEvent(..),
-        gTypeMediaKeyEvent)
+        js_getInitData, getInitData, getInitDataUnsafe,
+        getInitDataUnchecked, js_getMessage, getMessage, getMessageUnsafe,
+        getMessageUnchecked, js_getDefaultURL, getDefaultURL,
+        js_getErrorCode, getErrorCode, getErrorCodeUnsafe,
+        getErrorCodeUnchecked, js_getSystemCode, getSystemCode,
+        MediaKeyEvent(..), gTypeMediaKeyEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"keySystem\"]"
         js_getKeySystem :: MediaKeyEvent -> IO JSString
@@ -51,6 +68,14 @@ getInitData self
   = liftIO (nullableToMaybe <$> (js_getInitData (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.initData Mozilla MediaKeyEvent.initData documentation> 
+getInitDataUnsafe ::
+                  (MonadIO m, HasCallStack) => MediaKeyEvent -> m Uint8Array
+getInitDataUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getInitData (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.initData Mozilla MediaKeyEvent.initData documentation> 
 getInitDataUnchecked ::
                      (MonadIO m) => MediaKeyEvent -> m Uint8Array
 getInitDataUnchecked self
@@ -63,6 +88,14 @@ foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
 getMessage :: (MonadIO m) => MediaKeyEvent -> m (Maybe Uint8Array)
 getMessage self
   = liftIO (nullableToMaybe <$> (js_getMessage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.message Mozilla MediaKeyEvent.message documentation> 
+getMessageUnsafe ::
+                 (MonadIO m, HasCallStack) => MediaKeyEvent -> m Uint8Array
+getMessageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMessage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.message Mozilla MediaKeyEvent.message documentation> 
 getMessageUnchecked :: (MonadIO m) => MediaKeyEvent -> m Uint8Array
@@ -86,6 +119,14 @@ getErrorCode ::
              (MonadIO m) => MediaKeyEvent -> m (Maybe MediaKeyError)
 getErrorCode self
   = liftIO (nullableToMaybe <$> (js_getErrorCode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.errorCode Mozilla MediaKeyEvent.errorCode documentation> 
+getErrorCodeUnsafe ::
+                   (MonadIO m, HasCallStack) => MediaKeyEvent -> m MediaKeyError
+getErrorCodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getErrorCode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyEvent.errorCode Mozilla MediaKeyEvent.errorCode documentation> 
 getErrorCodeUnchecked ::

@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AllVideoCapabilities
        (js_getSourceType, getSourceType, js_getSourceId, getSourceId,
-        js_getWidth, getWidth, getWidthUnchecked, js_getHeight, getHeight,
-        getHeightUnchecked, js_getFrameRate, getFrameRate,
+        js_getWidth, getWidth, getWidthUnsafe, getWidthUnchecked,
+        js_getHeight, getHeight, getHeightUnsafe, getHeightUnchecked,
+        js_getFrameRate, getFrameRate, getFrameRateUnsafe,
         getFrameRateUnchecked, js_getAspectRatio, getAspectRatio,
-        getAspectRatioUnchecked, js_getFacingMode, getFacingMode,
-        AllVideoCapabilities(..), gTypeAllVideoCapabilities)
+        getAspectRatioUnsafe, getAspectRatioUnchecked, js_getFacingMode,
+        getFacingMode, AllVideoCapabilities(..), gTypeAllVideoCapabilities)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"sourceType\"]"
         js_getSourceType :: AllVideoCapabilities -> IO JSVal
@@ -53,6 +70,15 @@ getWidth ::
 getWidth self = liftIO (nullableToMaybe <$> (js_getWidth (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.width Mozilla AllVideoCapabilities.width documentation> 
+getWidthUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 AllVideoCapabilities -> m CapabilityRange
+getWidthUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWidth (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.width Mozilla AllVideoCapabilities.width documentation> 
 getWidthUnchecked ::
                   (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
 getWidthUnchecked self
@@ -65,6 +91,15 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight ::
           (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getHeight self = liftIO (nullableToMaybe <$> (js_getHeight (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.height Mozilla AllVideoCapabilities.height documentation> 
+getHeightUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  AllVideoCapabilities -> m CapabilityRange
+getHeightUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHeight (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.height Mozilla AllVideoCapabilities.height documentation> 
 getHeightUnchecked ::
@@ -83,6 +118,15 @@ getFrameRate self
   = liftIO (nullableToMaybe <$> (js_getFrameRate (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.frameRate Mozilla AllVideoCapabilities.frameRate documentation> 
+getFrameRateUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     AllVideoCapabilities -> m CapabilityRange
+getFrameRateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFrameRate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.frameRate Mozilla AllVideoCapabilities.frameRate documentation> 
 getFrameRateUnchecked ::
                       (MonadIO m) => AllVideoCapabilities -> m CapabilityRange
 getFrameRateUnchecked self
@@ -97,6 +141,15 @@ getAspectRatio ::
                (MonadIO m) => AllVideoCapabilities -> m (Maybe CapabilityRange)
 getAspectRatio self
   = liftIO (nullableToMaybe <$> (js_getAspectRatio (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.aspectRatio Mozilla AllVideoCapabilities.aspectRatio documentation> 
+getAspectRatioUnsafe ::
+                     (MonadIO m, HasCallStack) =>
+                       AllVideoCapabilities -> m CapabilityRange
+getAspectRatioUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAspectRatio (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AllVideoCapabilities.aspectRatio Mozilla AllVideoCapabilities.aspectRatio documentation> 
 getAspectRatioUnchecked ::

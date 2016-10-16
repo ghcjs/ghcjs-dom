@@ -1,16 +1,24 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaSource
        (js_newMediaSource, newMediaSource, js_addSourceBuffer,
-        addSourceBuffer, addSourceBuffer_, addSourceBufferUnchecked,
-        js_removeSourceBuffer, removeSourceBuffer, js_endOfStream,
-        endOfStream, js_isTypeSupported, isTypeSupported, isTypeSupported_,
-        js_getSourceBuffers, getSourceBuffers, getSourceBuffersUnchecked,
-        js_getActiveSourceBuffers, getActiveSourceBuffers,
+        addSourceBuffer, addSourceBuffer_, addSourceBufferUnsafe,
+        addSourceBufferUnchecked, js_removeSourceBuffer,
+        removeSourceBuffer, js_endOfStream, endOfStream,
+        js_isTypeSupported, isTypeSupported, isTypeSupported_,
+        js_getSourceBuffers, getSourceBuffers, getSourceBuffersUnsafe,
+        getSourceBuffersUnchecked, js_getActiveSourceBuffers,
+        getActiveSourceBuffers, getActiveSourceBuffersUnsafe,
         getActiveSourceBuffersUnchecked, js_setDuration, setDuration,
         js_getDuration, getDuration, js_getReadyState, getReadyState,
         MediaSource(..), gTypeMediaSource)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"MediaSource\"]()"
         js_newMediaSource :: IO MediaSource
@@ -52,6 +70,16 @@ addSourceBuffer_ ::
                  (MonadIO m, ToJSString type') => MediaSource -> type' -> m ()
 addSourceBuffer_ self type'
   = liftIO (void (js_addSourceBuffer (self) (toJSString type')))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
+addSourceBufferUnsafe ::
+                      (MonadIO m, ToJSString type', HasCallStack) =>
+                        MediaSource -> type' -> m SourceBuffer
+addSourceBufferUnsafe self type'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_addSourceBuffer (self) (toJSString type')))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
 addSourceBufferUnchecked ::
@@ -108,6 +136,14 @@ getSourceBuffers self
   = liftIO (nullableToMaybe <$> (js_getSourceBuffers (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
+getSourceBuffersUnsafe ::
+                       (MonadIO m, HasCallStack) => MediaSource -> m SourceBufferList
+getSourceBuffersUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSourceBuffers (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
 getSourceBuffersUnchecked ::
                           (MonadIO m) => MediaSource -> m SourceBufferList
 getSourceBuffersUnchecked self
@@ -123,6 +159,14 @@ getActiveSourceBuffers ::
                        (MonadIO m) => MediaSource -> m (Maybe SourceBufferList)
 getActiveSourceBuffers self
   = liftIO (nullableToMaybe <$> (js_getActiveSourceBuffers (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
+getActiveSourceBuffersUnsafe ::
+                             (MonadIO m, HasCallStack) => MediaSource -> m SourceBufferList
+getActiveSourceBuffersUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getActiveSourceBuffers (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
 getActiveSourceBuffersUnchecked ::

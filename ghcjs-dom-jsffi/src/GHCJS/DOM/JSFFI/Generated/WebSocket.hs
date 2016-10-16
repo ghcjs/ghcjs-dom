@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WebSocket
        (js_newWebSocket, newWebSocket, js_newWebSocket', newWebSocket',
         js_send, send, js_sendView, sendView, js_sendBlob, sendBlob,
@@ -6,12 +11,14 @@ module GHCJS.DOM.JSFFI.Generated.WebSocket
         pattern OPEN, pattern CLOSING, pattern CLOSED, js_getUrl, getUrl,
         js_getReadyState, getReadyState, js_getBufferedAmount,
         getBufferedAmount, open, message, error, closeEvent,
-        js_getProtocol, getProtocol, getProtocolUnchecked,
-        js_getExtensions, getExtensions, getExtensionsUnchecked,
-        js_setBinaryType, setBinaryType, js_getBinaryType, getBinaryType,
-        WebSocket(..), gTypeWebSocket)
+        js_getProtocol, getProtocol, getProtocolUnsafe,
+        getProtocolUnchecked, js_getExtensions, getExtensions,
+        getExtensionsUnsafe, getExtensionsUnchecked, js_setBinaryType,
+        setBinaryType, js_getBinaryType, getBinaryType, WebSocket(..),
+        gTypeWebSocket)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"WebSocket\"]($1, $2)" js_newWebSocket ::
@@ -154,6 +171,15 @@ getProtocol self
   = liftIO (fromMaybeJSString <$> (js_getProtocol (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 
+getProtocolUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    WebSocket -> m result
+getProtocolUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getProtocol (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 
 getProtocolUnchecked ::
                      (MonadIO m, FromJSString result) => WebSocket -> m result
 getProtocolUnchecked self
@@ -167,6 +193,15 @@ getExtensions ::
               (MonadIO m, FromJSString result) => WebSocket -> m (Maybe result)
 getExtensions self
   = liftIO (fromMaybeJSString <$> (js_getExtensions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
+getExtensionsUnsafe ::
+                    (MonadIO m, HasCallStack, FromJSString result) =>
+                      WebSocket -> m result
+getExtensionsUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getExtensions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
 getExtensionsUnchecked ::

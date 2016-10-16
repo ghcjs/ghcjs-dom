@@ -1,16 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFieldSetElement
        (js_checkValidity, checkValidity, checkValidity_,
         js_setCustomValidity, setCustomValidity, js_setDisabled,
         setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
-        getFormUnchecked, js_setName, setName, js_getName, getName,
-        js_getType, getType, js_getElements, getElements,
-        getElementsUnchecked, js_getWillValidate, getWillValidate,
-        js_getValidity, getValidity, getValidityUnchecked,
-        js_getValidationMessage, getValidationMessage,
-        HTMLFieldSetElement(..), gTypeHTMLFieldSetElement)
+        getFormUnsafe, getFormUnchecked, js_setName, setName, js_getName,
+        getName, js_getType, getType, js_getElements, getElements,
+        getElementsUnsafe, getElementsUnchecked, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity, getValidityUnsafe,
+        getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, HTMLFieldSetElement(..),
+        gTypeHTMLFieldSetElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
@@ -73,6 +90,15 @@ getForm ::
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.form Mozilla HTMLFieldSetElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                HTMLFieldSetElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.form Mozilla HTMLFieldSetElement.form documentation> 
 getFormUnchecked ::
                  (MonadIO m) => HTMLFieldSetElement -> m HTMLFormElement
 getFormUnchecked self
@@ -112,6 +138,15 @@ getElements self
   = liftIO (nullableToMaybe <$> (js_getElements (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.elements Mozilla HTMLFieldSetElement.elements documentation> 
+getElementsUnsafe ::
+                  (MonadIO m, HasCallStack) =>
+                    HTMLFieldSetElement -> m HTMLCollection
+getElementsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getElements (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.elements Mozilla HTMLFieldSetElement.elements documentation> 
 getElementsUnchecked ::
                      (MonadIO m) => HTMLFieldSetElement -> m HTMLCollection
 getElementsUnchecked self
@@ -132,6 +167,14 @@ getValidity ::
             (MonadIO m) => HTMLFieldSetElement -> m (Maybe ValidityState)
 getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validity Mozilla HTMLFieldSetElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLFieldSetElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validity Mozilla HTMLFieldSetElement.validity documentation> 
 getValidityUnchecked ::

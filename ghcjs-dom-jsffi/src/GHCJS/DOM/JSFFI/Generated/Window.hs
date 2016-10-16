@@ -1,25 +1,34 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Window
-       (js_openDatabase, openDatabase, openDatabase_,
+       (js_openDatabase, openDatabase, openDatabase_, openDatabaseUnsafe,
         openDatabaseUnchecked, js_getSelection, getSelection,
-        getSelection_, getSelectionUnchecked, js_focus, focus, js_blur,
-        blur, js_close, close, js_print, print, js_stop, stop, js_open,
-        open, open_, openUnchecked, js_showModalDialog, showModalDialog,
-        showModalDialog_, js_alert, alert, js_confirm, confirm, confirm_,
-        js_prompt, prompt, prompt_, promptUnchecked, js_find, find, find_,
-        js_scrollBy, scrollBy, js_scrollTo, scrollTo, js_scroll, scroll,
-        js_moveBy, moveBy, js_moveTo, moveTo, js_resizeBy, resizeBy,
-        js_resizeTo, resizeTo, js_matchMedia, matchMedia, matchMedia_,
+        getSelection_, getSelectionUnsafe, getSelectionUnchecked, js_focus,
+        focus, js_blur, blur, js_close, close, js_print, print, js_stop,
+        stop, js_open, open, open_, openUnsafe, openUnchecked,
+        js_showModalDialog, showModalDialog, showModalDialog_, js_alert,
+        alert, js_confirm, confirm, confirm_, js_prompt, prompt, prompt_,
+        promptUnsafe, promptUnchecked, js_find, find, find_, js_scrollBy,
+        scrollBy, js_scrollTo, scrollTo, js_scroll, scroll, js_moveBy,
+        moveBy, js_moveTo, moveTo, js_resizeBy, resizeBy, js_resizeTo,
+        resizeTo, js_matchMedia, matchMedia, matchMedia_, matchMediaUnsafe,
         matchMediaUnchecked, js_getComputedStyle, getComputedStyle,
-        getComputedStyle_, getComputedStyleUnchecked,
-        js_getMatchedCSSRules, getMatchedCSSRules, getMatchedCSSRules_,
+        getComputedStyle_, getComputedStyleUnsafe,
+        getComputedStyleUnchecked, js_getMatchedCSSRules,
+        getMatchedCSSRules, getMatchedCSSRules_, getMatchedCSSRulesUnsafe,
         getMatchedCSSRulesUnchecked, js_webkitConvertPointFromPageToNode,
         webkitConvertPointFromPageToNode,
         webkitConvertPointFromPageToNode_,
+        webkitConvertPointFromPageToNodeUnsafe,
         webkitConvertPointFromPageToNodeUnchecked,
         js_webkitConvertPointFromNodeToPage,
         webkitConvertPointFromNodeToPage,
         webkitConvertPointFromNodeToPage_,
+        webkitConvertPointFromNodeToPageUnsafe,
         webkitConvertPointFromNodeToPageUnchecked, js_postMessage,
         postMessage, js_requestAnimationFrame, requestAnimationFrame,
         requestAnimationFrame_, js_cancelAnimationFrame,
@@ -29,59 +38,70 @@ module GHCJS.DOM.JSFFI.Generated.Window
         js_webkitCancelRequestAnimationFrame,
         webkitCancelRequestAnimationFrame, js_captureEvents, captureEvents,
         js_releaseEvents, releaseEvents, js_getWebkitIndexedDB,
-        getWebkitIndexedDB, getWebkitIndexedDBUnchecked, js_getIndexedDB,
-        getIndexedDB, getIndexedDBUnchecked, js_getWebkitStorageInfo,
-        getWebkitStorageInfo, getWebkitStorageInfoUnchecked,
-        js_getSpeechSynthesis, getSpeechSynthesis,
+        getWebkitIndexedDB, getWebkitIndexedDBUnsafe,
+        getWebkitIndexedDBUnchecked, js_getIndexedDB, getIndexedDB,
+        getIndexedDBUnsafe, getIndexedDBUnchecked, js_getWebkitStorageInfo,
+        getWebkitStorageInfo, getWebkitStorageInfoUnsafe,
+        getWebkitStorageInfoUnchecked, js_getSpeechSynthesis,
+        getSpeechSynthesis, getSpeechSynthesisUnsafe,
         getSpeechSynthesisUnchecked, js_getScreen, getScreen,
-        getScreenUnchecked, js_getHistory, getHistory, getHistoryUnchecked,
-        js_getLocationbar, getLocationbar, getLocationbarUnchecked,
-        js_getMenubar, getMenubar, getMenubarUnchecked, js_getPersonalbar,
-        getPersonalbar, getPersonalbarUnchecked, js_getScrollbars,
-        getScrollbars, getScrollbarsUnchecked, js_getStatusbar,
-        getStatusbar, getStatusbarUnchecked, js_getToolbar, getToolbar,
-        getToolbarUnchecked, js_getNavigator, getNavigator,
+        getScreenUnsafe, getScreenUnchecked, js_getHistory, getHistory,
+        getHistoryUnsafe, getHistoryUnchecked, js_getLocationbar,
+        getLocationbar, getLocationbarUnsafe, getLocationbarUnchecked,
+        js_getMenubar, getMenubar, getMenubarUnsafe, getMenubarUnchecked,
+        js_getPersonalbar, getPersonalbar, getPersonalbarUnsafe,
+        getPersonalbarUnchecked, js_getScrollbars, getScrollbars,
+        getScrollbarsUnsafe, getScrollbarsUnchecked, js_getStatusbar,
+        getStatusbar, getStatusbarUnsafe, getStatusbarUnchecked,
+        js_getToolbar, getToolbar, getToolbarUnsafe, getToolbarUnchecked,
+        js_getNavigator, getNavigator, getNavigatorUnsafe,
         getNavigatorUnchecked, js_getClientInformation,
-        getClientInformation, getClientInformationUnchecked, js_getCrypto,
-        getCrypto, getCryptoUnchecked, js_setLocation, setLocation,
-        js_getLocation, getLocation, getLocationUnchecked, js_getEvent,
-        getEvent, getEventUnchecked, js_getFrameElement, getFrameElement,
-        getFrameElementUnchecked, js_getOffscreenBuffering,
-        getOffscreenBuffering, js_getOuterHeight, getOuterHeight,
-        js_getOuterWidth, getOuterWidth, js_getInnerHeight, getInnerHeight,
-        js_getInnerWidth, getInnerWidth, js_getScreenX, getScreenX,
-        js_getScreenY, getScreenY, js_getScreenLeft, getScreenLeft,
-        js_getScreenTop, getScreenTop, js_getScrollX, getScrollX,
-        js_getScrollY, getScrollY, js_getPageXOffset, getPageXOffset,
-        js_getPageYOffset, getPageYOffset, js_getClosed, getClosed,
-        js_getLength, getLength, js_setName, setName, js_getName, getName,
-        js_setStatus, setStatus, js_getStatus, getStatus,
-        js_setDefaultStatus, setDefaultStatus, js_getDefaultStatus,
-        getDefaultStatus, js_setDefaultstatus, setDefaultstatus,
-        js_getDefaultstatus, getDefaultstatus, js_getSelf, getSelf,
-        getSelfUnchecked, js_getWindow, getWindow, getWindowUnchecked,
-        js_getFrames, getFrames, getFramesUnchecked, js_getOpener,
-        getOpener, getOpenerUnchecked, js_getParent, getParent,
-        getParentUnchecked, js_getTop, getTop, getTopUnchecked,
-        js_getDocument, getDocument, getDocumentUnchecked,
-        js_getStyleMedia, getStyleMedia, getStyleMediaUnchecked,
+        getClientInformation, getClientInformationUnsafe,
+        getClientInformationUnchecked, js_getCrypto, getCrypto,
+        getCryptoUnsafe, getCryptoUnchecked, js_setLocation, setLocation,
+        js_getLocation, getLocation, getLocationUnsafe,
+        getLocationUnchecked, js_getEvent, getEvent, getEventUnsafe,
+        getEventUnchecked, js_getFrameElement, getFrameElement,
+        getFrameElementUnsafe, getFrameElementUnchecked,
+        js_getOffscreenBuffering, getOffscreenBuffering, js_getOuterHeight,
+        getOuterHeight, js_getOuterWidth, getOuterWidth, js_getInnerHeight,
+        getInnerHeight, js_getInnerWidth, getInnerWidth, js_getScreenX,
+        getScreenX, js_getScreenY, getScreenY, js_getScreenLeft,
+        getScreenLeft, js_getScreenTop, getScreenTop, js_getScrollX,
+        getScrollX, js_getScrollY, getScrollY, js_getPageXOffset,
+        getPageXOffset, js_getPageYOffset, getPageYOffset, js_getClosed,
+        getClosed, js_getLength, getLength, js_setName, setName,
+        js_getName, getName, js_setStatus, setStatus, js_getStatus,
+        getStatus, js_setDefaultStatus, setDefaultStatus,
+        js_getDefaultStatus, getDefaultStatus, js_setDefaultstatus,
+        setDefaultstatus, js_getDefaultstatus, getDefaultstatus,
+        js_getSelf, getSelf, getSelfUnsafe, getSelfUnchecked, js_getWindow,
+        getWindow, getWindowUnsafe, getWindowUnchecked, js_getFrames,
+        getFrames, getFramesUnsafe, getFramesUnchecked, js_getOpener,
+        getOpener, getOpenerUnsafe, getOpenerUnchecked, js_getParent,
+        getParent, getParentUnsafe, getParentUnchecked, js_getTop, getTop,
+        getTopUnsafe, getTopUnchecked, js_getDocument, getDocument,
+        getDocumentUnsafe, getDocumentUnchecked, js_getStyleMedia,
+        getStyleMedia, getStyleMediaUnsafe, getStyleMediaUnchecked,
         js_getDevicePixelRatio, getDevicePixelRatio,
         js_getApplicationCache, getApplicationCache,
-        getApplicationCacheUnchecked, js_getSessionStorage,
-        getSessionStorage, getSessionStorageUnchecked, js_getLocalStorage,
-        getLocalStorage, getLocalStorageUnchecked, js_getOrientation,
+        getApplicationCacheUnsafe, getApplicationCacheUnchecked,
+        js_getSessionStorage, getSessionStorage, getSessionStorageUnsafe,
+        getSessionStorageUnchecked, js_getLocalStorage, getLocalStorage,
+        getLocalStorageUnsafe, getLocalStorageUnchecked, js_getOrientation,
         getOrientation, js_getPerformance, getPerformance,
-        getPerformanceUnchecked, js_getCSS, getCSS, getCSSUnchecked, abort,
-        beforeUnload, blurEvent, canPlay, canPlayThrough, change, click,
-        contextMenu, dblClick, drag, dragEnd, dragEnter, dragLeave,
-        dragOver, dragStart, drop, durationChange, emptied, ended, error,
-        focusEvent, hashChange, input, invalid, keyDown, keyPress, keyUp,
-        load, loadedData, loadedMetadata, loadStart, message, mouseDown,
-        mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp,
-        mouseWheel, offline, online, pageHide, pageShow, pause, play,
-        playing, popState, progress, rateChange, resize, scrollEvent,
-        seeked, seeking, select, stalled, storage, submit, suspend,
-        timeUpdate, unload, volumeChange, waiting, wheel, reset, search,
+        getPerformanceUnsafe, getPerformanceUnchecked, js_getCSS, getCSS,
+        getCSSUnsafe, getCSSUnchecked, abort, beforeUnload, blurEvent,
+        canPlay, canPlayThrough, change, click, contextMenu, dblClick,
+        drag, dragEnd, dragEnter, dragLeave, dragOver, dragStart, drop,
+        durationChange, emptied, ended, error, focusEvent, hashChange,
+        input, invalid, keyDown, keyPress, keyUp, load, loadedData,
+        loadedMetadata, loadStart, message, mouseDown, mouseEnter,
+        mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp, mouseWheel,
+        offline, online, pageHide, pageShow, pause, play, playing,
+        popState, progress, rateChange, resize, scrollEvent, seeked,
+        seeking, select, stalled, storage, submit, suspend, timeUpdate,
+        unload, volumeChange, waiting, wheel, reset, search,
         webKitAnimationEnd, webKitAnimationIteration, webKitAnimationStart,
         animationEnd, animationIteration, animationStart,
         webKitTransitionEnd, transitionEnd, orientationChange, touchStart,
@@ -92,6 +112,7 @@ module GHCJS.DOM.JSFFI.Generated.Window
         gTypeWindow)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -107,6 +128,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"openDatabase\"]($2, $3, $4,\n$5, $6)" js_openDatabase ::
@@ -150,6 +181,24 @@ openDatabase_ self name version displayName estimatedSize
             (maybeToNullable creationCallback)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.openDatabase Mozilla Window.openDatabase documentation> 
+openDatabaseUnsafe ::
+                   (MonadIO m, ToJSString name, ToJSString version,
+                    ToJSString displayName, HasCallStack) =>
+                     Window ->
+                       name ->
+                         version ->
+                           displayName -> Word -> Maybe DatabaseCallback -> m Database
+openDatabaseUnsafe self name version displayName estimatedSize
+  creationCallback
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_openDatabase (self) (toJSString name) (toJSString version)
+             (toJSString displayName)
+             estimatedSize
+             (maybeToNullable creationCallback)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.openDatabase Mozilla Window.openDatabase documentation> 
 openDatabaseUnchecked ::
                       (MonadIO m, ToJSString name, ToJSString version,
                        ToJSString displayName) =>
@@ -177,6 +226,14 @@ getSelection self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getSelection Mozilla Window.getSelection documentation> 
 getSelection_ :: (MonadIO m) => Window -> m ()
 getSelection_ self = liftIO (void (js_getSelection (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getSelection Mozilla Window.getSelection documentation> 
+getSelectionUnsafe ::
+                   (MonadIO m, HasCallStack) => Window -> m Selection
+getSelectionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSelection (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getSelection Mozilla Window.getSelection documentation> 
 getSelectionUnchecked :: (MonadIO m) => Window -> m Selection
@@ -241,6 +298,18 @@ open_ self url name options
       (void
          (js_open (self) (toJSString url) (toJSString name)
             (toJSString options)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.open Mozilla Window.open documentation> 
+openUnsafe ::
+           (MonadIO m, ToJSString url, ToJSString name, ToJSString options,
+            HasCallStack) =>
+             Window -> url -> name -> options -> m Window
+openUnsafe self url name options
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_open (self) (toJSString url) (toJSString name)
+             (toJSString options)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.open Mozilla Window.open documentation> 
 openUnchecked ::
@@ -322,6 +391,18 @@ prompt_ self message defaultValue
       (void
          (js_prompt (self) (toJSString message)
             (toMaybeJSString defaultValue)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.prompt Mozilla Window.prompt documentation> 
+promptUnsafe ::
+             (MonadIO m, ToJSString message, ToJSString defaultValue,
+              HasCallStack, FromJSString result) =>
+               Window -> message -> Maybe defaultValue -> m result
+promptUnsafe self message defaultValue
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_prompt (self) (toJSString message)
+             (toMaybeJSString defaultValue)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.prompt Mozilla Window.prompt documentation> 
 promptUnchecked ::
@@ -434,6 +515,15 @@ matchMedia_ self query
   = liftIO (void (js_matchMedia (self) (toJSString query)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.matchMedia Mozilla Window.matchMedia documentation> 
+matchMediaUnsafe ::
+                 (MonadIO m, ToJSString query, HasCallStack) =>
+                   Window -> query -> m MediaQueryList
+matchMediaUnsafe self query
+  = liftIO
+      ((nullableToMaybe <$> (js_matchMedia (self) (toJSString query)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.matchMedia Mozilla Window.matchMedia documentation> 
 matchMediaUnchecked ::
                     (MonadIO m, ToJSString query) =>
                       Window -> query -> m MediaQueryList
@@ -471,6 +561,20 @@ getComputedStyle_ self element pseudoElement
          (js_getComputedStyle (self)
             (maybeToNullable (fmap toElement element))
             (toMaybeJSString pseudoElement)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getComputedStyle Mozilla Window.getComputedStyle documentation> 
+getComputedStyleUnsafe ::
+                       (MonadIO m, IsElement element, ToJSString pseudoElement,
+                        HasCallStack) =>
+                         Window ->
+                           Maybe element -> Maybe pseudoElement -> m CSSStyleDeclaration
+getComputedStyleUnsafe self element pseudoElement
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getComputedStyle (self)
+             (maybeToNullable (fmap toElement element))
+             (toMaybeJSString pseudoElement)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getComputedStyle Mozilla Window.getComputedStyle documentation> 
 getComputedStyleUnchecked ::
@@ -513,6 +617,19 @@ getMatchedCSSRules_ self element pseudoElement
             (toMaybeJSString pseudoElement)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getMatchedCSSRules Mozilla Window.getMatchedCSSRules documentation> 
+getMatchedCSSRulesUnsafe ::
+                         (MonadIO m, IsElement element, ToJSString pseudoElement,
+                          HasCallStack) =>
+                           Window -> Maybe element -> Maybe pseudoElement -> m CSSRuleList
+getMatchedCSSRulesUnsafe self element pseudoElement
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getMatchedCSSRules (self)
+             (maybeToNullable (fmap toElement element))
+             (toMaybeJSString pseudoElement)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getMatchedCSSRules Mozilla Window.getMatchedCSSRules documentation> 
 getMatchedCSSRulesUnchecked ::
                             (MonadIO m, IsElement element, ToJSString pseudoElement) =>
                               Window -> Maybe element -> Maybe pseudoElement -> m CSSRuleList
@@ -551,6 +668,18 @@ webkitConvertPointFromPageToNode_ self node p
          (js_webkitConvertPointFromPageToNode (self)
             (maybeToNullable (fmap toNode node))
             (maybeToNullable p)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromPageToNode Mozilla Window.webkitConvertPointFromPageToNode documentation> 
+webkitConvertPointFromPageToNodeUnsafe ::
+                                       (MonadIO m, IsNode node, HasCallStack) =>
+                                         Window -> Maybe node -> Maybe WebKitPoint -> m WebKitPoint
+webkitConvertPointFromPageToNodeUnsafe self node p
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_webkitConvertPointFromPageToNode (self)
+             (maybeToNullable (fmap toNode node))
+             (maybeToNullable p)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromPageToNode Mozilla Window.webkitConvertPointFromPageToNode documentation> 
 webkitConvertPointFromPageToNodeUnchecked ::
@@ -592,6 +721,18 @@ webkitConvertPointFromNodeToPage_ self node p
          (js_webkitConvertPointFromNodeToPage (self)
             (maybeToNullable (fmap toNode node))
             (maybeToNullable p)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromNodeToPage Mozilla Window.webkitConvertPointFromNodeToPage documentation> 
+webkitConvertPointFromNodeToPageUnsafe ::
+                                       (MonadIO m, IsNode node, HasCallStack) =>
+                                         Window -> Maybe node -> Maybe WebKitPoint -> m WebKitPoint
+webkitConvertPointFromNodeToPageUnsafe self node p
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_webkitConvertPointFromNodeToPage (self)
+             (maybeToNullable (fmap toNode node))
+             (maybeToNullable p)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitConvertPointFromNodeToPage Mozilla Window.webkitConvertPointFromNodeToPage documentation> 
 webkitConvertPointFromNodeToPageUnchecked ::
@@ -716,6 +857,14 @@ getWebkitIndexedDB self
   = liftIO (nullableToMaybe <$> (js_getWebkitIndexedDB (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitIndexedDB Mozilla Window.webkitIndexedDB documentation> 
+getWebkitIndexedDBUnsafe ::
+                         (MonadIO m, HasCallStack) => Window -> m IDBFactory
+getWebkitIndexedDBUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitIndexedDB (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitIndexedDB Mozilla Window.webkitIndexedDB documentation> 
 getWebkitIndexedDBUnchecked ::
                             (MonadIO m) => Window -> m IDBFactory
 getWebkitIndexedDBUnchecked self
@@ -731,6 +880,14 @@ getIndexedDB self
   = liftIO (nullableToMaybe <$> (js_getIndexedDB (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.indexedDB Mozilla Window.indexedDB documentation> 
+getIndexedDBUnsafe ::
+                   (MonadIO m, HasCallStack) => Window -> m IDBFactory
+getIndexedDBUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIndexedDB (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.indexedDB Mozilla Window.indexedDB documentation> 
 getIndexedDBUnchecked :: (MonadIO m) => Window -> m IDBFactory
 getIndexedDBUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getIndexedDB (self)))
@@ -743,6 +900,14 @@ getWebkitStorageInfo ::
                      (MonadIO m) => Window -> m (Maybe StorageInfo)
 getWebkitStorageInfo self
   = liftIO (nullableToMaybe <$> (js_getWebkitStorageInfo (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitStorageInfo Mozilla Window.webkitStorageInfo documentation> 
+getWebkitStorageInfoUnsafe ::
+                           (MonadIO m, HasCallStack) => Window -> m StorageInfo
+getWebkitStorageInfoUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWebkitStorageInfo (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitStorageInfo Mozilla Window.webkitStorageInfo documentation> 
 getWebkitStorageInfoUnchecked ::
@@ -761,6 +926,14 @@ getSpeechSynthesis self
   = liftIO (nullableToMaybe <$> (js_getSpeechSynthesis (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.speechSynthesis Mozilla Window.speechSynthesis documentation> 
+getSpeechSynthesisUnsafe ::
+                         (MonadIO m, HasCallStack) => Window -> m SpeechSynthesis
+getSpeechSynthesisUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSpeechSynthesis (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.speechSynthesis Mozilla Window.speechSynthesis documentation> 
 getSpeechSynthesisUnchecked ::
                             (MonadIO m) => Window -> m SpeechSynthesis
 getSpeechSynthesisUnchecked self
@@ -773,6 +946,13 @@ foreign import javascript unsafe "$1[\"screen\"]" js_getScreen ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screen Mozilla Window.screen documentation> 
 getScreen :: (MonadIO m) => Window -> m (Maybe Screen)
 getScreen self = liftIO (nullableToMaybe <$> (js_getScreen (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screen Mozilla Window.screen documentation> 
+getScreenUnsafe :: (MonadIO m, HasCallStack) => Window -> m Screen
+getScreenUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getScreen (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screen Mozilla Window.screen documentation> 
 getScreenUnchecked :: (MonadIO m) => Window -> m Screen
@@ -788,6 +968,14 @@ getHistory self
   = liftIO (nullableToMaybe <$> (js_getHistory (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.history Mozilla Window.history documentation> 
+getHistoryUnsafe ::
+                 (MonadIO m, HasCallStack) => Window -> m History
+getHistoryUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getHistory (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.history Mozilla Window.history documentation> 
 getHistoryUnchecked :: (MonadIO m) => Window -> m History
 getHistoryUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getHistory (self)))
@@ -799,6 +987,14 @@ foreign import javascript unsafe "$1[\"locationbar\"]"
 getLocationbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getLocationbar self
   = liftIO (nullableToMaybe <$> (js_getLocationbar (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.locationbar Mozilla Window.locationbar documentation> 
+getLocationbarUnsafe ::
+                     (MonadIO m, HasCallStack) => Window -> m BarProp
+getLocationbarUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocationbar (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.locationbar Mozilla Window.locationbar documentation> 
 getLocationbarUnchecked :: (MonadIO m) => Window -> m BarProp
@@ -815,6 +1011,14 @@ getMenubar self
   = liftIO (nullableToMaybe <$> (js_getMenubar (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.menubar Mozilla Window.menubar documentation> 
+getMenubarUnsafe ::
+                 (MonadIO m, HasCallStack) => Window -> m BarProp
+getMenubarUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMenubar (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.menubar Mozilla Window.menubar documentation> 
 getMenubarUnchecked :: (MonadIO m) => Window -> m BarProp
 getMenubarUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getMenubar (self)))
@@ -826,6 +1030,14 @@ foreign import javascript unsafe "$1[\"personalbar\"]"
 getPersonalbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getPersonalbar self
   = liftIO (nullableToMaybe <$> (js_getPersonalbar (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.personalbar Mozilla Window.personalbar documentation> 
+getPersonalbarUnsafe ::
+                     (MonadIO m, HasCallStack) => Window -> m BarProp
+getPersonalbarUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPersonalbar (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.personalbar Mozilla Window.personalbar documentation> 
 getPersonalbarUnchecked :: (MonadIO m) => Window -> m BarProp
@@ -842,6 +1054,14 @@ getScrollbars self
   = liftIO (nullableToMaybe <$> (js_getScrollbars (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollbars Mozilla Window.scrollbars documentation> 
+getScrollbarsUnsafe ::
+                    (MonadIO m, HasCallStack) => Window -> m BarProp
+getScrollbarsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getScrollbars (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollbars Mozilla Window.scrollbars documentation> 
 getScrollbarsUnchecked :: (MonadIO m) => Window -> m BarProp
 getScrollbarsUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getScrollbars (self)))
@@ -853,6 +1073,14 @@ foreign import javascript unsafe "$1[\"statusbar\"]"
 getStatusbar :: (MonadIO m) => Window -> m (Maybe BarProp)
 getStatusbar self
   = liftIO (nullableToMaybe <$> (js_getStatusbar (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.statusbar Mozilla Window.statusbar documentation> 
+getStatusbarUnsafe ::
+                   (MonadIO m, HasCallStack) => Window -> m BarProp
+getStatusbarUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStatusbar (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.statusbar Mozilla Window.statusbar documentation> 
 getStatusbarUnchecked :: (MonadIO m) => Window -> m BarProp
@@ -868,6 +1096,14 @@ getToolbar self
   = liftIO (nullableToMaybe <$> (js_getToolbar (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.toolbar Mozilla Window.toolbar documentation> 
+getToolbarUnsafe ::
+                 (MonadIO m, HasCallStack) => Window -> m BarProp
+getToolbarUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getToolbar (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.toolbar Mozilla Window.toolbar documentation> 
 getToolbarUnchecked :: (MonadIO m) => Window -> m BarProp
 getToolbarUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getToolbar (self)))
@@ -879,6 +1115,14 @@ foreign import javascript unsafe "$1[\"navigator\"]"
 getNavigator :: (MonadIO m) => Window -> m (Maybe Navigator)
 getNavigator self
   = liftIO (nullableToMaybe <$> (js_getNavigator (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.navigator Mozilla Window.navigator documentation> 
+getNavigatorUnsafe ::
+                   (MonadIO m, HasCallStack) => Window -> m Navigator
+getNavigatorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNavigator (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.navigator Mozilla Window.navigator documentation> 
 getNavigatorUnchecked :: (MonadIO m) => Window -> m Navigator
@@ -895,6 +1139,14 @@ getClientInformation self
   = liftIO (nullableToMaybe <$> (js_getClientInformation (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.clientInformation Mozilla Window.clientInformation documentation> 
+getClientInformationUnsafe ::
+                           (MonadIO m, HasCallStack) => Window -> m Navigator
+getClientInformationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClientInformation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.clientInformation Mozilla Window.clientInformation documentation> 
 getClientInformationUnchecked ::
                               (MonadIO m) => Window -> m Navigator
 getClientInformationUnchecked self
@@ -907,6 +1159,13 @@ foreign import javascript unsafe "$1[\"crypto\"]" js_getCrypto ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.crypto Mozilla Window.crypto documentation> 
 getCrypto :: (MonadIO m) => Window -> m (Maybe Crypto)
 getCrypto self = liftIO (nullableToMaybe <$> (js_getCrypto (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.crypto Mozilla Window.crypto documentation> 
+getCryptoUnsafe :: (MonadIO m, HasCallStack) => Window -> m Crypto
+getCryptoUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCrypto (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.crypto Mozilla Window.crypto documentation> 
 getCryptoUnchecked :: (MonadIO m) => Window -> m Crypto
@@ -930,6 +1189,14 @@ getLocation self
   = liftIO (nullableToMaybe <$> (js_getLocation (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
+getLocationUnsafe ::
+                  (MonadIO m, HasCallStack) => Window -> m Location
+getLocationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.location Mozilla Window.location documentation> 
 getLocationUnchecked :: (MonadIO m) => Window -> m Location
 getLocationUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getLocation (self)))
@@ -940,6 +1207,13 @@ foreign import javascript unsafe "$1[\"event\"]" js_getEvent ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.event Mozilla Window.event documentation> 
 getEvent :: (MonadIO m) => Window -> m (Maybe Event)
 getEvent self = liftIO (nullableToMaybe <$> (js_getEvent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.event Mozilla Window.event documentation> 
+getEventUnsafe :: (MonadIO m, HasCallStack) => Window -> m Event
+getEventUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getEvent (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.event Mozilla Window.event documentation> 
 getEventUnchecked :: (MonadIO m) => Window -> m Event
@@ -953,6 +1227,14 @@ foreign import javascript unsafe "$1[\"frameElement\"]"
 getFrameElement :: (MonadIO m) => Window -> m (Maybe Element)
 getFrameElement self
   = liftIO (nullableToMaybe <$> (js_getFrameElement (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frameElement Mozilla Window.frameElement documentation> 
+getFrameElementUnsafe ::
+                      (MonadIO m, HasCallStack) => Window -> m Element
+getFrameElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFrameElement (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frameElement Mozilla Window.frameElement documentation> 
 getFrameElementUnchecked :: (MonadIO m) => Window -> m Element
@@ -1139,6 +1421,13 @@ getSelf :: (MonadIO m) => Window -> m (Maybe Window)
 getSelf self = liftIO (nullableToMaybe <$> (js_getSelf (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.self Mozilla Window.self documentation> 
+getSelfUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getSelfUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSelf (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.self Mozilla Window.self documentation> 
 getSelfUnchecked :: (MonadIO m) => Window -> m Window
 getSelfUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getSelf (self)))
@@ -1149,6 +1438,13 @@ foreign import javascript unsafe "$1[\"window\"]" js_getWindow ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.window Mozilla Window.window documentation> 
 getWindow :: (MonadIO m) => Window -> m (Maybe Window)
 getWindow self = liftIO (nullableToMaybe <$> (js_getWindow (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.window Mozilla Window.window documentation> 
+getWindowUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getWindowUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getWindow (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.window Mozilla Window.window documentation> 
 getWindowUnchecked :: (MonadIO m) => Window -> m Window
@@ -1163,6 +1459,13 @@ getFrames :: (MonadIO m) => Window -> m (Maybe Window)
 getFrames self = liftIO (nullableToMaybe <$> (js_getFrames (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frames Mozilla Window.frames documentation> 
+getFramesUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getFramesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFrames (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frames Mozilla Window.frames documentation> 
 getFramesUnchecked :: (MonadIO m) => Window -> m Window
 getFramesUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getFrames (self)))
@@ -1173,6 +1476,13 @@ foreign import javascript unsafe "$1[\"opener\"]" js_getOpener ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.opener Mozilla Window.opener documentation> 
 getOpener :: (MonadIO m) => Window -> m (Maybe Window)
 getOpener self = liftIO (nullableToMaybe <$> (js_getOpener (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.opener Mozilla Window.opener documentation> 
+getOpenerUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getOpenerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOpener (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.opener Mozilla Window.opener documentation> 
 getOpenerUnchecked :: (MonadIO m) => Window -> m Window
@@ -1187,6 +1497,13 @@ getParent :: (MonadIO m) => Window -> m (Maybe Window)
 getParent self = liftIO (nullableToMaybe <$> (js_getParent (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.parent Mozilla Window.parent documentation> 
+getParentUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getParentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getParent (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.parent Mozilla Window.parent documentation> 
 getParentUnchecked :: (MonadIO m) => Window -> m Window
 getParentUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getParent (self)))
@@ -1197,6 +1514,13 @@ foreign import javascript unsafe "$1[\"top\"]" js_getTop ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.top Mozilla Window.top documentation> 
 getTop :: (MonadIO m) => Window -> m (Maybe Window)
 getTop self = liftIO (nullableToMaybe <$> (js_getTop (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.top Mozilla Window.top documentation> 
+getTopUnsafe :: (MonadIO m, HasCallStack) => Window -> m Window
+getTopUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTop (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.top Mozilla Window.top documentation> 
 getTopUnchecked :: (MonadIO m) => Window -> m Window
@@ -1212,6 +1536,14 @@ getDocument self
   = liftIO (nullableToMaybe <$> (js_getDocument (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.document Mozilla Window.document documentation> 
+getDocumentUnsafe ::
+                  (MonadIO m, HasCallStack) => Window -> m Document
+getDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.document Mozilla Window.document documentation> 
 getDocumentUnchecked :: (MonadIO m) => Window -> m Document
 getDocumentUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getDocument (self)))
@@ -1223,6 +1555,14 @@ foreign import javascript unsafe "$1[\"styleMedia\"]"
 getStyleMedia :: (MonadIO m) => Window -> m (Maybe StyleMedia)
 getStyleMedia self
   = liftIO (nullableToMaybe <$> (js_getStyleMedia (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.styleMedia Mozilla Window.styleMedia documentation> 
+getStyleMediaUnsafe ::
+                    (MonadIO m, HasCallStack) => Window -> m StyleMedia
+getStyleMediaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyleMedia (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.styleMedia Mozilla Window.styleMedia documentation> 
 getStyleMediaUnchecked :: (MonadIO m) => Window -> m StyleMedia
@@ -1246,6 +1586,14 @@ getApplicationCache self
   = liftIO (nullableToMaybe <$> (js_getApplicationCache (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.applicationCache Mozilla Window.applicationCache documentation> 
+getApplicationCacheUnsafe ::
+                          (MonadIO m, HasCallStack) => Window -> m ApplicationCache
+getApplicationCacheUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getApplicationCache (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.applicationCache Mozilla Window.applicationCache documentation> 
 getApplicationCacheUnchecked ::
                              (MonadIO m) => Window -> m ApplicationCache
 getApplicationCacheUnchecked self
@@ -1261,6 +1609,14 @@ getSessionStorage self
   = liftIO (nullableToMaybe <$> (js_getSessionStorage (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
+getSessionStorageUnsafe ::
+                        (MonadIO m, HasCallStack) => Window -> m Storage
+getSessionStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSessionStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
 getSessionStorageUnchecked :: (MonadIO m) => Window -> m Storage
 getSessionStorageUnchecked self
   = liftIO
@@ -1273,6 +1629,14 @@ foreign import javascript unsafe "$1[\"localStorage\"]"
 getLocalStorage :: (MonadIO m) => Window -> m (Maybe Storage)
 getLocalStorage self
   = liftIO (nullableToMaybe <$> (js_getLocalStorage (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 
+getLocalStorageUnsafe ::
+                      (MonadIO m, HasCallStack) => Window -> m Storage
+getLocalStorageUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocalStorage (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 
 getLocalStorageUnchecked :: (MonadIO m) => Window -> m Storage
@@ -1296,6 +1660,14 @@ getPerformance self
   = liftIO (nullableToMaybe <$> (js_getPerformance (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.performance Mozilla Window.performance documentation> 
+getPerformanceUnsafe ::
+                     (MonadIO m, HasCallStack) => Window -> m Performance
+getPerformanceUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPerformance (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.performance Mozilla Window.performance documentation> 
 getPerformanceUnchecked :: (MonadIO m) => Window -> m Performance
 getPerformanceUnchecked self
   = liftIO
@@ -1307,6 +1679,13 @@ foreign import javascript unsafe "$1[\"CSS\"]" js_getCSS ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.CSS Mozilla Window.CSS documentation> 
 getCSS :: (MonadIO m) => Window -> m (Maybe CSS)
 getCSS self = liftIO (nullableToMaybe <$> (js_getCSS (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.CSS Mozilla Window.CSS documentation> 
+getCSSUnsafe :: (MonadIO m, HasCallStack) => Window -> m CSS
+getCSSUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCSS (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.CSS Mozilla Window.CSS documentation> 
 getCSSUnchecked :: (MonadIO m) => Window -> m CSS

@@ -1,16 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
-       (js_setText, setText, js_getText, getText, getTextUnchecked,
-        js_setHtmlFor, setHtmlFor, js_getHtmlFor, getHtmlFor, js_setEvent,
-        setEvent, js_getEvent, getEvent, js_setCharset, setCharset,
-        js_getCharset, getCharset, js_setAsync, setAsync, js_getAsync,
-        getAsync, js_setDefer, setDefer, js_getDefer, getDefer, js_setSrc,
-        setSrc, js_getSrc, getSrc, js_setType, setType, js_getType,
-        getType, js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
-        getCrossOrigin, js_setNonce, setNonce, js_getNonce, getNonce,
-        HTMLScriptElement(..), gTypeHTMLScriptElement)
+       (js_setText, setText, js_getText, getText, getTextUnsafe,
+        getTextUnchecked, js_setHtmlFor, setHtmlFor, js_getHtmlFor,
+        getHtmlFor, js_setEvent, setEvent, js_getEvent, getEvent,
+        js_setCharset, setCharset, js_getCharset, getCharset, js_setAsync,
+        setAsync, js_getAsync, getAsync, js_setDefer, setDefer,
+        js_getDefer, getDefer, js_setSrc, setSrc, js_getSrc, getSrc,
+        js_setType, setType, js_getType, getType, js_setCrossOrigin,
+        setCrossOrigin, js_getCrossOrigin, getCrossOrigin, js_setNonce,
+        setNonce, js_getNonce, getNonce, HTMLScriptElement(..),
+        gTypeHTMLScriptElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         HTMLScriptElement -> Nullable JSString -> IO ()
@@ -44,6 +61,15 @@ getText ::
         (MonadIO m, FromJSString result) =>
           HTMLScriptElement -> m (Maybe result)
 getText self = liftIO (fromMaybeJSString <$> (js_getText (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
+getTextUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                HTMLScriptElement -> m result
+getTextUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getText (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.text Mozilla HTMLScriptElement.text documentation> 
 getTextUnchecked ::

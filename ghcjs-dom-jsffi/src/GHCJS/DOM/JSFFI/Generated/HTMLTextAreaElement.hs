@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
        (js_checkValidity, checkValidity, checkValidity_,
         js_setCustomValidity, setCustomValidity, js_select, select,
@@ -7,7 +12,7 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         setAutofocus, js_getAutofocus, getAutofocus, js_setCols, setCols,
         js_getCols, getCols, js_setDirName, setDirName, js_getDirName,
         getDirName, js_setDisabled, setDisabled, js_getDisabled,
-        getDisabled, js_getForm, getForm, getFormUnchecked,
+        getDisabled, js_getForm, getForm, getFormUnsafe, getFormUnchecked,
         js_setMaxLength, setMaxLength, js_getMaxLength, getMaxLength,
         js_setName, setName, js_getName, getName, js_setPlaceholder,
         setPlaceholder, js_getPlaceholder, getPlaceholder, js_setReadOnly,
@@ -15,22 +20,25 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         setRequired, js_getRequired, getRequired, js_setRows, setRows,
         js_getRows, getRows, js_setWrap, setWrap, js_getWrap, getWrap,
         js_getType, getType, js_setDefaultValue, setDefaultValue,
-        js_getDefaultValue, getDefaultValue, getDefaultValueUnchecked,
-        js_setValue, setValue, js_getValue, getValue, getValueUnchecked,
-        js_getTextLength, getTextLength, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity, getValidityUnchecked,
+        js_getDefaultValue, getDefaultValue, getDefaultValueUnsafe,
+        getDefaultValueUnchecked, js_setValue, setValue, js_getValue,
+        getValue, getValueUnsafe, getValueUnchecked, js_getTextLength,
+        getTextLength, js_getWillValidate, getWillValidate, js_getValidity,
+        getValidity, getValidityUnsafe, getValidityUnchecked,
         js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, js_setSelectionStart,
-        setSelectionStart, js_getSelectionStart, getSelectionStart,
-        js_setSelectionEnd, setSelectionEnd, js_getSelectionEnd,
-        getSelectionEnd, js_setSelectionDirection, setSelectionDirection,
-        js_getSelectionDirection, getSelectionDirection, js_setAutocorrect,
-        setAutocorrect, js_getAutocorrect, getAutocorrect,
-        js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, getAutocapitalizeUnchecked,
+        getLabels, getLabelsUnsafe, getLabelsUnchecked,
+        js_setSelectionStart, setSelectionStart, js_getSelectionStart,
+        getSelectionStart, js_setSelectionEnd, setSelectionEnd,
+        js_getSelectionEnd, getSelectionEnd, js_setSelectionDirection,
+        setSelectionDirection, js_getSelectionDirection,
+        getSelectionDirection, js_setAutocorrect, setAutocorrect,
+        js_getAutocorrect, getAutocorrect, js_setAutocapitalize,
+        setAutocapitalize, js_getAutocapitalize, getAutocapitalize,
+        getAutocapitalizeUnsafe, getAutocapitalizeUnchecked,
         HTMLTextAreaElement(..), gTypeHTMLTextAreaElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -46,6 +54,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
@@ -180,6 +198,15 @@ foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
 getForm ::
         (MonadIO m) => HTMLTextAreaElement -> m (Maybe HTMLFormElement)
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.form Mozilla HTMLTextAreaElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) =>
+                HTMLTextAreaElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.form Mozilla HTMLTextAreaElement.form documentation> 
 getFormUnchecked ::
@@ -323,6 +350,15 @@ getDefaultValue self
   = liftIO (fromMaybeJSString <$> (js_getDefaultValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
+getDefaultValueUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        HTMLTextAreaElement -> m result
+getDefaultValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDefaultValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.defaultValue Mozilla HTMLTextAreaElement.defaultValue documentation> 
 getDefaultValueUnchecked ::
                          (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
 getDefaultValueUnchecked self
@@ -347,6 +383,15 @@ getValue ::
          (MonadIO m, FromJSString result) =>
            HTMLTextAreaElement -> m (Maybe result)
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
+getValueUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) =>
+                 HTMLTextAreaElement -> m result
+getValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
 getValueUnchecked ::
@@ -378,6 +423,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validity Mozilla HTMLTextAreaElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLTextAreaElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validity Mozilla HTMLTextAreaElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLTextAreaElement -> m ValidityState
 getValidityUnchecked self
@@ -399,6 +452,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 getLabels ::
           (MonadIO m) => HTMLTextAreaElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.labels Mozilla HTMLTextAreaElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLTextAreaElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.labels Mozilla HTMLTextAreaElement.labels documentation> 
 getLabelsUnchecked ::
@@ -492,6 +553,15 @@ getAutocapitalize ::
                     HTMLTextAreaElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO (fromMaybeJSString <$> (js_getAutocapitalize (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
+getAutocapitalizeUnsafe ::
+                        (MonadIO m, HasCallStack, FromJSString result) =>
+                          HTMLTextAreaElement -> m result
+getAutocapitalizeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAutocapitalize (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.autocapitalize Mozilla HTMLTextAreaElement.autocapitalize documentation> 
 getAutocapitalizeUnchecked ::

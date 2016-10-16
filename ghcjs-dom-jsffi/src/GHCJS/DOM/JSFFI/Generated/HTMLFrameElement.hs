@@ -1,22 +1,29 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
        (js_getSVGDocument, getSVGDocument, getSVGDocument_,
-        getSVGDocumentUnchecked, js_setFrameBorder, setFrameBorder,
-        js_getFrameBorder, getFrameBorder, js_setLongDesc, setLongDesc,
-        js_getLongDesc, getLongDesc, js_setMarginHeight, setMarginHeight,
-        js_getMarginHeight, getMarginHeight, js_setMarginWidth,
-        setMarginWidth, js_getMarginWidth, getMarginWidth, js_setName,
-        setName, js_getName, getName, js_setNoResize, setNoResize,
-        js_getNoResize, getNoResize, js_setScrolling, setScrolling,
-        js_getScrolling, getScrolling, js_setSrc, setSrc, js_getSrc,
-        getSrc, js_getContentDocument, getContentDocument,
+        getSVGDocumentUnsafe, getSVGDocumentUnchecked, js_setFrameBorder,
+        setFrameBorder, js_getFrameBorder, getFrameBorder, js_setLongDesc,
+        setLongDesc, js_getLongDesc, getLongDesc, js_setMarginHeight,
+        setMarginHeight, js_getMarginHeight, getMarginHeight,
+        js_setMarginWidth, setMarginWidth, js_getMarginWidth,
+        getMarginWidth, js_setName, setName, js_getName, getName,
+        js_setNoResize, setNoResize, js_getNoResize, getNoResize,
+        js_setScrolling, setScrolling, js_getScrolling, getScrolling,
+        js_setSrc, setSrc, js_getSrc, getSrc, js_getContentDocument,
+        getContentDocument, getContentDocumentUnsafe,
         getContentDocumentUnchecked, js_getContentWindow, getContentWindow,
-        getContentWindowUnchecked, js_setLocation, setLocation,
-        js_getLocation, getLocation, getLocationUnchecked, js_getWidth,
-        getWidth, js_getHeight, getHeight, HTMLFrameElement(..),
-        gTypeHTMLFrameElement)
+        getContentWindowUnsafe, getContentWindowUnchecked, js_setLocation,
+        setLocation, js_getLocation, getLocation, getLocationUnsafe,
+        getLocationUnchecked, js_getWidth, getWidth, js_getHeight,
+        getHeight, HTMLFrameElement(..), gTypeHTMLFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -32,6 +39,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
         js_getSVGDocument :: HTMLFrameElement -> IO (Nullable SVGDocument)
@@ -45,6 +62,14 @@ getSVGDocument self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.getSVGDocument Mozilla HTMLFrameElement.getSVGDocument documentation> 
 getSVGDocument_ :: (MonadIO m) => HTMLFrameElement -> m ()
 getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.getSVGDocument Mozilla HTMLFrameElement.getSVGDocument documentation> 
+getSVGDocumentUnsafe ::
+                     (MonadIO m, HasCallStack) => HTMLFrameElement -> m SVGDocument
+getSVGDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSVGDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.getSVGDocument Mozilla HTMLFrameElement.getSVGDocument documentation> 
 getSVGDocumentUnchecked ::
@@ -199,6 +224,14 @@ getContentDocument self
   = liftIO (nullableToMaybe <$> (js_getContentDocument (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentDocument Mozilla HTMLFrameElement.contentDocument documentation> 
+getContentDocumentUnsafe ::
+                         (MonadIO m, HasCallStack) => HTMLFrameElement -> m Document
+getContentDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getContentDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentDocument Mozilla HTMLFrameElement.contentDocument documentation> 
 getContentDocumentUnchecked ::
                             (MonadIO m) => HTMLFrameElement -> m Document
 getContentDocumentUnchecked self
@@ -213,6 +246,14 @@ getContentWindow ::
                  (MonadIO m) => HTMLFrameElement -> m (Maybe Window)
 getContentWindow self
   = liftIO (nullableToMaybe <$> (js_getContentWindow (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentWindow Mozilla HTMLFrameElement.contentWindow documentation> 
+getContentWindowUnsafe ::
+                       (MonadIO m, HasCallStack) => HTMLFrameElement -> m Window
+getContentWindowUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getContentWindow (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.contentWindow Mozilla HTMLFrameElement.contentWindow documentation> 
 getContentWindowUnchecked ::
@@ -240,6 +281,15 @@ getLocation ::
               HTMLFrameElement -> m (Maybe result)
 getLocation self
   = liftIO (fromMaybeJSString <$> (js_getLocation (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
+getLocationUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    HTMLFrameElement -> m result
+getLocationUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getLocation (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 
 getLocationUnchecked ::

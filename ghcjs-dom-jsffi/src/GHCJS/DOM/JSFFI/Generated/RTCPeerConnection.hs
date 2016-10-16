@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
        (js_newRTCPeerConnection, newRTCPeerConnection, js_createOffer,
         createOffer, js_createAnswer, createAnswer, js_setLocalDescription,
@@ -7,15 +12,18 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
         js_getLocalStreams, getLocalStreams, getLocalStreams_,
         js_getRemoteStreams, getRemoteStreams, getRemoteStreams_,
         js_getStreamById, getStreamById, getStreamById_,
-        getStreamByIdUnchecked, js_getConfiguration, getConfiguration,
-        getConfiguration_, getConfigurationUnchecked, js_addStream,
-        addStream, js_removeStream, removeStream, js_getStats, getStats,
+        getStreamByIdUnsafe, getStreamByIdUnchecked, js_getConfiguration,
+        getConfiguration, getConfiguration_, getConfigurationUnsafe,
+        getConfigurationUnchecked, js_addStream, addStream,
+        js_removeStream, removeStream, js_getStats, getStats,
         js_createDataChannel, createDataChannel, createDataChannel_,
-        createDataChannelUnchecked, js_createDTMFSender, createDTMFSender,
-        createDTMFSender_, createDTMFSenderUnchecked, js_close, close,
+        createDataChannelUnsafe, createDataChannelUnchecked,
+        js_createDTMFSender, createDTMFSender, createDTMFSender_,
+        createDTMFSenderUnsafe, createDTMFSenderUnchecked, js_close, close,
         js_getLocalDescription, getLocalDescription,
-        getLocalDescriptionUnchecked, js_getRemoteDescription,
-        getRemoteDescription, getRemoteDescriptionUnchecked,
+        getLocalDescriptionUnsafe, getLocalDescriptionUnchecked,
+        js_getRemoteDescription, getRemoteDescription,
+        getRemoteDescriptionUnsafe, getRemoteDescriptionUnchecked,
         js_getSignalingState, getSignalingState, js_getIceGatheringState,
         getIceGatheringState, js_getIceConnectionState,
         getIceConnectionState, negotiationNeeded, iceCandidate,
@@ -24,6 +32,7 @@ module GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
         gTypeRTCPeerConnection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -39,6 +48,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"webkitRTCPeerConnection\"]($1)"
@@ -212,6 +231,16 @@ getStreamById_ self streamId
   = liftIO (void (js_getStreamById (self) (toJSString streamId)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
+getStreamByIdUnsafe ::
+                    (MonadIO m, ToJSString streamId, HasCallStack) =>
+                      RTCPeerConnection -> streamId -> m MediaStream
+getStreamByIdUnsafe self streamId
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getStreamById (self) (toJSString streamId)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
 getStreamByIdUnchecked ::
                        (MonadIO m, ToJSString streamId) =>
                          RTCPeerConnection -> streamId -> m MediaStream
@@ -233,6 +262,15 @@ getConfiguration self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
 getConfiguration_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getConfiguration_ self = liftIO (void (js_getConfiguration (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
+getConfigurationUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         RTCPeerConnection -> m RTCConfiguration
+getConfigurationUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getConfiguration (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
 getConfigurationUnchecked ::
@@ -307,6 +345,19 @@ createDataChannel_ self label options
             (maybeToNullable (fmap toDictionary options))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
+createDataChannelUnsafe ::
+                        (MonadIO m, ToJSString label, IsDictionary options,
+                         HasCallStack) =>
+                          RTCPeerConnection ->
+                            Maybe label -> Maybe options -> m RTCDataChannel
+createDataChannelUnsafe self label options
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createDataChannel (self) (toMaybeJSString label)
+             (maybeToNullable (fmap toDictionary options))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
 createDataChannelUnchecked ::
                            (MonadIO m, ToJSString label, IsDictionary options) =>
                              RTCPeerConnection ->
@@ -343,6 +394,17 @@ createDTMFSender_ self track
             (maybeToNullable (fmap toMediaStreamTrack track))))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDTMFSender Mozilla webkitRTCPeerConnection.createDTMFSender documentation> 
+createDTMFSenderUnsafe ::
+                       (MonadIO m, IsMediaStreamTrack track, HasCallStack) =>
+                         RTCPeerConnection -> Maybe track -> m RTCDTMFSender
+createDTMFSenderUnsafe self track
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createDTMFSender (self)
+             (maybeToNullable (fmap toMediaStreamTrack track))))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDTMFSender Mozilla webkitRTCPeerConnection.createDTMFSender documentation> 
 createDTMFSenderUnchecked ::
                           (MonadIO m, IsMediaStreamTrack track) =>
                             RTCPeerConnection -> Maybe track -> m RTCDTMFSender
@@ -370,6 +432,15 @@ getLocalDescription self
   = liftIO (nullableToMaybe <$> (js_getLocalDescription (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.localDescription Mozilla webkitRTCPeerConnection.localDescription documentation> 
+getLocalDescriptionUnsafe ::
+                          (MonadIO m, HasCallStack) =>
+                            RTCPeerConnection -> m RTCSessionDescription
+getLocalDescriptionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLocalDescription (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.localDescription Mozilla webkitRTCPeerConnection.localDescription documentation> 
 getLocalDescriptionUnchecked ::
                              (MonadIO m) => RTCPeerConnection -> m RTCSessionDescription
 getLocalDescriptionUnchecked self
@@ -385,6 +456,15 @@ getRemoteDescription ::
                      (MonadIO m) => RTCPeerConnection -> m (Maybe RTCSessionDescription)
 getRemoteDescription self
   = liftIO (nullableToMaybe <$> (js_getRemoteDescription (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.remoteDescription Mozilla webkitRTCPeerConnection.remoteDescription documentation> 
+getRemoteDescriptionUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             RTCPeerConnection -> m RTCSessionDescription
+getRemoteDescriptionUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRemoteDescription (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.remoteDescription Mozilla webkitRTCPeerConnection.remoteDescription documentation> 
 getRemoteDescriptionUnchecked ::

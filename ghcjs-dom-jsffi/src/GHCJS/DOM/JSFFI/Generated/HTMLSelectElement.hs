@@ -1,27 +1,35 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLSelectElement
-       (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
-        namedItem_, namedItemUnchecked, js_addBefore, addBefore, js_add,
-        add, js_remove, remove, js_checkValidity, checkValidity,
-        checkValidity_, js_setCustomValidity, setCustomValidity,
-        js_setAutofocus, setAutofocus, js_getAutofocus, getAutofocus,
-        js_setDisabled, setDisabled, js_getDisabled, getDisabled,
-        js_getForm, getForm, getFormUnchecked, js_setMultiple, setMultiple,
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js_namedItem,
+        namedItem, namedItem_, namedItemUnsafe, namedItemUnchecked,
+        js_addBefore, addBefore, js_add, add, js_remove, remove,
+        js_checkValidity, checkValidity, checkValidity_,
+        js_setCustomValidity, setCustomValidity, js_setAutofocus,
+        setAutofocus, js_getAutofocus, getAutofocus, js_setDisabled,
+        setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
+        getFormUnsafe, getFormUnchecked, js_setMultiple, setMultiple,
         js_getMultiple, getMultiple, js_setName, setName, js_getName,
         getName, js_setRequired, setRequired, js_getRequired, getRequired,
         js_setSize, setSize, js_getSize, getSize, js_getType, getType,
-        js_getOptions, getOptions, getOptionsUnchecked, js_setLength,
-        setLength, js_getLength, getLength, js_getSelectedOptions,
-        getSelectedOptions, getSelectedOptionsUnchecked,
+        js_getOptions, getOptions, getOptionsUnsafe, getOptionsUnchecked,
+        js_setLength, setLength, js_getLength, getLength,
+        js_getSelectedOptions, getSelectedOptions,
+        getSelectedOptionsUnsafe, getSelectedOptionsUnchecked,
         js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
         getSelectedIndex, js_setValue, setValue, js_getValue, getValue,
-        getValueUnchecked, js_getWillValidate, getWillValidate,
-        js_getValidity, getValidity, getValidityUnchecked,
-        js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, HTMLSelectElement(..),
-        gTypeHTMLSelectElement)
+        getValueUnsafe, getValueUnchecked, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity, getValidityUnsafe,
+        getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnsafe,
+        getLabelsUnchecked, HTMLSelectElement(..), gTypeHTMLSelectElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -37,6 +45,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         HTMLSelectElement -> Word -> IO (Nullable Node)
@@ -49,6 +67,14 @@ item self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
 item_ :: (MonadIO m) => HTMLSelectElement -> Word -> m ()
 item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
+itemUnsafe ::
+           (MonadIO m, HasCallStack) => HTMLSelectElement -> Word -> m Node
+itemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_item (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.item Mozilla HTMLSelectElement.item documentation> 
 itemUnchecked :: (MonadIO m) => HTMLSelectElement -> Word -> m Node
@@ -71,6 +97,15 @@ namedItem_ ::
            (MonadIO m, ToJSString name) => HTMLSelectElement -> name -> m ()
 namedItem_ self name
   = liftIO (void (js_namedItem (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.namedItem Mozilla HTMLSelectElement.namedItem documentation> 
+namedItemUnsafe ::
+                (MonadIO m, ToJSString name, HasCallStack) =>
+                  HTMLSelectElement -> name -> m Node
+namedItemUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_namedItem (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.namedItem Mozilla HTMLSelectElement.namedItem documentation> 
 namedItemUnchecked ::
@@ -173,6 +208,14 @@ getForm ::
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.form Mozilla HTMLSelectElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLSelectElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.form Mozilla HTMLSelectElement.form documentation> 
 getFormUnchecked ::
                  (MonadIO m) => HTMLSelectElement -> m HTMLFormElement
 getFormUnchecked self
@@ -254,6 +297,15 @@ getOptions self
   = liftIO (nullableToMaybe <$> (js_getOptions (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.options Mozilla HTMLSelectElement.options documentation> 
+getOptionsUnsafe ::
+                 (MonadIO m, HasCallStack) =>
+                   HTMLSelectElement -> m HTMLOptionsCollection
+getOptionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOptions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.options Mozilla HTMLSelectElement.options documentation> 
 getOptionsUnchecked ::
                     (MonadIO m) => HTMLSelectElement -> m HTMLOptionsCollection
 getOptionsUnchecked self
@@ -282,6 +334,14 @@ getSelectedOptions ::
                    (MonadIO m) => HTMLSelectElement -> m (Maybe HTMLCollection)
 getSelectedOptions self
   = liftIO (nullableToMaybe <$> (js_getSelectedOptions (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedOptions Mozilla HTMLSelectElement.selectedOptions documentation> 
+getSelectedOptionsUnsafe ::
+                         (MonadIO m, HasCallStack) => HTMLSelectElement -> m HTMLCollection
+getSelectedOptionsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSelectedOptions (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.selectedOptions Mozilla HTMLSelectElement.selectedOptions documentation> 
 getSelectedOptionsUnchecked ::
@@ -324,6 +384,15 @@ getValue ::
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.value Mozilla HTMLSelectElement.value documentation> 
+getValueUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) =>
+                 HTMLSelectElement -> m result
+getValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.value Mozilla HTMLSelectElement.value documentation> 
 getValueUnchecked ::
                   (MonadIO m, FromJSString result) => HTMLSelectElement -> m result
 getValueUnchecked self
@@ -346,6 +415,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.validity Mozilla HTMLSelectElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLSelectElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.validity Mozilla HTMLSelectElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLSelectElement -> m ValidityState
 getValidityUnchecked self
@@ -366,6 +443,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLSelectElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLSelectElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.labels Mozilla HTMLSelectElement.labels documentation> 
 getLabelsUnchecked ::

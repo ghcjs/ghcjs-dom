@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
        (js_activeTexture, activeTexture, js_attachShader, attachShader,
         js_bindAttribLocation, bindAttribLocation, js_bindBuffer,
@@ -17,20 +22,22 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         compressedTexImage2D, js_compressedTexSubImage2D,
         compressedTexSubImage2D, js_copyTexImage2D, copyTexImage2D,
         js_copyTexSubImage2D, copyTexSubImage2D, js_createBuffer,
-        createBuffer, createBuffer_, createBufferUnchecked,
-        js_createFramebuffer, createFramebuffer, createFramebuffer_,
+        createBuffer, createBuffer_, createBufferUnsafe,
+        createBufferUnchecked, js_createFramebuffer, createFramebuffer,
+        createFramebuffer_, createFramebufferUnsafe,
         createFramebufferUnchecked, js_createProgram, createProgram,
-        createProgram_, createProgramUnchecked, js_createRenderbuffer,
-        createRenderbuffer, createRenderbuffer_,
-        createRenderbufferUnchecked, js_createShader, createShader,
-        createShader_, createShaderUnchecked, js_createTexture,
-        createTexture, createTexture_, createTextureUnchecked, js_cullFace,
-        cullFace, js_deleteBuffer, deleteBuffer, js_deleteFramebuffer,
-        deleteFramebuffer, js_deleteProgram, deleteProgram,
-        js_deleteRenderbuffer, deleteRenderbuffer, js_deleteShader,
-        deleteShader, js_deleteTexture, deleteTexture, js_depthFunc,
-        depthFunc, js_depthMask, depthMask, js_depthRange, depthRange,
-        js_detachShader, detachShader, js_disable, disable,
+        createProgram_, createProgramUnsafe, createProgramUnchecked,
+        js_createRenderbuffer, createRenderbuffer, createRenderbuffer_,
+        createRenderbufferUnsafe, createRenderbufferUnchecked,
+        js_createShader, createShader, createShader_, createShaderUnsafe,
+        createShaderUnchecked, js_createTexture, createTexture,
+        createTexture_, createTextureUnsafe, createTextureUnchecked,
+        js_cullFace, cullFace, js_deleteBuffer, deleteBuffer,
+        js_deleteFramebuffer, deleteFramebuffer, js_deleteProgram,
+        deleteProgram, js_deleteRenderbuffer, deleteRenderbuffer,
+        js_deleteShader, deleteShader, js_deleteTexture, deleteTexture,
+        js_depthFunc, depthFunc, js_depthMask, depthMask, js_depthRange,
+        depthRange, js_detachShader, detachShader, js_disable, disable,
         js_disableVertexAttribArray, disableVertexAttribArray,
         js_drawArrays, drawArrays, js_drawElements, drawElements,
         js_enable, enable, js_enableVertexAttribArray,
@@ -38,32 +45,36 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         js_framebufferRenderbuffer, framebufferRenderbuffer,
         js_framebufferTexture2D, framebufferTexture2D, js_frontFace,
         frontFace, js_generateMipmap, generateMipmap, js_getActiveAttrib,
-        getActiveAttrib, getActiveAttrib_, getActiveAttribUnchecked,
-        js_getActiveUniform, getActiveUniform, getActiveUniform_,
+        getActiveAttrib, getActiveAttrib_, getActiveAttribUnsafe,
+        getActiveAttribUnchecked, js_getActiveUniform, getActiveUniform,
+        getActiveUniform_, getActiveUniformUnsafe,
         getActiveUniformUnchecked, js_getAttachedShaders,
         getAttachedShaders, js_getAttribLocation, getAttribLocation,
         getAttribLocation_, js_getBufferParameter, getBufferParameter,
         getBufferParameter_, js_getContextAttributes, getContextAttributes,
-        getContextAttributes_, getContextAttributesUnchecked, js_getError,
-        getError, getError_, js_getExtension, getExtension, getExtension_,
+        getContextAttributes_, getContextAttributesUnsafe,
+        getContextAttributesUnchecked, js_getError, getError, getError_,
+        js_getExtension, getExtension, getExtension_,
         js_getFramebufferAttachmentParameter,
         getFramebufferAttachmentParameter,
         getFramebufferAttachmentParameter_, js_getParameter, getParameter,
         getParameter_, js_getProgramParameter, getProgramParameter,
         getProgramParameter_, js_getProgramInfoLog, getProgramInfoLog,
-        getProgramInfoLog_, getProgramInfoLogUnchecked,
-        js_getRenderbufferParameter, getRenderbufferParameter,
-        getRenderbufferParameter_, js_getShaderParameter,
-        getShaderParameter, getShaderParameter_, js_getShaderInfoLog,
-        getShaderInfoLog, getShaderInfoLog_, getShaderInfoLogUnchecked,
+        getProgramInfoLog_, getProgramInfoLogUnsafe,
+        getProgramInfoLogUnchecked, js_getRenderbufferParameter,
+        getRenderbufferParameter, getRenderbufferParameter_,
+        js_getShaderParameter, getShaderParameter, getShaderParameter_,
+        js_getShaderInfoLog, getShaderInfoLog, getShaderInfoLog_,
+        getShaderInfoLogUnsafe, getShaderInfoLogUnchecked,
         js_getShaderPrecisionFormat, getShaderPrecisionFormat,
-        getShaderPrecisionFormat_, getShaderPrecisionFormatUnchecked,
-        js_getShaderSource, getShaderSource, getShaderSource_,
+        getShaderPrecisionFormat_, getShaderPrecisionFormatUnsafe,
+        getShaderPrecisionFormatUnchecked, js_getShaderSource,
+        getShaderSource, getShaderSource_, getShaderSourceUnsafe,
         getShaderSourceUnchecked, js_getSupportedExtensions,
         getSupportedExtensions, getSupportedExtensions_,
         js_getTexParameter, getTexParameter, getTexParameter_,
         js_getUniform, getUniform, getUniform_, js_getUniformLocation,
-        getUniformLocation, getUniformLocation_,
+        getUniformLocation, getUniformLocation_, getUniformLocationUnsafe,
         getUniformLocationUnchecked, js_getVertexAttrib, getVertexAttrib,
         getVertexAttrib_, js_getVertexAttribOffset, getVertexAttribOffset,
         getVertexAttribOffset_, js_hint, hint, js_isBuffer, isBuffer,
@@ -247,6 +258,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
         toWebGLRenderingContextBase)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -262,6 +274,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"activeTexture\"]($2)"
         js_activeTexture :: WebGLRenderingContextBase -> GLenum -> IO ()
@@ -734,6 +756,16 @@ createBuffer_ self
       (void (js_createBuffer (toWebGLRenderingContextBase self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createBuffer Mozilla WebGLRenderingContextBase.createBuffer documentation> 
+createBufferUnsafe ::
+                   (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                     self -> m WebGLBuffer
+createBufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createBuffer (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createBuffer Mozilla WebGLRenderingContextBase.createBuffer documentation> 
 createBufferUnchecked ::
                       (MonadIO m, IsWebGLRenderingContextBase self) =>
                         self -> m WebGLBuffer
@@ -761,6 +793,16 @@ createFramebuffer_ ::
 createFramebuffer_ self
   = liftIO
       (void (js_createFramebuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createFramebuffer Mozilla WebGLRenderingContextBase.createFramebuffer documentation> 
+createFramebufferUnsafe ::
+                        (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                          self -> m WebGLFramebuffer
+createFramebufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createFramebuffer (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createFramebuffer Mozilla WebGLRenderingContextBase.createFramebuffer documentation> 
 createFramebufferUnchecked ::
@@ -792,6 +834,16 @@ createProgram_ self
       (void (js_createProgram (toWebGLRenderingContextBase self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createProgram Mozilla WebGLRenderingContextBase.createProgram documentation> 
+createProgramUnsafe ::
+                    (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                      self -> m WebGLProgram
+createProgramUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createProgram (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createProgram Mozilla WebGLRenderingContextBase.createProgram documentation> 
 createProgramUnchecked ::
                        (MonadIO m, IsWebGLRenderingContextBase self) =>
                          self -> m WebGLProgram
@@ -819,6 +871,16 @@ createRenderbuffer_ ::
 createRenderbuffer_ self
   = liftIO
       (void (js_createRenderbuffer (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createRenderbuffer Mozilla WebGLRenderingContextBase.createRenderbuffer documentation> 
+createRenderbufferUnsafe ::
+                         (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                           self -> m WebGLRenderbuffer
+createRenderbufferUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createRenderbuffer (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createRenderbuffer Mozilla WebGLRenderingContextBase.createRenderbuffer documentation> 
 createRenderbufferUnchecked ::
@@ -851,6 +913,16 @@ createShader_ self type'
       (void (js_createShader (toWebGLRenderingContextBase self) type'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createShader Mozilla WebGLRenderingContextBase.createShader documentation> 
+createShaderUnsafe ::
+                   (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                     self -> GLenum -> m WebGLShader
+createShaderUnsafe self type'
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createShader (toWebGLRenderingContextBase self) type'))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createShader Mozilla WebGLRenderingContextBase.createShader documentation> 
 createShaderUnchecked ::
                       (MonadIO m, IsWebGLRenderingContextBase self) =>
                         self -> GLenum -> m WebGLShader
@@ -878,6 +950,16 @@ createTexture_ ::
 createTexture_ self
   = liftIO
       (void (js_createTexture (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createTexture Mozilla WebGLRenderingContextBase.createTexture documentation> 
+createTextureUnsafe ::
+                    (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                      self -> m WebGLTexture
+createTextureUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createTexture (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.createTexture Mozilla WebGLRenderingContextBase.createTexture documentation> 
 createTextureUnchecked ::
@@ -1201,6 +1283,18 @@ getActiveAttrib_ self program index
             index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveAttrib Mozilla WebGLRenderingContextBase.getActiveAttrib documentation> 
+getActiveAttribUnsafe ::
+                      (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                        self -> Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
+getActiveAttribUnsafe self program index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getActiveAttrib (toWebGLRenderingContextBase self)
+             (maybeToNullable program)
+             index))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveAttrib Mozilla WebGLRenderingContextBase.getActiveAttrib documentation> 
 getActiveAttribUnchecked ::
                          (MonadIO m, IsWebGLRenderingContextBase self) =>
                            self -> Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
@@ -1237,6 +1331,18 @@ getActiveUniform_ self program index
          (js_getActiveUniform (toWebGLRenderingContextBase self)
             (maybeToNullable program)
             index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveUniform Mozilla WebGLRenderingContextBase.getActiveUniform documentation> 
+getActiveUniformUnsafe ::
+                       (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                         self -> Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
+getActiveUniformUnsafe self program index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getActiveUniform (toWebGLRenderingContextBase self)
+             (maybeToNullable program)
+             index))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getActiveUniform Mozilla WebGLRenderingContextBase.getActiveUniform documentation> 
 getActiveUniformUnchecked ::
@@ -1330,6 +1436,16 @@ getContextAttributes_ ::
 getContextAttributes_ self
   = liftIO
       (void (js_getContextAttributes (toWebGLRenderingContextBase self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getContextAttributes Mozilla WebGLRenderingContextBase.getContextAttributes documentation> 
+getContextAttributesUnsafe ::
+                           (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                             self -> m WebGLContextAttributes
+getContextAttributesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getContextAttributes (toWebGLRenderingContextBase self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getContextAttributes Mozilla WebGLRenderingContextBase.getContextAttributes documentation> 
 getContextAttributesUnchecked ::
@@ -1479,6 +1595,18 @@ getProgramInfoLog_ self program
             (maybeToNullable program)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramInfoLog Mozilla WebGLRenderingContextBase.getProgramInfoLog documentation> 
+getProgramInfoLogUnsafe ::
+                        (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack,
+                         FromJSString result) =>
+                          self -> Maybe WebGLProgram -> m result
+getProgramInfoLogUnsafe self program
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getProgramInfoLog (toWebGLRenderingContextBase self)
+             (maybeToNullable program)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getProgramInfoLog Mozilla WebGLRenderingContextBase.getProgramInfoLog documentation> 
 getProgramInfoLogUnchecked ::
                            (MonadIO m, IsWebGLRenderingContextBase self,
                             FromJSString result) =>
@@ -1568,6 +1696,18 @@ getShaderInfoLog_ self shader
             (maybeToNullable shader)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderInfoLog Mozilla WebGLRenderingContextBase.getShaderInfoLog documentation> 
+getShaderInfoLogUnsafe ::
+                       (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack,
+                        FromJSString result) =>
+                         self -> Maybe WebGLShader -> m result
+getShaderInfoLogUnsafe self shader
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getShaderInfoLog (toWebGLRenderingContextBase self)
+             (maybeToNullable shader)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderInfoLog Mozilla WebGLRenderingContextBase.getShaderInfoLog documentation> 
 getShaderInfoLogUnchecked ::
                           (MonadIO m, IsWebGLRenderingContextBase self,
                            FromJSString result) =>
@@ -1607,6 +1747,18 @@ getShaderPrecisionFormat_ self shadertype precisiontype
             precisiontype))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderPrecisionFormat Mozilla WebGLRenderingContextBase.getShaderPrecisionFormat documentation> 
+getShaderPrecisionFormatUnsafe ::
+                               (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack) =>
+                                 self -> GLenum -> GLenum -> m WebGLShaderPrecisionFormat
+getShaderPrecisionFormatUnsafe self shadertype precisiontype
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getShaderPrecisionFormat (toWebGLRenderingContextBase self)
+             shadertype
+             precisiontype))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderPrecisionFormat Mozilla WebGLRenderingContextBase.getShaderPrecisionFormat documentation> 
 getShaderPrecisionFormatUnchecked ::
                                   (MonadIO m, IsWebGLRenderingContextBase self) =>
                                     self -> GLenum -> GLenum -> m WebGLShaderPrecisionFormat
@@ -1642,6 +1794,18 @@ getShaderSource_ self shader
       (void
          (js_getShaderSource (toWebGLRenderingContextBase self)
             (maybeToNullable shader)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderSource Mozilla WebGLRenderingContextBase.getShaderSource documentation> 
+getShaderSourceUnsafe ::
+                      (MonadIO m, IsWebGLRenderingContextBase self, HasCallStack,
+                       FromJSString result) =>
+                        self -> Maybe WebGLShader -> m result
+getShaderSourceUnsafe self shader
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getShaderSource (toWebGLRenderingContextBase self)
+             (maybeToNullable shader)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getShaderSource Mozilla WebGLRenderingContextBase.getShaderSource documentation> 
 getShaderSourceUnchecked ::
@@ -1752,6 +1916,19 @@ getUniformLocation_ self program name
          (js_getUniformLocation (toWebGLRenderingContextBase self)
             (maybeToNullable program)
             (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniformLocation Mozilla WebGLRenderingContextBase.getUniformLocation documentation> 
+getUniformLocationUnsafe ::
+                         (MonadIO m, IsWebGLRenderingContextBase self, ToJSString name,
+                          HasCallStack) =>
+                           self -> Maybe WebGLProgram -> name -> m WebGLUniformLocation
+getUniformLocationUnsafe self program name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getUniformLocation (toWebGLRenderingContextBase self)
+             (maybeToNullable program)
+             (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getUniformLocation Mozilla WebGLRenderingContextBase.getUniformLocation documentation> 
 getUniformLocationUnchecked ::

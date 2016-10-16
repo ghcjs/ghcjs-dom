@@ -1,45 +1,56 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Element
-       (js_getAttribute, getAttribute, getAttribute_,
+       (js_getAttribute, getAttribute, getAttribute_, getAttributeUnsafe,
         getAttributeUnchecked, js_setAttribute, setAttribute,
         js_removeAttribute, removeAttribute, js_getAttributeNode,
-        getAttributeNode, getAttributeNode_, getAttributeNodeUnchecked,
-        js_setAttributeNode, setAttributeNode, setAttributeNode_,
+        getAttributeNode, getAttributeNode_, getAttributeNodeUnsafe,
+        getAttributeNodeUnchecked, js_setAttributeNode, setAttributeNode,
+        setAttributeNode_, setAttributeNodeUnsafe,
         setAttributeNodeUnchecked, js_removeAttributeNode,
         removeAttributeNode, removeAttributeNode_,
-        removeAttributeNodeUnchecked, js_getElementsByTagName,
-        getElementsByTagName, getElementsByTagName_,
+        removeAttributeNodeUnsafe, removeAttributeNodeUnchecked,
+        js_getElementsByTagName, getElementsByTagName,
+        getElementsByTagName_, getElementsByTagNameUnsafe,
         getElementsByTagNameUnchecked, js_hasAttributes, hasAttributes,
         hasAttributes_, js_getAttributeNS, getAttributeNS, getAttributeNS_,
         js_setAttributeNS, setAttributeNS, js_removeAttributeNS,
         removeAttributeNS, js_getElementsByTagNameNS,
         getElementsByTagNameNS, getElementsByTagNameNS_,
-        getElementsByTagNameNSUnchecked, js_getAttributeNodeNS,
-        getAttributeNodeNS, getAttributeNodeNS_,
-        getAttributeNodeNSUnchecked, js_setAttributeNodeNS,
-        setAttributeNodeNS, setAttributeNodeNS_,
-        setAttributeNodeNSUnchecked, js_hasAttribute, hasAttribute,
-        hasAttribute_, js_hasAttributeNS, hasAttributeNS, hasAttributeNS_,
-        js_focus, focus, js_blur, blur, js_scrollIntoView, scrollIntoView,
-        js_scrollIntoViewIfNeeded, scrollIntoViewIfNeeded,
-        js_scrollByLines, scrollByLines, js_scrollByPages, scrollByPages,
-        js_getElementsByClassName, getElementsByClassName,
-        getElementsByClassName_, getElementsByClassNameUnchecked,
+        getElementsByTagNameNSUnsafe, getElementsByTagNameNSUnchecked,
+        js_getAttributeNodeNS, getAttributeNodeNS, getAttributeNodeNS_,
+        getAttributeNodeNSUnsafe, getAttributeNodeNSUnchecked,
+        js_setAttributeNodeNS, setAttributeNodeNS, setAttributeNodeNS_,
+        setAttributeNodeNSUnsafe, setAttributeNodeNSUnchecked,
+        js_hasAttribute, hasAttribute, hasAttribute_, js_hasAttributeNS,
+        hasAttributeNS, hasAttributeNS_, js_focus, focus, js_blur, blur,
+        js_scrollIntoView, scrollIntoView, js_scrollIntoViewIfNeeded,
+        scrollIntoViewIfNeeded, js_scrollByLines, scrollByLines,
+        js_scrollByPages, scrollByPages, js_getElementsByClassName,
+        getElementsByClassName, getElementsByClassName_,
+        getElementsByClassNameUnsafe, getElementsByClassNameUnchecked,
         js_querySelector, querySelector, querySelector_,
-        querySelectorUnchecked, js_querySelectorAll, querySelectorAll,
-        querySelectorAll_, querySelectorAllUnchecked, js_matches, matches,
-        matches_, js_closest, closest, closest_, closestUnchecked,
+        querySelectorUnsafe, querySelectorUnchecked, js_querySelectorAll,
+        querySelectorAll, querySelectorAll_, querySelectorAllUnsafe,
+        querySelectorAllUnchecked, js_matches, matches, matches_,
+        js_closest, closest, closest_, closestUnsafe, closestUnchecked,
         js_webkitMatchesSelector, webkitMatchesSelector,
         webkitMatchesSelector_, js_getClientRects, getClientRects,
-        getClientRects_, getClientRectsUnchecked, js_getBoundingClientRect,
-        getBoundingClientRect, getBoundingClientRect_,
+        getClientRects_, getClientRectsUnsafe, getClientRectsUnchecked,
+        js_getBoundingClientRect, getBoundingClientRect,
+        getBoundingClientRect_, getBoundingClientRectUnsafe,
         getBoundingClientRectUnchecked, js_webkitRequestFullScreen,
         webkitRequestFullScreen, js_webkitRequestFullscreen,
         webkitRequestFullscreen, js_requestPointerLock, requestPointerLock,
         js_webkitGetRegionFlowRanges, webkitGetRegionFlowRanges,
         webkitGetRegionFlowRanges_, pattern ALLOW_KEYBOARD_INPUT,
-        js_getTagName, getTagName, getTagNameUnchecked, js_getAttributes,
-        getAttributes, getAttributesUnchecked, js_getStyle, getStyle,
+        js_getTagName, getTagName, getTagNameUnsafe, getTagNameUnchecked,
+        js_getAttributes, getAttributes, getAttributesUnsafe,
+        getAttributesUnchecked, js_getStyle, getStyle, getStyleUnsafe,
         getStyleUnchecked, js_setId, setId, js_getId, getId,
         js_getOffsetLeft, getOffsetLeft, js_getOffsetTop, getOffsetTop,
         js_getOffsetWidth, getOffsetWidth, js_getOffsetHeight,
@@ -49,35 +60,40 @@ module GHCJS.DOM.JSFFI.Generated.Element
         setScrollLeft, js_getScrollLeft, getScrollLeft, js_setScrollTop,
         setScrollTop, js_getScrollTop, getScrollTop, js_getScrollWidth,
         getScrollWidth, js_getScrollHeight, getScrollHeight,
-        js_getOffsetParent, getOffsetParent, getOffsetParentUnchecked,
-        js_setInnerHTML, setInnerHTML, js_getInnerHTML, getInnerHTML,
+        js_getOffsetParent, getOffsetParent, getOffsetParentUnsafe,
+        getOffsetParentUnchecked, js_setInnerHTML, setInnerHTML,
+        js_getInnerHTML, getInnerHTML, getInnerHTMLUnsafe,
         getInnerHTMLUnchecked, js_setOuterHTML, setOuterHTML,
-        js_getOuterHTML, getOuterHTML, getOuterHTMLUnchecked,
-        js_setClassName, setClassName, js_getClassName, getClassName,
-        js_getClassList, getClassList, getClassListUnchecked,
-        js_getDataset, getDataset, getDatasetUnchecked,
+        js_getOuterHTML, getOuterHTML, getOuterHTMLUnsafe,
+        getOuterHTMLUnchecked, js_setClassName, setClassName,
+        js_getClassName, getClassName, js_getClassList, getClassList,
+        getClassListUnsafe, getClassListUnchecked, js_getDataset,
+        getDataset, getDatasetUnsafe, getDatasetUnchecked,
         js_getFirstElementChild, getFirstElementChild,
-        getFirstElementChildUnchecked, js_getLastElementChild,
-        getLastElementChild, getLastElementChildUnchecked,
+        getFirstElementChildUnsafe, getFirstElementChildUnchecked,
+        js_getLastElementChild, getLastElementChild,
+        getLastElementChildUnsafe, getLastElementChildUnchecked,
         js_getPreviousElementSibling, getPreviousElementSibling,
+        getPreviousElementSiblingUnsafe,
         getPreviousElementSiblingUnchecked, js_getNextElementSibling,
-        getNextElementSibling, getNextElementSiblingUnchecked,
-        js_getChildElementCount, getChildElementCount, js_setUiactions,
-        setUiactions, js_getUiactions, getUiactions,
-        js_getWebkitRegionOverset, getWebkitRegionOverset, abort,
-        blurEvent, change, click, contextMenu, dblClick, drag, dragEnd,
-        dragEnter, dragLeave, dragOver, dragStart, drop, error, focusEvent,
-        input, invalid, keyDown, keyPress, keyUp, load, mouseDown,
-        mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp,
-        mouseWheel, scroll, select, submit, wheel, beforeCut, cut,
-        beforeCopy, copy, beforePaste, paste, reset, search, selectStart,
-        touchStart, touchMove, touchEnd, touchCancel,
-        webKitFullscreenChange, webKitFullscreenError,
-        webKitWillRevealBottom, webKitWillRevealLeft,
-        webKitWillRevealRight, webKitWillRevealTop, Element(..),
-        gTypeElement, IsElement, toElement)
+        getNextElementSibling, getNextElementSiblingUnsafe,
+        getNextElementSiblingUnchecked, js_getChildElementCount,
+        getChildElementCount, js_setUiactions, setUiactions,
+        js_getUiactions, getUiactions, js_getWebkitRegionOverset,
+        getWebkitRegionOverset, abort, blurEvent, change, click,
+        contextMenu, dblClick, drag, dragEnd, dragEnter, dragLeave,
+        dragOver, dragStart, drop, error, focusEvent, input, invalid,
+        keyDown, keyPress, keyUp, load, mouseDown, mouseEnter, mouseLeave,
+        mouseMove, mouseOut, mouseOver, mouseUp, mouseWheel, scroll,
+        select, submit, wheel, beforeCut, cut, beforeCopy, copy,
+        beforePaste, paste, reset, search, selectStart, touchStart,
+        touchMove, touchEnd, touchCancel, webKitFullscreenChange,
+        webKitFullscreenError, webKitWillRevealBottom,
+        webKitWillRevealLeft, webKitWillRevealRight, webKitWillRevealTop,
+        Element(..), gTypeElement, IsElement, toElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -93,6 +109,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"getAttribute\"]($2)"
         js_getAttribute :: Element -> JSString -> IO (Nullable JSString)
@@ -114,6 +140,17 @@ getAttribute_ ::
 getAttribute_ self name
   = liftIO
       (void (js_getAttribute (toElement self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttribute Mozilla Element.getAttribute documentation> 
+getAttributeUnsafe ::
+                   (MonadIO m, IsElement self, ToJSString name, HasCallStack,
+                    FromJSString result) =>
+                     self -> name -> m result
+getAttributeUnsafe self name
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getAttribute (toElement self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttribute Mozilla Element.getAttribute documentation> 
 getAttributeUnchecked ::
@@ -168,6 +205,16 @@ getAttributeNode_ self name
       (void (js_getAttributeNode (toElement self) (toJSString name)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNode Mozilla Element.getAttributeNode documentation> 
+getAttributeNodeUnsafe ::
+                       (MonadIO m, IsElement self, ToJSString name, HasCallStack) =>
+                         self -> name -> m Attr
+getAttributeNodeUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getAttributeNode (toElement self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNode Mozilla Element.getAttributeNode documentation> 
 getAttributeNodeUnchecked ::
                           (MonadIO m, IsElement self, ToJSString name) =>
                             self -> name -> m Attr
@@ -195,6 +242,16 @@ setAttributeNode_ self newAttr
   = liftIO
       (void
          (js_setAttributeNode (toElement self) (maybeToNullable newAttr)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNode Mozilla Element.setAttributeNode documentation> 
+setAttributeNodeUnsafe ::
+                       (MonadIO m, IsElement self, HasCallStack) =>
+                         self -> Maybe Attr -> m Attr
+setAttributeNodeUnsafe self newAttr
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_setAttributeNode (toElement self) (maybeToNullable newAttr)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNode Mozilla Element.setAttributeNode documentation> 
 setAttributeNodeUnchecked ::
@@ -227,6 +284,17 @@ removeAttributeNode_ self oldAttr
             (maybeToNullable oldAttr)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNode Mozilla Element.removeAttributeNode documentation> 
+removeAttributeNodeUnsafe ::
+                          (MonadIO m, IsElement self, HasCallStack) =>
+                            self -> Maybe Attr -> m Attr
+removeAttributeNodeUnsafe self oldAttr
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_removeAttributeNode (toElement self)
+             (maybeToNullable oldAttr)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNode Mozilla Element.removeAttributeNode documentation> 
 removeAttributeNodeUnchecked ::
                              (MonadIO m, IsElement self) => self -> Maybe Attr -> m Attr
 removeAttributeNodeUnchecked self oldAttr
@@ -255,6 +323,16 @@ getElementsByTagName_ ::
 getElementsByTagName_ self name
   = liftIO
       (void (js_getElementsByTagName (toElement self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagName Mozilla Element.getElementsByTagName documentation> 
+getElementsByTagNameUnsafe ::
+                           (MonadIO m, IsElement self, ToJSString name, HasCallStack) =>
+                             self -> name -> m NodeList
+getElementsByTagNameUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByTagName (toElement self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagName Mozilla Element.getElementsByTagName documentation> 
 getElementsByTagNameUnchecked ::
@@ -364,6 +442,19 @@ getElementsByTagNameNS_ self namespaceURI localName
             (toJSString localName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagNameNS Mozilla Element.getElementsByTagNameNS documentation> 
+getElementsByTagNameNSUnsafe ::
+                             (MonadIO m, IsElement self, ToJSString namespaceURI,
+                              ToJSString localName, HasCallStack) =>
+                               self -> Maybe namespaceURI -> localName -> m NodeList
+getElementsByTagNameNSUnsafe self namespaceURI localName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByTagNameNS (toElement self)
+             (toMaybeJSString namespaceURI)
+             (toJSString localName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagNameNS Mozilla Element.getElementsByTagNameNS documentation> 
 getElementsByTagNameNSUnchecked ::
                                 (MonadIO m, IsElement self, ToJSString namespaceURI,
                                  ToJSString localName) =>
@@ -404,6 +495,19 @@ getAttributeNodeNS_ self namespaceURI localName
             (toJSString localName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNodeNS Mozilla Element.getAttributeNodeNS documentation> 
+getAttributeNodeNSUnsafe ::
+                         (MonadIO m, IsElement self, ToJSString namespaceURI,
+                          ToJSString localName, HasCallStack) =>
+                           self -> Maybe namespaceURI -> localName -> m Attr
+getAttributeNodeNSUnsafe self namespaceURI localName
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getAttributeNodeNS (toElement self)
+             (toMaybeJSString namespaceURI)
+             (toJSString localName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNodeNS Mozilla Element.getAttributeNodeNS documentation> 
 getAttributeNodeNSUnchecked ::
                             (MonadIO m, IsElement self, ToJSString namespaceURI,
                              ToJSString localName) =>
@@ -434,6 +538,16 @@ setAttributeNodeNS_ self newAttr
   = liftIO
       (void
          (js_setAttributeNodeNS (toElement self) (maybeToNullable newAttr)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNodeNS Mozilla Element.setAttributeNodeNS documentation> 
+setAttributeNodeNSUnsafe ::
+                         (MonadIO m, IsElement self, HasCallStack) =>
+                           self -> Maybe Attr -> m Attr
+setAttributeNodeNSUnsafe self newAttr
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_setAttributeNodeNS (toElement self) (maybeToNullable newAttr)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNodeNS Mozilla Element.setAttributeNodeNS documentation> 
 setAttributeNodeNSUnchecked ::
@@ -560,6 +674,16 @@ getElementsByClassName_ self name
          (js_getElementsByClassName (toElement self) (toJSString name)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByClassName Mozilla Element.getElementsByClassName documentation> 
+getElementsByClassNameUnsafe ::
+                             (MonadIO m, IsElement self, ToJSString name, HasCallStack) =>
+                               self -> name -> m NodeList
+getElementsByClassNameUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getElementsByClassName (toElement self) (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByClassName Mozilla Element.getElementsByClassName documentation> 
 getElementsByClassNameUnchecked ::
                                 (MonadIO m, IsElement self, ToJSString name) =>
                                   self -> name -> m NodeList
@@ -587,6 +711,16 @@ querySelector_ ::
 querySelector_ self selectors
   = liftIO
       (void (js_querySelector (toElement self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelector Mozilla Element.querySelector documentation> 
+querySelectorUnsafe ::
+                    (MonadIO m, IsElement self, ToJSString selectors, HasCallStack) =>
+                      self -> selectors -> m Element
+querySelectorUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelector (toElement self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelector Mozilla Element.querySelector documentation> 
 querySelectorUnchecked ::
@@ -618,6 +752,16 @@ querySelectorAll_ self selectors
   = liftIO
       (void
          (js_querySelectorAll (toElement self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelectorAll Mozilla Element.querySelectorAll documentation> 
+querySelectorAllUnsafe ::
+                       (MonadIO m, IsElement self, ToJSString selectors, HasCallStack) =>
+                         self -> selectors -> m NodeList
+querySelectorAllUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelectorAll (toElement self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.querySelectorAll Mozilla Element.querySelectorAll documentation> 
 querySelectorAllUnchecked ::
@@ -667,6 +811,16 @@ closest_ self selectors
       (void (js_closest (toElement self) (toJSString selectors)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.closest Mozilla Element.closest documentation> 
+closestUnsafe ::
+              (MonadIO m, IsElement self, ToJSString selectors, HasCallStack) =>
+                self -> selectors -> m Element
+closestUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_closest (toElement self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.closest Mozilla Element.closest documentation> 
 closestUnchecked ::
                  (MonadIO m, IsElement self, ToJSString selectors) =>
                    self -> selectors -> m Element
@@ -711,6 +865,15 @@ getClientRects_ self
   = liftIO (void (js_getClientRects (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects Mozilla Element.getClientRects documentation> 
+getClientRectsUnsafe ::
+                     (MonadIO m, IsElement self, HasCallStack) =>
+                       self -> m ClientRectList
+getClientRectsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClientRects (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects Mozilla Element.getClientRects documentation> 
 getClientRectsUnchecked ::
                         (MonadIO m, IsElement self) => self -> m ClientRectList
 getClientRectsUnchecked self
@@ -733,6 +896,14 @@ getBoundingClientRect_ ::
                        (MonadIO m, IsElement self) => self -> m ()
 getBoundingClientRect_ self
   = liftIO (void (js_getBoundingClientRect (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getBoundingClientRect Mozilla Element.getBoundingClientRect documentation> 
+getBoundingClientRectUnsafe ::
+                            (MonadIO m, IsElement self, HasCallStack) => self -> m ClientRect
+getBoundingClientRectUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBoundingClientRect (toElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getBoundingClientRect Mozilla Element.getBoundingClientRect documentation> 
 getBoundingClientRectUnchecked ::
@@ -800,6 +971,15 @@ getTagName self
   = liftIO (fromMaybeJSString <$> (js_getTagName (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.tagName Mozilla Element.tagName documentation> 
+getTagNameUnsafe ::
+                 (MonadIO m, IsElement self, HasCallStack, FromJSString result) =>
+                   self -> m result
+getTagNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getTagName (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.tagName Mozilla Element.tagName documentation> 
 getTagNameUnchecked ::
                     (MonadIO m, IsElement self, FromJSString result) =>
                       self -> m result
@@ -815,6 +995,14 @@ getAttributes ::
               (MonadIO m, IsElement self) => self -> m (Maybe NamedNodeMap)
 getAttributes self
   = liftIO (nullableToMaybe <$> (js_getAttributes (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributes Mozilla Element.attributes documentation> 
+getAttributesUnsafe ::
+                    (MonadIO m, IsElement self, HasCallStack) => self -> m NamedNodeMap
+getAttributesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAttributes (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributes Mozilla Element.attributes documentation> 
 getAttributesUnchecked ::
@@ -833,6 +1021,15 @@ getStyle ::
            self -> m (Maybe CSSStyleDeclaration)
 getStyle self
   = liftIO (nullableToMaybe <$> (js_getStyle (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.style Mozilla Element.style documentation> 
+getStyleUnsafe ::
+               (MonadIO m, IsElement self, HasCallStack) =>
+                 self -> m CSSStyleDeclaration
+getStyleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyle (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.style Mozilla Element.style documentation> 
 getStyleUnchecked ::
@@ -970,6 +1167,14 @@ getOffsetParent self
       (nullableToMaybe <$> (js_getOffsetParent (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetParent Mozilla Element.offsetParent documentation> 
+getOffsetParentUnsafe ::
+                      (MonadIO m, IsElement self, HasCallStack) => self -> m Element
+getOffsetParentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOffsetParent (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.offsetParent Mozilla Element.offsetParent documentation> 
 getOffsetParentUnchecked ::
                          (MonadIO m, IsElement self) => self -> m Element
 getOffsetParentUnchecked self
@@ -996,6 +1201,15 @@ getInnerHTML ::
                self -> m (Maybe result)
 getInnerHTML self
   = liftIO (fromMaybeJSString <$> (js_getInnerHTML (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
+getInnerHTMLUnsafe ::
+                   (MonadIO m, IsElement self, HasCallStack, FromJSString result) =>
+                     self -> m result
+getInnerHTMLUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getInnerHTML (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
 getInnerHTMLUnchecked ::
@@ -1025,6 +1239,15 @@ getOuterHTML ::
                self -> m (Maybe result)
 getOuterHTML self
   = liftIO (fromMaybeJSString <$> (js_getOuterHTML (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
+getOuterHTMLUnsafe ::
+                   (MonadIO m, IsElement self, HasCallStack, FromJSString result) =>
+                     self -> m result
+getOuterHTMLUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getOuterHTML (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
 getOuterHTMLUnchecked ::
@@ -1064,6 +1287,14 @@ getClassList self
   = liftIO (nullableToMaybe <$> (js_getClassList (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.classList Mozilla Element.classList documentation> 
+getClassListUnsafe ::
+                   (MonadIO m, IsElement self, HasCallStack) => self -> m DOMTokenList
+getClassListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClassList (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.classList Mozilla Element.classList documentation> 
 getClassListUnchecked ::
                       (MonadIO m, IsElement self) => self -> m DOMTokenList
 getClassListUnchecked self
@@ -1078,6 +1309,14 @@ getDataset ::
            (MonadIO m, IsElement self) => self -> m (Maybe DOMStringMap)
 getDataset self
   = liftIO (nullableToMaybe <$> (js_getDataset (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dataset Mozilla Element.dataset documentation> 
+getDatasetUnsafe ::
+                 (MonadIO m, IsElement self, HasCallStack) => self -> m DOMStringMap
+getDatasetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDataset (toElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.dataset Mozilla Element.dataset documentation> 
 getDatasetUnchecked ::
@@ -1097,6 +1336,14 @@ getFirstElementChild self
       (nullableToMaybe <$> (js_getFirstElementChild (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.firstElementChild Mozilla Element.firstElementChild documentation> 
+getFirstElementChildUnsafe ::
+                           (MonadIO m, IsElement self, HasCallStack) => self -> m Element
+getFirstElementChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFirstElementChild (toElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.firstElementChild Mozilla Element.firstElementChild documentation> 
 getFirstElementChildUnchecked ::
                               (MonadIO m, IsElement self) => self -> m Element
 getFirstElementChildUnchecked self
@@ -1113,6 +1360,14 @@ getLastElementChild ::
 getLastElementChild self
   = liftIO
       (nullableToMaybe <$> (js_getLastElementChild (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.lastElementChild Mozilla Element.lastElementChild documentation> 
+getLastElementChildUnsafe ::
+                          (MonadIO m, IsElement self, HasCallStack) => self -> m Element
+getLastElementChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLastElementChild (toElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.lastElementChild Mozilla Element.lastElementChild documentation> 
 getLastElementChildUnchecked ::
@@ -1134,6 +1389,15 @@ getPreviousElementSibling self
          (js_getPreviousElementSibling (toElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.previousElementSibling Mozilla Element.previousElementSibling documentation> 
+getPreviousElementSiblingUnsafe ::
+                                (MonadIO m, IsElement self, HasCallStack) => self -> m Element
+getPreviousElementSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getPreviousElementSibling (toElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.previousElementSibling Mozilla Element.previousElementSibling documentation> 
 getPreviousElementSiblingUnchecked ::
                                    (MonadIO m, IsElement self) => self -> m Element
 getPreviousElementSiblingUnchecked self
@@ -1150,6 +1414,14 @@ getNextElementSibling ::
 getNextElementSibling self
   = liftIO
       (nullableToMaybe <$> (js_getNextElementSibling (toElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.nextElementSibling Mozilla Element.nextElementSibling documentation> 
+getNextElementSiblingUnsafe ::
+                            (MonadIO m, IsElement self, HasCallStack) => self -> m Element
+getNextElementSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNextElementSibling (toElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.nextElementSibling Mozilla Element.nextElementSibling documentation> 
 getNextElementSiblingUnchecked ::

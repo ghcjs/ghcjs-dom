@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaStream
        (js_newMediaStream, newMediaStream, js_newMediaStream',
         newMediaStream', js_newMediaStream'', newMediaStream'',
@@ -6,11 +11,13 @@ module GHCJS.DOM.JSFFI.Generated.MediaStream
         js_getVideoTracks, getVideoTracks, getVideoTracks_, js_getTracks,
         getTracks, getTracks_, js_addTrack, addTrack, js_removeTrack,
         removeTrack, js_getTrackById, getTrackById, getTrackById_,
-        getTrackByIdUnchecked, js_clone, clone, clone_, cloneUnchecked,
-        js_getId, getId, js_getActive, getActive, active, inactive,
-        addTrackEvent, removeTrackEvent, MediaStream(..), gTypeMediaStream)
+        getTrackByIdUnsafe, getTrackByIdUnchecked, js_clone, clone, clone_,
+        cloneUnsafe, cloneUnchecked, js_getId, getId, js_getActive,
+        getActive, active, inactive, addTrackEvent, removeTrackEvent,
+        MediaStream(..), gTypeMediaStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "new window[\"webkitMediaStream\"]()" js_newMediaStream ::
@@ -139,6 +156,16 @@ getTrackById_ self trackId
   = liftIO (void (js_getTrackById (self) (toJSString trackId)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
+getTrackByIdUnsafe ::
+                   (MonadIO m, ToJSString trackId, HasCallStack) =>
+                     MediaStream -> trackId -> m MediaStreamTrack
+getTrackByIdUnsafe self trackId
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getTrackById (self) (toJSString trackId)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
 getTrackByIdUnchecked ::
                       (MonadIO m, ToJSString trackId) =>
                         MediaStream -> trackId -> m MediaStreamTrack
@@ -157,6 +184,14 @@ clone self = liftIO (nullableToMaybe <$> (js_clone (self)))
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
 clone_ :: (MonadIO m) => MediaStream -> m ()
 clone_ self = liftIO (void (js_clone (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
+cloneUnsafe ::
+            (MonadIO m, HasCallStack) => MediaStream -> m MediaStream
+cloneUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_clone (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
 cloneUnchecked :: (MonadIO m) => MediaStream -> m MediaStream

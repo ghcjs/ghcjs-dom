@@ -1,18 +1,28 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGElement
        (js_getPresentationAttribute, getPresentationAttribute,
-        getPresentationAttribute_, getPresentationAttributeUnchecked,
-        js_setXmlbase, setXmlbase, js_getXmlbase, getXmlbase,
-        getXmlbaseUnchecked, js_getOwnerSVGElement, getOwnerSVGElement,
-        getOwnerSVGElementUnchecked, js_getViewportElement,
-        getViewportElement, getViewportElementUnchecked, js_setXmllang,
-        setXmllang, js_getXmllang, getXmllang, js_setXmlspace, setXmlspace,
-        js_getXmlspace, getXmlspace, js_getClassName, getClassName,
-        getClassNameUnchecked, js_getStyle, getStyle, getStyleUnchecked,
-        js_setTabIndex, setTabIndex, js_getTabIndex, getTabIndex,
-        SVGElement(..), gTypeSVGElement, IsSVGElement, toSVGElement)
+        getPresentationAttribute_, getPresentationAttributeUnsafe,
+        getPresentationAttributeUnchecked, js_setXmlbase, setXmlbase,
+        js_getXmlbase, getXmlbase, getXmlbaseUnsafe, getXmlbaseUnchecked,
+        js_getOwnerSVGElement, getOwnerSVGElement,
+        getOwnerSVGElementUnsafe, getOwnerSVGElementUnchecked,
+        js_getViewportElement, getViewportElement,
+        getViewportElementUnsafe, getViewportElementUnchecked,
+        js_setXmllang, setXmllang, js_getXmllang, getXmllang,
+        js_setXmlspace, setXmlspace, js_getXmlspace, getXmlspace,
+        js_getClassName, getClassName, getClassNameUnsafe,
+        getClassNameUnchecked, js_getStyle, getStyle, getStyleUnsafe,
+        getStyleUnchecked, js_setTabIndex, setTabIndex, js_getTabIndex,
+        getTabIndex, SVGElement(..), gTypeSVGElement, IsSVGElement,
+        toSVGElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -28,6 +38,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"getPresentationAttribute\"]($2)" js_getPresentationAttribute
@@ -52,6 +72,17 @@ getPresentationAttribute_ self name
       (void
          (js_getPresentationAttribute (toSVGElement self)
             (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
+getPresentationAttributeUnsafe ::
+                               (MonadIO m, IsSVGElement self, ToJSString name, HasCallStack) =>
+                                 self -> name -> m CSSValue
+getPresentationAttributeUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getPresentationAttribute (toSVGElement self)
+             (toJSString name)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
 getPresentationAttributeUnchecked ::
@@ -85,6 +116,16 @@ getXmlbase self
       (fromMaybeJSString <$> (js_getXmlbase (toSVGElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
+getXmlbaseUnsafe ::
+                 (MonadIO m, IsSVGElement self, HasCallStack,
+                  FromJSString result) =>
+                   self -> m result
+getXmlbaseUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getXmlbase (toSVGElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
 getXmlbaseUnchecked ::
                     (MonadIO m, IsSVGElement self, FromJSString result) =>
                       self -> m result
@@ -104,6 +145,15 @@ getOwnerSVGElement self
       (nullableToMaybe <$> (js_getOwnerSVGElement (toSVGElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
+getOwnerSVGElementUnsafe ::
+                         (MonadIO m, IsSVGElement self, HasCallStack) =>
+                           self -> m SVGSVGElement
+getOwnerSVGElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOwnerSVGElement (toSVGElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
 getOwnerSVGElementUnchecked ::
                             (MonadIO m, IsSVGElement self) => self -> m SVGSVGElement
 getOwnerSVGElementUnchecked self
@@ -120,6 +170,15 @@ getViewportElement ::
 getViewportElement self
   = liftIO
       (nullableToMaybe <$> (js_getViewportElement (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
+getViewportElementUnsafe ::
+                         (MonadIO m, IsSVGElement self, HasCallStack) =>
+                           self -> m SVGElement
+getViewportElementUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getViewportElement (toSVGElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
 getViewportElementUnchecked ::
@@ -181,6 +240,15 @@ getClassName self
       (nullableToMaybe <$> (js_getClassName (toSVGElement self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
+getClassNameUnsafe ::
+                   (MonadIO m, IsSVGElement self, HasCallStack) =>
+                     self -> m SVGAnimatedString
+getClassNameUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClassName (toSVGElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
 getClassNameUnchecked ::
                       (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
 getClassNameUnchecked self
@@ -197,6 +265,15 @@ getStyle ::
            self -> m (Maybe CSSStyleDeclaration)
 getStyle self
   = liftIO (nullableToMaybe <$> (js_getStyle (toSVGElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
+getStyleUnsafe ::
+               (MonadIO m, IsSVGElement self, HasCallStack) =>
+                 self -> m CSSStyleDeclaration
+getStyleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyle (toSVGElement self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
 getStyleUnchecked ::

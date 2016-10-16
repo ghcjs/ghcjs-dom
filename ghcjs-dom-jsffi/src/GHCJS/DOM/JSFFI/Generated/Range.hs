@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Range
        (js_newRange, newRange, js_setStart, setStart, js_setEnd, setEnd,
         js_setStartBefore, setStartBefore, js_setStartAfter, setStartAfter,
@@ -8,15 +13,18 @@ module GHCJS.DOM.JSFFI.Generated.Range
         js_compareBoundaryPoints, compareBoundaryPoints,
         compareBoundaryPoints_, js_deleteContents, deleteContents,
         js_extractContents, extractContents, extractContents_,
-        extractContentsUnchecked, js_cloneContents, cloneContents,
-        cloneContents_, cloneContentsUnchecked, js_insertNode, insertNode,
+        extractContentsUnsafe, extractContentsUnchecked, js_cloneContents,
+        cloneContents, cloneContents_, cloneContentsUnsafe,
+        cloneContentsUnchecked, js_insertNode, insertNode,
         js_surroundContents, surroundContents, js_cloneRange, cloneRange,
-        cloneRange_, cloneRangeUnchecked, js_toString, toString, toString_,
-        js_detach, detach, js_getClientRects, getClientRects,
-        getClientRects_, getClientRectsUnchecked, js_getBoundingClientRect,
+        cloneRange_, cloneRangeUnsafe, cloneRangeUnchecked, js_toString,
+        toString, toString_, js_detach, detach, js_getClientRects,
+        getClientRects, getClientRects_, getClientRectsUnsafe,
+        getClientRectsUnchecked, js_getBoundingClientRect,
         getBoundingClientRect, getBoundingClientRect_,
-        getBoundingClientRectUnchecked, js_createContextualFragment,
-        createContextualFragment, createContextualFragment_,
+        getBoundingClientRectUnsafe, getBoundingClientRectUnchecked,
+        js_createContextualFragment, createContextualFragment,
+        createContextualFragment_, createContextualFragmentUnsafe,
         createContextualFragmentUnchecked, js_intersectsNode,
         intersectsNode, intersectsNode_, js_compareNode, compareNode,
         compareNode_, js_comparePoint, comparePoint, comparePoint_,
@@ -25,13 +33,16 @@ module GHCJS.DOM.JSFFI.Generated.Range
         pattern END_TO_END, pattern END_TO_START, pattern NODE_BEFORE,
         pattern NODE_AFTER, pattern NODE_BEFORE_AND_AFTER,
         pattern NODE_INSIDE, js_getStartContainer, getStartContainer,
-        getStartContainerUnchecked, js_getStartOffset, getStartOffset,
-        js_getEndContainer, getEndContainer, getEndContainerUnchecked,
+        getStartContainerUnsafe, getStartContainerUnchecked,
+        js_getStartOffset, getStartOffset, js_getEndContainer,
+        getEndContainer, getEndContainerUnsafe, getEndContainerUnchecked,
         js_getEndOffset, getEndOffset, js_getCollapsed, getCollapsed,
         js_getCommonAncestorContainer, getCommonAncestorContainer,
+        getCommonAncestorContainerUnsafe,
         getCommonAncestorContainerUnchecked, Range(..), gTypeRange)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -47,6 +58,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "new window[\"Range\"]()"
         js_newRange :: IO Range
@@ -186,6 +207,14 @@ extractContents_ :: (MonadIO m) => Range -> m ()
 extractContents_ self = liftIO (void (js_extractContents (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
+extractContentsUnsafe ::
+                      (MonadIO m, HasCallStack) => Range -> m DocumentFragment
+extractContentsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_extractContents (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
 extractContentsUnchecked ::
                          (MonadIO m) => Range -> m DocumentFragment
 extractContentsUnchecked self
@@ -203,6 +232,14 @@ cloneContents self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
 cloneContents_ :: (MonadIO m) => Range -> m ()
 cloneContents_ self = liftIO (void (js_cloneContents (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
+cloneContentsUnsafe ::
+                    (MonadIO m, HasCallStack) => Range -> m DocumentFragment
+cloneContentsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_cloneContents (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
 cloneContentsUnchecked ::
@@ -244,6 +281,13 @@ cloneRange_ :: (MonadIO m) => Range -> m ()
 cloneRange_ self = liftIO (void (js_cloneRange (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
+cloneRangeUnsafe :: (MonadIO m, HasCallStack) => Range -> m Range
+cloneRangeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_cloneRange (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
 cloneRangeUnchecked :: (MonadIO m) => Range -> m Range
 cloneRangeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_cloneRange (self)))
@@ -279,6 +323,14 @@ getClientRects_ :: (MonadIO m) => Range -> m ()
 getClientRects_ self = liftIO (void (js_getClientRects (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
+getClientRectsUnsafe ::
+                     (MonadIO m, HasCallStack) => Range -> m ClientRectList
+getClientRectsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getClientRects (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
 getClientRectsUnchecked :: (MonadIO m) => Range -> m ClientRectList
 getClientRectsUnchecked self
   = liftIO
@@ -297,6 +349,14 @@ getBoundingClientRect self
 getBoundingClientRect_ :: (MonadIO m) => Range -> m ()
 getBoundingClientRect_ self
   = liftIO (void (js_getBoundingClientRect (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
+getBoundingClientRectUnsafe ::
+                            (MonadIO m, HasCallStack) => Range -> m ClientRect
+getBoundingClientRectUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getBoundingClientRect (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
 getBoundingClientRectUnchecked ::
@@ -324,6 +384,16 @@ createContextualFragment_ ::
 createContextualFragment_ self html
   = liftIO
       (void (js_createContextualFragment (self) (toJSString html)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
+createContextualFragmentUnsafe ::
+                               (MonadIO m, ToJSString html, HasCallStack) =>
+                                 Range -> html -> m DocumentFragment
+createContextualFragmentUnsafe self html
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_createContextualFragment (self) (toJSString html)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
 createContextualFragmentUnchecked ::
@@ -440,6 +510,14 @@ getStartContainer self
   = liftIO (nullableToMaybe <$> (js_getStartContainer (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startContainer Mozilla Range.startContainer documentation> 
+getStartContainerUnsafe ::
+                        (MonadIO m, HasCallStack) => Range -> m Node
+getStartContainerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStartContainer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startContainer Mozilla Range.startContainer documentation> 
 getStartContainerUnchecked :: (MonadIO m) => Range -> m Node
 getStartContainerUnchecked self
   = liftIO
@@ -459,6 +537,14 @@ foreign import javascript unsafe "$1[\"endContainer\"]"
 getEndContainer :: (MonadIO m) => Range -> m (Maybe Node)
 getEndContainer self
   = liftIO (nullableToMaybe <$> (js_getEndContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endContainer Mozilla Range.endContainer documentation> 
+getEndContainerUnsafe ::
+                      (MonadIO m, HasCallStack) => Range -> m Node
+getEndContainerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getEndContainer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endContainer Mozilla Range.endContainer documentation> 
 getEndContainerUnchecked :: (MonadIO m) => Range -> m Node
@@ -489,6 +575,14 @@ getCommonAncestorContainer ::
 getCommonAncestorContainer self
   = liftIO
       (nullableToMaybe <$> (js_getCommonAncestorContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.commonAncestorContainer Mozilla Range.commonAncestorContainer documentation> 
+getCommonAncestorContainerUnsafe ::
+                                 (MonadIO m, HasCallStack) => Range -> m Node
+getCommonAncestorContainerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCommonAncestorContainer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.commonAncestorContainer Mozilla Range.commonAncestorContainer documentation> 
 getCommonAncestorContainerUnchecked ::

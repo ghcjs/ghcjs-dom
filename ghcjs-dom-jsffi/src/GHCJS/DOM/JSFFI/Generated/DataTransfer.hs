@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.DataTransfer
        (js_clearData, clearData, js_getData, getData, getData_,
         js_setData, setData, js_setDragImage, setDragImage,
         js_setDropEffect, setDropEffect, js_getDropEffect, getDropEffect,
         js_setEffectAllowed, setEffectAllowed, js_getEffectAllowed,
-        getEffectAllowed, js_getTypes, getTypes, getTypesUnchecked,
-        js_getFiles, getFiles, getFilesUnchecked, js_getItems, getItems,
+        getEffectAllowed, js_getTypes, getTypes, getTypesUnsafe,
+        getTypesUnchecked, js_getFiles, getFiles, getFilesUnsafe,
+        getFilesUnchecked, js_getItems, getItems, getItemsUnsafe,
         getItemsUnchecked, DataTransfer(..), gTypeDataTransfer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"clearData\"]($2)"
         js_clearData :: DataTransfer -> JSString -> IO ()
@@ -117,6 +134,14 @@ getTypes :: (MonadIO m) => DataTransfer -> m (Maybe Array)
 getTypes self = liftIO (nullableToMaybe <$> (js_getTypes (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
+getTypesUnsafe ::
+               (MonadIO m, HasCallStack) => DataTransfer -> m Array
+getTypesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTypes (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
 getTypesUnchecked :: (MonadIO m) => DataTransfer -> m Array
 getTypesUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getTypes (self)))
@@ -127,6 +152,14 @@ foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
 getFiles :: (MonadIO m) => DataTransfer -> m (Maybe FileList)
 getFiles self = liftIO (nullableToMaybe <$> (js_getFiles (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
+getFilesUnsafe ::
+               (MonadIO m, HasCallStack) => DataTransfer -> m FileList
+getFilesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFiles (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 
 getFilesUnchecked :: (MonadIO m) => DataTransfer -> m FileList
@@ -140,6 +173,14 @@ foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
 getItems ::
          (MonadIO m) => DataTransfer -> m (Maybe DataTransferItemList)
 getItems self = liftIO (nullableToMaybe <$> (js_getItems (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
+getItemsUnsafe ::
+               (MonadIO m, HasCallStack) => DataTransfer -> m DataTransferItemList
+getItemsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getItems (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
 getItemsUnchecked ::

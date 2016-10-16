@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
        (js_copyBufferSubData, copyBufferSubData, js_getBufferSubDataView,
         getBufferSubDataView, js_getBufferSubData, getBufferSubData,
@@ -38,52 +43,54 @@ module GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
         drawBuffers, js_clearBufferiv, clearBufferiv, js_clearBufferuiv,
         clearBufferuiv, js_clearBufferfv, clearBufferfv, js_clearBufferfi,
         clearBufferfi, js_createQuery, createQuery, createQuery_,
-        createQueryUnchecked, js_deleteQuery, deleteQuery, js_isQuery,
-        isQuery, isQuery_, js_beginQuery, beginQuery, js_endQuery,
-        endQuery, js_getQuery, getQuery, getQuery_, getQueryUnchecked,
-        js_getQueryParameter, getQueryParameter, getQueryParameter_,
-        js_createSampler, createSampler, createSampler_,
+        createQueryUnsafe, createQueryUnchecked, js_deleteQuery,
+        deleteQuery, js_isQuery, isQuery, isQuery_, js_beginQuery,
+        beginQuery, js_endQuery, endQuery, js_getQuery, getQuery,
+        getQuery_, getQueryUnsafe, getQueryUnchecked, js_getQueryParameter,
+        getQueryParameter, getQueryParameter_, js_createSampler,
+        createSampler, createSampler_, createSamplerUnsafe,
         createSamplerUnchecked, js_deleteSampler, deleteSampler,
         js_isSampler, isSampler, isSampler_, js_bindSampler, bindSampler,
         js_samplerParameteri, samplerParameteri, js_samplerParameterf,
         samplerParameterf, js_getSamplerParameter, getSamplerParameter,
         getSamplerParameter_, js_fenceSync, fenceSync, fenceSync_,
-        fenceSyncUnchecked, js_isSync, isSync, isSync_, js_deleteSync,
-        deleteSync, js_clientWaitSync, clientWaitSync, clientWaitSync_,
-        js_waitSync, waitSync, js_getSyncParameter, getSyncParameter,
-        getSyncParameter_, js_createTransformFeedback,
+        fenceSyncUnsafe, fenceSyncUnchecked, js_isSync, isSync, isSync_,
+        js_deleteSync, deleteSync, js_clientWaitSync, clientWaitSync,
+        clientWaitSync_, js_waitSync, waitSync, js_getSyncParameter,
+        getSyncParameter, getSyncParameter_, js_createTransformFeedback,
         createTransformFeedback, createTransformFeedback_,
-        createTransformFeedbackUnchecked, js_deleteTransformFeedback,
-        deleteTransformFeedback, js_isTransformFeedback,
-        isTransformFeedback, isTransformFeedback_,
+        createTransformFeedbackUnsafe, createTransformFeedbackUnchecked,
+        js_deleteTransformFeedback, deleteTransformFeedback,
+        js_isTransformFeedback, isTransformFeedback, isTransformFeedback_,
         js_bindTransformFeedback, bindTransformFeedback,
         js_beginTransformFeedback, beginTransformFeedback,
         js_endTransformFeedback, endTransformFeedback,
         js_transformFeedbackVaryings, transformFeedbackVaryings,
         js_getTransformFeedbackVarying, getTransformFeedbackVarying,
-        getTransformFeedbackVarying_, getTransformFeedbackVaryingUnchecked,
-        js_pauseTransformFeedback, pauseTransformFeedback,
-        js_resumeTransformFeedback, resumeTransformFeedback,
-        js_bindBufferBase, bindBufferBase, js_bindBufferRange,
-        bindBufferRange, js_getIndexedParameter, getIndexedParameter,
-        getIndexedParameter_, js_getUniformIndices, getUniformIndices,
-        getUniformIndices_, getUniformIndicesUnchecked,
-        js_getActiveUniforms, getActiveUniforms, getActiveUniforms_,
+        getTransformFeedbackVarying_, getTransformFeedbackVaryingUnsafe,
+        getTransformFeedbackVaryingUnchecked, js_pauseTransformFeedback,
+        pauseTransformFeedback, js_resumeTransformFeedback,
+        resumeTransformFeedback, js_bindBufferBase, bindBufferBase,
+        js_bindBufferRange, bindBufferRange, js_getIndexedParameter,
+        getIndexedParameter, getIndexedParameter_, js_getUniformIndices,
+        getUniformIndices, getUniformIndices_, getUniformIndicesUnsafe,
+        getUniformIndicesUnchecked, js_getActiveUniforms,
+        getActiveUniforms, getActiveUniforms_, getActiveUniformsUnsafe,
         getActiveUniformsUnchecked, js_getUniformBlockIndex,
         getUniformBlockIndex, getUniformBlockIndex_,
         js_getActiveUniformBlockParameter, getActiveUniformBlockParameter,
         getActiveUniformBlockParameter_, js_getActiveUniformBlockName,
         getActiveUniformBlockName, getActiveUniformBlockName_,
         js_uniformBlockBinding, uniformBlockBinding, js_createVertexArray,
-        createVertexArray, createVertexArray_, createVertexArrayUnchecked,
-        js_deleteVertexArray, deleteVertexArray, js_isVertexArray,
-        isVertexArray, isVertexArray_, js_bindVertexArray, bindVertexArray,
-        pattern READ_BUFFER, pattern UNPACK_ROW_LENGTH,
-        pattern UNPACK_SKIP_ROWS, pattern UNPACK_SKIP_PIXELS,
-        pattern PACK_ROW_LENGTH, pattern PACK_SKIP_ROWS,
-        pattern PACK_SKIP_PIXELS, pattern COLOR, pattern DEPTH,
-        pattern STENCIL, pattern RED, pattern RGB8, pattern RGBA8,
-        pattern RGB10_A2, pattern TEXTURE_BINDING_3D,
+        createVertexArray, createVertexArray_, createVertexArrayUnsafe,
+        createVertexArrayUnchecked, js_deleteVertexArray,
+        deleteVertexArray, js_isVertexArray, isVertexArray, isVertexArray_,
+        js_bindVertexArray, bindVertexArray, pattern READ_BUFFER,
+        pattern UNPACK_ROW_LENGTH, pattern UNPACK_SKIP_ROWS,
+        pattern UNPACK_SKIP_PIXELS, pattern PACK_ROW_LENGTH,
+        pattern PACK_SKIP_ROWS, pattern PACK_SKIP_PIXELS, pattern COLOR,
+        pattern DEPTH, pattern STENCIL, pattern RED, pattern RGB8,
+        pattern RGBA8, pattern RGB10_A2, pattern TEXTURE_BINDING_3D,
         pattern UNPACK_SKIP_IMAGES, pattern UNPACK_IMAGE_HEIGHT,
         pattern TEXTURE_3D, pattern TEXTURE_WRAP_R,
         pattern MAX_3D_TEXTURE_SIZE, pattern UNSIGNED_INT_2_10_10_10_REV,
@@ -228,6 +235,7 @@ module GHCJS.DOM.JSFFI.Generated.WebGL2RenderingContext
         gTypeWebGL2RenderingContext)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -243,6 +251,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"copyBufferSubData\"]($2, $3,\n$4, $5, $6)"
@@ -1184,6 +1202,14 @@ createQuery_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createQuery_ self = liftIO (void (js_createQuery (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createQuery Mozilla WebGL2RenderingContext.createQuery documentation> 
+createQueryUnsafe ::
+                  (MonadIO m, HasCallStack) => WebGL2RenderingContext -> m WebGLQuery
+createQueryUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createQuery (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createQuery Mozilla WebGL2RenderingContext.createQuery documentation> 
 createQueryUnchecked ::
                      (MonadIO m) => WebGL2RenderingContext -> m WebGLQuery
 createQueryUnchecked self
@@ -1252,6 +1278,15 @@ getQuery_ self target pname
   = liftIO (void (js_getQuery (self) target pname))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getQuery Mozilla WebGL2RenderingContext.getQuery documentation> 
+getQueryUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 WebGL2RenderingContext -> GLenum -> GLenum -> m WebGLQuery
+getQueryUnsafe self target pname
+  = liftIO
+      ((nullableToMaybe <$> (js_getQuery (self) target pname)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getQuery Mozilla WebGL2RenderingContext.getQuery documentation> 
 getQueryUnchecked ::
                   (MonadIO m) =>
                     WebGL2RenderingContext -> GLenum -> GLenum -> m WebGLQuery
@@ -1292,6 +1327,15 @@ createSampler self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createSampler Mozilla WebGL2RenderingContext.createSampler documentation> 
 createSampler_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createSampler_ self = liftIO (void (js_createSampler (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createSampler Mozilla WebGL2RenderingContext.createSampler documentation> 
+createSamplerUnsafe ::
+                    (MonadIO m, HasCallStack) =>
+                      WebGL2RenderingContext -> m WebGLSampler
+createSamplerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createSampler (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createSampler Mozilla WebGL2RenderingContext.createSampler documentation> 
 createSamplerUnchecked ::
@@ -1409,6 +1453,15 @@ fenceSync_ self condition flags
   = liftIO (void (js_fenceSync (self) condition flags))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.fenceSync Mozilla WebGL2RenderingContext.fenceSync documentation> 
+fenceSyncUnsafe ::
+                (MonadIO m, HasCallStack) =>
+                  WebGL2RenderingContext -> GLenum -> GLbitfield -> m WebGLSync
+fenceSyncUnsafe self condition flags
+  = liftIO
+      ((nullableToMaybe <$> (js_fenceSync (self) condition flags)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.fenceSync Mozilla WebGL2RenderingContext.fenceSync documentation> 
 fenceSyncUnchecked ::
                    (MonadIO m) =>
                      WebGL2RenderingContext -> GLenum -> GLbitfield -> m WebGLSync
@@ -1518,6 +1571,15 @@ createTransformFeedback_ ::
                          (MonadIO m) => WebGL2RenderingContext -> m ()
 createTransformFeedback_ self
   = liftIO (void (js_createTransformFeedback (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createTransformFeedback Mozilla WebGL2RenderingContext.createTransformFeedback documentation> 
+createTransformFeedbackUnsafe ::
+                              (MonadIO m, HasCallStack) =>
+                                WebGL2RenderingContext -> m WebGLTransformFeedback
+createTransformFeedbackUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createTransformFeedback (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createTransformFeedback Mozilla WebGL2RenderingContext.createTransformFeedback documentation> 
 createTransformFeedbackUnchecked ::
@@ -1639,6 +1701,18 @@ getTransformFeedbackVarying_ self program index
             index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getTransformFeedbackVarying Mozilla WebGL2RenderingContext.getTransformFeedbackVarying documentation> 
+getTransformFeedbackVaryingUnsafe ::
+                                  (MonadIO m, HasCallStack) =>
+                                    WebGL2RenderingContext ->
+                                      Maybe WebGLProgram -> GLuint -> m WebGLActiveInfo
+getTransformFeedbackVaryingUnsafe self program index
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getTransformFeedbackVarying (self) (maybeToNullable program)
+             index))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getTransformFeedbackVarying Mozilla WebGL2RenderingContext.getTransformFeedbackVarying documentation> 
 getTransformFeedbackVaryingUnchecked ::
                                      (MonadIO m) =>
                                        WebGL2RenderingContext ->
@@ -1750,6 +1824,20 @@ getUniformIndices_ self program uniformNames
                 uniformNames'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getUniformIndices Mozilla WebGL2RenderingContext.getUniformIndices documentation> 
+getUniformIndicesUnsafe ::
+                        (MonadIO m, ToJSString uniformNames, HasCallStack) =>
+                          WebGL2RenderingContext ->
+                            Maybe WebGLProgram -> [uniformNames] -> m Uint32Array
+getUniformIndicesUnsafe self program uniformNames
+  = liftIO
+      ((nullableToMaybe <$>
+          (toJSVal uniformNames >>=
+             \ uniformNames' ->
+               js_getUniformIndices (self) (maybeToNullable program)
+                 uniformNames'))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getUniformIndices Mozilla WebGL2RenderingContext.getUniformIndices documentation> 
 getUniformIndicesUnchecked ::
                            (MonadIO m, ToJSString uniformNames) =>
                              WebGL2RenderingContext ->
@@ -1792,6 +1880,20 @@ getActiveUniforms_ self program uniformIndices pname
          (js_getActiveUniforms (self) (maybeToNullable program)
             (maybeToNullable (fmap toUint32Array uniformIndices))
             pname))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getActiveUniforms Mozilla WebGL2RenderingContext.getActiveUniforms documentation> 
+getActiveUniformsUnsafe ::
+                        (MonadIO m, IsUint32Array uniformIndices, HasCallStack) =>
+                          WebGL2RenderingContext ->
+                            Maybe WebGLProgram ->
+                              Maybe uniformIndices -> GLenum -> m Int32Array
+getActiveUniformsUnsafe self program uniformIndices pname
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getActiveUniforms (self) (maybeToNullable program)
+             (maybeToNullable (fmap toUint32Array uniformIndices))
+             pname))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getActiveUniforms Mozilla WebGL2RenderingContext.getActiveUniforms documentation> 
 getActiveUniformsUnchecked ::
@@ -1920,6 +2022,15 @@ createVertexArray self
 createVertexArray_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createVertexArray_ self
   = liftIO (void (js_createVertexArray (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createVertexArray Mozilla WebGL2RenderingContext.createVertexArray documentation> 
+createVertexArrayUnsafe ::
+                        (MonadIO m, HasCallStack) =>
+                          WebGL2RenderingContext -> m WebGLVertexArrayObject
+createVertexArrayUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_createVertexArray (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createVertexArray Mozilla WebGL2RenderingContext.createVertexArray documentation> 
 createVertexArrayUnchecked ::

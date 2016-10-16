@@ -1,20 +1,29 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.TreeWalker
-       (js_parentNode, parentNode, parentNode_, parentNodeUnchecked,
-        js_firstChild, firstChild, firstChild_, firstChildUnchecked,
-        js_lastChild, lastChild, lastChild_, lastChildUnchecked,
+       (js_parentNode, parentNode, parentNode_, parentNodeUnsafe,
+        parentNodeUnchecked, js_firstChild, firstChild, firstChild_,
+        firstChildUnsafe, firstChildUnchecked, js_lastChild, lastChild,
+        lastChild_, lastChildUnsafe, lastChildUnchecked,
         js_previousSibling, previousSibling, previousSibling_,
-        previousSiblingUnchecked, js_nextSibling, nextSibling,
-        nextSibling_, nextSiblingUnchecked, js_previousNode, previousNode,
-        previousNode_, previousNodeUnchecked, js_nextNode, nextNode,
-        nextNode_, nextNodeUnchecked, js_getRoot, getRoot,
-        getRootUnchecked, js_getWhatToShow, getWhatToShow, js_getFilter,
-        getFilter, getFilterUnchecked, js_getExpandEntityReferences,
-        getExpandEntityReferences, js_setCurrentNode, setCurrentNode,
-        js_getCurrentNode, getCurrentNode, getCurrentNodeUnchecked,
+        previousSiblingUnsafe, previousSiblingUnchecked, js_nextSibling,
+        nextSibling, nextSibling_, nextSiblingUnsafe, nextSiblingUnchecked,
+        js_previousNode, previousNode, previousNode_, previousNodeUnsafe,
+        previousNodeUnchecked, js_nextNode, nextNode, nextNode_,
+        nextNodeUnsafe, nextNodeUnchecked, js_getRoot, getRoot,
+        getRootUnsafe, getRootUnchecked, js_getWhatToShow, getWhatToShow,
+        js_getFilter, getFilter, getFilterUnsafe, getFilterUnchecked,
+        js_getExpandEntityReferences, getExpandEntityReferences,
+        js_setCurrentNode, setCurrentNode, js_getCurrentNode,
+        getCurrentNode, getCurrentNodeUnsafe, getCurrentNodeUnchecked,
         TreeWalker(..), gTypeTreeWalker)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -30,6 +39,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"parentNode\"]()"
         js_parentNode :: TreeWalker -> IO (Nullable Node)
@@ -42,6 +61,14 @@ parentNode self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.parentNode Mozilla TreeWalker.parentNode documentation> 
 parentNode_ :: (MonadIO m) => TreeWalker -> m ()
 parentNode_ self = liftIO (void (js_parentNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.parentNode Mozilla TreeWalker.parentNode documentation> 
+parentNodeUnsafe ::
+                 (MonadIO m, HasCallStack) => TreeWalker -> m Node
+parentNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_parentNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.parentNode Mozilla TreeWalker.parentNode documentation> 
 parentNodeUnchecked :: (MonadIO m) => TreeWalker -> m Node
@@ -61,6 +88,14 @@ firstChild_ :: (MonadIO m) => TreeWalker -> m ()
 firstChild_ self = liftIO (void (js_firstChild (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.firstChild Mozilla TreeWalker.firstChild documentation> 
+firstChildUnsafe ::
+                 (MonadIO m, HasCallStack) => TreeWalker -> m Node
+firstChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_firstChild (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.firstChild Mozilla TreeWalker.firstChild documentation> 
 firstChildUnchecked :: (MonadIO m) => TreeWalker -> m Node
 firstChildUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_firstChild (self)))
@@ -75,6 +110,14 @@ lastChild self = liftIO (nullableToMaybe <$> (js_lastChild (self)))
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.lastChild Mozilla TreeWalker.lastChild documentation> 
 lastChild_ :: (MonadIO m) => TreeWalker -> m ()
 lastChild_ self = liftIO (void (js_lastChild (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.lastChild Mozilla TreeWalker.lastChild documentation> 
+lastChildUnsafe ::
+                (MonadIO m, HasCallStack) => TreeWalker -> m Node
+lastChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_lastChild (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.lastChild Mozilla TreeWalker.lastChild documentation> 
 lastChildUnchecked :: (MonadIO m) => TreeWalker -> m Node
@@ -92,6 +135,14 @@ previousSibling self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousSibling Mozilla TreeWalker.previousSibling documentation> 
 previousSibling_ :: (MonadIO m) => TreeWalker -> m ()
 previousSibling_ self = liftIO (void (js_previousSibling (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousSibling Mozilla TreeWalker.previousSibling documentation> 
+previousSiblingUnsafe ::
+                      (MonadIO m, HasCallStack) => TreeWalker -> m Node
+previousSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_previousSibling (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousSibling Mozilla TreeWalker.previousSibling documentation> 
 previousSiblingUnchecked :: (MonadIO m) => TreeWalker -> m Node
@@ -112,6 +163,14 @@ nextSibling_ :: (MonadIO m) => TreeWalker -> m ()
 nextSibling_ self = liftIO (void (js_nextSibling (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextSibling Mozilla TreeWalker.nextSibling documentation> 
+nextSiblingUnsafe ::
+                  (MonadIO m, HasCallStack) => TreeWalker -> m Node
+nextSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_nextSibling (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextSibling Mozilla TreeWalker.nextSibling documentation> 
 nextSiblingUnchecked :: (MonadIO m) => TreeWalker -> m Node
 nextSiblingUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_nextSibling (self)))
@@ -127,6 +186,14 @@ previousNode self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousNode Mozilla TreeWalker.previousNode documentation> 
 previousNode_ :: (MonadIO m) => TreeWalker -> m ()
 previousNode_ self = liftIO (void (js_previousNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousNode Mozilla TreeWalker.previousNode documentation> 
+previousNodeUnsafe ::
+                   (MonadIO m, HasCallStack) => TreeWalker -> m Node
+previousNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_previousNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.previousNode Mozilla TreeWalker.previousNode documentation> 
 previousNodeUnchecked :: (MonadIO m) => TreeWalker -> m Node
@@ -145,6 +212,13 @@ nextNode_ :: (MonadIO m) => TreeWalker -> m ()
 nextNode_ self = liftIO (void (js_nextNode (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextNode Mozilla TreeWalker.nextNode documentation> 
+nextNodeUnsafe :: (MonadIO m, HasCallStack) => TreeWalker -> m Node
+nextNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_nextNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.nextNode Mozilla TreeWalker.nextNode documentation> 
 nextNodeUnchecked :: (MonadIO m) => TreeWalker -> m Node
 nextNodeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_nextNode (self)))
@@ -155,6 +229,13 @@ foreign import javascript unsafe "$1[\"root\"]" js_getRoot ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.root Mozilla TreeWalker.root documentation> 
 getRoot :: (MonadIO m) => TreeWalker -> m (Maybe Node)
 getRoot self = liftIO (nullableToMaybe <$> (js_getRoot (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.root Mozilla TreeWalker.root documentation> 
+getRootUnsafe :: (MonadIO m, HasCallStack) => TreeWalker -> m Node
+getRootUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRoot (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.root Mozilla TreeWalker.root documentation> 
 getRootUnchecked :: (MonadIO m) => TreeWalker -> m Node
@@ -174,6 +255,14 @@ foreign import javascript unsafe "$1[\"filter\"]" js_getFilter ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.filter Mozilla TreeWalker.filter documentation> 
 getFilter :: (MonadIO m) => TreeWalker -> m (Maybe NodeFilter)
 getFilter self = liftIO (nullableToMaybe <$> (js_getFilter (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.filter Mozilla TreeWalker.filter documentation> 
+getFilterUnsafe ::
+                (MonadIO m, HasCallStack) => TreeWalker -> m NodeFilter
+getFilterUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFilter (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.filter Mozilla TreeWalker.filter documentation> 
 getFilterUnchecked :: (MonadIO m) => TreeWalker -> m NodeFilter
@@ -206,6 +295,14 @@ foreign import javascript unsafe "$1[\"currentNode\"]"
 getCurrentNode :: (MonadIO m) => TreeWalker -> m (Maybe Node)
 getCurrentNode self
   = liftIO (nullableToMaybe <$> (js_getCurrentNode (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.currentNode Mozilla TreeWalker.currentNode documentation> 
+getCurrentNodeUnsafe ::
+                     (MonadIO m, HasCallStack) => TreeWalker -> m Node
+getCurrentNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCurrentNode (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TreeWalker.currentNode Mozilla TreeWalker.currentNode documentation> 
 getCurrentNodeUnchecked :: (MonadIO m) => TreeWalker -> m Node

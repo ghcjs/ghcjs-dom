@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances, RankNTypes, FlexibleContexts, ScopedTypeVariables #-}
+{-# LANGUAGE CPP, JavaScriptFFI, ForeignFunctionInterface, ConstraintKinds, FlexibleInstances, RankNTypes, FlexibleContexts, ScopedTypeVariables #-}
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, KindSignatures #-}
 module GHCJS.DOM.Types (
@@ -757,7 +757,7 @@ propagateGError = id
 
 newtype GType = GType JSVal
 
-foreign import javascript unsafe "$r = $1.toString();" gTypeToString :: GType -> JSString
+foreign import javascript unsafe "$r = $1.name;" gTypeToString :: GType -> JSString
 
 foreign import javascript unsafe
   "$1===$2" js_eq :: JSVal -> JSVal -> Bool

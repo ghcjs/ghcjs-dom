@@ -1,13 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Coordinates
        (js_getLatitude, getLatitude, js_getLongitude, getLongitude,
-        js_getAltitude, getAltitude, getAltitudeUnchecked, js_getAccuracy,
-        getAccuracy, js_getAltitudeAccuracy, getAltitudeAccuracy,
-        getAltitudeAccuracyUnchecked, js_getHeading, getHeading,
-        getHeadingUnchecked, js_getSpeed, getSpeed, getSpeedUnchecked,
+        js_getAltitude, getAltitude, getAltitudeUnsafe,
+        getAltitudeUnchecked, js_getAccuracy, getAccuracy,
+        js_getAltitudeAccuracy, getAltitudeAccuracy,
+        getAltitudeAccuracyUnsafe, getAltitudeAccuracyUnchecked,
+        js_getHeading, getHeading, getHeadingUnsafe, getHeadingUnchecked,
+        js_getSpeed, getSpeed, getSpeedUnsafe, getSpeedUnchecked,
         Coordinates(..), gTypeCoordinates)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"latitude\"]" js_getLatitude
         :: Coordinates -> IO Double
@@ -47,6 +65,14 @@ getAltitude self
   = liftIO ((js_getAltitude (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitude Mozilla Coordinates.altitude documentation> 
+getAltitudeUnsafe ::
+                  (MonadIO m, HasCallStack) => Coordinates -> m Double
+getAltitudeUnsafe self
+  = liftIO
+      (((js_getAltitude (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitude Mozilla Coordinates.altitude documentation> 
 getAltitudeUnchecked :: (MonadIO m) => Coordinates -> m Double
 getAltitudeUnchecked self
   = liftIO ((js_getAltitude (self)) >>= fromJSValUnchecked)
@@ -68,6 +94,14 @@ getAltitudeAccuracy self
   = liftIO ((js_getAltitudeAccuracy (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitudeAccuracy Mozilla Coordinates.altitudeAccuracy documentation> 
+getAltitudeAccuracyUnsafe ::
+                          (MonadIO m, HasCallStack) => Coordinates -> m Double
+getAltitudeAccuracyUnsafe self
+  = liftIO
+      (((js_getAltitudeAccuracy (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitudeAccuracy Mozilla Coordinates.altitudeAccuracy documentation> 
 getAltitudeAccuracyUnchecked ::
                              (MonadIO m) => Coordinates -> m Double
 getAltitudeAccuracyUnchecked self
@@ -82,6 +116,14 @@ getHeading self
   = liftIO ((js_getHeading (self)) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.heading Mozilla Coordinates.heading documentation> 
+getHeadingUnsafe ::
+                 (MonadIO m, HasCallStack) => Coordinates -> m Double
+getHeadingUnsafe self
+  = liftIO
+      (((js_getHeading (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.heading Mozilla Coordinates.heading documentation> 
 getHeadingUnchecked :: (MonadIO m) => Coordinates -> m Double
 getHeadingUnchecked self
   = liftIO ((js_getHeading (self)) >>= fromJSValUnchecked)
@@ -93,6 +135,14 @@ foreign import javascript unsafe "$1[\"speed\"]" js_getSpeed ::
 getSpeed :: (MonadIO m) => Coordinates -> m (Maybe Double)
 getSpeed self
   = liftIO ((js_getSpeed (self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.speed Mozilla Coordinates.speed documentation> 
+getSpeedUnsafe ::
+               (MonadIO m, HasCallStack) => Coordinates -> m Double
+getSpeedUnsafe self
+  = liftIO
+      (((js_getSpeed (self)) >>= fromJSValUnchecked) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.speed Mozilla Coordinates.speed documentation> 
 getSpeedUnchecked :: (MonadIO m) => Coordinates -> m Double

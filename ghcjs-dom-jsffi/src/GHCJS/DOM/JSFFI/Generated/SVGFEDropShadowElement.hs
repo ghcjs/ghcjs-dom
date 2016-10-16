@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEDropShadowElement
        (js_setStdDeviation, setStdDeviation, js_getIn1, getIn1,
-        getIn1Unchecked, js_getDx, getDx, getDxUnchecked, js_getDy, getDy,
-        getDyUnchecked, js_getStdDeviationX, getStdDeviationX,
+        getIn1Unsafe, getIn1Unchecked, js_getDx, getDx, getDxUnsafe,
+        getDxUnchecked, js_getDy, getDy, getDyUnsafe, getDyUnchecked,
+        js_getStdDeviationX, getStdDeviationX, getStdDeviationXUnsafe,
         getStdDeviationXUnchecked, js_getStdDeviationY, getStdDeviationY,
-        getStdDeviationYUnchecked, SVGFEDropShadowElement(..),
-        gTypeSVGFEDropShadowElement)
+        getStdDeviationYUnsafe, getStdDeviationYUnchecked,
+        SVGFEDropShadowElement(..), gTypeSVGFEDropShadowElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setStdDeviation\"]($2, $3)"
         js_setStdDeviation ::
@@ -44,6 +61,15 @@ getIn1 ::
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.in1 Mozilla SVGFEDropShadowElement.in1 documentation> 
+getIn1Unsafe ::
+             (MonadIO m, HasCallStack) =>
+               SVGFEDropShadowElement -> m SVGAnimatedString
+getIn1Unsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIn1 (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.in1 Mozilla SVGFEDropShadowElement.in1 documentation> 
 getIn1Unchecked ::
                 (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedString
 getIn1Unchecked self
@@ -59,6 +85,15 @@ getDx ::
 getDx self = liftIO (nullableToMaybe <$> (js_getDx (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dx Mozilla SVGFEDropShadowElement.dx documentation> 
+getDxUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              SVGFEDropShadowElement -> m SVGAnimatedNumber
+getDxUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDx (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dx Mozilla SVGFEDropShadowElement.dx documentation> 
 getDxUnchecked ::
                (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedNumber
 getDxUnchecked self
@@ -72,6 +107,15 @@ getDy ::
       (MonadIO m) =>
         SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
 getDy self = liftIO (nullableToMaybe <$> (js_getDy (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dy Mozilla SVGFEDropShadowElement.dy documentation> 
+getDyUnsafe ::
+            (MonadIO m, HasCallStack) =>
+              SVGFEDropShadowElement -> m SVGAnimatedNumber
+getDyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDy (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dy Mozilla SVGFEDropShadowElement.dy documentation> 
 getDyUnchecked ::
@@ -91,6 +135,15 @@ getStdDeviationX self
   = liftIO (nullableToMaybe <$> (js_getStdDeviationX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationX Mozilla SVGFEDropShadowElement.stdDeviationX documentation> 
+getStdDeviationXUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGFEDropShadowElement -> m SVGAnimatedNumber
+getStdDeviationXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStdDeviationX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationX Mozilla SVGFEDropShadowElement.stdDeviationX documentation> 
 getStdDeviationXUnchecked ::
                           (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedNumber
 getStdDeviationXUnchecked self
@@ -107,6 +160,15 @@ getStdDeviationY ::
                    SVGFEDropShadowElement -> m (Maybe SVGAnimatedNumber)
 getStdDeviationY self
   = liftIO (nullableToMaybe <$> (js_getStdDeviationY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationY Mozilla SVGFEDropShadowElement.stdDeviationY documentation> 
+getStdDeviationYUnsafe ::
+                       (MonadIO m, HasCallStack) =>
+                         SVGFEDropShadowElement -> m SVGAnimatedNumber
+getStdDeviationYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStdDeviationY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.stdDeviationY Mozilla SVGFEDropShadowElement.stdDeviationY documentation> 
 getStdDeviationYUnchecked ::

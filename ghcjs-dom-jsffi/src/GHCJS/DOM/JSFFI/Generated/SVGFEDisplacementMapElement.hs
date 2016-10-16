@@ -1,15 +1,23 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFEDisplacementMapElement
        (pattern SVG_CHANNEL_UNKNOWN, pattern SVG_CHANNEL_R,
         pattern SVG_CHANNEL_G, pattern SVG_CHANNEL_B,
-        pattern SVG_CHANNEL_A, js_getIn1, getIn1, getIn1Unchecked,
-        js_getIn2, getIn2, getIn2Unchecked, js_getScale, getScale,
-        getScaleUnchecked, js_getXChannelSelector, getXChannelSelector,
-        getXChannelSelectorUnchecked, js_getYChannelSelector,
-        getYChannelSelector, getYChannelSelectorUnchecked,
+        pattern SVG_CHANNEL_A, js_getIn1, getIn1, getIn1Unsafe,
+        getIn1Unchecked, js_getIn2, getIn2, getIn2Unsafe, getIn2Unchecked,
+        js_getScale, getScale, getScaleUnsafe, getScaleUnchecked,
+        js_getXChannelSelector, getXChannelSelector,
+        getXChannelSelectorUnsafe, getXChannelSelectorUnchecked,
+        js_getYChannelSelector, getYChannelSelector,
+        getYChannelSelectorUnsafe, getYChannelSelectorUnchecked,
         SVGFEDisplacementMapElement(..), gTypeSVGFEDisplacementMapElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +33,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
 pattern SVG_CHANNEL_UNKNOWN = 0
 pattern SVG_CHANNEL_R = 1
 pattern SVG_CHANNEL_G = 2
@@ -39,6 +57,15 @@ getIn1 ::
        (MonadIO m) =>
          SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedString)
 getIn1 self = liftIO (nullableToMaybe <$> (js_getIn1 (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
+getIn1Unsafe ::
+             (MonadIO m, HasCallStack) =>
+               SVGFEDisplacementMapElement -> m SVGAnimatedString
+getIn1Unsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIn1 (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
 getIn1Unchecked ::
@@ -56,6 +83,15 @@ getIn2 ::
 getIn2 self = liftIO (nullableToMaybe <$> (js_getIn2 (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
+getIn2Unsafe ::
+             (MonadIO m, HasCallStack) =>
+               SVGFEDisplacementMapElement -> m SVGAnimatedString
+getIn2Unsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getIn2 (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
 getIn2Unchecked ::
                 (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedString
 getIn2Unchecked self
@@ -69,6 +105,15 @@ getScale ::
          (MonadIO m) =>
            SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedNumber)
 getScale self = liftIO (nullableToMaybe <$> (js_getScale (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 
+getScaleUnsafe ::
+               (MonadIO m, HasCallStack) =>
+                 SVGFEDisplacementMapElement -> m SVGAnimatedNumber
+getScaleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getScale (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 
 getScaleUnchecked ::
@@ -88,6 +133,15 @@ getXChannelSelector self
   = liftIO (nullableToMaybe <$> (js_getXChannelSelector (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.xChannelSelector Mozilla SVGFEDisplacementMapElement.xChannelSelector documentation> 
+getXChannelSelectorUnsafe ::
+                          (MonadIO m, HasCallStack) =>
+                            SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
+getXChannelSelectorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getXChannelSelector (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.xChannelSelector Mozilla SVGFEDisplacementMapElement.xChannelSelector documentation> 
 getXChannelSelectorUnchecked ::
                              (MonadIO m) =>
                                SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
@@ -105,6 +159,15 @@ getYChannelSelector ::
                       SVGFEDisplacementMapElement -> m (Maybe SVGAnimatedEnumeration)
 getYChannelSelector self
   = liftIO (nullableToMaybe <$> (js_getYChannelSelector (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.yChannelSelector Mozilla SVGFEDisplacementMapElement.yChannelSelector documentation> 
+getYChannelSelectorUnsafe ::
+                          (MonadIO m, HasCallStack) =>
+                            SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
+getYChannelSelectorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getYChannelSelector (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.yChannelSelector Mozilla SVGFEDisplacementMapElement.yChannelSelector documentation> 
 getYChannelSelectorUnchecked ::

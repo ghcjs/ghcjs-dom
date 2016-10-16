@@ -1,14 +1,21 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGColor
        (js_setRGBColor, setRGBColor, js_setRGBColorICCColor,
         setRGBColorICCColor, js_setColor, setColor,
         pattern SVG_COLORTYPE_UNKNOWN, pattern SVG_COLORTYPE_RGBCOLOR,
         pattern SVG_COLORTYPE_RGBCOLOR_ICCCOLOR,
         pattern SVG_COLORTYPE_CURRENTCOLOR, js_getColorType, getColorType,
-        js_getRgbColor, getRgbColor, getRgbColorUnchecked, SVGColor(..),
-        gTypeSVGColor, IsSVGColor, toSVGColor)
+        js_getRgbColor, getRgbColor, getRgbColorUnsafe,
+        getRgbColorUnchecked, SVGColor(..), gTypeSVGColor, IsSVGColor,
+        toSVGColor)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +31,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"setRGBColor\"]($2)"
         js_setRGBColor :: SVGColor -> JSString -> IO ()
@@ -81,6 +98,14 @@ getRgbColor ::
             (MonadIO m, IsSVGColor self) => self -> m (Maybe RGBColor)
 getRgbColor self
   = liftIO (nullableToMaybe <$> (js_getRgbColor (toSVGColor self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColor Mozilla SVGColor.rgbColor documentation> 
+getRgbColorUnsafe ::
+                  (MonadIO m, IsSVGColor self, HasCallStack) => self -> m RGBColor
+getRgbColorUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRgbColor (toSVGColor self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGColor.rgbColor Mozilla SVGColor.rgbColor documentation> 
 getRgbColorUnchecked ::

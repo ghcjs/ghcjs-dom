@@ -1,11 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLAllCollection
-       (js_item, item, item_, itemUnchecked, js_namedItem, namedItem,
-        namedItem_, namedItemUnchecked, js_tags, tags, tags_,
-        tagsUnchecked, js_getLength, getLength, HTMLAllCollection(..),
-        gTypeHTMLAllCollection)
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js_namedItem,
+        namedItem, namedItem_, namedItemUnsafe, namedItemUnchecked,
+        js_tags, tags, tags_, tagsUnsafe, tagsUnchecked, js_getLength,
+        getLength, HTMLAllCollection(..), gTypeHTMLAllCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -21,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
         HTMLAllCollection -> Word -> IO (Nullable Node)
@@ -33,6 +49,14 @@ item self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.item Mozilla HTMLAllCollection.item documentation> 
 item_ :: (MonadIO m) => HTMLAllCollection -> Word -> m ()
 item_ self index = liftIO (void (js_item (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.item Mozilla HTMLAllCollection.item documentation> 
+itemUnsafe ::
+           (MonadIO m, HasCallStack) => HTMLAllCollection -> Word -> m Node
+itemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_item (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.item Mozilla HTMLAllCollection.item documentation> 
 itemUnchecked :: (MonadIO m) => HTMLAllCollection -> Word -> m Node
@@ -57,6 +81,15 @@ namedItem_ self name
   = liftIO (void (js_namedItem (self) (toJSString name)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.namedItem Mozilla HTMLAllCollection.namedItem documentation> 
+namedItemUnsafe ::
+                (MonadIO m, ToJSString name, HasCallStack) =>
+                  HTMLAllCollection -> name -> m Node
+namedItemUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_namedItem (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.namedItem Mozilla HTMLAllCollection.namedItem documentation> 
 namedItemUnchecked ::
                    (MonadIO m, ToJSString name) => HTMLAllCollection -> name -> m Node
 namedItemUnchecked self name
@@ -78,6 +111,15 @@ tags self name
 tags_ ::
       (MonadIO m, ToJSString name) => HTMLAllCollection -> name -> m ()
 tags_ self name = liftIO (void (js_tags (self) (toJSString name)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
+tagsUnsafe ::
+           (MonadIO m, ToJSString name, HasCallStack) =>
+             HTMLAllCollection -> name -> m NodeList
+tagsUnsafe self name
+  = liftIO
+      ((nullableToMaybe <$> (js_tags (self) (toJSString name))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
 tagsUnchecked ::

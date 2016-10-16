@@ -1,15 +1,24 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGFESpotLightElement
-       (js_getX, getX, getXUnchecked, js_getY, getY, getYUnchecked,
-        js_getZ, getZ, getZUnchecked, js_getPointsAtX, getPointsAtX,
+       (js_getX, getX, getXUnsafe, getXUnchecked, js_getY, getY,
+        getYUnsafe, getYUnchecked, js_getZ, getZ, getZUnsafe,
+        getZUnchecked, js_getPointsAtX, getPointsAtX, getPointsAtXUnsafe,
         getPointsAtXUnchecked, js_getPointsAtY, getPointsAtY,
-        getPointsAtYUnchecked, js_getPointsAtZ, getPointsAtZ,
-        getPointsAtZUnchecked, js_getSpecularExponent, getSpecularExponent,
-        getSpecularExponentUnchecked, js_getLimitingConeAngle,
-        getLimitingConeAngle, getLimitingConeAngleUnchecked,
+        getPointsAtYUnsafe, getPointsAtYUnchecked, js_getPointsAtZ,
+        getPointsAtZ, getPointsAtZUnsafe, getPointsAtZUnchecked,
+        js_getSpecularExponent, getSpecularExponent,
+        getSpecularExponentUnsafe, getSpecularExponentUnchecked,
+        js_getLimitingConeAngle, getLimitingConeAngle,
+        getLimitingConeAngleUnsafe, getLimitingConeAngleUnchecked,
         SVGFESpotLightElement(..), gTypeSVGFESpotLightElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -25,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGFESpotLightElement -> IO (Nullable SVGAnimatedNumber)
@@ -33,6 +52,15 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX ::
      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getX self = liftIO (nullableToMaybe <$> (js_getX (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.x Mozilla SVGFESpotLightElement.x documentation> 
+getXUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFESpotLightElement -> m SVGAnimatedNumber
+getXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.x Mozilla SVGFESpotLightElement.x documentation> 
 getXUnchecked ::
@@ -49,6 +77,15 @@ getY ::
 getY self = liftIO (nullableToMaybe <$> (js_getY (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.y Mozilla SVGFESpotLightElement.y documentation> 
+getYUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFESpotLightElement -> m SVGAnimatedNumber
+getYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.y Mozilla SVGFESpotLightElement.y documentation> 
 getYUnchecked ::
               (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getYUnchecked self
@@ -61,6 +98,15 @@ foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
 getZ ::
      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getZ self = liftIO (nullableToMaybe <$> (js_getZ (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.z Mozilla SVGFESpotLightElement.z documentation> 
+getZUnsafe ::
+           (MonadIO m, HasCallStack) =>
+             SVGFESpotLightElement -> m SVGAnimatedNumber
+getZUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getZ (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.z Mozilla SVGFESpotLightElement.z documentation> 
 getZUnchecked ::
@@ -79,6 +125,15 @@ getPointsAtX self
   = liftIO (nullableToMaybe <$> (js_getPointsAtX (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
+getPointsAtXUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     SVGFESpotLightElement -> m SVGAnimatedNumber
+getPointsAtXUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPointsAtX (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
 getPointsAtXUnchecked ::
                       (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtXUnchecked self
@@ -93,6 +148,15 @@ getPointsAtY ::
              (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getPointsAtY self
   = liftIO (nullableToMaybe <$> (js_getPointsAtY (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
+getPointsAtYUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     SVGFESpotLightElement -> m SVGAnimatedNumber
+getPointsAtYUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPointsAtY (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
 getPointsAtYUnchecked ::
@@ -111,6 +175,15 @@ getPointsAtZ self
   = liftIO (nullableToMaybe <$> (js_getPointsAtZ (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
+getPointsAtZUnsafe ::
+                   (MonadIO m, HasCallStack) =>
+                     SVGFESpotLightElement -> m SVGAnimatedNumber
+getPointsAtZUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPointsAtZ (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
 getPointsAtZUnchecked ::
                       (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtZUnchecked self
@@ -125,6 +198,15 @@ getSpecularExponent ::
                     (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getSpecularExponent self
   = liftIO (nullableToMaybe <$> (js_getSpecularExponent (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.specularExponent Mozilla SVGFESpotLightElement.specularExponent documentation> 
+getSpecularExponentUnsafe ::
+                          (MonadIO m, HasCallStack) =>
+                            SVGFESpotLightElement -> m SVGAnimatedNumber
+getSpecularExponentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getSpecularExponent (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.specularExponent Mozilla SVGFESpotLightElement.specularExponent documentation> 
 getSpecularExponentUnchecked ::
@@ -142,6 +224,15 @@ getLimitingConeAngle ::
                      (MonadIO m) => SVGFESpotLightElement -> m (Maybe SVGAnimatedNumber)
 getLimitingConeAngle self
   = liftIO (nullableToMaybe <$> (js_getLimitingConeAngle (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.limitingConeAngle Mozilla SVGFESpotLightElement.limitingConeAngle documentation> 
+getLimitingConeAngleUnsafe ::
+                           (MonadIO m, HasCallStack) =>
+                             SVGFESpotLightElement -> m SVGAnimatedNumber
+getLimitingConeAngleUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLimitingConeAngle (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.limitingConeAngle Mozilla SVGFESpotLightElement.limitingConeAngle documentation> 
 getLimitingConeAngleUnchecked ::

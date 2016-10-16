@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
        (js_sortedTrackListForMenu, sortedTrackListForMenu,
         sortedTrackListForMenu_, js_sortedTrackListForMenuAudio,
@@ -11,10 +16,12 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
         js_exitedFullscreen, exitedFullscreen, js_enterFullscreenOptimized,
         enterFullscreenOptimized, js_mediaUIImageData, mediaUIImageData,
         mediaUIImageData_, js_getCaptionMenuOffItem, getCaptionMenuOffItem,
-        getCaptionMenuOffItemUnchecked, js_getCaptionMenuAutomaticItem,
-        getCaptionMenuAutomaticItem, getCaptionMenuAutomaticItemUnchecked,
-        js_getCaptionDisplayMode, getCaptionDisplayMode,
-        js_getTextTrackContainer, getTextTrackContainer,
+        getCaptionMenuOffItemUnsafe, getCaptionMenuOffItemUnchecked,
+        js_getCaptionMenuAutomaticItem, getCaptionMenuAutomaticItem,
+        getCaptionMenuAutomaticItemUnsafe,
+        getCaptionMenuAutomaticItemUnchecked, js_getCaptionDisplayMode,
+        getCaptionDisplayMode, js_getTextTrackContainer,
+        getTextTrackContainer, getTextTrackContainerUnsafe,
         getTextTrackContainerUnchecked, js_getMediaPlaybackAllowsInline,
         getMediaPlaybackAllowsInline, js_getSupportsFullscreen,
         getSupportsFullscreen, js_getUserGestureRequired,
@@ -27,6 +34,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
         gTypeMediaControlsHost)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -42,6 +50,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe
         "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenu ::
@@ -199,6 +217,14 @@ getCaptionMenuOffItem self
   = liftIO (nullableToMaybe <$> (js_getCaptionMenuOffItem (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuOffItem Mozilla MediaControlsHost.captionMenuOffItem documentation> 
+getCaptionMenuOffItemUnsafe ::
+                            (MonadIO m, HasCallStack) => MediaControlsHost -> m TextTrack
+getCaptionMenuOffItemUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCaptionMenuOffItem (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuOffItem Mozilla MediaControlsHost.captionMenuOffItem documentation> 
 getCaptionMenuOffItemUnchecked ::
                                (MonadIO m) => MediaControlsHost -> m TextTrack
 getCaptionMenuOffItemUnchecked self
@@ -215,6 +241,14 @@ getCaptionMenuAutomaticItem ::
 getCaptionMenuAutomaticItem self
   = liftIO
       (nullableToMaybe <$> (js_getCaptionMenuAutomaticItem (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuAutomaticItem Mozilla MediaControlsHost.captionMenuAutomaticItem documentation> 
+getCaptionMenuAutomaticItemUnsafe ::
+                                  (MonadIO m, HasCallStack) => MediaControlsHost -> m TextTrack
+getCaptionMenuAutomaticItemUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCaptionMenuAutomaticItem (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuAutomaticItem Mozilla MediaControlsHost.captionMenuAutomaticItem documentation> 
 getCaptionMenuAutomaticItemUnchecked ::
@@ -242,6 +276,14 @@ getTextTrackContainer ::
                       (MonadIO m) => MediaControlsHost -> m (Maybe HTMLElement)
 getTextTrackContainer self
   = liftIO (nullableToMaybe <$> (js_getTextTrackContainer (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.textTrackContainer Mozilla MediaControlsHost.textTrackContainer documentation> 
+getTextTrackContainerUnsafe ::
+                            (MonadIO m, HasCallStack) => MediaControlsHost -> m HTMLElement
+getTextTrackContainerUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTextTrackContainer (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.textTrackContainer Mozilla MediaControlsHost.textTrackContainer documentation> 
 getTextTrackContainerUnchecked ::

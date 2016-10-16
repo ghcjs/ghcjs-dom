@@ -1,17 +1,26 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MutationRecord
-       (js_getType, getType, js_getTarget, getTarget, getTargetUnchecked,
-        js_getAddedNodes, getAddedNodes, getAddedNodesUnchecked,
-        js_getRemovedNodes, getRemovedNodes, getRemovedNodesUnchecked,
+       (js_getType, getType, js_getTarget, getTarget, getTargetUnsafe,
+        getTargetUnchecked, js_getAddedNodes, getAddedNodes,
+        getAddedNodesUnsafe, getAddedNodesUnchecked, js_getRemovedNodes,
+        getRemovedNodes, getRemovedNodesUnsafe, getRemovedNodesUnchecked,
         js_getPreviousSibling, getPreviousSibling,
-        getPreviousSiblingUnchecked, js_getNextSibling, getNextSibling,
+        getPreviousSiblingUnsafe, getPreviousSiblingUnchecked,
+        js_getNextSibling, getNextSibling, getNextSiblingUnsafe,
         getNextSiblingUnchecked, js_getAttributeName, getAttributeName,
-        getAttributeNameUnchecked, js_getAttributeNamespace,
-        getAttributeNamespace, getAttributeNamespaceUnchecked,
-        js_getOldValue, getOldValue, getOldValueUnchecked,
-        MutationRecord(..), gTypeMutationRecord)
+        getAttributeNameUnsafe, getAttributeNameUnchecked,
+        js_getAttributeNamespace, getAttributeNamespace,
+        getAttributeNamespaceUnsafe, getAttributeNamespaceUnchecked,
+        js_getOldValue, getOldValue, getOldValueUnsafe,
+        getOldValueUnchecked, MutationRecord(..), gTypeMutationRecord)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +36,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
         MutationRecord -> IO JSString
@@ -44,6 +63,14 @@ getTarget :: (MonadIO m) => MutationRecord -> m (Maybe Node)
 getTarget self = liftIO (nullableToMaybe <$> (js_getTarget (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.target Mozilla MutationRecord.target documentation> 
+getTargetUnsafe ::
+                (MonadIO m, HasCallStack) => MutationRecord -> m Node
+getTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTarget (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.target Mozilla MutationRecord.target documentation> 
 getTargetUnchecked :: (MonadIO m) => MutationRecord -> m Node
 getTargetUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getTarget (self)))
@@ -56,6 +83,14 @@ getAddedNodes ::
               (MonadIO m) => MutationRecord -> m (Maybe NodeList)
 getAddedNodes self
   = liftIO (nullableToMaybe <$> (js_getAddedNodes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.addedNodes Mozilla MutationRecord.addedNodes documentation> 
+getAddedNodesUnsafe ::
+                    (MonadIO m, HasCallStack) => MutationRecord -> m NodeList
+getAddedNodesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAddedNodes (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.addedNodes Mozilla MutationRecord.addedNodes documentation> 
 getAddedNodesUnchecked ::
@@ -71,6 +106,14 @@ getRemovedNodes ::
                 (MonadIO m) => MutationRecord -> m (Maybe NodeList)
 getRemovedNodes self
   = liftIO (nullableToMaybe <$> (js_getRemovedNodes (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.removedNodes Mozilla MutationRecord.removedNodes documentation> 
+getRemovedNodesUnsafe ::
+                      (MonadIO m, HasCallStack) => MutationRecord -> m NodeList
+getRemovedNodesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getRemovedNodes (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.removedNodes Mozilla MutationRecord.removedNodes documentation> 
 getRemovedNodesUnchecked ::
@@ -89,6 +132,14 @@ getPreviousSibling self
   = liftIO (nullableToMaybe <$> (js_getPreviousSibling (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
+getPreviousSiblingUnsafe ::
+                         (MonadIO m, HasCallStack) => MutationRecord -> m Node
+getPreviousSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreviousSibling (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
 getPreviousSiblingUnchecked ::
                             (MonadIO m) => MutationRecord -> m Node
 getPreviousSiblingUnchecked self
@@ -102,6 +153,14 @@ foreign import javascript unsafe "$1[\"nextSibling\"]"
 getNextSibling :: (MonadIO m) => MutationRecord -> m (Maybe Node)
 getNextSibling self
   = liftIO (nullableToMaybe <$> (js_getNextSibling (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
+getNextSiblingUnsafe ::
+                     (MonadIO m, HasCallStack) => MutationRecord -> m Node
+getNextSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNextSibling (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
 getNextSiblingUnchecked :: (MonadIO m) => MutationRecord -> m Node
@@ -118,6 +177,15 @@ getAttributeName ::
                    MutationRecord -> m (Maybe result)
 getAttributeName self
   = liftIO (fromMaybeJSString <$> (js_getAttributeName (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeName Mozilla MutationRecord.attributeName documentation> 
+getAttributeNameUnsafe ::
+                       (MonadIO m, HasCallStack, FromJSString result) =>
+                         MutationRecord -> m result
+getAttributeNameUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAttributeName (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeName Mozilla MutationRecord.attributeName documentation> 
 getAttributeNameUnchecked ::
@@ -138,6 +206,15 @@ getAttributeNamespace self
   = liftIO (fromMaybeJSString <$> (js_getAttributeNamespace (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeNamespace Mozilla MutationRecord.attributeNamespace documentation> 
+getAttributeNamespaceUnsafe ::
+                            (MonadIO m, HasCallStack, FromJSString result) =>
+                              MutationRecord -> m result
+getAttributeNamespaceUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAttributeNamespace (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeNamespace Mozilla MutationRecord.attributeNamespace documentation> 
 getAttributeNamespaceUnchecked ::
                                (MonadIO m, FromJSString result) => MutationRecord -> m result
 getAttributeNamespaceUnchecked self
@@ -154,6 +231,15 @@ getOldValue ::
               MutationRecord -> m (Maybe result)
 getOldValue self
   = liftIO (fromMaybeJSString <$> (js_getOldValue (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.oldValue Mozilla MutationRecord.oldValue documentation> 
+getOldValueUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    MutationRecord -> m result
+getOldValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getOldValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.oldValue Mozilla MutationRecord.oldValue documentation> 
 getOldValueUnchecked ::

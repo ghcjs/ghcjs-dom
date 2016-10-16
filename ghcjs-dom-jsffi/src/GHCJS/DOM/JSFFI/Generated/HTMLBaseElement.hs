@@ -1,10 +1,16 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLBaseElement
-       (js_setHref, setHref, js_getHref, getHref, getHrefUnchecked,
-        js_setTarget, setTarget, js_getTarget, getTarget,
+       (js_setHref, setHref, js_getHref, getHref, getHrefUnsafe,
+        getHrefUnchecked, js_setTarget, setTarget, js_getTarget, getTarget,
         HTMLBaseElement(..), gTypeHTMLBaseElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +26,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         HTMLBaseElement -> Nullable JSString -> IO ()
@@ -37,6 +53,15 @@ getHref ::
         (MonadIO m, FromJSString result) =>
           HTMLBaseElement -> m (Maybe result)
 getHref self = liftIO (fromMaybeJSString <$> (js_getHref (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
+getHrefUnsafe ::
+              (MonadIO m, HasCallStack, FromJSString result) =>
+                HTMLBaseElement -> m result
+getHrefUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHref (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.href Mozilla HTMLBaseElement.href documentation> 
 getHrefUnchecked ::

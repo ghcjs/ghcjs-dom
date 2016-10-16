@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLInputElement
        (js_stepUp, stepUp, js_stepDown, stepDown, js_checkValidity,
         checkValidity, checkValidity_, js_setCustomValidity,
@@ -12,52 +17,57 @@ module GHCJS.DOM.JSFFI.Generated.HTMLInputElement
         js_getDefaultChecked, getDefaultChecked, js_setChecked, setChecked,
         js_getChecked, getChecked, js_setDirName, setDirName,
         js_getDirName, getDirName, js_setDisabled, setDisabled,
-        js_getDisabled, getDisabled, js_getForm, getForm, getFormUnchecked,
-        js_setFiles, setFiles, js_getFiles, getFiles, getFilesUnchecked,
-        js_setFormAction, setFormAction, js_getFormAction, getFormAction,
-        js_setFormEnctype, setFormEnctype, js_getFormEnctype,
-        getFormEnctype, getFormEnctypeUnchecked, js_setFormMethod,
-        setFormMethod, js_getFormMethod, getFormMethod,
+        js_getDisabled, getDisabled, js_getForm, getForm, getFormUnsafe,
+        getFormUnchecked, js_setFiles, setFiles, js_getFiles, getFiles,
+        getFilesUnsafe, getFilesUnchecked, js_setFormAction, setFormAction,
+        js_getFormAction, getFormAction, js_setFormEnctype, setFormEnctype,
+        js_getFormEnctype, getFormEnctype, getFormEnctypeUnsafe,
+        getFormEnctypeUnchecked, js_setFormMethod, setFormMethod,
+        js_getFormMethod, getFormMethod, getFormMethodUnsafe,
         getFormMethodUnchecked, js_setFormNoValidate, setFormNoValidate,
         js_getFormNoValidate, getFormNoValidate, js_setFormTarget,
         setFormTarget, js_getFormTarget, getFormTarget, js_setHeight,
         setHeight, js_getHeight, getHeight, js_setIndeterminate,
         setIndeterminate, js_getIndeterminate, getIndeterminate,
-        js_getList, getList, getListUnchecked, js_setMax, setMax,
-        js_getMax, getMax, js_setMaxLength, setMaxLength, js_getMaxLength,
-        getMaxLength, js_setMin, setMin, js_getMin, getMin, js_setMultiple,
-        setMultiple, js_getMultiple, getMultiple, js_setName, setName,
-        js_getName, getName, js_setPattern, setPattern, js_getPattern,
-        getPattern, js_setPlaceholder, setPlaceholder, js_getPlaceholder,
-        getPlaceholder, js_setReadOnly, setReadOnly, js_getReadOnly,
-        getReadOnly, js_setRequired, setRequired, js_getRequired,
-        getRequired, js_setSize, setSize, js_getSize, getSize, js_setSrc,
-        setSrc, js_getSrc, getSrc, js_setStep, setStep, js_getStep,
-        getStep, js_setType, setType, js_getType, getType,
-        js_setDefaultValue, setDefaultValue, js_getDefaultValue,
-        getDefaultValue, getDefaultValueUnchecked, js_setValue, setValue,
-        js_getValue, getValue, getValueUnchecked, js_setValueAsDate,
+        js_getList, getList, getListUnsafe, getListUnchecked, js_setMax,
+        setMax, js_getMax, getMax, js_setMaxLength, setMaxLength,
+        js_getMaxLength, getMaxLength, js_setMin, setMin, js_getMin,
+        getMin, js_setMultiple, setMultiple, js_getMultiple, getMultiple,
+        js_setName, setName, js_getName, getName, js_setPattern,
+        setPattern, js_getPattern, getPattern, js_setPlaceholder,
+        setPlaceholder, js_getPlaceholder, getPlaceholder, js_setReadOnly,
+        setReadOnly, js_getReadOnly, getReadOnly, js_setRequired,
+        setRequired, js_getRequired, getRequired, js_setSize, setSize,
+        js_getSize, getSize, js_setSrc, setSrc, js_getSrc, getSrc,
+        js_setStep, setStep, js_getStep, getStep, js_setType, setType,
+        js_getType, getType, js_setDefaultValue, setDefaultValue,
+        js_getDefaultValue, getDefaultValue, getDefaultValueUnsafe,
+        getDefaultValueUnchecked, js_setValue, setValue, js_getValue,
+        getValue, getValueUnsafe, getValueUnchecked, js_setValueAsDate,
         setValueAsDate, js_getValueAsDate, getValueAsDate,
-        getValueAsDateUnchecked, js_setValueAsNumber, setValueAsNumber,
-        js_getValueAsNumber, getValueAsNumber, js_setWidth, setWidth,
-        js_getWidth, getWidth, js_getWillValidate, getWillValidate,
-        js_getValidity, getValidity, getValidityUnchecked,
-        js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, getLabelsUnchecked, js_setSelectionStart,
-        setSelectionStart, js_getSelectionStart, getSelectionStart,
-        js_setSelectionEnd, setSelectionEnd, js_getSelectionEnd,
-        getSelectionEnd, js_setSelectionDirection, setSelectionDirection,
+        getValueAsDateUnsafe, getValueAsDateUnchecked, js_setValueAsNumber,
+        setValueAsNumber, js_getValueAsNumber, getValueAsNumber,
+        js_setWidth, setWidth, js_getWidth, getWidth, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity, getValidityUnsafe,
+        getValidityUnchecked, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels, getLabelsUnsafe,
+        getLabelsUnchecked, js_setSelectionStart, setSelectionStart,
+        js_getSelectionStart, getSelectionStart, js_setSelectionEnd,
+        setSelectionEnd, js_getSelectionEnd, getSelectionEnd,
+        js_setSelectionDirection, setSelectionDirection,
         js_getSelectionDirection, getSelectionDirection, js_setAlign,
         setAlign, js_getAlign, getAlign, js_setUseMap, setUseMap,
         js_getUseMap, getUseMap, js_setIncremental, setIncremental,
         js_getIncremental, getIncremental, js_setAutocorrect,
         setAutocorrect, js_getAutocorrect, getAutocorrect,
         js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, getAutocapitalizeUnchecked, js_setCapture,
-        setCapture, js_getCapture, getCapture, HTMLInputElement(..),
+        getAutocapitalize, getAutocapitalizeUnsafe,
+        getAutocapitalizeUnchecked, js_setCapture, setCapture,
+        js_getCapture, getCapture, HTMLInputElement(..),
         gTypeHTMLInputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -73,6 +83,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"stepUp\"]($2)" js_stepUp ::
         HTMLInputElement -> Int -> IO ()
@@ -288,6 +308,14 @@ getForm ::
 getForm self = liftIO (nullableToMaybe <$> (js_getForm (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.form Mozilla HTMLInputElement.form documentation> 
+getFormUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLInputElement -> m HTMLFormElement
+getFormUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getForm (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.form Mozilla HTMLInputElement.form documentation> 
 getFormUnchecked ::
                  (MonadIO m) => HTMLInputElement -> m HTMLFormElement
 getFormUnchecked self
@@ -308,6 +336,14 @@ foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
 getFiles :: (MonadIO m) => HTMLInputElement -> m (Maybe FileList)
 getFiles self = liftIO (nullableToMaybe <$> (js_getFiles (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
+getFilesUnsafe ::
+               (MonadIO m, HasCallStack) => HTMLInputElement -> m FileList
+getFilesUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFiles (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
 getFilesUnchecked :: (MonadIO m) => HTMLInputElement -> m FileList
@@ -353,6 +389,15 @@ getFormEnctype self
   = liftIO (fromMaybeJSString <$> (js_getFormEnctype (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
+getFormEnctypeUnsafe ::
+                     (MonadIO m, HasCallStack, FromJSString result) =>
+                       HTMLInputElement -> m result
+getFormEnctypeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getFormEnctype (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formEnctype Mozilla HTMLInputElement.formEnctype documentation> 
 getFormEnctypeUnchecked ::
                         (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getFormEnctypeUnchecked self
@@ -378,6 +423,15 @@ getFormMethod ::
                 HTMLInputElement -> m (Maybe result)
 getFormMethod self
   = liftIO (fromMaybeJSString <$> (js_getFormMethod (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
+getFormMethodUnsafe ::
+                    (MonadIO m, HasCallStack, FromJSString result) =>
+                      HTMLInputElement -> m result
+getFormMethodUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getFormMethod (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.formMethod Mozilla HTMLInputElement.formMethod documentation> 
 getFormMethodUnchecked ::
@@ -454,6 +508,14 @@ foreign import javascript unsafe "$1[\"list\"]" js_getList ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.list Mozilla HTMLInputElement.list documentation> 
 getList :: (MonadIO m) => HTMLInputElement -> m (Maybe HTMLElement)
 getList self = liftIO (nullableToMaybe <$> (js_getList (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.list Mozilla HTMLInputElement.list documentation> 
+getListUnsafe ::
+              (MonadIO m, HasCallStack) => HTMLInputElement -> m HTMLElement
+getListUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getList (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.list Mozilla HTMLInputElement.list documentation> 
 getListUnchecked ::
@@ -684,6 +746,15 @@ getDefaultValue self
   = liftIO (fromMaybeJSString <$> (js_getDefaultValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
+getDefaultValueUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) =>
+                        HTMLInputElement -> m result
+getDefaultValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getDefaultValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.defaultValue Mozilla HTMLInputElement.defaultValue documentation> 
 getDefaultValueUnchecked ::
                          (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getDefaultValueUnchecked self
@@ -710,6 +781,15 @@ getValue ::
 getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
+getValueUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) =>
+                 HTMLInputElement -> m result
+getValueUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getValue (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 getValueUnchecked ::
                   (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getValueUnchecked self
@@ -732,6 +812,14 @@ foreign import javascript unsafe "$1[\"valueAsDate\"]"
 getValueAsDate :: (MonadIO m) => HTMLInputElement -> m (Maybe Date)
 getValueAsDate self
   = liftIO (nullableToMaybe <$> (js_getValueAsDate (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsDate Mozilla HTMLInputElement.valueAsDate documentation> 
+getValueAsDateUnsafe ::
+                     (MonadIO m, HasCallStack) => HTMLInputElement -> m Date
+getValueAsDateUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValueAsDate (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsDate Mozilla HTMLInputElement.valueAsDate documentation> 
 getValueAsDateUnchecked ::
@@ -786,6 +874,14 @@ getValidity self
   = liftIO (nullableToMaybe <$> (js_getValidity (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.validity Mozilla HTMLInputElement.validity documentation> 
+getValidityUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLInputElement -> m ValidityState
+getValidityUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getValidity (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.validity Mozilla HTMLInputElement.validity documentation> 
 getValidityUnchecked ::
                      (MonadIO m) => HTMLInputElement -> m ValidityState
 getValidityUnchecked self
@@ -806,6 +902,14 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.labels Mozilla HTMLInputElement.labels documentation> 
 getLabels :: (MonadIO m) => HTMLInputElement -> m (Maybe NodeList)
 getLabels self = liftIO (nullableToMaybe <$> (js_getLabels (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.labels Mozilla HTMLInputElement.labels documentation> 
+getLabelsUnsafe ::
+                (MonadIO m, HasCallStack) => HTMLInputElement -> m NodeList
+getLabelsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLabels (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.labels Mozilla HTMLInputElement.labels documentation> 
 getLabelsUnchecked :: (MonadIO m) => HTMLInputElement -> m NodeList
@@ -939,6 +1043,15 @@ getAutocapitalize ::
                     HTMLInputElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO (fromMaybeJSString <$> (js_getAutocapitalize (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
+getAutocapitalizeUnsafe ::
+                        (MonadIO m, HasCallStack, FromJSString result) =>
+                          HTMLInputElement -> m result
+getAutocapitalizeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAutocapitalize (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.autocapitalize Mozilla HTMLInputElement.autocapitalize documentation> 
 getAutocapitalizeUnchecked ::

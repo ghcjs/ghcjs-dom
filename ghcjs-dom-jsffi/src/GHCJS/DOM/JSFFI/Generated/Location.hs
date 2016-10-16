@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Location
        (js_assign, assign, js_replace, replace, js_reload, reload,
         js_toString, toString, toString_, js_setHref, setHref, js_getHref,
@@ -9,9 +14,11 @@ module GHCJS.DOM.JSFFI.Generated.Location
         getPathname, js_setSearch, setSearch, js_getSearch, getSearch,
         js_setHash, setHash, js_getHash, getHash, js_getOrigin, getOrigin,
         js_getAncestorOrigins, getAncestorOrigins,
-        getAncestorOriginsUnchecked, Location(..), gTypeLocation)
+        getAncestorOriginsUnsafe, getAncestorOriginsUnchecked,
+        Location(..), gTypeLocation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -27,6 +34,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"assign\"]($2)" js_assign ::
         Location -> JSString -> IO ()
@@ -202,6 +219,14 @@ getAncestorOrigins ::
                    (MonadIO m) => Location -> m (Maybe DOMStringList)
 getAncestorOrigins self
   = liftIO (nullableToMaybe <$> (js_getAncestorOrigins (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 
+getAncestorOriginsUnsafe ::
+                         (MonadIO m, HasCallStack) => Location -> m DOMStringList
+getAncestorOriginsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getAncestorOrigins (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 
 getAncestorOriginsUnchecked ::

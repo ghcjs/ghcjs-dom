@@ -1,13 +1,20 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CharacterData
        (js_substringData, substringData, substringData_,
-        substringDataUnchecked, js_appendData, appendData, js_insertData,
-        insertData, js_deleteData, deleteData, js_replaceData, replaceData,
-        js_setData, setData, js_getData, getData, getDataUnchecked,
-        js_getLength, getLength, CharacterData(..), gTypeCharacterData,
-        IsCharacterData, toCharacterData)
+        substringDataUnsafe, substringDataUnchecked, js_appendData,
+        appendData, js_insertData, insertData, js_deleteData, deleteData,
+        js_replaceData, replaceData, js_setData, setData, js_getData,
+        getData, getDataUnsafe, getDataUnchecked, js_getLength, getLength,
+        CharacterData(..), gTypeCharacterData, IsCharacterData,
+        toCharacterData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -23,6 +30,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
         js_substringData ::
@@ -43,6 +60,17 @@ substringData_ ::
 substringData_ self offset length
   = liftIO
       (void (js_substringData (toCharacterData self) offset length))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
+substringDataUnsafe ::
+                    (MonadIO m, IsCharacterData self, HasCallStack,
+                     FromJSString result) =>
+                      self -> Word -> Word -> m result
+substringDataUnsafe self offset length
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_substringData (toCharacterData self) offset length))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
 substringDataUnchecked ::
@@ -116,6 +144,16 @@ getData ::
 getData self
   = liftIO
       (fromMaybeJSString <$> (js_getData (toCharacterData self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
+getDataUnsafe ::
+              (MonadIO m, IsCharacterData self, HasCallStack,
+               FromJSString result) =>
+                self -> m result
+getDataUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getData (toCharacterData self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 getDataUnchecked ::

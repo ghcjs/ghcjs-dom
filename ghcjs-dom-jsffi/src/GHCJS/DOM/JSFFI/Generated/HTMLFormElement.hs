@@ -1,25 +1,33 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFormElement
-       (js__get, _get, _get_, _getUnchecked, js_submit, submit, js_reset,
-        reset, js_checkValidity, checkValidity, checkValidity_,
-        js_requestAutocomplete, requestAutocomplete, js_setAcceptCharset,
-        setAcceptCharset, js_getAcceptCharset, getAcceptCharset,
-        js_setAction, setAction, js_getAction, getAction,
+       (js__get, _get, _get_, _getUnsafe, _getUnchecked, js_submit,
+        submit, js_reset, reset, js_checkValidity, checkValidity,
+        checkValidity_, js_requestAutocomplete, requestAutocomplete,
+        js_setAcceptCharset, setAcceptCharset, js_getAcceptCharset,
+        getAcceptCharset, js_setAction, setAction, js_getAction, getAction,
         js_setAutocomplete, setAutocomplete, js_getAutocomplete,
         getAutocomplete, js_setEnctype, setEnctype, js_getEnctype,
-        getEnctype, getEnctypeUnchecked, js_setEncoding, setEncoding,
-        js_getEncoding, getEncoding, getEncodingUnchecked, js_setMethod,
-        setMethod, js_getMethod, getMethod, getMethodUnchecked, js_setName,
+        getEnctype, getEnctypeUnsafe, getEnctypeUnchecked, js_setEncoding,
+        setEncoding, js_getEncoding, getEncoding, getEncodingUnsafe,
+        getEncodingUnchecked, js_setMethod, setMethod, js_getMethod,
+        getMethod, getMethodUnsafe, getMethodUnchecked, js_setName,
         setName, js_getName, getName, js_setNoValidate, setNoValidate,
         js_getNoValidate, getNoValidate, js_setTarget, setTarget,
         js_getTarget, getTarget, js_getElements, getElements,
-        getElementsUnchecked, js_getLength, getLength, js_setAutocorrect,
-        setAutocorrect, js_getAutocorrect, getAutocorrect,
-        js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, getAutocapitalizeUnchecked, autocomplete,
-        autocompleteerror, HTMLFormElement(..), gTypeHTMLFormElement)
+        getElementsUnsafe, getElementsUnchecked, js_getLength, getLength,
+        js_setAutocorrect, setAutocorrect, js_getAutocorrect,
+        getAutocorrect, js_setAutocapitalize, setAutocapitalize,
+        js_getAutocapitalize, getAutocapitalize, getAutocapitalizeUnsafe,
+        getAutocapitalizeUnchecked, autocomplete, autocompleteerror,
+        HTMLFormElement(..), gTypeHTMLFormElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -35,6 +43,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"_get\"]($2)" js__get ::
         HTMLFormElement -> Word -> IO (Nullable Element)
@@ -47,6 +65,14 @@ _get self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
 _get_ :: (MonadIO m) => HTMLFormElement -> Word -> m ()
 _get_ self index = liftIO (void (js__get (self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
+_getUnsafe ::
+           (MonadIO m, HasCallStack) => HTMLFormElement -> Word -> m Element
+_getUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js__get (self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement._get Mozilla HTMLFormElement._get documentation> 
 _getUnchecked ::
@@ -159,6 +185,15 @@ getEnctype self
   = liftIO (fromMaybeJSString <$> (js_getEnctype (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
+getEnctypeUnsafe ::
+                 (MonadIO m, HasCallStack, FromJSString result) =>
+                   HTMLFormElement -> m result
+getEnctypeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getEnctype (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
 getEnctypeUnchecked ::
                     (MonadIO m, FromJSString result) => HTMLFormElement -> m result
 getEnctypeUnchecked self
@@ -184,6 +219,15 @@ getEncoding self
   = liftIO (fromMaybeJSString <$> (js_getEncoding (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
+getEncodingUnsafe ::
+                  (MonadIO m, HasCallStack, FromJSString result) =>
+                    HTMLFormElement -> m result
+getEncodingUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getEncoding (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
 getEncodingUnchecked ::
                      (MonadIO m, FromJSString result) => HTMLFormElement -> m result
 getEncodingUnchecked self
@@ -207,6 +251,15 @@ getMethod ::
             HTMLFormElement -> m (Maybe result)
 getMethod self
   = liftIO (fromMaybeJSString <$> (js_getMethod (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
+getMethodUnsafe ::
+                (MonadIO m, HasCallStack, FromJSString result) =>
+                  HTMLFormElement -> m result
+getMethodUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getMethod (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
 getMethodUnchecked ::
@@ -270,6 +323,14 @@ getElements self
   = liftIO (nullableToMaybe <$> (js_getElements (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.elements Mozilla HTMLFormElement.elements documentation> 
+getElementsUnsafe ::
+                  (MonadIO m, HasCallStack) => HTMLFormElement -> m HTMLCollection
+getElementsUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getElements (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.elements Mozilla HTMLFormElement.elements documentation> 
 getElementsUnchecked ::
                      (MonadIO m) => HTMLFormElement -> m HTMLCollection
 getElementsUnchecked self
@@ -315,6 +376,15 @@ getAutocapitalize ::
                     HTMLFormElement -> m (Maybe result)
 getAutocapitalize self
   = liftIO (fromMaybeJSString <$> (js_getAutocapitalize (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
+getAutocapitalizeUnsafe ::
+                        (MonadIO m, HasCallStack, FromJSString result) =>
+                          HTMLFormElement -> m result
+getAutocapitalizeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getAutocapitalize (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.autocapitalize Mozilla HTMLFormElement.autocapitalize documentation> 
 getAutocapitalizeUnchecked ::

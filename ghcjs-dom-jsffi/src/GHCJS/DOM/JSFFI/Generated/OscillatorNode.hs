@@ -1,4 +1,9 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.OscillatorNode
        (js_start, start, js_stop, stop, js_noteOn, noteOn, js_noteOff,
         noteOff, js_setPeriodicWave, setPeriodicWave, pattern SINE,
@@ -6,11 +11,12 @@ module GHCJS.DOM.JSFFI.Generated.OscillatorNode
         pattern UNSCHEDULED_STATE, pattern SCHEDULED_STATE,
         pattern PLAYING_STATE, pattern FINISHED_STATE, js_setType, setType,
         js_getType, getType, js_getPlaybackState, getPlaybackState,
-        js_getFrequency, getFrequency, getFrequencyUnchecked, js_getDetune,
-        getDetune, getDetuneUnchecked, ended, OscillatorNode(..),
-        gTypeOscillatorNode)
+        js_getFrequency, getFrequency, getFrequencyUnsafe,
+        getFrequencyUnchecked, js_getDetune, getDetune, getDetuneUnsafe,
+        getDetuneUnchecked, ended, OscillatorNode(..), gTypeOscillatorNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -26,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"start\"]($2)" js_start ::
         OscillatorNode -> Double -> IO ()
@@ -107,6 +123,14 @@ getFrequency self
   = liftIO (nullableToMaybe <$> (js_getFrequency (self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.frequency Mozilla OscillatorNode.frequency documentation> 
+getFrequencyUnsafe ::
+                   (MonadIO m, HasCallStack) => OscillatorNode -> m AudioParam
+getFrequencyUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getFrequency (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.frequency Mozilla OscillatorNode.frequency documentation> 
 getFrequencyUnchecked ::
                       (MonadIO m) => OscillatorNode -> m AudioParam
 getFrequencyUnchecked self
@@ -118,6 +142,14 @@ foreign import javascript unsafe "$1[\"detune\"]" js_getDetune ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
 getDetune :: (MonadIO m) => OscillatorNode -> m (Maybe AudioParam)
 getDetune self = liftIO (nullableToMaybe <$> (js_getDetune (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
+getDetuneUnsafe ::
+                (MonadIO m, HasCallStack) => OscillatorNode -> m AudioParam
+getDetuneUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDetune (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.detune Mozilla OscillatorNode.detune documentation> 
 getDetuneUnchecked :: (MonadIO m) => OscillatorNode -> m AudioParam

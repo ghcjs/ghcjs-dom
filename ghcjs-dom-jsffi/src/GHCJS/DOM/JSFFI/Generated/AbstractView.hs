@@ -1,10 +1,17 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AbstractView
-       (js_getDocument, getDocument, getDocumentUnchecked,
-        js_getStyleMedia, getStyleMedia, getStyleMediaUnchecked,
-        AbstractView(..), gTypeAbstractView)
+       (js_getDocument, getDocument, getDocumentUnsafe,
+        getDocumentUnchecked, js_getStyleMedia, getStyleMedia,
+        getStyleMediaUnsafe, getStyleMediaUnchecked, AbstractView(..),
+        gTypeAbstractView)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -20,6 +27,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"document\"]" js_getDocument
         :: AbstractView -> IO (Nullable Document)
@@ -28,6 +45,14 @@ foreign import javascript unsafe "$1[\"document\"]" js_getDocument
 getDocument :: (MonadIO m) => AbstractView -> m (Maybe Document)
 getDocument self
   = liftIO (nullableToMaybe <$> (js_getDocument (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.document Mozilla AbstractView.document documentation> 
+getDocumentUnsafe ::
+                  (MonadIO m, HasCallStack) => AbstractView -> m Document
+getDocumentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getDocument (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.document Mozilla AbstractView.document documentation> 
 getDocumentUnchecked :: (MonadIO m) => AbstractView -> m Document
@@ -42,6 +67,14 @@ getStyleMedia ::
               (MonadIO m) => AbstractView -> m (Maybe StyleMedia)
 getStyleMedia self
   = liftIO (nullableToMaybe <$> (js_getStyleMedia (self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.styleMedia Mozilla AbstractView.styleMedia documentation> 
+getStyleMediaUnsafe ::
+                    (MonadIO m, HasCallStack) => AbstractView -> m StyleMedia
+getStyleMediaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getStyleMedia (self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AbstractView.styleMedia Mozilla AbstractView.styleMedia documentation> 
 getStyleMediaUnchecked ::

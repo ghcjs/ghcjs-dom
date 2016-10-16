@@ -1,14 +1,22 @@
-{-# LANGUAGE PatternSynonyms, ForeignFunctionInterface, JavaScriptFFI #-}
+{-# LANGUAGE CPP #-}
+{-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE JavaScriptFFI #-}
+-- For HasCallStack compatibility
+{-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.StyleSheet
-       (js_getType, getType, getTypeUnchecked, js_setDisabled,
-        setDisabled, js_getDisabled, getDisabled, js_getOwnerNode,
-        getOwnerNode, getOwnerNodeUnchecked, js_getParentStyleSheet,
-        getParentStyleSheet, getParentStyleSheetUnchecked, js_getHref,
-        getHref, getHrefUnchecked, js_getTitle, getTitle,
-        getTitleUnchecked, js_getMedia, getMedia, getMediaUnchecked,
-        StyleSheet(..), gTypeStyleSheet, IsStyleSheet, toStyleSheet)
+       (js_getType, getType, getTypeUnsafe, getTypeUnchecked,
+        js_setDisabled, setDisabled, js_getDisabled, getDisabled,
+        js_getOwnerNode, getOwnerNode, getOwnerNodeUnsafe,
+        getOwnerNodeUnchecked, js_getParentStyleSheet, getParentStyleSheet,
+        getParentStyleSheetUnsafe, getParentStyleSheetUnchecked,
+        js_getHref, getHref, getHrefUnsafe, getHrefUnchecked, js_getTitle,
+        getTitle, getTitleUnsafe, getTitleUnchecked, js_getMedia, getMedia,
+        getMediaUnsafe, getMediaUnchecked, StyleSheet(..), gTypeStyleSheet,
+        IsStyleSheet, toStyleSheet)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
+import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull)
@@ -24,6 +32,16 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+#if MIN_VERSION_base(4,9,0)
+import GHC.Stack (HasCallStack)
+#elif MIN_VERSION_base(4,8,0)
+import GHC.Stack (CallStack)
+import GHC.Exts (Constraint)
+type HasCallStack = ((?callStack :: CallStack) :: Constraint)
+#else
+import GHC.Exts (Constraint)
+type HasCallStack = (() :: Constraint)
+#endif
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
         StyleSheet -> IO (Nullable JSString)
@@ -34,6 +52,16 @@ getType ::
           self -> m (Maybe result)
 getType self
   = liftIO (fromMaybeJSString <$> (js_getType (toStyleSheet self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.type Mozilla StyleSheet.type documentation> 
+getTypeUnsafe ::
+              (MonadIO m, IsStyleSheet self, HasCallStack,
+               FromJSString result) =>
+                self -> m result
+getTypeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getType (toStyleSheet self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.type Mozilla StyleSheet.type documentation> 
 getTypeUnchecked ::
@@ -70,6 +98,14 @@ getOwnerNode self
       (nullableToMaybe <$> (js_getOwnerNode (toStyleSheet self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.ownerNode Mozilla StyleSheet.ownerNode documentation> 
+getOwnerNodeUnsafe ::
+                   (MonadIO m, IsStyleSheet self, HasCallStack) => self -> m Node
+getOwnerNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOwnerNode (toStyleSheet self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.ownerNode Mozilla StyleSheet.ownerNode documentation> 
 getOwnerNodeUnchecked ::
                       (MonadIO m, IsStyleSheet self) => self -> m Node
 getOwnerNodeUnchecked self
@@ -86,6 +122,15 @@ getParentStyleSheet ::
 getParentStyleSheet self
   = liftIO
       (nullableToMaybe <$> (js_getParentStyleSheet (toStyleSheet self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.parentStyleSheet Mozilla StyleSheet.parentStyleSheet documentation> 
+getParentStyleSheetUnsafe ::
+                          (MonadIO m, IsStyleSheet self, HasCallStack) =>
+                            self -> m StyleSheet
+getParentStyleSheetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getParentStyleSheet (toStyleSheet self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.parentStyleSheet Mozilla StyleSheet.parentStyleSheet documentation> 
 getParentStyleSheetUnchecked ::
@@ -106,6 +151,16 @@ getHref self
   = liftIO (fromMaybeJSString <$> (js_getHref (toStyleSheet self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.href Mozilla StyleSheet.href documentation> 
+getHrefUnsafe ::
+              (MonadIO m, IsStyleSheet self, HasCallStack,
+               FromJSString result) =>
+                self -> m result
+getHrefUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getHref (toStyleSheet self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.href Mozilla StyleSheet.href documentation> 
 getHrefUnchecked ::
                  (MonadIO m, IsStyleSheet self, FromJSString result) =>
                    self -> m result
@@ -124,6 +179,16 @@ getTitle self
   = liftIO (fromMaybeJSString <$> (js_getTitle (toStyleSheet self)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.title Mozilla StyleSheet.title documentation> 
+getTitleUnsafe ::
+               (MonadIO m, IsStyleSheet self, HasCallStack,
+                FromJSString result) =>
+                 self -> m result
+getTitleUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getTitle (toStyleSheet self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.title Mozilla StyleSheet.title documentation> 
 getTitleUnchecked ::
                   (MonadIO m, IsStyleSheet self, FromJSString result) =>
                     self -> m result
@@ -140,6 +205,14 @@ getMedia ::
          (MonadIO m, IsStyleSheet self) => self -> m (Maybe MediaList)
 getMedia self
   = liftIO (nullableToMaybe <$> (js_getMedia (toStyleSheet self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.media Mozilla StyleSheet.media documentation> 
+getMediaUnsafe ::
+               (MonadIO m, IsStyleSheet self, HasCallStack) => self -> m MediaList
+getMediaUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getMedia (toStyleSheet self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.media Mozilla StyleSheet.media documentation> 
 getMediaUnchecked ::
