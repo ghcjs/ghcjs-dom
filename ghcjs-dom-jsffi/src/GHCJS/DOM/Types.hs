@@ -100,6 +100,9 @@ module GHCJS.DOM.Types (
   , GLintptr(..), GLsizeiptr(..), GLubyte(..), GLushort(..), GLuint(..), GLfloat(..), GLclampf(..)
   , GLint64, GLuint64
 
+  -- * Used for better error messages
+  , HasCallStack
+
   -- * Interface types from IDL files
 
 -- AUTO GENERATION STARTS HERE

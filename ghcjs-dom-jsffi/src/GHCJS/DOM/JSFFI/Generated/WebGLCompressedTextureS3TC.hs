@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
@@ -28,12 +27,6 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
-#if MIN_VERSION_base(4,9,0)
-import GHC.Stack (HasCallStack)
-#else
-import GHC.Exts (Constraint)
-type HasCallStack = (() :: Constraint)
-#endif
 pattern COMPRESSED_RGB_S3TC_DXT1_EXT = 33776
 pattern COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777
 pattern COMPRESSED_RGBA_S3TC_DXT3_EXT = 33778

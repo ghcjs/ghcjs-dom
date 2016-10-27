@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
@@ -28,12 +27,6 @@ import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
-#if MIN_VERSION_base(4,9,0)
-import GHC.Stack (HasCallStack)
-#else
-import GHC.Exts (Constraint)
-type HasCallStack = (() :: Constraint)
-#endif
  
 foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)" js_initUIEvent ::

@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
@@ -64,12 +63,6 @@ import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-#if MIN_VERSION_base(4,9,0)
-import GHC.Stack (HasCallStack)
-#else
-import GHC.Exts (Constraint)
-type HasCallStack = (() :: Constraint)
-#endif
  
 data KeyType = KeyTypeSecret
              | KeyTypePublic

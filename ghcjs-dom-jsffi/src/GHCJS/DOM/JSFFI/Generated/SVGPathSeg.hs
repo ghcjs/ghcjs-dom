@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
@@ -40,12 +39,6 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
-#if MIN_VERSION_base(4,9,0)
-import GHC.Stack (HasCallStack)
-#else
-import GHC.Exts (Constraint)
-type HasCallStack = (() :: Constraint)
-#endif
 pattern PATHSEG_UNKNOWN = 0
 pattern PATHSEG_CLOSEPATH = 1
 pattern PATHSEG_MOVETO_ABS = 2

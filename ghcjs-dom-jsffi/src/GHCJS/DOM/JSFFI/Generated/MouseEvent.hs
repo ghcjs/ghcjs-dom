@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
@@ -36,12 +35,6 @@ import Data.Maybe (fromJust)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
-#if MIN_VERSION_base(4,9,0)
-import GHC.Stack (HasCallStack)
-#else
-import GHC.Exts (Constraint)
-type HasCallStack = (() :: Constraint)
-#endif
  
 foreign import javascript unsafe
         "$1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16)"
