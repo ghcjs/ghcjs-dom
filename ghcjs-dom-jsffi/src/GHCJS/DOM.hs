@@ -3,7 +3,6 @@
 module GHCJS.DOM (
   currentWindow
 , currentDocument
-, run
 , syncPoint
 , syncAfter
 , waitForAnimationFrame
@@ -28,9 +27,6 @@ currentWindow :: IO (Maybe Window)
 currentWindow = nullableToMaybe <$> ghcjs_currentWindow
 currentDocument :: IO (Maybe Document)
 currentDocument = nullableToMaybe <$> ghcjs_currentDocument
-
-run :: Int -> IO () -> IO ()
-run _ = id
 
 syncPoint :: IO ()
 syncPoint = return ()
