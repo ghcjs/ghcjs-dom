@@ -14,6 +14,8 @@ module GHCJS.DOM (
 import Control.Applicative ((<$>))
 import Control.Exception (catch, bracket)
 
+import Data.Maybe (fromJust)
+
 import JavaScript.Web.AnimationFrame (waitForAnimationFrame)
 
 import GHCJS.DOM.Types
@@ -25,8 +27,12 @@ foreign import javascript unsafe "$r = document"
 
 currentWindow :: IO (Maybe Window)
 currentWindow = nullableToMaybe <$> ghcjs_currentWindow
+currentWindowUnchecked :: IO Window
+currentWindowUnchecked = fromJust <$> currentWindow
 currentDocument :: IO (Maybe Document)
 currentDocument = nullableToMaybe <$> ghcjs_currentDocument
+currentDocumentUnchecked :: IO Document
+currentDocumentUnchecked = fromJust <$> currentDocument
 
 syncPoint :: IO ()
 syncPoint = return ()
