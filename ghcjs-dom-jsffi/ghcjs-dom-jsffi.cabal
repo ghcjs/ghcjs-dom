@@ -26,6 +26,7 @@ library
                    ghc-prim
 
     default-language: Haskell2010
+    other-extensions: JavaScriptFFI
 
     hs-source-dirs: src
     cpp-options: -DUSE_JAVASCRIPTFFI
