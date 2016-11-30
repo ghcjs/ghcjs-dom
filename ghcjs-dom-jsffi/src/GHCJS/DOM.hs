@@ -2,7 +2,9 @@
 {-# LANGUAGE JavaScriptFFI #-}
 module GHCJS.DOM (
   currentWindow
+, currentWindowUnchecked
 , currentDocument
+, currentDocumentUnchecked
 , syncPoint
 , syncAfter
 , waitForAnimationFrame
