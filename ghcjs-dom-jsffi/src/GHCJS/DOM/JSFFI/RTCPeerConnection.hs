@@ -38,7 +38,7 @@ foreign import javascript interruptible
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection#createOffer Mozilla webkitRTCPeerConnection.createOffer documentation>
 createOffer' :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m (Either DOMError RTCSessionDescription)
-createOffer' self offerOptions = liftIO . IO $ \s# -> 
+createOffer' self offerOptions = liftIO . IO $ \s# ->
     case js_createOffer self (maybeToNullable offerOptions) s# of
         (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSVal error)) #)
         (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSVal d    )) #)
@@ -55,7 +55,7 @@ createAnswer' :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m (Either
 createAnswer' self answerOptions = liftIO . IO $ \s# ->
     case js_createOffer self (maybeToNullable answerOptions) s# of
         (# s2#, False, error #) -> (# s2#, Left  (DOMError              (JSVal error)) #)
-        (# s2#, True,  d     #) -> (# s2#, Right (RTCS essionDescription (JSVal d    )) #)
+        (# s2#, True,  d     #) -> (# s2#, Right (RTCSessionDescription (JSVal d    )) #)
 
 createAnswer :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m RTCSessionDescription
 createAnswer self answerOptions = createAnswer' self answerOptions >>= either throwDOMErrorException return
