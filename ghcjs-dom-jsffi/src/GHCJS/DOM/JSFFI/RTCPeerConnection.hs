@@ -25,7 +25,12 @@ import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.DOMError (throwDOMErrorException)
-import GHCJS.DOM.JSFFI.Generated.Geolocation as Generated hiding (js_getCurrentPosition, getCurrentPosition)
+import GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as Generated hiding (
+    js_createOffer, createOffer
+  , js_createAnswer, createAnswer
+  , js_setLocalDescription, setLocalDescription
+  , js_setRemoteDescription, setRemoteDescription
+)
 
 foreign import javascript interruptible
     "$1[\"createOffer\"](function(d) { $c(true, d); }, function(e) { $c(false, e); }, $2);" js_createOffer ::
