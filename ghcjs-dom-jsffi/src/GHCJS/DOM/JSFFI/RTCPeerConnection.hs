@@ -14,6 +14,12 @@ module GHCJS.DOM.JSFFI.RTCPeerConnection (
   , js_setRemoteDescription
   , setRemoteDescription'
   , setRemoteDescription
+  , js_addIceCandidate
+  , addIceCandidate'
+  , addIceCandidate
+  , js_getStats
+  , getStats'
+  , getStats
 ) where
 
 import GHC.Base (IO(..))
@@ -25,12 +31,13 @@ import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.DOMError (throwDOMErrorException)
-import GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as Generated hiding (
+import qualified GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as Generated hiding (
     js_createOffer, createOffer
   , js_createAnswer, createAnswer
   , js_setLocalDescription, setLocalDescription
   , js_setRemoteDescription, setRemoteDescription
-)
+  , js_addIceCandidate, addIceCandidate
+  , js_getStats, getStats)
 
 foreign import javascript interruptible
     "$1[\"createOffer\"](function(d) { $c(true, d); }, function(e) { $c(false, e); }, $2);" js_createOffer ::

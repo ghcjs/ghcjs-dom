@@ -39,9 +39,9 @@ library
         build-depends: ghcjs-dom-jsffi ==0.7.0.3
     else
         if flag(webkit)
-            build-depends: ghcjs-dom-webkit ==0.7.0.1
+            build-depends: ghcjs-dom-webkit ==0.7.0.3
         else
-            build-depends: ghcjs-dom-jsaddle ==0.7.0.1
+            build-depends: ghcjs-dom-jsaddle ==0.7.0.3
 
     reexported-modules:
             GHCJS.DOM
