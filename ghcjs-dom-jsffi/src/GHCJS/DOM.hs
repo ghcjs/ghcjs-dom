@@ -27,14 +27,14 @@ foreign import javascript unsafe "$r = window"
 foreign import javascript unsafe "$r = document"
   ghcjs_currentDocument :: IO (Nullable Document)
 
-currentWindow :: IO (Maybe Window)
-currentWindow = nullableToMaybe <$> ghcjs_currentWindow
-currentWindowUnchecked :: IO Window
-currentWindowUnchecked = fromJust <$> currentWindow
-currentDocument :: IO (Maybe Document)
-currentDocument = nullableToMaybe <$> ghcjs_currentDocument
-currentDocumentUnchecked :: IO Document
-currentDocumentUnchecked = fromJust <$> currentDocument
+currentWindow :: MonadDOM m => m (Maybe Window)
+currentWindow = liftDOM $ nullableToMaybe <$> ghcjs_currentWindow
+currentWindowUnchecked :: MonadDOM m => m Window
+currentWindowUnchecked = liftDOM $ fromJust <$> currentWindow
+currentDocument :: MonadDOM m => m (Maybe Document)
+currentDocument = liftDOM $ nullableToMaybe <$> ghcjs_currentDocument
+currentDocumentUnchecked :: MonadDOM m => m Document
+currentDocumentUnchecked = liftDOM $ fromJust <$> currentDocument
 
 syncPoint :: IO ()
 syncPoint = return ()
