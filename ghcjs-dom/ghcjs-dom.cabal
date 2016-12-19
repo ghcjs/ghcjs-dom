@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.7.0.3
+version: 0.7.0.4
 cabal-version: >=1.24
 build-type: Simple
 license: MIT
@@ -36,7 +36,7 @@ library
     buildable: True
 
     if (impl(ghcjs) && flag(jsffi))
-        build-depends: ghcjs-dom-jsffi ==0.7.0.3
+        build-depends: ghcjs-dom-jsffi ==0.7.0.4
     else
         if flag(webkit)
             build-depends: ghcjs-dom-webkit ==0.7.0.3
