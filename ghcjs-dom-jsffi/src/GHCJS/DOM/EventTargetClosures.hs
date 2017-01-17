@@ -1,6 +1,11 @@
 {-# LANGUAGE JavaScriptFFI, ForeignFunctionInterface #-}
 module GHCJS.DOM.EventTargetClosures
-       ( EventName(..)
+       (
+         -- | __Note on Naming:__ 'SaferEventListener' is to 'EventListener' what
+         --   'EventName' is to 'DOMString'. If @SaferEventListener@ did not have
+         --   a prefix we would have two types called @EventListener@. That might
+         --   lead to confusion.
+         EventName(..)
        , SaferEventListener(..)
        , unsafeEventName
        -- * Creation and Destruction
@@ -30,7 +35,6 @@ newtype EventName t e = EventName DOMString
 
 -- | Plain JS 'EventListener' that carries the same phantom types as 'EventName'.
 newtype SaferEventListener t e = SaferEventListener EventListener
--- TODO: why is it prefixed with “Safer”, while EventName above just aliases?
 
 instance PToJSVal (SaferEventListener t e) where
     pToJSVal (SaferEventListener l) = pToJSVal l
