@@ -20,6 +20,7 @@ Source-Repository head
 flag jsffi
     description: Use JavaScriptFFI extension for GHCJS JavaScript output
     default: True
+    manual: True
 
 flag webkit
     description: Use WebKitGtk DOM functions
