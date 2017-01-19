@@ -1,6 +1,12 @@
 {-# LANGUAGE ConstraintKinds #-}
+{- | 'EventM' provides a convenient monadic interface for handling DOM events.
+
+The <https://developer.mozilla.org/en-US/docs/Web/API/Event DOM Event interface>
+is exposed, as well as functions for accessing UIEvents and MouseEvents.
+-}
 module GHCJS.DOM.EventM
 (
+-- $doc
   EventM(..)
 , SaferEventListener(..)
 , EventName
@@ -11,6 +17,7 @@ module GHCJS.DOM.EventM
 , removeListener
 , releaseListener
 , on
+-- * DOM Event interface
 , event
 , eventTarget
 , target
@@ -28,6 +35,7 @@ module GHCJS.DOM.EventM
 , cancelBubble
 , getReturnValue
 , returnValue
+-- * UIEvent helpers
 , uiView
 , uiDetail
 , uiKeyCode
@@ -39,6 +47,7 @@ module GHCJS.DOM.EventM
 , uiPageY
 , uiPageXY
 , uiWhich
+-- * MouseEvent helpers
 , mouseScreenX
 , mouseScreenY
 , mouseScreenXY
@@ -78,34 +87,60 @@ import           Data.Foldable (forM_)
 import           Data.Traversable (mapM)
 import           Data.Coerce (coerce)
 
+-- $doc
+-- TODO: small tutorial w/ example function
+
+-- | @IO@ with the current @Event@ in scope (read with 'event').
 type EventM t e = ReaderT e IO
 
+-- | See 'eventListenerNew'.
 newListener :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
 newListener f = SaferEventListener <$> eventListenerNew (runReaderT f)
 
+-- | See 'eventListenerNewSync'.
 newListenerSync :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
 newListenerSync f = SaferEventListener <$> eventListenerNewSync (runReaderT f)
 
+-- | See 'eventListenerNewAsync'.
 newListenerAsync :: (IsEvent e) => EventM t e () -> IO (SaferEventListener t e)
 newListenerAsync f = SaferEventListener <$> eventListenerNewAsync (runReaderT f)
 
+-- | Add an EventListener to an EventTarget.
 addListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEventListener t e -> Bool -> IO ()
 addListener target (EventName eventName) (SaferEventListener l) useCapture =
     addEventListener target eventName (Just l) useCapture
 
+-- | Remove an EventListener from an EventTarget.
 removeListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEventListener t e -> Bool -> IO ()
 removeListener target (EventName eventName) (SaferEventListener l) useCapture =
     removeEventListener target eventName (Just l) useCapture
 
+-- | Release the listener (deallocates callbacks).
 releaseListener :: (IsEventTarget t, IsEvent e) => SaferEventListener t e -> IO ()
 releaseListener (SaferEventListener l) = eventListenerRelease l
 
-on :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> EventM t e () -> IO (IO ())
+-- | Shortcut for create, add and release:
+--
+-- @
+-- releaseAction <- on element 'GHCJS.DOM.JSFFI.Generated.Document.click' $ do
+--     Just w <- 'GHCJS.DOM.currentWindow'
+--     'GHCJS.DOM.JSFFI.Generated.Window.alert' w "I was clicked!"
+-- -- remove click handler again
+-- releaseAction
+-- @
+on :: (IsEventTarget t, IsEvent e)
+   => t             -- ^ target
+   -> EventName t e -- ^ event
+   -> EventM t e () -- ^ action
+   -> IO (IO ())    -- ^ @IO@ action that removes the listener from the element
 on target eventName callback = do
     l <- newListener callback
     addListener target eventName l False
     return (removeListener target eventName l False >> releaseListener l)
 
+-- | 'on' for multiple targets & events.
+--
+--   The returned @IO@ action removes them all at once.
 onThese :: (IsEventTarget t, IsEvent e) => [(t, EventName t e)] -> EventM t e () -> IO (IO ())
 onThese targetsAndEventNames callback = do
     l <- newListener callback
