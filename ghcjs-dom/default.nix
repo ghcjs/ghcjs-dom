@@ -3,7 +3,7 @@
 mkDerivation {
   pname = "ghcjs-dom";
   version = "0.7.0.4";
-  src = ./.;
+  src = builtins.filterSource (path: type: !(builtins.elem (baseNameOf path) [ ".git" "dist" ])) ./.;
   libraryHaskellDepends = [
     base text transformers
   ] ++ (if ghc.isGhcjs or false then [
