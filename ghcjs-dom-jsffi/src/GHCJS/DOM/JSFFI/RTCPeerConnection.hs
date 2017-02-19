@@ -31,7 +31,7 @@ import GHCJS.Prim (JSVal(..))
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.DOMError (throwDOMErrorException)
-import qualified GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as Generated hiding (
+import GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as Generated hiding (
     js_createOffer, createOffer
   , js_createAnswer, createAnswer
   , js_setLocalDescription, setLocalDescription
