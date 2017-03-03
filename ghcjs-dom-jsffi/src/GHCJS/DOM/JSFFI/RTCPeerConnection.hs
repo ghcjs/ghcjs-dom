@@ -55,7 +55,7 @@ createOffer self offerOptions = createOffer' self offerOptions >>= either throwD
 
 foreign import javascript interruptible
     "$1[\"createAnswer\"](function(d) { $c(true, d); }, function(e) { $c(false, e); }, $2);" js_createAnswer ::
-    RTCPeerConnection -> Dictionary -> Dictionary -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
+    RTCPeerConnection -> Nullable Dictionary -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection#createAnswer Mozilla webkitRTCPeerConnection.createAnswer documentation>
 createAnswer' :: MonadIO m => RTCPeerConnection -> Maybe Dictionary -> m (Either DOMError RTCSessionDescription)
