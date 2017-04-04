@@ -6,15 +6,16 @@
 module GHCJS.DOM.JSFFI.Generated.Attr
        (js_getName, getName, getNameUnsafe, getNameUnchecked,
         js_getSpecified, getSpecified, js_setValue, setValue, js_getValue,
-        getValue, getValueUnsafe, getValueUnchecked, js_getOwnerElement,
-        getOwnerElement, getOwnerElementUnsafe, getOwnerElementUnchecked,
-        js_getIsId, getIsId, Attr(..), gTypeAttr)
+        getValue, js_getOwnerElement, getOwnerElement, js_getNamespaceURI,
+        getNamespaceURI, getNamespaceURIUnsafe, getNamespaceURIUnchecked,
+        js_getPrefix, getPrefix, getPrefixUnsafe, getPrefixUnchecked,
+        js_getLocalName, getLocalName, Attr(..), gTypeAttr)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -23,6 +24,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,85 +36,101 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => Attr -> m (Maybe result)
-getName self = liftIO (fromMaybeJSString <$> (js_getName (self)))
+getName self = liftIO (fromMaybeJSString <$> (js_getName self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 getNameUnsafe ::
               (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
 getNameUnsafe self
   = liftIO
-      ((fromMaybeJSString <$> (js_getName (self))) >>=
+      ((fromMaybeJSString <$> (js_getName self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 getNameUnchecked ::
                  (MonadIO m, FromJSString result) => Attr -> m result
 getNameUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getName (self)))
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getName self))
  
 foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
         js_getSpecified :: Attr -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.specified Mozilla Attr.specified documentation> 
 getSpecified :: (MonadIO m) => Attr -> m Bool
-getSpecified self = liftIO (js_getSpecified (self))
+getSpecified self = liftIO (js_getSpecified self)
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: Attr -> Nullable JSString -> IO ()
+        :: Attr -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
-setValue ::
-         (MonadIO m, ToJSString val) => Attr -> Maybe val -> m ()
-setValue self val
-  = liftIO (js_setValue (self) (toMaybeJSString val))
+setValue :: (MonadIO m, ToJSString val) => Attr -> val -> m ()
+setValue self val = liftIO (js_setValue self (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        Attr -> IO (Nullable JSString)
+        Attr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
-getValue ::
-         (MonadIO m, FromJSString result) => Attr -> m (Maybe result)
-getValue self = liftIO (fromMaybeJSString <$> (js_getValue (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
-getValueUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
-getValueUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getValue (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
-getValueUnchecked ::
-                  (MonadIO m, FromJSString result) => Attr -> m result
-getValueUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue (self)))
+getValue :: (MonadIO m, FromJSString result) => Attr -> m result
+getValue self = liftIO (fromJSString <$> (js_getValue self))
  
 foreign import javascript unsafe "$1[\"ownerElement\"]"
-        js_getOwnerElement :: Attr -> IO (Nullable Element)
+        js_getOwnerElement :: Attr -> IO Element
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
-getOwnerElement :: (MonadIO m) => Attr -> m (Maybe Element)
-getOwnerElement self
-  = liftIO (nullableToMaybe <$> (js_getOwnerElement (self)))
+getOwnerElement :: (MonadIO m) => Attr -> m Element
+getOwnerElement self = liftIO (js_getOwnerElement self)
+ 
+foreign import javascript unsafe "$1[\"namespaceURI\"]"
+        js_getNamespaceURI :: Attr -> IO (Nullable JSString)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
-getOwnerElementUnsafe ::
-                      (MonadIO m, HasCallStack) => Attr -> m Element
-getOwnerElementUnsafe self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.namespaceURI Mozilla Attr.namespaceURI documentation> 
+getNamespaceURI ::
+                (MonadIO m, FromJSString result) => Attr -> m (Maybe result)
+getNamespaceURI self
+  = liftIO (fromMaybeJSString <$> (js_getNamespaceURI self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.namespaceURI Mozilla Attr.namespaceURI documentation> 
+getNamespaceURIUnsafe ::
+                      (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
+getNamespaceURIUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getOwnerElement (self))) >>=
+      ((fromMaybeJSString <$> (js_getNamespaceURI self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
-getOwnerElementUnchecked :: (MonadIO m) => Attr -> m Element
-getOwnerElementUnchecked self
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.namespaceURI Mozilla Attr.namespaceURI documentation> 
+getNamespaceURIUnchecked ::
+                         (MonadIO m, FromJSString result) => Attr -> m result
+getNamespaceURIUnchecked self
   = liftIO
-      (fromJust . nullableToMaybe <$> (js_getOwnerElement (self)))
+      (fromJust . fromMaybeJSString <$> (js_getNamespaceURI self))
  
-foreign import javascript unsafe "($1[\"isId\"] ? 1 : 0)"
-        js_getIsId :: Attr -> IO Bool
+foreign import javascript unsafe "$1[\"prefix\"]" js_getPrefix ::
+        Attr -> IO (Nullable JSString)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.isId Mozilla Attr.isId documentation> 
-getIsId :: (MonadIO m) => Attr -> m Bool
-getIsId self = liftIO (js_getIsId (self))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.prefix Mozilla Attr.prefix documentation> 
+getPrefix ::
+          (MonadIO m, FromJSString result) => Attr -> m (Maybe result)
+getPrefix self = liftIO (fromMaybeJSString <$> (js_getPrefix self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.prefix Mozilla Attr.prefix documentation> 
+getPrefixUnsafe ::
+                (MonadIO m, HasCallStack, FromJSString result) => Attr -> m result
+getPrefixUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getPrefix self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.prefix Mozilla Attr.prefix documentation> 
+getPrefixUnchecked ::
+                   (MonadIO m, FromJSString result) => Attr -> m result
+getPrefixUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getPrefix self))
+ 
+foreign import javascript unsafe "$1[\"localName\"]"
+        js_getLocalName :: Attr -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.localName Mozilla Attr.localName documentation> 
+getLocalName ::
+             (MonadIO m, FromJSString result) => Attr -> m result
+getLocalName self
+  = liftIO (fromJSString <$> (js_getLocalName self))

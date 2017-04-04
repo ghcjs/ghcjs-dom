@@ -16,7 +16,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -25,6 +25,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -114,14 +115,15 @@ replaceData self offset length data'
          (toJSString data'))
  
 foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
-        CharacterData -> Nullable JSString -> IO ()
+        CharacterData -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 setData ::
         (MonadIO m, IsCharacterData self, ToJSString val) =>
           self -> Maybe val -> m ()
 setData self val
-  = liftIO (js_setData (toCharacterData self) (toMaybeJSString val))
+  = liftIO
+      (js_setData (toCharacterData self) (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
         CharacterData -> IO (Nullable JSString)

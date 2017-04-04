@@ -4,14 +4,13 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGStopElement
-       (js_getOffset, getOffset, getOffsetUnsafe, getOffsetUnchecked,
-        SVGStopElement(..), gTypeSVGStopElement)
+       (js_getOffset, getOffset, SVGStopElement(..), gTypeSVGStopElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -20,29 +19,15 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
-        SVGStopElement -> IO (Nullable SVGAnimatedNumber)
+        SVGStopElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement.offset Mozilla SVGStopElement.offset documentation> 
-getOffset ::
-          (MonadIO m) => SVGStopElement -> m (Maybe SVGAnimatedNumber)
-getOffset self = liftIO (nullableToMaybe <$> (js_getOffset (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement.offset Mozilla SVGStopElement.offset documentation> 
-getOffsetUnsafe ::
-                (MonadIO m, HasCallStack) => SVGStopElement -> m SVGAnimatedNumber
-getOffsetUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getOffset (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement.offset Mozilla SVGStopElement.offset documentation> 
-getOffsetUnchecked ::
-                   (MonadIO m) => SVGStopElement -> m SVGAnimatedNumber
-getOffsetUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getOffset (self)))
+getOffset :: (MonadIO m) => SVGStopElement -> m SVGAnimatedNumber
+getOffset self = liftIO (js_getOffset self)

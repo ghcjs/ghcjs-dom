@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -31,14 +32,14 @@ foreign import javascript unsafe "$1[\"charIndex\"]"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.charIndex Mozilla SpeechSynthesisEvent.charIndex documentation> 
 getCharIndex :: (MonadIO m) => SpeechSynthesisEvent -> m Word
-getCharIndex self = liftIO (js_getCharIndex (self))
+getCharIndex self = liftIO (js_getCharIndex self)
  
 foreign import javascript unsafe "$1[\"elapsedTime\"]"
         js_getElapsedTime :: SpeechSynthesisEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.elapsedTime Mozilla SpeechSynthesisEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => SpeechSynthesisEvent -> m Float
-getElapsedTime self = liftIO (js_getElapsedTime (self))
+getElapsedTime self = liftIO (js_getElapsedTime self)
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         SpeechSynthesisEvent -> IO JSString
@@ -47,4 +48,4 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 getName ::
         (MonadIO m, FromJSString result) =>
           SpeechSynthesisEvent -> m result
-getName self = liftIO (fromJSString <$> (js_getName (self)))
+getName self = liftIO (fromJSString <$> (js_getName self))

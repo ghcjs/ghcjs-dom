@@ -4,18 +4,17 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.WorkerGlobalScope
-       (js_close, close, js_importScripts, importScripts, js_getSelf,
-        getSelf, getSelfUnsafe, getSelfUnchecked, js_getLocation,
-        getLocation, getLocationUnsafe, getLocationUnchecked, error,
-        offline, online, js_getNavigator, getNavigator, getNavigatorUnsafe,
-        getNavigatorUnchecked, WorkerGlobalScope(..),
+       (js_fetch, fetch, fetch_, js_close, close, js_importScripts,
+        importScripts, js_getIndexedDB, getIndexedDB, js_getSelf, getSelf,
+        js_getLocation, getLocation, error, offline, online,
+        js_getNavigator, getNavigator, WorkerGlobalScope(..),
         gTypeWorkerGlobalScope, IsWorkerGlobalScope, toWorkerGlobalScope)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -24,10 +23,36 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+ 
+foreign import javascript interruptible
+        "$1[\"fetch\"]($2, $3).then($c);" js_fetch ::
+        WorkerGlobalScope -> JSVal -> Optional RequestInit -> IO Response
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.fetch Mozilla WorkerGlobalScope.fetch documentation> 
+fetch ::
+      (MonadIO m, IsWorkerGlobalScope self, ToJSVal input) =>
+        self -> input -> Maybe RequestInit -> m Response
+fetch self input init
+  = liftIO
+      (toJSVal input >>=
+         \ input' -> js_fetch (toWorkerGlobalScope self) input'
+         (maybeToOptional init))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.fetch Mozilla WorkerGlobalScope.fetch documentation> 
+fetch_ ::
+       (MonadIO m, IsWorkerGlobalScope self, ToJSVal input) =>
+         self -> input -> Maybe RequestInit -> m ()
+fetch_ self input init
+  = liftIO
+      (void
+         (toJSVal input >>=
+            \ input' -> js_fetch (toWorkerGlobalScope self) input'
+            (maybeToOptional init)))
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
         WorkerGlobalScope -> IO ()
@@ -36,71 +61,44 @@ foreign import javascript unsafe "$1[\"close\"]()" js_close ::
 close :: (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
 close self = liftIO (js_close (toWorkerGlobalScope self))
  
-foreign import javascript unsafe "$1[\"importScripts\"]()"
-        js_importScripts :: WorkerGlobalScope -> IO ()
+foreign import javascript unsafe "$1[\"importScripts\"]($2)"
+        js_importScripts :: WorkerGlobalScope -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.importScripts Mozilla WorkerGlobalScope.importScripts documentation> 
 importScripts ::
-              (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
-importScripts self
-  = liftIO (js_importScripts (toWorkerGlobalScope self))
+              (MonadIO m, IsWorkerGlobalScope self, ToJSString urls) =>
+                self -> [urls] -> m ()
+importScripts self urls
+  = liftIO
+      (toJSVal urls >>=
+         \ urls' -> js_importScripts (toWorkerGlobalScope self) urls')
+ 
+foreign import javascript unsafe "$1[\"indexedDB\"]"
+        js_getIndexedDB :: WorkerGlobalScope -> IO IDBFactory
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.indexedDB Mozilla WorkerGlobalScope.indexedDB documentation> 
+getIndexedDB ::
+             (MonadIO m, IsWorkerGlobalScope self) => self -> m IDBFactory
+getIndexedDB self
+  = liftIO (js_getIndexedDB (toWorkerGlobalScope self))
  
 foreign import javascript unsafe "$1[\"self\"]" js_getSelf ::
-        WorkerGlobalScope -> IO (Nullable WorkerGlobalScope)
+        WorkerGlobalScope -> IO WorkerGlobalScope
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
 getSelf ::
         (MonadIO m, IsWorkerGlobalScope self) =>
-          self -> m (Maybe WorkerGlobalScope)
-getSelf self
-  = liftIO
-      (nullableToMaybe <$> (js_getSelf (toWorkerGlobalScope self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
-getSelfUnsafe ::
-              (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
-                self -> m WorkerGlobalScope
-getSelfUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getSelf (toWorkerGlobalScope self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
-getSelfUnchecked ::
-                 (MonadIO m, IsWorkerGlobalScope self) =>
-                   self -> m WorkerGlobalScope
-getSelfUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getSelf (toWorkerGlobalScope self)))
+          self -> m WorkerGlobalScope
+getSelf self = liftIO (js_getSelf (toWorkerGlobalScope self))
  
 foreign import javascript unsafe "$1[\"location\"]" js_getLocation
-        :: WorkerGlobalScope -> IO (Nullable WorkerLocation)
+        :: WorkerGlobalScope -> IO WorkerLocation
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
 getLocation ::
-            (MonadIO m, IsWorkerGlobalScope self) =>
-              self -> m (Maybe WorkerLocation)
+            (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerLocation
 getLocation self
-  = liftIO
-      (nullableToMaybe <$> (js_getLocation (toWorkerGlobalScope self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
-getLocationUnsafe ::
-                  (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
-                    self -> m WorkerLocation
-getLocationUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getLocation (toWorkerGlobalScope self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 
-getLocationUnchecked ::
-                     (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerLocation
-getLocationUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getLocation (toWorkerGlobalScope self)))
+  = liftIO (js_getLocation (toWorkerGlobalScope self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.onerror Mozilla WorkerGlobalScope.onerror documentation> 
 error ::
@@ -121,30 +119,10 @@ online ::
 online = unsafeEventName (toJSString "online")
  
 foreign import javascript unsafe "$1[\"navigator\"]"
-        js_getNavigator ::
-        WorkerGlobalScope -> IO (Nullable WorkerNavigator)
+        js_getNavigator :: WorkerGlobalScope -> IO WorkerNavigator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
 getNavigator ::
-             (MonadIO m, IsWorkerGlobalScope self) =>
-               self -> m (Maybe WorkerNavigator)
+             (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerNavigator
 getNavigator self
-  = liftIO
-      (nullableToMaybe <$> (js_getNavigator (toWorkerGlobalScope self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
-getNavigatorUnsafe ::
-                   (MonadIO m, IsWorkerGlobalScope self, HasCallStack) =>
-                     self -> m WorkerNavigator
-getNavigatorUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getNavigator (toWorkerGlobalScope self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 
-getNavigatorUnchecked ::
-                      (MonadIO m, IsWorkerGlobalScope self) => self -> m WorkerNavigator
-getNavigatorUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getNavigator (toWorkerGlobalScope self)))
+  = liftIO (js_getNavigator (toWorkerGlobalScope self))

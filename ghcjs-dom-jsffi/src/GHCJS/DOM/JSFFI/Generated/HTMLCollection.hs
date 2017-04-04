@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,18 +22,19 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
-        HTMLCollection -> Word -> IO (Nullable Node)
+foreign import javascript unsafe "$1[$2]" js_item ::
+        HTMLCollection -> Word -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
 item ::
      (MonadIO m, IsHTMLCollection self) =>
-       self -> Word -> m (Maybe Node)
+       self -> Word -> m (Maybe Element)
 item self index
   = liftIO
       (nullableToMaybe <$> (js_item (toHTMLCollection self) index))
@@ -46,7 +47,7 @@ item_ self index
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
 itemUnsafe ::
            (MonadIO m, IsHTMLCollection self, HasCallStack) =>
-             self -> Word -> m Node
+             self -> Word -> m Element
 itemUnsafe self index
   = liftIO
       ((nullableToMaybe <$> (js_item (toHTMLCollection self) index)) >>=
@@ -54,19 +55,19 @@ itemUnsafe self index
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.item Mozilla HTMLCollection.item documentation> 
 itemUnchecked ::
-              (MonadIO m, IsHTMLCollection self) => self -> Word -> m Node
+              (MonadIO m, IsHTMLCollection self) => self -> Word -> m Element
 itemUnchecked self index
   = liftIO
       (fromJust . nullableToMaybe <$>
          (js_item (toHTMLCollection self) index))
  
-foreign import javascript unsafe "$1[\"namedItem\"]($2)"
-        js_namedItem :: HTMLCollection -> JSString -> IO (Nullable Node)
+foreign import javascript unsafe "$1[$2]" js_namedItem ::
+        HTMLCollection -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
 namedItem ::
           (MonadIO m, IsHTMLCollection self, ToJSString name) =>
-            self -> name -> m (Maybe Node)
+            self -> name -> m (Maybe Element)
 namedItem self name
   = liftIO
       (nullableToMaybe <$>
@@ -84,7 +85,7 @@ namedItem_ self name
 namedItemUnsafe ::
                 (MonadIO m, IsHTMLCollection self, ToJSString name,
                  HasCallStack) =>
-                  self -> name -> m Node
+                  self -> name -> m Element
 namedItemUnsafe self name
   = liftIO
       ((nullableToMaybe <$>
@@ -94,7 +95,7 @@ namedItemUnsafe self name
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection.namedItem Mozilla HTMLCollection.namedItem documentation> 
 namedItemUnchecked ::
                    (MonadIO m, IsHTMLCollection self, ToJSString name) =>
-                     self -> name -> m Node
+                     self -> name -> m Element
 namedItemUnchecked self name
   = liftIO
       (fromJust . nullableToMaybe <$>

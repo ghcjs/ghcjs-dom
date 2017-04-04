@@ -5,11 +5,10 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.AudioNode
        (js_connect, connect, js_connectParam, connectParam, js_disconnect,
-        disconnect, js_getContext, getContext, getContextUnsafe,
-        getContextUnchecked, js_getNumberOfInputs, getNumberOfInputs,
-        js_getNumberOfOutputs, getNumberOfOutputs, js_setChannelCount,
-        setChannelCount, js_getChannelCount, getChannelCount,
-        js_setChannelCountMode, setChannelCountMode,
+        disconnect, js_getContext, getContext, js_getNumberOfInputs,
+        getNumberOfInputs, js_getNumberOfOutputs, getNumberOfOutputs,
+        js_setChannelCount, setChannelCount, js_getChannelCount,
+        getChannelCount, js_setChannelCountMode, setChannelCountMode,
         js_getChannelCountMode, getChannelCountMode,
         js_setChannelInterpretation, setChannelInterpretation,
         js_getChannelInterpretation, getChannelInterpretation,
@@ -19,7 +18,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -28,6 +27,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -35,64 +35,48 @@ import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"connect\"]($2, $3, $4)"
         js_connect ::
-        AudioNode -> Nullable AudioNode -> Word -> Word -> IO ()
+        AudioNode -> AudioNode -> Optional Word -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.connect Mozilla AudioNode.connect documentation> 
 connect ::
         (MonadIO m, IsAudioNode self, IsAudioNode destination) =>
-          self -> Maybe destination -> Word -> Word -> m ()
+          self -> destination -> Maybe Word -> Maybe Word -> m ()
 connect self destination output input
   = liftIO
-      (js_connect (toAudioNode self)
-         (maybeToNullable (fmap toAudioNode destination))
-         output
-         input)
+      (js_connect (toAudioNode self) (toAudioNode destination)
+         (maybeToOptional output)
+         (maybeToOptional input))
  
 foreign import javascript unsafe "$1[\"connect\"]($2, $3)"
         js_connectParam ::
-        AudioNode -> Nullable AudioParam -> Word -> IO ()
+        AudioNode -> AudioParam -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.connect Mozilla AudioNode.connect documentation> 
 connectParam ::
              (MonadIO m, IsAudioNode self) =>
-               self -> Maybe AudioParam -> Word -> m ()
+               self -> AudioParam -> Maybe Word -> m ()
 connectParam self destination output
   = liftIO
-      (js_connectParam (toAudioNode self) (maybeToNullable destination)
-         output)
+      (js_connectParam (toAudioNode self) destination
+         (maybeToOptional output))
  
 foreign import javascript unsafe "$1[\"disconnect\"]($2)"
-        js_disconnect :: AudioNode -> Word -> IO ()
+        js_disconnect :: AudioNode -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.disconnect Mozilla AudioNode.disconnect documentation> 
-disconnect :: (MonadIO m, IsAudioNode self) => self -> Word -> m ()
+disconnect ::
+           (MonadIO m, IsAudioNode self) => self -> Maybe Word -> m ()
 disconnect self output
-  = liftIO (js_disconnect (toAudioNode self) output)
+  = liftIO
+      (js_disconnect (toAudioNode self) (maybeToOptional output))
  
 foreign import javascript unsafe "$1[\"context\"]" js_getContext ::
-        AudioNode -> IO (Nullable AudioContext)
+        AudioNode -> IO AudioContext
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
 getContext ::
-           (MonadIO m, IsAudioNode self) => self -> m (Maybe AudioContext)
-getContext self
-  = liftIO (nullableToMaybe <$> (js_getContext (toAudioNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
-getContextUnsafe ::
-                 (MonadIO m, IsAudioNode self, HasCallStack) =>
-                   self -> m AudioContext
-getContextUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getContext (toAudioNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
-getContextUnchecked ::
-                    (MonadIO m, IsAudioNode self) => self -> m AudioContext
-getContextUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getContext (toAudioNode self)))
+           (MonadIO m, IsAudioNode self) => self -> m AudioContext
+getContext self = liftIO (js_getContext (toAudioNode self))
  
 foreign import javascript unsafe "$1[\"numberOfInputs\"]"
         js_getNumberOfInputs :: AudioNode -> IO Word

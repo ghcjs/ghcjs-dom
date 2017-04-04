@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,6 +22,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,14 +34,14 @@ foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x Mozilla SVGPathSegCurvetoQuadraticAbs.x documentation> 
 setX ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
-setX self val = liftIO (js_setX (self) val)
+setX self val = liftIO (js_setX self val)
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x Mozilla SVGPathSegCurvetoQuadraticAbs.x documentation> 
 getX :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
-getX self = liftIO (js_getX (self))
+getX self = liftIO (js_getX self)
  
 foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
         SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
@@ -48,14 +49,14 @@ foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y Mozilla SVGPathSegCurvetoQuadraticAbs.y documentation> 
 setY ::
      (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
-setY self val = liftIO (js_setY (self) val)
+setY self val = liftIO (js_setY self val)
  
 foreign import javascript unsafe "$1[\"y\"]" js_getY ::
         SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y Mozilla SVGPathSegCurvetoQuadraticAbs.y documentation> 
 getY :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
-getY self = liftIO (js_getY (self))
+getY self = liftIO (js_getY self)
  
 foreign import javascript unsafe "$1[\"x1\"] = $2;" js_setX1 ::
         SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
@@ -63,14 +64,14 @@ foreign import javascript unsafe "$1[\"x1\"] = $2;" js_setX1 ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x1 Mozilla SVGPathSegCurvetoQuadraticAbs.x1 documentation> 
 setX1 ::
       (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
-setX1 self val = liftIO (js_setX1 (self) val)
+setX1 self val = liftIO (js_setX1 self val)
  
 foreign import javascript unsafe "$1[\"x1\"]" js_getX1 ::
         SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.x1 Mozilla SVGPathSegCurvetoQuadraticAbs.x1 documentation> 
 getX1 :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
-getX1 self = liftIO (js_getX1 (self))
+getX1 self = liftIO (js_getX1 self)
  
 foreign import javascript unsafe "$1[\"y1\"] = $2;" js_setY1 ::
         SVGPathSegCurvetoQuadraticAbs -> Float -> IO ()
@@ -78,11 +79,11 @@ foreign import javascript unsafe "$1[\"y1\"] = $2;" js_setY1 ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y1 Mozilla SVGPathSegCurvetoQuadraticAbs.y1 documentation> 
 setY1 ::
       (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> Float -> m ()
-setY1 self val = liftIO (js_setY1 (self) val)
+setY1 self val = liftIO (js_setY1 self val)
  
 foreign import javascript unsafe "$1[\"y1\"]" js_getY1 ::
         SVGPathSegCurvetoQuadraticAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegCurvetoQuadraticAbs.y1 Mozilla SVGPathSegCurvetoQuadraticAbs.y1 documentation> 
 getY1 :: (MonadIO m) => SVGPathSegCurvetoQuadraticAbs -> m Float
-getY1 self = liftIO (js_getY1 (self))
+getY1 self = liftIO (js_getY1 self)

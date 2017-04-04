@@ -4,26 +4,29 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MouseEvent
-       (js_initMouseEvent, initMouseEvent, js_getScreenX, getScreenX,
-        js_getScreenY, getScreenY, js_getClientX, getClientX,
+       (js_newMouseEvent, newMouseEvent, js_initMouseEvent,
+        initMouseEvent, pattern WEBKIT_FORCE_AT_MOUSE_DOWN,
+        pattern WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN, js_getScreenX,
+        getScreenX, js_getScreenY, getScreenY, js_getClientX, getClientX,
         js_getClientY, getClientY, js_getCtrlKey, getCtrlKey,
         js_getShiftKey, getShiftKey, js_getAltKey, getAltKey,
         js_getMetaKey, getMetaKey, js_getButton, getButton,
         js_getRelatedTarget, getRelatedTarget, getRelatedTargetUnsafe,
         getRelatedTargetUnchecked, js_getMovementX, getMovementX,
-        js_getMovementY, getMovementY, js_getOffsetX, getOffsetX,
-        js_getOffsetY, getOffsetY, js_getX, getX, js_getY, getY,
-        js_getFromElement, getFromElement, getFromElementUnsafe,
-        getFromElementUnchecked, js_getToElement, getToElement,
-        getToElementUnsafe, getToElementUnchecked, js_getDataTransfer,
-        getDataTransfer, getDataTransferUnsafe, getDataTransferUnchecked,
-        MouseEvent(..), gTypeMouseEvent, IsMouseEvent, toMouseEvent)
+        js_getMovementY, getMovementY, js_getWebkitForce, getWebkitForce,
+        js_getOffsetX, getOffsetX, js_getOffsetY, getOffsetY, js_getX,
+        getX, js_getY, getY, js_getFromElement, getFromElement,
+        getFromElementUnsafe, getFromElementUnchecked, js_getToElement,
+        getToElement, getToElementUnsafe, getToElementUnchecked,
+        js_getDataTransfer, getDataTransfer, getDataTransferUnsafe,
+        getDataTransferUnchecked, MouseEvent(..), gTypeMouseEvent,
+        IsMouseEvent, toMouseEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -32,60 +35,79 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
+        "new window[\"MouseEvent\"]($1, $2)" js_newMouseEvent ::
+        JSString -> Optional MouseEventInit -> IO MouseEvent
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent Mozilla MouseEvent documentation> 
+newMouseEvent ::
+              (MonadIO m, ToJSString type', IsMouseEventInit eventInitDict) =>
+                type' -> Maybe eventInitDict -> m MouseEvent
+newMouseEvent type' eventInitDict
+  = liftIO
+      (js_newMouseEvent (toJSString type')
+         (maybeToOptional (fmap toMouseEventInit eventInitDict)))
+ 
+foreign import javascript unsafe
         "$1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16)"
         js_initMouseEvent ::
         MouseEvent ->
-          JSString ->
+          Optional JSString ->
             Bool ->
               Bool ->
-                Nullable Window ->
-                  Int ->
-                    Int ->
-                      Int ->
-                        Int ->
-                          Int ->
+                Optional Window ->
+                  Optional Int ->
+                    Optional Int ->
+                      Optional Int ->
+                        Optional Int ->
+                          Optional Int ->
                             Bool ->
-                              Bool -> Bool -> Bool -> Word -> Nullable EventTarget -> IO ()
+                              Bool ->
+                                Bool -> Bool -> Optional Word -> Optional EventTarget -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.initMouseEvent Mozilla MouseEvent.initMouseEvent documentation> 
 initMouseEvent ::
                (MonadIO m, IsMouseEvent self, ToJSString type',
                 IsEventTarget relatedTarget) =>
                  self ->
-                   type' ->
+                   Maybe type' ->
                      Bool ->
                        Bool ->
                          Maybe Window ->
-                           Int ->
-                             Int ->
-                               Int ->
-                                 Int ->
-                                   Int ->
+                           Maybe Int ->
+                             Maybe Int ->
+                               Maybe Int ->
+                                 Maybe Int ->
+                                   Maybe Int ->
                                      Bool ->
-                                       Bool -> Bool -> Bool -> Word -> Maybe relatedTarget -> m ()
+                                       Bool ->
+                                         Bool -> Bool -> Maybe Word -> Maybe relatedTarget -> m ()
 initMouseEvent self type' canBubble cancelable view detail screenX
   screenY clientX clientY ctrlKey altKey shiftKey metaKey button
   relatedTarget
   = liftIO
-      (js_initMouseEvent (toMouseEvent self) (toJSString type') canBubble
+      (js_initMouseEvent (toMouseEvent self) (toOptionalJSString type')
+         canBubble
          cancelable
-         (maybeToNullable view)
-         detail
-         screenX
-         screenY
-         clientX
-         clientY
+         (maybeToOptional view)
+         (maybeToOptional detail)
+         (maybeToOptional screenX)
+         (maybeToOptional screenY)
+         (maybeToOptional clientX)
+         (maybeToOptional clientY)
          ctrlKey
          altKey
          shiftKey
          metaKey
-         button
-         (maybeToNullable (fmap toEventTarget relatedTarget)))
+         (maybeToOptional button)
+         (maybeToOptional (fmap toEventTarget relatedTarget)))
+pattern WEBKIT_FORCE_AT_MOUSE_DOWN = 1
+pattern WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN = 2
  
 foreign import javascript unsafe "$1[\"screenX\"]" js_getScreenX ::
         MouseEvent -> IO Int
@@ -190,6 +212,15 @@ foreign import javascript unsafe "$1[\"movementY\"]"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.movementY Mozilla MouseEvent.movementY documentation> 
 getMovementY :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getMovementY self = liftIO (js_getMovementY (toMouseEvent self))
+ 
+foreign import javascript unsafe "$1[\"webkitForce\"]"
+        js_getWebkitForce :: MouseEvent -> IO Double
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.webkitForce Mozilla MouseEvent.webkitForce documentation> 
+getWebkitForce ::
+               (MonadIO m, IsMouseEvent self) => self -> m Double
+getWebkitForce self
+  = liftIO (js_getWebkitForce (toMouseEvent self))
  
 foreign import javascript unsafe "$1[\"offsetX\"]" js_getOffsetX ::
         MouseEvent -> IO Int

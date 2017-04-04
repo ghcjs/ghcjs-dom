@@ -4,15 +4,16 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFontElement
-       (js_setColor, setColor, js_getColor, getColor, js_setFace, setFace,
-        js_getFace, getFace, js_setSize, setSize, js_getSize, getSize,
-        HTMLFontElement(..), gTypeHTMLFontElement)
+       (js_setColor, setColor, js_getColor, getColor, getColorUnsafe,
+        getColorUnchecked, js_setFace, setFace, js_getFace, getFace,
+        js_setSize, setSize, js_getSize, getSize, HTMLFontElement(..),
+        gTypeHTMLFontElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,26 +22,44 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"color\"] = $2;" js_setColor
-        :: HTMLFontElement -> JSString -> IO ()
+        :: HTMLFontElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
 setColor ::
-         (MonadIO m, ToJSString val) => HTMLFontElement -> val -> m ()
-setColor self val = liftIO (js_setColor (self) (toJSString val))
+         (MonadIO m, ToJSString val) => HTMLFontElement -> Maybe val -> m ()
+setColor self val
+  = liftIO (js_setColor self (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"color\"]" js_getColor ::
-        HTMLFontElement -> IO JSString
+        HTMLFontElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
 getColor ::
-         (MonadIO m, FromJSString result) => HTMLFontElement -> m result
-getColor self = liftIO (fromJSString <$> (js_getColor (self)))
+         (MonadIO m, FromJSString result) =>
+           HTMLFontElement -> m (Maybe result)
+getColor self = liftIO (fromMaybeJSString <$> (js_getColor self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
+getColorUnsafe ::
+               (MonadIO m, HasCallStack, FromJSString result) =>
+                 HTMLFontElement -> m result
+getColorUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getColor self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
+getColorUnchecked ::
+                  (MonadIO m, FromJSString result) => HTMLFontElement -> m result
+getColorUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getColor self))
  
 foreign import javascript unsafe "$1[\"face\"] = $2;" js_setFace ::
         HTMLFontElement -> JSString -> IO ()
@@ -48,7 +67,7 @@ foreign import javascript unsafe "$1[\"face\"] = $2;" js_setFace ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.face Mozilla HTMLFontElement.face documentation> 
 setFace ::
         (MonadIO m, ToJSString val) => HTMLFontElement -> val -> m ()
-setFace self val = liftIO (js_setFace (self) (toJSString val))
+setFace self val = liftIO (js_setFace self (toJSString val))
  
 foreign import javascript unsafe "$1[\"face\"]" js_getFace ::
         HTMLFontElement -> IO JSString
@@ -56,7 +75,7 @@ foreign import javascript unsafe "$1[\"face\"]" js_getFace ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.face Mozilla HTMLFontElement.face documentation> 
 getFace ::
         (MonadIO m, FromJSString result) => HTMLFontElement -> m result
-getFace self = liftIO (fromJSString <$> (js_getFace (self)))
+getFace self = liftIO (fromJSString <$> (js_getFace self))
  
 foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
         HTMLFontElement -> JSString -> IO ()
@@ -64,7 +83,7 @@ foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.size Mozilla HTMLFontElement.size documentation> 
 setSize ::
         (MonadIO m, ToJSString val) => HTMLFontElement -> val -> m ()
-setSize self val = liftIO (js_setSize (self) (toJSString val))
+setSize self val = liftIO (js_setSize self (toJSString val))
  
 foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
         HTMLFontElement -> IO JSString
@@ -72,4 +91,4 @@ foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.size Mozilla HTMLFontElement.size documentation> 
 getSize ::
         (MonadIO m, FromJSString result) => HTMLFontElement -> m result
-getSize self = liftIO (fromJSString <$> (js_getSize (self)))
+getSize self = liftIO (fromJSString <$> (js_getSize self))

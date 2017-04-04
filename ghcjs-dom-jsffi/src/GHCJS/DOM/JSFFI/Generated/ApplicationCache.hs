@@ -15,7 +15,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -24,6 +24,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,21 +35,21 @@ foreign import javascript unsafe "$1[\"update\"]()" js_update ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.update Mozilla ApplicationCache.update documentation> 
 update :: (MonadIO m) => ApplicationCache -> m ()
-update self = liftIO (js_update (self))
+update self = liftIO (js_update self)
  
 foreign import javascript unsafe "$1[\"swapCache\"]()" js_swapCache
         :: ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.swapCache Mozilla ApplicationCache.swapCache documentation> 
 swapCache :: (MonadIO m) => ApplicationCache -> m ()
-swapCache self = liftIO (js_swapCache (self))
+swapCache self = liftIO (js_swapCache self)
  
 foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
         ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.abort Mozilla ApplicationCache.abort documentation> 
 abort :: (MonadIO m) => ApplicationCache -> m ()
-abort self = liftIO (js_abort (self))
+abort self = liftIO (js_abort self)
 pattern UNCACHED = 0
 pattern IDLE = 1
 pattern CHECKING = 2
@@ -61,7 +62,7 @@ foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.status Mozilla ApplicationCache.status documentation> 
 getStatus :: (MonadIO m) => ApplicationCache -> m Word
-getStatus self = liftIO (js_getStatus (self))
+getStatus self = liftIO (js_getStatus self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onchecking Mozilla ApplicationCache.onchecking documentation> 
 checking :: EventName ApplicationCache Event

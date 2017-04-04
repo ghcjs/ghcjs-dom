@@ -20,6 +20,7 @@ import GHCJS.Foreign (jsNull)
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.Generated.XMLHttpRequest as Generated hiding (js_send, send)
+import GHCJS.DOM.JSFFI.Generated.XMLHttpRequestEventTarget as Generated
 
 data XHRError = XHRError
               | XHRAborted

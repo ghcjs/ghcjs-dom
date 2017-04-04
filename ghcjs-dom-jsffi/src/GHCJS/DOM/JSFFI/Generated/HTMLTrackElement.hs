@@ -10,14 +10,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTrackElement
         getSrclang, js_setLabel, setLabel, js_getLabel, getLabel,
         js_setDefault, setDefault, js_getDefault, getDefault,
         js_getReadyState, getReadyState, js_getTrack, getTrack,
-        getTrackUnsafe, getTrackUnchecked, HTMLTrackElement(..),
-        gTypeHTMLTrackElement)
+        HTMLTrackElement(..), gTypeHTMLTrackElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -26,6 +25,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -41,7 +41,7 @@ foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.kind Mozilla HTMLTrackElement.kind documentation> 
 setKind ::
         (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
-setKind self val = liftIO (js_setKind (self) (toJSString val))
+setKind self val = liftIO (js_setKind self (toJSString val))
  
 foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         HTMLTrackElement -> IO JSString
@@ -49,7 +49,7 @@ foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.kind Mozilla HTMLTrackElement.kind documentation> 
 getKind ::
         (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
-getKind self = liftIO (fromJSString <$> (js_getKind (self)))
+getKind self = liftIO (fromJSString <$> (js_getKind self))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         HTMLTrackElement -> JSString -> IO ()
@@ -57,7 +57,7 @@ foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.src Mozilla HTMLTrackElement.src documentation> 
 setSrc ::
        (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
-setSrc self val = liftIO (js_setSrc (self) (toJSString val))
+setSrc self val = liftIO (js_setSrc self (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         HTMLTrackElement -> IO JSString
@@ -65,7 +65,7 @@ foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.src Mozilla HTMLTrackElement.src documentation> 
 getSrc ::
        (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
-getSrc self = liftIO (fromJSString <$> (js_getSrc (self)))
+getSrc self = liftIO (fromJSString <$> (js_getSrc self))
  
 foreign import javascript unsafe "$1[\"srclang\"] = $2;"
         js_setSrclang :: HTMLTrackElement -> JSString -> IO ()
@@ -73,8 +73,7 @@ foreign import javascript unsafe "$1[\"srclang\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.srclang Mozilla HTMLTrackElement.srclang documentation> 
 setSrclang ::
            (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
-setSrclang self val
-  = liftIO (js_setSrclang (self) (toJSString val))
+setSrclang self val = liftIO (js_setSrclang self (toJSString val))
  
 foreign import javascript unsafe "$1[\"srclang\"]" js_getSrclang ::
         HTMLTrackElement -> IO JSString
@@ -82,7 +81,7 @@ foreign import javascript unsafe "$1[\"srclang\"]" js_getSrclang ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.srclang Mozilla HTMLTrackElement.srclang documentation> 
 getSrclang ::
            (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
-getSrclang self = liftIO (fromJSString <$> (js_getSrclang (self)))
+getSrclang self = liftIO (fromJSString <$> (js_getSrclang self))
  
 foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
         :: HTMLTrackElement -> JSString -> IO ()
@@ -90,7 +89,7 @@ foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.label Mozilla HTMLTrackElement.label documentation> 
 setLabel ::
          (MonadIO m, ToJSString val) => HTMLTrackElement -> val -> m ()
-setLabel self val = liftIO (js_setLabel (self) (toJSString val))
+setLabel self val = liftIO (js_setLabel self (toJSString val))
  
 foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
         HTMLTrackElement -> IO JSString
@@ -98,45 +97,32 @@ foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.label Mozilla HTMLTrackElement.label documentation> 
 getLabel ::
          (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
-getLabel self = liftIO (fromJSString <$> (js_getLabel (self)))
+getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
 foreign import javascript unsafe "$1[\"default\"] = $2;"
         js_setDefault :: HTMLTrackElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
 setDefault :: (MonadIO m) => HTMLTrackElement -> Bool -> m ()
-setDefault self val = liftIO (js_setDefault (self) val)
+setDefault self val = liftIO (js_setDefault self val)
  
 foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
         js_getDefault :: HTMLTrackElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
 getDefault :: (MonadIO m) => HTMLTrackElement -> m Bool
-getDefault self = liftIO (js_getDefault (self))
+getDefault self = liftIO (js_getDefault self)
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: HTMLTrackElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.readyState Mozilla HTMLTrackElement.readyState documentation> 
 getReadyState :: (MonadIO m) => HTMLTrackElement -> m Word
-getReadyState self = liftIO (js_getReadyState (self))
+getReadyState self = liftIO (js_getReadyState self)
  
 foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
-        HTMLTrackElement -> IO (Nullable TextTrack)
+        HTMLTrackElement -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
-getTrack :: (MonadIO m) => HTMLTrackElement -> m (Maybe TextTrack)
-getTrack self = liftIO (nullableToMaybe <$> (js_getTrack (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
-getTrackUnsafe ::
-               (MonadIO m, HasCallStack) => HTMLTrackElement -> m TextTrack
-getTrackUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getTrack (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.track Mozilla HTMLTrackElement.track documentation> 
-getTrackUnchecked :: (MonadIO m) => HTMLTrackElement -> m TextTrack
-getTrackUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getTrack (self)))
+getTrack :: (MonadIO m) => HTMLTrackElement -> m TextTrack
+getTrack self = liftIO (js_getTrack self)

@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -28,8 +29,7 @@ import GHCJS.DOM.JSFFI.Generated.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
 newSQLTransactionErrorCallback ::
-                               (MonadIO m) =>
-                                 (Maybe SQLError -> IO ()) -> m SQLTransactionErrorCallback
+                               (MonadIO m) => (SQLError -> IO ()) -> m SQLTransactionErrorCallback
 newSQLTransactionErrorCallback callback
   = liftIO
       (SQLTransactionErrorCallback <$>
@@ -40,7 +40,7 @@ newSQLTransactionErrorCallback callback
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
 newSQLTransactionErrorCallbackSync ::
                                    (MonadIO m) =>
-                                     (Maybe SQLError -> IO ()) -> m SQLTransactionErrorCallback
+                                     (SQLError -> IO ()) -> m SQLTransactionErrorCallback
 newSQLTransactionErrorCallbackSync callback
   = liftIO
       (SQLTransactionErrorCallback <$>
@@ -51,7 +51,7 @@ newSQLTransactionErrorCallbackSync callback
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLTransactionErrorCallback Mozilla SQLTransactionErrorCallback documentation> 
 newSQLTransactionErrorCallbackAsync ::
                                     (MonadIO m) =>
-                                      (Maybe SQLError -> IO ()) -> m SQLTransactionErrorCallback
+                                      (SQLError -> IO ()) -> m SQLTransactionErrorCallback
 newSQLTransactionErrorCallbackAsync callback
   = liftIO
       (SQLTransactionErrorCallback <$>

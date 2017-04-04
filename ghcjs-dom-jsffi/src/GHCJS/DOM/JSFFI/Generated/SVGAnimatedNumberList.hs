@@ -4,15 +4,14 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGAnimatedNumberList
-       (js_getBaseVal, getBaseVal, getBaseValUnsafe, getBaseValUnchecked,
-        js_getAnimVal, getAnimVal, getAnimValUnsafe, getAnimValUnchecked,
+       (js_getBaseVal, getBaseVal, js_getAnimVal, getAnimVal,
         SVGAnimatedNumberList(..), gTypeSVGAnimatedNumberList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,55 +20,24 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
-        SVGAnimatedNumberList -> IO (Nullable SVGNumberList)
+        SVGAnimatedNumberList -> IO SVGNumberList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.baseVal Mozilla SVGAnimatedNumberList.baseVal documentation> 
 getBaseVal ::
-           (MonadIO m) => SVGAnimatedNumberList -> m (Maybe SVGNumberList)
-getBaseVal self
-  = liftIO (nullableToMaybe <$> (js_getBaseVal (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.baseVal Mozilla SVGAnimatedNumberList.baseVal documentation> 
-getBaseValUnsafe ::
-                 (MonadIO m, HasCallStack) =>
-                   SVGAnimatedNumberList -> m SVGNumberList
-getBaseValUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getBaseVal (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.baseVal Mozilla SVGAnimatedNumberList.baseVal documentation> 
-getBaseValUnchecked ::
-                    (MonadIO m) => SVGAnimatedNumberList -> m SVGNumberList
-getBaseValUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getBaseVal (self)))
+           (MonadIO m) => SVGAnimatedNumberList -> m SVGNumberList
+getBaseVal self = liftIO (js_getBaseVal self)
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
-        SVGAnimatedNumberList -> IO (Nullable SVGNumberList)
+        SVGAnimatedNumberList -> IO SVGNumberList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.animVal Mozilla SVGAnimatedNumberList.animVal documentation> 
 getAnimVal ::
-           (MonadIO m) => SVGAnimatedNumberList -> m (Maybe SVGNumberList)
-getAnimVal self
-  = liftIO (nullableToMaybe <$> (js_getAnimVal (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.animVal Mozilla SVGAnimatedNumberList.animVal documentation> 
-getAnimValUnsafe ::
-                 (MonadIO m, HasCallStack) =>
-                   SVGAnimatedNumberList -> m SVGNumberList
-getAnimValUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getAnimVal (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumberList.animVal Mozilla SVGAnimatedNumberList.animVal documentation> 
-getAnimValUnchecked ::
-                    (MonadIO m) => SVGAnimatedNumberList -> m SVGNumberList
-getAnimValUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getAnimVal (self)))
+           (MonadIO m) => SVGAnimatedNumberList -> m SVGNumberList
+getAnimVal self = liftIO (js_getAnimVal self)

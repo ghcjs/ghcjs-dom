@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,8 +34,7 @@ foreign import javascript unsafe "$1[\"voiceURI\"]" js_getVoiceURI
 getVoiceURI ::
             (MonadIO m, FromJSString result) =>
               SpeechSynthesisVoice -> m result
-getVoiceURI self
-  = liftIO (fromJSString <$> (js_getVoiceURI (self)))
+getVoiceURI self = liftIO (fromJSString <$> (js_getVoiceURI self))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         SpeechSynthesisVoice -> IO JSString
@@ -43,7 +43,7 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 getName ::
         (MonadIO m, FromJSString result) =>
           SpeechSynthesisVoice -> m result
-getName self = liftIO (fromJSString <$> (js_getName (self)))
+getName self = liftIO (fromJSString <$> (js_getName self))
  
 foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
         SpeechSynthesisVoice -> IO JSString
@@ -52,18 +52,18 @@ foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
 getLang ::
         (MonadIO m, FromJSString result) =>
           SpeechSynthesisVoice -> m result
-getLang self = liftIO (fromJSString <$> (js_getLang (self)))
+getLang self = liftIO (fromJSString <$> (js_getLang self))
  
 foreign import javascript unsafe "($1[\"localService\"] ? 1 : 0)"
         js_getLocalService :: SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.localService Mozilla SpeechSynthesisVoice.localService documentation> 
 getLocalService :: (MonadIO m) => SpeechSynthesisVoice -> m Bool
-getLocalService self = liftIO (js_getLocalService (self))
+getLocalService self = liftIO (js_getLocalService self)
  
 foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
         js_getDefault :: SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.default Mozilla SpeechSynthesisVoice.default documentation> 
 getDefault :: (MonadIO m) => SpeechSynthesisVoice -> m Bool
-getDefault self = liftIO (js_getDefault (self))
+getDefault self = liftIO (js_getDefault self)

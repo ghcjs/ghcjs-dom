@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,6 +22,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -49,19 +50,21 @@ getEntryType self
       (fromJSString <$> (js_getEntryType (toPerformanceEntry self)))
  
 foreign import javascript unsafe "$1[\"startTime\"]"
-        js_getStartTime :: PerformanceEntry -> IO Double
+        js_getStartTime :: PerformanceEntry -> IO DOMHighResTimeStamp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.startTime Mozilla PerformanceEntry.startTime documentation> 
 getStartTime ::
-             (MonadIO m, IsPerformanceEntry self) => self -> m Double
+             (MonadIO m, IsPerformanceEntry self) =>
+               self -> m DOMHighResTimeStamp
 getStartTime self
   = liftIO (js_getStartTime (toPerformanceEntry self))
  
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
-        :: PerformanceEntry -> IO Double
+        :: PerformanceEntry -> IO DOMHighResTimeStamp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.duration Mozilla PerformanceEntry.duration documentation> 
 getDuration ::
-            (MonadIO m, IsPerformanceEntry self) => self -> m Double
+            (MonadIO m, IsPerformanceEntry self) =>
+              self -> m DOMHighResTimeStamp
 getDuration self
   = liftIO (js_getDuration (toPerformanceEntry self))

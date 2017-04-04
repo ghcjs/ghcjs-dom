@@ -4,62 +4,54 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Node
-       (js_insertBefore, insertBefore, insertBefore_, insertBeforeUnsafe,
-        insertBeforeUnchecked, js_replaceChild, replaceChild,
-        replaceChild_, replaceChildUnsafe, replaceChildUnchecked,
-        js_removeChild, removeChild, removeChild_, removeChildUnsafe,
-        removeChildUnchecked, js_appendChild, appendChild, appendChild_,
-        appendChildUnsafe, appendChildUnchecked, js_hasChildNodes,
-        hasChildNodes, hasChildNodes_, js_cloneNode, cloneNode, cloneNode_,
-        cloneNodeUnsafe, cloneNodeUnchecked, js_normalize, normalize,
-        js_isSupported, isSupported, isSupported_, js_isSameNode,
+       (js_insertBefore, insertBefore, insertBefore_, js_replaceChild,
+        replaceChild, replaceChild_, js_removeChild, removeChild,
+        removeChild_, js_appendChild, appendChild, appendChild_,
+        js_hasChildNodes, hasChildNodes, hasChildNodes_, js_cloneNode,
+        cloneNode, cloneNode_, js_normalize, normalize, js_isSameNode,
         isSameNode, isSameNode_, js_isEqualNode, isEqualNode, isEqualNode_,
         js_lookupPrefix, lookupPrefix, lookupPrefix_, lookupPrefixUnsafe,
-        lookupPrefixUnchecked, js_isDefaultNamespace, isDefaultNamespace,
-        isDefaultNamespace_, js_lookupNamespaceURI, lookupNamespaceURI,
+        lookupPrefixUnchecked, js_lookupNamespaceURI, lookupNamespaceURI,
         lookupNamespaceURI_, lookupNamespaceURIUnsafe,
-        lookupNamespaceURIUnchecked, js_compareDocumentPosition,
-        compareDocumentPosition, compareDocumentPosition_, js_contains,
-        contains, contains_, pattern ELEMENT_NODE, pattern ATTRIBUTE_NODE,
-        pattern TEXT_NODE, pattern CDATA_SECTION_NODE,
-        pattern ENTITY_REFERENCE_NODE, pattern ENTITY_NODE,
-        pattern PROCESSING_INSTRUCTION_NODE, pattern COMMENT_NODE,
-        pattern DOCUMENT_NODE, pattern DOCUMENT_TYPE_NODE,
-        pattern DOCUMENT_FRAGMENT_NODE, pattern NOTATION_NODE,
-        pattern DOCUMENT_POSITION_DISCONNECTED,
+        lookupNamespaceURIUnchecked, js_isDefaultNamespace,
+        isDefaultNamespace, isDefaultNamespace_,
+        js_compareDocumentPosition, compareDocumentPosition,
+        compareDocumentPosition_, js_contains, contains, contains_,
+        js_getRootNode, getRootNode, getRootNode_, pattern ELEMENT_NODE,
+        pattern ATTRIBUTE_NODE, pattern TEXT_NODE,
+        pattern CDATA_SECTION_NODE, pattern ENTITY_REFERENCE_NODE,
+        pattern ENTITY_NODE, pattern PROCESSING_INSTRUCTION_NODE,
+        pattern COMMENT_NODE, pattern DOCUMENT_NODE,
+        pattern DOCUMENT_TYPE_NODE, pattern DOCUMENT_FRAGMENT_NODE,
+        pattern NOTATION_NODE, pattern DOCUMENT_POSITION_DISCONNECTED,
         pattern DOCUMENT_POSITION_PRECEDING,
         pattern DOCUMENT_POSITION_FOLLOWING,
         pattern DOCUMENT_POSITION_CONTAINS,
         pattern DOCUMENT_POSITION_CONTAINED_BY,
         pattern DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC, js_getNodeName,
-        getNodeName, getNodeNameUnsafe, getNodeNameUnchecked,
-        js_setNodeValue, setNodeValue, js_getNodeValue, getNodeValue,
-        getNodeValueUnsafe, getNodeValueUnchecked, js_getNodeType,
-        getNodeType, js_getParentNode, getParentNode, getParentNodeUnsafe,
-        getParentNodeUnchecked, js_getChildNodes, getChildNodes,
-        getChildNodesUnsafe, getChildNodesUnchecked, js_getFirstChild,
-        getFirstChild, getFirstChildUnsafe, getFirstChildUnchecked,
-        js_getLastChild, getLastChild, getLastChildUnsafe,
-        getLastChildUnchecked, js_getPreviousSibling, getPreviousSibling,
+        getNodeName, js_setNodeValue, setNodeValue, js_getNodeValue,
+        getNodeValue, getNodeValueUnsafe, getNodeValueUnchecked,
+        js_getNodeType, getNodeType, js_getParentNode, getParentNode,
+        getParentNodeUnsafe, getParentNodeUnchecked, js_getChildNodes,
+        getChildNodes, js_getFirstChild, getFirstChild,
+        getFirstChildUnsafe, getFirstChildUnchecked, js_getLastChild,
+        getLastChild, getLastChildUnsafe, getLastChildUnchecked,
+        js_getPreviousSibling, getPreviousSibling,
         getPreviousSiblingUnsafe, getPreviousSiblingUnchecked,
         js_getNextSibling, getNextSibling, getNextSiblingUnsafe,
         getNextSiblingUnchecked, js_getOwnerDocument, getOwnerDocument,
-        getOwnerDocumentUnsafe, getOwnerDocumentUnchecked,
-        js_getNamespaceURI, getNamespaceURI, getNamespaceURIUnsafe,
-        getNamespaceURIUnchecked, js_setPrefix, setPrefix, js_getPrefix,
-        getPrefix, getPrefixUnsafe, getPrefixUnchecked, js_getLocalName,
-        getLocalName, getLocalNameUnsafe, getLocalNameUnchecked,
-        js_getBaseURI, getBaseURI, getBaseURIUnsafe, getBaseURIUnchecked,
-        js_setTextContent, setTextContent, js_getTextContent,
+        getOwnerDocumentUnsafe, getOwnerDocumentUnchecked, js_getBaseURI,
+        getBaseURI, js_setTextContent, setTextContent, js_getTextContent,
         getTextContent, getTextContentUnsafe, getTextContentUnchecked,
-        js_getParentElement, getParentElement, getParentElementUnsafe,
+        js_getIsConnected, getIsConnected, js_getParentElement,
+        getParentElement, getParentElementUnsafe,
         getParentElementUnchecked, Node(..), gTypeNode, IsNode, toNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -68,198 +60,88 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"insertBefore\"]($2, $3)"
-        js_insertBefore ::
-        Node -> Nullable Node -> Nullable Node -> IO (Nullable Node)
+        js_insertBefore :: Node -> Node -> Optional Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
 insertBefore ::
              (MonadIO m, IsNode self, IsNode newChild, IsNode refChild) =>
-               self -> Maybe newChild -> Maybe refChild -> m (Maybe Node)
+               self -> newChild -> Maybe refChild -> m Node
 insertBefore self newChild refChild
   = liftIO
-      (nullableToMaybe <$>
-         (js_insertBefore (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode refChild))))
+      (js_insertBefore (toNode self) (toNode newChild)
+         (maybeToOptional (fmap toNode refChild)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
 insertBefore_ ::
               (MonadIO m, IsNode self, IsNode newChild, IsNode refChild) =>
-                self -> Maybe newChild -> Maybe refChild -> m ()
+                self -> newChild -> Maybe refChild -> m ()
 insertBefore_ self newChild refChild
   = liftIO
       (void
-         (js_insertBefore (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode refChild))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
-insertBeforeUnsafe ::
-                   (MonadIO m, IsNode self, IsNode newChild, IsNode refChild,
-                    HasCallStack) =>
-                     self -> Maybe newChild -> Maybe refChild -> m Node
-insertBeforeUnsafe self newChild refChild
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_insertBefore (toNode self)
-             (maybeToNullable (fmap toNode newChild))
-             (maybeToNullable (fmap toNode refChild))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
-insertBeforeUnchecked ::
-                      (MonadIO m, IsNode self, IsNode newChild, IsNode refChild) =>
-                        self -> Maybe newChild -> Maybe refChild -> m Node
-insertBeforeUnchecked self newChild refChild
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_insertBefore (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode refChild))))
+         (js_insertBefore (toNode self) (toNode newChild)
+            (maybeToOptional (fmap toNode refChild))))
  
 foreign import javascript unsafe "$1[\"replaceChild\"]($2, $3)"
-        js_replaceChild ::
-        Node -> Nullable Node -> Nullable Node -> IO (Nullable Node)
+        js_replaceChild :: Node -> Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
 replaceChild ::
              (MonadIO m, IsNode self, IsNode newChild, IsNode oldChild) =>
-               self -> Maybe newChild -> Maybe oldChild -> m (Maybe Node)
+               self -> newChild -> oldChild -> m Node
 replaceChild self newChild oldChild
   = liftIO
-      (nullableToMaybe <$>
-         (js_replaceChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode oldChild))))
+      (js_replaceChild (toNode self) (toNode newChild) (toNode oldChild))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
 replaceChild_ ::
               (MonadIO m, IsNode self, IsNode newChild, IsNode oldChild) =>
-                self -> Maybe newChild -> Maybe oldChild -> m ()
+                self -> newChild -> oldChild -> m ()
 replaceChild_ self newChild oldChild
   = liftIO
       (void
-         (js_replaceChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode oldChild))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
-replaceChildUnsafe ::
-                   (MonadIO m, IsNode self, IsNode newChild, IsNode oldChild,
-                    HasCallStack) =>
-                     self -> Maybe newChild -> Maybe oldChild -> m Node
-replaceChildUnsafe self newChild oldChild
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_replaceChild (toNode self)
-             (maybeToNullable (fmap toNode newChild))
-             (maybeToNullable (fmap toNode oldChild))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
-replaceChildUnchecked ::
-                      (MonadIO m, IsNode self, IsNode newChild, IsNode oldChild) =>
-                        self -> Maybe newChild -> Maybe oldChild -> m Node
-replaceChildUnchecked self newChild oldChild
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_replaceChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))
-            (maybeToNullable (fmap toNode oldChild))))
+         (js_replaceChild (toNode self) (toNode newChild)
+            (toNode oldChild)))
  
 foreign import javascript unsafe "$1[\"removeChild\"]($2)"
-        js_removeChild :: Node -> Nullable Node -> IO (Nullable Node)
+        js_removeChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
 removeChild ::
             (MonadIO m, IsNode self, IsNode oldChild) =>
-              self -> Maybe oldChild -> m (Maybe Node)
+              self -> oldChild -> m Node
 removeChild self oldChild
-  = liftIO
-      (nullableToMaybe <$>
-         (js_removeChild (toNode self)
-            (maybeToNullable (fmap toNode oldChild))))
+  = liftIO (js_removeChild (toNode self) (toNode oldChild))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
 removeChild_ ::
              (MonadIO m, IsNode self, IsNode oldChild) =>
-               self -> Maybe oldChild -> m ()
+               self -> oldChild -> m ()
 removeChild_ self oldChild
-  = liftIO
-      (void
-         (js_removeChild (toNode self)
-            (maybeToNullable (fmap toNode oldChild))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
-removeChildUnsafe ::
-                  (MonadIO m, IsNode self, IsNode oldChild, HasCallStack) =>
-                    self -> Maybe oldChild -> m Node
-removeChildUnsafe self oldChild
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_removeChild (toNode self)
-             (maybeToNullable (fmap toNode oldChild))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
-removeChildUnchecked ::
-                     (MonadIO m, IsNode self, IsNode oldChild) =>
-                       self -> Maybe oldChild -> m Node
-removeChildUnchecked self oldChild
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_removeChild (toNode self)
-            (maybeToNullable (fmap toNode oldChild))))
+  = liftIO (void (js_removeChild (toNode self) (toNode oldChild)))
  
 foreign import javascript unsafe "$1[\"appendChild\"]($2)"
-        js_appendChild :: Node -> Nullable Node -> IO (Nullable Node)
+        js_appendChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
 appendChild ::
             (MonadIO m, IsNode self, IsNode newChild) =>
-              self -> Maybe newChild -> m (Maybe Node)
+              self -> newChild -> m Node
 appendChild self newChild
-  = liftIO
-      (nullableToMaybe <$>
-         (js_appendChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))))
+  = liftIO (js_appendChild (toNode self) (toNode newChild))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
 appendChild_ ::
              (MonadIO m, IsNode self, IsNode newChild) =>
-               self -> Maybe newChild -> m ()
+               self -> newChild -> m ()
 appendChild_ self newChild
-  = liftIO
-      (void
-         (js_appendChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
-appendChildUnsafe ::
-                  (MonadIO m, IsNode self, IsNode newChild, HasCallStack) =>
-                    self -> Maybe newChild -> m Node
-appendChildUnsafe self newChild
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_appendChild (toNode self)
-             (maybeToNullable (fmap toNode newChild))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
-appendChildUnchecked ::
-                     (MonadIO m, IsNode self, IsNode newChild) =>
-                       self -> Maybe newChild -> m Node
-appendChildUnchecked self newChild
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_appendChild (toNode self)
-            (maybeToNullable (fmap toNode newChild))))
+  = liftIO (void (js_appendChild (toNode self) (toNode newChild)))
  
 foreign import javascript unsafe
         "($1[\"hasChildNodes\"]() ? 1 : 0)" js_hasChildNodes ::
@@ -275,33 +157,16 @@ hasChildNodes_ self
   = liftIO (void (js_hasChildNodes (toNode self)))
  
 foreign import javascript unsafe "$1[\"cloneNode\"]($2)"
-        js_cloneNode :: Node -> Bool -> IO (Nullable Node)
+        js_cloneNode :: Node -> Bool -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
-cloneNode ::
-          (MonadIO m, IsNode self) => self -> Bool -> m (Maybe Node)
-cloneNode self deep
-  = liftIO (nullableToMaybe <$> (js_cloneNode (toNode self) deep))
+cloneNode :: (MonadIO m, IsNode self) => self -> Bool -> m Node
+cloneNode self deep = liftIO (js_cloneNode (toNode self) deep)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
 cloneNode_ :: (MonadIO m, IsNode self) => self -> Bool -> m ()
 cloneNode_ self deep
   = liftIO (void (js_cloneNode (toNode self) deep))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
-cloneNodeUnsafe ::
-                (MonadIO m, IsNode self, HasCallStack) => self -> Bool -> m Node
-cloneNodeUnsafe self deep
-  = liftIO
-      ((nullableToMaybe <$> (js_cloneNode (toNode self) deep)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
-cloneNodeUnchecked ::
-                   (MonadIO m, IsNode self) => self -> Bool -> m Node
-cloneNodeUnchecked self deep
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_cloneNode (toNode self) deep))
  
 foreign import javascript unsafe "$1[\"normalize\"]()" js_normalize
         :: Node -> IO ()
@@ -310,31 +175,8 @@ foreign import javascript unsafe "$1[\"normalize\"]()" js_normalize
 normalize :: (MonadIO m, IsNode self) => self -> m ()
 normalize self = liftIO (js_normalize (toNode self))
  
-foreign import javascript unsafe
-        "($1[\"isSupported\"]($2,\n$3) ? 1 : 0)" js_isSupported ::
-        Node -> JSString -> Nullable JSString -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSupported Mozilla Node.isSupported documentation> 
-isSupported ::
-            (MonadIO m, IsNode self, ToJSString feature, ToJSString version) =>
-              self -> feature -> Maybe version -> m Bool
-isSupported self feature version
-  = liftIO
-      (js_isSupported (toNode self) (toJSString feature)
-         (toMaybeJSString version))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSupported Mozilla Node.isSupported documentation> 
-isSupported_ ::
-             (MonadIO m, IsNode self, ToJSString feature, ToJSString version) =>
-               self -> feature -> Maybe version -> m ()
-isSupported_ self feature version
-  = liftIO
-      (void
-         (js_isSupported (toNode self) (toJSString feature)
-            (toMaybeJSString version)))
- 
 foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
-        js_isSameNode :: Node -> Nullable Node -> IO Bool
+        js_isSameNode :: Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSameNode Mozilla Node.isSameNode documentation> 
 isSameNode ::
@@ -342,7 +184,7 @@ isSameNode ::
              self -> Maybe other -> m Bool
 isSameNode self other
   = liftIO
-      (js_isSameNode (toNode self) (maybeToNullable (fmap toNode other)))
+      (js_isSameNode (toNode self) (maybeToOptional (fmap toNode other)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSameNode Mozilla Node.isSameNode documentation> 
 isSameNode_ ::
@@ -352,11 +194,11 @@ isSameNode_ self other
   = liftIO
       (void
          (js_isSameNode (toNode self)
-            (maybeToNullable (fmap toNode other))))
+            (maybeToOptional (fmap toNode other))))
  
 foreign import javascript unsafe
         "($1[\"isEqualNode\"]($2) ? 1 : 0)" js_isEqualNode ::
-        Node -> Nullable Node -> IO Bool
+        Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isEqualNode Mozilla Node.isEqualNode documentation> 
 isEqualNode ::
@@ -365,7 +207,7 @@ isEqualNode ::
 isEqualNode self other
   = liftIO
       (js_isEqualNode (toNode self)
-         (maybeToNullable (fmap toNode other)))
+         (maybeToOptional (fmap toNode other)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isEqualNode Mozilla Node.isEqualNode documentation> 
 isEqualNode_ ::
@@ -375,11 +217,11 @@ isEqualNode_ self other
   = liftIO
       (void
          (js_isEqualNode (toNode self)
-            (maybeToNullable (fmap toNode other))))
+            (maybeToOptional (fmap toNode other))))
  
 foreign import javascript unsafe "$1[\"lookupPrefix\"]($2)"
         js_lookupPrefix ::
-        Node -> Nullable JSString -> IO (Nullable JSString)
+        Node -> Optional JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
 lookupPrefix ::
@@ -389,7 +231,7 @@ lookupPrefix ::
 lookupPrefix self namespaceURI
   = liftIO
       (fromMaybeJSString <$>
-         (js_lookupPrefix (toNode self) (toMaybeJSString namespaceURI)))
+         (js_lookupPrefix (toNode self) (toOptionalJSString namespaceURI)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
 lookupPrefix_ ::
@@ -398,7 +240,7 @@ lookupPrefix_ ::
 lookupPrefix_ self namespaceURI
   = liftIO
       (void
-         (js_lookupPrefix (toNode self) (toMaybeJSString namespaceURI)))
+         (js_lookupPrefix (toNode self) (toOptionalJSString namespaceURI)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
 lookupPrefixUnsafe ::
@@ -408,7 +250,7 @@ lookupPrefixUnsafe ::
 lookupPrefixUnsafe self namespaceURI
   = liftIO
       ((fromMaybeJSString <$>
-          (js_lookupPrefix (toNode self) (toMaybeJSString namespaceURI)))
+          (js_lookupPrefix (toNode self) (toOptionalJSString namespaceURI)))
          >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupPrefix Mozilla Node.lookupPrefix documentation> 
@@ -419,34 +261,11 @@ lookupPrefixUnchecked ::
 lookupPrefixUnchecked self namespaceURI
   = liftIO
       (fromJust . fromMaybeJSString <$>
-         (js_lookupPrefix (toNode self) (toMaybeJSString namespaceURI)))
- 
-foreign import javascript unsafe
-        "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)" js_isDefaultNamespace ::
-        Node -> Nullable JSString -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
-isDefaultNamespace ::
-                   (MonadIO m, IsNode self, ToJSString namespaceURI) =>
-                     self -> Maybe namespaceURI -> m Bool
-isDefaultNamespace self namespaceURI
-  = liftIO
-      (js_isDefaultNamespace (toNode self)
-         (toMaybeJSString namespaceURI))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
-isDefaultNamespace_ ::
-                    (MonadIO m, IsNode self, ToJSString namespaceURI) =>
-                      self -> Maybe namespaceURI -> m ()
-isDefaultNamespace_ self namespaceURI
-  = liftIO
-      (void
-         (js_isDefaultNamespace (toNode self)
-            (toMaybeJSString namespaceURI)))
+         (js_lookupPrefix (toNode self) (toOptionalJSString namespaceURI)))
  
 foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
         js_lookupNamespaceURI ::
-        Node -> Nullable JSString -> IO (Nullable JSString)
+        Node -> Optional JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
 lookupNamespaceURI ::
@@ -455,7 +274,7 @@ lookupNamespaceURI ::
 lookupNamespaceURI self prefix
   = liftIO
       (fromMaybeJSString <$>
-         (js_lookupNamespaceURI (toNode self) (toMaybeJSString prefix)))
+         (js_lookupNamespaceURI (toNode self) (toOptionalJSString prefix)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
 lookupNamespaceURI_ ::
@@ -464,7 +283,7 @@ lookupNamespaceURI_ ::
 lookupNamespaceURI_ self prefix
   = liftIO
       (void
-         (js_lookupNamespaceURI (toNode self) (toMaybeJSString prefix)))
+         (js_lookupNamespaceURI (toNode self) (toOptionalJSString prefix)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
 lookupNamespaceURIUnsafe ::
@@ -474,7 +293,7 @@ lookupNamespaceURIUnsafe ::
 lookupNamespaceURIUnsafe self prefix
   = liftIO
       ((fromMaybeJSString <$>
-          (js_lookupNamespaceURI (toNode self) (toMaybeJSString prefix)))
+          (js_lookupNamespaceURI (toNode self) (toOptionalJSString prefix)))
          >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lookupNamespaceURI Mozilla Node.lookupNamespaceURI documentation> 
@@ -484,33 +303,50 @@ lookupNamespaceURIUnchecked ::
 lookupNamespaceURIUnchecked self prefix
   = liftIO
       (fromJust . fromMaybeJSString <$>
-         (js_lookupNamespaceURI (toNode self) (toMaybeJSString prefix)))
+         (js_lookupNamespaceURI (toNode self) (toOptionalJSString prefix)))
+ 
+foreign import javascript unsafe
+        "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)" js_isDefaultNamespace ::
+        Node -> Optional JSString -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
+isDefaultNamespace ::
+                   (MonadIO m, IsNode self, ToJSString namespaceURI) =>
+                     self -> Maybe namespaceURI -> m Bool
+isDefaultNamespace self namespaceURI
+  = liftIO
+      (js_isDefaultNamespace (toNode self)
+         (toOptionalJSString namespaceURI))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
+isDefaultNamespace_ ::
+                    (MonadIO m, IsNode self, ToJSString namespaceURI) =>
+                      self -> Maybe namespaceURI -> m ()
+isDefaultNamespace_ self namespaceURI
+  = liftIO
+      (void
+         (js_isDefaultNamespace (toNode self)
+            (toOptionalJSString namespaceURI)))
  
 foreign import javascript unsafe
         "$1[\"compareDocumentPosition\"]($2)" js_compareDocumentPosition ::
-        Node -> Nullable Node -> IO Word
+        Node -> Node -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.compareDocumentPosition Mozilla Node.compareDocumentPosition documentation> 
 compareDocumentPosition ::
-                        (MonadIO m, IsNode self, IsNode other) =>
-                          self -> Maybe other -> m Word
+                        (MonadIO m, IsNode self, IsNode other) => self -> other -> m Word
 compareDocumentPosition self other
-  = liftIO
-      (js_compareDocumentPosition (toNode self)
-         (maybeToNullable (fmap toNode other)))
+  = liftIO (js_compareDocumentPosition (toNode self) (toNode other))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.compareDocumentPosition Mozilla Node.compareDocumentPosition documentation> 
 compareDocumentPosition_ ::
-                         (MonadIO m, IsNode self, IsNode other) =>
-                           self -> Maybe other -> m ()
+                         (MonadIO m, IsNode self, IsNode other) => self -> other -> m ()
 compareDocumentPosition_ self other
   = liftIO
-      (void
-         (js_compareDocumentPosition (toNode self)
-            (maybeToNullable (fmap toNode other))))
+      (void (js_compareDocumentPosition (toNode self) (toNode other)))
  
 foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
-        js_contains :: Node -> Nullable Node -> IO Bool
+        js_contains :: Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.contains Mozilla Node.contains documentation> 
 contains ::
@@ -518,7 +354,7 @@ contains ::
            self -> Maybe other -> m Bool
 contains self other
   = liftIO
-      (js_contains (toNode self) (maybeToNullable (fmap toNode other)))
+      (js_contains (toNode self) (maybeToOptional (fmap toNode other)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.contains Mozilla Node.contains documentation> 
 contains_ ::
@@ -527,7 +363,25 @@ contains_ ::
 contains_ self other
   = liftIO
       (void
-         (js_contains (toNode self) (maybeToNullable (fmap toNode other))))
+         (js_contains (toNode self) (maybeToOptional (fmap toNode other))))
+ 
+foreign import javascript unsafe "$1[\"getRootNode\"]($2)"
+        js_getRootNode :: Node -> Optional GetRootNodeOptions -> IO Node
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.getRootNode Mozilla Node.getRootNode documentation> 
+getRootNode ::
+            (MonadIO m, IsNode self) =>
+              self -> Maybe GetRootNodeOptions -> m Node
+getRootNode self options
+  = liftIO (js_getRootNode (toNode self) (maybeToOptional options))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.getRootNode Mozilla Node.getRootNode documentation> 
+getRootNode_ ::
+             (MonadIO m, IsNode self) =>
+               self -> Maybe GetRootNodeOptions -> m ()
+getRootNode_ self options
+  = liftIO
+      (void (js_getRootNode (toNode self) (maybeToOptional options)))
 pattern ELEMENT_NODE = 1
 pattern ATTRIBUTE_NODE = 2
 pattern TEXT_NODE = 3
@@ -548,40 +402,23 @@ pattern DOCUMENT_POSITION_CONTAINED_BY = 16
 pattern DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 32
  
 foreign import javascript unsafe "$1[\"nodeName\"]" js_getNodeName
-        :: Node -> IO (Nullable JSString)
+        :: Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
 getNodeName ::
-            (MonadIO m, IsNode self, FromJSString result) =>
-              self -> m (Maybe result)
+            (MonadIO m, IsNode self, FromJSString result) => self -> m result
 getNodeName self
-  = liftIO (fromMaybeJSString <$> (js_getNodeName (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
-getNodeNameUnsafe ::
-                  (MonadIO m, IsNode self, HasCallStack, FromJSString result) =>
-                    self -> m result
-getNodeNameUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getNodeName (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
-getNodeNameUnchecked ::
-                     (MonadIO m, IsNode self, FromJSString result) => self -> m result
-getNodeNameUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getNodeName (toNode self)))
+  = liftIO (fromJSString <$> (js_getNodeName (toNode self)))
  
 foreign import javascript unsafe "$1[\"nodeValue\"] = $2;"
-        js_setNodeValue :: Node -> Nullable JSString -> IO ()
+        js_setNodeValue :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
 setNodeValue ::
              (MonadIO m, IsNode self, ToJSString val) =>
                self -> Maybe val -> m ()
 setNodeValue self val
-  = liftIO (js_setNodeValue (toNode self) (toMaybeJSString val))
+  = liftIO (js_setNodeValue (toNode self) (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"nodeValue\"]"
         js_getNodeValue :: Node -> IO (Nullable JSString)
@@ -640,28 +477,11 @@ getParentNodeUnchecked self
       (fromJust . nullableToMaybe <$> (js_getParentNode (toNode self)))
  
 foreign import javascript unsafe "$1[\"childNodes\"]"
-        js_getChildNodes :: Node -> IO (Nullable NodeList)
+        js_getChildNodes :: Node -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.childNodes Mozilla Node.childNodes documentation> 
-getChildNodes ::
-              (MonadIO m, IsNode self) => self -> m (Maybe NodeList)
-getChildNodes self
-  = liftIO (nullableToMaybe <$> (js_getChildNodes (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.childNodes Mozilla Node.childNodes documentation> 
-getChildNodesUnsafe ::
-                    (MonadIO m, IsNode self, HasCallStack) => self -> m NodeList
-getChildNodesUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getChildNodes (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.childNodes Mozilla Node.childNodes documentation> 
-getChildNodesUnchecked ::
-                       (MonadIO m, IsNode self) => self -> m NodeList
-getChildNodesUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getChildNodes (toNode self)))
+getChildNodes :: (MonadIO m, IsNode self) => self -> m NodeList
+getChildNodes self = liftIO (js_getChildNodes (toNode self))
  
 foreign import javascript unsafe "$1[\"firstChild\"]"
         js_getFirstChild :: Node -> IO (Nullable Node)
@@ -783,130 +603,24 @@ getOwnerDocumentUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getOwnerDocument (toNode self)))
  
-foreign import javascript unsafe "$1[\"namespaceURI\"]"
-        js_getNamespaceURI :: Node -> IO (Nullable JSString)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.namespaceURI Mozilla Node.namespaceURI documentation> 
-getNamespaceURI ::
-                (MonadIO m, IsNode self, FromJSString result) =>
-                  self -> m (Maybe result)
-getNamespaceURI self
-  = liftIO (fromMaybeJSString <$> (js_getNamespaceURI (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.namespaceURI Mozilla Node.namespaceURI documentation> 
-getNamespaceURIUnsafe ::
-                      (MonadIO m, IsNode self, HasCallStack, FromJSString result) =>
-                        self -> m result
-getNamespaceURIUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getNamespaceURI (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.namespaceURI Mozilla Node.namespaceURI documentation> 
-getNamespaceURIUnchecked ::
-                         (MonadIO m, IsNode self, FromJSString result) => self -> m result
-getNamespaceURIUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getNamespaceURI (toNode self)))
- 
-foreign import javascript unsafe "$1[\"prefix\"] = $2;"
-        js_setPrefix :: Node -> Nullable JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
-setPrefix ::
-          (MonadIO m, IsNode self, ToJSString val) =>
-            self -> Maybe val -> m ()
-setPrefix self val
-  = liftIO (js_setPrefix (toNode self) (toMaybeJSString val))
- 
-foreign import javascript unsafe "$1[\"prefix\"]" js_getPrefix ::
-        Node -> IO (Nullable JSString)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
-getPrefix ::
-          (MonadIO m, IsNode self, FromJSString result) =>
-            self -> m (Maybe result)
-getPrefix self
-  = liftIO (fromMaybeJSString <$> (js_getPrefix (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
-getPrefixUnsafe ::
-                (MonadIO m, IsNode self, HasCallStack, FromJSString result) =>
-                  self -> m result
-getPrefixUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getPrefix (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.prefix Mozilla Node.prefix documentation> 
-getPrefixUnchecked ::
-                   (MonadIO m, IsNode self, FromJSString result) => self -> m result
-getPrefixUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getPrefix (toNode self)))
- 
-foreign import javascript unsafe "$1[\"localName\"]"
-        js_getLocalName :: Node -> IO (Nullable JSString)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.localName Mozilla Node.localName documentation> 
-getLocalName ::
-             (MonadIO m, IsNode self, FromJSString result) =>
-               self -> m (Maybe result)
-getLocalName self
-  = liftIO (fromMaybeJSString <$> (js_getLocalName (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.localName Mozilla Node.localName documentation> 
-getLocalNameUnsafe ::
-                   (MonadIO m, IsNode self, HasCallStack, FromJSString result) =>
-                     self -> m result
-getLocalNameUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getLocalName (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.localName Mozilla Node.localName documentation> 
-getLocalNameUnchecked ::
-                      (MonadIO m, IsNode self, FromJSString result) => self -> m result
-getLocalNameUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getLocalName (toNode self)))
- 
 foreign import javascript unsafe "$1[\"baseURI\"]" js_getBaseURI ::
-        Node -> IO (Nullable JSString)
+        Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 
 getBaseURI ::
-           (MonadIO m, IsNode self, FromJSString result) =>
-             self -> m (Maybe result)
+           (MonadIO m, IsNode self, FromJSString result) => self -> m result
 getBaseURI self
-  = liftIO (fromMaybeJSString <$> (js_getBaseURI (toNode self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 
-getBaseURIUnsafe ::
-                 (MonadIO m, IsNode self, HasCallStack, FromJSString result) =>
-                   self -> m result
-getBaseURIUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBaseURI (toNode self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 
-getBaseURIUnchecked ::
-                    (MonadIO m, IsNode self, FromJSString result) => self -> m result
-getBaseURIUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getBaseURI (toNode self)))
+  = liftIO (fromJSString <$> (js_getBaseURI (toNode self)))
  
 foreign import javascript unsafe "$1[\"textContent\"] = $2;"
-        js_setTextContent :: Node -> Nullable JSString -> IO ()
+        js_setTextContent :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
 setTextContent ::
                (MonadIO m, IsNode self, ToJSString val) =>
                  self -> Maybe val -> m ()
 setTextContent self val
-  = liftIO (js_setTextContent (toNode self) (toMaybeJSString val))
+  = liftIO (js_setTextContent (toNode self) (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"textContent\"]"
         js_getTextContent :: Node -> IO (Nullable JSString)
@@ -934,6 +648,13 @@ getTextContentUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$>
          (js_getTextContent (toNode self)))
+ 
+foreign import javascript unsafe "($1[\"isConnected\"] ? 1 : 0)"
+        js_getIsConnected :: Node -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isConnected Mozilla Node.isConnected documentation> 
+getIsConnected :: (MonadIO m, IsNode self) => self -> m Bool
+getIsConnected self = liftIO (js_getIsConnected (toNode self))
  
 foreign import javascript unsafe "$1[\"parentElement\"]"
         js_getParentElement :: Node -> IO (Nullable Element)

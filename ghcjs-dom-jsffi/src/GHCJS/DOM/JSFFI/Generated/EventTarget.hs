@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,58 +22,65 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
         "$1[\"addEventListener\"]($2, $3,\n$4)" js_addEventListener ::
-        EventTarget -> JSString -> Nullable EventListener -> Bool -> IO ()
+        EventTarget ->
+          JSString ->
+            Optional EventListener -> AddEventListenerOptionsOrBool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener Mozilla EventTarget.addEventListener documentation> 
 addEventListener ::
-                 (MonadIO m, IsEventTarget self, ToJSString type') =>
-                   self -> type' -> Maybe EventListener -> Bool -> m ()
-addEventListener self type' listener useCapture
+                 (MonadIO m, IsEventTarget self, ToJSString type',
+                  IsAddEventListenerOptionsOrBool options) =>
+                   self -> type' -> Maybe EventListener -> options -> m ()
+addEventListener self type' callback options
   = liftIO
-      (js_addEventListener (toEventTarget self) (toJSString type')
-         (maybeToNullable listener)
-         useCapture)
+      (toJSVal options >>=
+         \ options' ->
+           js_addEventListener (toEventTarget self) (toJSString type')
+             (maybeToOptional callback)
+             (AddEventListenerOptionsOrBool options'))
  
 foreign import javascript unsafe
         "$1[\"removeEventListener\"]($2,\n$3, $4)" js_removeEventListener
         ::
-        EventTarget -> JSString -> Nullable EventListener -> Bool -> IO ()
+        EventTarget ->
+          JSString ->
+            Optional EventListener -> EventListenerOptionsOrBool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener Mozilla EventTarget.removeEventListener documentation> 
 removeEventListener ::
-                    (MonadIO m, IsEventTarget self, ToJSString type') =>
-                      self -> type' -> Maybe EventListener -> Bool -> m ()
-removeEventListener self type' listener useCapture
+                    (MonadIO m, IsEventTarget self, ToJSString type',
+                     IsEventListenerOptionsOrBool options) =>
+                      self -> type' -> Maybe EventListener -> options -> m ()
+removeEventListener self type' callback options
   = liftIO
-      (js_removeEventListener (toEventTarget self) (toJSString type')
-         (maybeToNullable listener)
-         useCapture)
+      (toJSVal options >>=
+         \ options' ->
+           js_removeEventListener (toEventTarget self) (toJSString type')
+             (maybeToOptional callback)
+             (EventListenerOptionsOrBool options'))
  
 foreign import javascript unsafe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)" js_dispatchEvent ::
-        EventTarget -> Nullable Event -> IO Bool
+        EventTarget -> Event -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 
 dispatchEvent ::
               (MonadIO m, IsEventTarget self, IsEvent event) =>
-                self -> Maybe event -> m Bool
+                self -> event -> m Bool
 dispatchEvent self event
-  = liftIO
-      (js_dispatchEvent (toEventTarget self)
-         (maybeToNullable (fmap toEvent event)))
+  = liftIO (js_dispatchEvent (toEventTarget self) (toEvent event))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 
 dispatchEvent_ ::
                (MonadIO m, IsEventTarget self, IsEvent event) =>
-                 self -> Maybe event -> m ()
+                 self -> event -> m ()
 dispatchEvent_ self event
   = liftIO
-      (void
-         (js_dispatchEvent (toEventTarget self)
-            (maybeToNullable (fmap toEvent event))))
+      (void (js_dispatchEvent (toEventTarget self) (toEvent event)))

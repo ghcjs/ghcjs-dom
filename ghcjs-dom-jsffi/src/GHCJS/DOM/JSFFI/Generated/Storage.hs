@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,6 +22,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,12 +35,11 @@ foreign import javascript unsafe "$1[\"key\"]($2)" js_key ::
 key ::
     (MonadIO m, FromJSString result) =>
       Storage -> Word -> m (Maybe result)
-key self index
-  = liftIO (fromMaybeJSString <$> (js_key (self) index))
+key self index = liftIO (fromMaybeJSString <$> (js_key self index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 key_ :: (MonadIO m) => Storage -> Word -> m ()
-key_ self index = liftIO (void (js_key (self) index))
+key_ self index = liftIO (void (js_key self index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 keyUnsafe ::
@@ -47,30 +47,29 @@ keyUnsafe ::
             Storage -> Word -> m result
 keyUnsafe self index
   = liftIO
-      ((fromMaybeJSString <$> (js_key (self) index)) >>=
+      ((fromMaybeJSString <$> (js_key self index)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
 keyUnchecked ::
              (MonadIO m, FromJSString result) => Storage -> Word -> m result
 keyUnchecked self index
-  = liftIO (fromJust . fromMaybeJSString <$> (js_key (self) index))
+  = liftIO (fromJust . fromMaybeJSString <$> (js_key self index))
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: Storage -> JSString -> IO (Nullable JSString)
+foreign import javascript unsafe "$1[$2]" js_getItem ::
+        Storage -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
 getItem ::
         (MonadIO m, ToJSString key, FromJSString result) =>
           Storage -> key -> m (Maybe result)
 getItem self key
-  = liftIO
-      (fromMaybeJSString <$> (js_getItem (self) (toJSString key)))
+  = liftIO (fromMaybeJSString <$> (js_getItem self (toJSString key)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
 getItem_ :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
 getItem_ self key
-  = liftIO (void (js_getItem (self) (toJSString key)))
+  = liftIO (void (js_getItem self (toJSString key)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
 getItemUnsafe ::
@@ -78,7 +77,7 @@ getItemUnsafe ::
                 Storage -> key -> m result
 getItemUnsafe self key
   = liftIO
-      ((fromMaybeJSString <$> (js_getItem (self) (toJSString key))) >>=
+      ((fromMaybeJSString <$> (js_getItem self (toJSString key))) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
@@ -88,7 +87,7 @@ getItemUnchecked ::
 getItemUnchecked self key
   = liftIO
       (fromJust . fromMaybeJSString <$>
-         (js_getItem (self) (toJSString key)))
+         (js_getItem self (toJSString key)))
  
 foreign import javascript unsafe "$1[\"setItem\"]($2, $3)"
         js_setItem :: Storage -> JSString -> JSString -> IO ()
@@ -98,26 +97,25 @@ setItem ::
         (MonadIO m, ToJSString key, ToJSString data') =>
           Storage -> key -> data' -> m ()
 setItem self key data'
-  = liftIO (js_setItem (self) (toJSString key) (toJSString data'))
+  = liftIO (js_setItem self (toJSString key) (toJSString data'))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
         js_removeItem :: Storage -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.removeItem Mozilla Storage.removeItem documentation> 
 removeItem :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
-removeItem self key
-  = liftIO (js_removeItem (self) (toJSString key))
+removeItem self key = liftIO (js_removeItem self (toJSString key))
  
 foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
         Storage -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.clear Mozilla Storage.clear documentation> 
 clear :: (MonadIO m) => Storage -> m ()
-clear self = liftIO (js_clear (self))
+clear self = liftIO (js_clear self)
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         Storage -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.length Mozilla Storage.length documentation> 
 getLength :: (MonadIO m) => Storage -> m Word
-getLength self = liftIO (js_getLength (self))
+getLength self = liftIO (js_getLength self)

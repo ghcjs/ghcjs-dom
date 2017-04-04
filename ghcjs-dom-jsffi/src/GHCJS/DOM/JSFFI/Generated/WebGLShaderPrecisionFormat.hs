@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -31,18 +32,18 @@ foreign import javascript unsafe "$1[\"rangeMin\"]" js_getRangeMin
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMin Mozilla WebGLShaderPrecisionFormat.rangeMin documentation> 
 getRangeMin :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getRangeMin self = liftIO (js_getRangeMin (self))
+getRangeMin self = liftIO (js_getRangeMin self)
  
 foreign import javascript unsafe "$1[\"rangeMax\"]" js_getRangeMax
         :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMax Mozilla WebGLShaderPrecisionFormat.rangeMax documentation> 
 getRangeMax :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getRangeMax self = liftIO (js_getRangeMax (self))
+getRangeMax self = liftIO (js_getRangeMax self)
  
 foreign import javascript unsafe "$1[\"precision\"]"
         js_getPrecision :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.precision Mozilla WebGLShaderPrecisionFormat.precision documentation> 
 getPrecision :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
-getPrecision self = liftIO (js_getPrecision (self))
+getPrecision self = liftIO (js_getPrecision self)

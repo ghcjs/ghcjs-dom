@@ -13,7 +13,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,6 +22,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,42 +33,42 @@ foreign import javascript unsafe "$1[\"compact\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
 setCompact :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
-setCompact self val = liftIO (js_setCompact (self) val)
+setCompact self val = liftIO (js_setCompact self val)
  
 foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
         js_getCompact :: HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
 getCompact :: (MonadIO m) => HTMLOListElement -> m Bool
-getCompact self = liftIO (js_getCompact (self))
+getCompact self = liftIO (js_getCompact self)
  
 foreign import javascript unsafe "$1[\"start\"] = $2;" js_setStart
         :: HTMLOListElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
 setStart :: (MonadIO m) => HTMLOListElement -> Int -> m ()
-setStart self val = liftIO (js_setStart (self) val)
+setStart self val = liftIO (js_setStart self val)
  
 foreign import javascript unsafe "$1[\"start\"]" js_getStart ::
         HTMLOListElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
 getStart :: (MonadIO m) => HTMLOListElement -> m Int
-getStart self = liftIO (js_getStart (self))
+getStart self = liftIO (js_getStart self)
  
 foreign import javascript unsafe "$1[\"reversed\"] = $2;"
         js_setReversed :: HTMLOListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 
 setReversed :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
-setReversed self val = liftIO (js_setReversed (self) val)
+setReversed self val = liftIO (js_setReversed self val)
  
 foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
         js_getReversed :: HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 
 getReversed :: (MonadIO m) => HTMLOListElement -> m Bool
-getReversed self = liftIO (js_getReversed (self))
+getReversed self = liftIO (js_getReversed self)
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
         HTMLOListElement -> JSString -> IO ()
@@ -75,7 +76,7 @@ foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => HTMLOListElement -> val -> m ()
-setType self val = liftIO (js_setType (self) (toJSString val))
+setType self val = liftIO (js_setType self (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
         HTMLOListElement -> IO JSString
@@ -83,4 +84,4 @@ foreign import javascript unsafe "$1[\"type\"]" js_getType ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLOListElement -> m result
-getType self = liftIO (fromJSString <$> (js_getType (self)))
+getType self = liftIO (fromJSString <$> (js_getType self))

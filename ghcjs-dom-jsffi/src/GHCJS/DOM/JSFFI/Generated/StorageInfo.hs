@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -30,8 +31,8 @@ foreign import javascript unsafe
         "$1[\"queryUsageAndQuota\"]($2, $3,\n$4)" js_queryUsageAndQuota ::
         StorageInfo ->
           Word ->
-            Nullable StorageUsageCallback ->
-              Nullable StorageErrorCallback -> IO ()
+            Optional StorageUsageCallback ->
+              Optional StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.queryUsageAndQuota Mozilla StorageInfo.queryUsageAndQuota documentation> 
 queryUsageAndQuota ::
@@ -41,17 +42,17 @@ queryUsageAndQuota ::
                          Maybe StorageUsageCallback -> Maybe StorageErrorCallback -> m ()
 queryUsageAndQuota self storageType usageCallback errorCallback
   = liftIO
-      (js_queryUsageAndQuota (self) storageType
-         (maybeToNullable usageCallback)
-         (maybeToNullable errorCallback))
+      (js_queryUsageAndQuota self storageType
+         (maybeToOptional usageCallback)
+         (maybeToOptional errorCallback))
  
 foreign import javascript unsafe
         "$1[\"requestQuota\"]($2, $3, $4,\n$5)" js_requestQuota ::
         StorageInfo ->
           Word ->
             Double ->
-              Nullable StorageQuotaCallback ->
-                Nullable StorageErrorCallback -> IO ()
+              Optional StorageQuotaCallback ->
+                Optional StorageErrorCallback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageInfo.requestQuota Mozilla StorageInfo.requestQuota documentation> 
 requestQuota ::
@@ -63,8 +64,8 @@ requestQuota ::
 requestQuota self storageType newQuotaInBytes quotaCallback
   errorCallback
   = liftIO
-      (js_requestQuota (self) storageType (fromIntegral newQuotaInBytes)
-         (maybeToNullable quotaCallback)
-         (maybeToNullable errorCallback))
+      (js_requestQuota self storageType (fromIntegral newQuotaInBytes)
+         (maybeToOptional quotaCallback)
+         (maybeToOptional errorCallback))
 pattern TEMPORARY = 0
 pattern PERSISTENT = 1

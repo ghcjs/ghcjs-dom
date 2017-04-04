@@ -16,14 +16,13 @@ module GHCJS.DOM.JSFFI.Generated.SVGLength
         js_setValueInSpecifiedUnits, setValueInSpecifiedUnits,
         js_getValueInSpecifiedUnits, getValueInSpecifiedUnits,
         js_setValueAsString, setValueAsString, js_getValueAsString,
-        getValueAsString, getValueAsStringUnsafe,
-        getValueAsStringUnchecked, SVGLength(..), gTypeSVGLength)
+        getValueAsString, SVGLength(..), gTypeSVGLength)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -32,6 +31,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -46,7 +46,7 @@ newValueSpecifiedUnits ::
                        (MonadIO m) => SVGLength -> Word -> Float -> m ()
 newValueSpecifiedUnits self unitType valueInSpecifiedUnits
   = liftIO
-      (js_newValueSpecifiedUnits (self) unitType valueInSpecifiedUnits)
+      (js_newValueSpecifiedUnits self unitType valueInSpecifiedUnits)
  
 foreign import javascript unsafe
         "$1[\"convertToSpecifiedUnits\"]($2)" js_convertToSpecifiedUnits ::
@@ -55,7 +55,7 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.convertToSpecifiedUnits Mozilla SVGLength.convertToSpecifiedUnits documentation> 
 convertToSpecifiedUnits :: (MonadIO m) => SVGLength -> Word -> m ()
 convertToSpecifiedUnits self unitType
-  = liftIO (js_convertToSpecifiedUnits (self) unitType)
+  = liftIO (js_convertToSpecifiedUnits self unitType)
 pattern SVG_LENGTHTYPE_UNKNOWN = 0
 pattern SVG_LENGTHTYPE_NUMBER = 1
 pattern SVG_LENGTHTYPE_PERCENTAGE = 2
@@ -73,21 +73,21 @@ foreign import javascript unsafe "$1[\"unitType\"]" js_getUnitType
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.unitType Mozilla SVGLength.unitType documentation> 
 getUnitType :: (MonadIO m) => SVGLength -> m Word
-getUnitType self = liftIO (js_getUnitType (self))
+getUnitType self = liftIO (js_getUnitType self)
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
         :: SVGLength -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
 setValue :: (MonadIO m) => SVGLength -> Float -> m ()
-setValue self val = liftIO (js_setValue (self) val)
+setValue self val = liftIO (js_setValue self val)
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
         SVGLength -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
 getValue :: (MonadIO m) => SVGLength -> m Float
-getValue self = liftIO (js_getValue (self))
+getValue self = liftIO (js_getValue self)
  
 foreign import javascript unsafe
         "$1[\"valueInSpecifiedUnits\"] = $2;" js_setValueInSpecifiedUnits
@@ -97,7 +97,7 @@ foreign import javascript unsafe
 setValueInSpecifiedUnits ::
                          (MonadIO m) => SVGLength -> Float -> m ()
 setValueInSpecifiedUnits self val
-  = liftIO (js_setValueInSpecifiedUnits (self) val)
+  = liftIO (js_setValueInSpecifiedUnits self val)
  
 foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
         js_getValueInSpecifiedUnits :: SVGLength -> IO Float
@@ -105,38 +105,22 @@ foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueInSpecifiedUnits Mozilla SVGLength.valueInSpecifiedUnits documentation> 
 getValueInSpecifiedUnits :: (MonadIO m) => SVGLength -> m Float
 getValueInSpecifiedUnits self
-  = liftIO (js_getValueInSpecifiedUnits (self))
+  = liftIO (js_getValueInSpecifiedUnits self)
  
 foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
-        js_setValueAsString :: SVGLength -> Nullable JSString -> IO ()
+        js_setValueAsString :: SVGLength -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
 setValueAsString ::
-                 (MonadIO m, ToJSString val) => SVGLength -> Maybe val -> m ()
+                 (MonadIO m, ToJSString val) => SVGLength -> val -> m ()
 setValueAsString self val
-  = liftIO (js_setValueAsString (self) (toMaybeJSString val))
+  = liftIO (js_setValueAsString self (toJSString val))
  
 foreign import javascript unsafe "$1[\"valueAsString\"]"
-        js_getValueAsString :: SVGLength -> IO (Nullable JSString)
+        js_getValueAsString :: SVGLength -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
 getValueAsString ::
-                 (MonadIO m, FromJSString result) => SVGLength -> m (Maybe result)
+                 (MonadIO m, FromJSString result) => SVGLength -> m result
 getValueAsString self
-  = liftIO (fromMaybeJSString <$> (js_getValueAsString (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
-getValueAsStringUnsafe ::
-                       (MonadIO m, HasCallStack, FromJSString result) =>
-                         SVGLength -> m result
-getValueAsStringUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getValueAsString (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
-getValueAsStringUnchecked ::
-                          (MonadIO m, FromJSString result) => SVGLength -> m result
-getValueAsStringUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getValueAsString (self)))
+  = liftIO (fromJSString <$> (js_getValueAsString self))

@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -34,7 +35,7 @@ foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
 getCode :: (MonadIO m) => PositionError -> m Word
-getCode self = liftIO (js_getCode (self))
+getCode self = liftIO (js_getCode self)
  
 foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
         PositionError -> IO JSString
@@ -42,4 +43,4 @@ foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 
 getMessage ::
            (MonadIO m, FromJSString result) => PositionError -> m result
-getMessage self = liftIO (fromJSString <$> (js_getMessage (self)))
+getMessage self = liftIO (fromJSString <$> (js_getMessage self))

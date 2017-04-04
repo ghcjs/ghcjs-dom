@@ -4,11 +4,8 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLElement
-       (js_insertAdjacentElement, insertAdjacentElement,
-        insertAdjacentElement_, insertAdjacentElementUnsafe,
-        insertAdjacentElementUnchecked, js_insertAdjacentHTML,
-        insertAdjacentHTML, js_insertAdjacentText, insertAdjacentText,
-        js_click, click, js_setTitle, setTitle, js_getTitle, getTitle,
+       (js_newHTMLElement, newHTMLElement, js_click, click, js_focus,
+        focus, js_blur, blur, js_setTitle, setTitle, js_getTitle, getTitle,
         js_setLang, setLang, js_getLang, getLang, js_setTranslate,
         setTranslate, js_getTranslate, getTranslate, js_setDir, setDir,
         js_getDir, getDir, js_setTabIndex, setTabIndex, js_getTabIndex,
@@ -20,19 +17,21 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         js_getInnerText, getInnerText, getInnerTextUnsafe,
         getInnerTextUnchecked, js_setOuterText, setOuterText,
         js_getOuterText, getOuterText, getOuterTextUnsafe,
-        getOuterTextUnchecked, js_getChildren, getChildren,
-        getChildrenUnsafe, getChildrenUnchecked, js_setContentEditable,
-        setContentEditable, js_getContentEditable, getContentEditable,
-        getContentEditableUnsafe, getContentEditableUnchecked,
-        js_getIsContentEditable, getIsContentEditable, js_setSpellcheck,
-        setSpellcheck, js_getSpellcheck, getSpellcheck, HTMLElement(..),
-        gTypeHTMLElement, IsHTMLElement, toHTMLElement)
+        getOuterTextUnchecked, js_setContentEditable, setContentEditable,
+        js_getContentEditable, getContentEditable, js_getIsContentEditable,
+        getIsContentEditable, js_setSpellcheck, setSpellcheck,
+        js_getSpellcheck, getSpellcheck, js_setAutocorrect, setAutocorrect,
+        js_getAutocorrect, getAutocorrect, js_setAutocapitalize,
+        setAutocapitalize, js_getAutocapitalize, getAutocapitalize,
+        getAutocapitalizeUnsafe, getAutocapitalizeUnchecked, js_getDataset,
+        getDataset, HTMLElement(..), gTypeHTMLElement, IsHTMLElement,
+        toHTMLElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -41,89 +40,18 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
-        "$1[\"insertAdjacentElement\"]($2,\n$3)" js_insertAdjacentElement
-        ::
-        HTMLElement ->
-          JSString -> Nullable Element -> IO (Nullable Element)
+foreign import javascript unsafe "new window[\"HTMLElement\"]()"
+        js_newHTMLElement :: IO HTMLElement
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
-insertAdjacentElement ::
-                      (MonadIO m, IsHTMLElement self, ToJSString where',
-                       IsElement element) =>
-                        self -> where' -> Maybe element -> m (Maybe Element)
-insertAdjacentElement self where' element
-  = liftIO
-      (nullableToMaybe <$>
-         (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
-            (maybeToNullable (fmap toElement element))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
-insertAdjacentElement_ ::
-                       (MonadIO m, IsHTMLElement self, ToJSString where',
-                        IsElement element) =>
-                         self -> where' -> Maybe element -> m ()
-insertAdjacentElement_ self where' element
-  = liftIO
-      (void
-         (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
-            (maybeToNullable (fmap toElement element))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
-insertAdjacentElementUnsafe ::
-                            (MonadIO m, IsHTMLElement self, ToJSString where',
-                             IsElement element, HasCallStack) =>
-                              self -> where' -> Maybe element -> m Element
-insertAdjacentElementUnsafe self where' element
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
-             (maybeToNullable (fmap toElement element))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentElement Mozilla HTMLElement.insertAdjacentElement documentation> 
-insertAdjacentElementUnchecked ::
-                               (MonadIO m, IsHTMLElement self, ToJSString where',
-                                IsElement element) =>
-                                 self -> where' -> Maybe element -> m Element
-insertAdjacentElementUnchecked self where' element
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_insertAdjacentElement (toHTMLElement self) (toJSString where')
-            (maybeToNullable (fmap toElement element))))
- 
-foreign import javascript unsafe
-        "$1[\"insertAdjacentHTML\"]($2, $3)" js_insertAdjacentHTML ::
-        HTMLElement -> JSString -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentHTML Mozilla HTMLElement.insertAdjacentHTML documentation> 
-insertAdjacentHTML ::
-                   (MonadIO m, IsHTMLElement self, ToJSString where',
-                    ToJSString html) =>
-                     self -> where' -> html -> m ()
-insertAdjacentHTML self where' html
-  = liftIO
-      (js_insertAdjacentHTML (toHTMLElement self) (toJSString where')
-         (toJSString html))
- 
-foreign import javascript unsafe
-        "$1[\"insertAdjacentText\"]($2, $3)" js_insertAdjacentText ::
-        HTMLElement -> JSString -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.insertAdjacentText Mozilla HTMLElement.insertAdjacentText documentation> 
-insertAdjacentText ::
-                   (MonadIO m, IsHTMLElement self, ToJSString where',
-                    ToJSString text) =>
-                     self -> where' -> text -> m ()
-insertAdjacentText self where' text
-  = liftIO
-      (js_insertAdjacentText (toHTMLElement self) (toJSString where')
-         (toJSString text))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation> 
+newHTMLElement :: (MonadIO m) => m HTMLElement
+newHTMLElement = liftIO (js_newHTMLElement)
  
 foreign import javascript unsafe "$1[\"click\"]()" js_click ::
         HTMLElement -> IO ()
@@ -131,6 +59,20 @@ foreign import javascript unsafe "$1[\"click\"]()" js_click ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click Mozilla HTMLElement.click documentation> 
 click :: (MonadIO m, IsHTMLElement self) => self -> m ()
 click self = liftIO (js_click (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"focus\"]()" js_focus ::
+        HTMLElement -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.focus Mozilla HTMLElement.focus documentation> 
+focus :: (MonadIO m, IsHTMLElement self) => self -> m ()
+focus self = liftIO (js_focus (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"blur\"]()" js_blur ::
+        HTMLElement -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.blur Mozilla HTMLElement.blur documentation> 
+blur :: (MonadIO m, IsHTMLElement self) => self -> m ()
+blur self = liftIO (js_blur (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"title\"] = $2;" js_setTitle
         :: HTMLElement -> JSString -> IO ()
@@ -298,7 +240,7 @@ getAccessKey self
   = liftIO (fromJSString <$> (js_getAccessKey (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
-        js_setInnerText :: HTMLElement -> Nullable JSString -> IO ()
+        js_setInnerText :: HTMLElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 setInnerText ::
@@ -306,7 +248,7 @@ setInnerText ::
                self -> Maybe val -> m ()
 setInnerText self val
   = liftIO
-      (js_setInnerText (toHTMLElement self) (toMaybeJSString val))
+      (js_setInnerText (toHTMLElement self) (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"innerText\"]"
         js_getInnerText :: HTMLElement -> IO (Nullable JSString)
@@ -339,7 +281,7 @@ getInnerTextUnchecked self
          (js_getInnerText (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
-        js_setOuterText :: HTMLElement -> Nullable JSString -> IO ()
+        js_setOuterText :: HTMLElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 setOuterText ::
@@ -347,7 +289,7 @@ setOuterText ::
                self -> Maybe val -> m ()
 setOuterText self val
   = liftIO
-      (js_setOuterText (toHTMLElement self) (toMaybeJSString val))
+      (js_setOuterText (toHTMLElement self) (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"outerText\"]"
         js_getOuterText :: HTMLElement -> IO (Nullable JSString)
@@ -379,75 +321,27 @@ getOuterTextUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getOuterText (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"children\"]" js_getChildren
-        :: HTMLElement -> IO (Nullable HTMLCollection)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
-getChildren ::
-            (MonadIO m, IsHTMLElement self) => self -> m (Maybe HTMLCollection)
-getChildren self
-  = liftIO
-      (nullableToMaybe <$> (js_getChildren (toHTMLElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
-getChildrenUnsafe ::
-                  (MonadIO m, IsHTMLElement self, HasCallStack) =>
-                    self -> m HTMLCollection
-getChildrenUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getChildren (toHTMLElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.children Mozilla HTMLElement.children documentation> 
-getChildrenUnchecked ::
-                     (MonadIO m, IsHTMLElement self) => self -> m HTMLCollection
-getChildrenUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getChildren (toHTMLElement self)))
- 
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
-        js_setContentEditable :: HTMLElement -> Nullable JSString -> IO ()
+        js_setContentEditable :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 setContentEditable ::
                    (MonadIO m, IsHTMLElement self, ToJSString val) =>
-                     self -> Maybe val -> m ()
+                     self -> val -> m ()
 setContentEditable self val
   = liftIO
-      (js_setContentEditable (toHTMLElement self) (toMaybeJSString val))
+      (js_setContentEditable (toHTMLElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"contentEditable\"]"
-        js_getContentEditable :: HTMLElement -> IO (Nullable JSString)
+        js_getContentEditable :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
 getContentEditable ::
                    (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                     self -> m (Maybe result)
+                     self -> m result
 getContentEditable self
   = liftIO
-      (fromMaybeJSString <$>
-         (js_getContentEditable (toHTMLElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
-getContentEditableUnsafe ::
-                         (MonadIO m, IsHTMLElement self, HasCallStack,
-                          FromJSString result) =>
-                           self -> m result
-getContentEditableUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$>
-          (js_getContentEditable (toHTMLElement self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
-getContentEditableUnchecked ::
-                            (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                              self -> m result
-getContentEditableUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getContentEditable (toHTMLElement self)))
+      (fromJSString <$> (js_getContentEditable (toHTMLElement self)))
  
 foreign import javascript unsafe
         "($1[\"isContentEditable\"] ? 1 : 0)" js_getIsContentEditable ::
@@ -474,3 +368,71 @@ foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
 getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
+        js_setAutocorrect :: HTMLElement -> Bool -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocorrect Mozilla HTMLElement.autocorrect documentation> 
+setAutocorrect ::
+               (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
+setAutocorrect self val
+  = liftIO (js_setAutocorrect (toHTMLElement self) val)
+ 
+foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
+        js_getAutocorrect :: HTMLElement -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocorrect Mozilla HTMLElement.autocorrect documentation> 
+getAutocorrect :: (MonadIO m, IsHTMLElement self) => self -> m Bool
+getAutocorrect self
+  = liftIO (js_getAutocorrect (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
+        js_setAutocapitalize :: HTMLElement -> Optional JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
+setAutocapitalize ::
+                  (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                    self -> Maybe val -> m ()
+setAutocapitalize self val
+  = liftIO
+      (js_setAutocapitalize (toHTMLElement self)
+         (toOptionalJSString val))
+ 
+foreign import javascript unsafe "$1[\"autocapitalize\"]"
+        js_getAutocapitalize :: HTMLElement -> IO (Nullable JSString)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
+getAutocapitalize ::
+                  (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                    self -> m (Maybe result)
+getAutocapitalize self
+  = liftIO
+      (fromMaybeJSString <$> (js_getAutocapitalize (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
+getAutocapitalizeUnsafe ::
+                        (MonadIO m, IsHTMLElement self, HasCallStack,
+                         FromJSString result) =>
+                          self -> m result
+getAutocapitalizeUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$>
+          (js_getAutocapitalize (toHTMLElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
+getAutocapitalizeUnchecked ::
+                           (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                             self -> m result
+getAutocapitalizeUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$>
+         (js_getAutocapitalize (toHTMLElement self)))
+ 
+foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
+        HTMLElement -> IO DOMStringMap
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dataset Mozilla HTMLElement.dataset documentation> 
+getDataset ::
+           (MonadIO m, IsHTMLElement self) => self -> m DOMStringMap
+getDataset self = liftIO (js_getDataset (toHTMLElement self))

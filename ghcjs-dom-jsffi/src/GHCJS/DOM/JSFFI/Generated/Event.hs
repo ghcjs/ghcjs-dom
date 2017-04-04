@@ -4,33 +4,27 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Event
-       (js_stopPropagation, stopPropagation, js_preventDefault,
-        preventDefault, js_initEvent, initEvent,
+       (js_newEvent, newEvent, js_composedPath, composedPath,
+        composedPath_, js_stopPropagation, stopPropagation,
+        js_preventDefault, preventDefault, js_initEvent, initEvent,
         js_stopImmediatePropagation, stopImmediatePropagation,
         pattern NONE, pattern CAPTURING_PHASE, pattern AT_TARGET,
-        pattern BUBBLING_PHASE, pattern MOUSEDOWN, pattern MOUSEUP,
-        pattern MOUSEOVER, pattern MOUSEOUT, pattern MOUSEMOVE,
-        pattern MOUSEDRAG, pattern CLICK, pattern DBLCLICK,
-        pattern KEYDOWN, pattern KEYUP, pattern KEYPRESS, pattern DRAGDROP,
-        pattern FOCUS, pattern BLUR, pattern SELECT, pattern CHANGE,
-        js_getType, getType, js_getTarget, getTarget, getTargetUnsafe,
-        getTargetUnchecked, js_getCurrentTarget, getCurrentTarget,
-        getCurrentTargetUnsafe, getCurrentTargetUnchecked,
-        js_getEventPhase, getEventPhase, js_getBubbles, getBubbles,
-        js_getCancelable, getCancelable, js_getTimeStamp, getTimeStamp,
-        js_getDefaultPrevented, getDefaultPrevented, js_getSrcElement,
-        getSrcElement, getSrcElementUnsafe, getSrcElementUnchecked,
+        pattern BUBBLING_PHASE, js_getType, getType, js_getTarget,
+        getTarget, js_getCurrentTarget, getCurrentTarget, js_getEventPhase,
+        getEventPhase, js_getBubbles, getBubbles, js_getCancelable,
+        getCancelable, js_getComposed, getComposed, js_getTimeStamp,
+        getTimeStamp, js_getDefaultPrevented, getDefaultPrevented,
+        js_getIsTrusted, getIsTrusted, js_getSrcElement, getSrcElement,
         js_setReturnValue, setReturnValue, js_getReturnValue,
         getReturnValue, js_setCancelBubble, setCancelBubble,
-        js_getCancelBubble, getCancelBubble, js_getClipboardData,
-        getClipboardData, getClipboardDataUnsafe,
-        getClipboardDataUnchecked, Event(..), gTypeEvent, IsEvent, toEvent)
+        js_getCancelBubble, getCancelBubble, Event(..), gTypeEvent,
+        IsEvent, toEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -39,9 +33,34 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
+ 
+foreign import javascript unsafe "new window[\"Event\"]($1, $2)"
+        js_newEvent :: JSString -> Optional EventInit -> IO Event
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event Mozilla Event documentation> 
+newEvent ::
+         (MonadIO m, ToJSString type', IsEventInit eventInitDict) =>
+           type' -> Maybe eventInitDict -> m Event
+newEvent type' eventInitDict
+  = liftIO
+      (js_newEvent (toJSString type')
+         (maybeToOptional (fmap toEventInit eventInitDict)))
+ 
+foreign import javascript unsafe "$1[\"composedPath\"]()"
+        js_composedPath :: Event -> IO JSVal
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composedPath Mozilla Event.composedPath documentation> 
+composedPath :: (MonadIO m, IsEvent self) => self -> m [Node]
+composedPath self
+  = liftIO ((js_composedPath (toEvent self)) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composedPath Mozilla Event.composedPath documentation> 
+composedPath_ :: (MonadIO m, IsEvent self) => self -> m ()
+composedPath_ self = liftIO (void (js_composedPath (toEvent self)))
  
 foreign import javascript unsafe "$1[\"stopPropagation\"]()"
         js_stopPropagation :: Event -> IO ()
@@ -62,12 +81,11 @@ foreign import javascript unsafe "$1[\"initEvent\"]($2, $3, $4)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.initEvent Mozilla Event.initEvent documentation> 
 initEvent ::
-          (MonadIO m, IsEvent self, ToJSString eventTypeArg) =>
-            self -> eventTypeArg -> Bool -> Bool -> m ()
-initEvent self eventTypeArg canBubbleArg cancelableArg
+          (MonadIO m, IsEvent self, ToJSString type') =>
+            self -> type' -> Bool -> Bool -> m ()
+initEvent self type' bubbles cancelable
   = liftIO
-      (js_initEvent (toEvent self) (toJSString eventTypeArg) canBubbleArg
-         cancelableArg)
+      (js_initEvent (toEvent self) (toJSString type') bubbles cancelable)
  
 foreign import javascript unsafe
         "$1[\"stopImmediatePropagation\"]()" js_stopImmediatePropagation ::
@@ -82,22 +100,6 @@ pattern NONE = 0
 pattern CAPTURING_PHASE = 1
 pattern AT_TARGET = 2
 pattern BUBBLING_PHASE = 3
-pattern MOUSEDOWN = 1
-pattern MOUSEUP = 2
-pattern MOUSEOVER = 4
-pattern MOUSEOUT = 8
-pattern MOUSEMOVE = 16
-pattern MOUSEDRAG = 32
-pattern CLICK = 64
-pattern DBLCLICK = 128
-pattern KEYDOWN = 256
-pattern KEYUP = 512
-pattern KEYPRESS = 1024
-pattern DRAGDROP = 2048
-pattern FOCUS = 4096
-pattern BLUR = 8192
-pattern SELECT = 16384
-pattern CHANGE = 32768
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
         Event -> IO JSString
@@ -109,53 +111,19 @@ getType self
   = liftIO (fromJSString <$> (js_getType (toEvent self)))
  
 foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
-        Event -> IO (Nullable EventTarget)
+        Event -> IO EventTarget
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
-getTarget ::
-          (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
-getTarget self
-  = liftIO (nullableToMaybe <$> (js_getTarget (toEvent self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
-getTargetUnsafe ::
-                (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
-getTargetUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getTarget (toEvent self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
-getTargetUnchecked ::
-                   (MonadIO m, IsEvent self) => self -> m EventTarget
-getTargetUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getTarget (toEvent self)))
+getTarget :: (MonadIO m, IsEvent self) => self -> m EventTarget
+getTarget self = liftIO (js_getTarget (toEvent self))
  
 foreign import javascript unsafe "$1[\"currentTarget\"]"
-        js_getCurrentTarget :: Event -> IO (Nullable EventTarget)
+        js_getCurrentTarget :: Event -> IO EventTarget
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
 getCurrentTarget ::
-                 (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
-getCurrentTarget self
-  = liftIO (nullableToMaybe <$> (js_getCurrentTarget (toEvent self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
-getCurrentTargetUnsafe ::
-                       (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
-getCurrentTargetUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getCurrentTarget (toEvent self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
-getCurrentTargetUnchecked ::
-                          (MonadIO m, IsEvent self) => self -> m EventTarget
-getCurrentTargetUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getCurrentTarget (toEvent self)))
+                 (MonadIO m, IsEvent self) => self -> m EventTarget
+getCurrentTarget self = liftIO (js_getCurrentTarget (toEvent self))
  
 foreign import javascript unsafe "$1[\"eventPhase\"]"
         js_getEventPhase :: Event -> IO Word
@@ -178,6 +146,13 @@ foreign import javascript unsafe "($1[\"cancelable\"] ? 1 : 0)"
 getCancelable :: (MonadIO m, IsEvent self) => self -> m Bool
 getCancelable self = liftIO (js_getCancelable (toEvent self))
  
+foreign import javascript unsafe "($1[\"composed\"] ? 1 : 0)"
+        js_getComposed :: Event -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composed Mozilla Event.composed documentation> 
+getComposed :: (MonadIO m, IsEvent self) => self -> m Bool
+getComposed self = liftIO (js_getComposed (toEvent self))
+ 
 foreign import javascript unsafe "$1[\"timeStamp\"]"
         js_getTimeStamp :: Event -> IO Word
 
@@ -194,29 +169,19 @@ getDefaultPrevented :: (MonadIO m, IsEvent self) => self -> m Bool
 getDefaultPrevented self
   = liftIO (js_getDefaultPrevented (toEvent self))
  
+foreign import javascript unsafe "($1[\"isTrusted\"] ? 1 : 0)"
+        js_getIsTrusted :: Event -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.isTrusted Mozilla Event.isTrusted documentation> 
+getIsTrusted :: (MonadIO m, IsEvent self) => self -> m Bool
+getIsTrusted self = liftIO (js_getIsTrusted (toEvent self))
+ 
 foreign import javascript unsafe "$1[\"srcElement\"]"
-        js_getSrcElement :: Event -> IO (Nullable EventTarget)
+        js_getSrcElement :: Event -> IO EventTarget
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
-getSrcElement ::
-              (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
-getSrcElement self
-  = liftIO (nullableToMaybe <$> (js_getSrcElement (toEvent self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
-getSrcElementUnsafe ::
-                    (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
-getSrcElementUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getSrcElement (toEvent self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.srcElement Mozilla Event.srcElement documentation> 
-getSrcElementUnchecked ::
-                       (MonadIO m, IsEvent self) => self -> m EventTarget
-getSrcElementUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getSrcElement (toEvent self)))
+getSrcElement :: (MonadIO m, IsEvent self) => self -> m EventTarget
+getSrcElement self = liftIO (js_getSrcElement (toEvent self))
  
 foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
         js_setReturnValue :: Event -> Bool -> IO ()
@@ -248,28 +213,3 @@ foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.cancelBubble Mozilla Event.cancelBubble documentation> 
 getCancelBubble :: (MonadIO m, IsEvent self) => self -> m Bool
 getCancelBubble self = liftIO (js_getCancelBubble (toEvent self))
- 
-foreign import javascript unsafe "$1[\"clipboardData\"]"
-        js_getClipboardData :: Event -> IO (Nullable DataTransfer)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
-getClipboardData ::
-                 (MonadIO m, IsEvent self) => self -> m (Maybe DataTransfer)
-getClipboardData self
-  = liftIO (nullableToMaybe <$> (js_getClipboardData (toEvent self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
-getClipboardDataUnsafe ::
-                       (MonadIO m, IsEvent self, HasCallStack) => self -> m DataTransfer
-getClipboardDataUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getClipboardData (toEvent self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.clipboardData Mozilla Event.clipboardData documentation> 
-getClipboardDataUnchecked ::
-                          (MonadIO m, IsEvent self) => self -> m DataTransfer
-getClipboardDataUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getClipboardData (toEvent self)))

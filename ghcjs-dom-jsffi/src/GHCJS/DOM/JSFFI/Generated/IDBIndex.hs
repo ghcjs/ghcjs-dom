@@ -5,20 +5,16 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBIndex
        (js_openCursorRange, openCursorRange, openCursorRange_,
-        openCursorRangeUnsafe, openCursorRangeUnchecked, js_openCursor,
-        openCursor, openCursor_, openCursorUnsafe, openCursorUnchecked,
-        js_openKeyCursorRange, openKeyCursorRange, openKeyCursorRange_,
-        openKeyCursorRangeUnsafe, openKeyCursorRangeUnchecked,
-        js_openKeyCursor, openKeyCursor, openKeyCursor_,
-        openKeyCursorUnsafe, openKeyCursorUnchecked, js_getRange, getRange,
-        getRange_, getRangeUnsafe, getRangeUnchecked, js_get, get, get_,
-        getUnsafe, getUnchecked, js_getKeyRange, getKeyRange, getKeyRange_,
-        getKeyRangeUnsafe, getKeyRangeUnchecked, js_getKey, getKey,
-        getKey_, getKeyUnsafe, getKeyUnchecked, js_countRange, countRange,
-        countRange_, countRangeUnsafe, countRangeUnchecked, js_count,
-        count, count_, countUnsafe, countUnchecked, js_getName, getName,
-        js_getObjectStore, getObjectStore, getObjectStoreUnsafe,
-        getObjectStoreUnchecked, js_getKeyPath, getKeyPath,
+        js_openCursor, openCursor, openCursor_, js_openKeyCursorRange,
+        openKeyCursorRange, openKeyCursorRange_, js_openKeyCursor,
+        openKeyCursor, openKeyCursor_, js_getRange, getRange, getRange_,
+        js_get, get, get_, js_getKeyRange, getKeyRange, getKeyRange_,
+        js_getKey, getKey, getKey_, js_getAllRange, getAllRange,
+        getAllRange_, js_getAll, getAll, getAll_, js_getAllKeysRange,
+        getAllKeysRange, getAllKeysRange_, js_getAllKeys, getAllKeys,
+        getAllKeys_, js_countRange, countRange, countRange_, js_count,
+        count, count_, js_setName, setName, js_getName, getName,
+        js_getObjectStore, getObjectStore, js_getKeyPath, getKeyPath,
         getKeyPathUnsafe, getKeyPathUnchecked, js_getMultiEntry,
         getMultiEntry, js_getUnique, getUnique, IDBIndex(..),
         gTypeIDBIndex)
@@ -27,7 +23,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -36,6 +32,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -44,413 +41,321 @@ import GHCJS.DOM.JSFFI.Generated.Enums
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         js_openCursorRange ::
         IDBIndex ->
-          Nullable IDBKeyRange -> JSString -> IO (Nullable IDBRequest)
+          Optional IDBKeyRange ->
+            Optional IDBCursorDirection -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
 openCursorRange ::
-                (MonadIO m, ToJSString direction) =>
-                  IDBIndex -> Maybe IDBKeyRange -> direction -> m (Maybe IDBRequest)
+                (MonadIO m) =>
+                  IDBIndex ->
+                    Maybe IDBKeyRange -> Maybe IDBCursorDirection -> m IDBRequest
 openCursorRange self range direction
   = liftIO
-      (nullableToMaybe <$>
-         (js_openCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
+      (js_openCursorRange self (maybeToOptional range)
+         (maybeToOptional direction))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
 openCursorRange_ ::
-                 (MonadIO m, ToJSString direction) =>
-                   IDBIndex -> Maybe IDBKeyRange -> direction -> m ()
+                 (MonadIO m) =>
+                   IDBIndex -> Maybe IDBKeyRange -> Maybe IDBCursorDirection -> m ()
 openCursorRange_ self range direction
   = liftIO
       (void
-         (js_openCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
-openCursorRangeUnsafe ::
-                      (MonadIO m, ToJSString direction, HasCallStack) =>
-                        IDBIndex -> Maybe IDBKeyRange -> direction -> m IDBRequest
-openCursorRangeUnsafe self range direction
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_openCursorRange (self) (maybeToNullable range)
-             (toJSString direction)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
-openCursorRangeUnchecked ::
-                         (MonadIO m, ToJSString direction) =>
-                           IDBIndex -> Maybe IDBKeyRange -> direction -> m IDBRequest
-openCursorRangeUnchecked self range direction
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_openCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
+         (js_openCursorRange self (maybeToOptional range)
+            (maybeToOptional direction)))
  
 foreign import javascript unsafe "$1[\"openCursor\"]($2, $3)"
         js_openCursor ::
-        IDBIndex -> JSVal -> JSString -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> Optional IDBCursorDirection -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
 openCursor ::
-           (MonadIO m, ToJSString direction) =>
-             IDBIndex -> JSVal -> direction -> m (Maybe IDBRequest)
+           (MonadIO m, ToJSVal key) =>
+             IDBIndex -> key -> Maybe IDBCursorDirection -> m IDBRequest
 openCursor self key direction
   = liftIO
-      (nullableToMaybe <$>
-         (js_openCursor (self) key (toJSString direction)))
+      (toJSVal key >>= \ key' -> js_openCursor self key'
+         (maybeToOptional direction))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
 openCursor_ ::
-            (MonadIO m, ToJSString direction) =>
-              IDBIndex -> JSVal -> direction -> m ()
+            (MonadIO m, ToJSVal key) =>
+              IDBIndex -> key -> Maybe IDBCursorDirection -> m ()
 openCursor_ self key direction
-  = liftIO (void (js_openCursor (self) key (toJSString direction)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
-openCursorUnsafe ::
-                 (MonadIO m, ToJSString direction, HasCallStack) =>
-                   IDBIndex -> JSVal -> direction -> m IDBRequest
-openCursorUnsafe self key direction
   = liftIO
-      ((nullableToMaybe <$>
-          (js_openCursor (self) key (toJSString direction)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openCursor Mozilla IDBIndex.openCursor documentation> 
-openCursorUnchecked ::
-                    (MonadIO m, ToJSString direction) =>
-                      IDBIndex -> JSVal -> direction -> m IDBRequest
-openCursorUnchecked self key direction
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_openCursor (self) key (toJSString direction)))
+      (void
+         (toJSVal key >>= \ key' -> js_openCursor self key'
+            (maybeToOptional direction)))
  
 foreign import javascript unsafe "$1[\"openKeyCursor\"]($2, $3)"
         js_openKeyCursorRange ::
         IDBIndex ->
-          Nullable IDBKeyRange -> JSString -> IO (Nullable IDBRequest)
+          Optional IDBKeyRange ->
+            Optional IDBCursorDirection -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
 openKeyCursorRange ::
-                   (MonadIO m, ToJSString direction) =>
-                     IDBIndex -> Maybe IDBKeyRange -> direction -> m (Maybe IDBRequest)
+                   (MonadIO m) =>
+                     IDBIndex ->
+                       Maybe IDBKeyRange -> Maybe IDBCursorDirection -> m IDBRequest
 openKeyCursorRange self range direction
   = liftIO
-      (nullableToMaybe <$>
-         (js_openKeyCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
+      (js_openKeyCursorRange self (maybeToOptional range)
+         (maybeToOptional direction))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
 openKeyCursorRange_ ::
-                    (MonadIO m, ToJSString direction) =>
-                      IDBIndex -> Maybe IDBKeyRange -> direction -> m ()
+                    (MonadIO m) =>
+                      IDBIndex -> Maybe IDBKeyRange -> Maybe IDBCursorDirection -> m ()
 openKeyCursorRange_ self range direction
   = liftIO
       (void
-         (js_openKeyCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
-openKeyCursorRangeUnsafe ::
-                         (MonadIO m, ToJSString direction, HasCallStack) =>
-                           IDBIndex -> Maybe IDBKeyRange -> direction -> m IDBRequest
-openKeyCursorRangeUnsafe self range direction
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_openKeyCursorRange (self) (maybeToNullable range)
-             (toJSString direction)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
-openKeyCursorRangeUnchecked ::
-                            (MonadIO m, ToJSString direction) =>
-                              IDBIndex -> Maybe IDBKeyRange -> direction -> m IDBRequest
-openKeyCursorRangeUnchecked self range direction
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_openKeyCursorRange (self) (maybeToNullable range)
-            (toJSString direction)))
+         (js_openKeyCursorRange self (maybeToOptional range)
+            (maybeToOptional direction)))
  
 foreign import javascript unsafe "$1[\"openKeyCursor\"]($2, $3)"
         js_openKeyCursor ::
-        IDBIndex -> JSVal -> JSString -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> Optional IDBCursorDirection -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
 openKeyCursor ::
-              (MonadIO m, ToJSString direction) =>
-                IDBIndex -> JSVal -> direction -> m (Maybe IDBRequest)
+              (MonadIO m, ToJSVal key) =>
+                IDBIndex -> key -> Maybe IDBCursorDirection -> m IDBRequest
 openKeyCursor self key direction
   = liftIO
-      (nullableToMaybe <$>
-         (js_openKeyCursor (self) key (toJSString direction)))
+      (toJSVal key >>= \ key' -> js_openKeyCursor self key'
+         (maybeToOptional direction))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
 openKeyCursor_ ::
-               (MonadIO m, ToJSString direction) =>
-                 IDBIndex -> JSVal -> direction -> m ()
+               (MonadIO m, ToJSVal key) =>
+                 IDBIndex -> key -> Maybe IDBCursorDirection -> m ()
 openKeyCursor_ self key direction
   = liftIO
-      (void (js_openKeyCursor (self) key (toJSString direction)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
-openKeyCursorUnsafe ::
-                    (MonadIO m, ToJSString direction, HasCallStack) =>
-                      IDBIndex -> JSVal -> direction -> m IDBRequest
-openKeyCursorUnsafe self key direction
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_openKeyCursor (self) key (toJSString direction)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.openKeyCursor Mozilla IDBIndex.openKeyCursor documentation> 
-openKeyCursorUnchecked ::
-                       (MonadIO m, ToJSString direction) =>
-                         IDBIndex -> JSVal -> direction -> m IDBRequest
-openKeyCursorUnchecked self key direction
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_openKeyCursor (self) key (toJSString direction)))
+      (void
+         (toJSVal key >>= \ key' -> js_openKeyCursor self key'
+            (maybeToOptional direction)))
  
 foreign import javascript unsafe "$1[\"get\"]($2)" js_getRange ::
-        IDBIndex -> Nullable IDBKeyRange -> IO (Nullable IDBRequest)
+        IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
 getRange ::
-         (MonadIO m) =>
-           IDBIndex -> Maybe IDBKeyRange -> m (Maybe IDBRequest)
-getRange self key
-  = liftIO
-      (nullableToMaybe <$> (js_getRange (self) (maybeToNullable key)))
+         (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
+getRange self key = liftIO (js_getRange self (maybeToOptional key))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
 getRange_ :: (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m ()
 getRange_ self key
-  = liftIO (void (js_getRange (self) (maybeToNullable key)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-getRangeUnsafe ::
-               (MonadIO m, HasCallStack) =>
-                 IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-getRangeUnsafe self key
-  = liftIO
-      ((nullableToMaybe <$> (js_getRange (self) (maybeToNullable key)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-getRangeUnchecked ::
-                  (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-getRangeUnchecked self key
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getRange (self) (maybeToNullable key)))
+  = liftIO (void (js_getRange self (maybeToOptional key)))
  
 foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
-        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-get :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
-get self key = liftIO (nullableToMaybe <$> (js_get (self) key))
+get :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m IDBRequest
+get self key = liftIO (toJSVal key >>= \ key' -> js_get self key')
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-get_ :: (MonadIO m) => IDBIndex -> JSVal -> m ()
-get_ self key = liftIO (void (js_get (self) key))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-getUnsafe ::
-          (MonadIO m, HasCallStack) => IDBIndex -> JSVal -> m IDBRequest
-getUnsafe self key
-  = liftIO
-      ((nullableToMaybe <$> (js_get (self) key)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
-getUnchecked :: (MonadIO m) => IDBIndex -> JSVal -> m IDBRequest
-getUnchecked self key
-  = liftIO (fromJust . nullableToMaybe <$> (js_get (self) key))
+get_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
+get_ self key
+  = liftIO (void (toJSVal key >>= \ key' -> js_get self key'))
  
 foreign import javascript unsafe "$1[\"getKey\"]($2)"
-        js_getKeyRange ::
-        IDBIndex -> Nullable IDBKeyRange -> IO (Nullable IDBRequest)
+        js_getKeyRange :: IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
 getKeyRange ::
-            (MonadIO m) =>
-              IDBIndex -> Maybe IDBKeyRange -> m (Maybe IDBRequest)
+            (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
 getKeyRange self key
-  = liftIO
-      (nullableToMaybe <$> (js_getKeyRange (self) (maybeToNullable key)))
+  = liftIO (js_getKeyRange self (maybeToOptional key))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
 getKeyRange_ ::
              (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m ()
 getKeyRange_ self key
-  = liftIO (void (js_getKeyRange (self) (maybeToNullable key)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKeyRangeUnsafe ::
-                  (MonadIO m, HasCallStack) =>
-                    IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-getKeyRangeUnsafe self key
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_getKeyRange (self) (maybeToNullable key)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKeyRangeUnchecked ::
-                     (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-getKeyRangeUnchecked self key
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getKeyRange (self) (maybeToNullable key)))
+  = liftIO (void (js_getKeyRange self (maybeToOptional key)))
  
 foreign import javascript unsafe "$1[\"getKey\"]($2)" js_getKey ::
-        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKey :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
+getKey ::
+       (MonadIO m, ToJSVal key) => IDBIndex -> key -> m IDBRequest
 getKey self key
-  = liftIO (nullableToMaybe <$> (js_getKey (self) key))
+  = liftIO (toJSVal key >>= \ key' -> js_getKey self key')
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKey_ :: (MonadIO m) => IDBIndex -> JSVal -> m ()
-getKey_ self key = liftIO (void (js_getKey (self) key))
+getKey_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
+getKey_ self key
+  = liftIO (void (toJSVal key >>= \ key' -> js_getKey self key'))
+ 
+foreign import javascript unsafe "$1[\"getAll\"]($2, $3)"
+        js_getAllRange ::
+        IDBIndex -> Optional IDBKeyRange -> Optional Word -> IO IDBRequest
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKeyUnsafe ::
-             (MonadIO m, HasCallStack) => IDBIndex -> JSVal -> m IDBRequest
-getKeyUnsafe self key
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAll Mozilla IDBIndex.getAll documentation> 
+getAllRange ::
+            (MonadIO m) =>
+              IDBIndex -> Maybe IDBKeyRange -> Maybe Word -> m IDBRequest
+getAllRange self range count
   = liftIO
-      ((nullableToMaybe <$> (js_getKey (self) key)) >>=
-         maybe (Prelude.error "Nothing to return") return)
+      (js_getAllRange self (maybeToOptional range)
+         (maybeToOptional count))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
-getKeyUnchecked :: (MonadIO m) => IDBIndex -> JSVal -> m IDBRequest
-getKeyUnchecked self key
-  = liftIO (fromJust . nullableToMaybe <$> (js_getKey (self) key))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAll Mozilla IDBIndex.getAll documentation> 
+getAllRange_ ::
+             (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> Maybe Word -> m ()
+getAllRange_ self range count
+  = liftIO
+      (void
+         (js_getAllRange self (maybeToOptional range)
+            (maybeToOptional count)))
+ 
+foreign import javascript unsafe "$1[\"getAll\"]($2, $3)" js_getAll
+        :: IDBIndex -> JSVal -> Optional Word -> IO IDBRequest
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAll Mozilla IDBIndex.getAll documentation> 
+getAll ::
+       (MonadIO m, ToJSVal key) =>
+         IDBIndex -> key -> Maybe Word -> m IDBRequest
+getAll self key count
+  = liftIO
+      (toJSVal key >>= \ key' -> js_getAll self key'
+         (maybeToOptional count))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAll Mozilla IDBIndex.getAll documentation> 
+getAll_ ::
+        (MonadIO m, ToJSVal key) => IDBIndex -> key -> Maybe Word -> m ()
+getAll_ self key count
+  = liftIO
+      (void
+         (toJSVal key >>= \ key' -> js_getAll self key'
+            (maybeToOptional count)))
+ 
+foreign import javascript unsafe "$1[\"getAllKeys\"]($2, $3)"
+        js_getAllKeysRange ::
+        IDBIndex -> Optional IDBKeyRange -> Optional Word -> IO IDBRequest
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAllKeys Mozilla IDBIndex.getAllKeys documentation> 
+getAllKeysRange ::
+                (MonadIO m) =>
+                  IDBIndex -> Maybe IDBKeyRange -> Maybe Word -> m IDBRequest
+getAllKeysRange self range count
+  = liftIO
+      (js_getAllKeysRange self (maybeToOptional range)
+         (maybeToOptional count))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAllKeys Mozilla IDBIndex.getAllKeys documentation> 
+getAllKeysRange_ ::
+                 (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> Maybe Word -> m ()
+getAllKeysRange_ self range count
+  = liftIO
+      (void
+         (js_getAllKeysRange self (maybeToOptional range)
+            (maybeToOptional count)))
+ 
+foreign import javascript unsafe "$1[\"getAllKeys\"]($2, $3)"
+        js_getAllKeys ::
+        IDBIndex -> JSVal -> Optional Word -> IO IDBRequest
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAllKeys Mozilla IDBIndex.getAllKeys documentation> 
+getAllKeys ::
+           (MonadIO m, ToJSVal key) =>
+             IDBIndex -> key -> Maybe Word -> m IDBRequest
+getAllKeys self key count
+  = liftIO
+      (toJSVal key >>= \ key' -> js_getAllKeys self key'
+         (maybeToOptional count))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAllKeys Mozilla IDBIndex.getAllKeys documentation> 
+getAllKeys_ ::
+            (MonadIO m, ToJSVal key) => IDBIndex -> key -> Maybe Word -> m ()
+getAllKeys_ self key count
+  = liftIO
+      (void
+         (toJSVal key >>= \ key' -> js_getAllKeys self key'
+            (maybeToOptional count)))
  
 foreign import javascript unsafe "$1[\"count\"]($2)" js_countRange
-        :: IDBIndex -> Nullable IDBKeyRange -> IO (Nullable IDBRequest)
+        :: IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
 countRange ::
-           (MonadIO m) =>
-             IDBIndex -> Maybe IDBKeyRange -> m (Maybe IDBRequest)
+           (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
 countRange self range
-  = liftIO
-      (nullableToMaybe <$>
-         (js_countRange (self) (maybeToNullable range)))
+  = liftIO (js_countRange self (maybeToOptional range))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
 countRange_ :: (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m ()
 countRange_ self range
-  = liftIO (void (js_countRange (self) (maybeToNullable range)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-countRangeUnsafe ::
-                 (MonadIO m, HasCallStack) =>
-                   IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-countRangeUnsafe self range
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_countRange (self) (maybeToNullable range)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-countRangeUnchecked ::
-                    (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m IDBRequest
-countRangeUnchecked self range
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_countRange (self) (maybeToNullable range)))
+  = liftIO (void (js_countRange self (maybeToOptional range)))
  
 foreign import javascript unsafe "$1[\"count\"]($2)" js_count ::
-        IDBIndex -> JSVal -> IO (Nullable IDBRequest)
+        IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-count :: (MonadIO m) => IDBIndex -> JSVal -> m (Maybe IDBRequest)
-count self key = liftIO (nullableToMaybe <$> (js_count (self) key))
+count ::
+      (MonadIO m, ToJSVal key) => IDBIndex -> key -> m IDBRequest
+count self key
+  = liftIO (toJSVal key >>= \ key' -> js_count self key')
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-count_ :: (MonadIO m) => IDBIndex -> JSVal -> m ()
-count_ self key = liftIO (void (js_count (self) key))
+count_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
+count_ self key
+  = liftIO (void (toJSVal key >>= \ key' -> js_count self key'))
+ 
+foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+        IDBIndex -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-countUnsafe ::
-            (MonadIO m, HasCallStack) => IDBIndex -> JSVal -> m IDBRequest
-countUnsafe self key
-  = liftIO
-      ((nullableToMaybe <$> (js_count (self) key)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
-countUnchecked :: (MonadIO m) => IDBIndex -> JSVal -> m IDBRequest
-countUnchecked self key
-  = liftIO (fromJust . nullableToMaybe <$> (js_count (self) key))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.name Mozilla IDBIndex.name documentation> 
+setName :: (MonadIO m, ToJSString val) => IDBIndex -> val -> m ()
+setName self val = liftIO (js_setName self (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         IDBIndex -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.name Mozilla IDBIndex.name documentation> 
 getName :: (MonadIO m, FromJSString result) => IDBIndex -> m result
-getName self = liftIO (fromJSString <$> (js_getName (self)))
+getName self = liftIO (fromJSString <$> (js_getName self))
  
 foreign import javascript unsafe "$1[\"objectStore\"]"
-        js_getObjectStore :: IDBIndex -> IO (Nullable IDBObjectStore)
+        js_getObjectStore :: IDBIndex -> IO IDBObjectStore
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.objectStore Mozilla IDBIndex.objectStore documentation> 
-getObjectStore ::
-               (MonadIO m) => IDBIndex -> m (Maybe IDBObjectStore)
-getObjectStore self
-  = liftIO (nullableToMaybe <$> (js_getObjectStore (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.objectStore Mozilla IDBIndex.objectStore documentation> 
-getObjectStoreUnsafe ::
-                     (MonadIO m, HasCallStack) => IDBIndex -> m IDBObjectStore
-getObjectStoreUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getObjectStore (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.objectStore Mozilla IDBIndex.objectStore documentation> 
-getObjectStoreUnchecked ::
-                        (MonadIO m) => IDBIndex -> m IDBObjectStore
-getObjectStoreUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getObjectStore (self)))
+getObjectStore :: (MonadIO m) => IDBIndex -> m IDBObjectStore
+getObjectStore self = liftIO (js_getObjectStore self)
  
 foreign import javascript unsafe "$1[\"keyPath\"]" js_getKeyPath ::
-        IDBIndex -> IO (Nullable IDBAny)
+        IDBIndex -> IO (Nullable IDBKeyPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.keyPath Mozilla IDBIndex.keyPath documentation> 
-getKeyPath :: (MonadIO m) => IDBIndex -> m (Maybe IDBAny)
-getKeyPath self
-  = liftIO (nullableToMaybe <$> (js_getKeyPath (self)))
+getKeyPath :: (MonadIO m) => IDBIndex -> m (Maybe IDBKeyPath)
+getKeyPath self = liftIO (nullableToMaybe <$> (js_getKeyPath self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.keyPath Mozilla IDBIndex.keyPath documentation> 
 getKeyPathUnsafe ::
-                 (MonadIO m, HasCallStack) => IDBIndex -> m IDBAny
+                 (MonadIO m, HasCallStack) => IDBIndex -> m IDBKeyPath
 getKeyPathUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getKeyPath (self))) >>=
+      ((nullableToMaybe <$> (js_getKeyPath self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.keyPath Mozilla IDBIndex.keyPath documentation> 
-getKeyPathUnchecked :: (MonadIO m) => IDBIndex -> m IDBAny
+getKeyPathUnchecked :: (MonadIO m) => IDBIndex -> m IDBKeyPath
 getKeyPathUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getKeyPath (self)))
+  = liftIO (fromJust . nullableToMaybe <$> (js_getKeyPath self))
  
 foreign import javascript unsafe "($1[\"multiEntry\"] ? 1 : 0)"
         js_getMultiEntry :: IDBIndex -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.multiEntry Mozilla IDBIndex.multiEntry documentation> 
 getMultiEntry :: (MonadIO m) => IDBIndex -> m Bool
-getMultiEntry self = liftIO (js_getMultiEntry (self))
+getMultiEntry self = liftIO (js_getMultiEntry self)
  
 foreign import javascript unsafe "($1[\"unique\"] ? 1 : 0)"
         js_getUnique :: IDBIndex -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.unique Mozilla IDBIndex.unique documentation> 
 getUnique :: (MonadIO m) => IDBIndex -> m Bool
-getUnique self = liftIO (js_getUnique (self))
+getUnique self = liftIO (js_getUnique self)

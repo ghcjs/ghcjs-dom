@@ -4,36 +4,34 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLTableElement
-       (js_createTHead, createTHead, createTHead_, createTHeadUnsafe,
-        createTHeadUnchecked, js_deleteTHead, deleteTHead, js_createTFoot,
-        createTFoot, createTFoot_, createTFootUnsafe, createTFootUnchecked,
+       (js_createTHead, createTHead, createTHead_, js_deleteTHead,
+        deleteTHead, js_createTFoot, createTFoot, createTFoot_,
         js_deleteTFoot, deleteTFoot, js_createTBody, createTBody,
-        createTBody_, createTBodyUnsafe, createTBodyUnchecked,
-        js_createCaption, createCaption, createCaption_,
-        createCaptionUnsafe, createCaptionUnchecked, js_deleteCaption,
-        deleteCaption, js_insertRow, insertRow, insertRow_,
-        insertRowUnsafe, insertRowUnchecked, js_deleteRow, deleteRow,
-        js_setCaption, setCaption, js_getCaption, getCaption,
-        getCaptionUnsafe, getCaptionUnchecked, js_setTHead, setTHead,
-        js_getTHead, getTHead, getTHeadUnsafe, getTHeadUnchecked,
-        js_setTFoot, setTFoot, js_getTFoot, getTFoot, getTFootUnsafe,
-        getTFootUnchecked, js_getRows, getRows, getRowsUnsafe,
-        getRowsUnchecked, js_getTBodies, getTBodies, getTBodiesUnsafe,
-        getTBodiesUnchecked, js_setAlign, setAlign, js_getAlign, getAlign,
-        js_setBgColor, setBgColor, js_getBgColor, getBgColor, js_setBorder,
-        setBorder, js_getBorder, getBorder, js_setCellPadding,
-        setCellPadding, js_getCellPadding, getCellPadding,
-        js_setCellSpacing, setCellSpacing, js_getCellSpacing,
-        getCellSpacing, js_setFrame, setFrame, js_getFrame, getFrame,
-        js_setRules, setRules, js_getRules, getRules, js_setSummary,
-        setSummary, js_getSummary, getSummary, js_setWidth, setWidth,
-        js_getWidth, getWidth, HTMLTableElement(..), gTypeHTMLTableElement)
+        createTBody_, js_createCaption, createCaption, createCaption_,
+        js_deleteCaption, deleteCaption, js_insertRow, insertRow,
+        insertRow_, js_deleteRow, deleteRow, js_setCaption, setCaption,
+        js_getCaption, getCaption, getCaptionUnsafe, getCaptionUnchecked,
+        js_setTHead, setTHead, js_getTHead, getTHead, getTHeadUnsafe,
+        getTHeadUnchecked, js_setTFoot, setTFoot, js_getTFoot, getTFoot,
+        getTFootUnsafe, getTFootUnchecked, js_getRows, getRows,
+        js_getTBodies, getTBodies, js_setAlign, setAlign, js_getAlign,
+        getAlign, js_setBgColor, setBgColor, js_getBgColor, getBgColor,
+        getBgColorUnsafe, getBgColorUnchecked, js_setBorder, setBorder,
+        js_getBorder, getBorder, js_setCellPadding, setCellPadding,
+        js_getCellPadding, getCellPadding, getCellPaddingUnsafe,
+        getCellPaddingUnchecked, js_setCellSpacing, setCellSpacing,
+        js_getCellSpacing, getCellSpacing, getCellSpacingUnsafe,
+        getCellSpacingUnchecked, js_setFrame, setFrame, js_getFrame,
+        getFrame, js_setRules, setRules, js_getRules, getRules,
+        js_setSummary, setSummary, js_getSummary, getSummary, js_setWidth,
+        setWidth, js_getWidth, getWidth, HTMLTableElement(..),
+        gTypeHTMLTableElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -42,187 +40,108 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"createTHead\"]()"
-        js_createTHead :: HTMLTableElement -> IO (Nullable HTMLElement)
+        js_createTHead :: HTMLTableElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
-createTHead ::
-            (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
-createTHead self
-  = liftIO (nullableToMaybe <$> (js_createTHead (self)))
+createTHead :: (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTHead self = liftIO (js_createTHead self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
 createTHead_ :: (MonadIO m) => HTMLTableElement -> m ()
-createTHead_ self = liftIO (void (js_createTHead (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
-createTHeadUnsafe ::
-                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
-createTHeadUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_createTHead (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTHead Mozilla HTMLTableElement.createTHead documentation> 
-createTHeadUnchecked ::
-                     (MonadIO m) => HTMLTableElement -> m HTMLElement
-createTHeadUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_createTHead (self)))
+createTHead_ self = liftIO (void (js_createTHead self))
  
 foreign import javascript unsafe "$1[\"deleteTHead\"]()"
         js_deleteTHead :: HTMLTableElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteTHead Mozilla HTMLTableElement.deleteTHead documentation> 
 deleteTHead :: (MonadIO m) => HTMLTableElement -> m ()
-deleteTHead self = liftIO (js_deleteTHead (self))
+deleteTHead self = liftIO (js_deleteTHead self)
  
 foreign import javascript unsafe "$1[\"createTFoot\"]()"
-        js_createTFoot :: HTMLTableElement -> IO (Nullable HTMLElement)
+        js_createTFoot :: HTMLTableElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
-createTFoot ::
-            (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
-createTFoot self
-  = liftIO (nullableToMaybe <$> (js_createTFoot (self)))
+createTFoot :: (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTFoot self = liftIO (js_createTFoot self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
 createTFoot_ :: (MonadIO m) => HTMLTableElement -> m ()
-createTFoot_ self = liftIO (void (js_createTFoot (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
-createTFootUnsafe ::
-                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
-createTFootUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_createTFoot (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTFoot Mozilla HTMLTableElement.createTFoot documentation> 
-createTFootUnchecked ::
-                     (MonadIO m) => HTMLTableElement -> m HTMLElement
-createTFootUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_createTFoot (self)))
+createTFoot_ self = liftIO (void (js_createTFoot self))
  
 foreign import javascript unsafe "$1[\"deleteTFoot\"]()"
         js_deleteTFoot :: HTMLTableElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteTFoot Mozilla HTMLTableElement.deleteTFoot documentation> 
 deleteTFoot :: (MonadIO m) => HTMLTableElement -> m ()
-deleteTFoot self = liftIO (js_deleteTFoot (self))
+deleteTFoot self = liftIO (js_deleteTFoot self)
  
 foreign import javascript unsafe "$1[\"createTBody\"]()"
-        js_createTBody :: HTMLTableElement -> IO (Nullable HTMLElement)
+        js_createTBody :: HTMLTableElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
-createTBody ::
-            (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
-createTBody self
-  = liftIO (nullableToMaybe <$> (js_createTBody (self)))
+createTBody :: (MonadIO m) => HTMLTableElement -> m HTMLElement
+createTBody self = liftIO (js_createTBody self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
 createTBody_ :: (MonadIO m) => HTMLTableElement -> m ()
-createTBody_ self = liftIO (void (js_createTBody (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
-createTBodyUnsafe ::
-                  (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
-createTBodyUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_createTBody (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createTBody Mozilla HTMLTableElement.createTBody documentation> 
-createTBodyUnchecked ::
-                     (MonadIO m) => HTMLTableElement -> m HTMLElement
-createTBodyUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_createTBody (self)))
+createTBody_ self = liftIO (void (js_createTBody self))
  
 foreign import javascript unsafe "$1[\"createCaption\"]()"
-        js_createCaption :: HTMLTableElement -> IO (Nullable HTMLElement)
+        js_createCaption :: HTMLTableElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
-createCaption ::
-              (MonadIO m) => HTMLTableElement -> m (Maybe HTMLElement)
-createCaption self
-  = liftIO (nullableToMaybe <$> (js_createCaption (self)))
+createCaption :: (MonadIO m) => HTMLTableElement -> m HTMLElement
+createCaption self = liftIO (js_createCaption self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
 createCaption_ :: (MonadIO m) => HTMLTableElement -> m ()
-createCaption_ self = liftIO (void (js_createCaption (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
-createCaptionUnsafe ::
-                    (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLElement
-createCaptionUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_createCaption (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.createCaption Mozilla HTMLTableElement.createCaption documentation> 
-createCaptionUnchecked ::
-                       (MonadIO m) => HTMLTableElement -> m HTMLElement
-createCaptionUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_createCaption (self)))
+createCaption_ self = liftIO (void (js_createCaption self))
  
 foreign import javascript unsafe "$1[\"deleteCaption\"]()"
         js_deleteCaption :: HTMLTableElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteCaption Mozilla HTMLTableElement.deleteCaption documentation> 
 deleteCaption :: (MonadIO m) => HTMLTableElement -> m ()
-deleteCaption self = liftIO (js_deleteCaption (self))
+deleteCaption self = liftIO (js_deleteCaption self)
  
 foreign import javascript unsafe "$1[\"insertRow\"]($2)"
-        js_insertRow ::
-        HTMLTableElement -> Int -> IO (Nullable HTMLElement)
+        js_insertRow :: HTMLTableElement -> Optional Int -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
 insertRow ::
-          (MonadIO m) => HTMLTableElement -> Int -> m (Maybe HTMLElement)
+          (MonadIO m) => HTMLTableElement -> Maybe Int -> m HTMLElement
 insertRow self index
-  = liftIO (nullableToMaybe <$> (js_insertRow (self) index))
+  = liftIO (js_insertRow self (maybeToOptional index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
-insertRow_ :: (MonadIO m) => HTMLTableElement -> Int -> m ()
-insertRow_ self index = liftIO (void (js_insertRow (self) index))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
-insertRowUnsafe ::
-                (MonadIO m, HasCallStack) =>
-                  HTMLTableElement -> Int -> m HTMLElement
-insertRowUnsafe self index
-  = liftIO
-      ((nullableToMaybe <$> (js_insertRow (self) index)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.insertRow Mozilla HTMLTableElement.insertRow documentation> 
-insertRowUnchecked ::
-                   (MonadIO m) => HTMLTableElement -> Int -> m HTMLElement
-insertRowUnchecked self index
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_insertRow (self) index))
+insertRow_ :: (MonadIO m) => HTMLTableElement -> Maybe Int -> m ()
+insertRow_ self index
+  = liftIO (void (js_insertRow self (maybeToOptional index)))
  
 foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
         js_deleteRow :: HTMLTableElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.deleteRow Mozilla HTMLTableElement.deleteRow documentation> 
 deleteRow :: (MonadIO m) => HTMLTableElement -> Int -> m ()
-deleteRow self index = liftIO (js_deleteRow (self) index)
+deleteRow self index = liftIO (js_deleteRow self index)
  
 foreign import javascript unsafe "$1[\"caption\"] = $2;"
         js_setCaption ::
-        HTMLTableElement -> Nullable HTMLTableCaptionElement -> IO ()
+        HTMLTableElement -> Optional HTMLTableCaptionElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 setCaption ::
            (MonadIO m) =>
              HTMLTableElement -> Maybe HTMLTableCaptionElement -> m ()
 setCaption self val
-  = liftIO (js_setCaption (self) (maybeToNullable val))
+  = liftIO (js_setCaption self (maybeToOptional val))
  
 foreign import javascript unsafe "$1[\"caption\"]" js_getCaption ::
         HTMLTableElement -> IO (Nullable HTMLTableCaptionElement)
@@ -231,8 +150,7 @@ foreign import javascript unsafe "$1[\"caption\"]" js_getCaption ::
 getCaption ::
            (MonadIO m) =>
              HTMLTableElement -> m (Maybe HTMLTableCaptionElement)
-getCaption self
-  = liftIO (nullableToMaybe <$> (js_getCaption (self)))
+getCaption self = liftIO (nullableToMaybe <$> (js_getCaption self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 getCaptionUnsafe ::
@@ -240,24 +158,23 @@ getCaptionUnsafe ::
                    HTMLTableElement -> m HTMLTableCaptionElement
 getCaptionUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getCaption (self))) >>=
+      ((nullableToMaybe <$> (js_getCaption self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.caption Mozilla HTMLTableElement.caption documentation> 
 getCaptionUnchecked ::
                     (MonadIO m) => HTMLTableElement -> m HTMLTableCaptionElement
 getCaptionUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getCaption (self)))
+  = liftIO (fromJust . nullableToMaybe <$> (js_getCaption self))
  
 foreign import javascript unsafe "$1[\"tHead\"] = $2;" js_setTHead
-        :: HTMLTableElement -> Nullable HTMLTableSectionElement -> IO ()
+        :: HTMLTableElement -> Optional HTMLTableSectionElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 setTHead ::
          (MonadIO m) =>
            HTMLTableElement -> Maybe HTMLTableSectionElement -> m ()
-setTHead self val
-  = liftIO (js_setTHead (self) (maybeToNullable val))
+setTHead self val = liftIO (js_setTHead self (maybeToOptional val))
  
 foreign import javascript unsafe "$1[\"tHead\"]" js_getTHead ::
         HTMLTableElement -> IO (Nullable HTMLTableSectionElement)
@@ -266,7 +183,7 @@ foreign import javascript unsafe "$1[\"tHead\"]" js_getTHead ::
 getTHead ::
          (MonadIO m) =>
            HTMLTableElement -> m (Maybe HTMLTableSectionElement)
-getTHead self = liftIO (nullableToMaybe <$> (js_getTHead (self)))
+getTHead self = liftIO (nullableToMaybe <$> (js_getTHead self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 getTHeadUnsafe ::
@@ -274,24 +191,23 @@ getTHeadUnsafe ::
                  HTMLTableElement -> m HTMLTableSectionElement
 getTHeadUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getTHead (self))) >>=
+      ((nullableToMaybe <$> (js_getTHead self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tHead Mozilla HTMLTableElement.tHead documentation> 
 getTHeadUnchecked ::
                   (MonadIO m) => HTMLTableElement -> m HTMLTableSectionElement
 getTHeadUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getTHead (self)))
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTHead self))
  
 foreign import javascript unsafe "$1[\"tFoot\"] = $2;" js_setTFoot
-        :: HTMLTableElement -> Nullable HTMLTableSectionElement -> IO ()
+        :: HTMLTableElement -> Optional HTMLTableSectionElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 setTFoot ::
          (MonadIO m) =>
            HTMLTableElement -> Maybe HTMLTableSectionElement -> m ()
-setTFoot self val
-  = liftIO (js_setTFoot (self) (maybeToNullable val))
+setTFoot self val = liftIO (js_setTFoot self (maybeToOptional val))
  
 foreign import javascript unsafe "$1[\"tFoot\"]" js_getTFoot ::
         HTMLTableElement -> IO (Nullable HTMLTableSectionElement)
@@ -300,7 +216,7 @@ foreign import javascript unsafe "$1[\"tFoot\"]" js_getTFoot ::
 getTFoot ::
          (MonadIO m) =>
            HTMLTableElement -> m (Maybe HTMLTableSectionElement)
-getTFoot self = liftIO (nullableToMaybe <$> (js_getTFoot (self)))
+getTFoot self = liftIO (nullableToMaybe <$> (js_getTFoot self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 getTFootUnsafe ::
@@ -308,59 +224,28 @@ getTFootUnsafe ::
                  HTMLTableElement -> m HTMLTableSectionElement
 getTFootUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getTFoot (self))) >>=
+      ((nullableToMaybe <$> (js_getTFoot self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tFoot Mozilla HTMLTableElement.tFoot documentation> 
 getTFootUnchecked ::
                   (MonadIO m) => HTMLTableElement -> m HTMLTableSectionElement
 getTFootUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getTFoot (self)))
+  = liftIO (fromJust . nullableToMaybe <$> (js_getTFoot self))
  
 foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
-        HTMLTableElement -> IO (Nullable HTMLCollection)
+        HTMLTableElement -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
-getRows ::
-        (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
-getRows self = liftIO (nullableToMaybe <$> (js_getRows (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
-getRowsUnsafe ::
-              (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLCollection
-getRowsUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getRows (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rows Mozilla HTMLTableElement.rows documentation> 
-getRowsUnchecked ::
-                 (MonadIO m) => HTMLTableElement -> m HTMLCollection
-getRowsUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getRows (self)))
+getRows :: (MonadIO m) => HTMLTableElement -> m HTMLCollection
+getRows self = liftIO (js_getRows self)
  
 foreign import javascript unsafe "$1[\"tBodies\"]" js_getTBodies ::
-        HTMLTableElement -> IO (Nullable HTMLCollection)
+        HTMLTableElement -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
-getTBodies ::
-           (MonadIO m) => HTMLTableElement -> m (Maybe HTMLCollection)
-getTBodies self
-  = liftIO (nullableToMaybe <$> (js_getTBodies (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
-getTBodiesUnsafe ::
-                 (MonadIO m, HasCallStack) => HTMLTableElement -> m HTMLCollection
-getTBodiesUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getTBodies (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.tBodies Mozilla HTMLTableElement.tBodies documentation> 
-getTBodiesUnchecked ::
-                    (MonadIO m) => HTMLTableElement -> m HTMLCollection
-getTBodiesUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getTBodies (self)))
+getTBodies :: (MonadIO m) => HTMLTableElement -> m HTMLCollection
+getTBodies self = liftIO (js_getTBodies self)
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLTableElement -> JSString -> IO ()
@@ -368,7 +253,7 @@ foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.align Mozilla HTMLTableElement.align documentation> 
 setAlign ::
          (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setAlign self val = liftIO (js_setAlign (self) (toJSString val))
+setAlign self val = liftIO (js_setAlign self (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         HTMLTableElement -> IO JSString
@@ -376,24 +261,42 @@ foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.align Mozilla HTMLTableElement.align documentation> 
 getAlign ::
          (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getAlign self = liftIO (fromJSString <$> (js_getAlign (self)))
+getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: HTMLTableElement -> JSString -> IO ()
+        js_setBgColor :: HTMLTableElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 setBgColor ::
-           (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
+           (MonadIO m, ToJSString val) =>
+             HTMLTableElement -> Maybe val -> m ()
 setBgColor self val
-  = liftIO (js_setBgColor (self) (toJSString val))
+  = liftIO (js_setBgColor self (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        HTMLTableElement -> IO JSString
+        HTMLTableElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 getBgColor ::
-           (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getBgColor self = liftIO (fromJSString <$> (js_getBgColor (self)))
+           (MonadIO m, FromJSString result) =>
+             HTMLTableElement -> m (Maybe result)
+getBgColor self
+  = liftIO (fromMaybeJSString <$> (js_getBgColor self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
+getBgColorUnsafe ::
+                 (MonadIO m, HasCallStack, FromJSString result) =>
+                   HTMLTableElement -> m result
+getBgColorUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getBgColor self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
+getBgColorUnchecked ::
+                    (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+getBgColorUnchecked self
+  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor self))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         js_setBorder :: HTMLTableElement -> JSString -> IO ()
@@ -401,7 +304,7 @@ foreign import javascript unsafe "$1[\"border\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.border Mozilla HTMLTableElement.border documentation> 
 setBorder ::
           (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setBorder self val = liftIO (js_setBorder (self) (toJSString val))
+setBorder self val = liftIO (js_setBorder self (toJSString val))
  
 foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
         HTMLTableElement -> IO JSString
@@ -409,43 +312,79 @@ foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.border Mozilla HTMLTableElement.border documentation> 
 getBorder ::
           (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getBorder self = liftIO (fromJSString <$> (js_getBorder (self)))
+getBorder self = liftIO (fromJSString <$> (js_getBorder self))
  
 foreign import javascript unsafe "$1[\"cellPadding\"] = $2;"
-        js_setCellPadding :: HTMLTableElement -> JSString -> IO ()
+        js_setCellPadding :: HTMLTableElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 setCellPadding ::
-               (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
+               (MonadIO m, ToJSString val) =>
+                 HTMLTableElement -> Maybe val -> m ()
 setCellPadding self val
-  = liftIO (js_setCellPadding (self) (toJSString val))
+  = liftIO (js_setCellPadding self (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"cellPadding\"]"
-        js_getCellPadding :: HTMLTableElement -> IO JSString
+        js_getCellPadding :: HTMLTableElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 getCellPadding ::
-               (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+               (MonadIO m, FromJSString result) =>
+                 HTMLTableElement -> m (Maybe result)
 getCellPadding self
-  = liftIO (fromJSString <$> (js_getCellPadding (self)))
+  = liftIO (fromMaybeJSString <$> (js_getCellPadding self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
+getCellPaddingUnsafe ::
+                     (MonadIO m, HasCallStack, FromJSString result) =>
+                       HTMLTableElement -> m result
+getCellPaddingUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCellPadding self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
+getCellPaddingUnchecked ::
+                        (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+getCellPaddingUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getCellPadding self))
  
 foreign import javascript unsafe "$1[\"cellSpacing\"] = $2;"
-        js_setCellSpacing :: HTMLTableElement -> JSString -> IO ()
+        js_setCellSpacing :: HTMLTableElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 setCellSpacing ::
-               (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
+               (MonadIO m, ToJSString val) =>
+                 HTMLTableElement -> Maybe val -> m ()
 setCellSpacing self val
-  = liftIO (js_setCellSpacing (self) (toJSString val))
+  = liftIO (js_setCellSpacing self (toOptionalJSString val))
  
 foreign import javascript unsafe "$1[\"cellSpacing\"]"
-        js_getCellSpacing :: HTMLTableElement -> IO JSString
+        js_getCellSpacing :: HTMLTableElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 getCellSpacing ::
-               (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+               (MonadIO m, FromJSString result) =>
+                 HTMLTableElement -> m (Maybe result)
 getCellSpacing self
-  = liftIO (fromJSString <$> (js_getCellSpacing (self)))
+  = liftIO (fromMaybeJSString <$> (js_getCellSpacing self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
+getCellSpacingUnsafe ::
+                     (MonadIO m, HasCallStack, FromJSString result) =>
+                       HTMLTableElement -> m result
+getCellSpacingUnsafe self
+  = liftIO
+      ((fromMaybeJSString <$> (js_getCellSpacing self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
+getCellSpacingUnchecked ::
+                        (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+getCellSpacingUnchecked self
+  = liftIO
+      (fromJust . fromMaybeJSString <$> (js_getCellSpacing self))
  
 foreign import javascript unsafe "$1[\"frame\"] = $2;" js_setFrame
         :: HTMLTableElement -> JSString -> IO ()
@@ -453,7 +392,7 @@ foreign import javascript unsafe "$1[\"frame\"] = $2;" js_setFrame
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.frame Mozilla HTMLTableElement.frame documentation> 
 setFrame ::
          (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setFrame self val = liftIO (js_setFrame (self) (toJSString val))
+setFrame self val = liftIO (js_setFrame self (toJSString val))
  
 foreign import javascript unsafe "$1[\"frame\"]" js_getFrame ::
         HTMLTableElement -> IO JSString
@@ -461,7 +400,7 @@ foreign import javascript unsafe "$1[\"frame\"]" js_getFrame ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.frame Mozilla HTMLTableElement.frame documentation> 
 getFrame ::
          (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getFrame self = liftIO (fromJSString <$> (js_getFrame (self)))
+getFrame self = liftIO (fromJSString <$> (js_getFrame self))
  
 foreign import javascript unsafe "$1[\"rules\"] = $2;" js_setRules
         :: HTMLTableElement -> JSString -> IO ()
@@ -469,7 +408,7 @@ foreign import javascript unsafe "$1[\"rules\"] = $2;" js_setRules
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rules Mozilla HTMLTableElement.rules documentation> 
 setRules ::
          (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setRules self val = liftIO (js_setRules (self) (toJSString val))
+setRules self val = liftIO (js_setRules self (toJSString val))
  
 foreign import javascript unsafe "$1[\"rules\"]" js_getRules ::
         HTMLTableElement -> IO JSString
@@ -477,7 +416,7 @@ foreign import javascript unsafe "$1[\"rules\"]" js_getRules ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.rules Mozilla HTMLTableElement.rules documentation> 
 getRules ::
          (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getRules self = liftIO (fromJSString <$> (js_getRules (self)))
+getRules self = liftIO (fromJSString <$> (js_getRules self))
  
 foreign import javascript unsafe "$1[\"summary\"] = $2;"
         js_setSummary :: HTMLTableElement -> JSString -> IO ()
@@ -485,8 +424,7 @@ foreign import javascript unsafe "$1[\"summary\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.summary Mozilla HTMLTableElement.summary documentation> 
 setSummary ::
            (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setSummary self val
-  = liftIO (js_setSummary (self) (toJSString val))
+setSummary self val = liftIO (js_setSummary self (toJSString val))
  
 foreign import javascript unsafe "$1[\"summary\"]" js_getSummary ::
         HTMLTableElement -> IO JSString
@@ -494,7 +432,7 @@ foreign import javascript unsafe "$1[\"summary\"]" js_getSummary ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.summary Mozilla HTMLTableElement.summary documentation> 
 getSummary ::
            (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getSummary self = liftIO (fromJSString <$> (js_getSummary (self)))
+getSummary self = liftIO (fromJSString <$> (js_getSummary self))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: HTMLTableElement -> JSString -> IO ()
@@ -502,7 +440,7 @@ foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.width Mozilla HTMLTableElement.width documentation> 
 setWidth ::
          (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
-setWidth self val = liftIO (js_setWidth (self) (toJSString val))
+setWidth self val = liftIO (js_setWidth self (toJSString val))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         HTMLTableElement -> IO JSString
@@ -510,4 +448,4 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.width Mozilla HTMLTableElement.width documentation> 
 getWidth ::
          (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getWidth self = liftIO (fromJSString <$> (js_getWidth (self)))
+getWidth self = liftIO (fromJSString <$> (js_getWidth self))

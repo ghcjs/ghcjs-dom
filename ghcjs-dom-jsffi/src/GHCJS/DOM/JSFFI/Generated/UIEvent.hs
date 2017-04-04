@@ -4,18 +4,17 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.UIEvent
-       (js_initUIEvent, initUIEvent, js_getView, getView, getViewUnsafe,
-        getViewUnchecked, js_getDetail, getDetail, js_getKeyCode,
-        getKeyCode, js_getCharCode, getCharCode, js_getLayerX, getLayerX,
-        js_getLayerY, getLayerY, js_getPageX, getPageX, js_getPageY,
-        getPageY, js_getWhich, getWhich, UIEvent(..), gTypeUIEvent,
-        IsUIEvent, toUIEvent)
+       (js_newUIEvent, newUIEvent, js_initUIEvent, initUIEvent,
+        js_getView, getView, js_getDetail, getDetail, js_getLayerX,
+        getLayerX, js_getLayerY, getLayerY, js_getPageX, getPageX,
+        js_getPageY, getPageY, js_getWhich, getWhich, UIEvent(..),
+        gTypeUIEvent, IsUIEvent, toUIEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -24,47 +23,48 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
  
+foreign import javascript unsafe "new window[\"UIEvent\"]($1, $2)"
+        js_newUIEvent :: JSString -> Optional UIEventInit -> IO UIEvent
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent Mozilla UIEvent documentation> 
+newUIEvent ::
+           (MonadIO m, ToJSString type', IsUIEventInit eventInitDict) =>
+             type' -> Maybe eventInitDict -> m UIEvent
+newUIEvent type' eventInitDict
+  = liftIO
+      (js_newUIEvent (toJSString type')
+         (maybeToOptional (fmap toUIEventInit eventInitDict)))
+ 
 foreign import javascript unsafe
         "$1[\"initUIEvent\"]($2, $3, $4,\n$5, $6)" js_initUIEvent ::
         UIEvent ->
-          JSString -> Bool -> Bool -> Nullable Window -> Int -> IO ()
+          Optional JSString ->
+            Bool -> Bool -> Optional Window -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.initUIEvent Mozilla UIEvent.initUIEvent documentation> 
 initUIEvent ::
             (MonadIO m, IsUIEvent self, ToJSString type') =>
-              self -> type' -> Bool -> Bool -> Maybe Window -> Int -> m ()
+              self ->
+                Maybe type' -> Bool -> Bool -> Maybe Window -> Maybe Int -> m ()
 initUIEvent self type' canBubble cancelable view detail
   = liftIO
-      (js_initUIEvent (toUIEvent self) (toJSString type') canBubble
+      (js_initUIEvent (toUIEvent self) (toOptionalJSString type')
+         canBubble
          cancelable
-         (maybeToNullable view)
-         detail)
+         (maybeToOptional view)
+         (maybeToOptional detail))
  
 foreign import javascript unsafe "$1[\"view\"]" js_getView ::
-        UIEvent -> IO (Nullable Window)
+        UIEvent -> IO Window
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
-getView :: (MonadIO m, IsUIEvent self) => self -> m (Maybe Window)
-getView self
-  = liftIO (nullableToMaybe <$> (js_getView (toUIEvent self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
-getViewUnsafe ::
-              (MonadIO m, IsUIEvent self, HasCallStack) => self -> m Window
-getViewUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getView (toUIEvent self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.view Mozilla UIEvent.view documentation> 
-getViewUnchecked :: (MonadIO m, IsUIEvent self) => self -> m Window
-getViewUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getView (toUIEvent self)))
+getView :: (MonadIO m, IsUIEvent self) => self -> m Window
+getView self = liftIO (js_getView (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
         UIEvent -> IO Int
@@ -72,20 +72,6 @@ foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.detail Mozilla UIEvent.detail documentation> 
 getDetail :: (MonadIO m, IsUIEvent self) => self -> m Int
 getDetail self = liftIO (js_getDetail (toUIEvent self))
- 
-foreign import javascript unsafe "$1[\"keyCode\"]" js_getKeyCode ::
-        UIEvent -> IO Int
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.keyCode Mozilla UIEvent.keyCode documentation> 
-getKeyCode :: (MonadIO m, IsUIEvent self) => self -> m Int
-getKeyCode self = liftIO (js_getKeyCode (toUIEvent self))
- 
-foreign import javascript unsafe "$1[\"charCode\"]" js_getCharCode
-        :: UIEvent -> IO Int
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent.charCode Mozilla UIEvent.charCode documentation> 
-getCharCode :: (MonadIO m, IsUIEvent self) => self -> m Int
-getCharCode self = liftIO (js_getCharCode (toUIEvent self))
  
 foreign import javascript unsafe "$1[\"layerX\"]" js_getLayerX ::
         UIEvent -> IO Int

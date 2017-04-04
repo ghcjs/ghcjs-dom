@@ -9,8 +9,7 @@ module GHCJS.DOM.JSFFI.Generated.SVGAnimationElement
         getSimpleDuration, getSimpleDuration_, js_beginElement,
         beginElement, js_beginElementAt, beginElementAt, js_endElement,
         endElement, js_endElementAt, endElementAt, js_getTargetElement,
-        getTargetElement, getTargetElementUnsafe,
-        getTargetElementUnchecked, SVGAnimationElement(..),
+        getTargetElement, SVGAnimationElement(..),
         gTypeSVGAnimationElement, IsSVGAnimationElement,
         toSVGAnimationElement)
        where
@@ -18,7 +17,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -27,6 +26,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -87,13 +87,16 @@ beginElement self
   = liftIO (js_beginElement (toSVGAnimationElement self))
  
 foreign import javascript unsafe "$1[\"beginElementAt\"]($2)"
-        js_beginElementAt :: SVGAnimationElement -> Float -> IO ()
+        js_beginElementAt :: SVGAnimationElement -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.beginElementAt Mozilla SVGAnimationElement.beginElementAt documentation> 
 beginElementAt ::
-               (MonadIO m, IsSVGAnimationElement self) => self -> Float -> m ()
+               (MonadIO m, IsSVGAnimationElement self) =>
+                 self -> Maybe Float -> m ()
 beginElementAt self offset
-  = liftIO (js_beginElementAt (toSVGAnimationElement self) offset)
+  = liftIO
+      (js_beginElementAt (toSVGAnimationElement self)
+         (maybeToOptional offset))
  
 foreign import javascript unsafe "$1[\"endElement\"]()"
         js_endElement :: SVGAnimationElement -> IO ()
@@ -105,41 +108,22 @@ endElement self
   = liftIO (js_endElement (toSVGAnimationElement self))
  
 foreign import javascript unsafe "$1[\"endElementAt\"]($2)"
-        js_endElementAt :: SVGAnimationElement -> Float -> IO ()
+        js_endElementAt :: SVGAnimationElement -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.endElementAt Mozilla SVGAnimationElement.endElementAt documentation> 
 endElementAt ::
-             (MonadIO m, IsSVGAnimationElement self) => self -> Float -> m ()
+             (MonadIO m, IsSVGAnimationElement self) =>
+               self -> Maybe Float -> m ()
 endElementAt self offset
-  = liftIO (js_endElementAt (toSVGAnimationElement self) offset)
+  = liftIO
+      (js_endElementAt (toSVGAnimationElement self)
+         (maybeToOptional offset))
  
 foreign import javascript unsafe "$1[\"targetElement\"]"
-        js_getTargetElement ::
-        SVGAnimationElement -> IO (Nullable SVGElement)
+        js_getTargetElement :: SVGAnimationElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
 getTargetElement ::
-                 (MonadIO m, IsSVGAnimationElement self) =>
-                   self -> m (Maybe SVGElement)
+                 (MonadIO m, IsSVGAnimationElement self) => self -> m SVGElement
 getTargetElement self
-  = liftIO
-      (nullableToMaybe <$>
-         (js_getTargetElement (toSVGAnimationElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
-getTargetElementUnsafe ::
-                       (MonadIO m, IsSVGAnimationElement self, HasCallStack) =>
-                         self -> m SVGElement
-getTargetElementUnsafe self
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_getTargetElement (toSVGAnimationElement self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 
-getTargetElementUnchecked ::
-                          (MonadIO m, IsSVGAnimationElement self) => self -> m SVGElement
-getTargetElementUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getTargetElement (toSVGAnimationElement self)))
+  = liftIO (js_getTargetElement (toSVGAnimationElement self))

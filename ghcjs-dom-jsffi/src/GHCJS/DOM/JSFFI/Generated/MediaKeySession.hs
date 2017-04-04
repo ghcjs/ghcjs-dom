@@ -4,16 +4,18 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaKeySession
-       (js_update, update, js_close, close, js_getError, getError,
-        getErrorUnsafe, getErrorUnchecked, js_getKeySystem, getKeySystem,
-        js_getSessionId, getSessionId, webKitKeyAdded, webKitKeyError,
-        webKitKeyMessage, MediaKeySession(..), gTypeMediaKeySession)
+       (js_generateRequest, generateRequest, js_load, load, load_,
+        js_update, update, js_close, close, js_remove, remove,
+        js_getSessionId, getSessionId, js_getExpiration, getExpiration,
+        js_getClosed, getClosed, js_getKeyStatuses, getKeyStatuses,
+        keystatuseschange, message, MediaKeySession(..),
+        gTypeMediaKeySession)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,59 +24,66 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"update\"]($2)" js_update ::
-        MediaKeySession -> Nullable Uint8Array -> IO ()
+foreign import javascript interruptible
+        "$1[\"generateRequest\"]($2, $3).\nthen($c);" js_generateRequest ::
+        MediaKeySession -> JSString -> BufferSource -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.generateRequest Mozilla WebKitMediaKeySession.generateRequest documentation> 
+generateRequest ::
+                (MonadIO m, ToJSString initDataType, IsBufferSource initData) =>
+                  MediaKeySession -> initDataType -> initData -> m ()
+generateRequest self initDataType initData
+  = liftIO
+      (js_generateRequest self (toJSString initDataType)
+         (toBufferSource initData))
+ 
+foreign import javascript interruptible
+        "$1[\"load\"]($2).then($c);" js_load ::
+        MediaKeySession -> JSString -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.load Mozilla WebKitMediaKeySession.load documentation> 
+load ::
+     (MonadIO m, ToJSString sessionId) =>
+       MediaKeySession -> sessionId -> m Bool
+load self sessionId = liftIO (js_load self (toJSString sessionId))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.load Mozilla WebKitMediaKeySession.load documentation> 
+load_ ::
+      (MonadIO m, ToJSString sessionId) =>
+        MediaKeySession -> sessionId -> m ()
+load_ self sessionId
+  = liftIO (void (js_load self (toJSString sessionId)))
+ 
+foreign import javascript interruptible
+        "$1[\"update\"]($2).then($c);" js_update ::
+        MediaKeySession -> BufferSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.update Mozilla WebKitMediaKeySession.update documentation> 
 update ::
-       (MonadIO m, IsUint8Array key) =>
-         MediaKeySession -> Maybe key -> m ()
-update self key
-  = liftIO
-      (js_update (self) (maybeToNullable (fmap toUint8Array key)))
+       (MonadIO m, IsBufferSource response) =>
+         MediaKeySession -> response -> m ()
+update self response
+  = liftIO (js_update self (toBufferSource response))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
-        MediaKeySession -> IO ()
+foreign import javascript interruptible
+        "$1[\"close\"]().then($c);" js_close :: MediaKeySession -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.close Mozilla WebKitMediaKeySession.close documentation> 
 close :: (MonadIO m) => MediaKeySession -> m ()
-close self = liftIO (js_close (self))
+close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"error\"]" js_getError ::
-        MediaKeySession -> IO (Nullable MediaKeyError)
+foreign import javascript interruptible
+        "$1[\"remove\"]().then($c);" js_remove :: MediaKeySession -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
-getError ::
-         (MonadIO m) => MediaKeySession -> m (Maybe MediaKeyError)
-getError self = liftIO (nullableToMaybe <$> (js_getError (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
-getErrorUnsafe ::
-               (MonadIO m, HasCallStack) => MediaKeySession -> m MediaKeyError
-getErrorUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getError (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 
-getErrorUnchecked ::
-                  (MonadIO m) => MediaKeySession -> m MediaKeyError
-getErrorUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getError (self)))
- 
-foreign import javascript unsafe "$1[\"keySystem\"]"
-        js_getKeySystem :: MediaKeySession -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.keySystem Mozilla WebKitMediaKeySession.keySystem documentation> 
-getKeySystem ::
-             (MonadIO m, FromJSString result) => MediaKeySession -> m result
-getKeySystem self
-  = liftIO (fromJSString <$> (js_getKeySystem (self)))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.remove Mozilla WebKitMediaKeySession.remove documentation> 
+remove :: (MonadIO m) => MediaKeySession -> m ()
+remove self = liftIO (js_remove self)
  
 foreign import javascript unsafe "$1[\"sessionId\"]"
         js_getSessionId :: MediaKeySession -> IO JSString
@@ -83,16 +92,35 @@ foreign import javascript unsafe "$1[\"sessionId\"]"
 getSessionId ::
              (MonadIO m, FromJSString result) => MediaKeySession -> m result
 getSessionId self
-  = liftIO (fromJSString <$> (js_getSessionId (self)))
+  = liftIO (fromJSString <$> (js_getSessionId self))
+ 
+foreign import javascript unsafe "$1[\"expiration\"]"
+        js_getExpiration :: MediaKeySession -> IO Double
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.onwebkitkeyadded Mozilla WebKitMediaKeySession.onwebkitkeyadded documentation> 
-webKitKeyAdded :: EventName MediaKeySession Event
-webKitKeyAdded = unsafeEventName (toJSString "webkitkeyadded")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.expiration Mozilla WebKitMediaKeySession.expiration documentation> 
+getExpiration :: (MonadIO m) => MediaKeySession -> m Double
+getExpiration self = liftIO (js_getExpiration self)
+ 
+foreign import javascript interruptible
+        "$1[\"closed\"].then($c);" js_getClosed :: MediaKeySession -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.onwebkitkeyerror Mozilla WebKitMediaKeySession.onwebkitkeyerror documentation> 
-webKitKeyError :: EventName MediaKeySession Event
-webKitKeyError = unsafeEventName (toJSString "webkitkeyerror")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.closed Mozilla WebKitMediaKeySession.closed documentation> 
+getClosed :: (MonadIO m) => MediaKeySession -> m ()
+getClosed self = liftIO (js_getClosed self)
+ 
+foreign import javascript unsafe "$1[\"keyStatuses\"]"
+        js_getKeyStatuses :: MediaKeySession -> IO MediaKeyStatusMap
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.onwebkitkeymessage Mozilla WebKitMediaKeySession.onwebkitkeymessage documentation> 
-webKitKeyMessage :: EventName MediaKeySession Event
-webKitKeyMessage = unsafeEventName (toJSString "webkitkeymessage")
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.keyStatuses Mozilla WebKitMediaKeySession.keyStatuses documentation> 
+getKeyStatuses ::
+               (MonadIO m) => MediaKeySession -> m MediaKeyStatusMap
+getKeyStatuses self = liftIO (js_getKeyStatuses self)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.onkeystatuseschange Mozilla WebKitMediaKeySession.onkeystatuseschange documentation> 
+keystatuseschange :: EventName MediaKeySession onkeystatuseschange
+keystatuseschange
+  = unsafeEventName (toJSString "keystatuseschange")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.onmessage Mozilla WebKitMediaKeySession.onmessage documentation> 
+message :: EventName MediaKeySession MessageEvent
+message = unsafeEventName (toJSString "message")

@@ -15,7 +15,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -24,6 +24,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -33,31 +34,34 @@ foreign import javascript unsafe
         "$1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
         js_initMutationEvent ::
         MutationEvent ->
-          JSString ->
+          Optional JSString ->
             Bool ->
               Bool ->
-                Nullable Node -> JSString -> JSString -> JSString -> Word -> IO ()
+                Optional Node ->
+                  Optional JSString ->
+                    Optional JSString -> Optional JSString -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.initMutationEvent Mozilla MutationEvent.initMutationEvent documentation> 
 initMutationEvent ::
                   (MonadIO m, ToJSString type', IsNode relatedNode,
                    ToJSString prevValue, ToJSString newValue, ToJSString attrName) =>
                     MutationEvent ->
-                      type' ->
+                      Maybe type' ->
                         Bool ->
                           Bool ->
                             Maybe relatedNode ->
-                              prevValue -> newValue -> attrName -> Word -> m ()
+                              Maybe prevValue ->
+                                Maybe newValue -> Maybe attrName -> Maybe Word -> m ()
 initMutationEvent self type' canBubble cancelable relatedNode
   prevValue newValue attrName attrChange
   = liftIO
-      (js_initMutationEvent (self) (toJSString type') canBubble
+      (js_initMutationEvent self (toOptionalJSString type') canBubble
          cancelable
-         (maybeToNullable (fmap toNode relatedNode))
-         (toJSString prevValue)
-         (toJSString newValue)
-         (toJSString attrName)
-         attrChange)
+         (maybeToOptional (fmap toNode relatedNode))
+         (toOptionalJSString prevValue)
+         (toOptionalJSString newValue)
+         (toOptionalJSString attrName)
+         (maybeToOptional attrChange))
 pattern MODIFICATION = 1
 pattern ADDITION = 2
 pattern REMOVAL = 3
@@ -68,21 +72,20 @@ foreign import javascript unsafe "$1[\"relatedNode\"]"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
 getRelatedNode :: (MonadIO m) => MutationEvent -> m (Maybe Node)
 getRelatedNode self
-  = liftIO (nullableToMaybe <$> (js_getRelatedNode (self)))
+  = liftIO (nullableToMaybe <$> (js_getRelatedNode self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
 getRelatedNodeUnsafe ::
                      (MonadIO m, HasCallStack) => MutationEvent -> m Node
 getRelatedNodeUnsafe self
   = liftIO
-      ((nullableToMaybe <$> (js_getRelatedNode (self))) >>=
+      ((nullableToMaybe <$> (js_getRelatedNode self)) >>=
          maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
 getRelatedNodeUnchecked :: (MonadIO m) => MutationEvent -> m Node
 getRelatedNodeUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getRelatedNode (self)))
+  = liftIO (fromJust . nullableToMaybe <$> (js_getRelatedNode self))
  
 foreign import javascript unsafe "$1[\"prevValue\"]"
         js_getPrevValue :: MutationEvent -> IO JSString
@@ -91,7 +94,7 @@ foreign import javascript unsafe "$1[\"prevValue\"]"
 getPrevValue ::
              (MonadIO m, FromJSString result) => MutationEvent -> m result
 getPrevValue self
-  = liftIO (fromJSString <$> (js_getPrevValue (self)))
+  = liftIO (fromJSString <$> (js_getPrevValue self))
  
 foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
         :: MutationEvent -> IO JSString
@@ -99,8 +102,7 @@ foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.newValue Mozilla MutationEvent.newValue documentation> 
 getNewValue ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
-getNewValue self
-  = liftIO (fromJSString <$> (js_getNewValue (self)))
+getNewValue self = liftIO (fromJSString <$> (js_getNewValue self))
  
 foreign import javascript unsafe "$1[\"attrName\"]" js_getAttrName
         :: MutationEvent -> IO JSString
@@ -108,12 +110,11 @@ foreign import javascript unsafe "$1[\"attrName\"]" js_getAttrName
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrName Mozilla MutationEvent.attrName documentation> 
 getAttrName ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
-getAttrName self
-  = liftIO (fromJSString <$> (js_getAttrName (self)))
+getAttrName self = liftIO (fromJSString <$> (js_getAttrName self))
  
 foreign import javascript unsafe "$1[\"attrChange\"]"
         js_getAttrChange :: MutationEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrChange Mozilla MutationEvent.attrChange documentation> 
 getAttrChange :: (MonadIO m) => MutationEvent -> m Word
-getAttrChange self = liftIO (js_getAttrChange (self))
+getAttrChange self = liftIO (js_getAttrChange self)

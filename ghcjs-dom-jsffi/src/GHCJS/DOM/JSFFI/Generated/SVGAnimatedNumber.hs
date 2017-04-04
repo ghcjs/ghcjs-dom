@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -31,18 +32,18 @@ foreign import javascript unsafe "$1[\"baseVal\"] = $2;"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.baseVal Mozilla SVGAnimatedNumber.baseVal documentation> 
 setBaseVal :: (MonadIO m) => SVGAnimatedNumber -> Float -> m ()
-setBaseVal self val = liftIO (js_setBaseVal (self) val)
+setBaseVal self val = liftIO (js_setBaseVal self val)
  
 foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
         SVGAnimatedNumber -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.baseVal Mozilla SVGAnimatedNumber.baseVal documentation> 
 getBaseVal :: (MonadIO m) => SVGAnimatedNumber -> m Float
-getBaseVal self = liftIO (js_getBaseVal (self))
+getBaseVal self = liftIO (js_getBaseVal self)
  
 foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
         SVGAnimatedNumber -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedNumber.animVal Mozilla SVGAnimatedNumber.animVal documentation> 
 getAnimVal :: (MonadIO m) => SVGAnimatedNumber -> m Float
-getAnimVal self = liftIO (js_getAnimVal (self))
+getAnimVal self = liftIO (js_getAnimVal self)

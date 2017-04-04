@@ -6,14 +6,13 @@
 module GHCJS.DOM.JSFFI.Generated.History
        (js_back, back, js_forward, forward, js_go, go, js_pushState,
         pushState, js_replaceState, replaceState, js_getLength, getLength,
-        js_getState, getState, getStateUnsafe, getStateUnchecked,
-        History(..), gTypeHistory)
+        js_getState, getState, History(..), gTypeHistory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,70 +32,60 @@ foreign import javascript unsafe "$1[\"back\"]()" js_back ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.back Mozilla History.back documentation> 
 back :: (MonadIO m) => History -> m ()
-back self = liftIO (js_back (self))
+back self = liftIO (js_back self)
  
 foreign import javascript unsafe "$1[\"forward\"]()" js_forward ::
         History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.forward Mozilla History.forward documentation> 
 forward :: (MonadIO m) => History -> m ()
-forward self = liftIO (js_forward (self))
+forward self = liftIO (js_forward self)
  
 foreign import javascript unsafe "$1[\"go\"]($2)" js_go ::
-        History -> Int -> IO ()
+        History -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.go Mozilla History.go documentation> 
-go :: (MonadIO m) => History -> Int -> m ()
-go self distance = liftIO (js_go (self) distance)
+go :: (MonadIO m) => History -> Maybe Int -> m ()
+go self distance = liftIO (js_go self (maybeToOptional distance))
  
 foreign import javascript unsafe "$1[\"pushState\"]($2, $3, $4)"
-        js_pushState :: History -> JSVal -> JSString -> JSString -> IO ()
+        js_pushState ::
+        History -> JSVal -> JSString -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.pushState Mozilla History.pushState documentation> 
 pushState ::
-          (MonadIO m, ToJSString title, ToJSString url) =>
-            History -> JSVal -> title -> url -> m ()
+          (MonadIO m, ToJSVal data', ToJSString title, ToJSString url) =>
+            History -> data' -> title -> Maybe url -> m ()
 pushState self data' title url
   = liftIO
-      (js_pushState (self) data' (toJSString title) (toJSString url))
+      (toJSVal data' >>= \ data'' -> js_pushState self data''
+         (toJSString title)
+         (toOptionalJSString url))
  
 foreign import javascript unsafe "$1[\"replaceState\"]($2, $3, $4)"
         js_replaceState ::
-        History -> JSVal -> JSString -> JSString -> IO ()
+        History -> JSVal -> JSString -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.replaceState Mozilla History.replaceState documentation> 
 replaceState ::
-             (MonadIO m, ToJSString title, ToJSString url) =>
-               History -> JSVal -> title -> url -> m ()
+             (MonadIO m, ToJSVal data', ToJSString title, ToJSString url) =>
+               History -> data' -> title -> Maybe url -> m ()
 replaceState self data' title url
   = liftIO
-      (js_replaceState (self) data' (toJSString title) (toJSString url))
+      (toJSVal data' >>= \ data'' -> js_replaceState self data''
+         (toJSString title)
+         (toOptionalJSString url))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         History -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.length Mozilla History.length documentation> 
 getLength :: (MonadIO m) => History -> m Word
-getLength self = liftIO (js_getLength (self))
+getLength self = liftIO (js_getLength self)
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
-        History -> IO (Nullable SerializedScriptValue)
+        History -> IO SerializedScriptValue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 
-getState ::
-         (MonadIO m) => History -> m (Maybe SerializedScriptValue)
-getState self = liftIO (nullableToMaybe <$> (js_getState (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 
-getStateUnsafe ::
-               (MonadIO m, HasCallStack) => History -> m SerializedScriptValue
-getStateUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getState (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 
-getStateUnchecked ::
-                  (MonadIO m) => History -> m SerializedScriptValue
-getStateUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getState (self)))
+getState :: (MonadIO m) => History -> m SerializedScriptValue
+getState self = liftIO (js_getState self)

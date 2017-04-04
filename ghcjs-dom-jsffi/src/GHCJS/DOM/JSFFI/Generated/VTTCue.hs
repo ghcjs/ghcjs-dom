@@ -5,9 +5,8 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.VTTCue
        (js_newVTTCue, newVTTCue, js_getCueAsHTML, getCueAsHTML,
-        getCueAsHTML_, getCueAsHTMLUnsafe, getCueAsHTMLUnchecked,
-        js_setVertical, setVertical, js_getVertical, getVertical,
-        js_setSnapToLines, setSnapToLines, js_getSnapToLines,
+        getCueAsHTML_, js_setVertical, setVertical, js_getVertical,
+        getVertical, js_setSnapToLines, setSnapToLines, js_getSnapToLines,
         getSnapToLines, js_setLine, setLine, js_getLine, getLine,
         js_setPosition, setPosition, js_getPosition, getPosition,
         js_setSize, setSize, js_getSize, getSize, js_setAlign, setAlign,
@@ -19,7 +18,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -28,6 +27,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -45,30 +45,15 @@ newVTTCue startTime endTime text
   = liftIO (js_newVTTCue startTime endTime (toJSString text))
  
 foreign import javascript unsafe "$1[\"getCueAsHTML\"]()"
-        js_getCueAsHTML :: VTTCue -> IO (Nullable DocumentFragment)
+        js_getCueAsHTML :: VTTCue -> IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
-getCueAsHTML :: (MonadIO m) => VTTCue -> m (Maybe DocumentFragment)
-getCueAsHTML self
-  = liftIO (nullableToMaybe <$> (js_getCueAsHTML (self)))
+getCueAsHTML :: (MonadIO m) => VTTCue -> m DocumentFragment
+getCueAsHTML self = liftIO (js_getCueAsHTML self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
 getCueAsHTML_ :: (MonadIO m) => VTTCue -> m ()
-getCueAsHTML_ self = liftIO (void (js_getCueAsHTML (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
-getCueAsHTMLUnsafe ::
-                   (MonadIO m, HasCallStack) => VTTCue -> m DocumentFragment
-getCueAsHTMLUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getCueAsHTML (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
-getCueAsHTMLUnchecked ::
-                      (MonadIO m) => VTTCue -> m DocumentFragment
-getCueAsHTMLUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getCueAsHTML (self)))
+getCueAsHTML_ self = liftIO (void (js_getCueAsHTML self))
  
 foreign import javascript unsafe "$1[\"vertical\"] = $2;"
         js_setVertical :: VTTCue -> JSString -> IO ()
@@ -76,7 +61,7 @@ foreign import javascript unsafe "$1[\"vertical\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
 setVertical :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setVertical self val
-  = liftIO (js_setVertical (self) (toJSString val))
+  = liftIO (js_setVertical self (toJSString val))
  
 foreign import javascript unsafe "$1[\"vertical\"]" js_getVertical
         :: VTTCue -> IO JSString
@@ -84,92 +69,91 @@ foreign import javascript unsafe "$1[\"vertical\"]" js_getVertical
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
 getVertical ::
             (MonadIO m, FromJSString result) => VTTCue -> m result
-getVertical self
-  = liftIO (fromJSString <$> (js_getVertical (self)))
+getVertical self = liftIO (fromJSString <$> (js_getVertical self))
  
 foreign import javascript unsafe "$1[\"snapToLines\"] = $2;"
         js_setSnapToLines :: VTTCue -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
 setSnapToLines :: (MonadIO m) => VTTCue -> Bool -> m ()
-setSnapToLines self val = liftIO (js_setSnapToLines (self) val)
+setSnapToLines self val = liftIO (js_setSnapToLines self val)
  
 foreign import javascript unsafe "($1[\"snapToLines\"] ? 1 : 0)"
         js_getSnapToLines :: VTTCue -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
 getSnapToLines :: (MonadIO m) => VTTCue -> m Bool
-getSnapToLines self = liftIO (js_getSnapToLines (self))
+getSnapToLines self = liftIO (js_getSnapToLines self)
  
 foreign import javascript unsafe "$1[\"line\"] = $2;" js_setLine ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
 setLine :: (MonadIO m) => VTTCue -> Double -> m ()
-setLine self val = liftIO (js_setLine (self) val)
+setLine self val = liftIO (js_setLine self val)
  
 foreign import javascript unsafe "$1[\"line\"]" js_getLine ::
         VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
 getLine :: (MonadIO m) => VTTCue -> m Double
-getLine self = liftIO (js_getLine (self))
+getLine self = liftIO (js_getLine self)
  
 foreign import javascript unsafe "$1[\"position\"] = $2;"
         js_setPosition :: VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
 setPosition :: (MonadIO m) => VTTCue -> Double -> m ()
-setPosition self val = liftIO (js_setPosition (self) val)
+setPosition self val = liftIO (js_setPosition self val)
  
 foreign import javascript unsafe "$1[\"position\"]" js_getPosition
         :: VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
 getPosition :: (MonadIO m) => VTTCue -> m Double
-getPosition self = liftIO (js_getPosition (self))
+getPosition self = liftIO (js_getPosition self)
  
 foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
 setSize :: (MonadIO m) => VTTCue -> Double -> m ()
-setSize self val = liftIO (js_setSize (self) val)
+setSize self val = liftIO (js_setSize self val)
  
 foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
         VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
 getSize :: (MonadIO m) => VTTCue -> m Double
-getSize self = liftIO (js_getSize (self))
+getSize self = liftIO (js_getSize self)
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
 setAlign :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
-setAlign self val = liftIO (js_setAlign (self) (toJSString val))
+setAlign self val = liftIO (js_setAlign self (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
 getAlign :: (MonadIO m, FromJSString result) => VTTCue -> m result
-getAlign self = liftIO (fromJSString <$> (js_getAlign (self)))
+getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
 foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
         VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
 setText :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
-setText self val = liftIO (js_setText (self) (toJSString val))
+setText self val = liftIO (js_setText self (toJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]" js_getText ::
         VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
 getText :: (MonadIO m, FromJSString result) => VTTCue -> m result
-getText self = liftIO (fromJSString <$> (js_getText (self)))
+getText self = liftIO (fromJSString <$> (js_getText self))
  
 foreign import javascript unsafe "$1[\"regionId\"] = $2;"
         js_setRegionId :: VTTCue -> JSString -> IO ()
@@ -177,7 +161,7 @@ foreign import javascript unsafe "$1[\"regionId\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 
 setRegionId :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setRegionId self val
-  = liftIO (js_setRegionId (self) (toJSString val))
+  = liftIO (js_setRegionId self (toJSString val))
  
 foreign import javascript unsafe "$1[\"regionId\"]" js_getRegionId
         :: VTTCue -> IO JSString
@@ -185,5 +169,4 @@ foreign import javascript unsafe "$1[\"regionId\"]" js_getRegionId
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 
 getRegionId ::
             (MonadIO m, FromJSString result) => VTTCue -> m result
-getRegionId self
-  = liftIO (fromJSString <$> (js_getRegionId (self)))
+getRegionId self = liftIO (fromJSString <$> (js_getRegionId self))

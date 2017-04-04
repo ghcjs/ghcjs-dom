@@ -5,22 +5,22 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaSource
        (js_newMediaSource, newMediaSource, js_addSourceBuffer,
-        addSourceBuffer, addSourceBuffer_, addSourceBufferUnsafe,
-        addSourceBufferUnchecked, js_removeSourceBuffer,
+        addSourceBuffer, addSourceBuffer_, js_removeSourceBuffer,
         removeSourceBuffer, js_endOfStream, endOfStream,
         js_isTypeSupported, isTypeSupported, isTypeSupported_,
-        js_getSourceBuffers, getSourceBuffers, getSourceBuffersUnsafe,
-        getSourceBuffersUnchecked, js_getActiveSourceBuffers,
-        getActiveSourceBuffers, getActiveSourceBuffersUnsafe,
-        getActiveSourceBuffersUnchecked, js_setDuration, setDuration,
+        js_setLiveSeekableRange, setLiveSeekableRange,
+        js_clearLiveSeekableRange, clearLiveSeekableRange,
+        js_getSourceBuffers, getSourceBuffers, js_getActiveSourceBuffers,
+        getActiveSourceBuffers, js_setDuration, setDuration,
         js_getDuration, getDuration, js_getReadyState, getReadyState,
-        MediaSource(..), gTypeMediaSource)
+        sourceopen, sourceended, sourceclose, MediaSource(..),
+        gTypeMediaSource)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -29,6 +29,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -42,61 +43,38 @@ newMediaSource :: (MonadIO m) => m MediaSource
 newMediaSource = liftIO (js_newMediaSource)
  
 foreign import javascript unsafe "$1[\"addSourceBuffer\"]($2)"
-        js_addSourceBuffer ::
-        MediaSource -> JSString -> IO (Nullable SourceBuffer)
+        js_addSourceBuffer :: MediaSource -> JSString -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
 addSourceBuffer ::
                 (MonadIO m, ToJSString type') =>
-                  MediaSource -> type' -> m (Maybe SourceBuffer)
+                  MediaSource -> type' -> m SourceBuffer
 addSourceBuffer self type'
-  = liftIO
-      (nullableToMaybe <$>
-         (js_addSourceBuffer (self) (toJSString type')))
+  = liftIO (js_addSourceBuffer self (toJSString type'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
 addSourceBuffer_ ::
                  (MonadIO m, ToJSString type') => MediaSource -> type' -> m ()
 addSourceBuffer_ self type'
-  = liftIO (void (js_addSourceBuffer (self) (toJSString type')))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
-addSourceBufferUnsafe ::
-                      (MonadIO m, ToJSString type', HasCallStack) =>
-                        MediaSource -> type' -> m SourceBuffer
-addSourceBufferUnsafe self type'
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_addSourceBuffer (self) (toJSString type')))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
-addSourceBufferUnchecked ::
-                         (MonadIO m, ToJSString type') =>
-                           MediaSource -> type' -> m SourceBuffer
-addSourceBufferUnchecked self type'
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_addSourceBuffer (self) (toJSString type')))
+  = liftIO (void (js_addSourceBuffer self (toJSString type')))
  
 foreign import javascript unsafe "$1[\"removeSourceBuffer\"]($2)"
-        js_removeSourceBuffer ::
-        MediaSource -> Nullable SourceBuffer -> IO ()
+        js_removeSourceBuffer :: MediaSource -> SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.removeSourceBuffer Mozilla MediaSource.removeSourceBuffer documentation> 
 removeSourceBuffer ::
-                   (MonadIO m) => MediaSource -> Maybe SourceBuffer -> m ()
+                   (MonadIO m) => MediaSource -> SourceBuffer -> m ()
 removeSourceBuffer self buffer
-  = liftIO (js_removeSourceBuffer (self) (maybeToNullable buffer))
+  = liftIO (js_removeSourceBuffer self buffer)
  
 foreign import javascript unsafe "$1[\"endOfStream\"]($2)"
-        js_endOfStream :: MediaSource -> JSVal -> IO ()
+        js_endOfStream :: MediaSource -> Optional EndOfStreamError -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.endOfStream Mozilla MediaSource.endOfStream documentation> 
 endOfStream ::
-            (MonadIO m) => MediaSource -> EndOfStreamError -> m ()
+            (MonadIO m) => MediaSource -> Maybe EndOfStreamError -> m ()
 endOfStream self error
-  = liftIO (js_endOfStream (self) (pToJSVal error))
+  = liftIO (js_endOfStream self (maybeToOptional error))
  
 foreign import javascript unsafe
         "($1[\"isTypeSupported\"]($2) ? 1 : 0)" js_isTypeSupported ::
@@ -106,77 +84,62 @@ foreign import javascript unsafe
 isTypeSupported ::
                 (MonadIO m, ToJSString type') => MediaSource -> type' -> m Bool
 isTypeSupported self type'
-  = liftIO (js_isTypeSupported (self) (toJSString type'))
+  = liftIO (js_isTypeSupported self (toJSString type'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.isTypeSupported Mozilla MediaSource.isTypeSupported documentation> 
 isTypeSupported_ ::
                  (MonadIO m, ToJSString type') => MediaSource -> type' -> m ()
 isTypeSupported_ self type'
-  = liftIO (void (js_isTypeSupported (self) (toJSString type')))
+  = liftIO (void (js_isTypeSupported self (toJSString type')))
+ 
+foreign import javascript unsafe
+        "$1[\"setLiveSeekableRange\"]($2,\n$3)" js_setLiveSeekableRange ::
+        MediaSource -> Double -> Double -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.setLiveSeekableRange Mozilla MediaSource.setLiveSeekableRange documentation> 
+setLiveSeekableRange ::
+                     (MonadIO m) => MediaSource -> Double -> Double -> m ()
+setLiveSeekableRange self start end
+  = liftIO (js_setLiveSeekableRange self start end)
+ 
+foreign import javascript unsafe "$1[\"clearLiveSeekableRange\"]()"
+        js_clearLiveSeekableRange :: MediaSource -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.clearLiveSeekableRange Mozilla MediaSource.clearLiveSeekableRange documentation> 
+clearLiveSeekableRange :: (MonadIO m) => MediaSource -> m ()
+clearLiveSeekableRange self
+  = liftIO (js_clearLiveSeekableRange self)
  
 foreign import javascript unsafe "$1[\"sourceBuffers\"]"
-        js_getSourceBuffers ::
-        MediaSource -> IO (Nullable SourceBufferList)
+        js_getSourceBuffers :: MediaSource -> IO SourceBufferList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
 getSourceBuffers ::
-                 (MonadIO m) => MediaSource -> m (Maybe SourceBufferList)
-getSourceBuffers self
-  = liftIO (nullableToMaybe <$> (js_getSourceBuffers (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
-getSourceBuffersUnsafe ::
-                       (MonadIO m, HasCallStack) => MediaSource -> m SourceBufferList
-getSourceBuffersUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getSourceBuffers (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
-getSourceBuffersUnchecked ::
-                          (MonadIO m) => MediaSource -> m SourceBufferList
-getSourceBuffersUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getSourceBuffers (self)))
+                 (MonadIO m) => MediaSource -> m SourceBufferList
+getSourceBuffers self = liftIO (js_getSourceBuffers self)
  
 foreign import javascript unsafe "$1[\"activeSourceBuffers\"]"
-        js_getActiveSourceBuffers ::
-        MediaSource -> IO (Nullable SourceBufferList)
+        js_getActiveSourceBuffers :: MediaSource -> IO SourceBufferList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
 getActiveSourceBuffers ::
-                       (MonadIO m) => MediaSource -> m (Maybe SourceBufferList)
+                       (MonadIO m) => MediaSource -> m SourceBufferList
 getActiveSourceBuffers self
-  = liftIO (nullableToMaybe <$> (js_getActiveSourceBuffers (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
-getActiveSourceBuffersUnsafe ::
-                             (MonadIO m, HasCallStack) => MediaSource -> m SourceBufferList
-getActiveSourceBuffersUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getActiveSourceBuffers (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
-getActiveSourceBuffersUnchecked ::
-                                (MonadIO m) => MediaSource -> m SourceBufferList
-getActiveSourceBuffersUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getActiveSourceBuffers (self)))
+  = liftIO (js_getActiveSourceBuffers self)
  
 foreign import javascript unsafe "$1[\"duration\"] = $2;"
         js_setDuration :: MediaSource -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 
 setDuration :: (MonadIO m) => MediaSource -> Double -> m ()
-setDuration self val = liftIO (js_setDuration (self) val)
+setDuration self val = liftIO (js_setDuration self val)
  
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
         :: MediaSource -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 
 getDuration :: (MonadIO m) => MediaSource -> m Double
-getDuration self = liftIO (js_getDuration (self))
+getDuration self = liftIO (js_getDuration self)
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: MediaSource -> IO JSString
@@ -185,4 +148,16 @@ foreign import javascript unsafe "$1[\"readyState\"]"
 getReadyState ::
               (MonadIO m, FromJSString result) => MediaSource -> m result
 getReadyState self
-  = liftIO (fromJSString <$> (js_getReadyState (self)))
+  = liftIO (fromJSString <$> (js_getReadyState self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.onsourceopen Mozilla MediaSource.onsourceopen documentation> 
+sourceopen :: EventName MediaSource onsourceopen
+sourceopen = unsafeEventName (toJSString "sourceopen")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.onsourceended Mozilla MediaSource.onsourceended documentation> 
+sourceended :: EventName MediaSource onsourceended
+sourceended = unsafeEventName (toJSString "sourceended")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.onsourceclose Mozilla MediaSource.onsourceclose documentation> 
+sourceclose :: EventName MediaSource onsourceclose
+sourceclose = unsafeEventName (toJSString "sourceclose")

@@ -4,8 +4,7 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLEmbedElement
-       (js_getSVGDocument, getSVGDocument, getSVGDocument_,
-        getSVGDocumentUnsafe, getSVGDocumentUnchecked, js_setAlign,
+       (js_getSVGDocument, getSVGDocument, getSVGDocument_, js_setAlign,
         setAlign, js_getAlign, getAlign, js_setHeight, setHeight,
         js_getHeight, getHeight, js_setName, setName, js_getName, getName,
         js_setSrc, setSrc, js_getSrc, getSrc, js_setType, setType,
@@ -16,7 +15,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -25,38 +24,22 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
-        js_getSVGDocument :: HTMLEmbedElement -> IO (Nullable SVGDocument)
+        js_getSVGDocument :: HTMLEmbedElement -> IO Document
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
-getSVGDocument ::
-               (MonadIO m) => HTMLEmbedElement -> m (Maybe SVGDocument)
-getSVGDocument self
-  = liftIO (nullableToMaybe <$> (js_getSVGDocument (self)))
+getSVGDocument :: (MonadIO m) => HTMLEmbedElement -> m Document
+getSVGDocument self = liftIO (js_getSVGDocument self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
 getSVGDocument_ :: (MonadIO m) => HTMLEmbedElement -> m ()
-getSVGDocument_ self = liftIO (void (js_getSVGDocument (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
-getSVGDocumentUnsafe ::
-                     (MonadIO m, HasCallStack) => HTMLEmbedElement -> m SVGDocument
-getSVGDocumentUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getSVGDocument (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 
-getSVGDocumentUnchecked ::
-                        (MonadIO m) => HTMLEmbedElement -> m SVGDocument
-getSVGDocumentUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getSVGDocument (self)))
+getSVGDocument_ self = liftIO (void (js_getSVGDocument self))
  
 foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
         :: HTMLEmbedElement -> JSString -> IO ()
@@ -64,7 +47,7 @@ foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.align Mozilla HTMLEmbedElement.align documentation> 
 setAlign ::
          (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setAlign self val = liftIO (js_setAlign (self) (toJSString val))
+setAlign self val = liftIO (js_setAlign self (toJSString val))
  
 foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
         HTMLEmbedElement -> IO JSString
@@ -72,7 +55,7 @@ foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.align Mozilla HTMLEmbedElement.align documentation> 
 getAlign ::
          (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getAlign self = liftIO (fromJSString <$> (js_getAlign (self)))
+getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
 foreign import javascript unsafe "$1[\"height\"] = $2;"
         js_setHeight :: HTMLEmbedElement -> JSString -> IO ()
@@ -80,7 +63,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
 setHeight ::
           (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setHeight self val = liftIO (js_setHeight (self) (toJSString val))
+setHeight self val = liftIO (js_setHeight self (toJSString val))
  
 foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
         HTMLEmbedElement -> IO JSString
@@ -88,7 +71,7 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.height Mozilla HTMLEmbedElement.height documentation> 
 getHeight ::
           (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getHeight self = liftIO (fromJSString <$> (js_getHeight (self)))
+getHeight self = liftIO (fromJSString <$> (js_getHeight self))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         HTMLEmbedElement -> JSString -> IO ()
@@ -96,7 +79,7 @@ foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.name Mozilla HTMLEmbedElement.name documentation> 
 setName ::
         (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setName self val = liftIO (js_setName (self) (toJSString val))
+setName self val = liftIO (js_setName self (toJSString val))
  
 foreign import javascript unsafe "$1[\"name\"]" js_getName ::
         HTMLEmbedElement -> IO JSString
@@ -104,7 +87,7 @@ foreign import javascript unsafe "$1[\"name\"]" js_getName ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.name Mozilla HTMLEmbedElement.name documentation> 
 getName ::
         (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getName self = liftIO (fromJSString <$> (js_getName (self)))
+getName self = liftIO (fromJSString <$> (js_getName self))
  
 foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
         HTMLEmbedElement -> JSString -> IO ()
@@ -112,7 +95,7 @@ foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.src Mozilla HTMLEmbedElement.src documentation> 
 setSrc ::
        (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setSrc self val = liftIO (js_setSrc (self) (toJSString val))
+setSrc self val = liftIO (js_setSrc self (toJSString val))
  
 foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
         HTMLEmbedElement -> IO JSString
@@ -120,7 +103,7 @@ foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.src Mozilla HTMLEmbedElement.src documentation> 
 getSrc ::
        (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getSrc self = liftIO (fromJSString <$> (js_getSrc (self)))
+getSrc self = liftIO (fromJSString <$> (js_getSrc self))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
         HTMLEmbedElement -> JSString -> IO ()
@@ -128,7 +111,7 @@ foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.type Mozilla HTMLEmbedElement.type documentation> 
 setType ::
         (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setType self val = liftIO (js_setType (self) (toJSString val))
+setType self val = liftIO (js_setType self (toJSString val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
         HTMLEmbedElement -> IO JSString
@@ -136,7 +119,7 @@ foreign import javascript unsafe "$1[\"type\"]" js_getType ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.type Mozilla HTMLEmbedElement.type documentation> 
 getType ::
         (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getType self = liftIO (fromJSString <$> (js_getType (self)))
+getType self = liftIO (fromJSString <$> (js_getType self))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: HTMLEmbedElement -> JSString -> IO ()
@@ -144,7 +127,7 @@ foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
 setWidth ::
          (MonadIO m, ToJSString val) => HTMLEmbedElement -> val -> m ()
-setWidth self val = liftIO (js_setWidth (self) (toJSString val))
+setWidth self val = liftIO (js_setWidth self (toJSString val))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         HTMLEmbedElement -> IO JSString
@@ -152,4 +135,4 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.width Mozilla HTMLEmbedElement.width documentation> 
 getWidth ::
          (MonadIO m, FromJSString result) => HTMLEmbedElement -> m result
-getWidth self = liftIO (fromJSString <$> (js_getWidth (self)))
+getWidth self = liftIO (fromJSString <$> (js_getWidth self))

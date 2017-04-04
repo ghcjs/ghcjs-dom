@@ -4,20 +4,20 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.NodeFilter
-       (js_acceptNode, acceptNode, acceptNode_, pattern FILTER_ACCEPT,
-        pattern FILTER_REJECT, pattern FILTER_SKIP, pattern SHOW_ALL,
-        pattern SHOW_ELEMENT, pattern SHOW_ATTRIBUTE, pattern SHOW_TEXT,
-        pattern SHOW_CDATA_SECTION, pattern SHOW_ENTITY_REFERENCE,
-        pattern SHOW_ENTITY, pattern SHOW_PROCESSING_INSTRUCTION,
-        pattern SHOW_COMMENT, pattern SHOW_DOCUMENT,
-        pattern SHOW_DOCUMENT_TYPE, pattern SHOW_DOCUMENT_FRAGMENT,
-        pattern SHOW_NOTATION, NodeFilter(..), gTypeNodeFilter)
+       (newNodeFilter, newNodeFilterSync, newNodeFilterAsync,
+        pattern FILTER_ACCEPT, pattern FILTER_REJECT, pattern FILTER_SKIP,
+        pattern SHOW_ALL, pattern SHOW_ELEMENT, pattern SHOW_ATTRIBUTE,
+        pattern SHOW_TEXT, pattern SHOW_CDATA_SECTION,
+        pattern SHOW_ENTITY_REFERENCE, pattern SHOW_ENTITY,
+        pattern SHOW_PROCESSING_INSTRUCTION, pattern SHOW_COMMENT,
+        pattern SHOW_DOCUMENT, pattern SHOW_DOCUMENT_TYPE,
+        pattern SHOW_DOCUMENT_FRAGMENT, pattern SHOW_NOTATION, NodeFilter)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -26,26 +26,36 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
- 
-foreign import javascript unsafe "$1[\"acceptNode\"]($2)"
-        js_acceptNode :: NodeFilter -> Nullable Node -> IO Int
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter.acceptNode Mozilla NodeFilter.acceptNode documentation> 
-acceptNode ::
-           (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m Int
-acceptNode self n
-  = liftIO (js_acceptNode (self) (maybeToNullable (fmap toNode n)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter.acceptNode Mozilla NodeFilter.acceptNode documentation> 
-acceptNode_ ::
-            (MonadIO m, IsNode n) => NodeFilter -> Maybe n -> m ()
-acceptNode_ self n
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation> 
+newNodeFilter :: (MonadIO m) => (Node -> IO ()) -> m NodeFilter
+newNodeFilter callback
   = liftIO
-      (void (js_acceptNode (self) (maybeToNullable (fmap toNode n))))
+      (NodeFilter <$>
+         syncCallback1 ThrowWouldBlock
+           (\ node -> fromJSValUnchecked node >>= \ node' -> callback node'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation> 
+newNodeFilterSync :: (MonadIO m) => (Node -> IO ()) -> m NodeFilter
+newNodeFilterSync callback
+  = liftIO
+      (NodeFilter <$>
+         syncCallback1 ContinueAsync
+           (\ node -> fromJSValUnchecked node >>= \ node' -> callback node'))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeFilter Mozilla NodeFilter documentation> 
+newNodeFilterAsync ::
+                   (MonadIO m) => (Node -> IO ()) -> m NodeFilter
+newNodeFilterAsync callback
+  = liftIO
+      (NodeFilter <$>
+         asyncCallback1
+           (\ node -> fromJSValUnchecked node >>= \ node' -> callback node'))
 pattern FILTER_ACCEPT = 1
 pattern FILTER_REJECT = 2
 pattern FILTER_SKIP = 3

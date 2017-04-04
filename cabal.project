@@ -1,7 +1,0 @@
-flags: -overloaded-methods -overloaded-signals -overloaded-properties
-
-packages:
- ghcjs-dom/
- ghcjs-dom-jsffi/
- ghcjs-dom-jsaddle/
- ghcjs-dom-webkit/

@@ -30,7 +30,7 @@ import GHCJS.DOM.JSFFI.Generated.SQLTransactionCallback (newSQLTransactionCallba
 import GHCJS.DOM.JSFFI.Generated.Database as Generated hiding (js_changeVersion, changeVersion, js_transaction, transaction, js_readTransaction, readTransaction)
 
 withSQLTransactionCallback :: (SQLTransaction -> IO ()) -> (SQLTransactionCallback -> IO a) -> IO a
-withSQLTransactionCallback f = bracket (newSQLTransactionCallbackSync (f . fromJust)) (\(SQLTransactionCallback c) -> releaseCallback c)
+withSQLTransactionCallback f = bracket (newSQLTransactionCallbackSync f) (\(SQLTransactionCallback c) -> releaseCallback c)
 
 foreign import javascript interruptible
         "$1[\"changeVersion\"]($2, $3, $4, $c, function() { $c(null); });"

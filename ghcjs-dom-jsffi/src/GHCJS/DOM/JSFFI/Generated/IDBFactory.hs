@@ -4,16 +4,15 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.IDBFactory
-       (js_open, open, open_, openUnsafe, openUnchecked,
-        js_deleteDatabase, deleteDatabase, deleteDatabase_,
-        deleteDatabaseUnsafe, deleteDatabaseUnchecked, js_cmp, cmp, cmp_,
-        IDBFactory(..), gTypeIDBFactory)
+       (js_open, open, open_, js_deleteDatabase, deleteDatabase,
+        deleteDatabase_, js_cmp, cmp, cmp_, IDBFactory(..),
+        gTypeIDBFactory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -22,93 +21,70 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"open\"]($2, $3)" js_open ::
-        IDBFactory -> JSString -> Double -> IO (Nullable IDBOpenDBRequest)
+        IDBFactory -> JSString -> Optional Double -> IO IDBOpenDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
 open ::
      (MonadIO m, ToJSString name) =>
-       IDBFactory -> name -> Word64 -> m (Maybe IDBOpenDBRequest)
+       IDBFactory -> name -> Maybe Word64 -> m IDBOpenDBRequest
 open self name version
   = liftIO
-      (nullableToMaybe <$>
-         (js_open (self) (toJSString name) (fromIntegral version)))
+      (js_open self (toJSString name)
+         (maybeToOptional (fmap fromIntegral version)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
 open_ ::
       (MonadIO m, ToJSString name) =>
-        IDBFactory -> name -> Word64 -> m ()
+        IDBFactory -> name -> Maybe Word64 -> m ()
 open_ self name version
   = liftIO
-      (void (js_open (self) (toJSString name) (fromIntegral version)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
-openUnsafe ::
-           (MonadIO m, ToJSString name, HasCallStack) =>
-             IDBFactory -> name -> Word64 -> m IDBOpenDBRequest
-openUnsafe self name version
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_open (self) (toJSString name) (fromIntegral version)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.open Mozilla IDBFactory.open documentation> 
-openUnchecked ::
-              (MonadIO m, ToJSString name) =>
-                IDBFactory -> name -> Word64 -> m IDBOpenDBRequest
-openUnchecked self name version
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_open (self) (toJSString name) (fromIntegral version)))
+      (void
+         (js_open self (toJSString name)
+            (maybeToOptional (fmap fromIntegral version))))
  
 foreign import javascript unsafe "$1[\"deleteDatabase\"]($2)"
-        js_deleteDatabase ::
-        IDBFactory -> JSString -> IO (Nullable IDBOpenDBRequest)
+        js_deleteDatabase :: IDBFactory -> JSString -> IO IDBOpenDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
 deleteDatabase ::
                (MonadIO m, ToJSString name) =>
-                 IDBFactory -> name -> m (Maybe IDBOpenDBRequest)
+                 IDBFactory -> name -> m IDBOpenDBRequest
 deleteDatabase self name
-  = liftIO
-      (nullableToMaybe <$> (js_deleteDatabase (self) (toJSString name)))
+  = liftIO (js_deleteDatabase self (toJSString name))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
 deleteDatabase_ ::
                 (MonadIO m, ToJSString name) => IDBFactory -> name -> m ()
 deleteDatabase_ self name
-  = liftIO (void (js_deleteDatabase (self) (toJSString name)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
-deleteDatabaseUnsafe ::
-                     (MonadIO m, ToJSString name, HasCallStack) =>
-                       IDBFactory -> name -> m IDBOpenDBRequest
-deleteDatabaseUnsafe self name
-  = liftIO
-      ((nullableToMaybe <$> (js_deleteDatabase (self) (toJSString name)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 
-deleteDatabaseUnchecked ::
-                        (MonadIO m, ToJSString name) =>
-                          IDBFactory -> name -> m IDBOpenDBRequest
-deleteDatabaseUnchecked self name
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_deleteDatabase (self) (toJSString name)))
+  = liftIO (void (js_deleteDatabase self (toJSString name)))
  
 foreign import javascript unsafe "$1[\"cmp\"]($2, $3)" js_cmp ::
         IDBFactory -> JSVal -> JSVal -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.cmp Mozilla IDBFactory.cmp documentation> 
-cmp :: (MonadIO m) => IDBFactory -> JSVal -> JSVal -> m Int
-cmp self first second = liftIO (js_cmp (self) first second)
+cmp ::
+    (MonadIO m, ToJSVal first, ToJSVal second) =>
+      IDBFactory -> first -> second -> m Int
+cmp self first second
+  = liftIO
+      (toJSVal second >>=
+         \ second' ->
+           toJSVal first >>= \ first' -> js_cmp self first' second')
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.cmp Mozilla IDBFactory.cmp documentation> 
-cmp_ :: (MonadIO m) => IDBFactory -> JSVal -> JSVal -> m ()
-cmp_ self first second = liftIO (void (js_cmp (self) first second))
+cmp_ ::
+     (MonadIO m, ToJSVal first, ToJSVal second) =>
+       IDBFactory -> first -> second -> m ()
+cmp_ self first second
+  = liftIO
+      (void
+         (toJSVal second >>=
+            \ second' ->
+              toJSVal first >>= \ first' -> js_cmp self first' second'))

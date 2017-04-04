@@ -5,21 +5,17 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGPathSegList
        (js_clear, clear, js_initialize, initialize, initialize_,
-        initializeUnsafe, initializeUnchecked, js_getItem, getItem,
-        getItem_, getItemUnsafe, getItemUnchecked, js_insertItemBefore,
-        insertItemBefore, insertItemBefore_, insertItemBeforeUnsafe,
-        insertItemBeforeUnchecked, js_replaceItem, replaceItem,
-        replaceItem_, replaceItemUnsafe, replaceItemUnchecked,
-        js_removeItem, removeItem, removeItem_, removeItemUnsafe,
-        removeItemUnchecked, js_appendItem, appendItem, appendItem_,
-        appendItemUnsafe, appendItemUnchecked, js_getNumberOfItems,
+        js_getItem, getItem, getItem_, js_insertItemBefore,
+        insertItemBefore, insertItemBefore_, js_replaceItem, replaceItem,
+        replaceItem_, js_removeItem, removeItem, removeItem_,
+        js_appendItem, appendItem, appendItem_, js_getNumberOfItems,
         getNumberOfItems, SVGPathSegList(..), gTypeSVGPathSegList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -28,6 +24,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -38,21 +35,19 @@ foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.clear Mozilla SVGPathSegList.clear documentation> 
 clear :: (MonadIO m) => SVGPathSegList -> m ()
-clear self = liftIO (js_clear (self))
+clear self = liftIO (js_clear self)
  
 foreign import javascript unsafe "$1[\"initialize\"]($2)"
         js_initialize ::
-        SVGPathSegList -> Nullable SVGPathSeg -> IO (Nullable SVGPathSeg)
+        SVGPathSegList -> Optional SVGPathSeg -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.initialize Mozilla SVGPathSegList.initialize documentation> 
 initialize ::
            (MonadIO m, IsSVGPathSeg newItem) =>
-             SVGPathSegList -> Maybe newItem -> m (Maybe SVGPathSeg)
+             SVGPathSegList -> Maybe newItem -> m SVGPathSeg
 initialize self newItem
   = liftIO
-      (nullableToMaybe <$>
-         (js_initialize (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
+      (js_initialize self (maybeToOptional (fmap toSVGPathSeg newItem)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.initialize Mozilla SVGPathSegList.initialize documentation> 
 initialize_ ::
@@ -61,72 +56,32 @@ initialize_ ::
 initialize_ self newItem
   = liftIO
       (void
-         (js_initialize (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.initialize Mozilla SVGPathSegList.initialize documentation> 
-initializeUnsafe ::
-                 (MonadIO m, IsSVGPathSeg newItem, HasCallStack) =>
-                   SVGPathSegList -> Maybe newItem -> m SVGPathSeg
-initializeUnsafe self newItem
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_initialize (self)
-             (maybeToNullable (fmap toSVGPathSeg newItem))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.initialize Mozilla SVGPathSegList.initialize documentation> 
-initializeUnchecked ::
-                    (MonadIO m, IsSVGPathSeg newItem) =>
-                      SVGPathSegList -> Maybe newItem -> m SVGPathSeg
-initializeUnchecked self newItem
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_initialize (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
+         (js_initialize self (maybeToOptional (fmap toSVGPathSeg newItem))))
  
 foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: SVGPathSegList -> Word -> IO (Nullable SVGPathSeg)
+        :: SVGPathSegList -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
-getItem ::
-        (MonadIO m) => SVGPathSegList -> Word -> m (Maybe SVGPathSeg)
-getItem self index
-  = liftIO (nullableToMaybe <$> (js_getItem (self) index))
+getItem :: (MonadIO m) => SVGPathSegList -> Word -> m SVGPathSeg
+getItem self index = liftIO (js_getItem self index)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
 getItem_ :: (MonadIO m) => SVGPathSegList -> Word -> m ()
-getItem_ self index = liftIO (void (js_getItem (self) index))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
-getItemUnsafe ::
-              (MonadIO m, HasCallStack) => SVGPathSegList -> Word -> m SVGPathSeg
-getItemUnsafe self index
-  = liftIO
-      ((nullableToMaybe <$> (js_getItem (self) index)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
-getItemUnchecked ::
-                 (MonadIO m) => SVGPathSegList -> Word -> m SVGPathSeg
-getItemUnchecked self index
-  = liftIO (fromJust . nullableToMaybe <$> (js_getItem (self) index))
+getItem_ self index = liftIO (void (js_getItem self index))
  
 foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
-        SVGPathSegList ->
-          Nullable SVGPathSeg -> Word -> IO (Nullable SVGPathSeg)
+        SVGPathSegList -> Optional SVGPathSeg -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.insertItemBefore Mozilla SVGPathSegList.insertItemBefore documentation> 
 insertItemBefore ::
                  (MonadIO m, IsSVGPathSeg newItem) =>
-                   SVGPathSegList -> Maybe newItem -> Word -> m (Maybe SVGPathSeg)
+                   SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
 insertItemBefore self newItem index
   = liftIO
-      (nullableToMaybe <$>
-         (js_insertItemBefore (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
-            index))
+      (js_insertItemBefore self
+         (maybeToOptional (fmap toSVGPathSeg newItem))
+         index)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.insertItemBefore Mozilla SVGPathSegList.insertItemBefore documentation> 
 insertItemBefore_ ::
@@ -135,48 +90,22 @@ insertItemBefore_ ::
 insertItemBefore_ self newItem index
   = liftIO
       (void
-         (js_insertItemBefore (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
-            index))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.insertItemBefore Mozilla SVGPathSegList.insertItemBefore documentation> 
-insertItemBeforeUnsafe ::
-                       (MonadIO m, IsSVGPathSeg newItem, HasCallStack) =>
-                         SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
-insertItemBeforeUnsafe self newItem index
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_insertItemBefore (self)
-             (maybeToNullable (fmap toSVGPathSeg newItem))
-             index))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.insertItemBefore Mozilla SVGPathSegList.insertItemBefore documentation> 
-insertItemBeforeUnchecked ::
-                          (MonadIO m, IsSVGPathSeg newItem) =>
-                            SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
-insertItemBeforeUnchecked self newItem index
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_insertItemBefore (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
+         (js_insertItemBefore self
+            (maybeToOptional (fmap toSVGPathSeg newItem))
             index))
  
 foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
-        SVGPathSegList ->
-          Nullable SVGPathSeg -> Word -> IO (Nullable SVGPathSeg)
+        SVGPathSegList -> Optional SVGPathSeg -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.replaceItem Mozilla SVGPathSegList.replaceItem documentation> 
 replaceItem ::
             (MonadIO m, IsSVGPathSeg newItem) =>
-              SVGPathSegList -> Maybe newItem -> Word -> m (Maybe SVGPathSeg)
+              SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
 replaceItem self newItem index
   = liftIO
-      (nullableToMaybe <$>
-         (js_replaceItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
-            index))
+      (js_replaceItem self (maybeToOptional (fmap toSVGPathSeg newItem))
+         index)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.replaceItem Mozilla SVGPathSegList.replaceItem documentation> 
 replaceItem_ ::
@@ -185,74 +114,31 @@ replaceItem_ ::
 replaceItem_ self newItem index
   = liftIO
       (void
-         (js_replaceItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
-            index))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.replaceItem Mozilla SVGPathSegList.replaceItem documentation> 
-replaceItemUnsafe ::
-                  (MonadIO m, IsSVGPathSeg newItem, HasCallStack) =>
-                    SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
-replaceItemUnsafe self newItem index
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_replaceItem (self)
-             (maybeToNullable (fmap toSVGPathSeg newItem))
-             index))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.replaceItem Mozilla SVGPathSegList.replaceItem documentation> 
-replaceItemUnchecked ::
-                     (MonadIO m, IsSVGPathSeg newItem) =>
-                       SVGPathSegList -> Maybe newItem -> Word -> m SVGPathSeg
-replaceItemUnchecked self newItem index
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_replaceItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))
+         (js_replaceItem self (maybeToOptional (fmap toSVGPathSeg newItem))
             index))
  
 foreign import javascript unsafe "$1[\"removeItem\"]($2)"
-        js_removeItem :: SVGPathSegList -> Word -> IO (Nullable SVGPathSeg)
+        js_removeItem :: SVGPathSegList -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
-removeItem ::
-           (MonadIO m) => SVGPathSegList -> Word -> m (Maybe SVGPathSeg)
-removeItem self index
-  = liftIO (nullableToMaybe <$> (js_removeItem (self) index))
+removeItem :: (MonadIO m) => SVGPathSegList -> Word -> m SVGPathSeg
+removeItem self index = liftIO (js_removeItem self index)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
 removeItem_ :: (MonadIO m) => SVGPathSegList -> Word -> m ()
-removeItem_ self index = liftIO (void (js_removeItem (self) index))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
-removeItemUnsafe ::
-                 (MonadIO m, HasCallStack) => SVGPathSegList -> Word -> m SVGPathSeg
-removeItemUnsafe self index
-  = liftIO
-      ((nullableToMaybe <$> (js_removeItem (self) index)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
-removeItemUnchecked ::
-                    (MonadIO m) => SVGPathSegList -> Word -> m SVGPathSeg
-removeItemUnchecked self index
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_removeItem (self) index))
+removeItem_ self index = liftIO (void (js_removeItem self index))
  
 foreign import javascript unsafe "$1[\"appendItem\"]($2)"
         js_appendItem ::
-        SVGPathSegList -> Nullable SVGPathSeg -> IO (Nullable SVGPathSeg)
+        SVGPathSegList -> Optional SVGPathSeg -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.appendItem Mozilla SVGPathSegList.appendItem documentation> 
 appendItem ::
            (MonadIO m, IsSVGPathSeg newItem) =>
-             SVGPathSegList -> Maybe newItem -> m (Maybe SVGPathSeg)
+             SVGPathSegList -> Maybe newItem -> m SVGPathSeg
 appendItem self newItem
   = liftIO
-      (nullableToMaybe <$>
-         (js_appendItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
+      (js_appendItem self (maybeToOptional (fmap toSVGPathSeg newItem)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.appendItem Mozilla SVGPathSegList.appendItem documentation> 
 appendItem_ ::
@@ -261,33 +147,11 @@ appendItem_ ::
 appendItem_ self newItem
   = liftIO
       (void
-         (js_appendItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.appendItem Mozilla SVGPathSegList.appendItem documentation> 
-appendItemUnsafe ::
-                 (MonadIO m, IsSVGPathSeg newItem, HasCallStack) =>
-                   SVGPathSegList -> Maybe newItem -> m SVGPathSeg
-appendItemUnsafe self newItem
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_appendItem (self)
-             (maybeToNullable (fmap toSVGPathSeg newItem))))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.appendItem Mozilla SVGPathSegList.appendItem documentation> 
-appendItemUnchecked ::
-                    (MonadIO m, IsSVGPathSeg newItem) =>
-                      SVGPathSegList -> Maybe newItem -> m SVGPathSeg
-appendItemUnchecked self newItem
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_appendItem (self)
-            (maybeToNullable (fmap toSVGPathSeg newItem))))
+         (js_appendItem self (maybeToOptional (fmap toSVGPathSeg newItem))))
  
 foreign import javascript unsafe "$1[\"numberOfItems\"]"
         js_getNumberOfItems :: SVGPathSegList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.numberOfItems Mozilla SVGPathSegList.numberOfItems documentation> 
 getNumberOfItems :: (MonadIO m) => SVGPathSegList -> m Word
-getNumberOfItems self = liftIO (js_getNumberOfItems (self))
+getNumberOfItems self = liftIO (js_getNumberOfItems self)

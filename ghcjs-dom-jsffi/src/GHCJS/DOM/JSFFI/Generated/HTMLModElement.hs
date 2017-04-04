@@ -12,7 +12,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -21,6 +21,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -32,7 +33,7 @@ foreign import javascript unsafe "$1[\"cite\"] = $2;" js_setCite ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
 setCite ::
         (MonadIO m, ToJSString val) => HTMLModElement -> val -> m ()
-setCite self val = liftIO (js_setCite (self) (toJSString val))
+setCite self val = liftIO (js_setCite self (toJSString val))
  
 foreign import javascript unsafe "$1[\"cite\"]" js_getCite ::
         HTMLModElement -> IO JSString
@@ -40,7 +41,7 @@ foreign import javascript unsafe "$1[\"cite\"]" js_getCite ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
 getCite ::
         (MonadIO m, FromJSString result) => HTMLModElement -> m result
-getCite self = liftIO (fromJSString <$> (js_getCite (self)))
+getCite self = liftIO (fromJSString <$> (js_getCite self))
  
 foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
         js_setDateTime :: HTMLModElement -> JSString -> IO ()
@@ -49,7 +50,7 @@ foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
 setDateTime ::
             (MonadIO m, ToJSString val) => HTMLModElement -> val -> m ()
 setDateTime self val
-  = liftIO (js_setDateTime (self) (toJSString val))
+  = liftIO (js_setDateTime self (toJSString val))
  
 foreign import javascript unsafe "$1[\"dateTime\"]" js_getDateTime
         :: HTMLModElement -> IO JSString
@@ -57,5 +58,4 @@ foreign import javascript unsafe "$1[\"dateTime\"]" js_getDateTime
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.dateTime Mozilla HTMLModElement.dateTime documentation> 
 getDateTime ::
             (MonadIO m, FromJSString result) => HTMLModElement -> m result
-getDateTime self
-  = liftIO (fromJSString <$> (js_getDateTime (self)))
+getDateTime self = liftIO (fromJSString <$> (js_getDateTime self))

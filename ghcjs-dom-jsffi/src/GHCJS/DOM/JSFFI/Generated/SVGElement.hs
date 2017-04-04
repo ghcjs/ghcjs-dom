@@ -5,26 +5,20 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.SVGElement
        (js_getPresentationAttribute, getPresentationAttribute,
-        getPresentationAttribute_, getPresentationAttributeUnsafe,
-        getPresentationAttributeUnchecked, js_setXmlbase, setXmlbase,
-        js_getXmlbase, getXmlbase, getXmlbaseUnsafe, getXmlbaseUnchecked,
-        js_getOwnerSVGElement, getOwnerSVGElement,
-        getOwnerSVGElementUnsafe, getOwnerSVGElementUnchecked,
-        js_getViewportElement, getViewportElement,
-        getViewportElementUnsafe, getViewportElementUnchecked,
-        js_setXmllang, setXmllang, js_getXmllang, getXmllang,
-        js_setXmlspace, setXmlspace, js_getXmlspace, getXmlspace,
-        js_getClassName, getClassName, getClassNameUnsafe,
-        getClassNameUnchecked, js_getStyle, getStyle, getStyleUnsafe,
-        getStyleUnchecked, js_setTabIndex, setTabIndex, js_getTabIndex,
-        getTabIndex, SVGElement(..), gTypeSVGElement, IsSVGElement,
-        toSVGElement)
+        getPresentationAttribute_, js_focus, focus, js_blur, blur,
+        js_getOwnerSVGElement, getOwnerSVGElement, js_getViewportElement,
+        getViewportElement, js_setXmllang, setXmllang, js_getXmllang,
+        getXmllang, js_setXmlspace, setXmlspace, js_getXmlspace,
+        getXmlspace, js_getClassName, getClassName, js_getStyle, getStyle,
+        js_setTabIndex, setTabIndex, js_getTabIndex, getTabIndex,
+        js_getDataset, getDataset, SVGElement(..), gTypeSVGElement,
+        IsSVGElement, toSVGElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -33,6 +27,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -40,142 +35,58 @@ import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
         "$1[\"getPresentationAttribute\"]($2)" js_getPresentationAttribute
-        :: SVGElement -> JSString -> IO (Nullable CSSValue)
+        :: SVGElement -> Optional JSString -> IO CSSValue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
 getPresentationAttribute ::
                          (MonadIO m, IsSVGElement self, ToJSString name) =>
-                           self -> name -> m (Maybe CSSValue)
+                           self -> Maybe name -> m CSSValue
 getPresentationAttribute self name
   = liftIO
-      (nullableToMaybe <$>
-         (js_getPresentationAttribute (toSVGElement self)
-            (toJSString name)))
+      (js_getPresentationAttribute (toSVGElement self)
+         (toOptionalJSString name))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
 getPresentationAttribute_ ::
                           (MonadIO m, IsSVGElement self, ToJSString name) =>
-                            self -> name -> m ()
+                            self -> Maybe name -> m ()
 getPresentationAttribute_ self name
   = liftIO
       (void
          (js_getPresentationAttribute (toSVGElement self)
-            (toJSString name)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
-getPresentationAttributeUnsafe ::
-                               (MonadIO m, IsSVGElement self, ToJSString name, HasCallStack) =>
-                                 self -> name -> m CSSValue
-getPresentationAttributeUnsafe self name
-  = liftIO
-      ((nullableToMaybe <$>
-          (js_getPresentationAttribute (toSVGElement self)
-             (toJSString name)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.getPresentationAttribute Mozilla SVGElement.getPresentationAttribute documentation> 
-getPresentationAttributeUnchecked ::
-                                  (MonadIO m, IsSVGElement self, ToJSString name) =>
-                                    self -> name -> m CSSValue
-getPresentationAttributeUnchecked self name
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getPresentationAttribute (toSVGElement self)
-            (toJSString name)))
+            (toOptionalJSString name)))
  
-foreign import javascript unsafe "$1[\"xmlbase\"] = $2;"
-        js_setXmlbase :: SVGElement -> Nullable JSString -> IO ()
+foreign import javascript unsafe "$1[\"focus\"]()" js_focus ::
+        SVGElement -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
-setXmlbase ::
-           (MonadIO m, IsSVGElement self, ToJSString val) =>
-             self -> Maybe val -> m ()
-setXmlbase self val
-  = liftIO (js_setXmlbase (toSVGElement self) (toMaybeJSString val))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.focus Mozilla SVGElement.focus documentation> 
+focus :: (MonadIO m, IsSVGElement self) => self -> m ()
+focus self = liftIO (js_focus (toSVGElement self))
  
-foreign import javascript unsafe "$1[\"xmlbase\"]" js_getXmlbase ::
-        SVGElement -> IO (Nullable JSString)
+foreign import javascript unsafe "$1[\"blur\"]()" js_blur ::
+        SVGElement -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
-getXmlbase ::
-           (MonadIO m, IsSVGElement self, FromJSString result) =>
-             self -> m (Maybe result)
-getXmlbase self
-  = liftIO
-      (fromMaybeJSString <$> (js_getXmlbase (toSVGElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
-getXmlbaseUnsafe ::
-                 (MonadIO m, IsSVGElement self, HasCallStack,
-                  FromJSString result) =>
-                   self -> m result
-getXmlbaseUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getXmlbase (toSVGElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlbase Mozilla SVGElement.xmlbase documentation> 
-getXmlbaseUnchecked ::
-                    (MonadIO m, IsSVGElement self, FromJSString result) =>
-                      self -> m result
-getXmlbaseUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getXmlbase (toSVGElement self)))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.blur Mozilla SVGElement.blur documentation> 
+blur :: (MonadIO m, IsSVGElement self) => self -> m ()
+blur self = liftIO (js_blur (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"ownerSVGElement\"]"
-        js_getOwnerSVGElement :: SVGElement -> IO (Nullable SVGSVGElement)
+        js_getOwnerSVGElement :: SVGElement -> IO SVGSVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
 getOwnerSVGElement ::
-                   (MonadIO m, IsSVGElement self) => self -> m (Maybe SVGSVGElement)
+                   (MonadIO m, IsSVGElement self) => self -> m SVGSVGElement
 getOwnerSVGElement self
-  = liftIO
-      (nullableToMaybe <$> (js_getOwnerSVGElement (toSVGElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
-getOwnerSVGElementUnsafe ::
-                         (MonadIO m, IsSVGElement self, HasCallStack) =>
-                           self -> m SVGSVGElement
-getOwnerSVGElementUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getOwnerSVGElement (toSVGElement self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
-getOwnerSVGElementUnchecked ::
-                            (MonadIO m, IsSVGElement self) => self -> m SVGSVGElement
-getOwnerSVGElementUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getOwnerSVGElement (toSVGElement self)))
+  = liftIO (js_getOwnerSVGElement (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"viewportElement\"]"
-        js_getViewportElement :: SVGElement -> IO (Nullable SVGElement)
+        js_getViewportElement :: SVGElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
 getViewportElement ::
-                   (MonadIO m, IsSVGElement self) => self -> m (Maybe SVGElement)
+                   (MonadIO m, IsSVGElement self) => self -> m SVGElement
 getViewportElement self
-  = liftIO
-      (nullableToMaybe <$> (js_getViewportElement (toSVGElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
-getViewportElementUnsafe ::
-                         (MonadIO m, IsSVGElement self, HasCallStack) =>
-                           self -> m SVGElement
-getViewportElementUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getViewportElement (toSVGElement self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
-getViewportElementUnchecked ::
-                            (MonadIO m, IsSVGElement self) => self -> m SVGElement
-getViewportElementUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getViewportElement (toSVGElement self)))
+  = liftIO (js_getViewportElement (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"xmllang\"] = $2;"
         js_setXmllang :: SVGElement -> JSString -> IO ()
@@ -218,58 +129,20 @@ getXmlspace self
   = liftIO (fromJSString <$> (js_getXmlspace (toSVGElement self)))
  
 foreign import javascript unsafe "$1[\"className\"]"
-        js_getClassName :: SVGElement -> IO (Nullable SVGAnimatedString)
+        js_getClassName :: SVGElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
 getClassName ::
-             (MonadIO m, IsSVGElement self) =>
-               self -> m (Maybe SVGAnimatedString)
-getClassName self
-  = liftIO
-      (nullableToMaybe <$> (js_getClassName (toSVGElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
-getClassNameUnsafe ::
-                   (MonadIO m, IsSVGElement self, HasCallStack) =>
-                     self -> m SVGAnimatedString
-getClassNameUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getClassName (toSVGElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
-getClassNameUnchecked ::
-                      (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
-getClassNameUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getClassName (toSVGElement self)))
+             (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
+getClassName self = liftIO (js_getClassName (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        SVGElement -> IO (Nullable CSSStyleDeclaration)
+        SVGElement -> IO CSSStyleDeclaration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
 getStyle ::
-         (MonadIO m, IsSVGElement self) =>
-           self -> m (Maybe CSSStyleDeclaration)
-getStyle self
-  = liftIO (nullableToMaybe <$> (js_getStyle (toSVGElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
-getStyleUnsafe ::
-               (MonadIO m, IsSVGElement self, HasCallStack) =>
-                 self -> m CSSStyleDeclaration
-getStyleUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getStyle (toSVGElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
-getStyleUnchecked ::
-                  (MonadIO m, IsSVGElement self) => self -> m CSSStyleDeclaration
-getStyleUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$> (js_getStyle (toSVGElement self)))
+         (MonadIO m, IsSVGElement self) => self -> m CSSStyleDeclaration
+getStyle self = liftIO (js_getStyle (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         js_setTabIndex :: SVGElement -> Int -> IO ()
@@ -286,3 +159,11 @@ foreign import javascript unsafe "$1[\"tabIndex\"]" js_getTabIndex
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.tabIndex Mozilla SVGElement.tabIndex documentation> 
 getTabIndex :: (MonadIO m, IsSVGElement self) => self -> m Int
 getTabIndex self = liftIO (js_getTabIndex (toSVGElement self))
+ 
+foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
+        SVGElement -> IO DOMStringMap
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.dataset Mozilla SVGElement.dataset documentation> 
+getDataset ::
+           (MonadIO m, IsSVGElement self) => self -> m DOMStringMap
+getDataset self = liftIO (js_getDataset (toSVGElement self))

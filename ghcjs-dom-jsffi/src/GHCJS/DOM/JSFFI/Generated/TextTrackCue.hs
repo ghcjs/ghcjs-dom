@@ -4,10 +4,9 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.TextTrackCue
-       (js_newTextTrackCue, newTextTrackCue, js_getTrack, getTrack,
-        getTrackUnsafe, getTrackUnchecked, js_setId, setId, js_getId,
-        getId, js_setStartTime, setStartTime, js_getStartTime,
-        getStartTime, js_setEndTime, setEndTime, js_getEndTime, getEndTime,
+       (js_getTrack, getTrack, js_setId, setId, js_getId, getId,
+        js_setStartTime, setStartTime, js_getStartTime, getStartTime,
+        js_setEndTime, setEndTime, js_getEndTime, getEndTime,
         js_setPauseOnExit, setPauseOnExit, js_getPauseOnExit,
         getPauseOnExit, enter, exit, TextTrackCue(..), gTypeTextTrackCue,
         IsTextTrackCue, toTextTrackCue)
@@ -16,7 +15,7 @@ import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Mayb
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -25,47 +24,18 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
-        "new window[\"TextTrackCue\"]($1,\n$2, $3)" js_newTextTrackCue ::
-        Double -> Double -> JSString -> IO TextTrackCue
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue Mozilla TextTrackCue documentation> 
-newTextTrackCue ::
-                (MonadIO m, ToJSString text) =>
-                  Double -> Double -> text -> m TextTrackCue
-newTextTrackCue startTime endTime text
-  = liftIO (js_newTextTrackCue startTime endTime (toJSString text))
- 
 foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
-        TextTrackCue -> IO (Nullable TextTrack)
+        TextTrackCue -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
-getTrack ::
-         (MonadIO m, IsTextTrackCue self) => self -> m (Maybe TextTrack)
-getTrack self
-  = liftIO (nullableToMaybe <$> (js_getTrack (toTextTrackCue self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
-getTrackUnsafe ::
-               (MonadIO m, IsTextTrackCue self, HasCallStack) =>
-                 self -> m TextTrack
-getTrackUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getTrack (toTextTrackCue self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
-getTrackUnchecked ::
-                  (MonadIO m, IsTextTrackCue self) => self -> m TextTrack
-getTrackUnchecked self
-  = liftIO
-      (fromJust . nullableToMaybe <$>
-         (js_getTrack (toTextTrackCue self)))
+getTrack :: (MonadIO m, IsTextTrackCue self) => self -> m TextTrack
+getTrack self = liftIO (js_getTrack (toTextTrackCue self))
  
 foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
         TextTrackCue -> JSString -> IO ()

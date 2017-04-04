@@ -4,21 +4,16 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.BiquadFilterNode
-       (js_getFrequencyResponse, getFrequencyResponse, pattern LOWPASS,
-        pattern HIGHPASS, pattern BANDPASS, pattern LOWSHELF,
-        pattern HIGHSHELF, pattern PEAKING, pattern NOTCH, pattern ALLPASS,
-        js_setType, setType, js_getType, getType, js_getFrequency,
-        getFrequency, getFrequencyUnsafe, getFrequencyUnchecked,
-        js_getDetune, getDetune, getDetuneUnsafe, getDetuneUnchecked,
-        js_getQ, getQ, getQUnsafe, getQUnchecked, js_getGain, getGain,
-        getGainUnsafe, getGainUnchecked, BiquadFilterNode(..),
-        gTypeBiquadFilterNode)
+       (js_getFrequencyResponse, getFrequencyResponse, js_setType,
+        setType, js_getType, getType, js_getFrequency, getFrequency,
+        js_getDetune, getDetune, js_getQ, getQ, js_getGain, getGain,
+        BiquadFilterNode(..), gTypeBiquadFilterNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
-import GHCJS.Foreign (jsNull)
+import GHCJS.Foreign (jsNull, jsUndefined)
 import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
@@ -27,6 +22,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import Data.Int (Int64)
 import Data.Word (Word, Word64)
 import Data.Maybe (fromJust)
+import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
@@ -36,8 +32,8 @@ foreign import javascript unsafe
         "$1[\"getFrequencyResponse\"]($2,\n$3, $4)" js_getFrequencyResponse
         ::
         BiquadFilterNode ->
-          Nullable Float32Array ->
-            Nullable Float32Array -> Nullable Float32Array -> IO ()
+          Optional Float32Array ->
+            Optional Float32Array -> Optional Float32Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.getFrequencyResponse Mozilla BiquadFilterNode.getFrequencyResponse documentation> 
 getFrequencyResponse ::
@@ -48,116 +44,50 @@ getFrequencyResponse ::
                            Maybe magResponse -> Maybe phaseResponse -> m ()
 getFrequencyResponse self frequencyHz magResponse phaseResponse
   = liftIO
-      (js_getFrequencyResponse (self)
-         (maybeToNullable (fmap toFloat32Array frequencyHz))
-         (maybeToNullable (fmap toFloat32Array magResponse))
-         (maybeToNullable (fmap toFloat32Array phaseResponse)))
-pattern LOWPASS = 0
-pattern HIGHPASS = 1
-pattern BANDPASS = 2
-pattern LOWSHELF = 3
-pattern HIGHSHELF = 4
-pattern PEAKING = 5
-pattern NOTCH = 6
-pattern ALLPASS = 7
+      (js_getFrequencyResponse self
+         (maybeToOptional (fmap toFloat32Array frequencyHz))
+         (maybeToOptional (fmap toFloat32Array magResponse))
+         (maybeToOptional (fmap toFloat32Array phaseResponse)))
  
 foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
-        BiquadFilterNode -> JSString -> IO ()
+        BiquadFilterNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.type Mozilla BiquadFilterNode.type documentation> 
 setType ::
-        (MonadIO m, ToJSString val) => BiquadFilterNode -> val -> m ()
-setType self val = liftIO (js_setType (self) (toJSString val))
+        (MonadIO m) => BiquadFilterNode -> BiquadFilterType -> m ()
+setType self val = liftIO (js_setType self (pToJSVal val))
  
 foreign import javascript unsafe "$1[\"type\"]" js_getType ::
-        BiquadFilterNode -> IO JSString
+        BiquadFilterNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.type Mozilla BiquadFilterNode.type documentation> 
-getType ::
-        (MonadIO m, FromJSString result) => BiquadFilterNode -> m result
-getType self = liftIO (fromJSString <$> (js_getType (self)))
+getType :: (MonadIO m) => BiquadFilterNode -> m BiquadFilterType
+getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"frequency\"]"
-        js_getFrequency :: BiquadFilterNode -> IO (Nullable AudioParam)
+        js_getFrequency :: BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequency Mozilla BiquadFilterNode.frequency documentation> 
-getFrequency ::
-             (MonadIO m) => BiquadFilterNode -> m (Maybe AudioParam)
-getFrequency self
-  = liftIO (nullableToMaybe <$> (js_getFrequency (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequency Mozilla BiquadFilterNode.frequency documentation> 
-getFrequencyUnsafe ::
-                   (MonadIO m, HasCallStack) => BiquadFilterNode -> m AudioParam
-getFrequencyUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getFrequency (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequency Mozilla BiquadFilterNode.frequency documentation> 
-getFrequencyUnchecked ::
-                      (MonadIO m) => BiquadFilterNode -> m AudioParam
-getFrequencyUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getFrequency (self)))
+getFrequency :: (MonadIO m) => BiquadFilterNode -> m AudioParam
+getFrequency self = liftIO (js_getFrequency self)
  
 foreign import javascript unsafe "$1[\"detune\"]" js_getDetune ::
-        BiquadFilterNode -> IO (Nullable AudioParam)
+        BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.detune Mozilla BiquadFilterNode.detune documentation> 
-getDetune ::
-          (MonadIO m) => BiquadFilterNode -> m (Maybe AudioParam)
-getDetune self = liftIO (nullableToMaybe <$> (js_getDetune (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.detune Mozilla BiquadFilterNode.detune documentation> 
-getDetuneUnsafe ::
-                (MonadIO m, HasCallStack) => BiquadFilterNode -> m AudioParam
-getDetuneUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getDetune (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.detune Mozilla BiquadFilterNode.detune documentation> 
-getDetuneUnchecked ::
-                   (MonadIO m) => BiquadFilterNode -> m AudioParam
-getDetuneUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getDetune (self)))
+getDetune :: (MonadIO m) => BiquadFilterNode -> m AudioParam
+getDetune self = liftIO (js_getDetune self)
  
 foreign import javascript unsafe "$1[\"Q\"]" js_getQ ::
-        BiquadFilterNode -> IO (Nullable AudioParam)
+        BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.Q Mozilla BiquadFilterNode.Q documentation> 
-getQ :: (MonadIO m) => BiquadFilterNode -> m (Maybe AudioParam)
-getQ self = liftIO (nullableToMaybe <$> (js_getQ (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.Q Mozilla BiquadFilterNode.Q documentation> 
-getQUnsafe ::
-           (MonadIO m, HasCallStack) => BiquadFilterNode -> m AudioParam
-getQUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getQ (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.Q Mozilla BiquadFilterNode.Q documentation> 
-getQUnchecked :: (MonadIO m) => BiquadFilterNode -> m AudioParam
-getQUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getQ (self)))
+getQ :: (MonadIO m) => BiquadFilterNode -> m AudioParam
+getQ self = liftIO (js_getQ self)
  
 foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
-        BiquadFilterNode -> IO (Nullable AudioParam)
+        BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.gain Mozilla BiquadFilterNode.gain documentation> 
-getGain :: (MonadIO m) => BiquadFilterNode -> m (Maybe AudioParam)
-getGain self = liftIO (nullableToMaybe <$> (js_getGain (self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.gain Mozilla BiquadFilterNode.gain documentation> 
-getGainUnsafe ::
-              (MonadIO m, HasCallStack) => BiquadFilterNode -> m AudioParam
-getGainUnsafe self
-  = liftIO
-      ((nullableToMaybe <$> (js_getGain (self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.gain Mozilla BiquadFilterNode.gain documentation> 
-getGainUnchecked :: (MonadIO m) => BiquadFilterNode -> m AudioParam
-getGainUnchecked self
-  = liftIO (fromJust . nullableToMaybe <$> (js_getGain (self)))
+getGain :: (MonadIO m) => BiquadFilterNode -> m AudioParam
+getGain self = liftIO (js_getGain self)
