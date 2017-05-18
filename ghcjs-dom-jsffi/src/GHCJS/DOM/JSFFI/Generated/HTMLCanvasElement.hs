@@ -6,9 +6,10 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLCanvasElement
        (js_getContext, getContext, getContext_, getContextUnsafe,
         getContextUnchecked, js_toDataURL, toDataURL, toDataURL_,
-        js_setWidth, setWidth, js_getWidth, getWidth, js_setHeight,
-        setHeight, js_getHeight, getHeight, HTMLCanvasElement(..),
-        gTypeHTMLCanvasElement)
+        js_toBlob', toBlob', js_captureStream, captureStream,
+        captureStream_, js_setWidth, setWidth, js_getWidth, getWidth,
+        js_setHeight, setHeight, js_getHeight, getHeight,
+        HTMLCanvasElement(..), gTypeHTMLCanvasElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -99,6 +100,40 @@ toDataURL_ ::
              HTMLCanvasElement -> Maybe type' -> m ()
 toDataURL_ self type'
   = liftIO (void (js_toDataURL self (toOptionalJSString type')))
+ 
+foreign import javascript unsafe "$1[\"toBlob\"]($2, $3, $4)"
+        js_toBlob' ::
+        HTMLCanvasElement ->
+          BlobCallback -> Optional JSString -> Optional JSVal -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toBlob Mozilla HTMLCanvasElement.toBlob documentation> 
+toBlob' ::
+        (MonadIO m, ToJSString type', ToJSVal quality) =>
+          HTMLCanvasElement ->
+            BlobCallback -> Maybe type' -> Maybe quality -> m ()
+toBlob' self callback type' quality
+  = liftIO
+      (mapM toJSVal quality >>=
+         \ quality' ->
+           js_toBlob' self callback (toOptionalJSString type')
+             (maybeToOptional quality'))
+ 
+foreign import javascript unsafe "$1[\"captureStream\"]($2)"
+        js_captureStream ::
+        HTMLCanvasElement -> Optional Double -> IO MediaStream
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.captureStream Mozilla HTMLCanvasElement.captureStream documentation> 
+captureStream ::
+              (MonadIO m) => HTMLCanvasElement -> Maybe Double -> m MediaStream
+captureStream self frameRequestRate
+  = liftIO (js_captureStream self (maybeToOptional frameRequestRate))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.captureStream Mozilla HTMLCanvasElement.captureStream documentation> 
+captureStream_ ::
+               (MonadIO m) => HTMLCanvasElement -> Maybe Double -> m ()
+captureStream_ self frameRequestRate
+  = liftIO
+      (void (js_captureStream self (maybeToOptional frameRequestRate)))
  
 foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
         :: HTMLCanvasElement -> Word -> IO ()

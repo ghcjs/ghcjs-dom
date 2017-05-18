@@ -8,18 +8,16 @@ module GHCJS.DOM.JSFFI.Generated.URL
         js_toJSON, toJSON, toJSON_, js_createObjectURL, createObjectURL,
         createObjectURL_, js_revokeObjectURL, revokeObjectURL,
         js_createObjectURLSource, createObjectURLSource,
-        createObjectURLSource_, js_createObjectURLStream,
-        createObjectURLStream, createObjectURLStream_, js_setHref, setHref,
-        js_getHref, getHref, js_getOrigin, getOrigin, js_setProtocol,
-        setProtocol, js_getProtocol, getProtocol, js_setUsername,
-        setUsername, js_getUsername, getUsername, js_setPassword,
-        setPassword, js_getPassword, getPassword, js_setHost, setHost,
-        js_getHost, getHost, js_setHostname, setHostname, js_getHostname,
-        getHostname, js_setPort, setPort, js_getPort, getPort,
-        js_setPathname, setPathname, js_getPathname, getPathname,
-        js_setHash, setHash, js_getHash, getHash, js_setSearch, setSearch,
-        js_getSearch, getSearch, js_getSearchParams, getSearchParams,
-        URL(..), gTypeURL)
+        createObjectURLSource_, js_setHref, setHref, js_getHref, getHref,
+        js_getOrigin, getOrigin, js_setProtocol, setProtocol,
+        js_getProtocol, getProtocol, js_setUsername, setUsername,
+        js_getUsername, getUsername, js_setPassword, setPassword,
+        js_getPassword, getPassword, js_setHost, setHost, js_getHost,
+        getHost, js_setHostname, setHostname, js_getHostname, getHostname,
+        js_setPort, setPort, js_getPort, getPort, js_setPathname,
+        setPathname, js_getPathname, getPathname, js_setHash, setHash,
+        js_getHash, getHash, js_setSearch, setSearch, js_getSearch,
+        getSearch, js_getSearchParams, getSearchParams, URL(..), gTypeURL)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -112,20 +110,6 @@ createObjectURLSource self source
 createObjectURLSource_ :: (MonadIO m) => URL -> MediaSource -> m ()
 createObjectURLSource_ self source
   = liftIO (void (js_createObjectURLSource self source))
- 
-foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        js_createObjectURLStream :: URL -> MediaStream -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
-createObjectURLStream ::
-                      (MonadIO m, FromJSString result) => URL -> MediaStream -> m result
-createObjectURLStream self stream
-  = liftIO (fromJSString <$> (js_createObjectURLStream self stream))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
-createObjectURLStream_ :: (MonadIO m) => URL -> MediaStream -> m ()
-createObjectURLStream_ self stream
-  = liftIO (void (js_createObjectURLStream self stream))
  
 foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
         URL -> JSString -> IO ()

@@ -4,11 +4,10 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLOptionsCollection
-       (js_addBefore, addBefore, js_remove, remove, js_removeElement,
-        removeElement, js_item, item, item_, itemUnsafe, itemUnchecked,
-        js_namedItem, namedItem, namedItem_, namedItemUnsafe,
-        namedItemUnchecked, js_setLength, setLength, js_getLength,
-        getLength, js_setSelectedIndex, setSelectedIndex,
+       (js_addBefore, addBefore, js_remove, remove, js_item, item, item_,
+        itemUnsafe, itemUnchecked, js_namedItem, namedItem, namedItem_,
+        namedItemUnsafe, namedItemUnchecked, js_setLength, setLength,
+        js_getLength, getLength, js_setSelectedIndex, setSelectedIndex,
         js_getSelectedIndex, getSelectedIndex, HTMLOptionsCollection(..),
         gTypeHTMLOptionsCollection)
        where
@@ -55,15 +54,6 @@ foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.remove Mozilla HTMLOptionsCollection.remove documentation> 
 remove :: (MonadIO m) => HTMLOptionsCollection -> Int -> m ()
 remove self index = liftIO (js_remove self index)
- 
-foreign import javascript unsafe "$1[\"remove\"]($2)"
-        js_removeElement ::
-        HTMLOptionsCollection -> HTMLOptionElement -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.remove Mozilla HTMLOptionsCollection.remove documentation> 
-removeElement ::
-              (MonadIO m) => HTMLOptionsCollection -> HTMLOptionElement -> m ()
-removeElement self option = liftIO (js_removeElement self option)
  
 foreign import javascript unsafe "$1[$2]" js_item ::
         HTMLOptionsCollection -> Word -> IO (Nullable HTMLOptionElement)

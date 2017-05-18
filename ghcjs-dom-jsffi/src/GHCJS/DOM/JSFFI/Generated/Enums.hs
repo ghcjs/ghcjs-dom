@@ -18,6 +18,8 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         js_FontFaceSetLoadStatusLoading, js_FontFaceSetLoadStatusLoaded,
         VisibilityState(..), js_VisibilityStateHidden,
         js_VisibilityStateVisible, js_VisibilityStatePrerender,
+        DocumentReadyState(..), js_DocumentReadyStateLoading,
+        js_DocumentReadyStateInteractive, js_DocumentReadyStateComplete,
         ShadowRootMode(..), js_ShadowRootModeUserAgent,
         js_ShadowRootModeClosed, js_ShadowRootModeOpen,
         BlobLineEndings(..), js_BlobLineEndingsTransparent,
@@ -27,8 +29,93 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         js_CanvasWindingRuleNonzero, js_CanvasWindingRuleEvenodd,
         WebGLPowerPreference(..), js_WebGLPowerPreferenceDefault,
         js_WebGLPowerPreferenceLowPower,
-        js_WebGLPowerPreferenceHighPerformance, VideoPresentationMode(..),
-        js_VideoPresentationModeFullscreen,
+        js_WebGLPowerPreferenceHighPerformance, WebGPUCompareFunction(..),
+        js_WebGPUCompareFunctionNever, js_WebGPUCompareFunctionLess,
+        js_WebGPUCompareFunctionEqual, js_WebGPUCompareFunctionLessequal,
+        js_WebGPUCompareFunctionGreater, js_WebGPUCompareFunctionNotequal,
+        js_WebGPUCompareFunctionGreaterequal,
+        js_WebGPUCompareFunctionAlways, WebGPUPixelFormat(..),
+        js_WebGPUPixelFormatBGRA8Unorm, WebGPULoadAction(..),
+        js_WebGPULoadActionDontcare, js_WebGPULoadActionLoad,
+        js_WebGPULoadActionClear, WebGPUStoreAction(..),
+        js_WebGPUStoreActionDontcare, js_WebGPUStoreActionStore,
+        js_WebGPUStoreActionMultisampleresolve, WebGPUPrimitiveType(..),
+        js_WebGPUPrimitiveTypePoint, js_WebGPUPrimitiveTypeLine,
+        js_WebGPUPrimitiveTypeLinestrip, js_WebGPUPrimitiveTypeTriangle,
+        js_WebGPUPrimitiveTypeTrianglestrip, WebGPUFunctionType(..),
+        js_WebGPUFunctionTypeFragment, js_WebGPUFunctionTypeVertex,
+        WebGPUStencilOperation(..), js_WebGPUStencilOperationKeep,
+        js_WebGPUStencilOperationZero, js_WebGPUStencilOperationReplace,
+        js_WebGPUStencilOperationIncrementclamp,
+        js_WebGPUStencilOperationDecrementclamp,
+        js_WebGPUStencilOperationInvert,
+        js_WebGPUStencilOperationIncrementwrap,
+        js_WebGPUStencilOperationDecrementwrap, WebGPUStatus(..),
+        js_WebGPUStatusNotenqueued, js_WebGPUStatusEnqueued,
+        js_WebGPUStatusCommitted, js_WebGPUStatusScheduled,
+        js_WebGPUStatusCompleted, js_WebGPUStatusError,
+        WebGPUSamplerAddressMode(..),
+        js_WebGPUSamplerAddressModeClamptoedge,
+        js_WebGPUSamplerAddressModeMirrorclamptoedge,
+        js_WebGPUSamplerAddressModeRepeat,
+        js_WebGPUSamplerAddressModeMirrorrepeat,
+        js_WebGPUSamplerAddressModeClamptozero,
+        WebGPUSamplerMinMagFilter(..), js_WebGPUSamplerMinMagFilterNearest,
+        js_WebGPUSamplerMinMagFilterLinear, WebGPUSamplerMipFilter(..),
+        js_WebGPUSamplerMipFilterNotmipmapped,
+        js_WebGPUSamplerMipFilterNearest, js_WebGPUSamplerMipFilterLinear,
+        WebGPUCullMode(..), js_WebGPUCullModeNone, js_WebGPUCullModeFront,
+        js_WebGPUCullModeBack, WebGPUIndexType(..),
+        js_WebGPUIndexTypeUint16, js_WebGPUIndexTypeUint32,
+        WebGPUVisibilityResultMode(..),
+        js_WebGPUVisibilityResultModeDisabled,
+        js_WebGPUVisibilityResultModeBoolean,
+        js_WebGPUVisibilityResultModeCounting, WebGPUWinding(..),
+        js_WebGPUWindingClockwise, js_WebGPUWindingCounterclockwise,
+        WebGPUDepthClipMode(..), js_WebGPUDepthClipModeClip,
+        js_WebGPUDepthClipModeClamp, WebGPUTriangleFillMode(..),
+        js_WebGPUTriangleFillModeFill, js_WebGPUTriangleFillModeLines,
+        WebGPUCPUCacheMode(..), js_WebGPUCPUCacheModeDefaultcache,
+        js_WebGPUCPUCacheModeWritecombined, WebGPUStorageMode(..),
+        js_WebGPUStorageModeShared, js_WebGPUStorageModeManaged,
+        js_WebGPUStorageModePrivate, WebGPUResourceOptions(..),
+        js_WebGPUResourceOptionsCpucachemodedefaultcache,
+        js_WebGPUResourceOptionsCpucachemodewritecombined,
+        js_WebGPUResourceOptionsStoragemodeshared,
+        js_WebGPUResourceOptionsStoragemodemanaged,
+        js_WebGPUResourceOptionsStoragemodeprivate,
+        js_WebGPUResourceOptionsOptioncpucachemodedefaultcache,
+        js_WebGPUResourceOptionsOptioncpucachemodewritecombined,
+        WebGPUTextureUsage(..), js_WebGPUTextureUsageUnknown,
+        js_WebGPUTextureUsageShaderread, js_WebGPUTextureUsageShaderwrite,
+        js_WebGPUTextureUsageRendertarget,
+        js_WebGPUTextureUsagePixelformatview, WebGPUBlendOperation(..),
+        js_WebGPUBlendOperationAdd, js_WebGPUBlendOperationSubtract,
+        js_WebGPUBlendOperationReversesubtract, js_WebGPUBlendOperationMin,
+        js_WebGPUBlendOperationMax, WebGPUBlendFactor(..),
+        js_WebGPUBlendFactorZero, js_WebGPUBlendFactorOne,
+        js_WebGPUBlendFactorSourcecolor,
+        js_WebGPUBlendFactorOneminussourcecolor,
+        js_WebGPUBlendFactorSourcealpha,
+        js_WebGPUBlendFactorOneminussourcealpha,
+        js_WebGPUBlendFactorDestinationcolor,
+        js_WebGPUBlendFactorOneminusdestinationcolor,
+        js_WebGPUBlendFactorDestinationalpha,
+        js_WebGPUBlendFactorOneminusdestinationalpha,
+        js_WebGPUBlendFactorSourcealphasaturated,
+        js_WebGPUBlendFactorBlendcolor,
+        js_WebGPUBlendFactorOneminusblendcolor,
+        js_WebGPUBlendFactorBlendalpha,
+        js_WebGPUBlendFactorOneminusblendalpha, WebGPUColorWriteMask(..),
+        js_WebGPUColorWriteMaskNone, js_WebGPUColorWriteMaskRed,
+        js_WebGPUColorWriteMaskGreen, js_WebGPUColorWriteMaskBlue,
+        js_WebGPUColorWriteMaskAlpha, js_WebGPUColorWriteMaskAll,
+        WebGPUMultisampleDepthResolveFilter(..),
+        js_WebGPUMultisampleDepthResolveFilterSample0,
+        js_WebGPUMultisampleDepthResolveFilterMin,
+        js_WebGPUMultisampleDepthResolveFilterMax, WebGPUFeatureSet(..),
+        js_WebGPUFeatureSetLevel1, js_WebGPUFeatureSetLevel2,
+        VideoPresentationMode(..), js_VideoPresentationModeFullscreen,
         js_VideoPresentationModePictureInPicture,
         js_VideoPresentationModeInline, TextTrackMode(..),
         js_TextTrackModeDisabled, js_TextTrackModeHidden,
@@ -36,9 +123,22 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         js_TextTrackKindSubtitles, js_TextTrackKindCaptions,
         js_TextTrackKindDescriptions, js_TextTrackKindChapters,
         js_TextTrackKindMetadata, js_TextTrackKindForced,
-        ApplePayLineItemType(..), js_ApplePayLineItemTypePending,
-        js_ApplePayLineItemTypeFinal, ApplePayPaymentMethodType(..),
-        js_ApplePayPaymentMethodTypeDebit,
+        ApplePayErrorCode(..), js_ApplePayErrorCodeUnknown,
+        js_ApplePayErrorCodeShippingContactInvalid,
+        js_ApplePayErrorCodeBillingContactInvalid,
+        js_ApplePayErrorCodeAddressUnservicable,
+        ApplePayErrorContactField(..),
+        js_ApplePayErrorContactFieldPhoneNumber,
+        js_ApplePayErrorContactFieldEmailAddress,
+        js_ApplePayErrorContactFieldName,
+        js_ApplePayErrorContactFieldPostalAddress,
+        js_ApplePayErrorContactFieldAddressLines,
+        js_ApplePayErrorContactFieldLocality,
+        js_ApplePayErrorContactFieldPostalCode,
+        js_ApplePayErrorContactFieldAdministrativeArea,
+        js_ApplePayErrorContactFieldCountry, ApplePayLineItemType(..),
+        js_ApplePayLineItemTypePending, js_ApplePayLineItemTypeFinal,
+        ApplePayPaymentMethodType(..), js_ApplePayPaymentMethodTypeDebit,
         js_ApplePayPaymentMethodTypeCredit,
         js_ApplePayPaymentMethodTypePrepaid,
         js_ApplePayPaymentMethodTypeStore,
@@ -104,22 +204,58 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         js_MediaSessionKindContent, js_MediaSessionKindTransient,
         js_MediaSessionKindTransientSolo, js_MediaSessionKindAmbient,
         EndOfStreamError(..), js_EndOfStreamErrorNetwork,
-        js_EndOfStreamErrorDecode, AppendMode(..), js_AppendModeSegments,
-        js_AppendModeSequence, MediaDeviceKind(..),
+        js_EndOfStreamErrorDecode, ReadyState(..), js_ReadyStateClosed,
+        js_ReadyStateOpen, js_ReadyStateEnded, AppendMode(..),
+        js_AppendModeSegments, js_AppendModeSequence, MediaDeviceKind(..),
         js_MediaDeviceKindAudioinput, js_MediaDeviceKindAudiooutput,
         js_MediaDeviceKindVideoinput, MediaStreamTrackState(..),
-        js_MediaStreamTrackStateNew, js_MediaStreamTrackStateLive,
-        js_MediaStreamTrackStateEnded, RTCIceTransportPolicy(..),
-        js_RTCIceTransportPolicyRelay, js_RTCIceTransportPolicyAll,
-        RTCBundlePolicy(..), js_RTCBundlePolicyBalanced,
-        js_RTCBundlePolicyMaxCompat, js_RTCBundlePolicyMaxBundle,
-        RTCRtpTransceiverDirection(..),
+        js_MediaStreamTrackStateLive, js_MediaStreamTrackStateEnded,
+        RTCIceTransportPolicy(..), js_RTCIceTransportPolicyRelay,
+        js_RTCIceTransportPolicyAll, RTCBundlePolicy(..),
+        js_RTCBundlePolicyBalanced, js_RTCBundlePolicyMaxCompat,
+        js_RTCBundlePolicyMaxBundle, RTCDataChannelState(..),
+        js_RTCDataChannelStateConnecting, js_RTCDataChannelStateOpen,
+        js_RTCDataChannelStateClosing, js_RTCDataChannelStateClosed,
+        RTCIceConnectionState(..), js_RTCIceConnectionStateNew,
+        js_RTCIceConnectionStateChecking,
+        js_RTCIceConnectionStateConnected,
+        js_RTCIceConnectionStateCompleted, js_RTCIceConnectionStateFailed,
+        js_RTCIceConnectionStateDisconnected,
+        js_RTCIceConnectionStateClosed, RTCIceGatheringState(..),
+        js_RTCIceGatheringStateNew, js_RTCIceGatheringStateGathering,
+        js_RTCIceGatheringStateComplete, RTCIceTransportState(..),
+        js_RTCIceTransportStateNew, js_RTCIceTransportStateChecking,
+        js_RTCIceTransportStateConnected, js_RTCIceTransportStateCompleted,
+        js_RTCIceTransportStateFailed, js_RTCIceTransportStateDisconnected,
+        js_RTCIceTransportStateClosed, RTCPeerConnectionState(..),
+        js_RTCPeerConnectionStateNew, js_RTCPeerConnectionStateConnecting,
+        js_RTCPeerConnectionStateConnected,
+        js_RTCPeerConnectionStateDisconnected,
+        js_RTCPeerConnectionStateFailed, js_RTCPeerConnectionStateClosed,
+        RTCDegradationPreference(..),
+        js_RTCDegradationPreferenceMaintainFramerate,
+        js_RTCDegradationPreferenceMaintainResolution,
+        js_RTCDegradationPreferenceBalanced, RTCDtxStatus(..),
+        js_RTCDtxStatusDisabled, js_RTCDtxStatusEnabled,
+        RTCPriorityType(..), js_RTCPriorityTypeVeryLow,
+        js_RTCPriorityTypeLow, js_RTCPriorityTypeMedium,
+        js_RTCPriorityTypeHigh, RTCRtpTransceiverDirection(..),
         js_RTCRtpTransceiverDirectionSendrecv,
         js_RTCRtpTransceiverDirectionSendonly,
         js_RTCRtpTransceiverDirectionRecvonly,
         js_RTCRtpTransceiverDirectionInactive, RTCSdpType(..),
         js_RTCSdpTypeOffer, js_RTCSdpTypePranswer, js_RTCSdpTypeAnswer,
-        js_RTCSdpTypeRollback, NotificationDirection(..),
+        js_RTCSdpTypeRollback, RTCSignalingState(..),
+        js_RTCSignalingStateStable, js_RTCSignalingStateHaveLocalOffer,
+        js_RTCSignalingStateHaveRemoteOffer,
+        js_RTCSignalingStateHaveLocalPranswer,
+        js_RTCSignalingStateHaveRemotePranswer, RTCStatsType(..),
+        js_RTCStatsTypeCodec, js_RTCStatsTypeInboundRtp,
+        js_RTCStatsTypeOutboundRtp, js_RTCStatsTypePeerConnection,
+        js_RTCStatsTypeDataChannel, js_RTCStatsTypeTrack,
+        js_RTCStatsTypeTransport, js_RTCStatsTypeCandidatePair,
+        js_RTCStatsTypeLocalCandidate, js_RTCStatsTypeRemoteCandidate,
+        js_RTCStatsTypeCertificate, NotificationDirection(..),
         js_NotificationDirectionAuto, js_NotificationDirectionLtr,
         js_NotificationDirectionRtl, AudioContextState(..),
         js_AudioContextStateSuspended, js_AudioContextStateRunning,
@@ -136,8 +272,9 @@ module GHCJS.DOM.JSFFI.Generated.Enums
         DistanceModelType(..), js_DistanceModelTypeLinear,
         js_DistanceModelTypeInverse, js_DistanceModelTypeExponential,
         OverSampleType(..), js_OverSampleTypeNone, js_OverSampleType2x,
-        js_OverSampleType4x, XMLHttpRequestResponseType(..),
-        js_XMLHttpRequestResponseType,
+        js_OverSampleType4x, ScrollRestoration(..),
+        js_ScrollRestorationAuto, js_ScrollRestorationManual,
+        XMLHttpRequestResponseType(..), js_XMLHttpRequestResponseType,
         js_XMLHttpRequestResponseTypeArraybuffer,
         js_XMLHttpRequestResponseTypeBlob,
         js_XMLHttpRequestResponseTypeDocument,
@@ -403,6 +540,44 @@ foreign import javascript unsafe "\"visible\""
 foreign import javascript unsafe "\"prerender\""
         js_VisibilityStatePrerender :: JSVal
  
+data DocumentReadyState = DocumentReadyStateLoading
+                        | DocumentReadyStateInteractive
+                        | DocumentReadyStateComplete
+                        deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal DocumentReadyState where
+        pToJSVal DocumentReadyStateLoading = js_DocumentReadyStateLoading
+        pToJSVal DocumentReadyStateInteractive
+          = js_DocumentReadyStateInteractive
+        pToJSVal DocumentReadyStateComplete = js_DocumentReadyStateComplete
+ 
+instance ToJSVal DocumentReadyState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal DocumentReadyState where
+        pFromJSVal x
+          | x `js_eq` js_DocumentReadyStateLoading =
+            DocumentReadyStateLoading
+        pFromJSVal x
+          | x `js_eq` js_DocumentReadyStateInteractive =
+            DocumentReadyStateInteractive
+        pFromJSVal x
+          | x `js_eq` js_DocumentReadyStateComplete =
+            DocumentReadyStateComplete
+ 
+instance FromJSVal DocumentReadyState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"loading\""
+        js_DocumentReadyStateLoading :: JSVal
+ 
+foreign import javascript unsafe "\"interactive\""
+        js_DocumentReadyStateInteractive :: JSVal
+ 
+foreign import javascript unsafe "\"complete\""
+        js_DocumentReadyStateComplete :: JSVal
+ 
 data ShadowRootMode = ShadowRootModeUserAgent
                     | ShadowRootModeClosed
                     | ShadowRootModeOpen
@@ -568,6 +743,1234 @@ foreign import javascript unsafe "\"low-power\""
 foreign import javascript unsafe "\"high-performance\""
         js_WebGLPowerPreferenceHighPerformance :: JSVal
  
+data WebGPUCompareFunction = WebGPUCompareFunctionNever
+                           | WebGPUCompareFunctionLess
+                           | WebGPUCompareFunctionEqual
+                           | WebGPUCompareFunctionLessequal
+                           | WebGPUCompareFunctionGreater
+                           | WebGPUCompareFunctionNotequal
+                           | WebGPUCompareFunctionGreaterequal
+                           | WebGPUCompareFunctionAlways
+                           deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUCompareFunction where
+        pToJSVal WebGPUCompareFunctionNever = js_WebGPUCompareFunctionNever
+        pToJSVal WebGPUCompareFunctionLess = js_WebGPUCompareFunctionLess
+        pToJSVal WebGPUCompareFunctionEqual = js_WebGPUCompareFunctionEqual
+        pToJSVal WebGPUCompareFunctionLessequal
+          = js_WebGPUCompareFunctionLessequal
+        pToJSVal WebGPUCompareFunctionGreater
+          = js_WebGPUCompareFunctionGreater
+        pToJSVal WebGPUCompareFunctionNotequal
+          = js_WebGPUCompareFunctionNotequal
+        pToJSVal WebGPUCompareFunctionGreaterequal
+          = js_WebGPUCompareFunctionGreaterequal
+        pToJSVal WebGPUCompareFunctionAlways
+          = js_WebGPUCompareFunctionAlways
+ 
+instance ToJSVal WebGPUCompareFunction where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUCompareFunction where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionNever =
+            WebGPUCompareFunctionNever
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionLess =
+            WebGPUCompareFunctionLess
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionEqual =
+            WebGPUCompareFunctionEqual
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionLessequal =
+            WebGPUCompareFunctionLessequal
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionGreater =
+            WebGPUCompareFunctionGreater
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionNotequal =
+            WebGPUCompareFunctionNotequal
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionGreaterequal =
+            WebGPUCompareFunctionGreaterequal
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCompareFunctionAlways =
+            WebGPUCompareFunctionAlways
+ 
+instance FromJSVal WebGPUCompareFunction where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"never\""
+        js_WebGPUCompareFunctionNever :: JSVal
+ 
+foreign import javascript unsafe "\"less\""
+        js_WebGPUCompareFunctionLess :: JSVal
+ 
+foreign import javascript unsafe "\"equal\""
+        js_WebGPUCompareFunctionEqual :: JSVal
+ 
+foreign import javascript unsafe "\"lessequal\""
+        js_WebGPUCompareFunctionLessequal :: JSVal
+ 
+foreign import javascript unsafe "\"greater\""
+        js_WebGPUCompareFunctionGreater :: JSVal
+ 
+foreign import javascript unsafe "\"notequal\""
+        js_WebGPUCompareFunctionNotequal :: JSVal
+ 
+foreign import javascript unsafe "\"greaterequal\""
+        js_WebGPUCompareFunctionGreaterequal :: JSVal
+ 
+foreign import javascript unsafe "\"always\""
+        js_WebGPUCompareFunctionAlways :: JSVal
+ 
+data WebGPUPixelFormat = WebGPUPixelFormatBGRA8Unorm
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUPixelFormat where
+        pToJSVal WebGPUPixelFormatBGRA8Unorm
+          = js_WebGPUPixelFormatBGRA8Unorm
+ 
+instance ToJSVal WebGPUPixelFormat where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUPixelFormat where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPixelFormatBGRA8Unorm =
+            WebGPUPixelFormatBGRA8Unorm
+ 
+instance FromJSVal WebGPUPixelFormat where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"BGRA8Unorm\""
+        js_WebGPUPixelFormatBGRA8Unorm :: JSVal
+ 
+data WebGPULoadAction = WebGPULoadActionDontcare
+                      | WebGPULoadActionLoad
+                      | WebGPULoadActionClear
+                      deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPULoadAction where
+        pToJSVal WebGPULoadActionDontcare = js_WebGPULoadActionDontcare
+        pToJSVal WebGPULoadActionLoad = js_WebGPULoadActionLoad
+        pToJSVal WebGPULoadActionClear = js_WebGPULoadActionClear
+ 
+instance ToJSVal WebGPULoadAction where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPULoadAction where
+        pFromJSVal x
+          | x `js_eq` js_WebGPULoadActionDontcare = WebGPULoadActionDontcare
+        pFromJSVal x
+          | x `js_eq` js_WebGPULoadActionLoad = WebGPULoadActionLoad
+        pFromJSVal x
+          | x `js_eq` js_WebGPULoadActionClear = WebGPULoadActionClear
+ 
+instance FromJSVal WebGPULoadAction where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"dontcare\""
+        js_WebGPULoadActionDontcare :: JSVal
+ 
+foreign import javascript unsafe "\"load\"" js_WebGPULoadActionLoad
+        :: JSVal
+ 
+foreign import javascript unsafe "\"clear\""
+        js_WebGPULoadActionClear :: JSVal
+ 
+data WebGPUStoreAction = WebGPUStoreActionDontcare
+                       | WebGPUStoreActionStore
+                       | WebGPUStoreActionMultisampleresolve
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUStoreAction where
+        pToJSVal WebGPUStoreActionDontcare = js_WebGPUStoreActionDontcare
+        pToJSVal WebGPUStoreActionStore = js_WebGPUStoreActionStore
+        pToJSVal WebGPUStoreActionMultisampleresolve
+          = js_WebGPUStoreActionMultisampleresolve
+ 
+instance ToJSVal WebGPUStoreAction where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUStoreAction where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStoreActionDontcare =
+            WebGPUStoreActionDontcare
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStoreActionStore = WebGPUStoreActionStore
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStoreActionMultisampleresolve =
+            WebGPUStoreActionMultisampleresolve
+ 
+instance FromJSVal WebGPUStoreAction where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"dontcare\""
+        js_WebGPUStoreActionDontcare :: JSVal
+ 
+foreign import javascript unsafe "\"store\""
+        js_WebGPUStoreActionStore :: JSVal
+ 
+foreign import javascript unsafe "\"multisampleresolve\""
+        js_WebGPUStoreActionMultisampleresolve :: JSVal
+ 
+data WebGPUPrimitiveType = WebGPUPrimitiveTypePoint
+                         | WebGPUPrimitiveTypeLine
+                         | WebGPUPrimitiveTypeLinestrip
+                         | WebGPUPrimitiveTypeTriangle
+                         | WebGPUPrimitiveTypeTrianglestrip
+                         deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUPrimitiveType where
+        pToJSVal WebGPUPrimitiveTypePoint = js_WebGPUPrimitiveTypePoint
+        pToJSVal WebGPUPrimitiveTypeLine = js_WebGPUPrimitiveTypeLine
+        pToJSVal WebGPUPrimitiveTypeLinestrip
+          = js_WebGPUPrimitiveTypeLinestrip
+        pToJSVal WebGPUPrimitiveTypeTriangle
+          = js_WebGPUPrimitiveTypeTriangle
+        pToJSVal WebGPUPrimitiveTypeTrianglestrip
+          = js_WebGPUPrimitiveTypeTrianglestrip
+ 
+instance ToJSVal WebGPUPrimitiveType where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUPrimitiveType where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPrimitiveTypePoint = WebGPUPrimitiveTypePoint
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPrimitiveTypeLine = WebGPUPrimitiveTypeLine
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPrimitiveTypeLinestrip =
+            WebGPUPrimitiveTypeLinestrip
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPrimitiveTypeTriangle =
+            WebGPUPrimitiveTypeTriangle
+        pFromJSVal x
+          | x `js_eq` js_WebGPUPrimitiveTypeTrianglestrip =
+            WebGPUPrimitiveTypeTrianglestrip
+ 
+instance FromJSVal WebGPUPrimitiveType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"point\""
+        js_WebGPUPrimitiveTypePoint :: JSVal
+ 
+foreign import javascript unsafe "\"line\""
+        js_WebGPUPrimitiveTypeLine :: JSVal
+ 
+foreign import javascript unsafe "\"linestrip\""
+        js_WebGPUPrimitiveTypeLinestrip :: JSVal
+ 
+foreign import javascript unsafe "\"triangle\""
+        js_WebGPUPrimitiveTypeTriangle :: JSVal
+ 
+foreign import javascript unsafe "\"trianglestrip\""
+        js_WebGPUPrimitiveTypeTrianglestrip :: JSVal
+ 
+data WebGPUFunctionType = WebGPUFunctionTypeFragment
+                        | WebGPUFunctionTypeVertex
+                        deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUFunctionType where
+        pToJSVal WebGPUFunctionTypeFragment = js_WebGPUFunctionTypeFragment
+        pToJSVal WebGPUFunctionTypeVertex = js_WebGPUFunctionTypeVertex
+ 
+instance ToJSVal WebGPUFunctionType where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUFunctionType where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUFunctionTypeFragment =
+            WebGPUFunctionTypeFragment
+        pFromJSVal x
+          | x `js_eq` js_WebGPUFunctionTypeVertex = WebGPUFunctionTypeVertex
+ 
+instance FromJSVal WebGPUFunctionType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"fragment\""
+        js_WebGPUFunctionTypeFragment :: JSVal
+ 
+foreign import javascript unsafe "\"vertex\""
+        js_WebGPUFunctionTypeVertex :: JSVal
+ 
+data WebGPUStencilOperation = WebGPUStencilOperationKeep
+                            | WebGPUStencilOperationZero
+                            | WebGPUStencilOperationReplace
+                            | WebGPUStencilOperationIncrementclamp
+                            | WebGPUStencilOperationDecrementclamp
+                            | WebGPUStencilOperationInvert
+                            | WebGPUStencilOperationIncrementwrap
+                            | WebGPUStencilOperationDecrementwrap
+                            deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUStencilOperation where
+        pToJSVal WebGPUStencilOperationKeep = js_WebGPUStencilOperationKeep
+        pToJSVal WebGPUStencilOperationZero = js_WebGPUStencilOperationZero
+        pToJSVal WebGPUStencilOperationReplace
+          = js_WebGPUStencilOperationReplace
+        pToJSVal WebGPUStencilOperationIncrementclamp
+          = js_WebGPUStencilOperationIncrementclamp
+        pToJSVal WebGPUStencilOperationDecrementclamp
+          = js_WebGPUStencilOperationDecrementclamp
+        pToJSVal WebGPUStencilOperationInvert
+          = js_WebGPUStencilOperationInvert
+        pToJSVal WebGPUStencilOperationIncrementwrap
+          = js_WebGPUStencilOperationIncrementwrap
+        pToJSVal WebGPUStencilOperationDecrementwrap
+          = js_WebGPUStencilOperationDecrementwrap
+ 
+instance ToJSVal WebGPUStencilOperation where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUStencilOperation where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationKeep =
+            WebGPUStencilOperationKeep
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationZero =
+            WebGPUStencilOperationZero
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationReplace =
+            WebGPUStencilOperationReplace
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationIncrementclamp =
+            WebGPUStencilOperationIncrementclamp
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationDecrementclamp =
+            WebGPUStencilOperationDecrementclamp
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationInvert =
+            WebGPUStencilOperationInvert
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationIncrementwrap =
+            WebGPUStencilOperationIncrementwrap
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStencilOperationDecrementwrap =
+            WebGPUStencilOperationDecrementwrap
+ 
+instance FromJSVal WebGPUStencilOperation where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"keep\""
+        js_WebGPUStencilOperationKeep :: JSVal
+ 
+foreign import javascript unsafe "\"zero\""
+        js_WebGPUStencilOperationZero :: JSVal
+ 
+foreign import javascript unsafe "\"replace\""
+        js_WebGPUStencilOperationReplace :: JSVal
+ 
+foreign import javascript unsafe "\"incrementclamp\""
+        js_WebGPUStencilOperationIncrementclamp :: JSVal
+ 
+foreign import javascript unsafe "\"decrementclamp\""
+        js_WebGPUStencilOperationDecrementclamp :: JSVal
+ 
+foreign import javascript unsafe "\"invert\""
+        js_WebGPUStencilOperationInvert :: JSVal
+ 
+foreign import javascript unsafe "\"incrementwrap\""
+        js_WebGPUStencilOperationIncrementwrap :: JSVal
+ 
+foreign import javascript unsafe "\"decrementwrap\""
+        js_WebGPUStencilOperationDecrementwrap :: JSVal
+ 
+data WebGPUStatus = WebGPUStatusNotenqueued
+                  | WebGPUStatusEnqueued
+                  | WebGPUStatusCommitted
+                  | WebGPUStatusScheduled
+                  | WebGPUStatusCompleted
+                  | WebGPUStatusError
+                  deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUStatus where
+        pToJSVal WebGPUStatusNotenqueued = js_WebGPUStatusNotenqueued
+        pToJSVal WebGPUStatusEnqueued = js_WebGPUStatusEnqueued
+        pToJSVal WebGPUStatusCommitted = js_WebGPUStatusCommitted
+        pToJSVal WebGPUStatusScheduled = js_WebGPUStatusScheduled
+        pToJSVal WebGPUStatusCompleted = js_WebGPUStatusCompleted
+        pToJSVal WebGPUStatusError = js_WebGPUStatusError
+ 
+instance ToJSVal WebGPUStatus where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUStatus where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStatusNotenqueued = WebGPUStatusNotenqueued
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStatusEnqueued = WebGPUStatusEnqueued
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStatusCommitted = WebGPUStatusCommitted
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStatusScheduled = WebGPUStatusScheduled
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStatusCompleted = WebGPUStatusCompleted
+        pFromJSVal x | x `js_eq` js_WebGPUStatusError = WebGPUStatusError
+ 
+instance FromJSVal WebGPUStatus where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"notenqueued\""
+        js_WebGPUStatusNotenqueued :: JSVal
+ 
+foreign import javascript unsafe "\"enqueued\""
+        js_WebGPUStatusEnqueued :: JSVal
+ 
+foreign import javascript unsafe "\"committed\""
+        js_WebGPUStatusCommitted :: JSVal
+ 
+foreign import javascript unsafe "\"scheduled\""
+        js_WebGPUStatusScheduled :: JSVal
+ 
+foreign import javascript unsafe "\"completed\""
+        js_WebGPUStatusCompleted :: JSVal
+ 
+foreign import javascript unsafe "\"error\"" js_WebGPUStatusError
+        :: JSVal
+ 
+data WebGPUSamplerAddressMode = WebGPUSamplerAddressModeClamptoedge
+                              | WebGPUSamplerAddressModeMirrorclamptoedge
+                              | WebGPUSamplerAddressModeRepeat
+                              | WebGPUSamplerAddressModeMirrorrepeat
+                              | WebGPUSamplerAddressModeClamptozero
+                              deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUSamplerAddressMode where
+        pToJSVal WebGPUSamplerAddressModeClamptoedge
+          = js_WebGPUSamplerAddressModeClamptoedge
+        pToJSVal WebGPUSamplerAddressModeMirrorclamptoedge
+          = js_WebGPUSamplerAddressModeMirrorclamptoedge
+        pToJSVal WebGPUSamplerAddressModeRepeat
+          = js_WebGPUSamplerAddressModeRepeat
+        pToJSVal WebGPUSamplerAddressModeMirrorrepeat
+          = js_WebGPUSamplerAddressModeMirrorrepeat
+        pToJSVal WebGPUSamplerAddressModeClamptozero
+          = js_WebGPUSamplerAddressModeClamptozero
+ 
+instance ToJSVal WebGPUSamplerAddressMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUSamplerAddressMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerAddressModeClamptoedge =
+            WebGPUSamplerAddressModeClamptoedge
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerAddressModeMirrorclamptoedge =
+            WebGPUSamplerAddressModeMirrorclamptoedge
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerAddressModeRepeat =
+            WebGPUSamplerAddressModeRepeat
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerAddressModeMirrorrepeat =
+            WebGPUSamplerAddressModeMirrorrepeat
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerAddressModeClamptozero =
+            WebGPUSamplerAddressModeClamptozero
+ 
+instance FromJSVal WebGPUSamplerAddressMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"clamptoedge\""
+        js_WebGPUSamplerAddressModeClamptoedge :: JSVal
+ 
+foreign import javascript unsafe "\"mirrorclamptoedge\""
+        js_WebGPUSamplerAddressModeMirrorclamptoedge :: JSVal
+ 
+foreign import javascript unsafe "\"repeat\""
+        js_WebGPUSamplerAddressModeRepeat :: JSVal
+ 
+foreign import javascript unsafe "\"mirrorrepeat\""
+        js_WebGPUSamplerAddressModeMirrorrepeat :: JSVal
+ 
+foreign import javascript unsafe "\"clamptozero\""
+        js_WebGPUSamplerAddressModeClamptozero :: JSVal
+ 
+data WebGPUSamplerMinMagFilter = WebGPUSamplerMinMagFilterNearest
+                               | WebGPUSamplerMinMagFilterLinear
+                               deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUSamplerMinMagFilter where
+        pToJSVal WebGPUSamplerMinMagFilterNearest
+          = js_WebGPUSamplerMinMagFilterNearest
+        pToJSVal WebGPUSamplerMinMagFilterLinear
+          = js_WebGPUSamplerMinMagFilterLinear
+ 
+instance ToJSVal WebGPUSamplerMinMagFilter where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUSamplerMinMagFilter where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerMinMagFilterNearest =
+            WebGPUSamplerMinMagFilterNearest
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerMinMagFilterLinear =
+            WebGPUSamplerMinMagFilterLinear
+ 
+instance FromJSVal WebGPUSamplerMinMagFilter where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"nearest\""
+        js_WebGPUSamplerMinMagFilterNearest :: JSVal
+ 
+foreign import javascript unsafe "\"linear\""
+        js_WebGPUSamplerMinMagFilterLinear :: JSVal
+ 
+data WebGPUSamplerMipFilter = WebGPUSamplerMipFilterNotmipmapped
+                            | WebGPUSamplerMipFilterNearest
+                            | WebGPUSamplerMipFilterLinear
+                            deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUSamplerMipFilter where
+        pToJSVal WebGPUSamplerMipFilterNotmipmapped
+          = js_WebGPUSamplerMipFilterNotmipmapped
+        pToJSVal WebGPUSamplerMipFilterNearest
+          = js_WebGPUSamplerMipFilterNearest
+        pToJSVal WebGPUSamplerMipFilterLinear
+          = js_WebGPUSamplerMipFilterLinear
+ 
+instance ToJSVal WebGPUSamplerMipFilter where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUSamplerMipFilter where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerMipFilterNotmipmapped =
+            WebGPUSamplerMipFilterNotmipmapped
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerMipFilterNearest =
+            WebGPUSamplerMipFilterNearest
+        pFromJSVal x
+          | x `js_eq` js_WebGPUSamplerMipFilterLinear =
+            WebGPUSamplerMipFilterLinear
+ 
+instance FromJSVal WebGPUSamplerMipFilter where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"notmipmapped\""
+        js_WebGPUSamplerMipFilterNotmipmapped :: JSVal
+ 
+foreign import javascript unsafe "\"nearest\""
+        js_WebGPUSamplerMipFilterNearest :: JSVal
+ 
+foreign import javascript unsafe "\"linear\""
+        js_WebGPUSamplerMipFilterLinear :: JSVal
+ 
+data WebGPUCullMode = WebGPUCullModeNone
+                    | WebGPUCullModeFront
+                    | WebGPUCullModeBack
+                    deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUCullMode where
+        pToJSVal WebGPUCullModeNone = js_WebGPUCullModeNone
+        pToJSVal WebGPUCullModeFront = js_WebGPUCullModeFront
+        pToJSVal WebGPUCullModeBack = js_WebGPUCullModeBack
+ 
+instance ToJSVal WebGPUCullMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUCullMode where
+        pFromJSVal x | x `js_eq` js_WebGPUCullModeNone = WebGPUCullModeNone
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCullModeFront = WebGPUCullModeFront
+        pFromJSVal x | x `js_eq` js_WebGPUCullModeBack = WebGPUCullModeBack
+ 
+instance FromJSVal WebGPUCullMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"none\"" js_WebGPUCullModeNone
+        :: JSVal
+ 
+foreign import javascript unsafe "\"front\"" js_WebGPUCullModeFront
+        :: JSVal
+ 
+foreign import javascript unsafe "\"back\"" js_WebGPUCullModeBack
+        :: JSVal
+ 
+data WebGPUIndexType = WebGPUIndexTypeUint16
+                     | WebGPUIndexTypeUint32
+                     deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUIndexType where
+        pToJSVal WebGPUIndexTypeUint16 = js_WebGPUIndexTypeUint16
+        pToJSVal WebGPUIndexTypeUint32 = js_WebGPUIndexTypeUint32
+ 
+instance ToJSVal WebGPUIndexType where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUIndexType where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUIndexTypeUint16 = WebGPUIndexTypeUint16
+        pFromJSVal x
+          | x `js_eq` js_WebGPUIndexTypeUint32 = WebGPUIndexTypeUint32
+ 
+instance FromJSVal WebGPUIndexType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"uint16\""
+        js_WebGPUIndexTypeUint16 :: JSVal
+ 
+foreign import javascript unsafe "\"uint32\""
+        js_WebGPUIndexTypeUint32 :: JSVal
+ 
+data WebGPUVisibilityResultMode = WebGPUVisibilityResultModeDisabled
+                                | WebGPUVisibilityResultModeBoolean
+                                | WebGPUVisibilityResultModeCounting
+                                deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUVisibilityResultMode where
+        pToJSVal WebGPUVisibilityResultModeDisabled
+          = js_WebGPUVisibilityResultModeDisabled
+        pToJSVal WebGPUVisibilityResultModeBoolean
+          = js_WebGPUVisibilityResultModeBoolean
+        pToJSVal WebGPUVisibilityResultModeCounting
+          = js_WebGPUVisibilityResultModeCounting
+ 
+instance ToJSVal WebGPUVisibilityResultMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUVisibilityResultMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUVisibilityResultModeDisabled =
+            WebGPUVisibilityResultModeDisabled
+        pFromJSVal x
+          | x `js_eq` js_WebGPUVisibilityResultModeBoolean =
+            WebGPUVisibilityResultModeBoolean
+        pFromJSVal x
+          | x `js_eq` js_WebGPUVisibilityResultModeCounting =
+            WebGPUVisibilityResultModeCounting
+ 
+instance FromJSVal WebGPUVisibilityResultMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"disabled\""
+        js_WebGPUVisibilityResultModeDisabled :: JSVal
+ 
+foreign import javascript unsafe "\"boolean\""
+        js_WebGPUVisibilityResultModeBoolean :: JSVal
+ 
+foreign import javascript unsafe "\"counting\""
+        js_WebGPUVisibilityResultModeCounting :: JSVal
+ 
+data WebGPUWinding = WebGPUWindingClockwise
+                   | WebGPUWindingCounterclockwise
+                   deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUWinding where
+        pToJSVal WebGPUWindingClockwise = js_WebGPUWindingClockwise
+        pToJSVal WebGPUWindingCounterclockwise
+          = js_WebGPUWindingCounterclockwise
+ 
+instance ToJSVal WebGPUWinding where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUWinding where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUWindingClockwise = WebGPUWindingClockwise
+        pFromJSVal x
+          | x `js_eq` js_WebGPUWindingCounterclockwise =
+            WebGPUWindingCounterclockwise
+ 
+instance FromJSVal WebGPUWinding where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"clockwise\""
+        js_WebGPUWindingClockwise :: JSVal
+ 
+foreign import javascript unsafe "\"counterclockwise\""
+        js_WebGPUWindingCounterclockwise :: JSVal
+ 
+data WebGPUDepthClipMode = WebGPUDepthClipModeClip
+                         | WebGPUDepthClipModeClamp
+                         deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUDepthClipMode where
+        pToJSVal WebGPUDepthClipModeClip = js_WebGPUDepthClipModeClip
+        pToJSVal WebGPUDepthClipModeClamp = js_WebGPUDepthClipModeClamp
+ 
+instance ToJSVal WebGPUDepthClipMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUDepthClipMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUDepthClipModeClip = WebGPUDepthClipModeClip
+        pFromJSVal x
+          | x `js_eq` js_WebGPUDepthClipModeClamp = WebGPUDepthClipModeClamp
+ 
+instance FromJSVal WebGPUDepthClipMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"clip\""
+        js_WebGPUDepthClipModeClip :: JSVal
+ 
+foreign import javascript unsafe "\"clamp\""
+        js_WebGPUDepthClipModeClamp :: JSVal
+ 
+data WebGPUTriangleFillMode = WebGPUTriangleFillModeFill
+                            | WebGPUTriangleFillModeLines
+                            deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUTriangleFillMode where
+        pToJSVal WebGPUTriangleFillModeFill = js_WebGPUTriangleFillModeFill
+        pToJSVal WebGPUTriangleFillModeLines
+          = js_WebGPUTriangleFillModeLines
+ 
+instance ToJSVal WebGPUTriangleFillMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUTriangleFillMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTriangleFillModeFill =
+            WebGPUTriangleFillModeFill
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTriangleFillModeLines =
+            WebGPUTriangleFillModeLines
+ 
+instance FromJSVal WebGPUTriangleFillMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"fill\""
+        js_WebGPUTriangleFillModeFill :: JSVal
+ 
+foreign import javascript unsafe "\"lines\""
+        js_WebGPUTriangleFillModeLines :: JSVal
+ 
+data WebGPUCPUCacheMode = WebGPUCPUCacheModeDefaultcache
+                        | WebGPUCPUCacheModeWritecombined
+                        deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUCPUCacheMode where
+        pToJSVal WebGPUCPUCacheModeDefaultcache
+          = js_WebGPUCPUCacheModeDefaultcache
+        pToJSVal WebGPUCPUCacheModeWritecombined
+          = js_WebGPUCPUCacheModeWritecombined
+ 
+instance ToJSVal WebGPUCPUCacheMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUCPUCacheMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCPUCacheModeDefaultcache =
+            WebGPUCPUCacheModeDefaultcache
+        pFromJSVal x
+          | x `js_eq` js_WebGPUCPUCacheModeWritecombined =
+            WebGPUCPUCacheModeWritecombined
+ 
+instance FromJSVal WebGPUCPUCacheMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"defaultcache\""
+        js_WebGPUCPUCacheModeDefaultcache :: JSVal
+ 
+foreign import javascript unsafe "\"writecombined\""
+        js_WebGPUCPUCacheModeWritecombined :: JSVal
+ 
+data WebGPUStorageMode = WebGPUStorageModeShared
+                       | WebGPUStorageModeManaged
+                       | WebGPUStorageModePrivate
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUStorageMode where
+        pToJSVal WebGPUStorageModeShared = js_WebGPUStorageModeShared
+        pToJSVal WebGPUStorageModeManaged = js_WebGPUStorageModeManaged
+        pToJSVal WebGPUStorageModePrivate = js_WebGPUStorageModePrivate
+ 
+instance ToJSVal WebGPUStorageMode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUStorageMode where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStorageModeShared = WebGPUStorageModeShared
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStorageModeManaged = WebGPUStorageModeManaged
+        pFromJSVal x
+          | x `js_eq` js_WebGPUStorageModePrivate = WebGPUStorageModePrivate
+ 
+instance FromJSVal WebGPUStorageMode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"shared\""
+        js_WebGPUStorageModeShared :: JSVal
+ 
+foreign import javascript unsafe "\"managed\""
+        js_WebGPUStorageModeManaged :: JSVal
+ 
+foreign import javascript unsafe "\"private\""
+        js_WebGPUStorageModePrivate :: JSVal
+ 
+data WebGPUResourceOptions = WebGPUResourceOptionsCpucachemodedefaultcache
+                           | WebGPUResourceOptionsCpucachemodewritecombined
+                           | WebGPUResourceOptionsStoragemodeshared
+                           | WebGPUResourceOptionsStoragemodemanaged
+                           | WebGPUResourceOptionsStoragemodeprivate
+                           | WebGPUResourceOptionsOptioncpucachemodedefaultcache
+                           | WebGPUResourceOptionsOptioncpucachemodewritecombined
+                           deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUResourceOptions where
+        pToJSVal WebGPUResourceOptionsCpucachemodedefaultcache
+          = js_WebGPUResourceOptionsCpucachemodedefaultcache
+        pToJSVal WebGPUResourceOptionsCpucachemodewritecombined
+          = js_WebGPUResourceOptionsCpucachemodewritecombined
+        pToJSVal WebGPUResourceOptionsStoragemodeshared
+          = js_WebGPUResourceOptionsStoragemodeshared
+        pToJSVal WebGPUResourceOptionsStoragemodemanaged
+          = js_WebGPUResourceOptionsStoragemodemanaged
+        pToJSVal WebGPUResourceOptionsStoragemodeprivate
+          = js_WebGPUResourceOptionsStoragemodeprivate
+        pToJSVal WebGPUResourceOptionsOptioncpucachemodedefaultcache
+          = js_WebGPUResourceOptionsOptioncpucachemodedefaultcache
+        pToJSVal WebGPUResourceOptionsOptioncpucachemodewritecombined
+          = js_WebGPUResourceOptionsOptioncpucachemodewritecombined
+ 
+instance ToJSVal WebGPUResourceOptions where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUResourceOptions where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsCpucachemodedefaultcache =
+            WebGPUResourceOptionsCpucachemodedefaultcache
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsCpucachemodewritecombined =
+            WebGPUResourceOptionsCpucachemodewritecombined
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsStoragemodeshared =
+            WebGPUResourceOptionsStoragemodeshared
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsStoragemodemanaged =
+            WebGPUResourceOptionsStoragemodemanaged
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsStoragemodeprivate =
+            WebGPUResourceOptionsStoragemodeprivate
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsOptioncpucachemodedefaultcache
+            = WebGPUResourceOptionsOptioncpucachemodedefaultcache
+        pFromJSVal x
+          | x `js_eq` js_WebGPUResourceOptionsOptioncpucachemodewritecombined
+            = WebGPUResourceOptionsOptioncpucachemodewritecombined
+ 
+instance FromJSVal WebGPUResourceOptions where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"cpucachemodedefaultcache\""
+        js_WebGPUResourceOptionsCpucachemodedefaultcache :: JSVal
+ 
+foreign import javascript unsafe "\"cpucachemodewritecombined\""
+        js_WebGPUResourceOptionsCpucachemodewritecombined :: JSVal
+ 
+foreign import javascript unsafe "\"storagemodeshared\""
+        js_WebGPUResourceOptionsStoragemodeshared :: JSVal
+ 
+foreign import javascript unsafe "\"storagemodemanaged\""
+        js_WebGPUResourceOptionsStoragemodemanaged :: JSVal
+ 
+foreign import javascript unsafe "\"storagemodeprivate\""
+        js_WebGPUResourceOptionsStoragemodeprivate :: JSVal
+ 
+foreign import javascript unsafe
+        "\"optioncpucachemodedefaultcache\""
+        js_WebGPUResourceOptionsOptioncpucachemodedefaultcache :: JSVal
+ 
+foreign import javascript unsafe
+        "\"optioncpucachemodewritecombined\""
+        js_WebGPUResourceOptionsOptioncpucachemodewritecombined :: JSVal
+ 
+data WebGPUTextureUsage = WebGPUTextureUsageUnknown
+                        | WebGPUTextureUsageShaderread
+                        | WebGPUTextureUsageShaderwrite
+                        | WebGPUTextureUsageRendertarget
+                        | WebGPUTextureUsagePixelformatview
+                        deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUTextureUsage where
+        pToJSVal WebGPUTextureUsageUnknown = js_WebGPUTextureUsageUnknown
+        pToJSVal WebGPUTextureUsageShaderread
+          = js_WebGPUTextureUsageShaderread
+        pToJSVal WebGPUTextureUsageShaderwrite
+          = js_WebGPUTextureUsageShaderwrite
+        pToJSVal WebGPUTextureUsageRendertarget
+          = js_WebGPUTextureUsageRendertarget
+        pToJSVal WebGPUTextureUsagePixelformatview
+          = js_WebGPUTextureUsagePixelformatview
+ 
+instance ToJSVal WebGPUTextureUsage where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUTextureUsage where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTextureUsageUnknown =
+            WebGPUTextureUsageUnknown
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTextureUsageShaderread =
+            WebGPUTextureUsageShaderread
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTextureUsageShaderwrite =
+            WebGPUTextureUsageShaderwrite
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTextureUsageRendertarget =
+            WebGPUTextureUsageRendertarget
+        pFromJSVal x
+          | x `js_eq` js_WebGPUTextureUsagePixelformatview =
+            WebGPUTextureUsagePixelformatview
+ 
+instance FromJSVal WebGPUTextureUsage where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"unknown\""
+        js_WebGPUTextureUsageUnknown :: JSVal
+ 
+foreign import javascript unsafe "\"shaderread\""
+        js_WebGPUTextureUsageShaderread :: JSVal
+ 
+foreign import javascript unsafe "\"shaderwrite\""
+        js_WebGPUTextureUsageShaderwrite :: JSVal
+ 
+foreign import javascript unsafe "\"rendertarget\""
+        js_WebGPUTextureUsageRendertarget :: JSVal
+ 
+foreign import javascript unsafe "\"pixelformatview\""
+        js_WebGPUTextureUsagePixelformatview :: JSVal
+ 
+data WebGPUBlendOperation = WebGPUBlendOperationAdd
+                          | WebGPUBlendOperationSubtract
+                          | WebGPUBlendOperationReversesubtract
+                          | WebGPUBlendOperationMin
+                          | WebGPUBlendOperationMax
+                          deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUBlendOperation where
+        pToJSVal WebGPUBlendOperationAdd = js_WebGPUBlendOperationAdd
+        pToJSVal WebGPUBlendOperationSubtract
+          = js_WebGPUBlendOperationSubtract
+        pToJSVal WebGPUBlendOperationReversesubtract
+          = js_WebGPUBlendOperationReversesubtract
+        pToJSVal WebGPUBlendOperationMin = js_WebGPUBlendOperationMin
+        pToJSVal WebGPUBlendOperationMax = js_WebGPUBlendOperationMax
+ 
+instance ToJSVal WebGPUBlendOperation where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUBlendOperation where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendOperationAdd = WebGPUBlendOperationAdd
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendOperationSubtract =
+            WebGPUBlendOperationSubtract
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendOperationReversesubtract =
+            WebGPUBlendOperationReversesubtract
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendOperationMin = WebGPUBlendOperationMin
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendOperationMax = WebGPUBlendOperationMax
+ 
+instance FromJSVal WebGPUBlendOperation where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"add\""
+        js_WebGPUBlendOperationAdd :: JSVal
+ 
+foreign import javascript unsafe "\"subtract\""
+        js_WebGPUBlendOperationSubtract :: JSVal
+ 
+foreign import javascript unsafe "\"reversesubtract\""
+        js_WebGPUBlendOperationReversesubtract :: JSVal
+ 
+foreign import javascript unsafe "\"min\""
+        js_WebGPUBlendOperationMin :: JSVal
+ 
+foreign import javascript unsafe "\"max\""
+        js_WebGPUBlendOperationMax :: JSVal
+ 
+data WebGPUBlendFactor = WebGPUBlendFactorZero
+                       | WebGPUBlendFactorOne
+                       | WebGPUBlendFactorSourcecolor
+                       | WebGPUBlendFactorOneminussourcecolor
+                       | WebGPUBlendFactorSourcealpha
+                       | WebGPUBlendFactorOneminussourcealpha
+                       | WebGPUBlendFactorDestinationcolor
+                       | WebGPUBlendFactorOneminusdestinationcolor
+                       | WebGPUBlendFactorDestinationalpha
+                       | WebGPUBlendFactorOneminusdestinationalpha
+                       | WebGPUBlendFactorSourcealphasaturated
+                       | WebGPUBlendFactorBlendcolor
+                       | WebGPUBlendFactorOneminusblendcolor
+                       | WebGPUBlendFactorBlendalpha
+                       | WebGPUBlendFactorOneminusblendalpha
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUBlendFactor where
+        pToJSVal WebGPUBlendFactorZero = js_WebGPUBlendFactorZero
+        pToJSVal WebGPUBlendFactorOne = js_WebGPUBlendFactorOne
+        pToJSVal WebGPUBlendFactorSourcecolor
+          = js_WebGPUBlendFactorSourcecolor
+        pToJSVal WebGPUBlendFactorOneminussourcecolor
+          = js_WebGPUBlendFactorOneminussourcecolor
+        pToJSVal WebGPUBlendFactorSourcealpha
+          = js_WebGPUBlendFactorSourcealpha
+        pToJSVal WebGPUBlendFactorOneminussourcealpha
+          = js_WebGPUBlendFactorOneminussourcealpha
+        pToJSVal WebGPUBlendFactorDestinationcolor
+          = js_WebGPUBlendFactorDestinationcolor
+        pToJSVal WebGPUBlendFactorOneminusdestinationcolor
+          = js_WebGPUBlendFactorOneminusdestinationcolor
+        pToJSVal WebGPUBlendFactorDestinationalpha
+          = js_WebGPUBlendFactorDestinationalpha
+        pToJSVal WebGPUBlendFactorOneminusdestinationalpha
+          = js_WebGPUBlendFactorOneminusdestinationalpha
+        pToJSVal WebGPUBlendFactorSourcealphasaturated
+          = js_WebGPUBlendFactorSourcealphasaturated
+        pToJSVal WebGPUBlendFactorBlendcolor
+          = js_WebGPUBlendFactorBlendcolor
+        pToJSVal WebGPUBlendFactorOneminusblendcolor
+          = js_WebGPUBlendFactorOneminusblendcolor
+        pToJSVal WebGPUBlendFactorBlendalpha
+          = js_WebGPUBlendFactorBlendalpha
+        pToJSVal WebGPUBlendFactorOneminusblendalpha
+          = js_WebGPUBlendFactorOneminusblendalpha
+ 
+instance ToJSVal WebGPUBlendFactor where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUBlendFactor where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorZero = WebGPUBlendFactorZero
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOne = WebGPUBlendFactorOne
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorSourcecolor =
+            WebGPUBlendFactorSourcecolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminussourcecolor =
+            WebGPUBlendFactorOneminussourcecolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorSourcealpha =
+            WebGPUBlendFactorSourcealpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminussourcealpha =
+            WebGPUBlendFactorOneminussourcealpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorDestinationcolor =
+            WebGPUBlendFactorDestinationcolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminusdestinationcolor =
+            WebGPUBlendFactorOneminusdestinationcolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorDestinationalpha =
+            WebGPUBlendFactorDestinationalpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminusdestinationalpha =
+            WebGPUBlendFactorOneminusdestinationalpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorSourcealphasaturated =
+            WebGPUBlendFactorSourcealphasaturated
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorBlendcolor =
+            WebGPUBlendFactorBlendcolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminusblendcolor =
+            WebGPUBlendFactorOneminusblendcolor
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorBlendalpha =
+            WebGPUBlendFactorBlendalpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUBlendFactorOneminusblendalpha =
+            WebGPUBlendFactorOneminusblendalpha
+ 
+instance FromJSVal WebGPUBlendFactor where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"zero\""
+        js_WebGPUBlendFactorZero :: JSVal
+ 
+foreign import javascript unsafe "\"one\"" js_WebGPUBlendFactorOne
+        :: JSVal
+ 
+foreign import javascript unsafe "\"sourcecolor\""
+        js_WebGPUBlendFactorSourcecolor :: JSVal
+ 
+foreign import javascript unsafe "\"oneminussourcecolor\""
+        js_WebGPUBlendFactorOneminussourcecolor :: JSVal
+ 
+foreign import javascript unsafe "\"sourcealpha\""
+        js_WebGPUBlendFactorSourcealpha :: JSVal
+ 
+foreign import javascript unsafe "\"oneminussourcealpha\""
+        js_WebGPUBlendFactorOneminussourcealpha :: JSVal
+ 
+foreign import javascript unsafe "\"destinationcolor\""
+        js_WebGPUBlendFactorDestinationcolor :: JSVal
+ 
+foreign import javascript unsafe "\"oneminusdestinationcolor\""
+        js_WebGPUBlendFactorOneminusdestinationcolor :: JSVal
+ 
+foreign import javascript unsafe "\"destinationalpha\""
+        js_WebGPUBlendFactorDestinationalpha :: JSVal
+ 
+foreign import javascript unsafe "\"oneminusdestinationalpha\""
+        js_WebGPUBlendFactorOneminusdestinationalpha :: JSVal
+ 
+foreign import javascript unsafe "\"sourcealphasaturated\""
+        js_WebGPUBlendFactorSourcealphasaturated :: JSVal
+ 
+foreign import javascript unsafe "\"blendcolor\""
+        js_WebGPUBlendFactorBlendcolor :: JSVal
+ 
+foreign import javascript unsafe "\"oneminusblendcolor\""
+        js_WebGPUBlendFactorOneminusblendcolor :: JSVal
+ 
+foreign import javascript unsafe "\"blendalpha\""
+        js_WebGPUBlendFactorBlendalpha :: JSVal
+ 
+foreign import javascript unsafe "\"oneminusblendalpha\""
+        js_WebGPUBlendFactorOneminusblendalpha :: JSVal
+ 
+data WebGPUColorWriteMask = WebGPUColorWriteMaskNone
+                          | WebGPUColorWriteMaskRed
+                          | WebGPUColorWriteMaskGreen
+                          | WebGPUColorWriteMaskBlue
+                          | WebGPUColorWriteMaskAlpha
+                          | WebGPUColorWriteMaskAll
+                          deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUColorWriteMask where
+        pToJSVal WebGPUColorWriteMaskNone = js_WebGPUColorWriteMaskNone
+        pToJSVal WebGPUColorWriteMaskRed = js_WebGPUColorWriteMaskRed
+        pToJSVal WebGPUColorWriteMaskGreen = js_WebGPUColorWriteMaskGreen
+        pToJSVal WebGPUColorWriteMaskBlue = js_WebGPUColorWriteMaskBlue
+        pToJSVal WebGPUColorWriteMaskAlpha = js_WebGPUColorWriteMaskAlpha
+        pToJSVal WebGPUColorWriteMaskAll = js_WebGPUColorWriteMaskAll
+ 
+instance ToJSVal WebGPUColorWriteMask where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUColorWriteMask where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskNone = WebGPUColorWriteMaskNone
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskRed = WebGPUColorWriteMaskRed
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskGreen =
+            WebGPUColorWriteMaskGreen
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskBlue = WebGPUColorWriteMaskBlue
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskAlpha =
+            WebGPUColorWriteMaskAlpha
+        pFromJSVal x
+          | x `js_eq` js_WebGPUColorWriteMaskAll = WebGPUColorWriteMaskAll
+ 
+instance FromJSVal WebGPUColorWriteMask where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"none\""
+        js_WebGPUColorWriteMaskNone :: JSVal
+ 
+foreign import javascript unsafe "\"red\""
+        js_WebGPUColorWriteMaskRed :: JSVal
+ 
+foreign import javascript unsafe "\"green\""
+        js_WebGPUColorWriteMaskGreen :: JSVal
+ 
+foreign import javascript unsafe "\"blue\""
+        js_WebGPUColorWriteMaskBlue :: JSVal
+ 
+foreign import javascript unsafe "\"alpha\""
+        js_WebGPUColorWriteMaskAlpha :: JSVal
+ 
+foreign import javascript unsafe "\"all\""
+        js_WebGPUColorWriteMaskAll :: JSVal
+ 
+data WebGPUMultisampleDepthResolveFilter = WebGPUMultisampleDepthResolveFilterSample0
+                                         | WebGPUMultisampleDepthResolveFilterMin
+                                         | WebGPUMultisampleDepthResolveFilterMax
+                                         deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUMultisampleDepthResolveFilter where
+        pToJSVal WebGPUMultisampleDepthResolveFilterSample0
+          = js_WebGPUMultisampleDepthResolveFilterSample0
+        pToJSVal WebGPUMultisampleDepthResolveFilterMin
+          = js_WebGPUMultisampleDepthResolveFilterMin
+        pToJSVal WebGPUMultisampleDepthResolveFilterMax
+          = js_WebGPUMultisampleDepthResolveFilterMax
+ 
+instance ToJSVal WebGPUMultisampleDepthResolveFilter where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUMultisampleDepthResolveFilter where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUMultisampleDepthResolveFilterSample0 =
+            WebGPUMultisampleDepthResolveFilterSample0
+        pFromJSVal x
+          | x `js_eq` js_WebGPUMultisampleDepthResolveFilterMin =
+            WebGPUMultisampleDepthResolveFilterMin
+        pFromJSVal x
+          | x `js_eq` js_WebGPUMultisampleDepthResolveFilterMax =
+            WebGPUMultisampleDepthResolveFilterMax
+ 
+instance FromJSVal WebGPUMultisampleDepthResolveFilter where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"sample0\""
+        js_WebGPUMultisampleDepthResolveFilterSample0 :: JSVal
+ 
+foreign import javascript unsafe "\"min\""
+        js_WebGPUMultisampleDepthResolveFilterMin :: JSVal
+ 
+foreign import javascript unsafe "\"max\""
+        js_WebGPUMultisampleDepthResolveFilterMax :: JSVal
+ 
+data WebGPUFeatureSet = WebGPUFeatureSetLevel1
+                      | WebGPUFeatureSetLevel2
+                      deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal WebGPUFeatureSet where
+        pToJSVal WebGPUFeatureSetLevel1 = js_WebGPUFeatureSetLevel1
+        pToJSVal WebGPUFeatureSetLevel2 = js_WebGPUFeatureSetLevel2
+ 
+instance ToJSVal WebGPUFeatureSet where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal WebGPUFeatureSet where
+        pFromJSVal x
+          | x `js_eq` js_WebGPUFeatureSetLevel1 = WebGPUFeatureSetLevel1
+        pFromJSVal x
+          | x `js_eq` js_WebGPUFeatureSetLevel2 = WebGPUFeatureSetLevel2
+ 
+instance FromJSVal WebGPUFeatureSet where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"level1\""
+        js_WebGPUFeatureSetLevel1 :: JSVal
+ 
+foreign import javascript unsafe "\"level2\""
+        js_WebGPUFeatureSetLevel2 :: JSVal
+ 
 data VideoPresentationMode = VideoPresentationModeFullscreen
                            | VideoPresentationModePictureInPicture
                            | VideoPresentationModeInline
@@ -697,6 +2100,147 @@ foreign import javascript unsafe "\"metadata\""
  
 foreign import javascript unsafe "\"forced\""
         js_TextTrackKindForced :: JSVal
+ 
+data ApplePayErrorCode = ApplePayErrorCodeUnknown
+                       | ApplePayErrorCodeShippingContactInvalid
+                       | ApplePayErrorCodeBillingContactInvalid
+                       | ApplePayErrorCodeAddressUnservicable
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal ApplePayErrorCode where
+        pToJSVal ApplePayErrorCodeUnknown = js_ApplePayErrorCodeUnknown
+        pToJSVal ApplePayErrorCodeShippingContactInvalid
+          = js_ApplePayErrorCodeShippingContactInvalid
+        pToJSVal ApplePayErrorCodeBillingContactInvalid
+          = js_ApplePayErrorCodeBillingContactInvalid
+        pToJSVal ApplePayErrorCodeAddressUnservicable
+          = js_ApplePayErrorCodeAddressUnservicable
+ 
+instance ToJSVal ApplePayErrorCode where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal ApplePayErrorCode where
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorCodeUnknown = ApplePayErrorCodeUnknown
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorCodeShippingContactInvalid =
+            ApplePayErrorCodeShippingContactInvalid
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorCodeBillingContactInvalid =
+            ApplePayErrorCodeBillingContactInvalid
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorCodeAddressUnservicable =
+            ApplePayErrorCodeAddressUnservicable
+ 
+instance FromJSVal ApplePayErrorCode where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"unknown\""
+        js_ApplePayErrorCodeUnknown :: JSVal
+ 
+foreign import javascript unsafe "\"shippingContactInvalid\""
+        js_ApplePayErrorCodeShippingContactInvalid :: JSVal
+ 
+foreign import javascript unsafe "\"billingContactInvalid\""
+        js_ApplePayErrorCodeBillingContactInvalid :: JSVal
+ 
+foreign import javascript unsafe "\"addressUnservicable\""
+        js_ApplePayErrorCodeAddressUnservicable :: JSVal
+ 
+data ApplePayErrorContactField = ApplePayErrorContactFieldPhoneNumber
+                               | ApplePayErrorContactFieldEmailAddress
+                               | ApplePayErrorContactFieldName
+                               | ApplePayErrorContactFieldPostalAddress
+                               | ApplePayErrorContactFieldAddressLines
+                               | ApplePayErrorContactFieldLocality
+                               | ApplePayErrorContactFieldPostalCode
+                               | ApplePayErrorContactFieldAdministrativeArea
+                               | ApplePayErrorContactFieldCountry
+                               deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal ApplePayErrorContactField where
+        pToJSVal ApplePayErrorContactFieldPhoneNumber
+          = js_ApplePayErrorContactFieldPhoneNumber
+        pToJSVal ApplePayErrorContactFieldEmailAddress
+          = js_ApplePayErrorContactFieldEmailAddress
+        pToJSVal ApplePayErrorContactFieldName
+          = js_ApplePayErrorContactFieldName
+        pToJSVal ApplePayErrorContactFieldPostalAddress
+          = js_ApplePayErrorContactFieldPostalAddress
+        pToJSVal ApplePayErrorContactFieldAddressLines
+          = js_ApplePayErrorContactFieldAddressLines
+        pToJSVal ApplePayErrorContactFieldLocality
+          = js_ApplePayErrorContactFieldLocality
+        pToJSVal ApplePayErrorContactFieldPostalCode
+          = js_ApplePayErrorContactFieldPostalCode
+        pToJSVal ApplePayErrorContactFieldAdministrativeArea
+          = js_ApplePayErrorContactFieldAdministrativeArea
+        pToJSVal ApplePayErrorContactFieldCountry
+          = js_ApplePayErrorContactFieldCountry
+ 
+instance ToJSVal ApplePayErrorContactField where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal ApplePayErrorContactField where
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldPhoneNumber =
+            ApplePayErrorContactFieldPhoneNumber
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldEmailAddress =
+            ApplePayErrorContactFieldEmailAddress
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldName =
+            ApplePayErrorContactFieldName
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldPostalAddress =
+            ApplePayErrorContactFieldPostalAddress
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldAddressLines =
+            ApplePayErrorContactFieldAddressLines
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldLocality =
+            ApplePayErrorContactFieldLocality
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldPostalCode =
+            ApplePayErrorContactFieldPostalCode
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldAdministrativeArea =
+            ApplePayErrorContactFieldAdministrativeArea
+        pFromJSVal x
+          | x `js_eq` js_ApplePayErrorContactFieldCountry =
+            ApplePayErrorContactFieldCountry
+ 
+instance FromJSVal ApplePayErrorContactField where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"phoneNumber\""
+        js_ApplePayErrorContactFieldPhoneNumber :: JSVal
+ 
+foreign import javascript unsafe "\"emailAddress\""
+        js_ApplePayErrorContactFieldEmailAddress :: JSVal
+ 
+foreign import javascript unsafe "\"name\""
+        js_ApplePayErrorContactFieldName :: JSVal
+ 
+foreign import javascript unsafe "\"postalAddress\""
+        js_ApplePayErrorContactFieldPostalAddress :: JSVal
+ 
+foreign import javascript unsafe "\"addressLines\""
+        js_ApplePayErrorContactFieldAddressLines :: JSVal
+ 
+foreign import javascript unsafe "\"locality\""
+        js_ApplePayErrorContactFieldLocality :: JSVal
+ 
+foreign import javascript unsafe "\"postalCode\""
+        js_ApplePayErrorContactFieldPostalCode :: JSVal
+ 
+foreign import javascript unsafe "\"administrativeArea\""
+        js_ApplePayErrorContactFieldAdministrativeArea :: JSVal
+ 
+foreign import javascript unsafe "\"country\""
+        js_ApplePayErrorContactFieldCountry :: JSVal
  
 data ApplePayLineItemType = ApplePayLineItemTypePending
                           | ApplePayLineItemTypeFinal
@@ -1785,6 +3329,37 @@ foreign import javascript unsafe "\"network\""
 foreign import javascript unsafe "\"decode\""
         js_EndOfStreamErrorDecode :: JSVal
  
+data ReadyState = ReadyStateClosed
+                | ReadyStateOpen
+                | ReadyStateEnded
+                deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal ReadyState where
+        pToJSVal ReadyStateClosed = js_ReadyStateClosed
+        pToJSVal ReadyStateOpen = js_ReadyStateOpen
+        pToJSVal ReadyStateEnded = js_ReadyStateEnded
+ 
+instance ToJSVal ReadyState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal ReadyState where
+        pFromJSVal x | x `js_eq` js_ReadyStateClosed = ReadyStateClosed
+        pFromJSVal x | x `js_eq` js_ReadyStateOpen = ReadyStateOpen
+        pFromJSVal x | x `js_eq` js_ReadyStateEnded = ReadyStateEnded
+ 
+instance FromJSVal ReadyState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"closed\"" js_ReadyStateClosed
+        :: JSVal
+ 
+foreign import javascript unsafe "\"open\"" js_ReadyStateOpen ::
+        JSVal
+ 
+foreign import javascript unsafe "\"ended\"" js_ReadyStateEnded ::
+        JSVal
+ 
 data AppendMode = AppendModeSegments
                 | AppendModeSequence
                 deriving (Show, Read, Eq, Ord, Typeable)
@@ -1847,13 +3422,11 @@ foreign import javascript unsafe "\"audiooutput\""
 foreign import javascript unsafe "\"videoinput\""
         js_MediaDeviceKindVideoinput :: JSVal
  
-data MediaStreamTrackState = MediaStreamTrackStateNew
-                           | MediaStreamTrackStateLive
+data MediaStreamTrackState = MediaStreamTrackStateLive
                            | MediaStreamTrackStateEnded
                            deriving (Show, Read, Eq, Ord, Typeable)
  
 instance PToJSVal MediaStreamTrackState where
-        pToJSVal MediaStreamTrackStateNew = js_MediaStreamTrackStateNew
         pToJSVal MediaStreamTrackStateLive = js_MediaStreamTrackStateLive
         pToJSVal MediaStreamTrackStateEnded = js_MediaStreamTrackStateEnded
  
@@ -1861,8 +3434,6 @@ instance ToJSVal MediaStreamTrackState where
         toJSVal = return . pToJSVal
  
 instance PFromJSVal MediaStreamTrackState where
-        pFromJSVal x
-          | x `js_eq` js_MediaStreamTrackStateNew = MediaStreamTrackStateNew
         pFromJSVal x
           | x `js_eq` js_MediaStreamTrackStateLive =
             MediaStreamTrackStateLive
@@ -1873,9 +3444,6 @@ instance PFromJSVal MediaStreamTrackState where
 instance FromJSVal MediaStreamTrackState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
- 
-foreign import javascript unsafe "\"new\""
-        js_MediaStreamTrackStateNew :: JSVal
  
 foreign import javascript unsafe "\"live\""
         js_MediaStreamTrackStateLive :: JSVal
@@ -1944,6 +3512,408 @@ foreign import javascript unsafe "\"max-compat\""
  
 foreign import javascript unsafe "\"max-bundle\""
         js_RTCBundlePolicyMaxBundle :: JSVal
+ 
+data RTCDataChannelState = RTCDataChannelStateConnecting
+                         | RTCDataChannelStateOpen
+                         | RTCDataChannelStateClosing
+                         | RTCDataChannelStateClosed
+                         deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCDataChannelState where
+        pToJSVal RTCDataChannelStateConnecting
+          = js_RTCDataChannelStateConnecting
+        pToJSVal RTCDataChannelStateOpen = js_RTCDataChannelStateOpen
+        pToJSVal RTCDataChannelStateClosing = js_RTCDataChannelStateClosing
+        pToJSVal RTCDataChannelStateClosed = js_RTCDataChannelStateClosed
+ 
+instance ToJSVal RTCDataChannelState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCDataChannelState where
+        pFromJSVal x
+          | x `js_eq` js_RTCDataChannelStateConnecting =
+            RTCDataChannelStateConnecting
+        pFromJSVal x
+          | x `js_eq` js_RTCDataChannelStateOpen = RTCDataChannelStateOpen
+        pFromJSVal x
+          | x `js_eq` js_RTCDataChannelStateClosing =
+            RTCDataChannelStateClosing
+        pFromJSVal x
+          | x `js_eq` js_RTCDataChannelStateClosed =
+            RTCDataChannelStateClosed
+ 
+instance FromJSVal RTCDataChannelState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"connecting\""
+        js_RTCDataChannelStateConnecting :: JSVal
+ 
+foreign import javascript unsafe "\"open\""
+        js_RTCDataChannelStateOpen :: JSVal
+ 
+foreign import javascript unsafe "\"closing\""
+        js_RTCDataChannelStateClosing :: JSVal
+ 
+foreign import javascript unsafe "\"closed\""
+        js_RTCDataChannelStateClosed :: JSVal
+ 
+data RTCIceConnectionState = RTCIceConnectionStateNew
+                           | RTCIceConnectionStateChecking
+                           | RTCIceConnectionStateConnected
+                           | RTCIceConnectionStateCompleted
+                           | RTCIceConnectionStateFailed
+                           | RTCIceConnectionStateDisconnected
+                           | RTCIceConnectionStateClosed
+                           deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCIceConnectionState where
+        pToJSVal RTCIceConnectionStateNew = js_RTCIceConnectionStateNew
+        pToJSVal RTCIceConnectionStateChecking
+          = js_RTCIceConnectionStateChecking
+        pToJSVal RTCIceConnectionStateConnected
+          = js_RTCIceConnectionStateConnected
+        pToJSVal RTCIceConnectionStateCompleted
+          = js_RTCIceConnectionStateCompleted
+        pToJSVal RTCIceConnectionStateFailed
+          = js_RTCIceConnectionStateFailed
+        pToJSVal RTCIceConnectionStateDisconnected
+          = js_RTCIceConnectionStateDisconnected
+        pToJSVal RTCIceConnectionStateClosed
+          = js_RTCIceConnectionStateClosed
+ 
+instance ToJSVal RTCIceConnectionState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCIceConnectionState where
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateNew = RTCIceConnectionStateNew
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateChecking =
+            RTCIceConnectionStateChecking
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateConnected =
+            RTCIceConnectionStateConnected
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateCompleted =
+            RTCIceConnectionStateCompleted
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateFailed =
+            RTCIceConnectionStateFailed
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateDisconnected =
+            RTCIceConnectionStateDisconnected
+        pFromJSVal x
+          | x `js_eq` js_RTCIceConnectionStateClosed =
+            RTCIceConnectionStateClosed
+ 
+instance FromJSVal RTCIceConnectionState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"new\""
+        js_RTCIceConnectionStateNew :: JSVal
+ 
+foreign import javascript unsafe "\"checking\""
+        js_RTCIceConnectionStateChecking :: JSVal
+ 
+foreign import javascript unsafe "\"connected\""
+        js_RTCIceConnectionStateConnected :: JSVal
+ 
+foreign import javascript unsafe "\"completed\""
+        js_RTCIceConnectionStateCompleted :: JSVal
+ 
+foreign import javascript unsafe "\"failed\""
+        js_RTCIceConnectionStateFailed :: JSVal
+ 
+foreign import javascript unsafe "\"disconnected\""
+        js_RTCIceConnectionStateDisconnected :: JSVal
+ 
+foreign import javascript unsafe "\"closed\""
+        js_RTCIceConnectionStateClosed :: JSVal
+ 
+data RTCIceGatheringState = RTCIceGatheringStateNew
+                          | RTCIceGatheringStateGathering
+                          | RTCIceGatheringStateComplete
+                          deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCIceGatheringState where
+        pToJSVal RTCIceGatheringStateNew = js_RTCIceGatheringStateNew
+        pToJSVal RTCIceGatheringStateGathering
+          = js_RTCIceGatheringStateGathering
+        pToJSVal RTCIceGatheringStateComplete
+          = js_RTCIceGatheringStateComplete
+ 
+instance ToJSVal RTCIceGatheringState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCIceGatheringState where
+        pFromJSVal x
+          | x `js_eq` js_RTCIceGatheringStateNew = RTCIceGatheringStateNew
+        pFromJSVal x
+          | x `js_eq` js_RTCIceGatheringStateGathering =
+            RTCIceGatheringStateGathering
+        pFromJSVal x
+          | x `js_eq` js_RTCIceGatheringStateComplete =
+            RTCIceGatheringStateComplete
+ 
+instance FromJSVal RTCIceGatheringState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"new\""
+        js_RTCIceGatheringStateNew :: JSVal
+ 
+foreign import javascript unsafe "\"gathering\""
+        js_RTCIceGatheringStateGathering :: JSVal
+ 
+foreign import javascript unsafe "\"complete\""
+        js_RTCIceGatheringStateComplete :: JSVal
+ 
+data RTCIceTransportState = RTCIceTransportStateNew
+                          | RTCIceTransportStateChecking
+                          | RTCIceTransportStateConnected
+                          | RTCIceTransportStateCompleted
+                          | RTCIceTransportStateFailed
+                          | RTCIceTransportStateDisconnected
+                          | RTCIceTransportStateClosed
+                          deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCIceTransportState where
+        pToJSVal RTCIceTransportStateNew = js_RTCIceTransportStateNew
+        pToJSVal RTCIceTransportStateChecking
+          = js_RTCIceTransportStateChecking
+        pToJSVal RTCIceTransportStateConnected
+          = js_RTCIceTransportStateConnected
+        pToJSVal RTCIceTransportStateCompleted
+          = js_RTCIceTransportStateCompleted
+        pToJSVal RTCIceTransportStateFailed = js_RTCIceTransportStateFailed
+        pToJSVal RTCIceTransportStateDisconnected
+          = js_RTCIceTransportStateDisconnected
+        pToJSVal RTCIceTransportStateClosed = js_RTCIceTransportStateClosed
+ 
+instance ToJSVal RTCIceTransportState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCIceTransportState where
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateNew = RTCIceTransportStateNew
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateChecking =
+            RTCIceTransportStateChecking
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateConnected =
+            RTCIceTransportStateConnected
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateCompleted =
+            RTCIceTransportStateCompleted
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateFailed =
+            RTCIceTransportStateFailed
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateDisconnected =
+            RTCIceTransportStateDisconnected
+        pFromJSVal x
+          | x `js_eq` js_RTCIceTransportStateClosed =
+            RTCIceTransportStateClosed
+ 
+instance FromJSVal RTCIceTransportState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"new\""
+        js_RTCIceTransportStateNew :: JSVal
+ 
+foreign import javascript unsafe "\"checking\""
+        js_RTCIceTransportStateChecking :: JSVal
+ 
+foreign import javascript unsafe "\"connected\""
+        js_RTCIceTransportStateConnected :: JSVal
+ 
+foreign import javascript unsafe "\"completed\""
+        js_RTCIceTransportStateCompleted :: JSVal
+ 
+foreign import javascript unsafe "\"failed\""
+        js_RTCIceTransportStateFailed :: JSVal
+ 
+foreign import javascript unsafe "\"disconnected\""
+        js_RTCIceTransportStateDisconnected :: JSVal
+ 
+foreign import javascript unsafe "\"closed\""
+        js_RTCIceTransportStateClosed :: JSVal
+ 
+data RTCPeerConnectionState = RTCPeerConnectionStateNew
+                            | RTCPeerConnectionStateConnecting
+                            | RTCPeerConnectionStateConnected
+                            | RTCPeerConnectionStateDisconnected
+                            | RTCPeerConnectionStateFailed
+                            | RTCPeerConnectionStateClosed
+                            deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCPeerConnectionState where
+        pToJSVal RTCPeerConnectionStateNew = js_RTCPeerConnectionStateNew
+        pToJSVal RTCPeerConnectionStateConnecting
+          = js_RTCPeerConnectionStateConnecting
+        pToJSVal RTCPeerConnectionStateConnected
+          = js_RTCPeerConnectionStateConnected
+        pToJSVal RTCPeerConnectionStateDisconnected
+          = js_RTCPeerConnectionStateDisconnected
+        pToJSVal RTCPeerConnectionStateFailed
+          = js_RTCPeerConnectionStateFailed
+        pToJSVal RTCPeerConnectionStateClosed
+          = js_RTCPeerConnectionStateClosed
+ 
+instance ToJSVal RTCPeerConnectionState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCPeerConnectionState where
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateNew =
+            RTCPeerConnectionStateNew
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateConnecting =
+            RTCPeerConnectionStateConnecting
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateConnected =
+            RTCPeerConnectionStateConnected
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateDisconnected =
+            RTCPeerConnectionStateDisconnected
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateFailed =
+            RTCPeerConnectionStateFailed
+        pFromJSVal x
+          | x `js_eq` js_RTCPeerConnectionStateClosed =
+            RTCPeerConnectionStateClosed
+ 
+instance FromJSVal RTCPeerConnectionState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"new\""
+        js_RTCPeerConnectionStateNew :: JSVal
+ 
+foreign import javascript unsafe "\"connecting\""
+        js_RTCPeerConnectionStateConnecting :: JSVal
+ 
+foreign import javascript unsafe "\"connected\""
+        js_RTCPeerConnectionStateConnected :: JSVal
+ 
+foreign import javascript unsafe "\"disconnected\""
+        js_RTCPeerConnectionStateDisconnected :: JSVal
+ 
+foreign import javascript unsafe "\"failed\""
+        js_RTCPeerConnectionStateFailed :: JSVal
+ 
+foreign import javascript unsafe "\"closed\""
+        js_RTCPeerConnectionStateClosed :: JSVal
+ 
+data RTCDegradationPreference = RTCDegradationPreferenceMaintainFramerate
+                              | RTCDegradationPreferenceMaintainResolution
+                              | RTCDegradationPreferenceBalanced
+                              deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCDegradationPreference where
+        pToJSVal RTCDegradationPreferenceMaintainFramerate
+          = js_RTCDegradationPreferenceMaintainFramerate
+        pToJSVal RTCDegradationPreferenceMaintainResolution
+          = js_RTCDegradationPreferenceMaintainResolution
+        pToJSVal RTCDegradationPreferenceBalanced
+          = js_RTCDegradationPreferenceBalanced
+ 
+instance ToJSVal RTCDegradationPreference where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCDegradationPreference where
+        pFromJSVal x
+          | x `js_eq` js_RTCDegradationPreferenceMaintainFramerate =
+            RTCDegradationPreferenceMaintainFramerate
+        pFromJSVal x
+          | x `js_eq` js_RTCDegradationPreferenceMaintainResolution =
+            RTCDegradationPreferenceMaintainResolution
+        pFromJSVal x
+          | x `js_eq` js_RTCDegradationPreferenceBalanced =
+            RTCDegradationPreferenceBalanced
+ 
+instance FromJSVal RTCDegradationPreference where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"maintain-framerate\""
+        js_RTCDegradationPreferenceMaintainFramerate :: JSVal
+ 
+foreign import javascript unsafe "\"maintain-resolution\""
+        js_RTCDegradationPreferenceMaintainResolution :: JSVal
+ 
+foreign import javascript unsafe "\"balanced\""
+        js_RTCDegradationPreferenceBalanced :: JSVal
+ 
+data RTCDtxStatus = RTCDtxStatusDisabled
+                  | RTCDtxStatusEnabled
+                  deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCDtxStatus where
+        pToJSVal RTCDtxStatusDisabled = js_RTCDtxStatusDisabled
+        pToJSVal RTCDtxStatusEnabled = js_RTCDtxStatusEnabled
+ 
+instance ToJSVal RTCDtxStatus where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCDtxStatus where
+        pFromJSVal x
+          | x `js_eq` js_RTCDtxStatusDisabled = RTCDtxStatusDisabled
+        pFromJSVal x
+          | x `js_eq` js_RTCDtxStatusEnabled = RTCDtxStatusEnabled
+ 
+instance FromJSVal RTCDtxStatus where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"disabled\""
+        js_RTCDtxStatusDisabled :: JSVal
+ 
+foreign import javascript unsafe "\"enabled\""
+        js_RTCDtxStatusEnabled :: JSVal
+ 
+data RTCPriorityType = RTCPriorityTypeVeryLow
+                     | RTCPriorityTypeLow
+                     | RTCPriorityTypeMedium
+                     | RTCPriorityTypeHigh
+                     deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCPriorityType where
+        pToJSVal RTCPriorityTypeVeryLow = js_RTCPriorityTypeVeryLow
+        pToJSVal RTCPriorityTypeLow = js_RTCPriorityTypeLow
+        pToJSVal RTCPriorityTypeMedium = js_RTCPriorityTypeMedium
+        pToJSVal RTCPriorityTypeHigh = js_RTCPriorityTypeHigh
+ 
+instance ToJSVal RTCPriorityType where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCPriorityType where
+        pFromJSVal x
+          | x `js_eq` js_RTCPriorityTypeVeryLow = RTCPriorityTypeVeryLow
+        pFromJSVal x | x `js_eq` js_RTCPriorityTypeLow = RTCPriorityTypeLow
+        pFromJSVal x
+          | x `js_eq` js_RTCPriorityTypeMedium = RTCPriorityTypeMedium
+        pFromJSVal x
+          | x `js_eq` js_RTCPriorityTypeHigh = RTCPriorityTypeHigh
+ 
+instance FromJSVal RTCPriorityType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"very-low\""
+        js_RTCPriorityTypeVeryLow :: JSVal
+ 
+foreign import javascript unsafe "\"low\"" js_RTCPriorityTypeLow ::
+        JSVal
+ 
+foreign import javascript unsafe "\"medium\""
+        js_RTCPriorityTypeMedium :: JSVal
+ 
+foreign import javascript unsafe "\"high\"" js_RTCPriorityTypeHigh
+        :: JSVal
  
 data RTCRtpTransceiverDirection = RTCRtpTransceiverDirectionSendrecv
                                 | RTCRtpTransceiverDirectionSendonly
@@ -2030,6 +4000,155 @@ foreign import javascript unsafe "\"answer\"" js_RTCSdpTypeAnswer
  
 foreign import javascript unsafe "\"rollback\""
         js_RTCSdpTypeRollback :: JSVal
+ 
+data RTCSignalingState = RTCSignalingStateStable
+                       | RTCSignalingStateHaveLocalOffer
+                       | RTCSignalingStateHaveRemoteOffer
+                       | RTCSignalingStateHaveLocalPranswer
+                       | RTCSignalingStateHaveRemotePranswer
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCSignalingState where
+        pToJSVal RTCSignalingStateStable = js_RTCSignalingStateStable
+        pToJSVal RTCSignalingStateHaveLocalOffer
+          = js_RTCSignalingStateHaveLocalOffer
+        pToJSVal RTCSignalingStateHaveRemoteOffer
+          = js_RTCSignalingStateHaveRemoteOffer
+        pToJSVal RTCSignalingStateHaveLocalPranswer
+          = js_RTCSignalingStateHaveLocalPranswer
+        pToJSVal RTCSignalingStateHaveRemotePranswer
+          = js_RTCSignalingStateHaveRemotePranswer
+ 
+instance ToJSVal RTCSignalingState where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCSignalingState where
+        pFromJSVal x
+          | x `js_eq` js_RTCSignalingStateStable = RTCSignalingStateStable
+        pFromJSVal x
+          | x `js_eq` js_RTCSignalingStateHaveLocalOffer =
+            RTCSignalingStateHaveLocalOffer
+        pFromJSVal x
+          | x `js_eq` js_RTCSignalingStateHaveRemoteOffer =
+            RTCSignalingStateHaveRemoteOffer
+        pFromJSVal x
+          | x `js_eq` js_RTCSignalingStateHaveLocalPranswer =
+            RTCSignalingStateHaveLocalPranswer
+        pFromJSVal x
+          | x `js_eq` js_RTCSignalingStateHaveRemotePranswer =
+            RTCSignalingStateHaveRemotePranswer
+ 
+instance FromJSVal RTCSignalingState where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"stable\""
+        js_RTCSignalingStateStable :: JSVal
+ 
+foreign import javascript unsafe "\"have-local-offer\""
+        js_RTCSignalingStateHaveLocalOffer :: JSVal
+ 
+foreign import javascript unsafe "\"have-remote-offer\""
+        js_RTCSignalingStateHaveRemoteOffer :: JSVal
+ 
+foreign import javascript unsafe "\"have-local-pranswer\""
+        js_RTCSignalingStateHaveLocalPranswer :: JSVal
+ 
+foreign import javascript unsafe "\"have-remote-pranswer\""
+        js_RTCSignalingStateHaveRemotePranswer :: JSVal
+ 
+data RTCStatsType = RTCStatsTypeCodec
+                  | RTCStatsTypeInboundRtp
+                  | RTCStatsTypeOutboundRtp
+                  | RTCStatsTypePeerConnection
+                  | RTCStatsTypeDataChannel
+                  | RTCStatsTypeTrack
+                  | RTCStatsTypeTransport
+                  | RTCStatsTypeCandidatePair
+                  | RTCStatsTypeLocalCandidate
+                  | RTCStatsTypeRemoteCandidate
+                  | RTCStatsTypeCertificate
+                  deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal RTCStatsType where
+        pToJSVal RTCStatsTypeCodec = js_RTCStatsTypeCodec
+        pToJSVal RTCStatsTypeInboundRtp = js_RTCStatsTypeInboundRtp
+        pToJSVal RTCStatsTypeOutboundRtp = js_RTCStatsTypeOutboundRtp
+        pToJSVal RTCStatsTypePeerConnection = js_RTCStatsTypePeerConnection
+        pToJSVal RTCStatsTypeDataChannel = js_RTCStatsTypeDataChannel
+        pToJSVal RTCStatsTypeTrack = js_RTCStatsTypeTrack
+        pToJSVal RTCStatsTypeTransport = js_RTCStatsTypeTransport
+        pToJSVal RTCStatsTypeCandidatePair = js_RTCStatsTypeCandidatePair
+        pToJSVal RTCStatsTypeLocalCandidate = js_RTCStatsTypeLocalCandidate
+        pToJSVal RTCStatsTypeRemoteCandidate
+          = js_RTCStatsTypeRemoteCandidate
+        pToJSVal RTCStatsTypeCertificate = js_RTCStatsTypeCertificate
+ 
+instance ToJSVal RTCStatsType where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal RTCStatsType where
+        pFromJSVal x | x `js_eq` js_RTCStatsTypeCodec = RTCStatsTypeCodec
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeInboundRtp = RTCStatsTypeInboundRtp
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeOutboundRtp = RTCStatsTypeOutboundRtp
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypePeerConnection =
+            RTCStatsTypePeerConnection
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeDataChannel = RTCStatsTypeDataChannel
+        pFromJSVal x | x `js_eq` js_RTCStatsTypeTrack = RTCStatsTypeTrack
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeTransport = RTCStatsTypeTransport
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeCandidatePair =
+            RTCStatsTypeCandidatePair
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeLocalCandidate =
+            RTCStatsTypeLocalCandidate
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeRemoteCandidate =
+            RTCStatsTypeRemoteCandidate
+        pFromJSVal x
+          | x `js_eq` js_RTCStatsTypeCertificate = RTCStatsTypeCertificate
+ 
+instance FromJSVal RTCStatsType where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"codec\"" js_RTCStatsTypeCodec
+        :: JSVal
+ 
+foreign import javascript unsafe "\"inbound-rtp\""
+        js_RTCStatsTypeInboundRtp :: JSVal
+ 
+foreign import javascript unsafe "\"outbound-rtp\""
+        js_RTCStatsTypeOutboundRtp :: JSVal
+ 
+foreign import javascript unsafe "\"peer-connection\""
+        js_RTCStatsTypePeerConnection :: JSVal
+ 
+foreign import javascript unsafe "\"data-channel\""
+        js_RTCStatsTypeDataChannel :: JSVal
+ 
+foreign import javascript unsafe "\"track\"" js_RTCStatsTypeTrack
+        :: JSVal
+ 
+foreign import javascript unsafe "\"transport\""
+        js_RTCStatsTypeTransport :: JSVal
+ 
+foreign import javascript unsafe "\"candidate-pair\""
+        js_RTCStatsTypeCandidatePair :: JSVal
+ 
+foreign import javascript unsafe "\"local-candidate\""
+        js_RTCStatsTypeLocalCandidate :: JSVal
+ 
+foreign import javascript unsafe "\"remote-candidate\""
+        js_RTCStatsTypeRemoteCandidate :: JSVal
+ 
+foreign import javascript unsafe "\"certificate\""
+        js_RTCStatsTypeCertificate :: JSVal
  
 data NotificationDirection = NotificationDirectionAuto
                            | NotificationDirectionLtr
@@ -2321,6 +4440,33 @@ foreign import javascript unsafe "\"2x\"" js_OverSampleType2x ::
  
 foreign import javascript unsafe "\"4x\"" js_OverSampleType4x ::
         JSVal
+ 
+data ScrollRestoration = ScrollRestorationAuto
+                       | ScrollRestorationManual
+                       deriving (Show, Read, Eq, Ord, Typeable)
+ 
+instance PToJSVal ScrollRestoration where
+        pToJSVal ScrollRestorationAuto = js_ScrollRestorationAuto
+        pToJSVal ScrollRestorationManual = js_ScrollRestorationManual
+ 
+instance ToJSVal ScrollRestoration where
+        toJSVal = return . pToJSVal
+ 
+instance PFromJSVal ScrollRestoration where
+        pFromJSVal x
+          | x `js_eq` js_ScrollRestorationAuto = ScrollRestorationAuto
+        pFromJSVal x
+          | x `js_eq` js_ScrollRestorationManual = ScrollRestorationManual
+ 
+instance FromJSVal ScrollRestoration where
+        fromJSValUnchecked = return . pFromJSVal
+        fromJSVal = return . pFromJSVal
+ 
+foreign import javascript unsafe "\"auto\""
+        js_ScrollRestorationAuto :: JSVal
+ 
+foreign import javascript unsafe "\"manual\""
+        js_ScrollRestorationManual :: JSVal
  
 data XMLHttpRequestResponseType = XMLHttpRequestResponseType
                                 | XMLHttpRequestResponseTypeArraybuffer

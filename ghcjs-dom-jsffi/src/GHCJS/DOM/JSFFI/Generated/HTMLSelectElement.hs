@@ -6,22 +6,21 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLSelectElement
        (js_item, item, item_, itemUnsafe, itemUnchecked, js_namedItem,
         namedItem, namedItem_, namedItemUnsafe, namedItemUnchecked,
-        js_addBefore, addBefore, js_removeThis, removeThis,
-        js_removeElement, removeElement, js_remove, remove,
-        js_checkValidity, checkValidity, checkValidity_, js_reportValidity,
-        reportValidity, reportValidity_, js_setCustomValidity,
-        setCustomValidity, js_setAutofocus, setAutofocus, js_getAutofocus,
-        getAutofocus, js_setDisabled, setDisabled, js_getDisabled,
-        getDisabled, js_getForm, getForm, getFormUnsafe, getFormUnchecked,
-        js_setMultiple, setMultiple, js_getMultiple, getMultiple,
-        js_setName, setName, js_getName, getName, js_setRequired,
-        setRequired, js_getRequired, getRequired, js_setSize, setSize,
-        js_getSize, getSize, js_getType, getType, js_getOptions,
-        getOptions, js_setLength, setLength, js_getLength, getLength,
-        js_getSelectedOptions, getSelectedOptions, js_setSelectedIndex,
-        setSelectedIndex, js_getSelectedIndex, getSelectedIndex,
-        js_setValue, setValue, js_getValue, getValue, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
+        js_addBefore, addBefore, js_removeThis, removeThis, js_remove,
+        remove, js_checkValidity, checkValidity, checkValidity_,
+        js_reportValidity, reportValidity, reportValidity_,
+        js_setCustomValidity, setCustomValidity, js_setAutofocus,
+        setAutofocus, js_getAutofocus, getAutofocus, js_setDisabled,
+        setDisabled, js_getDisabled, getDisabled, js_getForm, getForm,
+        getFormUnsafe, getFormUnchecked, js_setMultiple, setMultiple,
+        js_getMultiple, getMultiple, js_setName, setName, js_getName,
+        getName, js_setRequired, setRequired, js_getRequired, getRequired,
+        js_setSize, setSize, js_getSize, getSize, js_getType, getType,
+        js_getOptions, getOptions, js_setLength, setLength, js_getLength,
+        getLength, js_getSelectedOptions, getSelectedOptions,
+        js_setSelectedIndex, setSelectedIndex, js_getSelectedIndex,
+        getSelectedIndex, js_setValue, setValue, js_getValue, getValue,
+        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage, js_getLabels,
         getLabels, js_setAutocomplete, setAutocomplete, js_getAutocomplete,
         getAutocomplete, HTMLSelectElement(..), gTypeHTMLSelectElement)
@@ -133,14 +132,6 @@ foreign import javascript unsafe "$1[\"remove\"]()" js_removeThis
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.remove Mozilla HTMLSelectElement.remove documentation> 
 removeThis :: (MonadIO m) => HTMLSelectElement -> m ()
 removeThis self = liftIO (js_removeThis self)
- 
-foreign import javascript unsafe "$1[\"remove\"]($2)"
-        js_removeElement :: HTMLSelectElement -> HTMLOptionElement -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.remove Mozilla HTMLSelectElement.remove documentation> 
-removeElement ::
-              (MonadIO m) => HTMLSelectElement -> HTMLOptionElement -> m ()
-removeElement self option = liftIO (js_removeElement self option)
  
 foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::
         HTMLSelectElement -> Int -> IO ()

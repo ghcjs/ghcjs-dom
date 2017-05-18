@@ -13,7 +13,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLScriptElement
         js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
         getCrossOrigin, getCrossOriginUnsafe, getCrossOriginUnchecked,
         js_setNonce, setNonce, js_getNonce, getNonce, js_setNoModule,
-        setNoModule, js_getNoModule, getNoModule, HTMLScriptElement(..),
+        setNoModule, js_getNoModule, getNoModule, js_setIntegrity,
+        setIntegrity, js_getIntegrity, getIntegrity, HTMLScriptElement(..),
         gTypeHTMLScriptElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -225,3 +226,21 @@ foreign import javascript unsafe "($1[\"noModule\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.noModule Mozilla HTMLScriptElement.noModule documentation> 
 getNoModule :: (MonadIO m) => HTMLScriptElement -> m Bool
 getNoModule self = liftIO (js_getNoModule self)
+ 
+foreign import javascript unsafe "$1[\"integrity\"] = $2;"
+        js_setIntegrity :: HTMLScriptElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.integrity Mozilla HTMLScriptElement.integrity documentation> 
+setIntegrity ::
+             (MonadIO m, ToJSString val) => HTMLScriptElement -> val -> m ()
+setIntegrity self val
+  = liftIO (js_setIntegrity self (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"integrity\"]"
+        js_getIntegrity :: HTMLScriptElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.integrity Mozilla HTMLScriptElement.integrity documentation> 
+getIntegrity ::
+             (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
+getIntegrity self
+  = liftIO (fromJSString <$> (js_getIntegrity self))

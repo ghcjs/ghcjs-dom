@@ -4,12 +4,11 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Notification
-       (js_show, show, js_cancel, cancel, js_close, close,
-        js_requestPermission, requestPermission, js_getPermission,
-        getPermission, click, cLoseEvent, display, error, showEvent,
-        js_setDir, setDir, js_getDir, getDir, js_setReplaceId,
-        setReplaceId, js_getReplaceId, getReplaceId, js_setTag, setTag,
-        js_getTag, getTag, Notification(..), gTypeNotification)
+       (js_newNotification, newNotification, js_show, show, js_close,
+        close, js_requestPermission, requestPermission, js_getPermission,
+        getPermission, click, error, cLoseEvent, display, showEvent,
+        js_setTag, setTag, js_getTag, getTag, Notification(..),
+        gTypeNotification)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -30,19 +29,24 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
+foreign import javascript unsafe
+        "new window[\"Notification\"]($1,\n$2)" js_newNotification ::
+        JSString -> Optional NotificationOptions -> IO Notification
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification Mozilla Notification documentation> 
+newNotification ::
+                (MonadIO m, ToJSString title) =>
+                  title -> Maybe NotificationOptions -> m Notification
+newNotification title options
+  = liftIO
+      (js_newNotification (toJSString title) (maybeToOptional options))
+ 
 foreign import javascript unsafe "$1[\"show\"]()" js_show ::
         Notification -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.show Mozilla Notification.show documentation> 
 show :: (MonadIO m) => Notification -> m ()
 show self = liftIO (js_show self)
- 
-foreign import javascript unsafe "$1[\"cancel\"]()" js_cancel ::
-        Notification -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.cancel Mozilla Notification.cancel documentation> 
-cancel :: (MonadIO m) => Notification -> m ()
-cancel self = liftIO (js_cancel self)
  
 foreign import javascript unsafe "$1[\"close\"]()" js_close ::
         Notification -> IO ()
@@ -77,6 +81,10 @@ getPermission self
 click :: EventName Notification MouseEvent
 click = unsafeEventName (toJSString "click")
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onerror Mozilla Notification.onerror documentation> 
+error :: EventName Notification UIEvent
+error = unsafeEventName (toJSString "error")
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onclose Mozilla Notification.onclose documentation> 
 cLoseEvent :: EventName Notification CloseEvent
 cLoseEvent = unsafeEventName (toJSString "close")
@@ -85,47 +93,9 @@ cLoseEvent = unsafeEventName (toJSString "close")
 display :: EventName Notification ondisplay
 display = unsafeEventName (toJSString "display")
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onerror Mozilla Notification.onerror documentation> 
-error :: EventName Notification UIEvent
-error = unsafeEventName (toJSString "error")
-
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.onshow Mozilla Notification.onshow documentation> 
 showEvent :: EventName Notification MouseEvent
 showEvent = unsafeEventName (toJSString "show")
- 
-foreign import javascript unsafe "$1[\"dir\"] = $2;" js_setDir ::
-        Notification -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.dir Mozilla Notification.dir documentation> 
-setDir ::
-       (MonadIO m, ToJSString val) => Notification -> val -> m ()
-setDir self val = liftIO (js_setDir self (toJSString val))
- 
-foreign import javascript unsafe "$1[\"dir\"]" js_getDir ::
-        Notification -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.dir Mozilla Notification.dir documentation> 
-getDir ::
-       (MonadIO m, FromJSString result) => Notification -> m result
-getDir self = liftIO (fromJSString <$> (js_getDir self))
- 
-foreign import javascript unsafe "$1[\"replaceId\"] = $2;"
-        js_setReplaceId :: Notification -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.replaceId Mozilla Notification.replaceId documentation> 
-setReplaceId ::
-             (MonadIO m, ToJSString val) => Notification -> val -> m ()
-setReplaceId self val
-  = liftIO (js_setReplaceId self (toJSString val))
- 
-foreign import javascript unsafe "$1[\"replaceId\"]"
-        js_getReplaceId :: Notification -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.replaceId Mozilla Notification.replaceId documentation> 
-getReplaceId ::
-             (MonadIO m, FromJSString result) => Notification -> m result
-getReplaceId self
-  = liftIO (fromJSString <$> (js_getReplaceId self))
  
 foreign import javascript unsafe "$1[\"tag\"] = $2;" js_setTag ::
         Notification -> JSString -> IO ()

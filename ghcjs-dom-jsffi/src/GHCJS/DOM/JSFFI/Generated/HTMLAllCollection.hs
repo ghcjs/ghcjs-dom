@@ -6,8 +6,8 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLAllCollection
        (js_item, item, item_, itemUnsafe, itemUnchecked, js_namedItem,
         namedItem, namedItem_, namedItemUnsafe, namedItemUnchecked,
-        js_tags, tags, tags_, js_getLength, getLength,
-        HTMLAllCollection(..), gTypeHTMLAllCollection)
+        js_getLength, getLength, HTMLAllCollection(..),
+        gTypeHTMLAllCollection)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -89,20 +89,6 @@ namedItemUnchecked self name
   = liftIO
       (fromJust . nullableToMaybe <$>
          (js_namedItem self (toJSString name)))
- 
-foreign import javascript unsafe "$1[\"tags\"]($2)" js_tags ::
-        HTMLAllCollection -> JSString -> IO NodeList
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
-tags ::
-     (MonadIO m, ToJSString name) =>
-       HTMLAllCollection -> name -> m NodeList
-tags self name = liftIO (js_tags self (toJSString name))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAllCollection.tags Mozilla HTMLAllCollection.tags documentation> 
-tags_ ::
-      (MonadIO m, ToJSString name) => HTMLAllCollection -> name -> m ()
-tags_ self name = liftIO (void (js_tags self (toJSString name)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         HTMLAllCollection -> IO Word

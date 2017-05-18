@@ -7,9 +7,9 @@ module GHCJS.DOM.JSFFI.Generated.WindowOrWorkerGlobalScope
        (js_setTimeout, setTimeout, setTimeout_, js_clearTimeout,
         clearTimeout, js_setInterval, setInterval, setInterval_,
         js_clearInterval, clearInterval, js_atob, atob, atob_, js_btoa,
-        btoa, btoa_, WindowOrWorkerGlobalScope(..),
-        gTypeWindowOrWorkerGlobalScope, IsWindowOrWorkerGlobalScope,
-        toWindowOrWorkerGlobalScope)
+        btoa, btoa_, js_getOrigin, getOrigin,
+        WindowOrWorkerGlobalScope(..), gTypeWindowOrWorkerGlobalScope,
+        IsWindowOrWorkerGlobalScope, toWindowOrWorkerGlobalScope)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -153,3 +153,16 @@ btoa_ self string
   = liftIO
       (void
          (js_btoa (toWindowOrWorkerGlobalScope self) (toJSString string)))
+ 
+foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+        WindowOrWorkerGlobalScope -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope.origin Mozilla WindowOrWorkerGlobalScope.origin documentation> 
+getOrigin ::
+          (MonadIO m, IsWindowOrWorkerGlobalScope self,
+           FromJSString result) =>
+            self -> m result
+getOrigin self
+  = liftIO
+      (fromJSString <$>
+         (js_getOrigin (toWindowOrWorkerGlobalScope self)))

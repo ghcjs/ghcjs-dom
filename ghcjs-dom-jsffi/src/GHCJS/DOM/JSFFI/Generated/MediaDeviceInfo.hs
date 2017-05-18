@@ -5,8 +5,9 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaDeviceInfo
        (js_newMediaDeviceInfo, newMediaDeviceInfo, js_getDeviceId,
-        getDeviceId, js_getGroupId, getGroupId, js_getKind, getKind,
-        js_getLabel, getLabel, MediaDeviceInfo(..), gTypeMediaDeviceInfo)
+        getDeviceId, js_getKind, getKind, js_getLabel, getLabel,
+        js_getGroupId, getGroupId, MediaDeviceInfo(..),
+        gTypeMediaDeviceInfo)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -52,14 +53,6 @@ getDeviceId ::
             (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
 getDeviceId self = liftIO (fromJSString <$> (js_getDeviceId self))
  
-foreign import javascript unsafe "$1[\"groupId\"]" js_getGroupId ::
-        MediaDeviceInfo -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.groupId Mozilla MediaDeviceInfo.groupId documentation> 
-getGroupId ::
-           (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
-getGroupId self = liftIO (fromJSString <$> (js_getGroupId self))
- 
 foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         MediaDeviceInfo -> IO JSVal
 
@@ -74,3 +67,11 @@ foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
 getLabel ::
          (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
+ 
+foreign import javascript unsafe "$1[\"groupId\"]" js_getGroupId ::
+        MediaDeviceInfo -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.groupId Mozilla MediaDeviceInfo.groupId documentation> 
+getGroupId ::
+           (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
+getGroupId self = liftIO (fromJSString <$> (js_getGroupId self))

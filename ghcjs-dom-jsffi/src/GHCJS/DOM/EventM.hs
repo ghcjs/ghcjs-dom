@@ -155,14 +155,32 @@ onThese targetsAndEventNames callback = do
 event :: EventM t e e
 event = ask
 
-eventTarget :: IsEvent e => EventM t e EventTarget
+eventTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventTarget = event >>= Event.getTarget
 
-target :: (IsEvent e, IsGObject t) => EventM t e (Maybe t)
-target = eventTarget >>= liftJSM . fromJSValUnchecked . coerce
+eventTargetUnsafe :: IsEvent e => EventM t e EventTarget
+eventTargetUnsafe = event >>= Event.getTargetUnsafe
 
-eventCurrentTarget :: IsEvent e => EventM t e EventTarget
+eventTargetUnchecked :: IsEvent e => EventM t e EventTarget
+eventTargetUnchecked = event >>= Event.getTargetUnchecked
+
+target :: (IsEvent e, IsGObject t) => EventM t e (Maybe t)
+target = eventTarget >>= mapM (liftJSM . fromJSValUnchecked . coerce)
+
+targetUnsafe :: (IsEvent e, IsGObject t) => EventM t e t
+targetUnsafe = eventTargetUnsafe >>= (liftJSM . fromJSValUnchecked . coerce)
+
+targetUnchecked :: (IsEvent e, IsGObject t) => EventM t e t
+targetUnchecked = eventTargetUnchecked >>= (liftJSM . fromJSValUnchecked . coerce)
+
+eventCurrentTarget :: IsEvent e => EventM t e (Maybe EventTarget)
 eventCurrentTarget = event >>= Event.getCurrentTarget
+
+eventCurrentTargetUnsafe :: IsEvent e => EventM t e EventTarget
+eventCurrentTargetUnsafe = event >>= Event.getCurrentTargetUnsafe
+
+eventCurrentTargetUnchecked :: IsEvent e => EventM t e EventTarget
+eventCurrentTargetUnchecked = event >>= Event.getCurrentTargetUnchecked
 
 eventPhase :: IsEvent e => EventM t e Word
 eventPhase = event >>= Event.getEventPhase

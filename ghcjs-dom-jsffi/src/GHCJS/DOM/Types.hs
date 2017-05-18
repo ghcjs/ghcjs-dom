@@ -24,6 +24,9 @@ module GHCJS.DOM.Types (
 
   -- * DOM String
   , DOMString(..), ToDOMString(..), FromDOMString(..), IsDOMString
+  , USVString(..), IsUSVString
+  , ByteString(..), IsByteString
+  , CSSOMString(..), IsCSSOMString
 
   -- * Object
   , maybeJSNullOrUndefined, GType(..)
@@ -31,10 +34,14 @@ module GHCJS.DOM.Types (
   , castTo, unsafeCastTo, uncheckedCastTo
   , js_eq, strictEqual
 
+  -- * TypedArray
+  , RawTypedArray(RawTypedArray), unRawTypedArray, IsRawTypedArray, toRawTypedArray
+
   , Function(Function), unFunction, IsFunction, toFunction
 
   -- * Callbacks
   , AudioBufferCallback(..)
+  , BlobCallback(..)
   , DatabaseCallback(..)
   , IntersectionObserverCallback(..)
   , MediaQueryListListener(..)
@@ -117,6 +124,7 @@ module GHCJS.DOM.Types (
   , BufferSource(BufferSource), unBufferSource, IsBufferSource, toBufferSource
   , CanvasImageSource(CanvasImageSource), unCanvasImageSource, IsCanvasImageSource, toCanvasImageSource
   , CanvasStyle(CanvasStyle), unCanvasStyle, IsCanvasStyle
+  , CredentialBodyType(CredentialBodyType), unCredentialBodyType, IsCredentialBodyType, toCredentialBodyType
   , CryptoKeyOrKeyPair(CryptoKeyOrKeyPair), unCryptoKeyOrKeyPair, IsCryptoKeyOrKeyPair, toCryptoKeyOrKeyPair
   , EventListenerOptionsOrBool(EventListenerOptionsOrBool), unEventListenerOptionsOrBool, IsEventListenerOptionsOrBool, toEventListenerOptionsOrBool
   , Float32List(Float32List), unFloat32List, IsFloat32List
@@ -130,8 +138,10 @@ module GHCJS.DOM.Types (
   , Int32List(Int32List), unInt32List, IsInt32List
   , KeyData(KeyData), unKeyData, IsKeyData, toKeyData
   , MediaProvider(MediaProvider), unMediaProvider, IsMediaProvider, toMediaProvider
+  , MediaStreamTrackOrKind(MediaStreamTrackOrKind), unMediaStreamTrackOrKind, IsMediaStreamTrackOrKind
   , MessageEventSource(MessageEventSource), unMessageEventSource, IsMessageEventSource, toMessageEventSource
   , NodeOrString(NodeOrString), unNodeOrString, IsNodeOrString
+  , RTCIceCandidateOrInit(RTCIceCandidateOrInit), unRTCIceCandidateOrInit, IsRTCIceCandidateOrInit, toRTCIceCandidateOrInit
   , RadioNodeListOrElement(RadioNodeListOrElement), unRadioNodeListOrElement, IsRadioNodeListOrElement, toRadioNodeListOrElement
   , RenderingContext(RenderingContext), unRenderingContext, IsRenderingContext, toRenderingContext
   , SQLValue(SQLValue), unSQLValue, IsSQLValue
@@ -147,8 +157,10 @@ module GHCJS.DOM.Types (
   , AbstractWorker(AbstractWorker), unAbstractWorker, IsAbstractWorker, toAbstractWorker, gTypeAbstractWorker
   , Acceleration(Acceleration), unAcceleration, gTypeAcceleration
   , AddEventListenerOptions(AddEventListenerOptions), unAddEventListenerOptions, gTypeAddEventListenerOptions
-  , AesCbcParams(AesCbcParams), unAesCbcParams, gTypeAesCbcParams
-  , AesKeyGenParams(AesKeyGenParams), unAesKeyGenParams, gTypeAesKeyGenParams
+  , AesCbcCfbParams(AesCbcCfbParams), unAesCbcCfbParams, gTypeAesCbcCfbParams
+  , AesCtrParams(AesCtrParams), unAesCtrParams, gTypeAesCtrParams
+  , AesGcmParams(AesGcmParams), unAesGcmParams, gTypeAesGcmParams
+  , AesKeyParams(AesKeyParams), unAesKeyParams, gTypeAesKeyParams
   , AnalyserNode(AnalyserNode), unAnalyserNode, gTypeAnalyserNode
   , Animatable(Animatable), unAnimatable, IsAnimatable, toAnimatable, gTypeAnimatable
   , Animation(Animation), unAnimation, gTypeAnimation
@@ -156,19 +168,24 @@ module GHCJS.DOM.Types (
   , AnimationEvent(AnimationEvent), unAnimationEvent, gTypeAnimationEvent
   , AnimationEventInit(AnimationEventInit), unAnimationEventInit, gTypeAnimationEventInit
   , AnimationTimeline(AnimationTimeline), unAnimationTimeline, IsAnimationTimeline, toAnimationTimeline, gTypeAnimationTimeline
+  , ApplePayError(ApplePayError), unApplePayError, gTypeApplePayError
   , ApplePayLineItem(ApplePayLineItem), unApplePayLineItem, gTypeApplePayLineItem
   , ApplePayPayment(ApplePayPayment), unApplePayPayment, gTypeApplePayPayment
+  , ApplePayPaymentAuthorizationResult(ApplePayPaymentAuthorizationResult), unApplePayPaymentAuthorizationResult, gTypeApplePayPaymentAuthorizationResult
   , ApplePayPaymentAuthorizedEvent(ApplePayPaymentAuthorizedEvent), unApplePayPaymentAuthorizedEvent, gTypeApplePayPaymentAuthorizedEvent
   , ApplePayPaymentContact(ApplePayPaymentContact), unApplePayPaymentContact, gTypeApplePayPaymentContact
   , ApplePayPaymentMethod(ApplePayPaymentMethod), unApplePayPaymentMethod, gTypeApplePayPaymentMethod
   , ApplePayPaymentMethodSelectedEvent(ApplePayPaymentMethodSelectedEvent), unApplePayPaymentMethodSelectedEvent, gTypeApplePayPaymentMethodSelectedEvent
+  , ApplePayPaymentMethodUpdate(ApplePayPaymentMethodUpdate), unApplePayPaymentMethodUpdate, gTypeApplePayPaymentMethodUpdate
   , ApplePayPaymentPass(ApplePayPaymentPass), unApplePayPaymentPass, gTypeApplePayPaymentPass
   , ApplePayPaymentRequest(ApplePayPaymentRequest), unApplePayPaymentRequest, gTypeApplePayPaymentRequest
   , ApplePayPaymentToken(ApplePayPaymentToken), unApplePayPaymentToken, gTypeApplePayPaymentToken
   , ApplePaySession(ApplePaySession), unApplePaySession, gTypeApplePaySession
   , ApplePayShippingContactSelectedEvent(ApplePayShippingContactSelectedEvent), unApplePayShippingContactSelectedEvent, gTypeApplePayShippingContactSelectedEvent
+  , ApplePayShippingContactUpdate(ApplePayShippingContactUpdate), unApplePayShippingContactUpdate, gTypeApplePayShippingContactUpdate
   , ApplePayShippingMethod(ApplePayShippingMethod), unApplePayShippingMethod, gTypeApplePayShippingMethod
   , ApplePayShippingMethodSelectedEvent(ApplePayShippingMethodSelectedEvent), unApplePayShippingMethodSelectedEvent, gTypeApplePayShippingMethodSelectedEvent
+  , ApplePayShippingMethodUpdate(ApplePayShippingMethodUpdate), unApplePayShippingMethodUpdate, gTypeApplePayShippingMethodUpdate
   , ApplePayValidateMerchantEvent(ApplePayValidateMerchantEvent), unApplePayValidateMerchantEvent, gTypeApplePayValidateMerchantEvent
   , ApplicationCache(ApplicationCache), unApplicationCache, gTypeApplicationCache
   , AssignedNodesOptions(AssignedNodesOptions), unAssignedNodesOptions, gTypeAssignedNodesOptions
@@ -186,6 +203,7 @@ module GHCJS.DOM.Types (
   , AutocompleteErrorEvent(AutocompleteErrorEvent), unAutocompleteErrorEvent, gTypeAutocompleteErrorEvent
   , AutocompleteErrorEventInit(AutocompleteErrorEventInit), unAutocompleteErrorEventInit, gTypeAutocompleteErrorEventInit
   , BarProp(BarProp), unBarProp, gTypeBarProp
+  , BasicCredential(BasicCredential), unBasicCredential, IsBasicCredential, toBasicCredential, gTypeBasicCredential
   , BeforeLoadEvent(BeforeLoadEvent), unBeforeLoadEvent, gTypeBeforeLoadEvent
   , BeforeLoadEventInit(BeforeLoadEventInit), unBeforeLoadEventInit, gTypeBeforeLoadEventInit
   , BeforeUnloadEvent(BeforeUnloadEvent), unBeforeUnloadEvent, gTypeBeforeUnloadEvent
@@ -215,6 +233,7 @@ module GHCJS.DOM.Types (
   , CSSUnknownRule(CSSUnknownRule), unCSSUnknownRule, gTypeCSSUnknownRule
   , CSSValue(CSSValue), unCSSValue, IsCSSValue, toCSSValue, gTypeCSSValue
   , CSSValueList(CSSValueList), unCSSValueList, gTypeCSSValueList
+  , CanvasCaptureMediaStreamTrack(CanvasCaptureMediaStreamTrack), unCanvasCaptureMediaStreamTrack, gTypeCanvasCaptureMediaStreamTrack
   , CanvasGradient(CanvasGradient), unCanvasGradient, gTypeCanvasGradient
   , CanvasPath(CanvasPath), unCanvasPath, IsCanvasPath, toCanvasPath, gTypeCanvasPath
   , CanvasPattern(CanvasPattern), unCanvasPattern, gTypeCanvasPattern
@@ -224,8 +243,6 @@ module GHCJS.DOM.Types (
   , ChannelSplitterNode(ChannelSplitterNode), unChannelSplitterNode, gTypeChannelSplitterNode
   , CharacterData(CharacterData), unCharacterData, IsCharacterData, toCharacterData, gTypeCharacterData
   , ChildNode(ChildNode), unChildNode, IsChildNode, toChildNode, gTypeChildNode
-  , ClientRect(ClientRect), unClientRect, gTypeClientRect
-  , ClientRectList(ClientRectList), unClientRectList, gTypeClientRectList
   , ClipboardEvent(ClipboardEvent), unClipboardEvent, gTypeClipboardEvent
   , ClipboardEventInit(ClipboardEventInit), unClipboardEventInit, gTypeClipboardEventInit
   , CloseEvent(CloseEvent), unCloseEvent, gTypeCloseEvent
@@ -242,6 +259,7 @@ module GHCJS.DOM.Types (
   , Coordinates(Coordinates), unCoordinates, gTypeCoordinates
   , CountQueuingStrategy(CountQueuingStrategy), unCountQueuingStrategy, gTypeCountQueuingStrategy
   , Counter(Counter), unCounter, gTypeCounter
+  , CredentialData(CredentialData), unCredentialData, IsCredentialData, toCredentialData, gTypeCredentialData
   , Crypto(Crypto), unCrypto, gTypeCrypto
   , CryptoAlgorithmParameters(CryptoAlgorithmParameters), unCryptoAlgorithmParameters, IsCryptoAlgorithmParameters, toCryptoAlgorithmParameters, gTypeCryptoAlgorithmParameters
   , CryptoKey(CryptoKey), unCryptoKey, gTypeCryptoKey
@@ -275,6 +293,7 @@ module GHCJS.DOM.Types (
   , DeviceProximityEvent(DeviceProximityEvent), unDeviceProximityEvent, gTypeDeviceProximityEvent
   , DeviceProximityEventInit(DeviceProximityEventInit), unDeviceProximityEventInit, gTypeDeviceProximityEventInit
   , Document(Document), unDocument, IsDocument, toDocument, gTypeDocument
+  , DocumentAndElementEventHandlers(DocumentAndElementEventHandlers), unDocumentAndElementEventHandlers, IsDocumentAndElementEventHandlers, toDocumentAndElementEventHandlers, gTypeDocumentAndElementEventHandlers
   , DocumentFragment(DocumentFragment), unDocumentFragment, IsDocumentFragment, toDocumentFragment, gTypeDocumentFragment
   , DocumentOrShadowRoot(DocumentOrShadowRoot), unDocumentOrShadowRoot, IsDocumentOrShadowRoot, toDocumentOrShadowRoot, gTypeDocumentOrShadowRoot
   , DocumentTimeline(DocumentTimeline), unDocumentTimeline, gTypeDocumentTimeline
@@ -286,7 +305,11 @@ module GHCJS.DOM.Types (
   , EXTShaderTextureLOD(EXTShaderTextureLOD), unEXTShaderTextureLOD, gTypeEXTShaderTextureLOD
   , EXTTextureFilterAnisotropic(EXTTextureFilterAnisotropic), unEXTTextureFilterAnisotropic, gTypeEXTTextureFilterAnisotropic
   , EXTsRGB(EXTsRGB), unEXTsRGB, gTypeEXTsRGB
+  , EcKeyParams(EcKeyParams), unEcKeyParams, gTypeEcKeyParams
+  , EcdhKeyDeriveParams(EcdhKeyDeriveParams), unEcdhKeyDeriveParams, gTypeEcdhKeyDeriveParams
+  , EcdsaParams(EcdsaParams), unEcdsaParams, gTypeEcdsaParams
   , Element(Element), unElement, IsElement, toElement, gTypeElement
+  , ElementCSSInlineStyle(ElementCSSInlineStyle), unElementCSSInlineStyle, IsElementCSSInlineStyle, toElementCSSInlineStyle, gTypeElementCSSInlineStyle
   , ErrorEvent(ErrorEvent), unErrorEvent, gTypeErrorEvent
   , ErrorEventInit(ErrorEventInit), unErrorEventInit, gTypeErrorEventInit
   , Event(Event), unEvent, IsEvent, toEvent, gTypeEvent
@@ -404,6 +427,7 @@ module GHCJS.DOM.Types (
   , HashChangeEventInit(HashChangeEventInit), unHashChangeEventInit, gTypeHashChangeEventInit
   , Headers(Headers), unHeaders, gTypeHeaders
   , History(History), unHistory, gTypeHistory
+  , HkdfParams(HkdfParams), unHkdfParams, gTypeHkdfParams
   , HmacKeyParams(HmacKeyParams), unHmacKeyParams, gTypeHmacKeyParams
   , IDBCursor(IDBCursor), unIDBCursor, IsIDBCursor, toIDBCursor, gTypeIDBCursor
   , IDBCursorWithValue(IDBCursorWithValue), unIDBCursorWithValue, gTypeIDBCursorWithValue
@@ -461,7 +485,7 @@ module GHCJS.DOM.Types (
   , MediaStreamConstraints(MediaStreamConstraints), unMediaStreamConstraints, gTypeMediaStreamConstraints
   , MediaStreamEvent(MediaStreamEvent), unMediaStreamEvent, gTypeMediaStreamEvent
   , MediaStreamEventInit(MediaStreamEventInit), unMediaStreamEventInit, gTypeMediaStreamEventInit
-  , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, gTypeMediaStreamTrack
+  , MediaStreamTrack(MediaStreamTrack), unMediaStreamTrack, IsMediaStreamTrack, toMediaStreamTrack, gTypeMediaStreamTrack
   , MediaStreamTrackEvent(MediaStreamTrackEvent), unMediaStreamTrackEvent, gTypeMediaStreamTrackEvent
   , MediaStreamTrackEventInit(MediaStreamTrackEventInit), unMediaStreamTrackEventInit, gTypeMediaStreamTrackEventInit
   , MediaTrackCapabilities(MediaTrackCapabilities), unMediaTrackCapabilities, gTypeMediaTrackCapabilities
@@ -494,7 +518,6 @@ module GHCJS.DOM.Types (
   , NonDocumentTypeChildNode(NonDocumentTypeChildNode), unNonDocumentTypeChildNode, IsNonDocumentTypeChildNode, toNonDocumentTypeChildNode, gTypeNonDocumentTypeChildNode
   , NonElementParentNode(NonElementParentNode), unNonElementParentNode, IsNonElementParentNode, toNonElementParentNode, gTypeNonElementParentNode
   , Notification(Notification), unNotification, gTypeNotification
-  , NotificationCenter(NotificationCenter), unNotificationCenter, gTypeNotificationCenter
   , NotificationOptions(NotificationOptions), unNotificationOptions, gTypeNotificationOptions
   , OESElementIndexUint(OESElementIndexUint), unOESElementIndexUint, gTypeOESElementIndexUint
   , OESStandardDerivatives(OESStandardDerivatives), unOESStandardDerivatives, gTypeOESStandardDerivatives
@@ -515,7 +538,10 @@ module GHCJS.DOM.Types (
   , PageTransitionEventInit(PageTransitionEventInit), unPageTransitionEventInit, gTypePageTransitionEventInit
   , PannerNode(PannerNode), unPannerNode, gTypePannerNode
   , ParentNode(ParentNode), unParentNode, IsParentNode, toParentNode, gTypeParentNode
+  , PasswordCredential(PasswordCredential), unPasswordCredential, gTypePasswordCredential
+  , PasswordCredentialData(PasswordCredentialData), unPasswordCredentialData, gTypePasswordCredentialData
   , Path2D(Path2D), unPath2D, gTypePath2D
+  , Pbkdf2Params(Pbkdf2Params), unPbkdf2Params, gTypePbkdf2Params
   , Performance(Performance), unPerformance, gTypePerformance
   , PerformanceEntry(PerformanceEntry), unPerformanceEntry, IsPerformanceEntry, toPerformanceEntry, gTypePerformanceEntry
   , PerformanceMark(PerformanceMark), unPerformanceMark, gTypePerformanceMark
@@ -536,6 +562,8 @@ module GHCJS.DOM.Types (
   , ProcessingInstruction(ProcessingInstruction), unProcessingInstruction, gTypeProcessingInstruction
   , ProgressEvent(ProgressEvent), unProgressEvent, IsProgressEvent, toProgressEvent, gTypeProgressEvent
   , ProgressEventInit(ProgressEventInit), unProgressEventInit, gTypeProgressEventInit
+  , PromiseRejectionEvent(PromiseRejectionEvent), unPromiseRejectionEvent, gTypePromiseRejectionEvent
+  , PromiseRejectionEventInit(PromiseRejectionEventInit), unPromiseRejectionEventInit, gTypePromiseRejectionEventInit
   , QuickTimePluginReplacement(QuickTimePluginReplacement), unQuickTimePluginReplacement, gTypeQuickTimePluginReplacement
   , RGBColor(RGBColor), unRGBColor, gTypeRGBColor
   , RTCAnswerOptions(RTCAnswerOptions), unRTCAnswerOptions, gTypeRTCAnswerOptions
@@ -545,20 +573,35 @@ module GHCJS.DOM.Types (
   , RTCDTMFToneChangeEventInit(RTCDTMFToneChangeEventInit), unRTCDTMFToneChangeEventInit, gTypeRTCDTMFToneChangeEventInit
   , RTCDataChannel(RTCDataChannel), unRTCDataChannel, gTypeRTCDataChannel
   , RTCDataChannelEvent(RTCDataChannelEvent), unRTCDataChannelEvent, gTypeRTCDataChannelEvent
+  , RTCDataChannelEventInit(RTCDataChannelEventInit), unRTCDataChannelEventInit, gTypeRTCDataChannelEventInit
   , RTCDataChannelInit(RTCDataChannelInit), unRTCDataChannelInit, gTypeRTCDataChannelInit
+  , RTCDataChannelStats(RTCDataChannelStats), unRTCDataChannelStats, gTypeRTCDataChannelStats
   , RTCIceCandidate(RTCIceCandidate), unRTCIceCandidate, gTypeRTCIceCandidate
   , RTCIceCandidateEvent(RTCIceCandidateEvent), unRTCIceCandidateEvent, gTypeRTCIceCandidateEvent
   , RTCIceCandidateInit(RTCIceCandidateInit), unRTCIceCandidateInit, gTypeRTCIceCandidateInit
   , RTCIceServer(RTCIceServer), unRTCIceServer, gTypeRTCIceServer
+  , RTCIceTransport(RTCIceTransport), unRTCIceTransport, gTypeRTCIceTransport
+  , RTCInboundRTPStreamStats(RTCInboundRTPStreamStats), unRTCInboundRTPStreamStats, gTypeRTCInboundRTPStreamStats
+  , RTCMediaStreamTrackStats(RTCMediaStreamTrackStats), unRTCMediaStreamTrackStats, gTypeRTCMediaStreamTrackStats
   , RTCOfferAnswerOptions(RTCOfferAnswerOptions), unRTCOfferAnswerOptions, IsRTCOfferAnswerOptions, toRTCOfferAnswerOptions, gTypeRTCOfferAnswerOptions
   , RTCOfferOptions(RTCOfferOptions), unRTCOfferOptions, gTypeRTCOfferOptions
+  , RTCOutboundRTPStreamStats(RTCOutboundRTPStreamStats), unRTCOutboundRTPStreamStats, gTypeRTCOutboundRTPStreamStats
   , RTCPeerConnection(RTCPeerConnection), unRTCPeerConnection, gTypeRTCPeerConnection
+  , RTCPeerConnectionIceEvent(RTCPeerConnectionIceEvent), unRTCPeerConnectionIceEvent, gTypeRTCPeerConnectionIceEvent
+  , RTCRTPStreamStats(RTCRTPStreamStats), unRTCRTPStreamStats, IsRTCRTPStreamStats, toRTCRTPStreamStats, gTypeRTCRTPStreamStats
+  , RTCRtpCodecParameters(RTCRtpCodecParameters), unRTCRtpCodecParameters, gTypeRTCRtpCodecParameters
+  , RTCRtpEncodingParameters(RTCRtpEncodingParameters), unRTCRtpEncodingParameters, gTypeRTCRtpEncodingParameters
+  , RTCRtpFecParameters(RTCRtpFecParameters), unRTCRtpFecParameters, gTypeRTCRtpFecParameters
+  , RTCRtpHeaderExtensionParameters(RTCRtpHeaderExtensionParameters), unRTCRtpHeaderExtensionParameters, gTypeRTCRtpHeaderExtensionParameters
+  , RTCRtpParameters(RTCRtpParameters), unRTCRtpParameters, gTypeRTCRtpParameters
   , RTCRtpReceiver(RTCRtpReceiver), unRTCRtpReceiver, gTypeRTCRtpReceiver
+  , RTCRtpRtxParameters(RTCRtpRtxParameters), unRTCRtpRtxParameters, gTypeRTCRtpRtxParameters
   , RTCRtpSender(RTCRtpSender), unRTCRtpSender, gTypeRTCRtpSender
   , RTCRtpTransceiver(RTCRtpTransceiver), unRTCRtpTransceiver, gTypeRTCRtpTransceiver
   , RTCRtpTransceiverInit(RTCRtpTransceiverInit), unRTCRtpTransceiverInit, gTypeRTCRtpTransceiverInit
   , RTCSessionDescription(RTCSessionDescription), unRTCSessionDescription, gTypeRTCSessionDescription
   , RTCSessionDescriptionInit(RTCSessionDescriptionInit), unRTCSessionDescriptionInit, gTypeRTCSessionDescriptionInit
+  , RTCStats(RTCStats), unRTCStats, IsRTCStats, toRTCStats, gTypeRTCStats
   , RTCStatsReport(RTCStatsReport), unRTCStatsReport, gTypeRTCStatsReport
   , RTCTrackEvent(RTCTrackEvent), unRTCTrackEvent, gTypeRTCTrackEvent
   , RTCTrackEventInit(RTCTrackEventInit), unRTCTrackEventInit, gTypeRTCTrackEventInit
@@ -566,6 +609,8 @@ module GHCJS.DOM.Types (
   , Range(Range), unRange, gTypeRange
   , ReadableByteStreamController(ReadableByteStreamController), unReadableByteStreamController, gTypeReadableByteStreamController
   , ReadableStream(ReadableStream), unReadableStream, gTypeReadableStream
+  , ReadableStreamBYOBReader(ReadableStreamBYOBReader), unReadableStreamBYOBReader, gTypeReadableStreamBYOBReader
+  , ReadableStreamBYOBRequest(ReadableStreamBYOBRequest), unReadableStreamBYOBRequest, gTypeReadableStreamBYOBRequest
   , ReadableStreamDefaultController(ReadableStreamDefaultController), unReadableStreamDefaultController, gTypeReadableStreamDefaultController
   , ReadableStreamDefaultReader(ReadableStreamDefaultReader), unReadableStreamDefaultReader, gTypeReadableStreamDefaultReader
   , ReadableStreamSource(ReadableStreamSource), unReadableStreamSource, gTypeReadableStreamSource
@@ -736,6 +781,8 @@ module GHCJS.DOM.Types (
   , Selection(Selection), unSelection, gTypeSelection
   , ShadowRoot(ShadowRoot), unShadowRoot, gTypeShadowRoot
   , ShadowRootInit(ShadowRootInit), unShadowRootInit, gTypeShadowRootInit
+  , SiteBoundCredential(SiteBoundCredential), unSiteBoundCredential, IsSiteBoundCredential, toSiteBoundCredential, gTypeSiteBoundCredential
+  , SiteBoundCredentialData(SiteBoundCredentialData), unSiteBoundCredentialData, IsSiteBoundCredentialData, toSiteBoundCredentialData, gTypeSiteBoundCredentialData
   , Slotable(Slotable), unSlotable, IsSlotable, toSlotable, gTypeSlotable
   , SourceBuffer(SourceBuffer), unSourceBuffer, gTypeSourceBuffer
   , SourceBufferList(SourceBufferList), unSourceBufferList, gTypeSourceBufferList
@@ -817,6 +864,28 @@ module GHCJS.DOM.Types (
   , WebGLUniformLocation(WebGLUniformLocation), unWebGLUniformLocation, gTypeWebGLUniformLocation
   , WebGLVertexArrayObject(WebGLVertexArrayObject), unWebGLVertexArrayObject, gTypeWebGLVertexArrayObject
   , WebGLVertexArrayObjectOES(WebGLVertexArrayObjectOES), unWebGLVertexArrayObjectOES, gTypeWebGLVertexArrayObjectOES
+  , WebGPUBuffer(WebGPUBuffer), unWebGPUBuffer, gTypeWebGPUBuffer
+  , WebGPUCommandBuffer(WebGPUCommandBuffer), unWebGPUCommandBuffer, gTypeWebGPUCommandBuffer
+  , WebGPUCommandQueue(WebGPUCommandQueue), unWebGPUCommandQueue, gTypeWebGPUCommandQueue
+  , WebGPUComputeCommandEncoder(WebGPUComputeCommandEncoder), unWebGPUComputeCommandEncoder, gTypeWebGPUComputeCommandEncoder
+  , WebGPUComputePipelineState(WebGPUComputePipelineState), unWebGPUComputePipelineState, gTypeWebGPUComputePipelineState
+  , WebGPUDepthStencilDescriptor(WebGPUDepthStencilDescriptor), unWebGPUDepthStencilDescriptor, gTypeWebGPUDepthStencilDescriptor
+  , WebGPUDepthStencilState(WebGPUDepthStencilState), unWebGPUDepthStencilState, gTypeWebGPUDepthStencilState
+  , WebGPUDrawable(WebGPUDrawable), unWebGPUDrawable, gTypeWebGPUDrawable
+  , WebGPUFunction(WebGPUFunction), unWebGPUFunction, gTypeWebGPUFunction
+  , WebGPULibrary(WebGPULibrary), unWebGPULibrary, gTypeWebGPULibrary
+  , WebGPURenderCommandEncoder(WebGPURenderCommandEncoder), unWebGPURenderCommandEncoder, gTypeWebGPURenderCommandEncoder
+  , WebGPURenderPassAttachmentDescriptor(WebGPURenderPassAttachmentDescriptor), unWebGPURenderPassAttachmentDescriptor, IsWebGPURenderPassAttachmentDescriptor, toWebGPURenderPassAttachmentDescriptor, gTypeWebGPURenderPassAttachmentDescriptor
+  , WebGPURenderPassColorAttachmentDescriptor(WebGPURenderPassColorAttachmentDescriptor), unWebGPURenderPassColorAttachmentDescriptor, gTypeWebGPURenderPassColorAttachmentDescriptor
+  , WebGPURenderPassDepthAttachmentDescriptor(WebGPURenderPassDepthAttachmentDescriptor), unWebGPURenderPassDepthAttachmentDescriptor, gTypeWebGPURenderPassDepthAttachmentDescriptor
+  , WebGPURenderPassDescriptor(WebGPURenderPassDescriptor), unWebGPURenderPassDescriptor, gTypeWebGPURenderPassDescriptor
+  , WebGPURenderPipelineColorAttachmentDescriptor(WebGPURenderPipelineColorAttachmentDescriptor), unWebGPURenderPipelineColorAttachmentDescriptor, gTypeWebGPURenderPipelineColorAttachmentDescriptor
+  , WebGPURenderPipelineDescriptor(WebGPURenderPipelineDescriptor), unWebGPURenderPipelineDescriptor, gTypeWebGPURenderPipelineDescriptor
+  , WebGPURenderPipelineState(WebGPURenderPipelineState), unWebGPURenderPipelineState, gTypeWebGPURenderPipelineState
+  , WebGPURenderingContext(WebGPURenderingContext), unWebGPURenderingContext, gTypeWebGPURenderingContext
+  , WebGPUSize(WebGPUSize), unWebGPUSize, gTypeWebGPUSize
+  , WebGPUTexture(WebGPUTexture), unWebGPUTexture, gTypeWebGPUTexture
+  , WebGPUTextureDescriptor(WebGPUTextureDescriptor), unWebGPUTextureDescriptor, gTypeWebGPUTextureDescriptor
   , WebKitAnimationEvent(WebKitAnimationEvent), unWebKitAnimationEvent, gTypeWebKitAnimationEvent
   , WebKitAnimationEventInit(WebKitAnimationEventInit), unWebKitAnimationEventInit, gTypeWebKitAnimationEventInit
   , WebKitCSSMatrix(WebKitCSSMatrix), unWebKitCSSMatrix, gTypeWebKitCSSMatrix
@@ -1075,6 +1144,9 @@ objectToString self = liftIO (fromJSString <$> js_objectToString (toGObject self
 --   want to take a string from the DOM then
 --   give it back as is.
 type DOMString = JSString
+type CSSOMString = JSString
+type USVString = JSString
+type ByteString = JSString
 
 class (PToJSVal a, ToJSVal a) => ToJSString a
 class (PFromJSVal a, FromJSVal a) => FromJSString a
@@ -1110,8 +1182,32 @@ instance FromJSString JSString
 type ToDOMString s = ToJSString s
 type FromDOMString s = FromJSString s
 type IsDOMString s = (ToDOMString s, FromDOMString s)
+type IsCSSOMString s = (ToDOMString s, FromDOMString s)
 type IsUSVString s = (ToDOMString s, FromDOMString s)
 type IsByteString s = (ToDOMString s, FromDOMString s)
+
+newtype RawTypedArray = RawTypedArray { unRawTypedArray :: JSVal }
+
+instance PToJSVal RawTypedArray where
+  pToJSVal = unRawTypedArray
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RawTypedArray where
+  pFromJSVal = RawTypedArray
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RawTypedArray where
+  toJSVal = return . unRawTypedArray
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RawTypedArray where
+  fromJSVal = return . fmap RawTypedArray . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (FromJSVal o, ToJSVal o, PFromJSVal o, PToJSVal o, Coercible o JSVal) => IsRawTypedArray o
+
+toRawTypedArray :: IsRawTypedArray o => o -> RawTypedArray
+toRawTypedArray = RawTypedArray . coerce
 
 newtype Function = Function { unFunction :: JSVal }
 
@@ -1148,6 +1244,8 @@ instance Exception PromiseRejected
 -- Callbacks
 newtype AudioBufferCallback = AudioBufferCallback (Callback (JSVal -> IO ()))
 instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback (Callback r)) = r
+newtype BlobCallback = BlobCallback (Callback (JSVal -> IO ()))
+instance ToJSVal BlobCallback where toJSVal (BlobCallback (Callback r)) = toJSVal r
 newtype DatabaseCallback = DatabaseCallback (Callback (JSVal -> IO ()))
 instance PToJSVal DatabaseCallback where pToJSVal (DatabaseCallback (Callback r)) = r
 newtype IntersectionObserverCallback = IntersectionObserverCallback (Callback (JSVal -> JSVal -> IO ()))
@@ -2034,6 +2132,32 @@ instance IsCanvasStyle Text
 instance IsCanvasStyle JSString
 instance IsCanvasStyle String
 
+newtype CredentialBodyType = CredentialBodyType { unCredentialBodyType :: JSVal }
+
+instance PToJSVal CredentialBodyType where
+  pToJSVal = unCredentialBodyType
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal CredentialBodyType where
+  pFromJSVal = CredentialBodyType
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal CredentialBodyType where
+  toJSVal = return . unCredentialBodyType
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal CredentialBodyType where
+  fromJSVal = return . fmap CredentialBodyType . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+class (FromJSVal o, ToJSVal o, PFromJSVal o, PToJSVal o, Coercible o JSVal) => IsCredentialBodyType o
+
+toCredentialBodyType :: IsCredentialBodyType o => o -> CredentialBodyType
+toCredentialBodyType = CredentialBodyType . coerce
+
+instance IsCredentialBodyType CredentialBodyType
+instance IsCredentialBodyType URLSearchParams
+instance IsCredentialBodyType FormData
+
 newtype CryptoKeyOrKeyPair = CryptoKeyOrKeyPair { unCryptoKeyOrKeyPair :: JSVal }
 
 instance PToJSVal CryptoKeyOrKeyPair where
@@ -2608,6 +2732,32 @@ instance IsMediaProvider MediaSource
 instance IsMediaProvider Blob
 instance IsMediaProvider File
 
+newtype MediaStreamTrackOrKind = MediaStreamTrackOrKind { unMediaStreamTrackOrKind :: JSVal }
+
+instance PToJSVal MediaStreamTrackOrKind where
+  pToJSVal = unMediaStreamTrackOrKind
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal MediaStreamTrackOrKind where
+  pFromJSVal = MediaStreamTrackOrKind
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal MediaStreamTrackOrKind where
+  toJSVal = return . unMediaStreamTrackOrKind
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal MediaStreamTrackOrKind where
+  fromJSVal = return . fmap MediaStreamTrackOrKind . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+class (FromJSVal o, ToJSVal o) => IsMediaStreamTrackOrKind o
+
+instance IsMediaStreamTrackOrKind MediaStreamTrackOrKind
+instance IsMediaStreamTrackOrKind Text
+instance IsMediaStreamTrackOrKind JSString
+instance IsMediaStreamTrackOrKind String
+instance IsMediaStreamTrackOrKind MediaStreamTrack
+instance IsMediaStreamTrackOrKind CanvasCaptureMediaStreamTrack
+
 newtype MessageEventSource = MessageEventSource { unMessageEventSource :: JSVal }
 
 instance PToJSVal MessageEventSource where
@@ -2830,6 +2980,32 @@ instance IsNodeOrString Comment
 instance IsNodeOrString CharacterData
 instance IsNodeOrString CDATASection
 instance IsNodeOrString Attr
+
+newtype RTCIceCandidateOrInit = RTCIceCandidateOrInit { unRTCIceCandidateOrInit :: JSVal }
+
+instance PToJSVal RTCIceCandidateOrInit where
+  pToJSVal = unRTCIceCandidateOrInit
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCIceCandidateOrInit where
+  pFromJSVal = RTCIceCandidateOrInit
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCIceCandidateOrInit where
+  toJSVal = return . unRTCIceCandidateOrInit
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCIceCandidateOrInit where
+  fromJSVal = return . fmap RTCIceCandidateOrInit . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+class (FromJSVal o, ToJSVal o, PFromJSVal o, PToJSVal o, Coercible o JSVal) => IsRTCIceCandidateOrInit o
+
+toRTCIceCandidateOrInit :: IsRTCIceCandidateOrInit o => o -> RTCIceCandidateOrInit
+toRTCIceCandidateOrInit = RTCIceCandidateOrInit . coerce
+
+instance IsRTCIceCandidateOrInit RTCIceCandidateOrInit
+instance IsRTCIceCandidateOrInit RTCIceCandidate
+instance IsRTCIceCandidateOrInit RTCIceCandidateInit
 
 newtype RadioNodeListOrElement = RadioNodeListOrElement { unRadioNodeListOrElement :: JSVal }
 
@@ -3392,71 +3568,137 @@ instance IsGObject AddEventListenerOptions where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AddEventListenerOptions\"]" gTypeAddEventListenerOptions :: GType
 
--- | Functions for this inteface are in "GHCJS.DOM.AesCbcParams".
+-- | Functions for this inteface are in "GHCJS.DOM.AesCbcCfbParams".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.CryptoAlgorithmParameters"
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/AesCbcParams Mozilla AesCbcParams documentation>
-newtype AesCbcParams = AesCbcParams { unAesCbcParams :: JSVal }
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AesCbcCfbParams Mozilla AesCbcCfbParams documentation>
+newtype AesCbcCfbParams = AesCbcCfbParams { unAesCbcCfbParams :: JSVal }
 
-instance Eq (AesCbcParams) where
-  (AesCbcParams a) == (AesCbcParams b) = js_eq a b
+instance Eq (AesCbcCfbParams) where
+  (AesCbcCfbParams a) == (AesCbcCfbParams b) = js_eq a b
 
-instance PToJSVal AesCbcParams where
-  pToJSVal = unAesCbcParams
+instance PToJSVal AesCbcCfbParams where
+  pToJSVal = unAesCbcCfbParams
   {-# INLINE pToJSVal #-}
 
-instance PFromJSVal AesCbcParams where
-  pFromJSVal = AesCbcParams
+instance PFromJSVal AesCbcCfbParams where
+  pFromJSVal = AesCbcCfbParams
   {-# INLINE pFromJSVal #-}
 
-instance ToJSVal AesCbcParams where
-  toJSVal = return . unAesCbcParams
+instance ToJSVal AesCbcCfbParams where
+  toJSVal = return . unAesCbcCfbParams
   {-# INLINE toJSVal #-}
 
-instance FromJSVal AesCbcParams where
-  fromJSVal = return . fmap AesCbcParams . maybeJSNullOrUndefined
+instance FromJSVal AesCbcCfbParams where
+  fromJSVal = return . fmap AesCbcCfbParams . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-instance IsCryptoAlgorithmParameters AesCbcParams
-instance IsGObject AesCbcParams where
-  typeGType _ = gTypeAesCbcParams
+instance IsCryptoAlgorithmParameters AesCbcCfbParams
+instance IsGObject AesCbcCfbParams where
+  typeGType _ = gTypeAesCbcCfbParams
   {-# INLINE typeGType #-}
-foreign import javascript unsafe "window[\"AesCbcParams\"]" gTypeAesCbcParams :: GType
+foreign import javascript unsafe "window[\"AesCbcCfbParams\"]" gTypeAesCbcCfbParams :: GType
 
--- | Functions for this inteface are in "GHCJS.DOM.AesKeyGenParams".
+-- | Functions for this inteface are in "GHCJS.DOM.AesCtrParams".
 -- Base interface functions are in:
 --
 --     * "GHCJS.DOM.CryptoAlgorithmParameters"
 --
--- <https://developer.mozilla.org/en-US/docs/Web/API/AesKeyGenParams Mozilla AesKeyGenParams documentation>
-newtype AesKeyGenParams = AesKeyGenParams { unAesKeyGenParams :: JSVal }
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AesCtrParams Mozilla AesCtrParams documentation>
+newtype AesCtrParams = AesCtrParams { unAesCtrParams :: JSVal }
 
-instance Eq (AesKeyGenParams) where
-  (AesKeyGenParams a) == (AesKeyGenParams b) = js_eq a b
+instance Eq (AesCtrParams) where
+  (AesCtrParams a) == (AesCtrParams b) = js_eq a b
 
-instance PToJSVal AesKeyGenParams where
-  pToJSVal = unAesKeyGenParams
+instance PToJSVal AesCtrParams where
+  pToJSVal = unAesCtrParams
   {-# INLINE pToJSVal #-}
 
-instance PFromJSVal AesKeyGenParams where
-  pFromJSVal = AesKeyGenParams
+instance PFromJSVal AesCtrParams where
+  pFromJSVal = AesCtrParams
   {-# INLINE pFromJSVal #-}
 
-instance ToJSVal AesKeyGenParams where
-  toJSVal = return . unAesKeyGenParams
+instance ToJSVal AesCtrParams where
+  toJSVal = return . unAesCtrParams
   {-# INLINE toJSVal #-}
 
-instance FromJSVal AesKeyGenParams where
-  fromJSVal = return . fmap AesKeyGenParams . maybeJSNullOrUndefined
+instance FromJSVal AesCtrParams where
+  fromJSVal = return . fmap AesCtrParams . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-instance IsCryptoAlgorithmParameters AesKeyGenParams
-instance IsGObject AesKeyGenParams where
-  typeGType _ = gTypeAesKeyGenParams
+instance IsCryptoAlgorithmParameters AesCtrParams
+instance IsGObject AesCtrParams where
+  typeGType _ = gTypeAesCtrParams
   {-# INLINE typeGType #-}
-foreign import javascript unsafe "window[\"AesKeyGenParams\"]" gTypeAesKeyGenParams :: GType
+foreign import javascript unsafe "window[\"AesCtrParams\"]" gTypeAesCtrParams :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.AesGcmParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams Mozilla AesGcmParams documentation>
+newtype AesGcmParams = AesGcmParams { unAesGcmParams :: JSVal }
+
+instance Eq (AesGcmParams) where
+  (AesGcmParams a) == (AesGcmParams b) = js_eq a b
+
+instance PToJSVal AesGcmParams where
+  pToJSVal = unAesGcmParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal AesGcmParams where
+  pFromJSVal = AesGcmParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal AesGcmParams where
+  toJSVal = return . unAesGcmParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal AesGcmParams where
+  fromJSVal = return . fmap AesGcmParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters AesGcmParams
+instance IsGObject AesGcmParams where
+  typeGType _ = gTypeAesGcmParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"AesGcmParams\"]" gTypeAesGcmParams :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.AesKeyParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/AesKeyParams Mozilla AesKeyParams documentation>
+newtype AesKeyParams = AesKeyParams { unAesKeyParams :: JSVal }
+
+instance Eq (AesKeyParams) where
+  (AesKeyParams a) == (AesKeyParams b) = js_eq a b
+
+instance PToJSVal AesKeyParams where
+  pToJSVal = unAesKeyParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal AesKeyParams where
+  pFromJSVal = AesKeyParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal AesKeyParams where
+  toJSVal = return . unAesKeyParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal AesKeyParams where
+  fromJSVal = return . fmap AesKeyParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters AesKeyParams
+instance IsGObject AesKeyParams where
+  typeGType _ = gTypeAesKeyParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"AesKeyParams\"]" gTypeAesKeyParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnalyserNode".
 -- Base interface functions are in:
@@ -3690,6 +3932,35 @@ instance IsGObject AnimationTimeline where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"AnimationTimeline\"]" gTypeAnimationTimeline :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.ApplePayError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayError Mozilla ApplePayError documentation>
+newtype ApplePayError = ApplePayError { unApplePayError :: JSVal }
+
+instance Eq (ApplePayError) where
+  (ApplePayError a) == (ApplePayError b) = js_eq a b
+
+instance PToJSVal ApplePayError where
+  pToJSVal = unApplePayError
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ApplePayError where
+  pFromJSVal = ApplePayError
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ApplePayError where
+  toJSVal = return . unApplePayError
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ApplePayError where
+  fromJSVal = return . fmap ApplePayError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ApplePayError where
+  typeGType _ = gTypeApplePayError
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ApplePayError\"]" gTypeApplePayError :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayLineItem".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayLineItem Mozilla ApplePayLineItem documentation>
@@ -3747,6 +4018,35 @@ instance IsGObject ApplePayPayment where
   typeGType _ = gTypeApplePayPayment
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ApplePayPayment\"]" gTypeApplePayPayment :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentAuthorizationResult".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayPaymentAuthorizationResult Mozilla ApplePayPaymentAuthorizationResult documentation>
+newtype ApplePayPaymentAuthorizationResult = ApplePayPaymentAuthorizationResult { unApplePayPaymentAuthorizationResult :: JSVal }
+
+instance Eq (ApplePayPaymentAuthorizationResult) where
+  (ApplePayPaymentAuthorizationResult a) == (ApplePayPaymentAuthorizationResult b) = js_eq a b
+
+instance PToJSVal ApplePayPaymentAuthorizationResult where
+  pToJSVal = unApplePayPaymentAuthorizationResult
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ApplePayPaymentAuthorizationResult where
+  pFromJSVal = ApplePayPaymentAuthorizationResult
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ApplePayPaymentAuthorizationResult where
+  toJSVal = return . unApplePayPaymentAuthorizationResult
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ApplePayPaymentAuthorizationResult where
+  fromJSVal = return . fmap ApplePayPaymentAuthorizationResult . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ApplePayPaymentAuthorizationResult where
+  typeGType _ = gTypeApplePayPaymentAuthorizationResult
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ApplePayPaymentAuthorizationResult\"]" gTypeApplePayPaymentAuthorizationResult :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentAuthorizedEvent".
 -- Base interface functions are in:
@@ -3871,6 +4171,35 @@ instance IsGObject ApplePayPaymentMethodSelectedEvent where
   typeGType _ = gTypeApplePayPaymentMethodSelectedEvent
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ApplePayPaymentMethodSelectedEvent\"]" gTypeApplePayPaymentMethodSelectedEvent :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentMethodUpdate".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayPaymentMethodUpdate Mozilla ApplePayPaymentMethodUpdate documentation>
+newtype ApplePayPaymentMethodUpdate = ApplePayPaymentMethodUpdate { unApplePayPaymentMethodUpdate :: JSVal }
+
+instance Eq (ApplePayPaymentMethodUpdate) where
+  (ApplePayPaymentMethodUpdate a) == (ApplePayPaymentMethodUpdate b) = js_eq a b
+
+instance PToJSVal ApplePayPaymentMethodUpdate where
+  pToJSVal = unApplePayPaymentMethodUpdate
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ApplePayPaymentMethodUpdate where
+  pFromJSVal = ApplePayPaymentMethodUpdate
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ApplePayPaymentMethodUpdate where
+  toJSVal = return . unApplePayPaymentMethodUpdate
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ApplePayPaymentMethodUpdate where
+  fromJSVal = return . fmap ApplePayPaymentMethodUpdate . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ApplePayPaymentMethodUpdate where
+  typeGType _ = gTypeApplePayPaymentMethodUpdate
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ApplePayPaymentMethodUpdate\"]" gTypeApplePayPaymentMethodUpdate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentPass".
 --
@@ -4025,6 +4354,35 @@ instance IsGObject ApplePayShippingContactSelectedEvent where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ApplePayShippingContactSelectedEvent\"]" gTypeApplePayShippingContactSelectedEvent :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingContactUpdate".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayShippingContactUpdate Mozilla ApplePayShippingContactUpdate documentation>
+newtype ApplePayShippingContactUpdate = ApplePayShippingContactUpdate { unApplePayShippingContactUpdate :: JSVal }
+
+instance Eq (ApplePayShippingContactUpdate) where
+  (ApplePayShippingContactUpdate a) == (ApplePayShippingContactUpdate b) = js_eq a b
+
+instance PToJSVal ApplePayShippingContactUpdate where
+  pToJSVal = unApplePayShippingContactUpdate
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ApplePayShippingContactUpdate where
+  pFromJSVal = ApplePayShippingContactUpdate
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ApplePayShippingContactUpdate where
+  toJSVal = return . unApplePayShippingContactUpdate
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ApplePayShippingContactUpdate where
+  fromJSVal = return . fmap ApplePayShippingContactUpdate . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ApplePayShippingContactUpdate where
+  typeGType _ = gTypeApplePayShippingContactUpdate
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ApplePayShippingContactUpdate\"]" gTypeApplePayShippingContactUpdate :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingMethod".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayShippingMethod Mozilla ApplePayShippingMethod documentation>
@@ -4086,6 +4444,35 @@ instance IsGObject ApplePayShippingMethodSelectedEvent where
   typeGType _ = gTypeApplePayShippingMethodSelectedEvent
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ApplePayShippingMethodSelectedEvent\"]" gTypeApplePayShippingMethodSelectedEvent :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingMethodUpdate".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayShippingMethodUpdate Mozilla ApplePayShippingMethodUpdate documentation>
+newtype ApplePayShippingMethodUpdate = ApplePayShippingMethodUpdate { unApplePayShippingMethodUpdate :: JSVal }
+
+instance Eq (ApplePayShippingMethodUpdate) where
+  (ApplePayShippingMethodUpdate a) == (ApplePayShippingMethodUpdate b) = js_eq a b
+
+instance PToJSVal ApplePayShippingMethodUpdate where
+  pToJSVal = unApplePayShippingMethodUpdate
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ApplePayShippingMethodUpdate where
+  pFromJSVal = ApplePayShippingMethodUpdate
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ApplePayShippingMethodUpdate where
+  toJSVal = return . unApplePayShippingMethodUpdate
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ApplePayShippingMethodUpdate where
+  fromJSVal = return . fmap ApplePayShippingMethodUpdate . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ApplePayShippingMethodUpdate where
+  typeGType _ = gTypeApplePayShippingMethodUpdate
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ApplePayShippingMethodUpdate\"]" gTypeApplePayShippingMethodUpdate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayValidateMerchantEvent".
 -- Base interface functions are in:
@@ -4639,6 +5026,40 @@ instance IsGObject BarProp where
   typeGType _ = gTypeBarProp
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.BasicCredential".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/BasicCredential Mozilla BasicCredential documentation>
+newtype BasicCredential = BasicCredential { unBasicCredential :: JSVal }
+
+instance Eq (BasicCredential) where
+  (BasicCredential a) == (BasicCredential b) = js_eq a b
+
+instance PToJSVal BasicCredential where
+  pToJSVal = unBasicCredential
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal BasicCredential where
+  pFromJSVal = BasicCredential
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal BasicCredential where
+  toJSVal = return . unBasicCredential
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal BasicCredential where
+  fromJSVal = return . fmap BasicCredential . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsBasicCredential o
+toBasicCredential :: IsBasicCredential o => o -> BasicCredential
+toBasicCredential = BasicCredential . coerce
+
+instance IsBasicCredential BasicCredential
+instance IsGObject BasicCredential where
+  typeGType _ = gTypeBasicCredential
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"BasicCredential\"]" gTypeBasicCredential :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEvent".
 -- Base interface functions are in:
@@ -5600,6 +6021,41 @@ instance IsGObject CSSValueList where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.CanvasCaptureMediaStreamTrack".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.MediaStreamTrack"
+--     * "GHCJS.DOM.EventTarget"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasCaptureMediaStreamTrack Mozilla CanvasCaptureMediaStreamTrack documentation>
+newtype CanvasCaptureMediaStreamTrack = CanvasCaptureMediaStreamTrack { unCanvasCaptureMediaStreamTrack :: JSVal }
+
+instance Eq (CanvasCaptureMediaStreamTrack) where
+  (CanvasCaptureMediaStreamTrack a) == (CanvasCaptureMediaStreamTrack b) = js_eq a b
+
+instance PToJSVal CanvasCaptureMediaStreamTrack where
+  pToJSVal = unCanvasCaptureMediaStreamTrack
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal CanvasCaptureMediaStreamTrack where
+  pFromJSVal = CanvasCaptureMediaStreamTrack
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal CanvasCaptureMediaStreamTrack where
+  toJSVal = return . unCanvasCaptureMediaStreamTrack
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal CanvasCaptureMediaStreamTrack where
+  fromJSVal = return . fmap CanvasCaptureMediaStreamTrack . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsMediaStreamTrack CanvasCaptureMediaStreamTrack
+instance IsEventTarget CanvasCaptureMediaStreamTrack
+instance IsGObject CanvasCaptureMediaStreamTrack where
+  typeGType _ = gTypeCanvasCaptureMediaStreamTrack
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"CanvasCaptureMediaStreamTrack\"]" gTypeCanvasCaptureMediaStreamTrack :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient Mozilla CanvasGradient documentation>
@@ -5901,64 +6357,6 @@ instance IsGObject ChildNode where
   typeGType _ = gTypeChildNode
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
-
--- | Functions for this inteface are in "GHCJS.DOM.ClientRect".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRect Mozilla ClientRect documentation>
-newtype ClientRect = ClientRect { unClientRect :: JSVal }
-
-instance Eq (ClientRect) where
-  (ClientRect a) == (ClientRect b) = js_eq a b
-
-instance PToJSVal ClientRect where
-  pToJSVal = unClientRect
-  {-# INLINE pToJSVal #-}
-
-instance PFromJSVal ClientRect where
-  pFromJSVal = ClientRect
-  {-# INLINE pFromJSVal #-}
-
-instance ToJSVal ClientRect where
-  toJSVal = return . unClientRect
-  {-# INLINE toJSVal #-}
-
-instance FromJSVal ClientRect where
-  fromJSVal = return . fmap ClientRect . maybeJSNullOrUndefined
-  {-# INLINE fromJSVal #-}
-
-instance IsGObject ClientRect where
-  typeGType _ = gTypeClientRect
-  {-# INLINE typeGType #-}
-foreign import javascript unsafe "window[\"ClientRect\"]" gTypeClientRect :: GType
-
--- | Functions for this inteface are in "GHCJS.DOM.ClientRectList".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList Mozilla ClientRectList documentation>
-newtype ClientRectList = ClientRectList { unClientRectList :: JSVal }
-
-instance Eq (ClientRectList) where
-  (ClientRectList a) == (ClientRectList b) = js_eq a b
-
-instance PToJSVal ClientRectList where
-  pToJSVal = unClientRectList
-  {-# INLINE pToJSVal #-}
-
-instance PFromJSVal ClientRectList where
-  pFromJSVal = ClientRectList
-  {-# INLINE pFromJSVal #-}
-
-instance ToJSVal ClientRectList where
-  toJSVal = return . unClientRectList
-  {-# INLINE toJSVal #-}
-
-instance FromJSVal ClientRectList where
-  fromJSVal = return . fmap ClientRectList . maybeJSNullOrUndefined
-  {-# INLINE fromJSVal #-}
-
-instance IsGObject ClientRectList where
-  typeGType _ = gTypeClientRectList
-  {-# INLINE typeGType #-}
-foreign import javascript unsafe "window[\"ClientRectList\"]" gTypeClientRectList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ClipboardEvent".
 -- Base interface functions are in:
@@ -6477,6 +6875,40 @@ instance IsGObject Counter where
   typeGType _ = gTypeCounter
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.CredentialData".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/CredentialData Mozilla CredentialData documentation>
+newtype CredentialData = CredentialData { unCredentialData :: JSVal }
+
+instance Eq (CredentialData) where
+  (CredentialData a) == (CredentialData b) = js_eq a b
+
+instance PToJSVal CredentialData where
+  pToJSVal = unCredentialData
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal CredentialData where
+  pFromJSVal = CredentialData
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal CredentialData where
+  toJSVal = return . unCredentialData
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal CredentialData where
+  fromJSVal = return . fmap CredentialData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsCredentialData o
+toCredentialData :: IsCredentialData o => o -> CredentialData
+toCredentialData = CredentialData . coerce
+
+instance IsCredentialData CredentialData
+instance IsGObject CredentialData where
+  typeGType _ = gTypeCredentialData
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"CredentialData\"]" gTypeCredentialData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
 --
@@ -7491,6 +7923,7 @@ foreign import javascript unsafe "window[\"DeviceProximityEventInit\"]" gTypeDev
 --     * "GHCJS.DOM.DocumentOrShadowRoot"
 --     * "GHCJS.DOM.NonElementParentNode"
 --     * "GHCJS.DOM.ParentNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/Document Mozilla Document documentation>
 newtype Document = Document { unDocument :: JSVal }
@@ -7514,7 +7947,7 @@ instance FromJSVal Document where
   fromJSVal = return . fmap Document . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsNode o, IsEventTarget o, IsGlobalEventHandlers o, IsDocumentOrShadowRoot o, IsNonElementParentNode o, IsParentNode o, IsGObject o) => IsDocument o
+class (IsNode o, IsEventTarget o, IsGlobalEventHandlers o, IsDocumentOrShadowRoot o, IsNonElementParentNode o, IsParentNode o, IsDocumentAndElementEventHandlers o, IsGObject o) => IsDocument o
 toDocument :: IsDocument o => o -> Document
 toDocument = Document . coerce
 
@@ -7525,10 +7958,45 @@ instance IsGlobalEventHandlers Document
 instance IsDocumentOrShadowRoot Document
 instance IsNonElementParentNode Document
 instance IsParentNode Document
+instance IsDocumentAndElementEventHandlers Document
 instance IsGObject Document where
   typeGType _ = gTypeDocument
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Document\"]" gTypeDocument :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.DocumentAndElementEventHandlers".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/DocumentAndElementEventHandlers Mozilla DocumentAndElementEventHandlers documentation>
+newtype DocumentAndElementEventHandlers = DocumentAndElementEventHandlers { unDocumentAndElementEventHandlers :: JSVal }
+
+instance Eq (DocumentAndElementEventHandlers) where
+  (DocumentAndElementEventHandlers a) == (DocumentAndElementEventHandlers b) = js_eq a b
+
+instance PToJSVal DocumentAndElementEventHandlers where
+  pToJSVal = unDocumentAndElementEventHandlers
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal DocumentAndElementEventHandlers where
+  pFromJSVal = DocumentAndElementEventHandlers
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal DocumentAndElementEventHandlers where
+  toJSVal = return . unDocumentAndElementEventHandlers
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal DocumentAndElementEventHandlers where
+  fromJSVal = return . fmap DocumentAndElementEventHandlers . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsDocumentAndElementEventHandlers o
+toDocumentAndElementEventHandlers :: IsDocumentAndElementEventHandlers o => o -> DocumentAndElementEventHandlers
+toDocumentAndElementEventHandlers = DocumentAndElementEventHandlers . coerce
+
+instance IsDocumentAndElementEventHandlers DocumentAndElementEventHandlers
+instance IsGObject DocumentAndElementEventHandlers where
+  typeGType _ = gTypeDocumentAndElementEventHandlers
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"DocumentAndElementEventHandlers\"]" gTypeDocumentAndElementEventHandlers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentFragment".
 -- Base interface functions are in:
@@ -7892,6 +8360,105 @@ instance IsGObject EXTsRGB where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.EcKeyParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EcKeyParams Mozilla EcKeyParams documentation>
+newtype EcKeyParams = EcKeyParams { unEcKeyParams :: JSVal }
+
+instance Eq (EcKeyParams) where
+  (EcKeyParams a) == (EcKeyParams b) = js_eq a b
+
+instance PToJSVal EcKeyParams where
+  pToJSVal = unEcKeyParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal EcKeyParams where
+  pFromJSVal = EcKeyParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal EcKeyParams where
+  toJSVal = return . unEcKeyParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal EcKeyParams where
+  fromJSVal = return . fmap EcKeyParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters EcKeyParams
+instance IsGObject EcKeyParams where
+  typeGType _ = gTypeEcKeyParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"EcKeyParams\"]" gTypeEcKeyParams :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.EcdhKeyDeriveParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EcdhKeyDeriveParams Mozilla EcdhKeyDeriveParams documentation>
+newtype EcdhKeyDeriveParams = EcdhKeyDeriveParams { unEcdhKeyDeriveParams :: JSVal }
+
+instance Eq (EcdhKeyDeriveParams) where
+  (EcdhKeyDeriveParams a) == (EcdhKeyDeriveParams b) = js_eq a b
+
+instance PToJSVal EcdhKeyDeriveParams where
+  pToJSVal = unEcdhKeyDeriveParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal EcdhKeyDeriveParams where
+  pFromJSVal = EcdhKeyDeriveParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal EcdhKeyDeriveParams where
+  toJSVal = return . unEcdhKeyDeriveParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal EcdhKeyDeriveParams where
+  fromJSVal = return . fmap EcdhKeyDeriveParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters EcdhKeyDeriveParams
+instance IsGObject EcdhKeyDeriveParams where
+  typeGType _ = gTypeEcdhKeyDeriveParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"EcdhKeyDeriveParams\"]" gTypeEcdhKeyDeriveParams :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.EcdsaParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/EcdsaParams Mozilla EcdsaParams documentation>
+newtype EcdsaParams = EcdsaParams { unEcdsaParams :: JSVal }
+
+instance Eq (EcdsaParams) where
+  (EcdsaParams a) == (EcdsaParams b) = js_eq a b
+
+instance PToJSVal EcdsaParams where
+  pToJSVal = unEcdsaParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal EcdsaParams where
+  pFromJSVal = EcdsaParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal EcdsaParams where
+  toJSVal = return . unEcdsaParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal EcdsaParams where
+  fromJSVal = return . fmap EcdsaParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters EcdsaParams
+instance IsGObject EcdsaParams where
+  typeGType _ = gTypeEcdsaParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"EcdsaParams\"]" gTypeEcdsaParams :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.Element".
 -- Base interface functions are in:
 --
@@ -7900,6 +8467,7 @@ foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --
@@ -7925,7 +8493,7 @@ instance FromJSVal Element where
   fromJSVal = return . fmap Element . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGObject o) => IsElement o
+class (IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGObject o) => IsElement o
 toElement :: IsElement o => o -> Element
 toElement = Element . coerce
 
@@ -7935,12 +8503,47 @@ instance IsEventTarget Element
 instance IsSlotable Element
 instance IsParentNode Element
 instance IsNonDocumentTypeChildNode Element
+instance IsDocumentAndElementEventHandlers Element
 instance IsChildNode Element
 instance IsAnimatable Element
 instance IsGObject Element where
   typeGType _ = gTypeElement
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Element\"]" gTypeElement :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ElementCSSInlineStyle".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ElementCSSInlineStyle Mozilla ElementCSSInlineStyle documentation>
+newtype ElementCSSInlineStyle = ElementCSSInlineStyle { unElementCSSInlineStyle :: JSVal }
+
+instance Eq (ElementCSSInlineStyle) where
+  (ElementCSSInlineStyle a) == (ElementCSSInlineStyle b) = js_eq a b
+
+instance PToJSVal ElementCSSInlineStyle where
+  pToJSVal = unElementCSSInlineStyle
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ElementCSSInlineStyle where
+  pFromJSVal = ElementCSSInlineStyle
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ElementCSSInlineStyle where
+  toJSVal = return . unElementCSSInlineStyle
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ElementCSSInlineStyle where
+  fromJSVal = return . fmap ElementCSSInlineStyle . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsElementCSSInlineStyle o
+toElementCSSInlineStyle :: IsElementCSSInlineStyle o => o -> ElementCSSInlineStyle
+toElementCSSInlineStyle = ElementCSSInlineStyle . coerce
+
+instance IsElementCSSInlineStyle ElementCSSInlineStyle
+instance IsGObject ElementCSSInlineStyle where
+  typeGType _ = gTypeElementCSSInlineStyle
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ElementCSSInlineStyle\"]" gTypeElementCSSInlineStyle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ErrorEvent".
 -- Base interface functions are in:
@@ -9067,9 +9670,11 @@ foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCol
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.HTMLHyperlinkElementUtils"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement Mozilla HTMLAnchorElement documentation>
@@ -9101,9 +9706,11 @@ instance IsEventTarget HTMLAnchorElement
 instance IsSlotable HTMLAnchorElement
 instance IsParentNode HTMLAnchorElement
 instance IsNonDocumentTypeChildNode HTMLAnchorElement
+instance IsDocumentAndElementEventHandlers HTMLAnchorElement
 instance IsChildNode HTMLAnchorElement
 instance IsAnimatable HTMLAnchorElement
 instance IsGlobalEventHandlers HTMLAnchorElement
+instance IsElementCSSInlineStyle HTMLAnchorElement
 instance IsHTMLHyperlinkElementUtils HTMLAnchorElement
 instance IsGObject HTMLAnchorElement where
   typeGType _ = gTypeHTMLAnchorElement
@@ -9120,9 +9727,11 @@ foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchor
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAppletElement Mozilla HTMLAppletElement documentation>
 newtype HTMLAppletElement = HTMLAppletElement { unHTMLAppletElement :: JSVal }
@@ -9153,9 +9762,11 @@ instance IsEventTarget HTMLAppletElement
 instance IsSlotable HTMLAppletElement
 instance IsParentNode HTMLAppletElement
 instance IsNonDocumentTypeChildNode HTMLAppletElement
+instance IsDocumentAndElementEventHandlers HTMLAppletElement
 instance IsChildNode HTMLAppletElement
 instance IsAnimatable HTMLAppletElement
 instance IsGlobalEventHandlers HTMLAppletElement
+instance IsElementCSSInlineStyle HTMLAppletElement
 instance IsGObject HTMLAppletElement where
   typeGType _ = gTypeHTMLAppletElement
   {-# INLINE typeGType #-}
@@ -9171,9 +9782,11 @@ foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLApplet
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.HTMLHyperlinkElementUtils"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement Mozilla HTMLAreaElement documentation>
@@ -9205,9 +9818,11 @@ instance IsEventTarget HTMLAreaElement
 instance IsSlotable HTMLAreaElement
 instance IsParentNode HTMLAreaElement
 instance IsNonDocumentTypeChildNode HTMLAreaElement
+instance IsDocumentAndElementEventHandlers HTMLAreaElement
 instance IsChildNode HTMLAreaElement
 instance IsAnimatable HTMLAreaElement
 instance IsGlobalEventHandlers HTMLAreaElement
+instance IsElementCSSInlineStyle HTMLAreaElement
 instance IsHTMLHyperlinkElementUtils HTMLAreaElement
 instance IsGObject HTMLAreaElement where
   typeGType _ = gTypeHTMLAreaElement
@@ -9224,9 +9839,11 @@ foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAttachmentElement Mozilla HTMLAttachmentElement documentation>
 newtype HTMLAttachmentElement = HTMLAttachmentElement { unHTMLAttachmentElement :: JSVal }
@@ -9257,9 +9874,11 @@ instance IsEventTarget HTMLAttachmentElement
 instance IsSlotable HTMLAttachmentElement
 instance IsParentNode HTMLAttachmentElement
 instance IsNonDocumentTypeChildNode HTMLAttachmentElement
+instance IsDocumentAndElementEventHandlers HTMLAttachmentElement
 instance IsChildNode HTMLAttachmentElement
 instance IsAnimatable HTMLAttachmentElement
 instance IsGlobalEventHandlers HTMLAttachmentElement
+instance IsElementCSSInlineStyle HTMLAttachmentElement
 instance IsGObject HTMLAttachmentElement where
   typeGType _ = gTypeHTMLAttachmentElement
   {-# INLINE typeGType #-}
@@ -9276,9 +9895,11 @@ foreign import javascript unsafe "window[\"HTMLAttachmentElement\"]" gTypeHTMLAt
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement Mozilla HTMLAudioElement documentation>
 newtype HTMLAudioElement = HTMLAudioElement { unHTMLAudioElement :: JSVal }
@@ -9310,9 +9931,11 @@ instance IsEventTarget HTMLAudioElement
 instance IsSlotable HTMLAudioElement
 instance IsParentNode HTMLAudioElement
 instance IsNonDocumentTypeChildNode HTMLAudioElement
+instance IsDocumentAndElementEventHandlers HTMLAudioElement
 instance IsChildNode HTMLAudioElement
 instance IsAnimatable HTMLAudioElement
 instance IsGlobalEventHandlers HTMLAudioElement
+instance IsElementCSSInlineStyle HTMLAudioElement
 instance IsGObject HTMLAudioElement where
   typeGType _ = gTypeHTMLAudioElement
   {-# INLINE typeGType #-}
@@ -9328,9 +9951,11 @@ foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBRElement Mozilla HTMLBRElement documentation>
 newtype HTMLBRElement = HTMLBRElement { unHTMLBRElement :: JSVal }
@@ -9361,9 +9986,11 @@ instance IsEventTarget HTMLBRElement
 instance IsSlotable HTMLBRElement
 instance IsParentNode HTMLBRElement
 instance IsNonDocumentTypeChildNode HTMLBRElement
+instance IsDocumentAndElementEventHandlers HTMLBRElement
 instance IsChildNode HTMLBRElement
 instance IsAnimatable HTMLBRElement
 instance IsGlobalEventHandlers HTMLBRElement
+instance IsElementCSSInlineStyle HTMLBRElement
 instance IsGObject HTMLBRElement where
   typeGType _ = gTypeHTMLBRElement
   {-# INLINE typeGType #-}
@@ -9379,9 +10006,11 @@ foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement Mozilla HTMLBaseElement documentation>
 newtype HTMLBaseElement = HTMLBaseElement { unHTMLBaseElement :: JSVal }
@@ -9412,9 +10041,11 @@ instance IsEventTarget HTMLBaseElement
 instance IsSlotable HTMLBaseElement
 instance IsParentNode HTMLBaseElement
 instance IsNonDocumentTypeChildNode HTMLBaseElement
+instance IsDocumentAndElementEventHandlers HTMLBaseElement
 instance IsChildNode HTMLBaseElement
 instance IsAnimatable HTMLBaseElement
 instance IsGlobalEventHandlers HTMLBaseElement
+instance IsElementCSSInlineStyle HTMLBaseElement
 instance IsGObject HTMLBaseElement where
   typeGType _ = gTypeHTMLBaseElement
   {-# INLINE typeGType #-}
@@ -9430,9 +10061,11 @@ foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.WindowEventHandlers"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement Mozilla HTMLBodyElement documentation>
@@ -9464,9 +10097,11 @@ instance IsEventTarget HTMLBodyElement
 instance IsSlotable HTMLBodyElement
 instance IsParentNode HTMLBodyElement
 instance IsNonDocumentTypeChildNode HTMLBodyElement
+instance IsDocumentAndElementEventHandlers HTMLBodyElement
 instance IsChildNode HTMLBodyElement
 instance IsAnimatable HTMLBodyElement
 instance IsGlobalEventHandlers HTMLBodyElement
+instance IsElementCSSInlineStyle HTMLBodyElement
 instance IsWindowEventHandlers HTMLBodyElement
 instance IsGObject HTMLBodyElement where
   typeGType _ = gTypeHTMLBodyElement
@@ -9483,9 +10118,11 @@ foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement Mozilla HTMLButtonElement documentation>
 newtype HTMLButtonElement = HTMLButtonElement { unHTMLButtonElement :: JSVal }
@@ -9516,9 +10153,11 @@ instance IsEventTarget HTMLButtonElement
 instance IsSlotable HTMLButtonElement
 instance IsParentNode HTMLButtonElement
 instance IsNonDocumentTypeChildNode HTMLButtonElement
+instance IsDocumentAndElementEventHandlers HTMLButtonElement
 instance IsChildNode HTMLButtonElement
 instance IsAnimatable HTMLButtonElement
 instance IsGlobalEventHandlers HTMLButtonElement
+instance IsElementCSSInlineStyle HTMLButtonElement
 instance IsGObject HTMLButtonElement where
   typeGType _ = gTypeHTMLButtonElement
   {-# INLINE typeGType #-}
@@ -9534,9 +10173,11 @@ foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButton
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement Mozilla HTMLCanvasElement documentation>
 newtype HTMLCanvasElement = HTMLCanvasElement { unHTMLCanvasElement :: JSVal }
@@ -9567,9 +10208,11 @@ instance IsEventTarget HTMLCanvasElement
 instance IsSlotable HTMLCanvasElement
 instance IsParentNode HTMLCanvasElement
 instance IsNonDocumentTypeChildNode HTMLCanvasElement
+instance IsDocumentAndElementEventHandlers HTMLCanvasElement
 instance IsChildNode HTMLCanvasElement
 instance IsAnimatable HTMLCanvasElement
 instance IsGlobalEventHandlers HTMLCanvasElement
+instance IsElementCSSInlineStyle HTMLCanvasElement
 instance IsGObject HTMLCanvasElement where
   typeGType _ = gTypeHTMLCanvasElement
   {-# INLINE typeGType #-}
@@ -9619,9 +10262,11 @@ foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollectio
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement Mozilla HTMLDListElement documentation>
 newtype HTMLDListElement = HTMLDListElement { unHTMLDListElement :: JSVal }
@@ -9652,9 +10297,11 @@ instance IsEventTarget HTMLDListElement
 instance IsSlotable HTMLDListElement
 instance IsParentNode HTMLDListElement
 instance IsNonDocumentTypeChildNode HTMLDListElement
+instance IsDocumentAndElementEventHandlers HTMLDListElement
 instance IsChildNode HTMLDListElement
 instance IsAnimatable HTMLDListElement
 instance IsGlobalEventHandlers HTMLDListElement
+instance IsElementCSSInlineStyle HTMLDListElement
 instance IsGObject HTMLDListElement where
   typeGType _ = gTypeHTMLDListElement
   {-# INLINE typeGType #-}
@@ -9670,9 +10317,11 @@ foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataElement Mozilla HTMLDataElement documentation>
 newtype HTMLDataElement = HTMLDataElement { unHTMLDataElement :: JSVal }
@@ -9703,9 +10352,11 @@ instance IsEventTarget HTMLDataElement
 instance IsSlotable HTMLDataElement
 instance IsParentNode HTMLDataElement
 instance IsNonDocumentTypeChildNode HTMLDataElement
+instance IsDocumentAndElementEventHandlers HTMLDataElement
 instance IsChildNode HTMLDataElement
 instance IsAnimatable HTMLDataElement
 instance IsGlobalEventHandlers HTMLDataElement
+instance IsElementCSSInlineStyle HTMLDataElement
 instance IsGObject HTMLDataElement where
   typeGType _ = gTypeHTMLDataElement
   {-# INLINE typeGType #-}
@@ -9721,9 +10372,11 @@ foreign import javascript unsafe "window[\"HTMLDataElement\"]" gTypeHTMLDataElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDataListElement Mozilla HTMLDataListElement documentation>
 newtype HTMLDataListElement = HTMLDataListElement { unHTMLDataListElement :: JSVal }
@@ -9754,9 +10407,11 @@ instance IsEventTarget HTMLDataListElement
 instance IsSlotable HTMLDataListElement
 instance IsParentNode HTMLDataListElement
 instance IsNonDocumentTypeChildNode HTMLDataListElement
+instance IsDocumentAndElementEventHandlers HTMLDataListElement
 instance IsChildNode HTMLDataListElement
 instance IsAnimatable HTMLDataListElement
 instance IsGlobalEventHandlers HTMLDataListElement
+instance IsElementCSSInlineStyle HTMLDataListElement
 instance IsGObject HTMLDataListElement where
   typeGType _ = gTypeHTMLDataListElement
   {-# INLINE typeGType #-}
@@ -9772,9 +10427,11 @@ foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLData
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement Mozilla HTMLDetailsElement documentation>
 newtype HTMLDetailsElement = HTMLDetailsElement { unHTMLDetailsElement :: JSVal }
@@ -9805,9 +10462,11 @@ instance IsEventTarget HTMLDetailsElement
 instance IsSlotable HTMLDetailsElement
 instance IsParentNode HTMLDetailsElement
 instance IsNonDocumentTypeChildNode HTMLDetailsElement
+instance IsDocumentAndElementEventHandlers HTMLDetailsElement
 instance IsChildNode HTMLDetailsElement
 instance IsAnimatable HTMLDetailsElement
 instance IsGlobalEventHandlers HTMLDetailsElement
+instance IsElementCSSInlineStyle HTMLDetailsElement
 instance IsGObject HTMLDetailsElement where
   typeGType _ = gTypeHTMLDetailsElement
   {-# INLINE typeGType #-}
@@ -9823,9 +10482,11 @@ foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetai
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDirectoryElement Mozilla HTMLDirectoryElement documentation>
 newtype HTMLDirectoryElement = HTMLDirectoryElement { unHTMLDirectoryElement :: JSVal }
@@ -9856,9 +10517,11 @@ instance IsEventTarget HTMLDirectoryElement
 instance IsSlotable HTMLDirectoryElement
 instance IsParentNode HTMLDirectoryElement
 instance IsNonDocumentTypeChildNode HTMLDirectoryElement
+instance IsDocumentAndElementEventHandlers HTMLDirectoryElement
 instance IsChildNode HTMLDirectoryElement
 instance IsAnimatable HTMLDirectoryElement
 instance IsGlobalEventHandlers HTMLDirectoryElement
+instance IsElementCSSInlineStyle HTMLDirectoryElement
 instance IsGObject HTMLDirectoryElement where
   typeGType _ = gTypeHTMLDirectoryElement
   {-# INLINE typeGType #-}
@@ -9874,9 +10537,11 @@ foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDir
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement Mozilla HTMLDivElement documentation>
 newtype HTMLDivElement = HTMLDivElement { unHTMLDivElement :: JSVal }
@@ -9907,9 +10572,11 @@ instance IsEventTarget HTMLDivElement
 instance IsSlotable HTMLDivElement
 instance IsParentNode HTMLDivElement
 instance IsNonDocumentTypeChildNode HTMLDivElement
+instance IsDocumentAndElementEventHandlers HTMLDivElement
 instance IsChildNode HTMLDivElement
 instance IsAnimatable HTMLDivElement
 instance IsGlobalEventHandlers HTMLDivElement
+instance IsElementCSSInlineStyle HTMLDivElement
 instance IsGObject HTMLDivElement where
   typeGType _ = gTypeHTMLDivElement
   {-# INLINE typeGType #-}
@@ -9925,6 +10592,7 @@ foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElemen
 --     * "GHCJS.DOM.DocumentOrShadowRoot"
 --     * "GHCJS.DOM.NonElementParentNode"
 --     * "GHCJS.DOM.ParentNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument Mozilla HTMLDocument documentation>
 newtype HTMLDocument = HTMLDocument { unHTMLDocument :: JSVal }
@@ -9955,6 +10623,7 @@ instance IsGlobalEventHandlers HTMLDocument
 instance IsDocumentOrShadowRoot HTMLDocument
 instance IsNonElementParentNode HTMLDocument
 instance IsParentNode HTMLDocument
+instance IsDocumentAndElementEventHandlers HTMLDocument
 instance IsGObject HTMLDocument where
   typeGType _ = gTypeHTMLDocument
   {-# INLINE typeGType #-}
@@ -9969,9 +10638,11 @@ foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument ::
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation>
 newtype HTMLElement = HTMLElement { unHTMLElement :: JSVal }
@@ -9995,7 +10666,7 @@ instance FromJSVal HTMLElement where
   fromJSVal = return . fmap HTMLElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsGObject o) => IsHTMLElement o
+class (IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsGObject o) => IsHTMLElement o
 toHTMLElement :: IsHTMLElement o => o -> HTMLElement
 toHTMLElement = HTMLElement . coerce
 
@@ -10006,9 +10677,11 @@ instance IsEventTarget HTMLElement
 instance IsSlotable HTMLElement
 instance IsParentNode HTMLElement
 instance IsNonDocumentTypeChildNode HTMLElement
+instance IsDocumentAndElementEventHandlers HTMLElement
 instance IsChildNode HTMLElement
 instance IsAnimatable HTMLElement
 instance IsGlobalEventHandlers HTMLElement
+instance IsElementCSSInlineStyle HTMLElement
 instance IsGObject HTMLElement where
   typeGType _ = gTypeHTMLElement
   {-# INLINE typeGType #-}
@@ -10024,9 +10697,11 @@ foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement :: G
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement Mozilla HTMLEmbedElement documentation>
 newtype HTMLEmbedElement = HTMLEmbedElement { unHTMLEmbedElement :: JSVal }
@@ -10057,9 +10732,11 @@ instance IsEventTarget HTMLEmbedElement
 instance IsSlotable HTMLEmbedElement
 instance IsParentNode HTMLEmbedElement
 instance IsNonDocumentTypeChildNode HTMLEmbedElement
+instance IsDocumentAndElementEventHandlers HTMLEmbedElement
 instance IsChildNode HTMLEmbedElement
 instance IsAnimatable HTMLEmbedElement
 instance IsGlobalEventHandlers HTMLEmbedElement
+instance IsElementCSSInlineStyle HTMLEmbedElement
 instance IsGObject HTMLEmbedElement where
   typeGType _ = gTypeHTMLEmbedElement
   {-# INLINE typeGType #-}
@@ -10075,9 +10752,11 @@ foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement Mozilla HTMLFieldSetElement documentation>
 newtype HTMLFieldSetElement = HTMLFieldSetElement { unHTMLFieldSetElement :: JSVal }
@@ -10108,9 +10787,11 @@ instance IsEventTarget HTMLFieldSetElement
 instance IsSlotable HTMLFieldSetElement
 instance IsParentNode HTMLFieldSetElement
 instance IsNonDocumentTypeChildNode HTMLFieldSetElement
+instance IsDocumentAndElementEventHandlers HTMLFieldSetElement
 instance IsChildNode HTMLFieldSetElement
 instance IsAnimatable HTMLFieldSetElement
 instance IsGlobalEventHandlers HTMLFieldSetElement
+instance IsElementCSSInlineStyle HTMLFieldSetElement
 instance IsGObject HTMLFieldSetElement where
   typeGType _ = gTypeHTMLFieldSetElement
   {-# INLINE typeGType #-}
@@ -10126,9 +10807,11 @@ foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFiel
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement Mozilla HTMLFontElement documentation>
 newtype HTMLFontElement = HTMLFontElement { unHTMLFontElement :: JSVal }
@@ -10159,9 +10842,11 @@ instance IsEventTarget HTMLFontElement
 instance IsSlotable HTMLFontElement
 instance IsParentNode HTMLFontElement
 instance IsNonDocumentTypeChildNode HTMLFontElement
+instance IsDocumentAndElementEventHandlers HTMLFontElement
 instance IsChildNode HTMLFontElement
 instance IsAnimatable HTMLFontElement
 instance IsGlobalEventHandlers HTMLFontElement
+instance IsElementCSSInlineStyle HTMLFontElement
 instance IsGObject HTMLFontElement where
   typeGType _ = gTypeHTMLFontElement
   {-# INLINE typeGType #-}
@@ -10210,9 +10895,11 @@ foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeH
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement Mozilla HTMLFormElement documentation>
 newtype HTMLFormElement = HTMLFormElement { unHTMLFormElement :: JSVal }
@@ -10243,9 +10930,11 @@ instance IsEventTarget HTMLFormElement
 instance IsSlotable HTMLFormElement
 instance IsParentNode HTMLFormElement
 instance IsNonDocumentTypeChildNode HTMLFormElement
+instance IsDocumentAndElementEventHandlers HTMLFormElement
 instance IsChildNode HTMLFormElement
 instance IsAnimatable HTMLFormElement
 instance IsGlobalEventHandlers HTMLFormElement
+instance IsElementCSSInlineStyle HTMLFormElement
 instance IsGObject HTMLFormElement where
   typeGType _ = gTypeHTMLFormElement
   {-# INLINE typeGType #-}
@@ -10261,9 +10950,11 @@ foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement Mozilla HTMLFrameElement documentation>
 newtype HTMLFrameElement = HTMLFrameElement { unHTMLFrameElement :: JSVal }
@@ -10294,9 +10985,11 @@ instance IsEventTarget HTMLFrameElement
 instance IsSlotable HTMLFrameElement
 instance IsParentNode HTMLFrameElement
 instance IsNonDocumentTypeChildNode HTMLFrameElement
+instance IsDocumentAndElementEventHandlers HTMLFrameElement
 instance IsChildNode HTMLFrameElement
 instance IsAnimatable HTMLFrameElement
 instance IsGlobalEventHandlers HTMLFrameElement
+instance IsElementCSSInlineStyle HTMLFrameElement
 instance IsGObject HTMLFrameElement where
   typeGType _ = gTypeHTMLFrameElement
   {-# INLINE typeGType #-}
@@ -10312,9 +11005,11 @@ foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.WindowEventHandlers"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement Mozilla HTMLFrameSetElement documentation>
@@ -10346,9 +11041,11 @@ instance IsEventTarget HTMLFrameSetElement
 instance IsSlotable HTMLFrameSetElement
 instance IsParentNode HTMLFrameSetElement
 instance IsNonDocumentTypeChildNode HTMLFrameSetElement
+instance IsDocumentAndElementEventHandlers HTMLFrameSetElement
 instance IsChildNode HTMLFrameSetElement
 instance IsAnimatable HTMLFrameSetElement
 instance IsGlobalEventHandlers HTMLFrameSetElement
+instance IsElementCSSInlineStyle HTMLFrameSetElement
 instance IsWindowEventHandlers HTMLFrameSetElement
 instance IsGObject HTMLFrameSetElement where
   typeGType _ = gTypeHTMLFrameSetElement
@@ -10365,9 +11062,11 @@ foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFram
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement Mozilla HTMLHRElement documentation>
 newtype HTMLHRElement = HTMLHRElement { unHTMLHRElement :: JSVal }
@@ -10398,9 +11097,11 @@ instance IsEventTarget HTMLHRElement
 instance IsSlotable HTMLHRElement
 instance IsParentNode HTMLHRElement
 instance IsNonDocumentTypeChildNode HTMLHRElement
+instance IsDocumentAndElementEventHandlers HTMLHRElement
 instance IsChildNode HTMLHRElement
 instance IsAnimatable HTMLHRElement
 instance IsGlobalEventHandlers HTMLHRElement
+instance IsElementCSSInlineStyle HTMLHRElement
 instance IsGObject HTMLHRElement where
   typeGType _ = gTypeHTMLHRElement
   {-# INLINE typeGType #-}
@@ -10416,9 +11117,11 @@ foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadElement Mozilla HTMLHeadElement documentation>
 newtype HTMLHeadElement = HTMLHeadElement { unHTMLHeadElement :: JSVal }
@@ -10449,9 +11152,11 @@ instance IsEventTarget HTMLHeadElement
 instance IsSlotable HTMLHeadElement
 instance IsParentNode HTMLHeadElement
 instance IsNonDocumentTypeChildNode HTMLHeadElement
+instance IsDocumentAndElementEventHandlers HTMLHeadElement
 instance IsChildNode HTMLHeadElement
 instance IsAnimatable HTMLHeadElement
 instance IsGlobalEventHandlers HTMLHeadElement
+instance IsElementCSSInlineStyle HTMLHeadElement
 instance IsGObject HTMLHeadElement where
   typeGType _ = gTypeHTMLHeadElement
   {-# INLINE typeGType #-}
@@ -10467,9 +11172,11 @@ foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHeadingElement Mozilla HTMLHeadingElement documentation>
 newtype HTMLHeadingElement = HTMLHeadingElement { unHTMLHeadingElement :: JSVal }
@@ -10500,9 +11207,11 @@ instance IsEventTarget HTMLHeadingElement
 instance IsSlotable HTMLHeadingElement
 instance IsParentNode HTMLHeadingElement
 instance IsNonDocumentTypeChildNode HTMLHeadingElement
+instance IsDocumentAndElementEventHandlers HTMLHeadingElement
 instance IsChildNode HTMLHeadingElement
 instance IsAnimatable HTMLHeadingElement
 instance IsGlobalEventHandlers HTMLHeadingElement
+instance IsElementCSSInlineStyle HTMLHeadingElement
 instance IsGObject HTMLHeadingElement where
   typeGType _ = gTypeHTMLHeadingElement
   {-# INLINE typeGType #-}
@@ -10518,9 +11227,11 @@ foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadi
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement Mozilla HTMLHtmlElement documentation>
 newtype HTMLHtmlElement = HTMLHtmlElement { unHTMLHtmlElement :: JSVal }
@@ -10551,9 +11262,11 @@ instance IsEventTarget HTMLHtmlElement
 instance IsSlotable HTMLHtmlElement
 instance IsParentNode HTMLHtmlElement
 instance IsNonDocumentTypeChildNode HTMLHtmlElement
+instance IsDocumentAndElementEventHandlers HTMLHtmlElement
 instance IsChildNode HTMLHtmlElement
 instance IsAnimatable HTMLHtmlElement
 instance IsGlobalEventHandlers HTMLHtmlElement
+instance IsElementCSSInlineStyle HTMLHtmlElement
 instance IsGObject HTMLHtmlElement where
   typeGType _ = gTypeHTMLHtmlElement
   {-# INLINE typeGType #-}
@@ -10603,9 +11316,11 @@ foreign import javascript unsafe "window[\"HTMLHyperlinkElementUtils\"]" gTypeHT
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement Mozilla HTMLIFrameElement documentation>
 newtype HTMLIFrameElement = HTMLIFrameElement { unHTMLIFrameElement :: JSVal }
@@ -10636,9 +11351,11 @@ instance IsEventTarget HTMLIFrameElement
 instance IsSlotable HTMLIFrameElement
 instance IsParentNode HTMLIFrameElement
 instance IsNonDocumentTypeChildNode HTMLIFrameElement
+instance IsDocumentAndElementEventHandlers HTMLIFrameElement
 instance IsChildNode HTMLIFrameElement
 instance IsAnimatable HTMLIFrameElement
 instance IsGlobalEventHandlers HTMLIFrameElement
+instance IsElementCSSInlineStyle HTMLIFrameElement
 instance IsGObject HTMLIFrameElement where
   typeGType _ = gTypeHTMLIFrameElement
   {-# INLINE typeGType #-}
@@ -10654,9 +11371,11 @@ foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrame
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement Mozilla HTMLImageElement documentation>
 newtype HTMLImageElement = HTMLImageElement { unHTMLImageElement :: JSVal }
@@ -10687,9 +11406,11 @@ instance IsEventTarget HTMLImageElement
 instance IsSlotable HTMLImageElement
 instance IsParentNode HTMLImageElement
 instance IsNonDocumentTypeChildNode HTMLImageElement
+instance IsDocumentAndElementEventHandlers HTMLImageElement
 instance IsChildNode HTMLImageElement
 instance IsAnimatable HTMLImageElement
 instance IsGlobalEventHandlers HTMLImageElement
+instance IsElementCSSInlineStyle HTMLImageElement
 instance IsGObject HTMLImageElement where
   typeGType _ = gTypeHTMLImageElement
   {-# INLINE typeGType #-}
@@ -10705,9 +11426,11 @@ foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement Mozilla HTMLInputElement documentation>
 newtype HTMLInputElement = HTMLInputElement { unHTMLInputElement :: JSVal }
@@ -10738,9 +11461,11 @@ instance IsEventTarget HTMLInputElement
 instance IsSlotable HTMLInputElement
 instance IsParentNode HTMLInputElement
 instance IsNonDocumentTypeChildNode HTMLInputElement
+instance IsDocumentAndElementEventHandlers HTMLInputElement
 instance IsChildNode HTMLInputElement
 instance IsAnimatable HTMLInputElement
 instance IsGlobalEventHandlers HTMLInputElement
+instance IsElementCSSInlineStyle HTMLInputElement
 instance IsGObject HTMLInputElement where
   typeGType _ = gTypeHTMLInputElement
   {-# INLINE typeGType #-}
@@ -10756,9 +11481,11 @@ foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLKeygenElement Mozilla HTMLKeygenElement documentation>
 newtype HTMLKeygenElement = HTMLKeygenElement { unHTMLKeygenElement :: JSVal }
@@ -10789,9 +11516,11 @@ instance IsEventTarget HTMLKeygenElement
 instance IsSlotable HTMLKeygenElement
 instance IsParentNode HTMLKeygenElement
 instance IsNonDocumentTypeChildNode HTMLKeygenElement
+instance IsDocumentAndElementEventHandlers HTMLKeygenElement
 instance IsChildNode HTMLKeygenElement
 instance IsAnimatable HTMLKeygenElement
 instance IsGlobalEventHandlers HTMLKeygenElement
+instance IsElementCSSInlineStyle HTMLKeygenElement
 instance IsGObject HTMLKeygenElement where
   typeGType _ = gTypeHTMLKeygenElement
   {-# INLINE typeGType #-}
@@ -10807,9 +11536,11 @@ foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLIElement Mozilla HTMLLIElement documentation>
 newtype HTMLLIElement = HTMLLIElement { unHTMLLIElement :: JSVal }
@@ -10840,9 +11571,11 @@ instance IsEventTarget HTMLLIElement
 instance IsSlotable HTMLLIElement
 instance IsParentNode HTMLLIElement
 instance IsNonDocumentTypeChildNode HTMLLIElement
+instance IsDocumentAndElementEventHandlers HTMLLIElement
 instance IsChildNode HTMLLIElement
 instance IsAnimatable HTMLLIElement
 instance IsGlobalEventHandlers HTMLLIElement
+instance IsElementCSSInlineStyle HTMLLIElement
 instance IsGObject HTMLLIElement where
   typeGType _ = gTypeHTMLLIElement
   {-# INLINE typeGType #-}
@@ -10858,9 +11591,11 @@ foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement Mozilla HTMLLabelElement documentation>
 newtype HTMLLabelElement = HTMLLabelElement { unHTMLLabelElement :: JSVal }
@@ -10891,9 +11626,11 @@ instance IsEventTarget HTMLLabelElement
 instance IsSlotable HTMLLabelElement
 instance IsParentNode HTMLLabelElement
 instance IsNonDocumentTypeChildNode HTMLLabelElement
+instance IsDocumentAndElementEventHandlers HTMLLabelElement
 instance IsChildNode HTMLLabelElement
 instance IsAnimatable HTMLLabelElement
 instance IsGlobalEventHandlers HTMLLabelElement
+instance IsElementCSSInlineStyle HTMLLabelElement
 instance IsGObject HTMLLabelElement where
   typeGType _ = gTypeHTMLLabelElement
   {-# INLINE typeGType #-}
@@ -10909,9 +11646,11 @@ foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLegendElement Mozilla HTMLLegendElement documentation>
 newtype HTMLLegendElement = HTMLLegendElement { unHTMLLegendElement :: JSVal }
@@ -10942,9 +11681,11 @@ instance IsEventTarget HTMLLegendElement
 instance IsSlotable HTMLLegendElement
 instance IsParentNode HTMLLegendElement
 instance IsNonDocumentTypeChildNode HTMLLegendElement
+instance IsDocumentAndElementEventHandlers HTMLLegendElement
 instance IsChildNode HTMLLegendElement
 instance IsAnimatable HTMLLegendElement
 instance IsGlobalEventHandlers HTMLLegendElement
+instance IsElementCSSInlineStyle HTMLLegendElement
 instance IsGObject HTMLLegendElement where
   typeGType _ = gTypeHTMLLegendElement
   {-# INLINE typeGType #-}
@@ -10960,9 +11701,11 @@ foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegend
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement Mozilla HTMLLinkElement documentation>
 newtype HTMLLinkElement = HTMLLinkElement { unHTMLLinkElement :: JSVal }
@@ -10993,9 +11736,11 @@ instance IsEventTarget HTMLLinkElement
 instance IsSlotable HTMLLinkElement
 instance IsParentNode HTMLLinkElement
 instance IsNonDocumentTypeChildNode HTMLLinkElement
+instance IsDocumentAndElementEventHandlers HTMLLinkElement
 instance IsChildNode HTMLLinkElement
 instance IsAnimatable HTMLLinkElement
 instance IsGlobalEventHandlers HTMLLinkElement
+instance IsElementCSSInlineStyle HTMLLinkElement
 instance IsGObject HTMLLinkElement where
   typeGType _ = gTypeHTMLLinkElement
   {-# INLINE typeGType #-}
@@ -11011,9 +11756,11 @@ foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMapElement Mozilla HTMLMapElement documentation>
 newtype HTMLMapElement = HTMLMapElement { unHTMLMapElement :: JSVal }
@@ -11044,9 +11791,11 @@ instance IsEventTarget HTMLMapElement
 instance IsSlotable HTMLMapElement
 instance IsParentNode HTMLMapElement
 instance IsNonDocumentTypeChildNode HTMLMapElement
+instance IsDocumentAndElementEventHandlers HTMLMapElement
 instance IsChildNode HTMLMapElement
 instance IsAnimatable HTMLMapElement
 instance IsGlobalEventHandlers HTMLMapElement
+instance IsElementCSSInlineStyle HTMLMapElement
 instance IsGObject HTMLMapElement where
   typeGType _ = gTypeHTMLMapElement
   {-# INLINE typeGType #-}
@@ -11062,9 +11811,11 @@ foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement Mozilla HTMLMarqueeElement documentation>
 newtype HTMLMarqueeElement = HTMLMarqueeElement { unHTMLMarqueeElement :: JSVal }
@@ -11095,9 +11846,11 @@ instance IsEventTarget HTMLMarqueeElement
 instance IsSlotable HTMLMarqueeElement
 instance IsParentNode HTMLMarqueeElement
 instance IsNonDocumentTypeChildNode HTMLMarqueeElement
+instance IsDocumentAndElementEventHandlers HTMLMarqueeElement
 instance IsChildNode HTMLMarqueeElement
 instance IsAnimatable HTMLMarqueeElement
 instance IsGlobalEventHandlers HTMLMarqueeElement
+instance IsElementCSSInlineStyle HTMLMarqueeElement
 instance IsGObject HTMLMarqueeElement where
   typeGType _ = gTypeHTMLMarqueeElement
   {-# INLINE typeGType #-}
@@ -11113,9 +11866,11 @@ foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqu
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement Mozilla HTMLMediaElement documentation>
 newtype HTMLMediaElement = HTMLMediaElement { unHTMLMediaElement :: JSVal }
@@ -11139,7 +11894,7 @@ instance FromJSVal HTMLMediaElement where
   fromJSVal = return . fmap HTMLMediaElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsHTMLElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsGObject o) => IsHTMLMediaElement o
+class (IsHTMLElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsGObject o) => IsHTMLMediaElement o
 toHTMLMediaElement :: IsHTMLMediaElement o => o -> HTMLMediaElement
 toHTMLMediaElement = HTMLMediaElement . coerce
 
@@ -11151,9 +11906,11 @@ instance IsEventTarget HTMLMediaElement
 instance IsSlotable HTMLMediaElement
 instance IsParentNode HTMLMediaElement
 instance IsNonDocumentTypeChildNode HTMLMediaElement
+instance IsDocumentAndElementEventHandlers HTMLMediaElement
 instance IsChildNode HTMLMediaElement
 instance IsAnimatable HTMLMediaElement
 instance IsGlobalEventHandlers HTMLMediaElement
+instance IsElementCSSInlineStyle HTMLMediaElement
 instance IsGObject HTMLMediaElement where
   typeGType _ = gTypeHTMLMediaElement
   {-# INLINE typeGType #-}
@@ -11169,9 +11926,11 @@ foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMenuElement Mozilla HTMLMenuElement documentation>
 newtype HTMLMenuElement = HTMLMenuElement { unHTMLMenuElement :: JSVal }
@@ -11202,9 +11961,11 @@ instance IsEventTarget HTMLMenuElement
 instance IsSlotable HTMLMenuElement
 instance IsParentNode HTMLMenuElement
 instance IsNonDocumentTypeChildNode HTMLMenuElement
+instance IsDocumentAndElementEventHandlers HTMLMenuElement
 instance IsChildNode HTMLMenuElement
 instance IsAnimatable HTMLMenuElement
 instance IsGlobalEventHandlers HTMLMenuElement
+instance IsElementCSSInlineStyle HTMLMenuElement
 instance IsGObject HTMLMenuElement where
   typeGType _ = gTypeHTMLMenuElement
   {-# INLINE typeGType #-}
@@ -11220,9 +11981,11 @@ foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement Mozilla HTMLMetaElement documentation>
 newtype HTMLMetaElement = HTMLMetaElement { unHTMLMetaElement :: JSVal }
@@ -11253,9 +12016,11 @@ instance IsEventTarget HTMLMetaElement
 instance IsSlotable HTMLMetaElement
 instance IsParentNode HTMLMetaElement
 instance IsNonDocumentTypeChildNode HTMLMetaElement
+instance IsDocumentAndElementEventHandlers HTMLMetaElement
 instance IsChildNode HTMLMetaElement
 instance IsAnimatable HTMLMetaElement
 instance IsGlobalEventHandlers HTMLMetaElement
+instance IsElementCSSInlineStyle HTMLMetaElement
 instance IsGObject HTMLMetaElement where
   typeGType _ = gTypeHTMLMetaElement
   {-# INLINE typeGType #-}
@@ -11271,9 +12036,11 @@ foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement Mozilla HTMLMeterElement documentation>
 newtype HTMLMeterElement = HTMLMeterElement { unHTMLMeterElement :: JSVal }
@@ -11304,9 +12071,11 @@ instance IsEventTarget HTMLMeterElement
 instance IsSlotable HTMLMeterElement
 instance IsParentNode HTMLMeterElement
 instance IsNonDocumentTypeChildNode HTMLMeterElement
+instance IsDocumentAndElementEventHandlers HTMLMeterElement
 instance IsChildNode HTMLMeterElement
 instance IsAnimatable HTMLMeterElement
 instance IsGlobalEventHandlers HTMLMeterElement
+instance IsElementCSSInlineStyle HTMLMeterElement
 instance IsGObject HTMLMeterElement where
   typeGType _ = gTypeHTMLMeterElement
   {-# INLINE typeGType #-}
@@ -11322,9 +12091,11 @@ foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement Mozilla HTMLModElement documentation>
 newtype HTMLModElement = HTMLModElement { unHTMLModElement :: JSVal }
@@ -11355,9 +12126,11 @@ instance IsEventTarget HTMLModElement
 instance IsSlotable HTMLModElement
 instance IsParentNode HTMLModElement
 instance IsNonDocumentTypeChildNode HTMLModElement
+instance IsDocumentAndElementEventHandlers HTMLModElement
 instance IsChildNode HTMLModElement
 instance IsAnimatable HTMLModElement
 instance IsGlobalEventHandlers HTMLModElement
+instance IsElementCSSInlineStyle HTMLModElement
 instance IsGObject HTMLModElement where
   typeGType _ = gTypeHTMLModElement
   {-# INLINE typeGType #-}
@@ -11373,9 +12146,11 @@ foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement Mozilla HTMLOListElement documentation>
 newtype HTMLOListElement = HTMLOListElement { unHTMLOListElement :: JSVal }
@@ -11406,9 +12181,11 @@ instance IsEventTarget HTMLOListElement
 instance IsSlotable HTMLOListElement
 instance IsParentNode HTMLOListElement
 instance IsNonDocumentTypeChildNode HTMLOListElement
+instance IsDocumentAndElementEventHandlers HTMLOListElement
 instance IsChildNode HTMLOListElement
 instance IsAnimatable HTMLOListElement
 instance IsGlobalEventHandlers HTMLOListElement
+instance IsElementCSSInlineStyle HTMLOListElement
 instance IsGObject HTMLOListElement where
   typeGType _ = gTypeHTMLOListElement
   {-# INLINE typeGType #-}
@@ -11424,9 +12201,11 @@ foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement Mozilla HTMLObjectElement documentation>
 newtype HTMLObjectElement = HTMLObjectElement { unHTMLObjectElement :: JSVal }
@@ -11457,9 +12236,11 @@ instance IsEventTarget HTMLObjectElement
 instance IsSlotable HTMLObjectElement
 instance IsParentNode HTMLObjectElement
 instance IsNonDocumentTypeChildNode HTMLObjectElement
+instance IsDocumentAndElementEventHandlers HTMLObjectElement
 instance IsChildNode HTMLObjectElement
 instance IsAnimatable HTMLObjectElement
 instance IsGlobalEventHandlers HTMLObjectElement
+instance IsElementCSSInlineStyle HTMLObjectElement
 instance IsGObject HTMLObjectElement where
   typeGType _ = gTypeHTMLObjectElement
   {-# INLINE typeGType #-}
@@ -11475,9 +12256,11 @@ foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObject
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement Mozilla HTMLOptGroupElement documentation>
 newtype HTMLOptGroupElement = HTMLOptGroupElement { unHTMLOptGroupElement :: JSVal }
@@ -11508,9 +12291,11 @@ instance IsEventTarget HTMLOptGroupElement
 instance IsSlotable HTMLOptGroupElement
 instance IsParentNode HTMLOptGroupElement
 instance IsNonDocumentTypeChildNode HTMLOptGroupElement
+instance IsDocumentAndElementEventHandlers HTMLOptGroupElement
 instance IsChildNode HTMLOptGroupElement
 instance IsAnimatable HTMLOptGroupElement
 instance IsGlobalEventHandlers HTMLOptGroupElement
+instance IsElementCSSInlineStyle HTMLOptGroupElement
 instance IsGObject HTMLOptGroupElement where
   typeGType _ = gTypeHTMLOptGroupElement
   {-# INLINE typeGType #-}
@@ -11526,9 +12311,11 @@ foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement Mozilla HTMLOptionElement documentation>
 newtype HTMLOptionElement = HTMLOptionElement { unHTMLOptionElement :: JSVal }
@@ -11559,9 +12346,11 @@ instance IsEventTarget HTMLOptionElement
 instance IsSlotable HTMLOptionElement
 instance IsParentNode HTMLOptionElement
 instance IsNonDocumentTypeChildNode HTMLOptionElement
+instance IsDocumentAndElementEventHandlers HTMLOptionElement
 instance IsChildNode HTMLOptionElement
 instance IsAnimatable HTMLOptionElement
 instance IsGlobalEventHandlers HTMLOptionElement
+instance IsElementCSSInlineStyle HTMLOptionElement
 instance IsGObject HTMLOptionElement where
   typeGType _ = gTypeHTMLOptionElement
   {-# INLINE typeGType #-}
@@ -11610,9 +12399,11 @@ foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOp
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement Mozilla HTMLOutputElement documentation>
 newtype HTMLOutputElement = HTMLOutputElement { unHTMLOutputElement :: JSVal }
@@ -11643,9 +12434,11 @@ instance IsEventTarget HTMLOutputElement
 instance IsSlotable HTMLOutputElement
 instance IsParentNode HTMLOutputElement
 instance IsNonDocumentTypeChildNode HTMLOutputElement
+instance IsDocumentAndElementEventHandlers HTMLOutputElement
 instance IsChildNode HTMLOutputElement
 instance IsAnimatable HTMLOutputElement
 instance IsGlobalEventHandlers HTMLOutputElement
+instance IsElementCSSInlineStyle HTMLOutputElement
 instance IsGObject HTMLOutputElement where
   typeGType _ = gTypeHTMLOutputElement
   {-# INLINE typeGType #-}
@@ -11661,9 +12454,11 @@ foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutput
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParagraphElement Mozilla HTMLParagraphElement documentation>
 newtype HTMLParagraphElement = HTMLParagraphElement { unHTMLParagraphElement :: JSVal }
@@ -11694,9 +12489,11 @@ instance IsEventTarget HTMLParagraphElement
 instance IsSlotable HTMLParagraphElement
 instance IsParentNode HTMLParagraphElement
 instance IsNonDocumentTypeChildNode HTMLParagraphElement
+instance IsDocumentAndElementEventHandlers HTMLParagraphElement
 instance IsChildNode HTMLParagraphElement
 instance IsAnimatable HTMLParagraphElement
 instance IsGlobalEventHandlers HTMLParagraphElement
+instance IsElementCSSInlineStyle HTMLParagraphElement
 instance IsGObject HTMLParagraphElement where
   typeGType _ = gTypeHTMLParagraphElement
   {-# INLINE typeGType #-}
@@ -11712,9 +12509,11 @@ foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLPar
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement Mozilla HTMLParamElement documentation>
 newtype HTMLParamElement = HTMLParamElement { unHTMLParamElement :: JSVal }
@@ -11745,9 +12544,11 @@ instance IsEventTarget HTMLParamElement
 instance IsSlotable HTMLParamElement
 instance IsParentNode HTMLParamElement
 instance IsNonDocumentTypeChildNode HTMLParamElement
+instance IsDocumentAndElementEventHandlers HTMLParamElement
 instance IsChildNode HTMLParamElement
 instance IsAnimatable HTMLParamElement
 instance IsGlobalEventHandlers HTMLParamElement
+instance IsElementCSSInlineStyle HTMLParamElement
 instance IsGObject HTMLParamElement where
   typeGType _ = gTypeHTMLParamElement
   {-# INLINE typeGType #-}
@@ -11763,9 +12564,11 @@ foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPictureElement Mozilla HTMLPictureElement documentation>
 newtype HTMLPictureElement = HTMLPictureElement { unHTMLPictureElement :: JSVal }
@@ -11796,9 +12599,11 @@ instance IsEventTarget HTMLPictureElement
 instance IsSlotable HTMLPictureElement
 instance IsParentNode HTMLPictureElement
 instance IsNonDocumentTypeChildNode HTMLPictureElement
+instance IsDocumentAndElementEventHandlers HTMLPictureElement
 instance IsChildNode HTMLPictureElement
 instance IsAnimatable HTMLPictureElement
 instance IsGlobalEventHandlers HTMLPictureElement
+instance IsElementCSSInlineStyle HTMLPictureElement
 instance IsGObject HTMLPictureElement where
   typeGType _ = gTypeHTMLPictureElement
   {-# INLINE typeGType #-}
@@ -11814,9 +12619,11 @@ foreign import javascript unsafe "window[\"HTMLPictureElement\"]" gTypeHTMLPictu
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPreElement Mozilla HTMLPreElement documentation>
 newtype HTMLPreElement = HTMLPreElement { unHTMLPreElement :: JSVal }
@@ -11847,9 +12654,11 @@ instance IsEventTarget HTMLPreElement
 instance IsSlotable HTMLPreElement
 instance IsParentNode HTMLPreElement
 instance IsNonDocumentTypeChildNode HTMLPreElement
+instance IsDocumentAndElementEventHandlers HTMLPreElement
 instance IsChildNode HTMLPreElement
 instance IsAnimatable HTMLPreElement
 instance IsGlobalEventHandlers HTMLPreElement
+instance IsElementCSSInlineStyle HTMLPreElement
 instance IsGObject HTMLPreElement where
   typeGType _ = gTypeHTMLPreElement
   {-# INLINE typeGType #-}
@@ -11865,9 +12674,11 @@ foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLProgressElement Mozilla HTMLProgressElement documentation>
 newtype HTMLProgressElement = HTMLProgressElement { unHTMLProgressElement :: JSVal }
@@ -11898,9 +12709,11 @@ instance IsEventTarget HTMLProgressElement
 instance IsSlotable HTMLProgressElement
 instance IsParentNode HTMLProgressElement
 instance IsNonDocumentTypeChildNode HTMLProgressElement
+instance IsDocumentAndElementEventHandlers HTMLProgressElement
 instance IsChildNode HTMLProgressElement
 instance IsAnimatable HTMLProgressElement
 instance IsGlobalEventHandlers HTMLProgressElement
+instance IsElementCSSInlineStyle HTMLProgressElement
 instance IsGObject HTMLProgressElement where
   typeGType _ = gTypeHTMLProgressElement
   {-# INLINE typeGType #-}
@@ -11916,9 +12729,11 @@ foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProg
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLQuoteElement Mozilla HTMLQuoteElement documentation>
 newtype HTMLQuoteElement = HTMLQuoteElement { unHTMLQuoteElement :: JSVal }
@@ -11949,9 +12764,11 @@ instance IsEventTarget HTMLQuoteElement
 instance IsSlotable HTMLQuoteElement
 instance IsParentNode HTMLQuoteElement
 instance IsNonDocumentTypeChildNode HTMLQuoteElement
+instance IsDocumentAndElementEventHandlers HTMLQuoteElement
 instance IsChildNode HTMLQuoteElement
 instance IsAnimatable HTMLQuoteElement
 instance IsGlobalEventHandlers HTMLQuoteElement
+instance IsElementCSSInlineStyle HTMLQuoteElement
 instance IsGObject HTMLQuoteElement where
   typeGType _ = gTypeHTMLQuoteElement
   {-# INLINE typeGType #-}
@@ -11967,9 +12784,11 @@ foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement Mozilla HTMLScriptElement documentation>
 newtype HTMLScriptElement = HTMLScriptElement { unHTMLScriptElement :: JSVal }
@@ -12000,9 +12819,11 @@ instance IsEventTarget HTMLScriptElement
 instance IsSlotable HTMLScriptElement
 instance IsParentNode HTMLScriptElement
 instance IsNonDocumentTypeChildNode HTMLScriptElement
+instance IsDocumentAndElementEventHandlers HTMLScriptElement
 instance IsChildNode HTMLScriptElement
 instance IsAnimatable HTMLScriptElement
 instance IsGlobalEventHandlers HTMLScriptElement
+instance IsElementCSSInlineStyle HTMLScriptElement
 instance IsGObject HTMLScriptElement where
   typeGType _ = gTypeHTMLScriptElement
   {-# INLINE typeGType #-}
@@ -12018,9 +12839,11 @@ foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScript
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement Mozilla HTMLSelectElement documentation>
 newtype HTMLSelectElement = HTMLSelectElement { unHTMLSelectElement :: JSVal }
@@ -12051,9 +12874,11 @@ instance IsEventTarget HTMLSelectElement
 instance IsSlotable HTMLSelectElement
 instance IsParentNode HTMLSelectElement
 instance IsNonDocumentTypeChildNode HTMLSelectElement
+instance IsDocumentAndElementEventHandlers HTMLSelectElement
 instance IsChildNode HTMLSelectElement
 instance IsAnimatable HTMLSelectElement
 instance IsGlobalEventHandlers HTMLSelectElement
+instance IsElementCSSInlineStyle HTMLSelectElement
 instance IsGObject HTMLSelectElement where
   typeGType _ = gTypeHTMLSelectElement
   {-# INLINE typeGType #-}
@@ -12069,9 +12894,11 @@ foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelect
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement Mozilla HTMLSlotElement documentation>
 newtype HTMLSlotElement = HTMLSlotElement { unHTMLSlotElement :: JSVal }
@@ -12102,9 +12929,11 @@ instance IsEventTarget HTMLSlotElement
 instance IsSlotable HTMLSlotElement
 instance IsParentNode HTMLSlotElement
 instance IsNonDocumentTypeChildNode HTMLSlotElement
+instance IsDocumentAndElementEventHandlers HTMLSlotElement
 instance IsChildNode HTMLSlotElement
 instance IsAnimatable HTMLSlotElement
 instance IsGlobalEventHandlers HTMLSlotElement
+instance IsElementCSSInlineStyle HTMLSlotElement
 instance IsGObject HTMLSlotElement where
   typeGType _ = gTypeHTMLSlotElement
   {-# INLINE typeGType #-}
@@ -12120,9 +12949,11 @@ foreign import javascript unsafe "window[\"HTMLSlotElement\"]" gTypeHTMLSlotElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement Mozilla HTMLSourceElement documentation>
 newtype HTMLSourceElement = HTMLSourceElement { unHTMLSourceElement :: JSVal }
@@ -12153,9 +12984,11 @@ instance IsEventTarget HTMLSourceElement
 instance IsSlotable HTMLSourceElement
 instance IsParentNode HTMLSourceElement
 instance IsNonDocumentTypeChildNode HTMLSourceElement
+instance IsDocumentAndElementEventHandlers HTMLSourceElement
 instance IsChildNode HTMLSourceElement
 instance IsAnimatable HTMLSourceElement
 instance IsGlobalEventHandlers HTMLSourceElement
+instance IsElementCSSInlineStyle HTMLSourceElement
 instance IsGObject HTMLSourceElement where
   typeGType _ = gTypeHTMLSourceElement
   {-# INLINE typeGType #-}
@@ -12171,9 +13004,11 @@ foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSource
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSpanElement Mozilla HTMLSpanElement documentation>
 newtype HTMLSpanElement = HTMLSpanElement { unHTMLSpanElement :: JSVal }
@@ -12204,9 +13039,11 @@ instance IsEventTarget HTMLSpanElement
 instance IsSlotable HTMLSpanElement
 instance IsParentNode HTMLSpanElement
 instance IsNonDocumentTypeChildNode HTMLSpanElement
+instance IsDocumentAndElementEventHandlers HTMLSpanElement
 instance IsChildNode HTMLSpanElement
 instance IsAnimatable HTMLSpanElement
 instance IsGlobalEventHandlers HTMLSpanElement
+instance IsElementCSSInlineStyle HTMLSpanElement
 instance IsGObject HTMLSpanElement where
   typeGType _ = gTypeHTMLSpanElement
   {-# INLINE typeGType #-}
@@ -12222,9 +13059,11 @@ foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLStyleElement Mozilla HTMLStyleElement documentation>
 newtype HTMLStyleElement = HTMLStyleElement { unHTMLStyleElement :: JSVal }
@@ -12255,9 +13094,11 @@ instance IsEventTarget HTMLStyleElement
 instance IsSlotable HTMLStyleElement
 instance IsParentNode HTMLStyleElement
 instance IsNonDocumentTypeChildNode HTMLStyleElement
+instance IsDocumentAndElementEventHandlers HTMLStyleElement
 instance IsChildNode HTMLStyleElement
 instance IsAnimatable HTMLStyleElement
 instance IsGlobalEventHandlers HTMLStyleElement
+instance IsElementCSSInlineStyle HTMLStyleElement
 instance IsGObject HTMLStyleElement where
   typeGType _ = gTypeHTMLStyleElement
   {-# INLINE typeGType #-}
@@ -12273,9 +13114,11 @@ foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCaptionElement Mozilla HTMLTableCaptionElement documentation>
 newtype HTMLTableCaptionElement = HTMLTableCaptionElement { unHTMLTableCaptionElement :: JSVal }
@@ -12306,9 +13149,11 @@ instance IsEventTarget HTMLTableCaptionElement
 instance IsSlotable HTMLTableCaptionElement
 instance IsParentNode HTMLTableCaptionElement
 instance IsNonDocumentTypeChildNode HTMLTableCaptionElement
+instance IsDocumentAndElementEventHandlers HTMLTableCaptionElement
 instance IsChildNode HTMLTableCaptionElement
 instance IsAnimatable HTMLTableCaptionElement
 instance IsGlobalEventHandlers HTMLTableCaptionElement
+instance IsElementCSSInlineStyle HTMLTableCaptionElement
 instance IsGObject HTMLTableCaptionElement where
   typeGType _ = gTypeHTMLTableCaptionElement
   {-# INLINE typeGType #-}
@@ -12324,9 +13169,11 @@ foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTML
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement Mozilla HTMLTableCellElement documentation>
 newtype HTMLTableCellElement = HTMLTableCellElement { unHTMLTableCellElement :: JSVal }
@@ -12357,9 +13204,11 @@ instance IsEventTarget HTMLTableCellElement
 instance IsSlotable HTMLTableCellElement
 instance IsParentNode HTMLTableCellElement
 instance IsNonDocumentTypeChildNode HTMLTableCellElement
+instance IsDocumentAndElementEventHandlers HTMLTableCellElement
 instance IsChildNode HTMLTableCellElement
 instance IsAnimatable HTMLTableCellElement
 instance IsGlobalEventHandlers HTMLTableCellElement
+instance IsElementCSSInlineStyle HTMLTableCellElement
 instance IsGObject HTMLTableCellElement where
   typeGType _ = gTypeHTMLTableCellElement
   {-# INLINE typeGType #-}
@@ -12375,9 +13224,11 @@ foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTab
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement Mozilla HTMLTableColElement documentation>
 newtype HTMLTableColElement = HTMLTableColElement { unHTMLTableColElement :: JSVal }
@@ -12408,9 +13259,11 @@ instance IsEventTarget HTMLTableColElement
 instance IsSlotable HTMLTableColElement
 instance IsParentNode HTMLTableColElement
 instance IsNonDocumentTypeChildNode HTMLTableColElement
+instance IsDocumentAndElementEventHandlers HTMLTableColElement
 instance IsChildNode HTMLTableColElement
 instance IsAnimatable HTMLTableColElement
 instance IsGlobalEventHandlers HTMLTableColElement
+instance IsElementCSSInlineStyle HTMLTableColElement
 instance IsGObject HTMLTableColElement where
   typeGType _ = gTypeHTMLTableColElement
   {-# INLINE typeGType #-}
@@ -12426,9 +13279,11 @@ foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTabl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement Mozilla HTMLTableElement documentation>
 newtype HTMLTableElement = HTMLTableElement { unHTMLTableElement :: JSVal }
@@ -12459,9 +13314,11 @@ instance IsEventTarget HTMLTableElement
 instance IsSlotable HTMLTableElement
 instance IsParentNode HTMLTableElement
 instance IsNonDocumentTypeChildNode HTMLTableElement
+instance IsDocumentAndElementEventHandlers HTMLTableElement
 instance IsChildNode HTMLTableElement
 instance IsAnimatable HTMLTableElement
 instance IsGlobalEventHandlers HTMLTableElement
+instance IsElementCSSInlineStyle HTMLTableElement
 instance IsGObject HTMLTableElement where
   typeGType _ = gTypeHTMLTableElement
   {-# INLINE typeGType #-}
@@ -12477,9 +13334,11 @@ foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement Mozilla HTMLTableRowElement documentation>
 newtype HTMLTableRowElement = HTMLTableRowElement { unHTMLTableRowElement :: JSVal }
@@ -12510,9 +13369,11 @@ instance IsEventTarget HTMLTableRowElement
 instance IsSlotable HTMLTableRowElement
 instance IsParentNode HTMLTableRowElement
 instance IsNonDocumentTypeChildNode HTMLTableRowElement
+instance IsDocumentAndElementEventHandlers HTMLTableRowElement
 instance IsChildNode HTMLTableRowElement
 instance IsAnimatable HTMLTableRowElement
 instance IsGlobalEventHandlers HTMLTableRowElement
+instance IsElementCSSInlineStyle HTMLTableRowElement
 instance IsGObject HTMLTableRowElement where
   typeGType _ = gTypeHTMLTableRowElement
   {-# INLINE typeGType #-}
@@ -12528,9 +13389,11 @@ foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTabl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement Mozilla HTMLTableSectionElement documentation>
 newtype HTMLTableSectionElement = HTMLTableSectionElement { unHTMLTableSectionElement :: JSVal }
@@ -12561,9 +13424,11 @@ instance IsEventTarget HTMLTableSectionElement
 instance IsSlotable HTMLTableSectionElement
 instance IsParentNode HTMLTableSectionElement
 instance IsNonDocumentTypeChildNode HTMLTableSectionElement
+instance IsDocumentAndElementEventHandlers HTMLTableSectionElement
 instance IsChildNode HTMLTableSectionElement
 instance IsAnimatable HTMLTableSectionElement
 instance IsGlobalEventHandlers HTMLTableSectionElement
+instance IsElementCSSInlineStyle HTMLTableSectionElement
 instance IsGObject HTMLTableSectionElement where
   typeGType _ = gTypeHTMLTableSectionElement
   {-# INLINE typeGType #-}
@@ -12579,9 +13444,11 @@ foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTML
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTemplateElement Mozilla HTMLTemplateElement documentation>
 newtype HTMLTemplateElement = HTMLTemplateElement { unHTMLTemplateElement :: JSVal }
@@ -12612,9 +13479,11 @@ instance IsEventTarget HTMLTemplateElement
 instance IsSlotable HTMLTemplateElement
 instance IsParentNode HTMLTemplateElement
 instance IsNonDocumentTypeChildNode HTMLTemplateElement
+instance IsDocumentAndElementEventHandlers HTMLTemplateElement
 instance IsChildNode HTMLTemplateElement
 instance IsAnimatable HTMLTemplateElement
 instance IsGlobalEventHandlers HTMLTemplateElement
+instance IsElementCSSInlineStyle HTMLTemplateElement
 instance IsGObject HTMLTemplateElement where
   typeGType _ = gTypeHTMLTemplateElement
   {-# INLINE typeGType #-}
@@ -12630,9 +13499,11 @@ foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemp
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement Mozilla HTMLTextAreaElement documentation>
 newtype HTMLTextAreaElement = HTMLTextAreaElement { unHTMLTextAreaElement :: JSVal }
@@ -12663,9 +13534,11 @@ instance IsEventTarget HTMLTextAreaElement
 instance IsSlotable HTMLTextAreaElement
 instance IsParentNode HTMLTextAreaElement
 instance IsNonDocumentTypeChildNode HTMLTextAreaElement
+instance IsDocumentAndElementEventHandlers HTMLTextAreaElement
 instance IsChildNode HTMLTextAreaElement
 instance IsAnimatable HTMLTextAreaElement
 instance IsGlobalEventHandlers HTMLTextAreaElement
+instance IsElementCSSInlineStyle HTMLTextAreaElement
 instance IsGObject HTMLTextAreaElement where
   typeGType _ = gTypeHTMLTextAreaElement
   {-# INLINE typeGType #-}
@@ -12681,9 +13554,11 @@ foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLText
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTimeElement Mozilla HTMLTimeElement documentation>
 newtype HTMLTimeElement = HTMLTimeElement { unHTMLTimeElement :: JSVal }
@@ -12714,9 +13589,11 @@ instance IsEventTarget HTMLTimeElement
 instance IsSlotable HTMLTimeElement
 instance IsParentNode HTMLTimeElement
 instance IsNonDocumentTypeChildNode HTMLTimeElement
+instance IsDocumentAndElementEventHandlers HTMLTimeElement
 instance IsChildNode HTMLTimeElement
 instance IsAnimatable HTMLTimeElement
 instance IsGlobalEventHandlers HTMLTimeElement
+instance IsElementCSSInlineStyle HTMLTimeElement
 instance IsGObject HTMLTimeElement where
   typeGType _ = gTypeHTMLTimeElement
   {-# INLINE typeGType #-}
@@ -12732,9 +13609,11 @@ foreign import javascript unsafe "window[\"HTMLTimeElement\"]" gTypeHTMLTimeElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTitleElement Mozilla HTMLTitleElement documentation>
 newtype HTMLTitleElement = HTMLTitleElement { unHTMLTitleElement :: JSVal }
@@ -12765,9 +13644,11 @@ instance IsEventTarget HTMLTitleElement
 instance IsSlotable HTMLTitleElement
 instance IsParentNode HTMLTitleElement
 instance IsNonDocumentTypeChildNode HTMLTitleElement
+instance IsDocumentAndElementEventHandlers HTMLTitleElement
 instance IsChildNode HTMLTitleElement
 instance IsAnimatable HTMLTitleElement
 instance IsGlobalEventHandlers HTMLTitleElement
+instance IsElementCSSInlineStyle HTMLTitleElement
 instance IsGObject HTMLTitleElement where
   typeGType _ = gTypeHTMLTitleElement
   {-# INLINE typeGType #-}
@@ -12783,9 +13664,11 @@ foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement Mozilla HTMLTrackElement documentation>
 newtype HTMLTrackElement = HTMLTrackElement { unHTMLTrackElement :: JSVal }
@@ -12816,9 +13699,11 @@ instance IsEventTarget HTMLTrackElement
 instance IsSlotable HTMLTrackElement
 instance IsParentNode HTMLTrackElement
 instance IsNonDocumentTypeChildNode HTMLTrackElement
+instance IsDocumentAndElementEventHandlers HTMLTrackElement
 instance IsChildNode HTMLTrackElement
 instance IsAnimatable HTMLTrackElement
 instance IsGlobalEventHandlers HTMLTrackElement
+instance IsElementCSSInlineStyle HTMLTrackElement
 instance IsGObject HTMLTrackElement where
   typeGType _ = gTypeHTMLTrackElement
   {-# INLINE typeGType #-}
@@ -12834,9 +13719,11 @@ foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUListElement Mozilla HTMLUListElement documentation>
 newtype HTMLUListElement = HTMLUListElement { unHTMLUListElement :: JSVal }
@@ -12867,9 +13754,11 @@ instance IsEventTarget HTMLUListElement
 instance IsSlotable HTMLUListElement
 instance IsParentNode HTMLUListElement
 instance IsNonDocumentTypeChildNode HTMLUListElement
+instance IsDocumentAndElementEventHandlers HTMLUListElement
 instance IsChildNode HTMLUListElement
 instance IsAnimatable HTMLUListElement
 instance IsGlobalEventHandlers HTMLUListElement
+instance IsElementCSSInlineStyle HTMLUListElement
 instance IsGObject HTMLUListElement where
   typeGType _ = gTypeHTMLUListElement
   {-# INLINE typeGType #-}
@@ -12885,9 +13774,11 @@ foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLUnknownElement Mozilla HTMLUnknownElement documentation>
 newtype HTMLUnknownElement = HTMLUnknownElement { unHTMLUnknownElement :: JSVal }
@@ -12918,9 +13809,11 @@ instance IsEventTarget HTMLUnknownElement
 instance IsSlotable HTMLUnknownElement
 instance IsParentNode HTMLUnknownElement
 instance IsNonDocumentTypeChildNode HTMLUnknownElement
+instance IsDocumentAndElementEventHandlers HTMLUnknownElement
 instance IsChildNode HTMLUnknownElement
 instance IsAnimatable HTMLUnknownElement
 instance IsGlobalEventHandlers HTMLUnknownElement
+instance IsElementCSSInlineStyle HTMLUnknownElement
 instance IsGObject HTMLUnknownElement where
   typeGType _ = gTypeHTMLUnknownElement
   {-# INLINE typeGType #-}
@@ -12937,9 +13830,11 @@ foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnkno
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement Mozilla HTMLVideoElement documentation>
 newtype HTMLVideoElement = HTMLVideoElement { unHTMLVideoElement :: JSVal }
@@ -12971,9 +13866,11 @@ instance IsEventTarget HTMLVideoElement
 instance IsSlotable HTMLVideoElement
 instance IsParentNode HTMLVideoElement
 instance IsNonDocumentTypeChildNode HTMLVideoElement
+instance IsDocumentAndElementEventHandlers HTMLVideoElement
 instance IsChildNode HTMLVideoElement
 instance IsAnimatable HTMLVideoElement
 instance IsGlobalEventHandlers HTMLVideoElement
+instance IsElementCSSInlineStyle HTMLVideoElement
 instance IsGObject HTMLVideoElement where
   typeGType _ = gTypeHTMLVideoElement
   {-# INLINE typeGType #-}
@@ -13102,6 +13999,39 @@ instance IsGObject History where
   typeGType _ = gTypeHistory
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"History\"]" gTypeHistory :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.HkdfParams".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/HkdfParams Mozilla HkdfParams documentation>
+newtype HkdfParams = HkdfParams { unHkdfParams :: JSVal }
+
+instance Eq (HkdfParams) where
+  (HkdfParams a) == (HkdfParams b) = js_eq a b
+
+instance PToJSVal HkdfParams where
+  pToJSVal = unHkdfParams
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal HkdfParams where
+  pFromJSVal = HkdfParams
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal HkdfParams where
+  toJSVal = return . unHkdfParams
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal HkdfParams where
+  fromJSVal = return . fmap HkdfParams . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters HkdfParams
+instance IsGObject HkdfParams where
+  typeGType _ = gTypeHkdfParams
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"HkdfParams\"]" gTypeHkdfParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HmacKeyParams".
 -- Base interface functions are in:
@@ -14924,6 +15854,11 @@ instance FromJSVal MediaStreamTrack where
   fromJSVal = return . fmap MediaStreamTrack . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
+class (IsEventTarget o, IsGObject o) => IsMediaStreamTrack o
+toMediaStreamTrack :: IsMediaStreamTrack o => o -> MediaStreamTrack
+toMediaStreamTrack = MediaStreamTrack . coerce
+
+instance IsMediaStreamTrack MediaStreamTrack
 instance IsEventTarget MediaStreamTrack
 instance IsGObject MediaStreamTrack where
   typeGType _ = gTypeMediaStreamTrack
@@ -15977,35 +16912,6 @@ instance IsGObject Notification where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification :: GType
 
--- | Functions for this inteface are in "GHCJS.DOM.NotificationCenter".
---
--- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationCenter Mozilla NotificationCenter documentation>
-newtype NotificationCenter = NotificationCenter { unNotificationCenter :: JSVal }
-
-instance Eq (NotificationCenter) where
-  (NotificationCenter a) == (NotificationCenter b) = js_eq a b
-
-instance PToJSVal NotificationCenter where
-  pToJSVal = unNotificationCenter
-  {-# INLINE pToJSVal #-}
-
-instance PFromJSVal NotificationCenter where
-  pFromJSVal = NotificationCenter
-  {-# INLINE pFromJSVal #-}
-
-instance ToJSVal NotificationCenter where
-  toJSVal = return . unNotificationCenter
-  {-# INLINE toJSVal #-}
-
-instance FromJSVal NotificationCenter where
-  fromJSVal = return . fmap NotificationCenter . maybeJSNullOrUndefined
-  {-# INLINE fromJSVal #-}
-
-instance IsGObject NotificationCenter where
-  typeGType _ = gTypeNotificationCenter
-  {-# INLINE typeGType #-}
-foreign import javascript unsafe "window[\"NotificationCenter\"]" gTypeNotificationCenter :: GType
-
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationOptions".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/NotificationOptions Mozilla NotificationOptions documentation>
@@ -16637,6 +17543,76 @@ instance IsGObject ParentNode where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ParentNode\"]" gTypeParentNode :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.PasswordCredential".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SiteBoundCredential"
+--     * "GHCJS.DOM.BasicCredential"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential Mozilla PasswordCredential documentation>
+newtype PasswordCredential = PasswordCredential { unPasswordCredential :: JSVal }
+
+instance Eq (PasswordCredential) where
+  (PasswordCredential a) == (PasswordCredential b) = js_eq a b
+
+instance PToJSVal PasswordCredential where
+  pToJSVal = unPasswordCredential
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal PasswordCredential where
+  pFromJSVal = PasswordCredential
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal PasswordCredential where
+  toJSVal = return . unPasswordCredential
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal PasswordCredential where
+  fromJSVal = return . fmap PasswordCredential . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsSiteBoundCredential PasswordCredential
+instance IsBasicCredential PasswordCredential
+instance IsGObject PasswordCredential where
+  typeGType _ = gTypePasswordCredential
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"PasswordCredential\"]" gTypePasswordCredential :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.PasswordCredentialData".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.SiteBoundCredentialData"
+--     * "GHCJS.DOM.CredentialData"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredentialData Mozilla PasswordCredentialData documentation>
+newtype PasswordCredentialData = PasswordCredentialData { unPasswordCredentialData :: JSVal }
+
+instance Eq (PasswordCredentialData) where
+  (PasswordCredentialData a) == (PasswordCredentialData b) = js_eq a b
+
+instance PToJSVal PasswordCredentialData where
+  pToJSVal = unPasswordCredentialData
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal PasswordCredentialData where
+  pFromJSVal = PasswordCredentialData
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal PasswordCredentialData where
+  toJSVal = return . unPasswordCredentialData
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal PasswordCredentialData where
+  fromJSVal = return . fmap PasswordCredentialData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsSiteBoundCredentialData PasswordCredentialData
+instance IsCredentialData PasswordCredentialData
+instance IsGObject PasswordCredentialData where
+  typeGType _ = gTypePasswordCredentialData
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"PasswordCredentialData\"]" gTypePasswordCredentialData :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.Path2D".
 -- Base interface functions are in:
 --
@@ -16669,6 +17645,39 @@ instance IsGObject Path2D where
   typeGType _ = gTypePath2D
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.Pbkdf2Params".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CryptoAlgorithmParameters"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/Pbkdf2Params Mozilla Pbkdf2Params documentation>
+newtype Pbkdf2Params = Pbkdf2Params { unPbkdf2Params :: JSVal }
+
+instance Eq (Pbkdf2Params) where
+  (Pbkdf2Params a) == (Pbkdf2Params b) = js_eq a b
+
+instance PToJSVal Pbkdf2Params where
+  pToJSVal = unPbkdf2Params
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal Pbkdf2Params where
+  pFromJSVal = Pbkdf2Params
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal Pbkdf2Params where
+  toJSVal = return . unPbkdf2Params
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal Pbkdf2Params where
+  fromJSVal = return . fmap Pbkdf2Params . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsCryptoAlgorithmParameters Pbkdf2Params
+instance IsGObject Pbkdf2Params where
+  typeGType _ = gTypePbkdf2Params
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"Pbkdf2Params\"]" gTypePbkdf2Params :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Performance".
 -- Base interface functions are in:
@@ -17304,6 +18313,72 @@ instance IsGObject ProgressEventInit where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ProgressEventInit\"]" gTypeProgressEventInit :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.PromiseRejectionEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PromiseRejectionEvent Mozilla PromiseRejectionEvent documentation>
+newtype PromiseRejectionEvent = PromiseRejectionEvent { unPromiseRejectionEvent :: JSVal }
+
+instance Eq (PromiseRejectionEvent) where
+  (PromiseRejectionEvent a) == (PromiseRejectionEvent b) = js_eq a b
+
+instance PToJSVal PromiseRejectionEvent where
+  pToJSVal = unPromiseRejectionEvent
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal PromiseRejectionEvent where
+  pFromJSVal = PromiseRejectionEvent
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal PromiseRejectionEvent where
+  toJSVal = return . unPromiseRejectionEvent
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal PromiseRejectionEvent where
+  fromJSVal = return . fmap PromiseRejectionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEvent PromiseRejectionEvent
+instance IsGObject PromiseRejectionEvent where
+  typeGType _ = gTypePromiseRejectionEvent
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"PromiseRejectionEvent\"]" gTypePromiseRejectionEvent :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.PromiseRejectionEventInit".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventInit"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/PromiseRejectionEventInit Mozilla PromiseRejectionEventInit documentation>
+newtype PromiseRejectionEventInit = PromiseRejectionEventInit { unPromiseRejectionEventInit :: JSVal }
+
+instance Eq (PromiseRejectionEventInit) where
+  (PromiseRejectionEventInit a) == (PromiseRejectionEventInit b) = js_eq a b
+
+instance PToJSVal PromiseRejectionEventInit where
+  pToJSVal = unPromiseRejectionEventInit
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal PromiseRejectionEventInit where
+  pFromJSVal = PromiseRejectionEventInit
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal PromiseRejectionEventInit where
+  toJSVal = return . unPromiseRejectionEventInit
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal PromiseRejectionEventInit where
+  fromJSVal = return . fmap PromiseRejectionEventInit . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEventInit PromiseRejectionEventInit
+instance IsGObject PromiseRejectionEventInit where
+  typeGType _ = gTypePromiseRejectionEventInit
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"PromiseRejectionEventInit\"]" gTypePromiseRejectionEventInit :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/QuickTimePluginReplacement Mozilla QuickTimePluginReplacement documentation>
@@ -17589,6 +18664,39 @@ instance IsGObject RTCDataChannelEvent where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEventInit".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.EventInit"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEventInit Mozilla RTCDataChannelEventInit documentation>
+newtype RTCDataChannelEventInit = RTCDataChannelEventInit { unRTCDataChannelEventInit :: JSVal }
+
+instance Eq (RTCDataChannelEventInit) where
+  (RTCDataChannelEventInit a) == (RTCDataChannelEventInit b) = js_eq a b
+
+instance PToJSVal RTCDataChannelEventInit where
+  pToJSVal = unRTCDataChannelEventInit
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCDataChannelEventInit where
+  pFromJSVal = RTCDataChannelEventInit
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCDataChannelEventInit where
+  toJSVal = return . unRTCDataChannelEventInit
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCDataChannelEventInit where
+  fromJSVal = return . fmap RTCDataChannelEventInit . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEventInit RTCDataChannelEventInit
+instance IsGObject RTCDataChannelEventInit where
+  typeGType _ = gTypeRTCDataChannelEventInit
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCDataChannelEventInit\"]" gTypeRTCDataChannelEventInit :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelInit".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelInit Mozilla RTCDataChannelInit documentation>
@@ -17617,6 +18725,39 @@ instance IsGObject RTCDataChannelInit where
   typeGType _ = gTypeRTCDataChannelInit
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCDataChannelInit\"]" gTypeRTCDataChannelInit :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelStats".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.RTCStats"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelStats Mozilla RTCDataChannelStats documentation>
+newtype RTCDataChannelStats = RTCDataChannelStats { unRTCDataChannelStats :: JSVal }
+
+instance Eq (RTCDataChannelStats) where
+  (RTCDataChannelStats a) == (RTCDataChannelStats b) = js_eq a b
+
+instance PToJSVal RTCDataChannelStats where
+  pToJSVal = unRTCDataChannelStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCDataChannelStats where
+  pFromJSVal = RTCDataChannelStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCDataChannelStats where
+  toJSVal = return . unRTCDataChannelStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCDataChannelStats where
+  fromJSVal = return . fmap RTCDataChannelStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsRTCStats RTCDataChannelStats
+instance IsGObject RTCDataChannelStats where
+  typeGType _ = gTypeRTCDataChannelStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCDataChannelStats\"]" gTypeRTCDataChannelStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
 --
@@ -17738,6 +18879,103 @@ instance IsGObject RTCIceServer where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.RTCIceTransport".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceTransport Mozilla RTCIceTransport documentation>
+newtype RTCIceTransport = RTCIceTransport { unRTCIceTransport :: JSVal }
+
+instance Eq (RTCIceTransport) where
+  (RTCIceTransport a) == (RTCIceTransport b) = js_eq a b
+
+instance PToJSVal RTCIceTransport where
+  pToJSVal = unRTCIceTransport
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCIceTransport where
+  pFromJSVal = RTCIceTransport
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCIceTransport where
+  toJSVal = return . unRTCIceTransport
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCIceTransport where
+  fromJSVal = return . fmap RTCIceTransport . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCIceTransport where
+  typeGType _ = gTypeRTCIceTransport
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCIceTransport\"]" gTypeRTCIceTransport :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCInboundRTPStreamStats".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.RTCRTPStreamStats"
+--     * "GHCJS.DOM.RTCStats"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCInboundRTPStreamStats Mozilla RTCInboundRTPStreamStats documentation>
+newtype RTCInboundRTPStreamStats = RTCInboundRTPStreamStats { unRTCInboundRTPStreamStats :: JSVal }
+
+instance Eq (RTCInboundRTPStreamStats) where
+  (RTCInboundRTPStreamStats a) == (RTCInboundRTPStreamStats b) = js_eq a b
+
+instance PToJSVal RTCInboundRTPStreamStats where
+  pToJSVal = unRTCInboundRTPStreamStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCInboundRTPStreamStats where
+  pFromJSVal = RTCInboundRTPStreamStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCInboundRTPStreamStats where
+  toJSVal = return . unRTCInboundRTPStreamStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCInboundRTPStreamStats where
+  fromJSVal = return . fmap RTCInboundRTPStreamStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsRTCRTPStreamStats RTCInboundRTPStreamStats
+instance IsRTCStats RTCInboundRTPStreamStats
+instance IsGObject RTCInboundRTPStreamStats where
+  typeGType _ = gTypeRTCInboundRTPStreamStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCInboundRTPStreamStats\"]" gTypeRTCInboundRTPStreamStats :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCMediaStreamTrackStats".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.RTCStats"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCMediaStreamTrackStats Mozilla RTCMediaStreamTrackStats documentation>
+newtype RTCMediaStreamTrackStats = RTCMediaStreamTrackStats { unRTCMediaStreamTrackStats :: JSVal }
+
+instance Eq (RTCMediaStreamTrackStats) where
+  (RTCMediaStreamTrackStats a) == (RTCMediaStreamTrackStats b) = js_eq a b
+
+instance PToJSVal RTCMediaStreamTrackStats where
+  pToJSVal = unRTCMediaStreamTrackStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCMediaStreamTrackStats where
+  pFromJSVal = RTCMediaStreamTrackStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCMediaStreamTrackStats where
+  toJSVal = return . unRTCMediaStreamTrackStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCMediaStreamTrackStats where
+  fromJSVal = return . fmap RTCMediaStreamTrackStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsRTCStats RTCMediaStreamTrackStats
+instance IsGObject RTCMediaStreamTrackStats where
+  typeGType _ = gTypeRTCMediaStreamTrackStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCMediaStreamTrackStats\"]" gTypeRTCMediaStreamTrackStats :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.RTCOfferAnswerOptions".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCOfferAnswerOptions Mozilla RTCOfferAnswerOptions documentation>
@@ -17805,6 +19043,41 @@ instance IsGObject RTCOfferOptions where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCOfferOptions\"]" gTypeRTCOfferOptions :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.RTCOutboundRTPStreamStats".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.RTCRTPStreamStats"
+--     * "GHCJS.DOM.RTCStats"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCOutboundRTPStreamStats Mozilla RTCOutboundRTPStreamStats documentation>
+newtype RTCOutboundRTPStreamStats = RTCOutboundRTPStreamStats { unRTCOutboundRTPStreamStats :: JSVal }
+
+instance Eq (RTCOutboundRTPStreamStats) where
+  (RTCOutboundRTPStreamStats a) == (RTCOutboundRTPStreamStats b) = js_eq a b
+
+instance PToJSVal RTCOutboundRTPStreamStats where
+  pToJSVal = unRTCOutboundRTPStreamStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCOutboundRTPStreamStats where
+  pFromJSVal = RTCOutboundRTPStreamStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCOutboundRTPStreamStats where
+  toJSVal = return . unRTCOutboundRTPStreamStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCOutboundRTPStreamStats where
+  fromJSVal = return . fmap RTCOutboundRTPStreamStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsRTCRTPStreamStats RTCOutboundRTPStreamStats
+instance IsRTCStats RTCOutboundRTPStreamStats
+instance IsGObject RTCOutboundRTPStreamStats where
+  typeGType _ = gTypeRTCOutboundRTPStreamStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCOutboundRTPStreamStats\"]" gTypeRTCOutboundRTPStreamStats :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnection".
 -- Base interface functions are in:
 --
@@ -17838,6 +19111,222 @@ instance IsGObject RTCPeerConnection where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnectionIceEvent".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.Event"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnectionIceEvent Mozilla RTCPeerConnectionIceEvent documentation>
+newtype RTCPeerConnectionIceEvent = RTCPeerConnectionIceEvent { unRTCPeerConnectionIceEvent :: JSVal }
+
+instance Eq (RTCPeerConnectionIceEvent) where
+  (RTCPeerConnectionIceEvent a) == (RTCPeerConnectionIceEvent b) = js_eq a b
+
+instance PToJSVal RTCPeerConnectionIceEvent where
+  pToJSVal = unRTCPeerConnectionIceEvent
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCPeerConnectionIceEvent where
+  pFromJSVal = RTCPeerConnectionIceEvent
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCPeerConnectionIceEvent where
+  toJSVal = return . unRTCPeerConnectionIceEvent
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCPeerConnectionIceEvent where
+  fromJSVal = return . fmap RTCPeerConnectionIceEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEvent RTCPeerConnectionIceEvent
+instance IsGObject RTCPeerConnectionIceEvent where
+  typeGType _ = gTypeRTCPeerConnectionIceEvent
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCPeerConnectionIceEvent\"]" gTypeRTCPeerConnectionIceEvent :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRTPStreamStats".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.RTCStats"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRTPStreamStats Mozilla RTCRTPStreamStats documentation>
+newtype RTCRTPStreamStats = RTCRTPStreamStats { unRTCRTPStreamStats :: JSVal }
+
+instance Eq (RTCRTPStreamStats) where
+  (RTCRTPStreamStats a) == (RTCRTPStreamStats b) = js_eq a b
+
+instance PToJSVal RTCRTPStreamStats where
+  pToJSVal = unRTCRTPStreamStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRTPStreamStats where
+  pFromJSVal = RTCRTPStreamStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRTPStreamStats where
+  toJSVal = return . unRTCRTPStreamStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRTPStreamStats where
+  fromJSVal = return . fmap RTCRTPStreamStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsRTCStats o, IsGObject o) => IsRTCRTPStreamStats o
+toRTCRTPStreamStats :: IsRTCRTPStreamStats o => o -> RTCRTPStreamStats
+toRTCRTPStreamStats = RTCRTPStreamStats . coerce
+
+instance IsRTCRTPStreamStats RTCRTPStreamStats
+instance IsRTCStats RTCRTPStreamStats
+instance IsGObject RTCRTPStreamStats where
+  typeGType _ = gTypeRTCRTPStreamStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRTPStreamStats\"]" gTypeRTCRTPStreamStats :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpCodecParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpCodecParameters Mozilla RTCRtpCodecParameters documentation>
+newtype RTCRtpCodecParameters = RTCRtpCodecParameters { unRTCRtpCodecParameters :: JSVal }
+
+instance Eq (RTCRtpCodecParameters) where
+  (RTCRtpCodecParameters a) == (RTCRtpCodecParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpCodecParameters where
+  pToJSVal = unRTCRtpCodecParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpCodecParameters where
+  pFromJSVal = RTCRtpCodecParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpCodecParameters where
+  toJSVal = return . unRTCRtpCodecParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpCodecParameters where
+  fromJSVal = return . fmap RTCRtpCodecParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpCodecParameters where
+  typeGType _ = gTypeRTCRtpCodecParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpCodecParameters\"]" gTypeRTCRtpCodecParameters :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpEncodingParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpEncodingParameters Mozilla RTCRtpEncodingParameters documentation>
+newtype RTCRtpEncodingParameters = RTCRtpEncodingParameters { unRTCRtpEncodingParameters :: JSVal }
+
+instance Eq (RTCRtpEncodingParameters) where
+  (RTCRtpEncodingParameters a) == (RTCRtpEncodingParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpEncodingParameters where
+  pToJSVal = unRTCRtpEncodingParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpEncodingParameters where
+  pFromJSVal = RTCRtpEncodingParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpEncodingParameters where
+  toJSVal = return . unRTCRtpEncodingParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpEncodingParameters where
+  fromJSVal = return . fmap RTCRtpEncodingParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpEncodingParameters where
+  typeGType _ = gTypeRTCRtpEncodingParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpEncodingParameters\"]" gTypeRTCRtpEncodingParameters :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpFecParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpFecParameters Mozilla RTCRtpFecParameters documentation>
+newtype RTCRtpFecParameters = RTCRtpFecParameters { unRTCRtpFecParameters :: JSVal }
+
+instance Eq (RTCRtpFecParameters) where
+  (RTCRtpFecParameters a) == (RTCRtpFecParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpFecParameters where
+  pToJSVal = unRTCRtpFecParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpFecParameters where
+  pFromJSVal = RTCRtpFecParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpFecParameters where
+  toJSVal = return . unRTCRtpFecParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpFecParameters where
+  fromJSVal = return . fmap RTCRtpFecParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpFecParameters where
+  typeGType _ = gTypeRTCRtpFecParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpFecParameters\"]" gTypeRTCRtpFecParameters :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpHeaderExtensionParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpHeaderExtensionParameters Mozilla RTCRtpHeaderExtensionParameters documentation>
+newtype RTCRtpHeaderExtensionParameters = RTCRtpHeaderExtensionParameters { unRTCRtpHeaderExtensionParameters :: JSVal }
+
+instance Eq (RTCRtpHeaderExtensionParameters) where
+  (RTCRtpHeaderExtensionParameters a) == (RTCRtpHeaderExtensionParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpHeaderExtensionParameters where
+  pToJSVal = unRTCRtpHeaderExtensionParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpHeaderExtensionParameters where
+  pFromJSVal = RTCRtpHeaderExtensionParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpHeaderExtensionParameters where
+  toJSVal = return . unRTCRtpHeaderExtensionParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpHeaderExtensionParameters where
+  fromJSVal = return . fmap RTCRtpHeaderExtensionParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpHeaderExtensionParameters where
+  typeGType _ = gTypeRTCRtpHeaderExtensionParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpHeaderExtensionParameters\"]" gTypeRTCRtpHeaderExtensionParameters :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpParameters Mozilla RTCRtpParameters documentation>
+newtype RTCRtpParameters = RTCRtpParameters { unRTCRtpParameters :: JSVal }
+
+instance Eq (RTCRtpParameters) where
+  (RTCRtpParameters a) == (RTCRtpParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpParameters where
+  pToJSVal = unRTCRtpParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpParameters where
+  pFromJSVal = RTCRtpParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpParameters where
+  toJSVal = return . unRTCRtpParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpParameters where
+  fromJSVal = return . fmap RTCRtpParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpParameters where
+  typeGType _ = gTypeRTCRtpParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpParameters\"]" gTypeRTCRtpParameters :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpReceiver".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpReceiver Mozilla RTCRtpReceiver documentation>
@@ -17866,6 +19355,35 @@ instance IsGObject RTCRtpReceiver where
   typeGType _ = gTypeRTCRtpReceiver
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCRtpReceiver\"]" gTypeRTCRtpReceiver :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCRtpRtxParameters".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpRtxParameters Mozilla RTCRtpRtxParameters documentation>
+newtype RTCRtpRtxParameters = RTCRtpRtxParameters { unRTCRtpRtxParameters :: JSVal }
+
+instance Eq (RTCRtpRtxParameters) where
+  (RTCRtpRtxParameters a) == (RTCRtpRtxParameters b) = js_eq a b
+
+instance PToJSVal RTCRtpRtxParameters where
+  pToJSVal = unRTCRtpRtxParameters
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCRtpRtxParameters where
+  pFromJSVal = RTCRtpRtxParameters
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCRtpRtxParameters where
+  toJSVal = return . unRTCRtpRtxParameters
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCRtpRtxParameters where
+  fromJSVal = return . fmap RTCRtpRtxParameters . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject RTCRtpRtxParameters where
+  typeGType _ = gTypeRTCRtpRtxParameters
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCRtpRtxParameters\"]" gTypeRTCRtpRtxParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpSender".
 --
@@ -18011,6 +19529,40 @@ instance IsGObject RTCSessionDescriptionInit where
   typeGType _ = gTypeRTCSessionDescriptionInit
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"RTCSessionDescriptionInit\"]" gTypeRTCSessionDescriptionInit :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.RTCStats".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/RTCStats Mozilla RTCStats documentation>
+newtype RTCStats = RTCStats { unRTCStats :: JSVal }
+
+instance Eq (RTCStats) where
+  (RTCStats a) == (RTCStats b) = js_eq a b
+
+instance PToJSVal RTCStats where
+  pToJSVal = unRTCStats
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal RTCStats where
+  pFromJSVal = RTCStats
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal RTCStats where
+  toJSVal = return . unRTCStats
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal RTCStats where
+  fromJSVal = return . fmap RTCStats . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsRTCStats o
+toRTCStats :: IsRTCStats o => o -> RTCStats
+toRTCStats = RTCStats . coerce
+
+instance IsRTCStats RTCStats
+instance IsGObject RTCStats where
+  typeGType _ = gTypeRTCStats
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"RTCStats\"]" gTypeRTCStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
 --
@@ -18226,6 +19778,64 @@ instance IsGObject ReadableStream where
   typeGType _ = gTypeReadableStream
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamBYOBReader".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader Mozilla ReadableStreamBYOBReader documentation>
+newtype ReadableStreamBYOBReader = ReadableStreamBYOBReader { unReadableStreamBYOBReader :: JSVal }
+
+instance Eq (ReadableStreamBYOBReader) where
+  (ReadableStreamBYOBReader a) == (ReadableStreamBYOBReader b) = js_eq a b
+
+instance PToJSVal ReadableStreamBYOBReader where
+  pToJSVal = unReadableStreamBYOBReader
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ReadableStreamBYOBReader where
+  pFromJSVal = ReadableStreamBYOBReader
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ReadableStreamBYOBReader where
+  toJSVal = return . unReadableStreamBYOBReader
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ReadableStreamBYOBReader where
+  fromJSVal = return . fmap ReadableStreamBYOBReader . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ReadableStreamBYOBReader where
+  typeGType _ = gTypeReadableStreamBYOBReader
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ReadableStreamBYOBReader\"]" gTypeReadableStreamBYOBReader :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamBYOBRequest".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBRequest Mozilla ReadableStreamBYOBRequest documentation>
+newtype ReadableStreamBYOBRequest = ReadableStreamBYOBRequest { unReadableStreamBYOBRequest :: JSVal }
+
+instance Eq (ReadableStreamBYOBRequest) where
+  (ReadableStreamBYOBRequest a) == (ReadableStreamBYOBRequest b) = js_eq a b
+
+instance PToJSVal ReadableStreamBYOBRequest where
+  pToJSVal = unReadableStreamBYOBRequest
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal ReadableStreamBYOBRequest where
+  pFromJSVal = ReadableStreamBYOBRequest
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal ReadableStreamBYOBRequest where
+  toJSVal = return . unReadableStreamBYOBRequest
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal ReadableStreamBYOBRequest where
+  fromJSVal = return . fmap ReadableStreamBYOBRequest . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject ReadableStreamBYOBRequest where
+  typeGType _ = gTypeReadableStreamBYOBRequest
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"ReadableStreamBYOBRequest\"]" gTypeReadableStreamBYOBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamDefaultController".
 --
@@ -18787,9 +20397,11 @@ foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransactio
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -18824,9 +20436,11 @@ instance IsEventTarget SVGAElement
 instance IsSlotable SVGAElement
 instance IsParentNode SVGAElement
 instance IsNonDocumentTypeChildNode SVGAElement
+instance IsDocumentAndElementEventHandlers SVGAElement
 instance IsChildNode SVGAElement
 instance IsAnimatable SVGAElement
 instance IsGlobalEventHandlers SVGAElement
+instance IsElementCSSInlineStyle SVGAElement
 instance IsSVGTests SVGAElement
 instance IsSVGURIReference SVGAElement
 instance IsSVGExternalResourcesRequired SVGAElement
@@ -18845,9 +20459,11 @@ foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: G
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphDefElement Mozilla SVGAltGlyphDefElement documentation>
 newtype SVGAltGlyphDefElement = SVGAltGlyphDefElement { unSVGAltGlyphDefElement :: JSVal }
@@ -18878,9 +20494,11 @@ instance IsEventTarget SVGAltGlyphDefElement
 instance IsSlotable SVGAltGlyphDefElement
 instance IsParentNode SVGAltGlyphDefElement
 instance IsNonDocumentTypeChildNode SVGAltGlyphDefElement
+instance IsDocumentAndElementEventHandlers SVGAltGlyphDefElement
 instance IsChildNode SVGAltGlyphDefElement
 instance IsAnimatable SVGAltGlyphDefElement
 instance IsGlobalEventHandlers SVGAltGlyphDefElement
+instance IsElementCSSInlineStyle SVGAltGlyphDefElement
 instance IsGObject SVGAltGlyphDefElement where
   typeGType _ = gTypeSVGAltGlyphDefElement
   {-# INLINE typeGType #-}
@@ -18899,9 +20517,11 @@ foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAlt
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --     * "GHCJS.DOM.SVGURIReference"
@@ -18938,9 +20558,11 @@ instance IsEventTarget SVGAltGlyphElement
 instance IsSlotable SVGAltGlyphElement
 instance IsParentNode SVGAltGlyphElement
 instance IsNonDocumentTypeChildNode SVGAltGlyphElement
+instance IsDocumentAndElementEventHandlers SVGAltGlyphElement
 instance IsChildNode SVGAltGlyphElement
 instance IsAnimatable SVGAltGlyphElement
 instance IsGlobalEventHandlers SVGAltGlyphElement
+instance IsElementCSSInlineStyle SVGAltGlyphElement
 instance IsSVGTests SVGAltGlyphElement
 instance IsSVGExternalResourcesRequired SVGAltGlyphElement
 instance IsSVGURIReference SVGAltGlyphElement
@@ -18959,9 +20581,11 @@ foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGly
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGAltGlyphItemElement Mozilla SVGAltGlyphItemElement documentation>
 newtype SVGAltGlyphItemElement = SVGAltGlyphItemElement { unSVGAltGlyphItemElement :: JSVal }
@@ -18992,9 +20616,11 @@ instance IsEventTarget SVGAltGlyphItemElement
 instance IsSlotable SVGAltGlyphItemElement
 instance IsParentNode SVGAltGlyphItemElement
 instance IsNonDocumentTypeChildNode SVGAltGlyphItemElement
+instance IsDocumentAndElementEventHandlers SVGAltGlyphItemElement
 instance IsChildNode SVGAltGlyphItemElement
 instance IsAnimatable SVGAltGlyphItemElement
 instance IsGlobalEventHandlers SVGAltGlyphItemElement
+instance IsElementCSSInlineStyle SVGAltGlyphItemElement
 instance IsGObject SVGAltGlyphItemElement where
   typeGType _ = gTypeSVGAltGlyphItemElement
   {-# INLINE typeGType #-}
@@ -19040,9 +20666,11 @@ foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19076,9 +20704,11 @@ instance IsEventTarget SVGAnimateColorElement
 instance IsSlotable SVGAnimateColorElement
 instance IsParentNode SVGAnimateColorElement
 instance IsNonDocumentTypeChildNode SVGAnimateColorElement
+instance IsDocumentAndElementEventHandlers SVGAnimateColorElement
 instance IsChildNode SVGAnimateColorElement
 instance IsAnimatable SVGAnimateColorElement
 instance IsGlobalEventHandlers SVGAnimateColorElement
+instance IsElementCSSInlineStyle SVGAnimateColorElement
 instance IsSVGTests SVGAnimateColorElement
 instance IsSVGExternalResourcesRequired SVGAnimateColorElement
 instance IsGObject SVGAnimateColorElement where
@@ -19097,9 +20727,11 @@ foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAn
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19133,9 +20765,11 @@ instance IsEventTarget SVGAnimateElement
 instance IsSlotable SVGAnimateElement
 instance IsParentNode SVGAnimateElement
 instance IsNonDocumentTypeChildNode SVGAnimateElement
+instance IsDocumentAndElementEventHandlers SVGAnimateElement
 instance IsChildNode SVGAnimateElement
 instance IsAnimatable SVGAnimateElement
 instance IsGlobalEventHandlers SVGAnimateElement
+instance IsElementCSSInlineStyle SVGAnimateElement
 instance IsSVGTests SVGAnimateElement
 instance IsSVGExternalResourcesRequired SVGAnimateElement
 instance IsGObject SVGAnimateElement where
@@ -19154,9 +20788,11 @@ foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimate
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19190,9 +20826,11 @@ instance IsEventTarget SVGAnimateMotionElement
 instance IsSlotable SVGAnimateMotionElement
 instance IsParentNode SVGAnimateMotionElement
 instance IsNonDocumentTypeChildNode SVGAnimateMotionElement
+instance IsDocumentAndElementEventHandlers SVGAnimateMotionElement
 instance IsChildNode SVGAnimateMotionElement
 instance IsAnimatable SVGAnimateMotionElement
 instance IsGlobalEventHandlers SVGAnimateMotionElement
+instance IsElementCSSInlineStyle SVGAnimateMotionElement
 instance IsSVGTests SVGAnimateMotionElement
 instance IsSVGExternalResourcesRequired SVGAnimateMotionElement
 instance IsGObject SVGAnimateMotionElement where
@@ -19211,9 +20849,11 @@ foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGA
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19247,9 +20887,11 @@ instance IsEventTarget SVGAnimateTransformElement
 instance IsSlotable SVGAnimateTransformElement
 instance IsParentNode SVGAnimateTransformElement
 instance IsNonDocumentTypeChildNode SVGAnimateTransformElement
+instance IsDocumentAndElementEventHandlers SVGAnimateTransformElement
 instance IsChildNode SVGAnimateTransformElement
 instance IsAnimatable SVGAnimateTransformElement
 instance IsGlobalEventHandlers SVGAnimateTransformElement
+instance IsElementCSSInlineStyle SVGAnimateTransformElement
 instance IsSVGTests SVGAnimateTransformElement
 instance IsSVGExternalResourcesRequired SVGAnimateTransformElement
 instance IsGObject SVGAnimateTransformElement where
@@ -19615,9 +21257,11 @@ foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19643,7 +21287,7 @@ instance FromJSVal SVGAnimationElement where
   fromJSVal = return . fmap SVGAnimationElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGAnimationElement o
+class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGAnimationElement o
 toSVGAnimationElement :: IsSVGAnimationElement o => o -> SVGAnimationElement
 toSVGAnimationElement = SVGAnimationElement . coerce
 
@@ -19655,9 +21299,11 @@ instance IsEventTarget SVGAnimationElement
 instance IsSlotable SVGAnimationElement
 instance IsParentNode SVGAnimationElement
 instance IsNonDocumentTypeChildNode SVGAnimationElement
+instance IsDocumentAndElementEventHandlers SVGAnimationElement
 instance IsChildNode SVGAnimationElement
 instance IsAnimatable SVGAnimationElement
 instance IsGlobalEventHandlers SVGAnimationElement
+instance IsElementCSSInlineStyle SVGAnimationElement
 instance IsSVGTests SVGAnimationElement
 instance IsSVGExternalResourcesRequired SVGAnimationElement
 instance IsGObject SVGAnimationElement where
@@ -19676,9 +21322,11 @@ foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnima
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19712,9 +21360,11 @@ instance IsEventTarget SVGCircleElement
 instance IsSlotable SVGCircleElement
 instance IsParentNode SVGCircleElement
 instance IsNonDocumentTypeChildNode SVGCircleElement
+instance IsDocumentAndElementEventHandlers SVGCircleElement
 instance IsChildNode SVGCircleElement
 instance IsAnimatable SVGCircleElement
 instance IsGlobalEventHandlers SVGCircleElement
+instance IsElementCSSInlineStyle SVGCircleElement
 instance IsSVGTests SVGCircleElement
 instance IsSVGExternalResourcesRequired SVGCircleElement
 instance IsGObject SVGCircleElement where
@@ -19733,9 +21383,11 @@ foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19769,9 +21421,11 @@ instance IsEventTarget SVGClipPathElement
 instance IsSlotable SVGClipPathElement
 instance IsParentNode SVGClipPathElement
 instance IsNonDocumentTypeChildNode SVGClipPathElement
+instance IsDocumentAndElementEventHandlers SVGClipPathElement
 instance IsChildNode SVGClipPathElement
 instance IsAnimatable SVGClipPathElement
 instance IsGlobalEventHandlers SVGClipPathElement
+instance IsElementCSSInlineStyle SVGClipPathElement
 instance IsSVGTests SVGClipPathElement
 instance IsSVGExternalResourcesRequired SVGClipPathElement
 instance IsGObject SVGClipPathElement where
@@ -19789,9 +21443,11 @@ foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPa
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement Mozilla SVGComponentTransferFunctionElement documentation>
 newtype SVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement { unSVGComponentTransferFunctionElement :: JSVal }
@@ -19815,7 +21471,7 @@ instance FromJSVal SVGComponentTransferFunctionElement where
   fromJSVal = return . fmap SVGComponentTransferFunctionElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsGObject o) => IsSVGComponentTransferFunctionElement o
+class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsGObject o) => IsSVGComponentTransferFunctionElement o
 toSVGComponentTransferFunctionElement :: IsSVGComponentTransferFunctionElement o => o -> SVGComponentTransferFunctionElement
 toSVGComponentTransferFunctionElement = SVGComponentTransferFunctionElement . coerce
 
@@ -19827,9 +21483,11 @@ instance IsEventTarget SVGComponentTransferFunctionElement
 instance IsSlotable SVGComponentTransferFunctionElement
 instance IsParentNode SVGComponentTransferFunctionElement
 instance IsNonDocumentTypeChildNode SVGComponentTransferFunctionElement
+instance IsDocumentAndElementEventHandlers SVGComponentTransferFunctionElement
 instance IsChildNode SVGComponentTransferFunctionElement
 instance IsAnimatable SVGComponentTransferFunctionElement
 instance IsGlobalEventHandlers SVGComponentTransferFunctionElement
+instance IsElementCSSInlineStyle SVGComponentTransferFunctionElement
 instance IsGObject SVGComponentTransferFunctionElement where
   typeGType _ = gTypeSVGComponentTransferFunctionElement
   {-# INLINE typeGType #-}
@@ -19845,9 +21503,11 @@ foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -19881,9 +21541,11 @@ instance IsEventTarget SVGCursorElement
 instance IsSlotable SVGCursorElement
 instance IsParentNode SVGCursorElement
 instance IsNonDocumentTypeChildNode SVGCursorElement
+instance IsDocumentAndElementEventHandlers SVGCursorElement
 instance IsChildNode SVGCursorElement
 instance IsAnimatable SVGCursorElement
 instance IsGlobalEventHandlers SVGCursorElement
+instance IsElementCSSInlineStyle SVGCursorElement
 instance IsSVGURIReference SVGCursorElement
 instance IsSVGTests SVGCursorElement
 instance IsSVGExternalResourcesRequired SVGCursorElement
@@ -19903,9 +21565,11 @@ foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -19939,9 +21603,11 @@ instance IsEventTarget SVGDefsElement
 instance IsSlotable SVGDefsElement
 instance IsParentNode SVGDefsElement
 instance IsNonDocumentTypeChildNode SVGDefsElement
+instance IsDocumentAndElementEventHandlers SVGDefsElement
 instance IsChildNode SVGDefsElement
 instance IsAnimatable SVGDefsElement
 instance IsGlobalEventHandlers SVGDefsElement
+instance IsElementCSSInlineStyle SVGDefsElement
 instance IsSVGTests SVGDefsElement
 instance IsSVGExternalResourcesRequired SVGDefsElement
 instance IsGObject SVGDefsElement where
@@ -19959,9 +21625,11 @@ foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGDescElement Mozilla SVGDescElement documentation>
 newtype SVGDescElement = SVGDescElement { unSVGDescElement :: JSVal }
@@ -19992,9 +21660,11 @@ instance IsEventTarget SVGDescElement
 instance IsSlotable SVGDescElement
 instance IsParentNode SVGDescElement
 instance IsNonDocumentTypeChildNode SVGDescElement
+instance IsDocumentAndElementEventHandlers SVGDescElement
 instance IsChildNode SVGDescElement
 instance IsAnimatable SVGDescElement
 instance IsGlobalEventHandlers SVGDescElement
+instance IsElementCSSInlineStyle SVGDescElement
 instance IsGObject SVGDescElement where
   typeGType _ = gTypeSVGDescElement
   {-# INLINE typeGType #-}
@@ -20009,9 +21679,11 @@ foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement Mozilla SVGElement documentation>
 newtype SVGElement = SVGElement { unSVGElement :: JSVal }
@@ -20035,7 +21707,7 @@ instance FromJSVal SVGElement where
   fromJSVal = return . fmap SVGElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsGObject o) => IsSVGElement o
+class (IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsGObject o) => IsSVGElement o
 toSVGElement :: IsSVGElement o => o -> SVGElement
 toSVGElement = SVGElement . coerce
 
@@ -20046,9 +21718,11 @@ instance IsEventTarget SVGElement
 instance IsSlotable SVGElement
 instance IsParentNode SVGElement
 instance IsNonDocumentTypeChildNode SVGElement
+instance IsDocumentAndElementEventHandlers SVGElement
 instance IsChildNode SVGElement
 instance IsAnimatable SVGElement
 instance IsGlobalEventHandlers SVGElement
+instance IsElementCSSInlineStyle SVGElement
 instance IsGObject SVGElement where
   typeGType _ = gTypeSVGElement
   {-# INLINE typeGType #-}
@@ -20065,9 +21739,11 @@ foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GTy
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -20101,9 +21777,11 @@ instance IsEventTarget SVGEllipseElement
 instance IsSlotable SVGEllipseElement
 instance IsParentNode SVGEllipseElement
 instance IsNonDocumentTypeChildNode SVGEllipseElement
+instance IsDocumentAndElementEventHandlers SVGEllipseElement
 instance IsChildNode SVGEllipseElement
 instance IsAnimatable SVGEllipseElement
 instance IsGlobalEventHandlers SVGEllipseElement
+instance IsElementCSSInlineStyle SVGEllipseElement
 instance IsSVGTests SVGEllipseElement
 instance IsSVGExternalResourcesRequired SVGEllipseElement
 instance IsGObject SVGEllipseElement where
@@ -20184,9 +21862,11 @@ foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTyp
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEBlendElement Mozilla SVGFEBlendElement documentation>
@@ -20218,9 +21898,11 @@ instance IsEventTarget SVGFEBlendElement
 instance IsSlotable SVGFEBlendElement
 instance IsParentNode SVGFEBlendElement
 instance IsNonDocumentTypeChildNode SVGFEBlendElement
+instance IsDocumentAndElementEventHandlers SVGFEBlendElement
 instance IsChildNode SVGFEBlendElement
 instance IsAnimatable SVGFEBlendElement
 instance IsGlobalEventHandlers SVGFEBlendElement
+instance IsElementCSSInlineStyle SVGFEBlendElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEBlendElement
 instance IsGObject SVGFEBlendElement where
   typeGType _ = gTypeSVGFEBlendElement
@@ -20237,9 +21919,11 @@ foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlend
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement Mozilla SVGFEColorMatrixElement documentation>
@@ -20271,9 +21955,11 @@ instance IsEventTarget SVGFEColorMatrixElement
 instance IsSlotable SVGFEColorMatrixElement
 instance IsParentNode SVGFEColorMatrixElement
 instance IsNonDocumentTypeChildNode SVGFEColorMatrixElement
+instance IsDocumentAndElementEventHandlers SVGFEColorMatrixElement
 instance IsChildNode SVGFEColorMatrixElement
 instance IsAnimatable SVGFEColorMatrixElement
 instance IsGlobalEventHandlers SVGFEColorMatrixElement
+instance IsElementCSSInlineStyle SVGFEColorMatrixElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEColorMatrixElement
 instance IsGObject SVGFEColorMatrixElement where
   typeGType _ = gTypeSVGFEColorMatrixElement
@@ -20290,9 +21976,11 @@ foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGF
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEComponentTransferElement Mozilla SVGFEComponentTransferElement documentation>
@@ -20324,9 +22012,11 @@ instance IsEventTarget SVGFEComponentTransferElement
 instance IsSlotable SVGFEComponentTransferElement
 instance IsParentNode SVGFEComponentTransferElement
 instance IsNonDocumentTypeChildNode SVGFEComponentTransferElement
+instance IsDocumentAndElementEventHandlers SVGFEComponentTransferElement
 instance IsChildNode SVGFEComponentTransferElement
 instance IsAnimatable SVGFEComponentTransferElement
 instance IsGlobalEventHandlers SVGFEComponentTransferElement
+instance IsElementCSSInlineStyle SVGFEComponentTransferElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEComponentTransferElement
 instance IsGObject SVGFEComponentTransferElement where
   typeGType _ = gTypeSVGFEComponentTransferElement
@@ -20343,9 +22033,11 @@ foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTy
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFECompositeElement Mozilla SVGFECompositeElement documentation>
@@ -20377,9 +22069,11 @@ instance IsEventTarget SVGFECompositeElement
 instance IsSlotable SVGFECompositeElement
 instance IsParentNode SVGFECompositeElement
 instance IsNonDocumentTypeChildNode SVGFECompositeElement
+instance IsDocumentAndElementEventHandlers SVGFECompositeElement
 instance IsChildNode SVGFECompositeElement
 instance IsAnimatable SVGFECompositeElement
 instance IsGlobalEventHandlers SVGFECompositeElement
+instance IsElementCSSInlineStyle SVGFECompositeElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFECompositeElement
 instance IsGObject SVGFECompositeElement where
   typeGType _ = gTypeSVGFECompositeElement
@@ -20396,9 +22090,11 @@ foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFEC
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEConvolveMatrixElement Mozilla SVGFEConvolveMatrixElement documentation>
@@ -20430,9 +22126,11 @@ instance IsEventTarget SVGFEConvolveMatrixElement
 instance IsSlotable SVGFEConvolveMatrixElement
 instance IsParentNode SVGFEConvolveMatrixElement
 instance IsNonDocumentTypeChildNode SVGFEConvolveMatrixElement
+instance IsDocumentAndElementEventHandlers SVGFEConvolveMatrixElement
 instance IsChildNode SVGFEConvolveMatrixElement
 instance IsAnimatable SVGFEConvolveMatrixElement
 instance IsGlobalEventHandlers SVGFEConvolveMatrixElement
+instance IsElementCSSInlineStyle SVGFEConvolveMatrixElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEConvolveMatrixElement
 instance IsGObject SVGFEConvolveMatrixElement where
   typeGType _ = gTypeSVGFEConvolveMatrixElement
@@ -20449,9 +22147,11 @@ foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeS
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement Mozilla SVGFEDiffuseLightingElement documentation>
@@ -20483,9 +22183,11 @@ instance IsEventTarget SVGFEDiffuseLightingElement
 instance IsSlotable SVGFEDiffuseLightingElement
 instance IsParentNode SVGFEDiffuseLightingElement
 instance IsNonDocumentTypeChildNode SVGFEDiffuseLightingElement
+instance IsDocumentAndElementEventHandlers SVGFEDiffuseLightingElement
 instance IsChildNode SVGFEDiffuseLightingElement
 instance IsAnimatable SVGFEDiffuseLightingElement
 instance IsGlobalEventHandlers SVGFEDiffuseLightingElement
+instance IsElementCSSInlineStyle SVGFEDiffuseLightingElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEDiffuseLightingElement
 instance IsGObject SVGFEDiffuseLightingElement where
   typeGType _ = gTypeSVGFEDiffuseLightingElement
@@ -20502,9 +22204,11 @@ foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement Mozilla SVGFEDisplacementMapElement documentation>
@@ -20536,9 +22240,11 @@ instance IsEventTarget SVGFEDisplacementMapElement
 instance IsSlotable SVGFEDisplacementMapElement
 instance IsParentNode SVGFEDisplacementMapElement
 instance IsNonDocumentTypeChildNode SVGFEDisplacementMapElement
+instance IsDocumentAndElementEventHandlers SVGFEDisplacementMapElement
 instance IsChildNode SVGFEDisplacementMapElement
 instance IsAnimatable SVGFEDisplacementMapElement
 instance IsGlobalEventHandlers SVGFEDisplacementMapElement
+instance IsElementCSSInlineStyle SVGFEDisplacementMapElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEDisplacementMapElement
 instance IsGObject SVGFEDisplacementMapElement where
   typeGType _ = gTypeSVGFEDisplacementMapElement
@@ -20555,9 +22261,11 @@ foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement Mozilla SVGFEDistantLightElement documentation>
 newtype SVGFEDistantLightElement = SVGFEDistantLightElement { unSVGFEDistantLightElement :: JSVal }
@@ -20588,9 +22296,11 @@ instance IsEventTarget SVGFEDistantLightElement
 instance IsSlotable SVGFEDistantLightElement
 instance IsParentNode SVGFEDistantLightElement
 instance IsNonDocumentTypeChildNode SVGFEDistantLightElement
+instance IsDocumentAndElementEventHandlers SVGFEDistantLightElement
 instance IsChildNode SVGFEDistantLightElement
 instance IsAnimatable SVGFEDistantLightElement
 instance IsGlobalEventHandlers SVGFEDistantLightElement
+instance IsElementCSSInlineStyle SVGFEDistantLightElement
 instance IsGObject SVGFEDistantLightElement where
   typeGType _ = gTypeSVGFEDistantLightElement
   {-# INLINE typeGType #-}
@@ -20606,9 +22316,11 @@ foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement Mozilla SVGFEDropShadowElement documentation>
@@ -20640,9 +22352,11 @@ instance IsEventTarget SVGFEDropShadowElement
 instance IsSlotable SVGFEDropShadowElement
 instance IsParentNode SVGFEDropShadowElement
 instance IsNonDocumentTypeChildNode SVGFEDropShadowElement
+instance IsDocumentAndElementEventHandlers SVGFEDropShadowElement
 instance IsChildNode SVGFEDropShadowElement
 instance IsAnimatable SVGFEDropShadowElement
 instance IsGlobalEventHandlers SVGFEDropShadowElement
+instance IsElementCSSInlineStyle SVGFEDropShadowElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEDropShadowElement
 instance IsGObject SVGFEDropShadowElement where
   typeGType _ = gTypeSVGFEDropShadowElement
@@ -20659,9 +22373,11 @@ foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFloodElement Mozilla SVGFEFloodElement documentation>
@@ -20693,9 +22409,11 @@ instance IsEventTarget SVGFEFloodElement
 instance IsSlotable SVGFEFloodElement
 instance IsParentNode SVGFEFloodElement
 instance IsNonDocumentTypeChildNode SVGFEFloodElement
+instance IsDocumentAndElementEventHandlers SVGFEFloodElement
 instance IsChildNode SVGFEFloodElement
 instance IsAnimatable SVGFEFloodElement
 instance IsGlobalEventHandlers SVGFEFloodElement
+instance IsElementCSSInlineStyle SVGFEFloodElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEFloodElement
 instance IsGObject SVGFEFloodElement where
   typeGType _ = gTypeSVGFEFloodElement
@@ -20713,9 +22431,11 @@ foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFlood
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncAElement Mozilla SVGFEFuncAElement documentation>
 newtype SVGFEFuncAElement = SVGFEFuncAElement { unSVGFEFuncAElement :: JSVal }
@@ -20747,9 +22467,11 @@ instance IsEventTarget SVGFEFuncAElement
 instance IsSlotable SVGFEFuncAElement
 instance IsParentNode SVGFEFuncAElement
 instance IsNonDocumentTypeChildNode SVGFEFuncAElement
+instance IsDocumentAndElementEventHandlers SVGFEFuncAElement
 instance IsChildNode SVGFEFuncAElement
 instance IsAnimatable SVGFEFuncAElement
 instance IsGlobalEventHandlers SVGFEFuncAElement
+instance IsElementCSSInlineStyle SVGFEFuncAElement
 instance IsGObject SVGFEFuncAElement where
   typeGType _ = gTypeSVGFEFuncAElement
   {-# INLINE typeGType #-}
@@ -20766,9 +22488,11 @@ foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncA
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncBElement Mozilla SVGFEFuncBElement documentation>
 newtype SVGFEFuncBElement = SVGFEFuncBElement { unSVGFEFuncBElement :: JSVal }
@@ -20800,9 +22524,11 @@ instance IsEventTarget SVGFEFuncBElement
 instance IsSlotable SVGFEFuncBElement
 instance IsParentNode SVGFEFuncBElement
 instance IsNonDocumentTypeChildNode SVGFEFuncBElement
+instance IsDocumentAndElementEventHandlers SVGFEFuncBElement
 instance IsChildNode SVGFEFuncBElement
 instance IsAnimatable SVGFEFuncBElement
 instance IsGlobalEventHandlers SVGFEFuncBElement
+instance IsElementCSSInlineStyle SVGFEFuncBElement
 instance IsGObject SVGFEFuncBElement where
   typeGType _ = gTypeSVGFEFuncBElement
   {-# INLINE typeGType #-}
@@ -20819,9 +22545,11 @@ foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncB
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncGElement Mozilla SVGFEFuncGElement documentation>
 newtype SVGFEFuncGElement = SVGFEFuncGElement { unSVGFEFuncGElement :: JSVal }
@@ -20853,9 +22581,11 @@ instance IsEventTarget SVGFEFuncGElement
 instance IsSlotable SVGFEFuncGElement
 instance IsParentNode SVGFEFuncGElement
 instance IsNonDocumentTypeChildNode SVGFEFuncGElement
+instance IsDocumentAndElementEventHandlers SVGFEFuncGElement
 instance IsChildNode SVGFEFuncGElement
 instance IsAnimatable SVGFEFuncGElement
 instance IsGlobalEventHandlers SVGFEFuncGElement
+instance IsElementCSSInlineStyle SVGFEFuncGElement
 instance IsGObject SVGFEFuncGElement where
   typeGType _ = gTypeSVGFEFuncGElement
   {-# INLINE typeGType #-}
@@ -20872,9 +22602,11 @@ foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEFuncRElement Mozilla SVGFEFuncRElement documentation>
 newtype SVGFEFuncRElement = SVGFEFuncRElement { unSVGFEFuncRElement :: JSVal }
@@ -20906,9 +22638,11 @@ instance IsEventTarget SVGFEFuncRElement
 instance IsSlotable SVGFEFuncRElement
 instance IsParentNode SVGFEFuncRElement
 instance IsNonDocumentTypeChildNode SVGFEFuncRElement
+instance IsDocumentAndElementEventHandlers SVGFEFuncRElement
 instance IsChildNode SVGFEFuncRElement
 instance IsAnimatable SVGFEFuncRElement
 instance IsGlobalEventHandlers SVGFEFuncRElement
+instance IsElementCSSInlineStyle SVGFEFuncRElement
 instance IsGObject SVGFEFuncRElement where
   typeGType _ = gTypeSVGFEFuncRElement
   {-# INLINE typeGType #-}
@@ -20924,9 +22658,11 @@ foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncR
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement Mozilla SVGFEGaussianBlurElement documentation>
@@ -20958,9 +22694,11 @@ instance IsEventTarget SVGFEGaussianBlurElement
 instance IsSlotable SVGFEGaussianBlurElement
 instance IsParentNode SVGFEGaussianBlurElement
 instance IsNonDocumentTypeChildNode SVGFEGaussianBlurElement
+instance IsDocumentAndElementEventHandlers SVGFEGaussianBlurElement
 instance IsChildNode SVGFEGaussianBlurElement
 instance IsAnimatable SVGFEGaussianBlurElement
 instance IsGlobalEventHandlers SVGFEGaussianBlurElement
+instance IsElementCSSInlineStyle SVGFEGaussianBlurElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEGaussianBlurElement
 instance IsGObject SVGFEGaussianBlurElement where
   typeGType _ = gTypeSVGFEGaussianBlurElement
@@ -20977,9 +22715,11 @@ foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -21013,9 +22753,11 @@ instance IsEventTarget SVGFEImageElement
 instance IsSlotable SVGFEImageElement
 instance IsParentNode SVGFEImageElement
 instance IsNonDocumentTypeChildNode SVGFEImageElement
+instance IsDocumentAndElementEventHandlers SVGFEImageElement
 instance IsChildNode SVGFEImageElement
 instance IsAnimatable SVGFEImageElement
 instance IsGlobalEventHandlers SVGFEImageElement
+instance IsElementCSSInlineStyle SVGFEImageElement
 instance IsSVGURIReference SVGFEImageElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEImageElement
 instance IsSVGExternalResourcesRequired SVGFEImageElement
@@ -21034,9 +22776,11 @@ foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImage
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeElement Mozilla SVGFEMergeElement documentation>
@@ -21068,9 +22812,11 @@ instance IsEventTarget SVGFEMergeElement
 instance IsSlotable SVGFEMergeElement
 instance IsParentNode SVGFEMergeElement
 instance IsNonDocumentTypeChildNode SVGFEMergeElement
+instance IsDocumentAndElementEventHandlers SVGFEMergeElement
 instance IsChildNode SVGFEMergeElement
 instance IsAnimatable SVGFEMergeElement
 instance IsGlobalEventHandlers SVGFEMergeElement
+instance IsElementCSSInlineStyle SVGFEMergeElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEMergeElement
 instance IsGObject SVGFEMergeElement where
   typeGType _ = gTypeSVGFEMergeElement
@@ -21087,9 +22833,11 @@ foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMerge
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMergeNodeElement Mozilla SVGFEMergeNodeElement documentation>
 newtype SVGFEMergeNodeElement = SVGFEMergeNodeElement { unSVGFEMergeNodeElement :: JSVal }
@@ -21120,9 +22868,11 @@ instance IsEventTarget SVGFEMergeNodeElement
 instance IsSlotable SVGFEMergeNodeElement
 instance IsParentNode SVGFEMergeNodeElement
 instance IsNonDocumentTypeChildNode SVGFEMergeNodeElement
+instance IsDocumentAndElementEventHandlers SVGFEMergeNodeElement
 instance IsChildNode SVGFEMergeNodeElement
 instance IsAnimatable SVGFEMergeNodeElement
 instance IsGlobalEventHandlers SVGFEMergeNodeElement
+instance IsElementCSSInlineStyle SVGFEMergeNodeElement
 instance IsGObject SVGFEMergeNodeElement where
   typeGType _ = gTypeSVGFEMergeNodeElement
   {-# INLINE typeGType #-}
@@ -21138,9 +22888,11 @@ foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEM
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEMorphologyElement Mozilla SVGFEMorphologyElement documentation>
@@ -21172,9 +22924,11 @@ instance IsEventTarget SVGFEMorphologyElement
 instance IsSlotable SVGFEMorphologyElement
 instance IsParentNode SVGFEMorphologyElement
 instance IsNonDocumentTypeChildNode SVGFEMorphologyElement
+instance IsDocumentAndElementEventHandlers SVGFEMorphologyElement
 instance IsChildNode SVGFEMorphologyElement
 instance IsAnimatable SVGFEMorphologyElement
 instance IsGlobalEventHandlers SVGFEMorphologyElement
+instance IsElementCSSInlineStyle SVGFEMorphologyElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEMorphologyElement
 instance IsGObject SVGFEMorphologyElement where
   typeGType _ = gTypeSVGFEMorphologyElement
@@ -21191,9 +22945,11 @@ foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEOffsetElement Mozilla SVGFEOffsetElement documentation>
@@ -21225,9 +22981,11 @@ instance IsEventTarget SVGFEOffsetElement
 instance IsSlotable SVGFEOffsetElement
 instance IsParentNode SVGFEOffsetElement
 instance IsNonDocumentTypeChildNode SVGFEOffsetElement
+instance IsDocumentAndElementEventHandlers SVGFEOffsetElement
 instance IsChildNode SVGFEOffsetElement
 instance IsAnimatable SVGFEOffsetElement
 instance IsGlobalEventHandlers SVGFEOffsetElement
+instance IsElementCSSInlineStyle SVGFEOffsetElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFEOffsetElement
 instance IsGObject SVGFEOffsetElement where
   typeGType _ = gTypeSVGFEOffsetElement
@@ -21244,9 +23002,11 @@ foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffs
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEPointLightElement Mozilla SVGFEPointLightElement documentation>
 newtype SVGFEPointLightElement = SVGFEPointLightElement { unSVGFEPointLightElement :: JSVal }
@@ -21277,9 +23037,11 @@ instance IsEventTarget SVGFEPointLightElement
 instance IsSlotable SVGFEPointLightElement
 instance IsParentNode SVGFEPointLightElement
 instance IsNonDocumentTypeChildNode SVGFEPointLightElement
+instance IsDocumentAndElementEventHandlers SVGFEPointLightElement
 instance IsChildNode SVGFEPointLightElement
 instance IsAnimatable SVGFEPointLightElement
 instance IsGlobalEventHandlers SVGFEPointLightElement
+instance IsElementCSSInlineStyle SVGFEPointLightElement
 instance IsGObject SVGFEPointLightElement where
   typeGType _ = gTypeSVGFEPointLightElement
   {-# INLINE typeGType #-}
@@ -21295,9 +23057,11 @@ foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpecularLightingElement Mozilla SVGFESpecularLightingElement documentation>
@@ -21329,9 +23093,11 @@ instance IsEventTarget SVGFESpecularLightingElement
 instance IsSlotable SVGFESpecularLightingElement
 instance IsParentNode SVGFESpecularLightingElement
 instance IsNonDocumentTypeChildNode SVGFESpecularLightingElement
+instance IsDocumentAndElementEventHandlers SVGFESpecularLightingElement
 instance IsChildNode SVGFESpecularLightingElement
 instance IsAnimatable SVGFESpecularLightingElement
 instance IsGlobalEventHandlers SVGFESpecularLightingElement
+instance IsElementCSSInlineStyle SVGFESpecularLightingElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFESpecularLightingElement
 instance IsGObject SVGFESpecularLightingElement where
   typeGType _ = gTypeSVGFESpecularLightingElement
@@ -21348,9 +23114,11 @@ foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTyp
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement Mozilla SVGFESpotLightElement documentation>
 newtype SVGFESpotLightElement = SVGFESpotLightElement { unSVGFESpotLightElement :: JSVal }
@@ -21381,9 +23149,11 @@ instance IsEventTarget SVGFESpotLightElement
 instance IsSlotable SVGFESpotLightElement
 instance IsParentNode SVGFESpotLightElement
 instance IsNonDocumentTypeChildNode SVGFESpotLightElement
+instance IsDocumentAndElementEventHandlers SVGFESpotLightElement
 instance IsChildNode SVGFESpotLightElement
 instance IsAnimatable SVGFESpotLightElement
 instance IsGlobalEventHandlers SVGFESpotLightElement
+instance IsElementCSSInlineStyle SVGFESpotLightElement
 instance IsGObject SVGFESpotLightElement where
   typeGType _ = gTypeSVGFESpotLightElement
   {-# INLINE typeGType #-}
@@ -21399,9 +23169,11 @@ foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFES
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETileElement Mozilla SVGFETileElement documentation>
@@ -21433,9 +23205,11 @@ instance IsEventTarget SVGFETileElement
 instance IsSlotable SVGFETileElement
 instance IsParentNode SVGFETileElement
 instance IsNonDocumentTypeChildNode SVGFETileElement
+instance IsDocumentAndElementEventHandlers SVGFETileElement
 instance IsChildNode SVGFETileElement
 instance IsAnimatable SVGFETileElement
 instance IsGlobalEventHandlers SVGFETileElement
+instance IsElementCSSInlineStyle SVGFETileElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFETileElement
 instance IsGObject SVGFETileElement where
   typeGType _ = gTypeSVGFETileElement
@@ -21452,9 +23226,11 @@ foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement Mozilla SVGFETurbulenceElement documentation>
@@ -21486,9 +23262,11 @@ instance IsEventTarget SVGFETurbulenceElement
 instance IsSlotable SVGFETurbulenceElement
 instance IsParentNode SVGFETurbulenceElement
 instance IsNonDocumentTypeChildNode SVGFETurbulenceElement
+instance IsDocumentAndElementEventHandlers SVGFETurbulenceElement
 instance IsChildNode SVGFETurbulenceElement
 instance IsAnimatable SVGFETurbulenceElement
 instance IsGlobalEventHandlers SVGFETurbulenceElement
+instance IsElementCSSInlineStyle SVGFETurbulenceElement
 instance IsSVGFilterPrimitiveStandardAttributes SVGFETurbulenceElement
 instance IsGObject SVGFETurbulenceElement where
   typeGType _ = gTypeSVGFETurbulenceElement
@@ -21505,9 +23283,11 @@ foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFE
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -21540,9 +23320,11 @@ instance IsEventTarget SVGFilterElement
 instance IsSlotable SVGFilterElement
 instance IsParentNode SVGFilterElement
 instance IsNonDocumentTypeChildNode SVGFilterElement
+instance IsDocumentAndElementEventHandlers SVGFilterElement
 instance IsChildNode SVGFilterElement
 instance IsAnimatable SVGFilterElement
 instance IsGlobalEventHandlers SVGFilterElement
+instance IsElementCSSInlineStyle SVGFilterElement
 instance IsSVGURIReference SVGFilterElement
 instance IsSVGExternalResourcesRequired SVGFilterElement
 instance IsGObject SVGFilterElement where
@@ -21628,9 +23410,11 @@ foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToView
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontElement Mozilla SVGFontElement documentation>
 newtype SVGFontElement = SVGFontElement { unSVGFontElement :: JSVal }
@@ -21661,9 +23445,11 @@ instance IsEventTarget SVGFontElement
 instance IsSlotable SVGFontElement
 instance IsParentNode SVGFontElement
 instance IsNonDocumentTypeChildNode SVGFontElement
+instance IsDocumentAndElementEventHandlers SVGFontElement
 instance IsChildNode SVGFontElement
 instance IsAnimatable SVGFontElement
 instance IsGlobalEventHandlers SVGFontElement
+instance IsElementCSSInlineStyle SVGFontElement
 instance IsGObject SVGFontElement where
   typeGType _ = gTypeSVGFontElement
   {-# INLINE typeGType #-}
@@ -21679,9 +23465,11 @@ foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceElement Mozilla SVGFontFaceElement documentation>
 newtype SVGFontFaceElement = SVGFontFaceElement { unSVGFontFaceElement :: JSVal }
@@ -21712,9 +23500,11 @@ instance IsEventTarget SVGFontFaceElement
 instance IsSlotable SVGFontFaceElement
 instance IsParentNode SVGFontFaceElement
 instance IsNonDocumentTypeChildNode SVGFontFaceElement
+instance IsDocumentAndElementEventHandlers SVGFontFaceElement
 instance IsChildNode SVGFontFaceElement
 instance IsAnimatable SVGFontFaceElement
 instance IsGlobalEventHandlers SVGFontFaceElement
+instance IsElementCSSInlineStyle SVGFontFaceElement
 instance IsGObject SVGFontFaceElement where
   typeGType _ = gTypeSVGFontFaceElement
   {-# INLINE typeGType #-}
@@ -21730,9 +23520,11 @@ foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFa
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceFormatElement Mozilla SVGFontFaceFormatElement documentation>
 newtype SVGFontFaceFormatElement = SVGFontFaceFormatElement { unSVGFontFaceFormatElement :: JSVal }
@@ -21763,9 +23555,11 @@ instance IsEventTarget SVGFontFaceFormatElement
 instance IsSlotable SVGFontFaceFormatElement
 instance IsParentNode SVGFontFaceFormatElement
 instance IsNonDocumentTypeChildNode SVGFontFaceFormatElement
+instance IsDocumentAndElementEventHandlers SVGFontFaceFormatElement
 instance IsChildNode SVGFontFaceFormatElement
 instance IsAnimatable SVGFontFaceFormatElement
 instance IsGlobalEventHandlers SVGFontFaceFormatElement
+instance IsElementCSSInlineStyle SVGFontFaceFormatElement
 instance IsGObject SVGFontFaceFormatElement where
   typeGType _ = gTypeSVGFontFaceFormatElement
   {-# INLINE typeGType #-}
@@ -21781,9 +23575,11 @@ foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceNameElement Mozilla SVGFontFaceNameElement documentation>
 newtype SVGFontFaceNameElement = SVGFontFaceNameElement { unSVGFontFaceNameElement :: JSVal }
@@ -21814,9 +23610,11 @@ instance IsEventTarget SVGFontFaceNameElement
 instance IsSlotable SVGFontFaceNameElement
 instance IsParentNode SVGFontFaceNameElement
 instance IsNonDocumentTypeChildNode SVGFontFaceNameElement
+instance IsDocumentAndElementEventHandlers SVGFontFaceNameElement
 instance IsChildNode SVGFontFaceNameElement
 instance IsAnimatable SVGFontFaceNameElement
 instance IsGlobalEventHandlers SVGFontFaceNameElement
+instance IsElementCSSInlineStyle SVGFontFaceNameElement
 instance IsGObject SVGFontFaceNameElement where
   typeGType _ = gTypeSVGFontFaceNameElement
   {-# INLINE typeGType #-}
@@ -21832,9 +23630,11 @@ foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFo
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceSrcElement Mozilla SVGFontFaceSrcElement documentation>
 newtype SVGFontFaceSrcElement = SVGFontFaceSrcElement { unSVGFontFaceSrcElement :: JSVal }
@@ -21865,9 +23665,11 @@ instance IsEventTarget SVGFontFaceSrcElement
 instance IsSlotable SVGFontFaceSrcElement
 instance IsParentNode SVGFontFaceSrcElement
 instance IsNonDocumentTypeChildNode SVGFontFaceSrcElement
+instance IsDocumentAndElementEventHandlers SVGFontFaceSrcElement
 instance IsChildNode SVGFontFaceSrcElement
 instance IsAnimatable SVGFontFaceSrcElement
 instance IsGlobalEventHandlers SVGFontFaceSrcElement
+instance IsElementCSSInlineStyle SVGFontFaceSrcElement
 instance IsGObject SVGFontFaceSrcElement where
   typeGType _ = gTypeSVGFontFaceSrcElement
   {-# INLINE typeGType #-}
@@ -21883,9 +23685,11 @@ foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFon
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGFontFaceUriElement Mozilla SVGFontFaceUriElement documentation>
 newtype SVGFontFaceUriElement = SVGFontFaceUriElement { unSVGFontFaceUriElement :: JSVal }
@@ -21916,9 +23720,11 @@ instance IsEventTarget SVGFontFaceUriElement
 instance IsSlotable SVGFontFaceUriElement
 instance IsParentNode SVGFontFaceUriElement
 instance IsNonDocumentTypeChildNode SVGFontFaceUriElement
+instance IsDocumentAndElementEventHandlers SVGFontFaceUriElement
 instance IsChildNode SVGFontFaceUriElement
 instance IsAnimatable SVGFontFaceUriElement
 instance IsGlobalEventHandlers SVGFontFaceUriElement
+instance IsElementCSSInlineStyle SVGFontFaceUriElement
 instance IsGObject SVGFontFaceUriElement where
   typeGType _ = gTypeSVGFontFaceUriElement
   {-# INLINE typeGType #-}
@@ -21935,9 +23741,11 @@ foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFon
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -21971,9 +23779,11 @@ instance IsEventTarget SVGForeignObjectElement
 instance IsSlotable SVGForeignObjectElement
 instance IsParentNode SVGForeignObjectElement
 instance IsNonDocumentTypeChildNode SVGForeignObjectElement
+instance IsDocumentAndElementEventHandlers SVGForeignObjectElement
 instance IsChildNode SVGForeignObjectElement
 instance IsAnimatable SVGForeignObjectElement
 instance IsGlobalEventHandlers SVGForeignObjectElement
+instance IsElementCSSInlineStyle SVGForeignObjectElement
 instance IsSVGTests SVGForeignObjectElement
 instance IsSVGExternalResourcesRequired SVGForeignObjectElement
 instance IsGObject SVGForeignObjectElement where
@@ -21992,9 +23802,11 @@ foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGF
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22028,9 +23840,11 @@ instance IsEventTarget SVGGElement
 instance IsSlotable SVGGElement
 instance IsParentNode SVGGElement
 instance IsNonDocumentTypeChildNode SVGGElement
+instance IsDocumentAndElementEventHandlers SVGGElement
 instance IsChildNode SVGGElement
 instance IsAnimatable SVGGElement
 instance IsGlobalEventHandlers SVGGElement
+instance IsElementCSSInlineStyle SVGGElement
 instance IsSVGTests SVGGElement
 instance IsSVGExternalResourcesRequired SVGGElement
 instance IsGObject SVGGElement where
@@ -22048,9 +23862,11 @@ foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: G
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphElement Mozilla SVGGlyphElement documentation>
 newtype SVGGlyphElement = SVGGlyphElement { unSVGGlyphElement :: JSVal }
@@ -22081,9 +23897,11 @@ instance IsEventTarget SVGGlyphElement
 instance IsSlotable SVGGlyphElement
 instance IsParentNode SVGGlyphElement
 instance IsNonDocumentTypeChildNode SVGGlyphElement
+instance IsDocumentAndElementEventHandlers SVGGlyphElement
 instance IsChildNode SVGGlyphElement
 instance IsAnimatable SVGGlyphElement
 instance IsGlobalEventHandlers SVGGlyphElement
+instance IsElementCSSInlineStyle SVGGlyphElement
 instance IsGObject SVGGlyphElement where
   typeGType _ = gTypeSVGGlyphElement
   {-# INLINE typeGType #-}
@@ -22099,9 +23917,11 @@ foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement Mozilla SVGGlyphRefElement documentation>
@@ -22133,9 +23953,11 @@ instance IsEventTarget SVGGlyphRefElement
 instance IsSlotable SVGGlyphRefElement
 instance IsParentNode SVGGlyphRefElement
 instance IsNonDocumentTypeChildNode SVGGlyphRefElement
+instance IsDocumentAndElementEventHandlers SVGGlyphRefElement
 instance IsChildNode SVGGlyphRefElement
 instance IsAnimatable SVGGlyphRefElement
 instance IsGlobalEventHandlers SVGGlyphRefElement
+instance IsElementCSSInlineStyle SVGGlyphRefElement
 instance IsSVGURIReference SVGGlyphRefElement
 instance IsGObject SVGGlyphRefElement where
   typeGType _ = gTypeSVGGlyphRefElement
@@ -22152,9 +23974,11 @@ foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphR
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22180,7 +24004,7 @@ instance FromJSVal SVGGradientElement where
   fromJSVal = return . fmap SVGGradientElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsSVGURIReference o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGGradientElement o
+class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsSVGURIReference o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGGradientElement o
 toSVGGradientElement :: IsSVGGradientElement o => o -> SVGGradientElement
 toSVGGradientElement = SVGGradientElement . coerce
 
@@ -22192,9 +24016,11 @@ instance IsEventTarget SVGGradientElement
 instance IsSlotable SVGGradientElement
 instance IsParentNode SVGGradientElement
 instance IsNonDocumentTypeChildNode SVGGradientElement
+instance IsDocumentAndElementEventHandlers SVGGradientElement
 instance IsChildNode SVGGradientElement
 instance IsAnimatable SVGGradientElement
 instance IsGlobalEventHandlers SVGGradientElement
+instance IsElementCSSInlineStyle SVGGradientElement
 instance IsSVGURIReference SVGGradientElement
 instance IsSVGExternalResourcesRequired SVGGradientElement
 instance IsGObject SVGGradientElement where
@@ -22212,9 +24038,11 @@ foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradie
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement Mozilla SVGGraphicsElement documentation>
@@ -22239,7 +24067,7 @@ instance FromJSVal SVGGraphicsElement where
   fromJSVal = return . fmap SVGGraphicsElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsSVGTests o, IsGObject o) => IsSVGGraphicsElement o
+class (IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsSVGTests o, IsGObject o) => IsSVGGraphicsElement o
 toSVGGraphicsElement :: IsSVGGraphicsElement o => o -> SVGGraphicsElement
 toSVGGraphicsElement = SVGGraphicsElement . coerce
 
@@ -22251,9 +24079,11 @@ instance IsEventTarget SVGGraphicsElement
 instance IsSlotable SVGGraphicsElement
 instance IsParentNode SVGGraphicsElement
 instance IsNonDocumentTypeChildNode SVGGraphicsElement
+instance IsDocumentAndElementEventHandlers SVGGraphicsElement
 instance IsChildNode SVGGraphicsElement
 instance IsAnimatable SVGGraphicsElement
 instance IsGlobalEventHandlers SVGGraphicsElement
+instance IsElementCSSInlineStyle SVGGraphicsElement
 instance IsSVGTests SVGGraphicsElement
 instance IsGObject SVGGraphicsElement where
   typeGType _ = gTypeSVGGraphicsElement
@@ -22270,9 +24100,11 @@ foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphi
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGHKernElement Mozilla SVGHKernElement documentation>
 newtype SVGHKernElement = SVGHKernElement { unSVGHKernElement :: JSVal }
@@ -22303,9 +24135,11 @@ instance IsEventTarget SVGHKernElement
 instance IsSlotable SVGHKernElement
 instance IsParentNode SVGHKernElement
 instance IsNonDocumentTypeChildNode SVGHKernElement
+instance IsDocumentAndElementEventHandlers SVGHKernElement
 instance IsChildNode SVGHKernElement
 instance IsAnimatable SVGHKernElement
 instance IsGlobalEventHandlers SVGHKernElement
+instance IsElementCSSInlineStyle SVGHKernElement
 instance IsGObject SVGHKernElement where
   typeGType _ = gTypeSVGHKernElement
   {-# INLINE typeGType #-}
@@ -22322,9 +24156,11 @@ foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -22359,9 +24195,11 @@ instance IsEventTarget SVGImageElement
 instance IsSlotable SVGImageElement
 instance IsParentNode SVGImageElement
 instance IsNonDocumentTypeChildNode SVGImageElement
+instance IsDocumentAndElementEventHandlers SVGImageElement
 instance IsChildNode SVGImageElement
 instance IsAnimatable SVGImageElement
 instance IsGlobalEventHandlers SVGImageElement
+instance IsElementCSSInlineStyle SVGImageElement
 instance IsSVGTests SVGImageElement
 instance IsSVGURIReference SVGImageElement
 instance IsSVGExternalResourcesRequired SVGImageElement
@@ -22439,9 +24277,11 @@ foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22475,9 +24315,11 @@ instance IsEventTarget SVGLineElement
 instance IsSlotable SVGLineElement
 instance IsParentNode SVGLineElement
 instance IsNonDocumentTypeChildNode SVGLineElement
+instance IsDocumentAndElementEventHandlers SVGLineElement
 instance IsChildNode SVGLineElement
 instance IsAnimatable SVGLineElement
 instance IsGlobalEventHandlers SVGLineElement
+instance IsElementCSSInlineStyle SVGLineElement
 instance IsSVGTests SVGLineElement
 instance IsSVGExternalResourcesRequired SVGLineElement
 instance IsGObject SVGLineElement where
@@ -22496,9 +24338,11 @@ foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22532,9 +24376,11 @@ instance IsEventTarget SVGLinearGradientElement
 instance IsSlotable SVGLinearGradientElement
 instance IsParentNode SVGLinearGradientElement
 instance IsNonDocumentTypeChildNode SVGLinearGradientElement
+instance IsDocumentAndElementEventHandlers SVGLinearGradientElement
 instance IsChildNode SVGLinearGradientElement
 instance IsAnimatable SVGLinearGradientElement
 instance IsGlobalEventHandlers SVGLinearGradientElement
+instance IsElementCSSInlineStyle SVGLinearGradientElement
 instance IsSVGURIReference SVGLinearGradientElement
 instance IsSVGExternalResourcesRequired SVGLinearGradientElement
 instance IsGObject SVGLinearGradientElement where
@@ -22552,9 +24398,11 @@ foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVG
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22587,9 +24435,11 @@ instance IsEventTarget SVGMPathElement
 instance IsSlotable SVGMPathElement
 instance IsParentNode SVGMPathElement
 instance IsNonDocumentTypeChildNode SVGMPathElement
+instance IsDocumentAndElementEventHandlers SVGMPathElement
 instance IsChildNode SVGMPathElement
 instance IsAnimatable SVGMPathElement
 instance IsGlobalEventHandlers SVGMPathElement
+instance IsElementCSSInlineStyle SVGMPathElement
 instance IsSVGURIReference SVGMPathElement
 instance IsSVGExternalResourcesRequired SVGMPathElement
 instance IsGObject SVGMPathElement where
@@ -22607,9 +24457,11 @@ foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFitToViewBox"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22642,9 +24494,11 @@ instance IsEventTarget SVGMarkerElement
 instance IsSlotable SVGMarkerElement
 instance IsParentNode SVGMarkerElement
 instance IsNonDocumentTypeChildNode SVGMarkerElement
+instance IsDocumentAndElementEventHandlers SVGMarkerElement
 instance IsChildNode SVGMarkerElement
 instance IsAnimatable SVGMarkerElement
 instance IsGlobalEventHandlers SVGMarkerElement
+instance IsElementCSSInlineStyle SVGMarkerElement
 instance IsSVGFitToViewBox SVGMarkerElement
 instance IsSVGExternalResourcesRequired SVGMarkerElement
 instance IsGObject SVGMarkerElement where
@@ -22662,9 +24516,11 @@ foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22697,9 +24553,11 @@ instance IsEventTarget SVGMaskElement
 instance IsSlotable SVGMaskElement
 instance IsParentNode SVGMaskElement
 instance IsNonDocumentTypeChildNode SVGMaskElement
+instance IsDocumentAndElementEventHandlers SVGMaskElement
 instance IsChildNode SVGMaskElement
 instance IsAnimatable SVGMaskElement
 instance IsGlobalEventHandlers SVGMaskElement
+instance IsElementCSSInlineStyle SVGMaskElement
 instance IsSVGTests SVGMaskElement
 instance IsSVGExternalResourcesRequired SVGMaskElement
 instance IsGObject SVGMaskElement where
@@ -22746,9 +24604,11 @@ foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMetadataElement Mozilla SVGMetadataElement documentation>
 newtype SVGMetadataElement = SVGMetadataElement { unSVGMetadataElement :: JSVal }
@@ -22779,9 +24639,11 @@ instance IsEventTarget SVGMetadataElement
 instance IsSlotable SVGMetadataElement
 instance IsParentNode SVGMetadataElement
 instance IsNonDocumentTypeChildNode SVGMetadataElement
+instance IsDocumentAndElementEventHandlers SVGMetadataElement
 instance IsChildNode SVGMetadataElement
 instance IsAnimatable SVGMetadataElement
 instance IsGlobalEventHandlers SVGMetadataElement
+instance IsElementCSSInlineStyle SVGMetadataElement
 instance IsGObject SVGMetadataElement where
   typeGType _ = gTypeSVGMetadataElement
   {-# INLINE typeGType #-}
@@ -22797,9 +24659,11 @@ foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetada
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGMissingGlyphElement Mozilla SVGMissingGlyphElement documentation>
 newtype SVGMissingGlyphElement = SVGMissingGlyphElement { unSVGMissingGlyphElement :: JSVal }
@@ -22830,9 +24694,11 @@ instance IsEventTarget SVGMissingGlyphElement
 instance IsSlotable SVGMissingGlyphElement
 instance IsParentNode SVGMissingGlyphElement
 instance IsNonDocumentTypeChildNode SVGMissingGlyphElement
+instance IsDocumentAndElementEventHandlers SVGMissingGlyphElement
 instance IsChildNode SVGMissingGlyphElement
 instance IsAnimatable SVGMissingGlyphElement
 instance IsGlobalEventHandlers SVGMissingGlyphElement
+instance IsElementCSSInlineStyle SVGMissingGlyphElement
 instance IsGObject SVGMissingGlyphElement where
   typeGType _ = gTypeSVGMissingGlyphElement
   {-# INLINE typeGType #-}
@@ -22907,9 +24773,11 @@ foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -22943,9 +24811,11 @@ instance IsEventTarget SVGPathElement
 instance IsSlotable SVGPathElement
 instance IsParentNode SVGPathElement
 instance IsNonDocumentTypeChildNode SVGPathElement
+instance IsDocumentAndElementEventHandlers SVGPathElement
 instance IsChildNode SVGPathElement
 instance IsAnimatable SVGPathElement
 instance IsGlobalEventHandlers SVGPathElement
+instance IsElementCSSInlineStyle SVGPathElement
 instance IsSVGTests SVGPathElement
 instance IsSVGExternalResourcesRequired SVGPathElement
 instance IsGObject SVGPathElement where
@@ -23653,9 +25523,11 @@ foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathS
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGFitToViewBox"
@@ -23690,9 +25562,11 @@ instance IsEventTarget SVGPatternElement
 instance IsSlotable SVGPatternElement
 instance IsParentNode SVGPatternElement
 instance IsNonDocumentTypeChildNode SVGPatternElement
+instance IsDocumentAndElementEventHandlers SVGPatternElement
 instance IsChildNode SVGPatternElement
 instance IsAnimatable SVGPatternElement
 instance IsGlobalEventHandlers SVGPatternElement
+instance IsElementCSSInlineStyle SVGPatternElement
 instance IsSVGURIReference SVGPatternElement
 instance IsSVGTests SVGPatternElement
 instance IsSVGFitToViewBox SVGPatternElement
@@ -23771,9 +25645,11 @@ foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList ::
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -23807,9 +25683,11 @@ instance IsEventTarget SVGPolygonElement
 instance IsSlotable SVGPolygonElement
 instance IsParentNode SVGPolygonElement
 instance IsNonDocumentTypeChildNode SVGPolygonElement
+instance IsDocumentAndElementEventHandlers SVGPolygonElement
 instance IsChildNode SVGPolygonElement
 instance IsAnimatable SVGPolygonElement
 instance IsGlobalEventHandlers SVGPolygonElement
+instance IsElementCSSInlineStyle SVGPolygonElement
 instance IsSVGTests SVGPolygonElement
 instance IsSVGExternalResourcesRequired SVGPolygonElement
 instance IsGObject SVGPolygonElement where
@@ -23828,9 +25706,11 @@ foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygon
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -23864,9 +25744,11 @@ instance IsEventTarget SVGPolylineElement
 instance IsSlotable SVGPolylineElement
 instance IsParentNode SVGPolylineElement
 instance IsNonDocumentTypeChildNode SVGPolylineElement
+instance IsDocumentAndElementEventHandlers SVGPolylineElement
 instance IsChildNode SVGPolylineElement
 instance IsAnimatable SVGPolylineElement
 instance IsGlobalEventHandlers SVGPolylineElement
+instance IsElementCSSInlineStyle SVGPolylineElement
 instance IsSVGTests SVGPolylineElement
 instance IsSVGExternalResourcesRequired SVGPolylineElement
 instance IsGObject SVGPolylineElement where
@@ -23914,9 +25796,11 @@ foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPr
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -23950,9 +25834,11 @@ instance IsEventTarget SVGRadialGradientElement
 instance IsSlotable SVGRadialGradientElement
 instance IsParentNode SVGRadialGradientElement
 instance IsNonDocumentTypeChildNode SVGRadialGradientElement
+instance IsDocumentAndElementEventHandlers SVGRadialGradientElement
 instance IsChildNode SVGRadialGradientElement
 instance IsAnimatable SVGRadialGradientElement
 instance IsGlobalEventHandlers SVGRadialGradientElement
+instance IsElementCSSInlineStyle SVGRadialGradientElement
 instance IsSVGURIReference SVGRadialGradientElement
 instance IsSVGExternalResourcesRequired SVGRadialGradientElement
 instance IsGObject SVGRadialGradientElement where
@@ -24000,9 +25886,11 @@ foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24036,9 +25924,11 @@ instance IsEventTarget SVGRectElement
 instance IsSlotable SVGRectElement
 instance IsParentNode SVGRectElement
 instance IsNonDocumentTypeChildNode SVGRectElement
+instance IsDocumentAndElementEventHandlers SVGRectElement
 instance IsChildNode SVGRectElement
 instance IsAnimatable SVGRectElement
 instance IsGlobalEventHandlers SVGRectElement
+instance IsElementCSSInlineStyle SVGRectElement
 instance IsSVGTests SVGRectElement
 instance IsSVGExternalResourcesRequired SVGRectElement
 instance IsGObject SVGRectElement where
@@ -24086,9 +25976,11 @@ foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRender
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGZoomAndPan"
 --     * "GHCJS.DOM.SVGFitToViewBox"
@@ -24124,9 +26016,11 @@ instance IsEventTarget SVGSVGElement
 instance IsSlotable SVGSVGElement
 instance IsParentNode SVGSVGElement
 instance IsNonDocumentTypeChildNode SVGSVGElement
+instance IsDocumentAndElementEventHandlers SVGSVGElement
 instance IsChildNode SVGSVGElement
 instance IsAnimatable SVGSVGElement
 instance IsGlobalEventHandlers SVGSVGElement
+instance IsElementCSSInlineStyle SVGSVGElement
 instance IsSVGTests SVGSVGElement
 instance IsSVGZoomAndPan SVGSVGElement
 instance IsSVGFitToViewBox SVGSVGElement
@@ -24146,9 +26040,11 @@ foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24181,9 +26077,11 @@ instance IsEventTarget SVGScriptElement
 instance IsSlotable SVGScriptElement
 instance IsParentNode SVGScriptElement
 instance IsNonDocumentTypeChildNode SVGScriptElement
+instance IsDocumentAndElementEventHandlers SVGScriptElement
 instance IsChildNode SVGScriptElement
 instance IsAnimatable SVGScriptElement
 instance IsGlobalEventHandlers SVGScriptElement
+instance IsElementCSSInlineStyle SVGScriptElement
 instance IsSVGURIReference SVGScriptElement
 instance IsSVGExternalResourcesRequired SVGScriptElement
 instance IsGObject SVGScriptElement where
@@ -24202,9 +26100,11 @@ foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24238,9 +26138,11 @@ instance IsEventTarget SVGSetElement
 instance IsSlotable SVGSetElement
 instance IsParentNode SVGSetElement
 instance IsNonDocumentTypeChildNode SVGSetElement
+instance IsDocumentAndElementEventHandlers SVGSetElement
 instance IsChildNode SVGSetElement
 instance IsAnimatable SVGSetElement
 instance IsGlobalEventHandlers SVGSetElement
+instance IsElementCSSInlineStyle SVGSetElement
 instance IsSVGTests SVGSetElement
 instance IsSVGExternalResourcesRequired SVGSetElement
 instance IsGObject SVGSetElement where
@@ -24258,9 +26160,11 @@ foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStopElement Mozilla SVGStopElement documentation>
 newtype SVGStopElement = SVGStopElement { unSVGStopElement :: JSVal }
@@ -24291,9 +26195,11 @@ instance IsEventTarget SVGStopElement
 instance IsSlotable SVGStopElement
 instance IsParentNode SVGStopElement
 instance IsNonDocumentTypeChildNode SVGStopElement
+instance IsDocumentAndElementEventHandlers SVGStopElement
 instance IsChildNode SVGStopElement
 instance IsAnimatable SVGStopElement
 instance IsGlobalEventHandlers SVGStopElement
+instance IsElementCSSInlineStyle SVGStopElement
 instance IsGObject SVGStopElement where
   typeGType _ = gTypeSVGStopElement
   {-# INLINE typeGType #-}
@@ -24338,9 +26244,11 @@ foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement Mozilla SVGStyleElement documentation>
 newtype SVGStyleElement = SVGStyleElement { unSVGStyleElement :: JSVal }
@@ -24371,9 +26279,11 @@ instance IsEventTarget SVGStyleElement
 instance IsSlotable SVGStyleElement
 instance IsParentNode SVGStyleElement
 instance IsNonDocumentTypeChildNode SVGStyleElement
+instance IsDocumentAndElementEventHandlers SVGStyleElement
 instance IsChildNode SVGStyleElement
 instance IsAnimatable SVGStyleElement
 instance IsGlobalEventHandlers SVGStyleElement
+instance IsElementCSSInlineStyle SVGStyleElement
 instance IsGObject SVGStyleElement where
   typeGType _ = gTypeSVGStyleElement
   {-# INLINE typeGType #-}
@@ -24390,9 +26300,11 @@ foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24426,9 +26338,11 @@ instance IsEventTarget SVGSwitchElement
 instance IsSlotable SVGSwitchElement
 instance IsParentNode SVGSwitchElement
 instance IsNonDocumentTypeChildNode SVGSwitchElement
+instance IsDocumentAndElementEventHandlers SVGSwitchElement
 instance IsChildNode SVGSwitchElement
 instance IsAnimatable SVGSwitchElement
 instance IsGlobalEventHandlers SVGSwitchElement
+instance IsElementCSSInlineStyle SVGSwitchElement
 instance IsSVGTests SVGSwitchElement
 instance IsSVGExternalResourcesRequired SVGSwitchElement
 instance IsGObject SVGSwitchElement where
@@ -24446,9 +26360,11 @@ foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGFitToViewBox"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24481,9 +26397,11 @@ instance IsEventTarget SVGSymbolElement
 instance IsSlotable SVGSymbolElement
 instance IsParentNode SVGSymbolElement
 instance IsNonDocumentTypeChildNode SVGSymbolElement
+instance IsDocumentAndElementEventHandlers SVGSymbolElement
 instance IsChildNode SVGSymbolElement
 instance IsAnimatable SVGSymbolElement
 instance IsGlobalEventHandlers SVGSymbolElement
+instance IsElementCSSInlineStyle SVGSymbolElement
 instance IsSVGFitToViewBox SVGSymbolElement
 instance IsSVGExternalResourcesRequired SVGSymbolElement
 instance IsGObject SVGSymbolElement where
@@ -24504,9 +26422,11 @@ foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolEl
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --     * "GHCJS.DOM.SVGURIReference"
@@ -24543,9 +26463,11 @@ instance IsEventTarget SVGTRefElement
 instance IsSlotable SVGTRefElement
 instance IsParentNode SVGTRefElement
 instance IsNonDocumentTypeChildNode SVGTRefElement
+instance IsDocumentAndElementEventHandlers SVGTRefElement
 instance IsChildNode SVGTRefElement
 instance IsAnimatable SVGTRefElement
 instance IsGlobalEventHandlers SVGTRefElement
+instance IsElementCSSInlineStyle SVGTRefElement
 instance IsSVGTests SVGTRefElement
 instance IsSVGExternalResourcesRequired SVGTRefElement
 instance IsSVGURIReference SVGTRefElement
@@ -24567,9 +26489,11 @@ foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24605,9 +26529,11 @@ instance IsEventTarget SVGTSpanElement
 instance IsSlotable SVGTSpanElement
 instance IsParentNode SVGTSpanElement
 instance IsNonDocumentTypeChildNode SVGTSpanElement
+instance IsDocumentAndElementEventHandlers SVGTSpanElement
 instance IsChildNode SVGTSpanElement
 instance IsAnimatable SVGTSpanElement
 instance IsGlobalEventHandlers SVGTSpanElement
+instance IsElementCSSInlineStyle SVGTSpanElement
 instance IsSVGTests SVGTSpanElement
 instance IsSVGExternalResourcesRequired SVGTSpanElement
 instance IsGObject SVGTSpanElement where
@@ -24660,9 +26586,11 @@ foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24688,7 +26616,7 @@ instance FromJSVal SVGTextContentElement where
   fromJSVal = return . fmap SVGTextContentElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGGraphicsElement o, IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGTextContentElement o
+class (IsSVGGraphicsElement o, IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGTextContentElement o
 toSVGTextContentElement :: IsSVGTextContentElement o => o -> SVGTextContentElement
 toSVGTextContentElement = SVGTextContentElement . coerce
 
@@ -24701,9 +26629,11 @@ instance IsEventTarget SVGTextContentElement
 instance IsSlotable SVGTextContentElement
 instance IsParentNode SVGTextContentElement
 instance IsNonDocumentTypeChildNode SVGTextContentElement
+instance IsDocumentAndElementEventHandlers SVGTextContentElement
 instance IsChildNode SVGTextContentElement
 instance IsAnimatable SVGTextContentElement
 instance IsGlobalEventHandlers SVGTextContentElement
+instance IsElementCSSInlineStyle SVGTextContentElement
 instance IsSVGTests SVGTextContentElement
 instance IsSVGExternalResourcesRequired SVGTextContentElement
 instance IsGObject SVGTextContentElement where
@@ -24724,9 +26654,11 @@ foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTex
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24762,9 +26694,11 @@ instance IsEventTarget SVGTextElement
 instance IsSlotable SVGTextElement
 instance IsParentNode SVGTextElement
 instance IsNonDocumentTypeChildNode SVGTextElement
+instance IsDocumentAndElementEventHandlers SVGTextElement
 instance IsChildNode SVGTextElement
 instance IsAnimatable SVGTextElement
 instance IsGlobalEventHandlers SVGTextElement
+instance IsElementCSSInlineStyle SVGTextElement
 instance IsSVGTests SVGTextElement
 instance IsSVGExternalResourcesRequired SVGTextElement
 instance IsGObject SVGTextElement where
@@ -24784,9 +26718,11 @@ foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElemen
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --     * "GHCJS.DOM.SVGURIReference"
@@ -24822,9 +26758,11 @@ instance IsEventTarget SVGTextPathElement
 instance IsSlotable SVGTextPathElement
 instance IsParentNode SVGTextPathElement
 instance IsNonDocumentTypeChildNode SVGTextPathElement
+instance IsDocumentAndElementEventHandlers SVGTextPathElement
 instance IsChildNode SVGTextPathElement
 instance IsAnimatable SVGTextPathElement
 instance IsGlobalEventHandlers SVGTextPathElement
+instance IsElementCSSInlineStyle SVGTextPathElement
 instance IsSVGTests SVGTextPathElement
 instance IsSVGExternalResourcesRequired SVGTextPathElement
 instance IsSVGURIReference SVGTextPathElement
@@ -24845,9 +26783,11 @@ foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPa
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
 --
@@ -24873,7 +26813,7 @@ instance FromJSVal SVGTextPositioningElement where
   fromJSVal = return . fmap SVGTextPositioningElement . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
-class (IsSVGTextContentElement o, IsSVGGraphicsElement o, IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGTextPositioningElement o
+class (IsSVGTextContentElement o, IsSVGGraphicsElement o, IsSVGElement o, IsElement o, IsNode o, IsEventTarget o, IsSlotable o, IsParentNode o, IsNonDocumentTypeChildNode o, IsDocumentAndElementEventHandlers o, IsChildNode o, IsAnimatable o, IsGlobalEventHandlers o, IsElementCSSInlineStyle o, IsSVGTests o, IsSVGExternalResourcesRequired o, IsGObject o) => IsSVGTextPositioningElement o
 toSVGTextPositioningElement :: IsSVGTextPositioningElement o => o -> SVGTextPositioningElement
 toSVGTextPositioningElement = SVGTextPositioningElement . coerce
 
@@ -24887,9 +26827,11 @@ instance IsEventTarget SVGTextPositioningElement
 instance IsSlotable SVGTextPositioningElement
 instance IsParentNode SVGTextPositioningElement
 instance IsNonDocumentTypeChildNode SVGTextPositioningElement
+instance IsDocumentAndElementEventHandlers SVGTextPositioningElement
 instance IsChildNode SVGTextPositioningElement
 instance IsAnimatable SVGTextPositioningElement
 instance IsGlobalEventHandlers SVGTextPositioningElement
+instance IsElementCSSInlineStyle SVGTextPositioningElement
 instance IsSVGTests SVGTextPositioningElement
 instance IsSVGExternalResourcesRequired SVGTextPositioningElement
 instance IsGObject SVGTextPositioningElement where
@@ -24907,9 +26849,11 @@ foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSV
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGTitleElement Mozilla SVGTitleElement documentation>
 newtype SVGTitleElement = SVGTitleElement { unSVGTitleElement :: JSVal }
@@ -24940,9 +26884,11 @@ instance IsEventTarget SVGTitleElement
 instance IsSlotable SVGTitleElement
 instance IsParentNode SVGTitleElement
 instance IsNonDocumentTypeChildNode SVGTitleElement
+instance IsDocumentAndElementEventHandlers SVGTitleElement
 instance IsChildNode SVGTitleElement
 instance IsAnimatable SVGTitleElement
 instance IsGlobalEventHandlers SVGTitleElement
+instance IsElementCSSInlineStyle SVGTitleElement
 instance IsGObject SVGTitleElement where
   typeGType _ = gTypeSVGTitleElement
   {-# INLINE typeGType #-}
@@ -25080,9 +27026,11 @@ foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes ::
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGTests"
 --     * "GHCJS.DOM.SVGURIReference"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -25117,9 +27065,11 @@ instance IsEventTarget SVGUseElement
 instance IsSlotable SVGUseElement
 instance IsParentNode SVGUseElement
 instance IsNonDocumentTypeChildNode SVGUseElement
+instance IsDocumentAndElementEventHandlers SVGUseElement
 instance IsChildNode SVGUseElement
 instance IsAnimatable SVGUseElement
 instance IsGlobalEventHandlers SVGUseElement
+instance IsElementCSSInlineStyle SVGUseElement
 instance IsSVGTests SVGUseElement
 instance IsSVGURIReference SVGUseElement
 instance IsSVGExternalResourcesRequired SVGUseElement
@@ -25138,9 +27088,11 @@ foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement 
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SVGVKernElement Mozilla SVGVKernElement documentation>
 newtype SVGVKernElement = SVGVKernElement { unSVGVKernElement :: JSVal }
@@ -25171,9 +27123,11 @@ instance IsEventTarget SVGVKernElement
 instance IsSlotable SVGVKernElement
 instance IsParentNode SVGVKernElement
 instance IsNonDocumentTypeChildNode SVGVKernElement
+instance IsDocumentAndElementEventHandlers SVGVKernElement
 instance IsChildNode SVGVKernElement
 instance IsAnimatable SVGVKernElement
 instance IsGlobalEventHandlers SVGVKernElement
+instance IsElementCSSInlineStyle SVGVKernElement
 instance IsGObject SVGVKernElement where
   typeGType _ = gTypeSVGVKernElement
   {-# INLINE typeGType #-}
@@ -25189,9 +27143,11 @@ foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElem
 --     * "GHCJS.DOM.Slotable"
 --     * "GHCJS.DOM.ParentNode"
 --     * "GHCJS.DOM.NonDocumentTypeChildNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --     * "GHCJS.DOM.ChildNode"
 --     * "GHCJS.DOM.Animatable"
 --     * "GHCJS.DOM.GlobalEventHandlers"
+--     * "GHCJS.DOM.ElementCSSInlineStyle"
 --     * "GHCJS.DOM.SVGZoomAndPan"
 --     * "GHCJS.DOM.SVGFitToViewBox"
 --     * "GHCJS.DOM.SVGExternalResourcesRequired"
@@ -25225,9 +27181,11 @@ instance IsEventTarget SVGViewElement
 instance IsSlotable SVGViewElement
 instance IsParentNode SVGViewElement
 instance IsNonDocumentTypeChildNode SVGViewElement
+instance IsDocumentAndElementEventHandlers SVGViewElement
 instance IsChildNode SVGViewElement
 instance IsAnimatable SVGViewElement
 instance IsGlobalEventHandlers SVGViewElement
+instance IsElementCSSInlineStyle SVGViewElement
 instance IsSVGZoomAndPan SVGViewElement
 instance IsSVGFitToViewBox SVGViewElement
 instance IsSVGExternalResourcesRequired SVGViewElement
@@ -25597,6 +27555,82 @@ instance IsGObject ShadowRootInit where
   typeGType _ = gTypeShadowRootInit
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"ShadowRootInit\"]" gTypeShadowRootInit :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SiteBoundCredential".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.BasicCredential"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SiteBoundCredential Mozilla SiteBoundCredential documentation>
+newtype SiteBoundCredential = SiteBoundCredential { unSiteBoundCredential :: JSVal }
+
+instance Eq (SiteBoundCredential) where
+  (SiteBoundCredential a) == (SiteBoundCredential b) = js_eq a b
+
+instance PToJSVal SiteBoundCredential where
+  pToJSVal = unSiteBoundCredential
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SiteBoundCredential where
+  pFromJSVal = SiteBoundCredential
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SiteBoundCredential where
+  toJSVal = return . unSiteBoundCredential
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SiteBoundCredential where
+  fromJSVal = return . fmap SiteBoundCredential . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsBasicCredential o, IsGObject o) => IsSiteBoundCredential o
+toSiteBoundCredential :: IsSiteBoundCredential o => o -> SiteBoundCredential
+toSiteBoundCredential = SiteBoundCredential . coerce
+
+instance IsSiteBoundCredential SiteBoundCredential
+instance IsBasicCredential SiteBoundCredential
+instance IsGObject SiteBoundCredential where
+  typeGType _ = gTypeSiteBoundCredential
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"SiteBoundCredential\"]" gTypeSiteBoundCredential :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SiteBoundCredentialData".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.CredentialData"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SiteBoundCredentialData Mozilla SiteBoundCredentialData documentation>
+newtype SiteBoundCredentialData = SiteBoundCredentialData { unSiteBoundCredentialData :: JSVal }
+
+instance Eq (SiteBoundCredentialData) where
+  (SiteBoundCredentialData a) == (SiteBoundCredentialData b) = js_eq a b
+
+instance PToJSVal SiteBoundCredentialData where
+  pToJSVal = unSiteBoundCredentialData
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SiteBoundCredentialData where
+  pFromJSVal = SiteBoundCredentialData
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SiteBoundCredentialData where
+  toJSVal = return . unSiteBoundCredentialData
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SiteBoundCredentialData where
+  fromJSVal = return . fmap SiteBoundCredentialData . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsCredentialData o, IsGObject o) => IsSiteBoundCredentialData o
+toSiteBoundCredentialData :: IsSiteBoundCredentialData o => o -> SiteBoundCredentialData
+toSiteBoundCredentialData = SiteBoundCredentialData . coerce
+
+instance IsSiteBoundCredentialData SiteBoundCredentialData
+instance IsCredentialData SiteBoundCredentialData
+instance IsGObject SiteBoundCredentialData where
+  typeGType _ = gTypeSiteBoundCredentialData
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"SiteBoundCredentialData\"]" gTypeSiteBoundCredentialData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Slotable".
 --
@@ -28106,6 +30140,657 @@ instance IsGObject WebGLVertexArrayObjectOES where
   {-# INLINE typeGType #-}
 foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUBuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUBuffer Mozilla WebGPUBuffer documentation>
+newtype WebGPUBuffer = WebGPUBuffer { unWebGPUBuffer :: JSVal }
+
+instance Eq (WebGPUBuffer) where
+  (WebGPUBuffer a) == (WebGPUBuffer b) = js_eq a b
+
+instance PToJSVal WebGPUBuffer where
+  pToJSVal = unWebGPUBuffer
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUBuffer where
+  pFromJSVal = WebGPUBuffer
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUBuffer where
+  toJSVal = return . unWebGPUBuffer
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUBuffer where
+  fromJSVal = return . fmap WebGPUBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUBuffer where
+  typeGType _ = gTypeWebGPUBuffer
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUBuffer\"]" gTypeWebGPUBuffer :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUCommandBuffer".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandBuffer Mozilla WebGPUCommandBuffer documentation>
+newtype WebGPUCommandBuffer = WebGPUCommandBuffer { unWebGPUCommandBuffer :: JSVal }
+
+instance Eq (WebGPUCommandBuffer) where
+  (WebGPUCommandBuffer a) == (WebGPUCommandBuffer b) = js_eq a b
+
+instance PToJSVal WebGPUCommandBuffer where
+  pToJSVal = unWebGPUCommandBuffer
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUCommandBuffer where
+  pFromJSVal = WebGPUCommandBuffer
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUCommandBuffer where
+  toJSVal = return . unWebGPUCommandBuffer
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUCommandBuffer where
+  fromJSVal = return . fmap WebGPUCommandBuffer . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUCommandBuffer where
+  typeGType _ = gTypeWebGPUCommandBuffer
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUCommandBuffer\"]" gTypeWebGPUCommandBuffer :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUCommandQueue".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandQueue Mozilla WebGPUCommandQueue documentation>
+newtype WebGPUCommandQueue = WebGPUCommandQueue { unWebGPUCommandQueue :: JSVal }
+
+instance Eq (WebGPUCommandQueue) where
+  (WebGPUCommandQueue a) == (WebGPUCommandQueue b) = js_eq a b
+
+instance PToJSVal WebGPUCommandQueue where
+  pToJSVal = unWebGPUCommandQueue
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUCommandQueue where
+  pFromJSVal = WebGPUCommandQueue
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUCommandQueue where
+  toJSVal = return . unWebGPUCommandQueue
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUCommandQueue where
+  fromJSVal = return . fmap WebGPUCommandQueue . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUCommandQueue where
+  typeGType _ = gTypeWebGPUCommandQueue
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUCommandQueue\"]" gTypeWebGPUCommandQueue :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUComputeCommandEncoder".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUComputeCommandEncoder Mozilla WebGPUComputeCommandEncoder documentation>
+newtype WebGPUComputeCommandEncoder = WebGPUComputeCommandEncoder { unWebGPUComputeCommandEncoder :: JSVal }
+
+instance Eq (WebGPUComputeCommandEncoder) where
+  (WebGPUComputeCommandEncoder a) == (WebGPUComputeCommandEncoder b) = js_eq a b
+
+instance PToJSVal WebGPUComputeCommandEncoder where
+  pToJSVal = unWebGPUComputeCommandEncoder
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUComputeCommandEncoder where
+  pFromJSVal = WebGPUComputeCommandEncoder
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUComputeCommandEncoder where
+  toJSVal = return . unWebGPUComputeCommandEncoder
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUComputeCommandEncoder where
+  fromJSVal = return . fmap WebGPUComputeCommandEncoder . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUComputeCommandEncoder where
+  typeGType _ = gTypeWebGPUComputeCommandEncoder
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUComputeCommandEncoder\"]" gTypeWebGPUComputeCommandEncoder :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUComputePipelineState".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUComputePipelineState Mozilla WebGPUComputePipelineState documentation>
+newtype WebGPUComputePipelineState = WebGPUComputePipelineState { unWebGPUComputePipelineState :: JSVal }
+
+instance Eq (WebGPUComputePipelineState) where
+  (WebGPUComputePipelineState a) == (WebGPUComputePipelineState b) = js_eq a b
+
+instance PToJSVal WebGPUComputePipelineState where
+  pToJSVal = unWebGPUComputePipelineState
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUComputePipelineState where
+  pFromJSVal = WebGPUComputePipelineState
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUComputePipelineState where
+  toJSVal = return . unWebGPUComputePipelineState
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUComputePipelineState where
+  fromJSVal = return . fmap WebGPUComputePipelineState . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUComputePipelineState where
+  typeGType _ = gTypeWebGPUComputePipelineState
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUComputePipelineState\"]" gTypeWebGPUComputePipelineState :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUDepthStencilDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUDepthStencilDescriptor Mozilla WebGPUDepthStencilDescriptor documentation>
+newtype WebGPUDepthStencilDescriptor = WebGPUDepthStencilDescriptor { unWebGPUDepthStencilDescriptor :: JSVal }
+
+instance Eq (WebGPUDepthStencilDescriptor) where
+  (WebGPUDepthStencilDescriptor a) == (WebGPUDepthStencilDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPUDepthStencilDescriptor where
+  pToJSVal = unWebGPUDepthStencilDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUDepthStencilDescriptor where
+  pFromJSVal = WebGPUDepthStencilDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUDepthStencilDescriptor where
+  toJSVal = return . unWebGPUDepthStencilDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUDepthStencilDescriptor where
+  fromJSVal = return . fmap WebGPUDepthStencilDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUDepthStencilDescriptor where
+  typeGType _ = gTypeWebGPUDepthStencilDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUDepthStencilDescriptor\"]" gTypeWebGPUDepthStencilDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUDepthStencilState".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUDepthStencilState Mozilla WebGPUDepthStencilState documentation>
+newtype WebGPUDepthStencilState = WebGPUDepthStencilState { unWebGPUDepthStencilState :: JSVal }
+
+instance Eq (WebGPUDepthStencilState) where
+  (WebGPUDepthStencilState a) == (WebGPUDepthStencilState b) = js_eq a b
+
+instance PToJSVal WebGPUDepthStencilState where
+  pToJSVal = unWebGPUDepthStencilState
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUDepthStencilState where
+  pFromJSVal = WebGPUDepthStencilState
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUDepthStencilState where
+  toJSVal = return . unWebGPUDepthStencilState
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUDepthStencilState where
+  fromJSVal = return . fmap WebGPUDepthStencilState . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUDepthStencilState where
+  typeGType _ = gTypeWebGPUDepthStencilState
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUDepthStencilState\"]" gTypeWebGPUDepthStencilState :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUDrawable".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUDrawable Mozilla WebGPUDrawable documentation>
+newtype WebGPUDrawable = WebGPUDrawable { unWebGPUDrawable :: JSVal }
+
+instance Eq (WebGPUDrawable) where
+  (WebGPUDrawable a) == (WebGPUDrawable b) = js_eq a b
+
+instance PToJSVal WebGPUDrawable where
+  pToJSVal = unWebGPUDrawable
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUDrawable where
+  pFromJSVal = WebGPUDrawable
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUDrawable where
+  toJSVal = return . unWebGPUDrawable
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUDrawable where
+  fromJSVal = return . fmap WebGPUDrawable . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUDrawable where
+  typeGType _ = gTypeWebGPUDrawable
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUDrawable\"]" gTypeWebGPUDrawable :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUFunction".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUFunction Mozilla WebGPUFunction documentation>
+newtype WebGPUFunction = WebGPUFunction { unWebGPUFunction :: JSVal }
+
+instance Eq (WebGPUFunction) where
+  (WebGPUFunction a) == (WebGPUFunction b) = js_eq a b
+
+instance PToJSVal WebGPUFunction where
+  pToJSVal = unWebGPUFunction
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUFunction where
+  pFromJSVal = WebGPUFunction
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUFunction where
+  toJSVal = return . unWebGPUFunction
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUFunction where
+  fromJSVal = return . fmap WebGPUFunction . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUFunction where
+  typeGType _ = gTypeWebGPUFunction
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUFunction\"]" gTypeWebGPUFunction :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPULibrary".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPULibrary Mozilla WebGPULibrary documentation>
+newtype WebGPULibrary = WebGPULibrary { unWebGPULibrary :: JSVal }
+
+instance Eq (WebGPULibrary) where
+  (WebGPULibrary a) == (WebGPULibrary b) = js_eq a b
+
+instance PToJSVal WebGPULibrary where
+  pToJSVal = unWebGPULibrary
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPULibrary where
+  pFromJSVal = WebGPULibrary
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPULibrary where
+  toJSVal = return . unWebGPULibrary
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPULibrary where
+  fromJSVal = return . fmap WebGPULibrary . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPULibrary where
+  typeGType _ = gTypeWebGPULibrary
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPULibrary\"]" gTypeWebGPULibrary :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderCommandEncoder".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder Mozilla WebGPURenderCommandEncoder documentation>
+newtype WebGPURenderCommandEncoder = WebGPURenderCommandEncoder { unWebGPURenderCommandEncoder :: JSVal }
+
+instance Eq (WebGPURenderCommandEncoder) where
+  (WebGPURenderCommandEncoder a) == (WebGPURenderCommandEncoder b) = js_eq a b
+
+instance PToJSVal WebGPURenderCommandEncoder where
+  pToJSVal = unWebGPURenderCommandEncoder
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderCommandEncoder where
+  pFromJSVal = WebGPURenderCommandEncoder
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderCommandEncoder where
+  toJSVal = return . unWebGPURenderCommandEncoder
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderCommandEncoder where
+  fromJSVal = return . fmap WebGPURenderCommandEncoder . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderCommandEncoder where
+  typeGType _ = gTypeWebGPURenderCommandEncoder
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderCommandEncoder\"]" gTypeWebGPURenderCommandEncoder :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassAttachmentDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassAttachmentDescriptor Mozilla WebGPURenderPassAttachmentDescriptor documentation>
+newtype WebGPURenderPassAttachmentDescriptor = WebGPURenderPassAttachmentDescriptor { unWebGPURenderPassAttachmentDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPassAttachmentDescriptor) where
+  (WebGPURenderPassAttachmentDescriptor a) == (WebGPURenderPassAttachmentDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPassAttachmentDescriptor where
+  pToJSVal = unWebGPURenderPassAttachmentDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPassAttachmentDescriptor where
+  pFromJSVal = WebGPURenderPassAttachmentDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPassAttachmentDescriptor where
+  toJSVal = return . unWebGPURenderPassAttachmentDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPassAttachmentDescriptor where
+  fromJSVal = return . fmap WebGPURenderPassAttachmentDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+class (IsGObject o) => IsWebGPURenderPassAttachmentDescriptor o
+toWebGPURenderPassAttachmentDescriptor :: IsWebGPURenderPassAttachmentDescriptor o => o -> WebGPURenderPassAttachmentDescriptor
+toWebGPURenderPassAttachmentDescriptor = WebGPURenderPassAttachmentDescriptor . coerce
+
+instance IsWebGPURenderPassAttachmentDescriptor WebGPURenderPassAttachmentDescriptor
+instance IsGObject WebGPURenderPassAttachmentDescriptor where
+  typeGType _ = gTypeWebGPURenderPassAttachmentDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPassAttachmentDescriptor\"]" gTypeWebGPURenderPassAttachmentDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassColorAttachmentDescriptor".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.WebGPURenderPassAttachmentDescriptor"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassColorAttachmentDescriptor Mozilla WebGPURenderPassColorAttachmentDescriptor documentation>
+newtype WebGPURenderPassColorAttachmentDescriptor = WebGPURenderPassColorAttachmentDescriptor { unWebGPURenderPassColorAttachmentDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPassColorAttachmentDescriptor) where
+  (WebGPURenderPassColorAttachmentDescriptor a) == (WebGPURenderPassColorAttachmentDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPassColorAttachmentDescriptor where
+  pToJSVal = unWebGPURenderPassColorAttachmentDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPassColorAttachmentDescriptor where
+  pFromJSVal = WebGPURenderPassColorAttachmentDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPassColorAttachmentDescriptor where
+  toJSVal = return . unWebGPURenderPassColorAttachmentDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPassColorAttachmentDescriptor where
+  fromJSVal = return . fmap WebGPURenderPassColorAttachmentDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsWebGPURenderPassAttachmentDescriptor WebGPURenderPassColorAttachmentDescriptor
+instance IsGObject WebGPURenderPassColorAttachmentDescriptor where
+  typeGType _ = gTypeWebGPURenderPassColorAttachmentDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPassColorAttachmentDescriptor\"]" gTypeWebGPURenderPassColorAttachmentDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassDepthAttachmentDescriptor".
+-- Base interface functions are in:
+--
+--     * "GHCJS.DOM.WebGPURenderPassAttachmentDescriptor"
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassDepthAttachmentDescriptor Mozilla WebGPURenderPassDepthAttachmentDescriptor documentation>
+newtype WebGPURenderPassDepthAttachmentDescriptor = WebGPURenderPassDepthAttachmentDescriptor { unWebGPURenderPassDepthAttachmentDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPassDepthAttachmentDescriptor) where
+  (WebGPURenderPassDepthAttachmentDescriptor a) == (WebGPURenderPassDepthAttachmentDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPassDepthAttachmentDescriptor where
+  pToJSVal = unWebGPURenderPassDepthAttachmentDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPassDepthAttachmentDescriptor where
+  pFromJSVal = WebGPURenderPassDepthAttachmentDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPassDepthAttachmentDescriptor where
+  toJSVal = return . unWebGPURenderPassDepthAttachmentDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPassDepthAttachmentDescriptor where
+  fromJSVal = return . fmap WebGPURenderPassDepthAttachmentDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsWebGPURenderPassAttachmentDescriptor WebGPURenderPassDepthAttachmentDescriptor
+instance IsGObject WebGPURenderPassDepthAttachmentDescriptor where
+  typeGType _ = gTypeWebGPURenderPassDepthAttachmentDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPassDepthAttachmentDescriptor\"]" gTypeWebGPURenderPassDepthAttachmentDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassDescriptor Mozilla WebGPURenderPassDescriptor documentation>
+newtype WebGPURenderPassDescriptor = WebGPURenderPassDescriptor { unWebGPURenderPassDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPassDescriptor) where
+  (WebGPURenderPassDescriptor a) == (WebGPURenderPassDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPassDescriptor where
+  pToJSVal = unWebGPURenderPassDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPassDescriptor where
+  pFromJSVal = WebGPURenderPassDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPassDescriptor where
+  toJSVal = return . unWebGPURenderPassDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPassDescriptor where
+  fromJSVal = return . fmap WebGPURenderPassDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderPassDescriptor where
+  typeGType _ = gTypeWebGPURenderPassDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPassDescriptor\"]" gTypeWebGPURenderPassDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineColorAttachmentDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPipelineColorAttachmentDescriptor Mozilla WebGPURenderPipelineColorAttachmentDescriptor documentation>
+newtype WebGPURenderPipelineColorAttachmentDescriptor = WebGPURenderPipelineColorAttachmentDescriptor { unWebGPURenderPipelineColorAttachmentDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPipelineColorAttachmentDescriptor) where
+  (WebGPURenderPipelineColorAttachmentDescriptor a) == (WebGPURenderPipelineColorAttachmentDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPipelineColorAttachmentDescriptor where
+  pToJSVal = unWebGPURenderPipelineColorAttachmentDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPipelineColorAttachmentDescriptor where
+  pFromJSVal = WebGPURenderPipelineColorAttachmentDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPipelineColorAttachmentDescriptor where
+  toJSVal = return . unWebGPURenderPipelineColorAttachmentDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPipelineColorAttachmentDescriptor where
+  fromJSVal = return . fmap WebGPURenderPipelineColorAttachmentDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderPipelineColorAttachmentDescriptor where
+  typeGType _ = gTypeWebGPURenderPipelineColorAttachmentDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPipelineColorAttachmentDescriptor\"]" gTypeWebGPURenderPipelineColorAttachmentDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPipelineDescriptor Mozilla WebGPURenderPipelineDescriptor documentation>
+newtype WebGPURenderPipelineDescriptor = WebGPURenderPipelineDescriptor { unWebGPURenderPipelineDescriptor :: JSVal }
+
+instance Eq (WebGPURenderPipelineDescriptor) where
+  (WebGPURenderPipelineDescriptor a) == (WebGPURenderPipelineDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPURenderPipelineDescriptor where
+  pToJSVal = unWebGPURenderPipelineDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPipelineDescriptor where
+  pFromJSVal = WebGPURenderPipelineDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPipelineDescriptor where
+  toJSVal = return . unWebGPURenderPipelineDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPipelineDescriptor where
+  fromJSVal = return . fmap WebGPURenderPipelineDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderPipelineDescriptor where
+  typeGType _ = gTypeWebGPURenderPipelineDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPipelineDescriptor\"]" gTypeWebGPURenderPipelineDescriptor :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineState".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPipelineState Mozilla WebGPURenderPipelineState documentation>
+newtype WebGPURenderPipelineState = WebGPURenderPipelineState { unWebGPURenderPipelineState :: JSVal }
+
+instance Eq (WebGPURenderPipelineState) where
+  (WebGPURenderPipelineState a) == (WebGPURenderPipelineState b) = js_eq a b
+
+instance PToJSVal WebGPURenderPipelineState where
+  pToJSVal = unWebGPURenderPipelineState
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderPipelineState where
+  pFromJSVal = WebGPURenderPipelineState
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderPipelineState where
+  toJSVal = return . unWebGPURenderPipelineState
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderPipelineState where
+  fromJSVal = return . fmap WebGPURenderPipelineState . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderPipelineState where
+  typeGType _ = gTypeWebGPURenderPipelineState
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderPipelineState\"]" gTypeWebGPURenderPipelineState :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderingContext".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderingContext Mozilla WebGPURenderingContext documentation>
+newtype WebGPURenderingContext = WebGPURenderingContext { unWebGPURenderingContext :: JSVal }
+
+instance Eq (WebGPURenderingContext) where
+  (WebGPURenderingContext a) == (WebGPURenderingContext b) = js_eq a b
+
+instance PToJSVal WebGPURenderingContext where
+  pToJSVal = unWebGPURenderingContext
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPURenderingContext where
+  pFromJSVal = WebGPURenderingContext
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPURenderingContext where
+  toJSVal = return . unWebGPURenderingContext
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPURenderingContext where
+  fromJSVal = return . fmap WebGPURenderingContext . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPURenderingContext where
+  typeGType _ = gTypeWebGPURenderingContext
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPURenderingContext\"]" gTypeWebGPURenderingContext :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUSize".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUSize Mozilla WebGPUSize documentation>
+newtype WebGPUSize = WebGPUSize { unWebGPUSize :: JSVal }
+
+instance Eq (WebGPUSize) where
+  (WebGPUSize a) == (WebGPUSize b) = js_eq a b
+
+instance PToJSVal WebGPUSize where
+  pToJSVal = unWebGPUSize
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUSize where
+  pFromJSVal = WebGPUSize
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUSize where
+  toJSVal = return . unWebGPUSize
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUSize where
+  fromJSVal = return . fmap WebGPUSize . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUSize where
+  typeGType _ = gTypeWebGPUSize
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUSize\"]" gTypeWebGPUSize :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUTexture".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTexture Mozilla WebGPUTexture documentation>
+newtype WebGPUTexture = WebGPUTexture { unWebGPUTexture :: JSVal }
+
+instance Eq (WebGPUTexture) where
+  (WebGPUTexture a) == (WebGPUTexture b) = js_eq a b
+
+instance PToJSVal WebGPUTexture where
+  pToJSVal = unWebGPUTexture
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUTexture where
+  pFromJSVal = WebGPUTexture
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUTexture where
+  toJSVal = return . unWebGPUTexture
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUTexture where
+  fromJSVal = return . fmap WebGPUTexture . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUTexture where
+  typeGType _ = gTypeWebGPUTexture
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUTexture\"]" gTypeWebGPUTexture :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.WebGPUTextureDescriptor".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor Mozilla WebGPUTextureDescriptor documentation>
+newtype WebGPUTextureDescriptor = WebGPUTextureDescriptor { unWebGPUTextureDescriptor :: JSVal }
+
+instance Eq (WebGPUTextureDescriptor) where
+  (WebGPUTextureDescriptor a) == (WebGPUTextureDescriptor b) = js_eq a b
+
+instance PToJSVal WebGPUTextureDescriptor where
+  pToJSVal = unWebGPUTextureDescriptor
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal WebGPUTextureDescriptor where
+  pFromJSVal = WebGPUTextureDescriptor
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal WebGPUTextureDescriptor where
+  toJSVal = return . unWebGPUTextureDescriptor
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal WebGPUTextureDescriptor where
+  fromJSVal = return . fmap WebGPUTextureDescriptor . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject WebGPUTextureDescriptor where
+  typeGType _ = gTypeWebGPUTextureDescriptor
+  {-# INLINE typeGType #-}
+foreign import javascript unsafe "window[\"WebGPUTextureDescriptor\"]" gTypeWebGPUTextureDescriptor :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEvent".
 -- Base interface functions are in:
 --
@@ -29148,6 +31833,7 @@ foreign import javascript unsafe "window[\"WritableStream\"]" gTypeWritableStrea
 --     * "GHCJS.DOM.DocumentOrShadowRoot"
 --     * "GHCJS.DOM.NonElementParentNode"
 --     * "GHCJS.DOM.ParentNode"
+--     * "GHCJS.DOM.DocumentAndElementEventHandlers"
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/XMLDocument Mozilla XMLDocument documentation>
 newtype XMLDocument = XMLDocument { unXMLDocument :: JSVal }
@@ -29178,6 +31864,7 @@ instance IsGlobalEventHandlers XMLDocument
 instance IsDocumentOrShadowRoot XMLDocument
 instance IsNonElementParentNode XMLDocument
 instance IsParentNode XMLDocument
+instance IsDocumentAndElementEventHandlers XMLDocument
 instance IsGObject XMLDocument where
   typeGType _ = gTypeXMLDocument
   {-# INLINE typeGType #-}

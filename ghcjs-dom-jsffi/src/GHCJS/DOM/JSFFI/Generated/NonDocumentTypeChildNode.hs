@@ -5,9 +5,12 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.NonDocumentTypeChildNode
        (js_getPreviousElementSibling, getPreviousElementSibling,
-        js_getNextElementSibling, getNextElementSibling,
-        NonDocumentTypeChildNode(..), gTypeNonDocumentTypeChildNode,
-        IsNonDocumentTypeChildNode, toNonDocumentTypeChildNode)
+        getPreviousElementSiblingUnsafe,
+        getPreviousElementSiblingUnchecked, js_getNextElementSibling,
+        getNextElementSibling, getNextElementSiblingUnsafe,
+        getNextElementSiblingUnchecked, NonDocumentTypeChildNode(..),
+        gTypeNonDocumentTypeChildNode, IsNonDocumentTypeChildNode,
+        toNonDocumentTypeChildNode)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -30,21 +33,62 @@ import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"previousElementSibling\"]"
         js_getPreviousElementSibling ::
-        NonDocumentTypeChildNode -> IO Element
+        NonDocumentTypeChildNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.previousElementSibling Mozilla NonDocumentTypeChildNode.previousElementSibling documentation> 
 getPreviousElementSibling ::
-                          (MonadIO m, IsNonDocumentTypeChildNode self) => self -> m Element
+                          (MonadIO m, IsNonDocumentTypeChildNode self) =>
+                            self -> m (Maybe Element)
 getPreviousElementSibling self
   = liftIO
-      (js_getPreviousElementSibling (toNonDocumentTypeChildNode self))
+      (nullableToMaybe <$>
+         (js_getPreviousElementSibling (toNonDocumentTypeChildNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.previousElementSibling Mozilla NonDocumentTypeChildNode.previousElementSibling documentation> 
+getPreviousElementSiblingUnsafe ::
+                                (MonadIO m, IsNonDocumentTypeChildNode self, HasCallStack) =>
+                                  self -> m Element
+getPreviousElementSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getPreviousElementSibling (toNonDocumentTypeChildNode self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.previousElementSibling Mozilla NonDocumentTypeChildNode.previousElementSibling documentation> 
+getPreviousElementSiblingUnchecked ::
+                                   (MonadIO m, IsNonDocumentTypeChildNode self) => self -> m Element
+getPreviousElementSiblingUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getPreviousElementSibling (toNonDocumentTypeChildNode self)))
  
 foreign import javascript unsafe "$1[\"nextElementSibling\"]"
-        js_getNextElementSibling :: NonDocumentTypeChildNode -> IO Element
+        js_getNextElementSibling ::
+        NonDocumentTypeChildNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.nextElementSibling Mozilla NonDocumentTypeChildNode.nextElementSibling documentation> 
 getNextElementSibling ::
-                      (MonadIO m, IsNonDocumentTypeChildNode self) => self -> m Element
+                      (MonadIO m, IsNonDocumentTypeChildNode self) =>
+                        self -> m (Maybe Element)
 getNextElementSibling self
   = liftIO
-      (js_getNextElementSibling (toNonDocumentTypeChildNode self))
+      (nullableToMaybe <$>
+         (js_getNextElementSibling (toNonDocumentTypeChildNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.nextElementSibling Mozilla NonDocumentTypeChildNode.nextElementSibling documentation> 
+getNextElementSiblingUnsafe ::
+                            (MonadIO m, IsNonDocumentTypeChildNode self, HasCallStack) =>
+                              self -> m Element
+getNextElementSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getNextElementSibling (toNonDocumentTypeChildNode self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NonDocumentTypeChildNode.nextElementSibling Mozilla NonDocumentTypeChildNode.nextElementSibling documentation> 
+getNextElementSiblingUnchecked ::
+                               (MonadIO m, IsNonDocumentTypeChildNode self) => self -> m Element
+getNextElementSiblingUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getNextElementSibling (toNonDocumentTypeChildNode self)))

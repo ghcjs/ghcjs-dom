@@ -11,12 +11,14 @@ module GHCJS.DOM.JSFFI.Generated.GlobalEventHandlers
         keyDown, keyPress, keyUp, load, loadedData, loadedMetadata,
         loadStart, mouseDown, mouseEnter, mouseLeave, mouseMove, mouseOut,
         mouseOver, mouseUp, mouseWheel, pause, play, playing, progress,
-        rateChange, reset, resize, scroll, seeked, seeking, select,
-        stalled, submit, suspend, timeUpdate, toggle, volumeChange,
-        waiting, search, wheel, touchCancel, touchEnd, touchMove,
-        touchStart, touchForcechange, webKitMouseForcechanged,
-        webKitMouseForcedown, webKitMouseForcewillbegin,
-        webKitMouseForceup, webKitWillRevealBottom, webKitWillRevealLeft,
+        rateChange, rejectionhandled, reset, resize, scroll, seeked,
+        seeking, select, stalled, submit, suspend, timeUpdate, toggle,
+        unhandledrejection, volumeChange, waiting, transitionEnd,
+        animationEnd, animationIteration, animationStart, search, wheel,
+        touchCancel, touchEnd, touchMove, touchStart, touchForcechange,
+        webKitMouseForcechanged, webKitMouseForcedown,
+        webKitMouseForcewillbegin, webKitMouseForceup,
+        webKitWillRevealBottom, webKitWillRevealLeft,
         webKitWillRevealRight, webKitWillRevealTop,
         GlobalEventHandlers(..), gTypeGlobalEventHandlers,
         IsGlobalEventHandlers, toGlobalEventHandlers)
@@ -311,6 +313,12 @@ rateChange ::
              EventName self Event
 rateChange = unsafeEventName (toJSString "ratechange")
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onrejectionhandled Mozilla GlobalEventHandlers.onrejectionhandled documentation> 
+rejectionhandled ::
+                 (IsGlobalEventHandlers self, IsEventTarget self) =>
+                   EventName self onrejectionhandled
+rejectionhandled = unsafeEventName (toJSString "rejectionhandled")
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onreset Mozilla GlobalEventHandlers.onreset documentation> 
 reset ::
       (IsGlobalEventHandlers self, IsEventTarget self) =>
@@ -377,6 +385,13 @@ toggle ::
          EventName self ontoggle
 toggle = unsafeEventName (toJSString "toggle")
 
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onunhandledrejection Mozilla GlobalEventHandlers.onunhandledrejection documentation> 
+unhandledrejection ::
+                   (IsGlobalEventHandlers self, IsEventTarget self) =>
+                     EventName self onunhandledrejection
+unhandledrejection
+  = unsafeEventName (toJSString "unhandledrejection")
+
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onvolumechange Mozilla GlobalEventHandlers.onvolumechange documentation> 
 volumeChange ::
              (IsGlobalEventHandlers self, IsEventTarget self) =>
@@ -388,6 +403,31 @@ waiting ::
         (IsGlobalEventHandlers self, IsEventTarget self) =>
           EventName self Event
 waiting = unsafeEventName (toJSString "waiting")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.ontransitionend Mozilla GlobalEventHandlers.ontransitionend documentation> 
+transitionEnd ::
+              (IsGlobalEventHandlers self, IsEventTarget self) =>
+                EventName self TransitionEvent
+transitionEnd = unsafeEventName (toJSString "transitionend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onanimationend Mozilla GlobalEventHandlers.onanimationend documentation> 
+animationEnd ::
+             (IsGlobalEventHandlers self, IsEventTarget self) =>
+               EventName self AnimationEvent
+animationEnd = unsafeEventName (toJSString "animationend")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onanimationiteration Mozilla GlobalEventHandlers.onanimationiteration documentation> 
+animationIteration ::
+                   (IsGlobalEventHandlers self, IsEventTarget self) =>
+                     EventName self AnimationEvent
+animationIteration
+  = unsafeEventName (toJSString "animationiteration")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onanimationstart Mozilla GlobalEventHandlers.onanimationstart documentation> 
+animationStart ::
+               (IsGlobalEventHandlers self, IsEventTarget self) =>
+                 EventName self AnimationEvent
+animationStart = unsafeEventName (toJSString "animationstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onsearch Mozilla GlobalEventHandlers.onsearch documentation> 
 search ::

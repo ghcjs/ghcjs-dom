@@ -4,10 +4,10 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.RTCDTMFSender
-       (js_insertDTMF, insertDTMF, js_getCanInsertDTMF, getCanInsertDTMF,
-        js_getTrack, getTrack, js_getToneBuffer, getToneBuffer,
-        js_getDuration, getDuration, js_getInterToneGap, getInterToneGap,
-        toneChange, RTCDTMFSender(..), gTypeRTCDTMFSender)
+       (js_insertDTMF, insertDTMF, toneChange, js_getToneBuffer,
+        getToneBuffer, js_getCanInsertDTMF, getCanInsertDTMF, js_getTrack,
+        getTrack, js_getDuration, getDuration, js_getInterToneGap,
+        getInterToneGap, RTCDTMFSender(..), gTypeRTCDTMFSender)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -40,6 +40,19 @@ insertDTMF self tones duration interToneGap
   = liftIO
       (js_insertDTMF self (toJSString tones) (maybeToOptional duration)
          (maybeToOptional interToneGap))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.ontonechange Mozilla RTCDTMFSender.ontonechange documentation> 
+toneChange :: EventName RTCDTMFSender Event
+toneChange = unsafeEventName (toJSString "tonechange")
+ 
+foreign import javascript unsafe "$1[\"toneBuffer\"]"
+        js_getToneBuffer :: RTCDTMFSender -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.toneBuffer Mozilla RTCDTMFSender.toneBuffer documentation> 
+getToneBuffer ::
+              (MonadIO m, FromJSString result) => RTCDTMFSender -> m result
+getToneBuffer self
+  = liftIO (fromJSString <$> (js_getToneBuffer self))
  
 foreign import javascript unsafe "($1[\"canInsertDTMF\"] ? 1 : 0)"
         js_getCanInsertDTMF :: RTCDTMFSender -> IO Bool
@@ -55,15 +68,6 @@ foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
 getTrack :: (MonadIO m) => RTCDTMFSender -> m MediaStreamTrack
 getTrack self = liftIO (js_getTrack self)
  
-foreign import javascript unsafe "$1[\"toneBuffer\"]"
-        js_getToneBuffer :: RTCDTMFSender -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.toneBuffer Mozilla RTCDTMFSender.toneBuffer documentation> 
-getToneBuffer ::
-              (MonadIO m, FromJSString result) => RTCDTMFSender -> m result
-getToneBuffer self
-  = liftIO (fromJSString <$> (js_getToneBuffer self))
- 
 foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
         :: RTCDTMFSender -> IO Int
 
@@ -77,7 +81,3 @@ foreign import javascript unsafe "$1[\"interToneGap\"]"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.interToneGap Mozilla RTCDTMFSender.interToneGap documentation> 
 getInterToneGap :: (MonadIO m) => RTCDTMFSender -> m Int
 getInterToneGap self = liftIO (js_getInterToneGap self)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.ontonechange Mozilla RTCDTMFSender.ontonechange documentation> 
-toneChange :: EventName RTCDTMFSender Event
-toneChange = unsafeEventName (toJSString "tonechange")

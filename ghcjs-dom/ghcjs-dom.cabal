@@ -1,5 +1,5 @@
 name: ghcjs-dom
-version: 0.8.0.0
+version: 0.9.0.0
 cabal-version: >=1.24
 build-type: Simple
 license: MIT
@@ -33,9 +33,9 @@ library
     buildable: True
 
     if (impl(ghcjs) && flag(jsffi))
-        build-depends: ghcjs-dom-jsffi ==0.8.0.0
+        build-depends: ghcjs-dom-jsffi ==0.9.0.0
     else
-        build-depends: ghcjs-dom-jsaddle ==0.8.0.0
+        build-depends: ghcjs-dom-jsaddle ==0.9.0.0
 
     reexported-modules:
             GHCJS.DOM
@@ -48,6 +48,7 @@ library
           , GHCJS.DOM.Animatable
           , GHCJS.DOM.Animation
           , GHCJS.DOM.AnimationEvent
+          , GHCJS.DOM.ApplePayError
           , GHCJS.DOM.ApplePayPaymentAuthorizedEvent
           , GHCJS.DOM.ApplePayPaymentMethodSelectedEvent
           , GHCJS.DOM.ApplePaySession
@@ -69,10 +70,12 @@ library
           , GHCJS.DOM.AudioTrackList
           , GHCJS.DOM.AutocompleteErrorEvent
           , GHCJS.DOM.BarProp
+          , GHCJS.DOM.BasicCredential
           , GHCJS.DOM.BeforeLoadEvent
           , GHCJS.DOM.BeforeUnloadEvent
           , GHCJS.DOM.BiquadFilterNode
           , GHCJS.DOM.Blob
+          , GHCJS.DOM.BlobCallback
           , GHCJS.DOM.Body
           , GHCJS.DOM.ByteLengthQueuingStrategy
           , GHCJS.DOM.CSS
@@ -93,13 +96,12 @@ library
           , GHCJS.DOM.CSSSupportsRule
           , GHCJS.DOM.CSSValue
           , GHCJS.DOM.CSSValueList
+          , GHCJS.DOM.CanvasCaptureMediaStreamTrack
           , GHCJS.DOM.CanvasGradient
           , GHCJS.DOM.CanvasPath
           , GHCJS.DOM.CanvasRenderingContext2D
           , GHCJS.DOM.CharacterData
           , GHCJS.DOM.ChildNode
-          , GHCJS.DOM.ClientRect
-          , GHCJS.DOM.ClientRectList
           , GHCJS.DOM.ClipboardEvent
           , GHCJS.DOM.CloseEvent
           , GHCJS.DOM.CommandLineAPIHost
@@ -137,6 +139,7 @@ library
           , GHCJS.DOM.DeviceOrientationEvent
           , GHCJS.DOM.DeviceProximityEvent
           , GHCJS.DOM.Document
+          , GHCJS.DOM.DocumentAndElementEventHandlers
           , GHCJS.DOM.DocumentFragment
           , GHCJS.DOM.DocumentOrShadowRoot
           , GHCJS.DOM.DocumentTimeline
@@ -146,6 +149,7 @@ library
           , GHCJS.DOM.EXTTextureFilterAnisotropic
           , GHCJS.DOM.EXTsRGB
           , GHCJS.DOM.Element
+          , GHCJS.DOM.ElementCSSInlineStyle
           , GHCJS.DOM.Enums
           , GHCJS.DOM.ErrorEvent
           , GHCJS.DOM.Event
@@ -318,7 +322,6 @@ library
           , GHCJS.DOM.NonDocumentTypeChildNode
           , GHCJS.DOM.NonElementParentNode
           , GHCJS.DOM.Notification
-          , GHCJS.DOM.NotificationCenter
           , GHCJS.DOM.NotificationPermissionCallback
           , GHCJS.DOM.OESStandardDerivatives
           , GHCJS.DOM.OESTextureHalfFloat
@@ -332,6 +335,7 @@ library
           , GHCJS.DOM.PageTransitionEvent
           , GHCJS.DOM.PannerNode
           , GHCJS.DOM.ParentNode
+          , GHCJS.DOM.PasswordCredential
           , GHCJS.DOM.Path2D
           , GHCJS.DOM.Performance
           , GHCJS.DOM.PerformanceEntry
@@ -349,6 +353,7 @@ library
           , GHCJS.DOM.PositionErrorCallback
           , GHCJS.DOM.ProcessingInstruction
           , GHCJS.DOM.ProgressEvent
+          , GHCJS.DOM.PromiseRejectionEvent
           , GHCJS.DOM.QuickTimePluginReplacement
           , GHCJS.DOM.RGBColor
           , GHCJS.DOM.RTCDTMFSender
@@ -357,7 +362,9 @@ library
           , GHCJS.DOM.RTCDataChannelEvent
           , GHCJS.DOM.RTCIceCandidate
           , GHCJS.DOM.RTCIceCandidateEvent
+          , GHCJS.DOM.RTCIceTransport
           , GHCJS.DOM.RTCPeerConnection
+          , GHCJS.DOM.RTCPeerConnectionIceEvent
           , GHCJS.DOM.RTCRtpReceiver
           , GHCJS.DOM.RTCRtpSender
           , GHCJS.DOM.RTCRtpTransceiver
@@ -367,6 +374,8 @@ library
           , GHCJS.DOM.Range
           , GHCJS.DOM.ReadableByteStreamController
           , GHCJS.DOM.ReadableStream
+          , GHCJS.DOM.ReadableStreamBYOBReader
+          , GHCJS.DOM.ReadableStreamBYOBRequest
           , GHCJS.DOM.ReadableStreamDefaultController
           , GHCJS.DOM.ReadableStreamDefaultReader
           , GHCJS.DOM.ReadableStreamSource
@@ -497,6 +506,7 @@ library
           , GHCJS.DOM.SecurityPolicyViolationEvent
           , GHCJS.DOM.Selection
           , GHCJS.DOM.ShadowRoot
+          , GHCJS.DOM.SiteBoundCredential
           , GHCJS.DOM.Slotable
           , GHCJS.DOM.SourceBuffer
           , GHCJS.DOM.SourceBufferList
@@ -559,6 +569,26 @@ library
           , GHCJS.DOM.WebGLLoseContext
           , GHCJS.DOM.WebGLRenderingContextBase
           , GHCJS.DOM.WebGLShaderPrecisionFormat
+          , GHCJS.DOM.WebGPUBuffer
+          , GHCJS.DOM.WebGPUCommandBuffer
+          , GHCJS.DOM.WebGPUCommandQueue
+          , GHCJS.DOM.WebGPUComputeCommandEncoder
+          , GHCJS.DOM.WebGPUDepthStencilDescriptor
+          , GHCJS.DOM.WebGPUDepthStencilState
+          , GHCJS.DOM.WebGPUDrawable
+          , GHCJS.DOM.WebGPUFunction
+          , GHCJS.DOM.WebGPULibrary
+          , GHCJS.DOM.WebGPURenderCommandEncoder
+          , GHCJS.DOM.WebGPURenderPassAttachmentDescriptor
+          , GHCJS.DOM.WebGPURenderPassColorAttachmentDescriptor
+          , GHCJS.DOM.WebGPURenderPassDepthAttachmentDescriptor
+          , GHCJS.DOM.WebGPURenderPassDescriptor
+          , GHCJS.DOM.WebGPURenderPipelineColorAttachmentDescriptor
+          , GHCJS.DOM.WebGPURenderPipelineDescriptor
+          , GHCJS.DOM.WebGPURenderPipelineState
+          , GHCJS.DOM.WebGPURenderingContext
+          , GHCJS.DOM.WebGPUTexture
+          , GHCJS.DOM.WebGPUTextureDescriptor
           , GHCJS.DOM.WebKitAnimationEvent
           , GHCJS.DOM.WebKitCSSMatrix
           , GHCJS.DOM.WebKitCSSRegionRule

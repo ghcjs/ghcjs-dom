@@ -4,8 +4,8 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.RTCDataChannelEvent
-       (js_getChannel, getChannel, RTCDataChannelEvent(..),
-        gTypeRTCDataChannelEvent)
+       (js_newRTCDataChannelEvent, newRTCDataChannelEvent, js_getChannel,
+        getChannel, RTCDataChannelEvent(..), gTypeRTCDataChannelEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -25,6 +25,19 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+ 
+foreign import javascript unsafe
+        "new window[\"RTCDataChannelEvent\"]($1,\n$2)"
+        js_newRTCDataChannelEvent ::
+        JSString -> RTCDataChannelEventInit -> IO RTCDataChannelEvent
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannelEvent Mozilla RTCDataChannelEvent documentation> 
+newRTCDataChannelEvent ::
+                       (MonadIO m, ToJSString type') =>
+                         type' -> RTCDataChannelEventInit -> m RTCDataChannelEvent
+newRTCDataChannelEvent type' eventInitDict
+  = liftIO
+      (js_newRTCDataChannelEvent (toJSString type') eventInitDict)
  
 foreign import javascript unsafe "$1[\"channel\"]" js_getChannel ::
         RTCDataChannelEvent -> IO RTCDataChannel

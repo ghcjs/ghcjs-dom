@@ -7,23 +7,24 @@ module GHCJS.DOM.JSFFI.Generated.Range
        (js_newRange, newRange, js_setStart, setStart, js_setEnd, setEnd,
         js_setStartBefore, setStartBefore, js_setStartAfter, setStartAfter,
         js_setEndBefore, setEndBefore, js_setEndAfter, setEndAfter,
-        js_collapse, collapse, js_expand, expand, js_selectNode,
-        selectNode, js_selectNodeContents, selectNodeContents,
+        js_collapse, collapse, js_selectNode, selectNode,
+        js_selectNodeContents, selectNodeContents,
         js_compareBoundaryPoints, compareBoundaryPoints,
         compareBoundaryPoints_, js_deleteContents, deleteContents,
         js_extractContents, extractContents, extractContents_,
         js_cloneContents, cloneContents, cloneContents_, js_insertNode,
         insertNode, js_surroundContents, surroundContents, js_cloneRange,
-        cloneRange, cloneRange_, js_toString, toString, toString_,
-        js_detach, detach, js_getClientRects, getClientRects,
-        getClientRects_, js_getBoundingClientRect, getBoundingClientRect,
-        getBoundingClientRect_, js_createContextualFragment,
-        createContextualFragment, createContextualFragment_,
-        js_compareNode, compareNode, compareNode_, js_intersectsNode,
-        intersectsNode, intersectsNode_, js_comparePoint, comparePoint,
-        comparePoint_, js_isPointInRange, isPointInRange, isPointInRange_,
-        pattern START_TO_START, pattern START_TO_END, pattern END_TO_END,
-        pattern END_TO_START, pattern NODE_BEFORE, pattern NODE_AFTER,
+        cloneRange, cloneRange_, js_detach, detach, js_isPointInRange,
+        isPointInRange, isPointInRange_, js_comparePoint, comparePoint,
+        comparePoint_, js_intersectsNode, intersectsNode, intersectsNode_,
+        js_toString, toString, toString_, js_getClientRects,
+        getClientRects, getClientRects_, js_getBoundingClientRect,
+        getBoundingClientRect, getBoundingClientRect_,
+        js_createContextualFragment, createContextualFragment,
+        createContextualFragment_, js_expand, expand, js_compareNode,
+        compareNode, compareNode_, pattern START_TO_START,
+        pattern START_TO_END, pattern END_TO_END, pattern END_TO_START,
+        pattern NODE_BEFORE, pattern NODE_AFTER,
         pattern NODE_BEFORE_AND_AFTER, pattern NODE_INSIDE,
         js_getStartContainer, getStartContainer, js_getStartOffset,
         getStartOffset, js_getEndContainer, getEndContainer,
@@ -62,54 +63,48 @@ foreign import javascript unsafe "$1[\"setStart\"]($2, $3)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStart Mozilla Range.setStart documentation> 
 setStart ::
-         (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m ()
-setStart self refNode offset
-  = liftIO (js_setStart self (toNode refNode) offset)
+         (MonadIO m, IsNode node) => Range -> node -> Word -> m ()
+setStart self node offset
+  = liftIO (js_setStart self (toNode node) offset)
  
 foreign import javascript unsafe "$1[\"setEnd\"]($2, $3)" js_setEnd
         :: Range -> Node -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEnd Mozilla Range.setEnd documentation> 
-setEnd ::
-       (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m ()
-setEnd self refNode offset
-  = liftIO (js_setEnd self (toNode refNode) offset)
+setEnd :: (MonadIO m, IsNode node) => Range -> node -> Word -> m ()
+setEnd self node offset
+  = liftIO (js_setEnd self (toNode node) offset)
  
 foreign import javascript unsafe "$1[\"setStartBefore\"]($2)"
         js_setStartBefore :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStartBefore Mozilla Range.setStartBefore documentation> 
-setStartBefore ::
-               (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-setStartBefore self refNode
-  = liftIO (js_setStartBefore self (toNode refNode))
+setStartBefore :: (MonadIO m, IsNode node) => Range -> node -> m ()
+setStartBefore self node
+  = liftIO (js_setStartBefore self (toNode node))
  
 foreign import javascript unsafe "$1[\"setStartAfter\"]($2)"
         js_setStartAfter :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStartAfter Mozilla Range.setStartAfter documentation> 
-setStartAfter ::
-              (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-setStartAfter self refNode
-  = liftIO (js_setStartAfter self (toNode refNode))
+setStartAfter :: (MonadIO m, IsNode node) => Range -> node -> m ()
+setStartAfter self node
+  = liftIO (js_setStartAfter self (toNode node))
  
 foreign import javascript unsafe "$1[\"setEndBefore\"]($2)"
         js_setEndBefore :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEndBefore Mozilla Range.setEndBefore documentation> 
-setEndBefore ::
-             (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-setEndBefore self refNode
-  = liftIO (js_setEndBefore self (toNode refNode))
+setEndBefore :: (MonadIO m, IsNode node) => Range -> node -> m ()
+setEndBefore self node
+  = liftIO (js_setEndBefore self (toNode node))
  
 foreign import javascript unsafe "$1[\"setEndAfter\"]($2)"
         js_setEndAfter :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEndAfter Mozilla Range.setEndAfter documentation> 
-setEndAfter ::
-            (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-setEndAfter self refNode
-  = liftIO (js_setEndAfter self (toNode refNode))
+setEndAfter :: (MonadIO m, IsNode node) => Range -> node -> m ()
+setEndAfter self node = liftIO (js_setEndAfter self (toNode node))
  
 foreign import javascript unsafe "$1[\"collapse\"]($2)" js_collapse
         :: Range -> Bool -> IO ()
@@ -118,32 +113,21 @@ foreign import javascript unsafe "$1[\"collapse\"]($2)" js_collapse
 collapse :: (MonadIO m) => Range -> Bool -> m ()
 collapse self toStart = liftIO (js_collapse self toStart)
  
-foreign import javascript unsafe "$1[\"expand\"]($2)" js_expand ::
-        Range -> Optional JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.expand Mozilla Range.expand documentation> 
-expand ::
-       (MonadIO m, ToJSString unit) => Range -> Maybe unit -> m ()
-expand self unit
-  = liftIO (js_expand self (toOptionalJSString unit))
- 
 foreign import javascript unsafe "$1[\"selectNode\"]($2)"
         js_selectNode :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNode Mozilla Range.selectNode documentation> 
-selectNode ::
-           (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-selectNode self refNode
-  = liftIO (js_selectNode self (toNode refNode))
+selectNode :: (MonadIO m, IsNode node) => Range -> node -> m ()
+selectNode self node = liftIO (js_selectNode self (toNode node))
  
 foreign import javascript unsafe "$1[\"selectNodeContents\"]($2)"
         js_selectNodeContents :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNodeContents Mozilla Range.selectNodeContents documentation> 
 selectNodeContents ::
-                   (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-selectNodeContents self refNode
-  = liftIO (js_selectNodeContents self (toNode refNode))
+                   (MonadIO m, IsNode node) => Range -> node -> m ()
+selectNodeContents self node
+  = liftIO (js_selectNodeContents self (toNode node))
  
 foreign import javascript unsafe
         "$1[\"compareBoundaryPoints\"]($2,\n$3)" js_compareBoundaryPoints
@@ -194,10 +178,8 @@ foreign import javascript unsafe "$1[\"insertNode\"]($2)"
         js_insertNode :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.insertNode Mozilla Range.insertNode documentation> 
-insertNode ::
-           (MonadIO m, IsNode newNode) => Range -> newNode -> m ()
-insertNode self newNode
-  = liftIO (js_insertNode self (toNode newNode))
+insertNode :: (MonadIO m, IsNode node) => Range -> node -> m ()
+insertNode self node = liftIO (js_insertNode self (toNode node))
  
 foreign import javascript unsafe "$1[\"surroundContents\"]($2)"
         js_surroundContents :: Range -> Node -> IO ()
@@ -219,6 +201,60 @@ cloneRange self = liftIO (js_cloneRange self)
 cloneRange_ :: (MonadIO m) => Range -> m ()
 cloneRange_ self = liftIO (void (js_cloneRange self))
  
+foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
+        Range -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.detach Mozilla Range.detach documentation> 
+detach :: (MonadIO m) => Range -> m ()
+detach self = liftIO (js_detach self)
+ 
+foreign import javascript unsafe
+        "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)" js_isPointInRange ::
+        Range -> Node -> Word -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
+isPointInRange ::
+               (MonadIO m, IsNode node) => Range -> node -> Word -> m Bool
+isPointInRange self node offset
+  = liftIO (js_isPointInRange self (toNode node) offset)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
+isPointInRange_ ::
+                (MonadIO m, IsNode node) => Range -> node -> Word -> m ()
+isPointInRange_ self node offset
+  = liftIO (void (js_isPointInRange self (toNode node) offset))
+ 
+foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
+        js_comparePoint :: Range -> Node -> Word -> IO Int
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
+comparePoint ::
+             (MonadIO m, IsNode node) => Range -> node -> Word -> m Int
+comparePoint self node offset
+  = liftIO (js_comparePoint self (toNode node) offset)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
+comparePoint_ ::
+              (MonadIO m, IsNode node) => Range -> node -> Word -> m ()
+comparePoint_ self node offset
+  = liftIO (void (js_comparePoint self (toNode node) offset))
+ 
+foreign import javascript unsafe
+        "($1[\"intersectsNode\"]($2) ? 1 : 0)" js_intersectsNode ::
+        Range -> Node -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
+intersectsNode ::
+               (MonadIO m, IsNode node) => Range -> node -> m Bool
+intersectsNode self node
+  = liftIO (js_intersectsNode self (toNode node))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
+intersectsNode_ ::
+                (MonadIO m, IsNode node) => Range -> node -> m ()
+intersectsNode_ self node
+  = liftIO (void (js_intersectsNode self (toNode node)))
+ 
 foreign import javascript unsafe "$1[\"toString\"]()" js_toString
         :: Range -> IO JSString
 
@@ -230,29 +266,23 @@ toString self = liftIO (fromJSString <$> (js_toString self))
 toString_ :: (MonadIO m) => Range -> m ()
 toString_ self = liftIO (void (js_toString self))
  
-foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
-        Range -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.detach Mozilla Range.detach documentation> 
-detach :: (MonadIO m) => Range -> m ()
-detach self = liftIO (js_detach self)
- 
 foreign import javascript unsafe "$1[\"getClientRects\"]()"
-        js_getClientRects :: Range -> IO ClientRectList
+        js_getClientRects :: Range -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
-getClientRects :: (MonadIO m) => Range -> m ClientRectList
-getClientRects self = liftIO (js_getClientRects self)
+getClientRects :: (MonadIO m) => Range -> m [DOMRect]
+getClientRects self
+  = liftIO ((js_getClientRects self) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
 getClientRects_ :: (MonadIO m) => Range -> m ()
 getClientRects_ self = liftIO (void (js_getClientRects self))
  
 foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
-        js_getBoundingClientRect :: Range -> IO ClientRect
+        js_getBoundingClientRect :: Range -> IO DOMRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
-getBoundingClientRect :: (MonadIO m) => Range -> m ClientRect
+getBoundingClientRect :: (MonadIO m) => Range -> m DOMRect
 getBoundingClientRect self = liftIO (js_getBoundingClientRect self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
@@ -266,78 +296,38 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
 createContextualFragment ::
-                         (MonadIO m, ToJSString html) => Range -> html -> m DocumentFragment
-createContextualFragment self html
-  = liftIO (js_createContextualFragment self (toJSString html))
+                         (MonadIO m, ToJSString fragment) =>
+                           Range -> fragment -> m DocumentFragment
+createContextualFragment self fragment
+  = liftIO (js_createContextualFragment self (toJSString fragment))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
 createContextualFragment_ ::
-                          (MonadIO m, ToJSString html) => Range -> html -> m ()
-createContextualFragment_ self html
+                          (MonadIO m, ToJSString fragment) => Range -> fragment -> m ()
+createContextualFragment_ self fragment
   = liftIO
-      (void (js_createContextualFragment self (toJSString html)))
+      (void (js_createContextualFragment self (toJSString fragment)))
+ 
+foreign import javascript unsafe "$1[\"expand\"]($2)" js_expand ::
+        Range -> Optional JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.expand Mozilla Range.expand documentation> 
+expand ::
+       (MonadIO m, ToJSString unit) => Range -> Maybe unit -> m ()
+expand self unit
+  = liftIO (js_expand self (toOptionalJSString unit))
  
 foreign import javascript unsafe "$1[\"compareNode\"]($2)"
         js_compareNode :: Range -> Node -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareNode Mozilla Range.compareNode documentation> 
-compareNode ::
-            (MonadIO m, IsNode refNode) => Range -> refNode -> m Int
-compareNode self refNode
-  = liftIO (js_compareNode self (toNode refNode))
+compareNode :: (MonadIO m, IsNode node) => Range -> node -> m Int
+compareNode self node = liftIO (js_compareNode self (toNode node))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareNode Mozilla Range.compareNode documentation> 
-compareNode_ ::
-             (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-compareNode_ self refNode
-  = liftIO (void (js_compareNode self (toNode refNode)))
- 
-foreign import javascript unsafe
-        "($1[\"intersectsNode\"]($2) ? 1 : 0)" js_intersectsNode ::
-        Range -> Node -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
-intersectsNode ::
-               (MonadIO m, IsNode refNode) => Range -> refNode -> m Bool
-intersectsNode self refNode
-  = liftIO (js_intersectsNode self (toNode refNode))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
-intersectsNode_ ::
-                (MonadIO m, IsNode refNode) => Range -> refNode -> m ()
-intersectsNode_ self refNode
-  = liftIO (void (js_intersectsNode self (toNode refNode)))
- 
-foreign import javascript unsafe "$1[\"comparePoint\"]($2, $3)"
-        js_comparePoint :: Range -> Node -> Word -> IO Int
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
-comparePoint ::
-             (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m Int
-comparePoint self refNode offset
-  = liftIO (js_comparePoint self (toNode refNode) offset)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
-comparePoint_ ::
-              (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m ()
-comparePoint_ self refNode offset
-  = liftIO (void (js_comparePoint self (toNode refNode) offset))
- 
-foreign import javascript unsafe
-        "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)" js_isPointInRange ::
-        Range -> Node -> Word -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
-isPointInRange ::
-               (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m Bool
-isPointInRange self refNode offset
-  = liftIO (js_isPointInRange self (toNode refNode) offset)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
-isPointInRange_ ::
-                (MonadIO m, IsNode refNode) => Range -> refNode -> Word -> m ()
-isPointInRange_ self refNode offset
-  = liftIO (void (js_isPointInRange self (toNode refNode) offset))
+compareNode_ :: (MonadIO m, IsNode node) => Range -> node -> m ()
+compareNode_ self node
+  = liftIO (void (js_compareNode self (toNode node)))
 pattern START_TO_START = 0
 pattern START_TO_END = 1
 pattern END_TO_END = 2

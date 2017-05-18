@@ -63,34 +63,38 @@ foreign import javascript unsafe "$1[$2]" js_getNamedItem ::
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
 getNamedItem ::
-             (MonadIO m, ToJSString name) =>
-               NamedNodeMap -> name -> m (Maybe Attr)
-getNamedItem self name
+             (MonadIO m, ToJSString qualifiedName) =>
+               NamedNodeMap -> qualifiedName -> m (Maybe Attr)
+getNamedItem self qualifiedName
   = liftIO
-      (nullableToMaybe <$> (js_getNamedItem self (toJSString name)))
+      (nullableToMaybe <$>
+         (js_getNamedItem self (toJSString qualifiedName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
 getNamedItem_ ::
-              (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m ()
-getNamedItem_ self name
-  = liftIO (void (js_getNamedItem self (toJSString name)))
+              (MonadIO m, ToJSString qualifiedName) =>
+                NamedNodeMap -> qualifiedName -> m ()
+getNamedItem_ self qualifiedName
+  = liftIO (void (js_getNamedItem self (toJSString qualifiedName)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
 getNamedItemUnsafe ::
-                   (MonadIO m, ToJSString name, HasCallStack) =>
-                     NamedNodeMap -> name -> m Attr
-getNamedItemUnsafe self name
+                   (MonadIO m, ToJSString qualifiedName, HasCallStack) =>
+                     NamedNodeMap -> qualifiedName -> m Attr
+getNamedItemUnsafe self qualifiedName
   = liftIO
-      ((nullableToMaybe <$> (js_getNamedItem self (toJSString name))) >>=
-         maybe (Prelude.error "Nothing to return") return)
+      ((nullableToMaybe <$>
+          (js_getNamedItem self (toJSString qualifiedName)))
+         >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.getNamedItem Mozilla NamedNodeMap.getNamedItem documentation> 
 getNamedItemUnchecked ::
-                      (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m Attr
-getNamedItemUnchecked self name
+                      (MonadIO m, ToJSString qualifiedName) =>
+                        NamedNodeMap -> qualifiedName -> m Attr
+getNamedItemUnchecked self qualifiedName
   = liftIO
       (fromJust . nullableToMaybe <$>
-         (js_getNamedItem self (toJSString name)))
+         (js_getNamedItem self (toJSString qualifiedName)))
  
 foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
         js_getNamedItemNS ::
@@ -200,15 +204,18 @@ foreign import javascript unsafe "$1[\"removeNamedItem\"]($2)"
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
 removeNamedItem ::
-                (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m Attr
-removeNamedItem self name
-  = liftIO (js_removeNamedItem self (toJSString name))
+                (MonadIO m, ToJSString qualifiedName) =>
+                  NamedNodeMap -> qualifiedName -> m Attr
+removeNamedItem self qualifiedName
+  = liftIO (js_removeNamedItem self (toJSString qualifiedName))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
 removeNamedItem_ ::
-                 (MonadIO m, ToJSString name) => NamedNodeMap -> name -> m ()
-removeNamedItem_ self name
-  = liftIO (void (js_removeNamedItem self (toJSString name)))
+                 (MonadIO m, ToJSString qualifiedName) =>
+                   NamedNodeMap -> qualifiedName -> m ()
+removeNamedItem_ self qualifiedName
+  = liftIO
+      (void (js_removeNamedItem self (toJSString qualifiedName)))
  
 foreign import javascript unsafe
         "$1[\"removeNamedItemNS\"]($2, $3)" js_removeNamedItemNS ::

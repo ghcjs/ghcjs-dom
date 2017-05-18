@@ -4,11 +4,13 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.NodeIterator
-       (js_nextNode, nextNode, nextNode_, js_previousNode, previousNode,
-        previousNode_, js_detach, detach, js_getRoot, getRoot,
-        js_getWhatToShow, getWhatToShow, js_getReferenceNode,
-        getReferenceNode, js_getPointerBeforeReferenceNode,
-        getPointerBeforeReferenceNode, NodeIterator(..), gTypeNodeIterator)
+       (js_nextNode, nextNode, nextNode_, nextNodeUnsafe,
+        nextNodeUnchecked, js_previousNode, previousNode, previousNode_,
+        previousNodeUnsafe, previousNodeUnchecked, js_detach, detach,
+        js_getRoot, getRoot, js_getReferenceNode, getReferenceNode,
+        js_getPointerBeforeReferenceNode, getPointerBeforeReferenceNode,
+        js_getWhatToShow, getWhatToShow, NodeIterator(..),
+        gTypeNodeIterator)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -30,26 +32,53 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"nextNode\"]()" js_nextNode
-        :: NodeIterator -> IO Node
+        :: NodeIterator -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
-nextNode :: (MonadIO m) => NodeIterator -> m Node
-nextNode self = liftIO (js_nextNode self)
+nextNode :: (MonadIO m) => NodeIterator -> m (Maybe Node)
+nextNode self = liftIO (nullableToMaybe <$> (js_nextNode self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
 nextNode_ :: (MonadIO m) => NodeIterator -> m ()
 nextNode_ self = liftIO (void (js_nextNode self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
+nextNodeUnsafe ::
+               (MonadIO m, HasCallStack) => NodeIterator -> m Node
+nextNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_nextNode self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
+nextNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
+nextNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_nextNode self))
  
 foreign import javascript unsafe "$1[\"previousNode\"]()"
-        js_previousNode :: NodeIterator -> IO Node
+        js_previousNode :: NodeIterator -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
-previousNode :: (MonadIO m) => NodeIterator -> m Node
-previousNode self = liftIO (js_previousNode self)
+previousNode :: (MonadIO m) => NodeIterator -> m (Maybe Node)
+previousNode self
+  = liftIO (nullableToMaybe <$> (js_previousNode self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
 previousNode_ :: (MonadIO m) => NodeIterator -> m ()
 previousNode_ self = liftIO (void (js_previousNode self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
+previousNodeUnsafe ::
+                   (MonadIO m, HasCallStack) => NodeIterator -> m Node
+previousNodeUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_previousNode self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
+previousNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
+previousNodeUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_previousNode self))
  
 foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
         NodeIterator -> IO ()
@@ -64,13 +93,6 @@ foreign import javascript unsafe "$1[\"root\"]" js_getRoot ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.root Mozilla NodeIterator.root documentation> 
 getRoot :: (MonadIO m) => NodeIterator -> m Node
 getRoot self = liftIO (js_getRoot self)
- 
-foreign import javascript unsafe "$1[\"whatToShow\"]"
-        js_getWhatToShow :: NodeIterator -> IO Word
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.whatToShow Mozilla NodeIterator.whatToShow documentation> 
-getWhatToShow :: (MonadIO m) => NodeIterator -> m Word
-getWhatToShow self = liftIO (js_getWhatToShow self)
  
 foreign import javascript unsafe "$1[\"referenceNode\"]"
         js_getReferenceNode :: NodeIterator -> IO Node
@@ -88,3 +110,10 @@ getPointerBeforeReferenceNode ::
                               (MonadIO m) => NodeIterator -> m Bool
 getPointerBeforeReferenceNode self
   = liftIO (js_getPointerBeforeReferenceNode self)
+ 
+foreign import javascript unsafe "$1[\"whatToShow\"]"
+        js_getWhatToShow :: NodeIterator -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.whatToShow Mozilla NodeIterator.whatToShow documentation> 
+getWhatToShow :: (MonadIO m) => NodeIterator -> m Word
+getWhatToShow self = liftIO (js_getWhatToShow self)

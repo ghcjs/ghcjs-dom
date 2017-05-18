@@ -5,8 +5,7 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MessageEvent
        (js_newMessageEvent, newMessageEvent, js_initMessageEvent,
-        initMessageEvent, js_webkitInitMessageEvent,
-        webkitInitMessageEvent, js_getOrigin, getOrigin, js_getLastEventId,
+        initMessageEvent, js_getOrigin, getOrigin, js_getLastEventId,
         getLastEventId, js_getSource, getSource, getSourceUnsafe,
         getSourceUnchecked, js_getData, getData, js_getPorts, getPorts,
         MessageEvent(..), gTypeMessageEvent)
@@ -79,48 +78,6 @@ initMessageEvent self type' bubbles cancelable data' originArg
                  (toOptionalJSString originArg)
                  (toOptionalJSString lastEventId)
                  (maybeToOptional (fmap MessageEventSource source'))
-             messagePorts')
- 
-foreign import javascript unsafe
-        "$1[\"webkitInitMessageEvent\"]($2,\n$3, $4, $5, $6, $7, $8, $9)"
-        js_webkitInitMessageEvent ::
-        MessageEvent ->
-          Optional JSString ->
-            Bool ->
-              Bool ->
-                Optional JSVal ->
-                  Optional JSString ->
-                    Optional JSString -> Optional MessageEventSource -> JSVal -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.webkitInitMessageEvent Mozilla MessageEvent.webkitInitMessageEvent documentation> 
-webkitInitMessageEvent ::
-                       (MonadIO m, ToJSString typeArg, ToJSVal dataArg,
-                        ToJSString originArg, ToJSString lastEventIdArg,
-                        IsMessageEventSource sourceArg) =>
-                         MessageEvent ->
-                           Maybe typeArg ->
-                             Bool ->
-                               Bool ->
-                                 Maybe dataArg ->
-                                   Maybe originArg ->
-                                     Maybe lastEventIdArg ->
-                                       Maybe sourceArg -> [MessagePort] -> m ()
-webkitInitMessageEvent self typeArg canBubbleArg cancelableArg
-  dataArg originArg lastEventIdArg sourceArg messagePorts
-  = liftIO
-      (toJSVal messagePorts >>=
-         \ messagePorts' ->
-           mapM toJSVal sourceArg >>=
-             \ sourceArg' ->
-               mapM toJSVal dataArg >>=
-                 \ dataArg' ->
-                   js_webkitInitMessageEvent self (toOptionalJSString typeArg)
-                     canBubbleArg
-                     cancelableArg
-                     (maybeToOptional dataArg')
-                 (toOptionalJSString originArg)
-                 (toOptionalJSString lastEventIdArg)
-                 (maybeToOptional (fmap MessageEventSource sourceArg'))
              messagePorts')
  
 foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::

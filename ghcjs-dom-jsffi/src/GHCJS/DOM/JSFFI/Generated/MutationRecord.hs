@@ -6,8 +6,10 @@
 module GHCJS.DOM.JSFFI.Generated.MutationRecord
        (js_getType, getType, js_getTarget, getTarget, js_getAddedNodes,
         getAddedNodes, js_getRemovedNodes, getRemovedNodes,
-        js_getPreviousSibling, getPreviousSibling, js_getNextSibling,
-        getNextSibling, js_getAttributeName, getAttributeName,
+        js_getPreviousSibling, getPreviousSibling,
+        getPreviousSiblingUnsafe, getPreviousSiblingUnchecked,
+        js_getNextSibling, getNextSibling, getNextSiblingUnsafe,
+        getNextSiblingUnchecked, js_getAttributeName, getAttributeName,
         getAttributeNameUnsafe, getAttributeNameUnchecked,
         js_getAttributeNamespace, getAttributeNamespace,
         getAttributeNamespaceUnsafe, getAttributeNamespaceUnchecked,
@@ -63,18 +65,49 @@ getRemovedNodes :: (MonadIO m) => MutationRecord -> m NodeList
 getRemovedNodes self = liftIO (js_getRemovedNodes self)
  
 foreign import javascript unsafe "$1[\"previousSibling\"]"
-        js_getPreviousSibling :: MutationRecord -> IO Node
+        js_getPreviousSibling :: MutationRecord -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
-getPreviousSibling :: (MonadIO m) => MutationRecord -> m Node
-getPreviousSibling self = liftIO (js_getPreviousSibling self)
+getPreviousSibling ::
+                   (MonadIO m) => MutationRecord -> m (Maybe Node)
+getPreviousSibling self
+  = liftIO (nullableToMaybe <$> (js_getPreviousSibling self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
+getPreviousSiblingUnsafe ::
+                         (MonadIO m, HasCallStack) => MutationRecord -> m Node
+getPreviousSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getPreviousSibling self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
+getPreviousSiblingUnchecked ::
+                            (MonadIO m) => MutationRecord -> m Node
+getPreviousSiblingUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getPreviousSibling self))
  
 foreign import javascript unsafe "$1[\"nextSibling\"]"
-        js_getNextSibling :: MutationRecord -> IO Node
+        js_getNextSibling :: MutationRecord -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
-getNextSibling :: (MonadIO m) => MutationRecord -> m Node
-getNextSibling self = liftIO (js_getNextSibling self)
+getNextSibling :: (MonadIO m) => MutationRecord -> m (Maybe Node)
+getNextSibling self
+  = liftIO (nullableToMaybe <$> (js_getNextSibling self))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
+getNextSiblingUnsafe ::
+                     (MonadIO m, HasCallStack) => MutationRecord -> m Node
+getNextSiblingUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getNextSibling self)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
+getNextSiblingUnchecked :: (MonadIO m) => MutationRecord -> m Node
+getNextSiblingUnchecked self
+  = liftIO (fromJust . nullableToMaybe <$> (js_getNextSibling self))
  
 foreign import javascript unsafe "$1[\"attributeName\"]"
         js_getAttributeName :: MutationRecord -> IO (Nullable JSString)

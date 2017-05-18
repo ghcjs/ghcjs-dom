@@ -6,7 +6,8 @@
 module GHCJS.DOM.JSFFI.Generated.ReadableByteStreamController
        (js_newReadableByteStreamController,
         newReadableByteStreamController, js_enqueue, enqueue, js_close,
-        close, js_error, error, js_getDesiredSize, getDesiredSize,
+        close, js_error, error, js_getByobRequest, getByobRequest,
+        js_getDesiredSize, getDesiredSize,
         ReadableByteStreamController(..),
         gTypeReadableByteStreamController)
        where
@@ -77,6 +78,16 @@ error self error
   = liftIO
       (mapM toJSVal error >>=
          \ error' -> js_error self (maybeToOptional error'))
+ 
+foreign import javascript unsafe "$1[\"byobRequest\"]"
+        js_getByobRequest ::
+        ReadableByteStreamController -> IO ReadableStreamBYOBRequest
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.byobRequest Mozilla ReadableByteStreamController.byobRequest documentation> 
+getByobRequest ::
+               (MonadIO m) =>
+                 ReadableByteStreamController -> m ReadableStreamBYOBRequest
+getByobRequest self = liftIO (js_getByobRequest self)
  
 foreign import javascript unsafe "$1[\"desiredSize\"]"
         js_getDesiredSize :: ReadableByteStreamController -> IO Double

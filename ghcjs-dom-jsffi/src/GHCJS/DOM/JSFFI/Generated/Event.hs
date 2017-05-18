@@ -6,19 +6,20 @@
 module GHCJS.DOM.JSFFI.Generated.Event
        (js_newEvent, newEvent, js_composedPath, composedPath,
         composedPath_, js_stopPropagation, stopPropagation,
-        js_preventDefault, preventDefault, js_initEvent, initEvent,
         js_stopImmediatePropagation, stopImmediatePropagation,
+        js_preventDefault, preventDefault, js_initEvent, initEvent,
         pattern NONE, pattern CAPTURING_PHASE, pattern AT_TARGET,
         pattern BUBBLING_PHASE, js_getType, getType, js_getTarget,
-        getTarget, js_getCurrentTarget, getCurrentTarget, js_getEventPhase,
-        getEventPhase, js_getBubbles, getBubbles, js_getCancelable,
-        getCancelable, js_getComposed, getComposed, js_getTimeStamp,
-        getTimeStamp, js_getDefaultPrevented, getDefaultPrevented,
-        js_getIsTrusted, getIsTrusted, js_getSrcElement, getSrcElement,
+        getTarget, getTargetUnsafe, getTargetUnchecked,
+        js_getCurrentTarget, getCurrentTarget, getCurrentTargetUnsafe,
+        getCurrentTargetUnchecked, js_getEventPhase, getEventPhase,
+        js_setCancelBubble, setCancelBubble, js_getCancelBubble,
+        getCancelBubble, js_getBubbles, getBubbles, js_getCancelable,
+        getCancelable, js_getDefaultPrevented, getDefaultPrevented,
+        js_getComposed, getComposed, js_getIsTrusted, getIsTrusted,
+        js_getTimeStamp, getTimeStamp, js_getSrcElement, getSrcElement,
         js_setReturnValue, setReturnValue, js_getReturnValue,
-        getReturnValue, js_setCancelBubble, setCancelBubble,
-        js_getCancelBubble, getCancelBubble, Event(..), gTypeEvent,
-        IsEvent, toEvent)
+        getReturnValue, Event(..), gTypeEvent, IsEvent, toEvent)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -54,7 +55,8 @@ foreign import javascript unsafe "$1[\"composedPath\"]()"
         js_composedPath :: Event -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composedPath Mozilla Event.composedPath documentation> 
-composedPath :: (MonadIO m, IsEvent self) => self -> m [Node]
+composedPath ::
+             (MonadIO m, IsEvent self) => self -> m [EventTarget]
 composedPath self
   = liftIO ((js_composedPath (toEvent self)) >>= fromJSValUnchecked)
 
@@ -68,6 +70,16 @@ foreign import javascript unsafe "$1[\"stopPropagation\"]()"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.stopPropagation Mozilla Event.stopPropagation documentation> 
 stopPropagation :: (MonadIO m, IsEvent self) => self -> m ()
 stopPropagation self = liftIO (js_stopPropagation (toEvent self))
+ 
+foreign import javascript unsafe
+        "$1[\"stopImmediatePropagation\"]()" js_stopImmediatePropagation ::
+        Event -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.stopImmediatePropagation Mozilla Event.stopImmediatePropagation documentation> 
+stopImmediatePropagation ::
+                         (MonadIO m, IsEvent self) => self -> m ()
+stopImmediatePropagation self
+  = liftIO (js_stopImmediatePropagation (toEvent self))
  
 foreign import javascript unsafe "$1[\"preventDefault\"]()"
         js_preventDefault :: Event -> IO ()
@@ -86,16 +98,6 @@ initEvent ::
 initEvent self type' bubbles cancelable
   = liftIO
       (js_initEvent (toEvent self) (toJSString type') bubbles cancelable)
- 
-foreign import javascript unsafe
-        "$1[\"stopImmediatePropagation\"]()" js_stopImmediatePropagation ::
-        Event -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.stopImmediatePropagation Mozilla Event.stopImmediatePropagation documentation> 
-stopImmediatePropagation ::
-                         (MonadIO m, IsEvent self) => self -> m ()
-stopImmediatePropagation self
-  = liftIO (js_stopImmediatePropagation (toEvent self))
 pattern NONE = 0
 pattern CAPTURING_PHASE = 1
 pattern AT_TARGET = 2
@@ -111,19 +113,53 @@ getType self
   = liftIO (fromJSString <$> (js_getType (toEvent self)))
  
 foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
-        Event -> IO EventTarget
+        Event -> IO (Nullable EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
-getTarget :: (MonadIO m, IsEvent self) => self -> m EventTarget
-getTarget self = liftIO (js_getTarget (toEvent self))
+getTarget ::
+          (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
+getTarget self
+  = liftIO (nullableToMaybe <$> (js_getTarget (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
+getTargetUnsafe ::
+                (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
+getTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getTarget (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 
+getTargetUnchecked ::
+                   (MonadIO m, IsEvent self) => self -> m EventTarget
+getTargetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_getTarget (toEvent self)))
  
 foreign import javascript unsafe "$1[\"currentTarget\"]"
-        js_getCurrentTarget :: Event -> IO EventTarget
+        js_getCurrentTarget :: Event -> IO (Nullable EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
 getCurrentTarget ::
-                 (MonadIO m, IsEvent self) => self -> m EventTarget
-getCurrentTarget self = liftIO (js_getCurrentTarget (toEvent self))
+                 (MonadIO m, IsEvent self) => self -> m (Maybe EventTarget)
+getCurrentTarget self
+  = liftIO (nullableToMaybe <$> (js_getCurrentTarget (toEvent self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
+getCurrentTargetUnsafe ::
+                       (MonadIO m, IsEvent self, HasCallStack) => self -> m EventTarget
+getCurrentTargetUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getCurrentTarget (toEvent self))) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.currentTarget Mozilla Event.currentTarget documentation> 
+getCurrentTargetUnchecked ::
+                          (MonadIO m, IsEvent self) => self -> m EventTarget
+getCurrentTargetUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getCurrentTarget (toEvent self)))
  
 foreign import javascript unsafe "$1[\"eventPhase\"]"
         js_getEventPhase :: Event -> IO Word
@@ -131,6 +167,22 @@ foreign import javascript unsafe "$1[\"eventPhase\"]"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.eventPhase Mozilla Event.eventPhase documentation> 
 getEventPhase :: (MonadIO m, IsEvent self) => self -> m Word
 getEventPhase self = liftIO (js_getEventPhase (toEvent self))
+ 
+foreign import javascript unsafe "$1[\"cancelBubble\"] = $2;"
+        js_setCancelBubble :: Event -> Bool -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.cancelBubble Mozilla Event.cancelBubble documentation> 
+setCancelBubble ::
+                (MonadIO m, IsEvent self) => self -> Bool -> m ()
+setCancelBubble self val
+  = liftIO (js_setCancelBubble (toEvent self) val)
+ 
+foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
+        js_getCancelBubble :: Event -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.cancelBubble Mozilla Event.cancelBubble documentation> 
+getCancelBubble :: (MonadIO m, IsEvent self) => self -> m Bool
+getCancelBubble self = liftIO (js_getCancelBubble (toEvent self))
  
 foreign import javascript unsafe "($1[\"bubbles\"] ? 1 : 0)"
         js_getBubbles :: Event -> IO Bool
@@ -146,20 +198,6 @@ foreign import javascript unsafe "($1[\"cancelable\"] ? 1 : 0)"
 getCancelable :: (MonadIO m, IsEvent self) => self -> m Bool
 getCancelable self = liftIO (js_getCancelable (toEvent self))
  
-foreign import javascript unsafe "($1[\"composed\"] ? 1 : 0)"
-        js_getComposed :: Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composed Mozilla Event.composed documentation> 
-getComposed :: (MonadIO m, IsEvent self) => self -> m Bool
-getComposed self = liftIO (js_getComposed (toEvent self))
- 
-foreign import javascript unsafe "$1[\"timeStamp\"]"
-        js_getTimeStamp :: Event -> IO Word
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.timeStamp Mozilla Event.timeStamp documentation> 
-getTimeStamp :: (MonadIO m, IsEvent self) => self -> m Word
-getTimeStamp self = liftIO (js_getTimeStamp (toEvent self))
- 
 foreign import javascript unsafe
         "($1[\"defaultPrevented\"] ? 1 : 0)" js_getDefaultPrevented ::
         Event -> IO Bool
@@ -169,12 +207,26 @@ getDefaultPrevented :: (MonadIO m, IsEvent self) => self -> m Bool
 getDefaultPrevented self
   = liftIO (js_getDefaultPrevented (toEvent self))
  
+foreign import javascript unsafe "($1[\"composed\"] ? 1 : 0)"
+        js_getComposed :: Event -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.composed Mozilla Event.composed documentation> 
+getComposed :: (MonadIO m, IsEvent self) => self -> m Bool
+getComposed self = liftIO (js_getComposed (toEvent self))
+ 
 foreign import javascript unsafe "($1[\"isTrusted\"] ? 1 : 0)"
         js_getIsTrusted :: Event -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.isTrusted Mozilla Event.isTrusted documentation> 
 getIsTrusted :: (MonadIO m, IsEvent self) => self -> m Bool
 getIsTrusted self = liftIO (js_getIsTrusted (toEvent self))
+ 
+foreign import javascript unsafe "$1[\"timeStamp\"]"
+        js_getTimeStamp :: Event -> IO Word
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.timeStamp Mozilla Event.timeStamp documentation> 
+getTimeStamp :: (MonadIO m, IsEvent self) => self -> m Word
+getTimeStamp self = liftIO (js_getTimeStamp (toEvent self))
  
 foreign import javascript unsafe "$1[\"srcElement\"]"
         js_getSrcElement :: Event -> IO EventTarget
@@ -197,19 +249,3 @@ foreign import javascript unsafe "($1[\"returnValue\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.returnValue Mozilla Event.returnValue documentation> 
 getReturnValue :: (MonadIO m, IsEvent self) => self -> m Bool
 getReturnValue self = liftIO (js_getReturnValue (toEvent self))
- 
-foreign import javascript unsafe "$1[\"cancelBubble\"] = $2;"
-        js_setCancelBubble :: Event -> Bool -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.cancelBubble Mozilla Event.cancelBubble documentation> 
-setCancelBubble ::
-                (MonadIO m, IsEvent self) => self -> Bool -> m ()
-setCancelBubble self val
-  = liftIO (js_setCancelBubble (toEvent self) val)
- 
-foreign import javascript unsafe "($1[\"cancelBubble\"] ? 1 : 0)"
-        js_getCancelBubble :: Event -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.cancelBubble Mozilla Event.cancelBubble documentation> 
-getCancelBubble :: (MonadIO m, IsEvent self) => self -> m Bool
-getCancelBubble self = liftIO (js_getCancelBubble (toEvent self))

@@ -7,8 +7,7 @@ module GHCJS.DOM.JSFFI.Generated.DOMImplementation
        (js_createDocumentType, createDocumentType, createDocumentType_,
         js_createDocument, createDocument, createDocument_,
         js_createHTMLDocument, createHTMLDocument, createHTMLDocument_,
-        js_hasFeature, hasFeature, hasFeature_, js_createCSSStyleSheet,
-        createCSSStyleSheet, createCSSStyleSheet_, DOMImplementation(..),
+        js_hasFeature, hasFeature, hasFeature_, DOMImplementation(..),
         gTypeDOMImplementation)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -119,27 +118,3 @@ hasFeature self = liftIO (js_hasFeature self)
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 
 hasFeature_ :: (MonadIO m) => DOMImplementation -> m ()
 hasFeature_ self = liftIO (void (js_hasFeature self))
- 
-foreign import javascript unsafe
-        "$1[\"createCSSStyleSheet\"]($2,\n$3)" js_createCSSStyleSheet ::
-        DOMImplementation ->
-          Optional JSString -> Optional JSString -> IO CSSStyleSheet
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createCSSStyleSheet Mozilla DOMImplementation.createCSSStyleSheet documentation> 
-createCSSStyleSheet ::
-                    (MonadIO m, ToJSString title, ToJSString media) =>
-                      DOMImplementation -> Maybe title -> Maybe media -> m CSSStyleSheet
-createCSSStyleSheet self title media
-  = liftIO
-      (js_createCSSStyleSheet self (toOptionalJSString title)
-         (toOptionalJSString media))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createCSSStyleSheet Mozilla DOMImplementation.createCSSStyleSheet documentation> 
-createCSSStyleSheet_ ::
-                     (MonadIO m, ToJSString title, ToJSString media) =>
-                       DOMImplementation -> Maybe title -> Maybe media -> m ()
-createCSSStyleSheet_ self title media
-  = liftIO
-      (void
-         (js_createCSSStyleSheet self (toOptionalJSString title)
-            (toOptionalJSString media)))

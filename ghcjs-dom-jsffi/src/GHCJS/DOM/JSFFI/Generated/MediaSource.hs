@@ -142,13 +142,12 @@ getDuration :: (MonadIO m) => MediaSource -> m Double
 getDuration self = liftIO (js_getDuration self)
  
 foreign import javascript unsafe "$1[\"readyState\"]"
-        js_getReadyState :: MediaSource -> IO JSString
+        js_getReadyState :: MediaSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.readyState Mozilla MediaSource.readyState documentation> 
-getReadyState ::
-              (MonadIO m, FromJSString result) => MediaSource -> m result
+getReadyState :: (MonadIO m) => MediaSource -> m ReadyState
 getReadyState self
-  = liftIO (fromJSString <$> (js_getReadyState self))
+  = liftIO ((js_getReadyState self) >>= fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.onsourceopen Mozilla MediaSource.onsourceopen documentation> 
 sourceopen :: EventName MediaSource onsourceopen

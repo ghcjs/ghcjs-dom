@@ -3,9 +3,9 @@
 {-# LANGUAGE JavaScriptFFI #-}
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
-module GHCJS.DOM.JSFFI.Generated.ClientRectList
-       (js_item, item, item_, js_getLength, getLength, ClientRectList(..),
-        gTypeClientRectList)
+module GHCJS.DOM.JSFFI.Generated.WebGPUBuffer
+       (js_getLength, getLength, js_getContents, getContents,
+        WebGPUBuffer(..), gTypeWebGPUBuffer)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -26,20 +26,16 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[$2]" js_item ::
-        ClientRectList -> Word -> IO ClientRect
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.item Mozilla ClientRectList.item documentation> 
-item :: (MonadIO m) => ClientRectList -> Word -> m ClientRect
-item self index = liftIO (js_item self index)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.item Mozilla ClientRectList.item documentation> 
-item_ :: (MonadIO m) => ClientRectList -> Word -> m ()
-item_ self index = liftIO (void (js_item self index))
- 
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
-        ClientRectList -> IO Word
+        WebGPUBuffer -> IO Word
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ClientRectList.length Mozilla ClientRectList.length documentation> 
-getLength :: (MonadIO m) => ClientRectList -> m Word
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUBuffer.length Mozilla WebGPUBuffer.length documentation> 
+getLength :: (MonadIO m) => WebGPUBuffer -> m Word
 getLength self = liftIO (js_getLength self)
+ 
+foreign import javascript unsafe "$1[\"contents\"]" js_getContents
+        :: WebGPUBuffer -> IO ArrayBufferView
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUBuffer.contents Mozilla WebGPUBuffer.contents documentation> 
+getContents :: (MonadIO m) => WebGPUBuffer -> m ArrayBufferView
+getContents self = liftIO (js_getContents self)

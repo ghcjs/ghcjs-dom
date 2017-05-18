@@ -9,10 +9,10 @@ module GHCJS.DOM.JSFFI.Generated.SVGElement
         js_getOwnerSVGElement, getOwnerSVGElement, js_getViewportElement,
         getViewportElement, js_setXmllang, setXmllang, js_getXmllang,
         getXmllang, js_setXmlspace, setXmlspace, js_getXmlspace,
-        getXmlspace, js_getClassName, getClassName, js_getStyle, getStyle,
-        js_setTabIndex, setTabIndex, js_getTabIndex, getTabIndex,
-        js_getDataset, getDataset, SVGElement(..), gTypeSVGElement,
-        IsSVGElement, toSVGElement)
+        getXmlspace, js_getClassName, getClassName, js_setTabIndex,
+        setTabIndex, js_getTabIndex, getTabIndex, js_getDataset,
+        getDataset, SVGElement(..), gTypeSVGElement, IsSVGElement,
+        toSVGElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -135,14 +135,6 @@ foreign import javascript unsafe "$1[\"className\"]"
 getClassName ::
              (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
 getClassName self = liftIO (js_getClassName (toSVGElement self))
- 
-foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
-        SVGElement -> IO CSSStyleDeclaration
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.style Mozilla SVGElement.style documentation> 
-getStyle ::
-         (MonadIO m, IsSVGElement self) => self -> m CSSStyleDeclaration
-getStyle self = liftIO (js_getStyle (toSVGElement self))
  
 foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
         js_setTabIndex :: SVGElement -> Int -> IO ()

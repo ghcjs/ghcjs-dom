@@ -5,10 +5,13 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.ParentNode
        (js_prepend, prepend, js_append, append, js_querySelector,
-        querySelector, querySelector_, js_querySelectorAll,
-        querySelectorAll, querySelectorAll_, js_getChildren, getChildren,
+        querySelector, querySelector_, querySelectorUnsafe,
+        querySelectorUnchecked, js_querySelectorAll, querySelectorAll,
+        querySelectorAll_, js_getChildren, getChildren,
         js_getFirstElementChild, getFirstElementChild,
+        getFirstElementChildUnsafe, getFirstElementChildUnchecked,
         js_getLastElementChild, getLastElementChild,
+        getLastElementChildUnsafe, getLastElementChildUnchecked,
         js_getChildElementCount, getChildElementCount, ParentNode(..),
         gTypeParentNode, IsParentNode, toParentNode)
        where
@@ -56,15 +59,16 @@ append self nodes
          \ nodes' -> js_append (toParentNode self) nodes')
  
 foreign import javascript unsafe "$1[\"querySelector\"]($2)"
-        js_querySelector :: ParentNode -> JSString -> IO Element
+        js_querySelector :: ParentNode -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
 querySelector ::
               (MonadIO m, IsParentNode self, ToJSString selectors) =>
-                self -> selectors -> m Element
+                self -> selectors -> m (Maybe Element)
 querySelector self selectors
   = liftIO
-      (js_querySelector (toParentNode self) (toJSString selectors))
+      (nullableToMaybe <$>
+         (js_querySelector (toParentNode self) (toJSString selectors)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
 querySelector_ ::
@@ -73,6 +77,26 @@ querySelector_ ::
 querySelector_ self selectors
   = liftIO
       (void
+         (js_querySelector (toParentNode self) (toJSString selectors)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
+querySelectorUnsafe ::
+                    (MonadIO m, IsParentNode self, ToJSString selectors,
+                     HasCallStack) =>
+                      self -> selectors -> m Element
+querySelectorUnsafe self selectors
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_querySelector (toParentNode self) (toJSString selectors)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
+querySelectorUnchecked ::
+                       (MonadIO m, IsParentNode self, ToJSString selectors) =>
+                         self -> selectors -> m Element
+querySelectorUnchecked self selectors
+  = liftIO
+      (fromJust . nullableToMaybe <$>
          (js_querySelector (toParentNode self) (toJSString selectors)))
  
 foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
@@ -104,22 +128,57 @@ getChildren ::
 getChildren self = liftIO (js_getChildren (toParentNode self))
  
 foreign import javascript unsafe "$1[\"firstElementChild\"]"
-        js_getFirstElementChild :: ParentNode -> IO Element
+        js_getFirstElementChild :: ParentNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.firstElementChild Mozilla ParentNode.firstElementChild documentation> 
 getFirstElementChild ::
-                     (MonadIO m, IsParentNode self) => self -> m Element
+                     (MonadIO m, IsParentNode self) => self -> m (Maybe Element)
 getFirstElementChild self
-  = liftIO (js_getFirstElementChild (toParentNode self))
+  = liftIO
+      (nullableToMaybe <$> (js_getFirstElementChild (toParentNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.firstElementChild Mozilla ParentNode.firstElementChild documentation> 
+getFirstElementChildUnsafe ::
+                           (MonadIO m, IsParentNode self, HasCallStack) => self -> m Element
+getFirstElementChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$>
+          (js_getFirstElementChild (toParentNode self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.firstElementChild Mozilla ParentNode.firstElementChild documentation> 
+getFirstElementChildUnchecked ::
+                              (MonadIO m, IsParentNode self) => self -> m Element
+getFirstElementChildUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getFirstElementChild (toParentNode self)))
  
 foreign import javascript unsafe "$1[\"lastElementChild\"]"
-        js_getLastElementChild :: ParentNode -> IO Element
+        js_getLastElementChild :: ParentNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.lastElementChild Mozilla ParentNode.lastElementChild documentation> 
 getLastElementChild ::
-                    (MonadIO m, IsParentNode self) => self -> m Element
+                    (MonadIO m, IsParentNode self) => self -> m (Maybe Element)
 getLastElementChild self
-  = liftIO (js_getLastElementChild (toParentNode self))
+  = liftIO
+      (nullableToMaybe <$> (js_getLastElementChild (toParentNode self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.lastElementChild Mozilla ParentNode.lastElementChild documentation> 
+getLastElementChildUnsafe ::
+                          (MonadIO m, IsParentNode self, HasCallStack) => self -> m Element
+getLastElementChildUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getLastElementChild (toParentNode self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.lastElementChild Mozilla ParentNode.lastElementChild documentation> 
+getLastElementChildUnchecked ::
+                             (MonadIO m, IsParentNode self) => self -> m Element
+getLastElementChildUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getLastElementChild (toParentNode self)))
  
 foreign import javascript unsafe "$1[\"childElementCount\"]"
         js_getChildElementCount :: ParentNode -> IO Word

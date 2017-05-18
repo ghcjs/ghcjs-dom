@@ -13,8 +13,8 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
         setPreparedToReturnVideoLayerToInline, js_updateTextTrackContainer,
         updateTextTrackContainer, js_enteredFullscreen, enteredFullscreen,
         js_exitedFullscreen, exitedFullscreen, js_generateUUID,
-        generateUUID, generateUUID_, js_base64StringForIconAndPlatform,
-        base64StringForIconAndPlatform, base64StringForIconAndPlatform_,
+        generateUUID, generateUUID_, js_base64StringForIconNameAndType,
+        base64StringForIconNameAndType, base64StringForIconNameAndType_,
         js_getCaptionMenuOffItem, getCaptionMenuOffItem,
         js_getCaptionMenuAutomaticItem, getCaptionMenuAutomaticItem,
         js_getCaptionDisplayMode, getCaptionDisplayMode,
@@ -24,6 +24,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaControlsHost
         js_getIsVideoLayerInline, getIsVideoLayerInline,
         js_getUserGestureRequired, getUserGestureRequired,
         js_getIsInMediaDocument, getIsInMediaDocument,
+        js_getShouldForceControlsDisplay, getShouldForceControlsDisplay,
         js_getExternalDeviceDisplayName, getExternalDeviceDisplayName,
         js_getExternalDeviceType, getExternalDeviceType,
         js_setControlsDependOnPageScaleFactor,
@@ -173,30 +174,30 @@ generateUUID_ :: (MonadIO m) => MediaControlsHost -> m ()
 generateUUID_ self = liftIO (void (js_generateUUID self))
  
 foreign import javascript unsafe
-        "$1[\"base64StringForIconAndPlatform\"]($2,\n$3)"
-        js_base64StringForIconAndPlatform ::
+        "$1[\"base64StringForIconNameAndType\"]($2,\n$3)"
+        js_base64StringForIconNameAndType ::
         MediaControlsHost -> JSString -> JSString -> IO JSString
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.base64StringForIconAndPlatform Mozilla MediaControlsHost.base64StringForIconAndPlatform documentation> 
-base64StringForIconAndPlatform ::
-                               (MonadIO m, ToJSString iconName, ToJSString platform,
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.base64StringForIconNameAndType Mozilla MediaControlsHost.base64StringForIconNameAndType documentation> 
+base64StringForIconNameAndType ::
+                               (MonadIO m, ToJSString iconName, ToJSString iconType,
                                 FromJSString result) =>
-                                 MediaControlsHost -> iconName -> platform -> m result
-base64StringForIconAndPlatform self iconName platform
+                                 MediaControlsHost -> iconName -> iconType -> m result
+base64StringForIconNameAndType self iconName iconType
   = liftIO
       (fromJSString <$>
-         (js_base64StringForIconAndPlatform self (toJSString iconName)
-            (toJSString platform)))
+         (js_base64StringForIconNameAndType self (toJSString iconName)
+            (toJSString iconType)))
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.base64StringForIconAndPlatform Mozilla MediaControlsHost.base64StringForIconAndPlatform documentation> 
-base64StringForIconAndPlatform_ ::
-                                (MonadIO m, ToJSString iconName, ToJSString platform) =>
-                                  MediaControlsHost -> iconName -> platform -> m ()
-base64StringForIconAndPlatform_ self iconName platform
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.base64StringForIconNameAndType Mozilla MediaControlsHost.base64StringForIconNameAndType documentation> 
+base64StringForIconNameAndType_ ::
+                                (MonadIO m, ToJSString iconName, ToJSString iconType) =>
+                                  MediaControlsHost -> iconName -> iconType -> m ()
+base64StringForIconNameAndType_ self iconName iconType
   = liftIO
       (void
-         (js_base64StringForIconAndPlatform self (toJSString iconName)
-            (toJSString platform)))
+         (js_base64StringForIconNameAndType self (toJSString iconName)
+            (toJSString iconType)))
  
 foreign import javascript unsafe "$1[\"captionMenuOffItem\"]"
         js_getCaptionMenuOffItem :: MediaControlsHost -> IO TextTrack
@@ -275,6 +276,16 @@ foreign import javascript unsafe
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.isInMediaDocument Mozilla MediaControlsHost.isInMediaDocument documentation> 
 getIsInMediaDocument :: (MonadIO m) => MediaControlsHost -> m Bool
 getIsInMediaDocument self = liftIO (js_getIsInMediaDocument self)
+ 
+foreign import javascript unsafe
+        "($1[\"shouldForceControlsDisplay\"] ? 1 : 0)"
+        js_getShouldForceControlsDisplay :: MediaControlsHost -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.shouldForceControlsDisplay Mozilla MediaControlsHost.shouldForceControlsDisplay documentation> 
+getShouldForceControlsDisplay ::
+                              (MonadIO m) => MediaControlsHost -> m Bool
+getShouldForceControlsDisplay self
+  = liftIO (js_getShouldForceControlsDisplay self)
  
 foreign import javascript unsafe
         "$1[\"externalDeviceDisplayName\"]" js_getExternalDeviceDisplayName

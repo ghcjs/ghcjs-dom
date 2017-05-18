@@ -8,24 +8,27 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         focus, js_blur, blur, js_setTitle, setTitle, js_getTitle, getTitle,
         js_setLang, setLang, js_getLang, getLang, js_setTranslate,
         setTranslate, js_getTranslate, getTranslate, js_setDir, setDir,
-        js_getDir, getDir, js_setTabIndex, setTabIndex, js_getTabIndex,
-        getTabIndex, js_setDraggable, setDraggable, js_getDraggable,
-        getDraggable, js_setWebkitdropzone, setWebkitdropzone,
-        js_getWebkitdropzone, getWebkitdropzone, js_setHidden, setHidden,
-        js_getHidden, getHidden, js_setAccessKey, setAccessKey,
-        js_getAccessKey, getAccessKey, js_setInnerText, setInnerText,
+        js_getDir, getDir, js_getDataset, getDataset, js_setHidden,
+        setHidden, js_getHidden, getHidden, js_setTabIndex, setTabIndex,
+        js_getTabIndex, getTabIndex, js_setAccessKey, setAccessKey,
+        js_getAccessKey, getAccessKey, js_setDraggable, setDraggable,
+        js_getDraggable, getDraggable, js_setSpellcheck, setSpellcheck,
+        js_getSpellcheck, getSpellcheck, js_setInnerText, setInnerText,
         js_getInnerText, getInnerText, getInnerTextUnsafe,
-        getInnerTextUnchecked, js_setOuterText, setOuterText,
-        js_getOuterText, getOuterText, getOuterTextUnsafe,
-        getOuterTextUnchecked, js_setContentEditable, setContentEditable,
+        getInnerTextUnchecked, js_setContentEditable, setContentEditable,
         js_getContentEditable, getContentEditable, js_getIsContentEditable,
-        getIsContentEditable, js_setSpellcheck, setSpellcheck,
-        js_getSpellcheck, getSpellcheck, js_setAutocorrect, setAutocorrect,
-        js_getAutocorrect, getAutocorrect, js_setAutocapitalize,
-        setAutocapitalize, js_getAutocapitalize, getAutocapitalize,
-        getAutocapitalizeUnsafe, getAutocapitalizeUnchecked, js_getDataset,
-        getDataset, HTMLElement(..), gTypeHTMLElement, IsHTMLElement,
-        toHTMLElement)
+        getIsContentEditable, js_getOffsetParent, getOffsetParent,
+        getOffsetParentUnsafe, getOffsetParentUnchecked, js_getOffsetTop,
+        getOffsetTop, js_getOffsetLeft, getOffsetLeft, js_getOffsetWidth,
+        getOffsetWidth, js_getOffsetHeight, getOffsetHeight,
+        js_setOuterText, setOuterText, js_getOuterText, getOuterText,
+        getOuterTextUnsafe, getOuterTextUnchecked, js_setAutocorrect,
+        setAutocorrect, js_getAutocorrect, getAutocorrect,
+        js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
+        getAutocapitalize, getAutocapitalizeUnsafe,
+        getAutocapitalizeUnchecked, js_setWebkitdropzone,
+        setWebkitdropzone, js_getWebkitdropzone, getWebkitdropzone,
+        HTMLElement(..), gTypeHTMLElement, IsHTMLElement, toHTMLElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -150,59 +153,13 @@ getDir ::
 getDir self
   = liftIO (fromJSString <$> (js_getDir (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
-        js_setTabIndex :: HTMLElement -> Int -> IO ()
+foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
+        HTMLElement -> IO DOMStringMap
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
-setTabIndex ::
-            (MonadIO m, IsHTMLElement self) => self -> Int -> m ()
-setTabIndex self val
-  = liftIO (js_setTabIndex (toHTMLElement self) val)
- 
-foreign import javascript unsafe "$1[\"tabIndex\"]" js_getTabIndex
-        :: HTMLElement -> IO Int
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
-getTabIndex :: (MonadIO m, IsHTMLElement self) => self -> m Int
-getTabIndex self = liftIO (js_getTabIndex (toHTMLElement self))
- 
-foreign import javascript unsafe "$1[\"draggable\"] = $2;"
-        js_setDraggable :: HTMLElement -> Bool -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
-setDraggable ::
-             (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
-setDraggable self val
-  = liftIO (js_setDraggable (toHTMLElement self) val)
- 
-foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
-        js_getDraggable :: HTMLElement -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
-getDraggable :: (MonadIO m, IsHTMLElement self) => self -> m Bool
-getDraggable self = liftIO (js_getDraggable (toHTMLElement self))
- 
-foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
-        js_setWebkitdropzone :: HTMLElement -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
-setWebkitdropzone ::
-                  (MonadIO m, IsHTMLElement self, ToJSString val) =>
-                    self -> val -> m ()
-setWebkitdropzone self val
-  = liftIO
-      (js_setWebkitdropzone (toHTMLElement self) (toJSString val))
- 
-foreign import javascript unsafe "$1[\"webkitdropzone\"]"
-        js_getWebkitdropzone :: HTMLElement -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
-getWebkitdropzone ::
-                  (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                    self -> m result
-getWebkitdropzone self
-  = liftIO
-      (fromJSString <$> (js_getWebkitdropzone (toHTMLElement self)))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dataset Mozilla HTMLElement.dataset documentation> 
+getDataset ::
+           (MonadIO m, IsHTMLElement self) => self -> m DOMStringMap
+getDataset self = liftIO (js_getDataset (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"hidden\"] = $2;"
         js_setHidden :: HTMLElement -> Bool -> IO ()
@@ -218,6 +175,22 @@ foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.hidden Mozilla HTMLElement.hidden documentation> 
 getHidden :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getHidden self = liftIO (js_getHidden (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
+        js_setTabIndex :: HTMLElement -> Int -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
+setTabIndex ::
+            (MonadIO m, IsHTMLElement self) => self -> Int -> m ()
+setTabIndex self val
+  = liftIO (js_setTabIndex (toHTMLElement self) val)
+ 
+foreign import javascript unsafe "$1[\"tabIndex\"]" js_getTabIndex
+        :: HTMLElement -> IO Int
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
+getTabIndex :: (MonadIO m, IsHTMLElement self) => self -> m Int
+getTabIndex self = liftIO (js_getTabIndex (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"accessKey\"] = $2;"
         js_setAccessKey :: HTMLElement -> JSString -> IO ()
@@ -238,6 +211,38 @@ getAccessKey ::
                self -> m result
 getAccessKey self
   = liftIO (fromJSString <$> (js_getAccessKey (toHTMLElement self)))
+ 
+foreign import javascript unsafe "$1[\"draggable\"] = $2;"
+        js_setDraggable :: HTMLElement -> Bool -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
+setDraggable ::
+             (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
+setDraggable self val
+  = liftIO (js_setDraggable (toHTMLElement self) val)
+ 
+foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
+        js_getDraggable :: HTMLElement -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
+getDraggable :: (MonadIO m, IsHTMLElement self) => self -> m Bool
+getDraggable self = liftIO (js_getDraggable (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
+        js_setSpellcheck :: HTMLElement -> Bool -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
+setSpellcheck ::
+              (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
+setSpellcheck self val
+  = liftIO (js_setSpellcheck (toHTMLElement self) val)
+ 
+foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
+        js_getSpellcheck :: HTMLElement -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
+getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
+getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
         js_setInnerText :: HTMLElement -> Optional JSString -> IO ()
@@ -280,6 +285,97 @@ getInnerTextUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getInnerText (toHTMLElement self)))
  
+foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
+        js_setContentEditable :: HTMLElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
+setContentEditable ::
+                   (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                     self -> val -> m ()
+setContentEditable self val
+  = liftIO
+      (js_setContentEditable (toHTMLElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"contentEditable\"]"
+        js_getContentEditable :: HTMLElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
+getContentEditable ::
+                   (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                     self -> m result
+getContentEditable self
+  = liftIO
+      (fromJSString <$> (js_getContentEditable (toHTMLElement self)))
+ 
+foreign import javascript unsafe
+        "($1[\"isContentEditable\"] ? 1 : 0)" js_getIsContentEditable ::
+        HTMLElement -> IO Bool
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.isContentEditable Mozilla HTMLElement.isContentEditable documentation> 
+getIsContentEditable ::
+                     (MonadIO m, IsHTMLElement self) => self -> m Bool
+getIsContentEditable self
+  = liftIO (js_getIsContentEditable (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"offsetParent\"]"
+        js_getOffsetParent :: HTMLElement -> IO (Nullable Element)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetParent Mozilla HTMLElement.offsetParent documentation> 
+getOffsetParent ::
+                (MonadIO m, IsHTMLElement self) => self -> m (Maybe Element)
+getOffsetParent self
+  = liftIO
+      (nullableToMaybe <$> (js_getOffsetParent (toHTMLElement self)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetParent Mozilla HTMLElement.offsetParent documentation> 
+getOffsetParentUnsafe ::
+                      (MonadIO m, IsHTMLElement self, HasCallStack) => self -> m Element
+getOffsetParentUnsafe self
+  = liftIO
+      ((nullableToMaybe <$> (js_getOffsetParent (toHTMLElement self)))
+         >>= maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetParent Mozilla HTMLElement.offsetParent documentation> 
+getOffsetParentUnchecked ::
+                         (MonadIO m, IsHTMLElement self) => self -> m Element
+getOffsetParentUnchecked self
+  = liftIO
+      (fromJust . nullableToMaybe <$>
+         (js_getOffsetParent (toHTMLElement self)))
+ 
+foreign import javascript unsafe "$1[\"offsetTop\"]"
+        js_getOffsetTop :: HTMLElement -> IO Double
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetTop Mozilla HTMLElement.offsetTop documentation> 
+getOffsetTop :: (MonadIO m, IsHTMLElement self) => self -> m Double
+getOffsetTop self = liftIO (js_getOffsetTop (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"offsetLeft\"]"
+        js_getOffsetLeft :: HTMLElement -> IO Double
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetLeft Mozilla HTMLElement.offsetLeft documentation> 
+getOffsetLeft ::
+              (MonadIO m, IsHTMLElement self) => self -> m Double
+getOffsetLeft self = liftIO (js_getOffsetLeft (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"offsetWidth\"]"
+        js_getOffsetWidth :: HTMLElement -> IO Double
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetWidth Mozilla HTMLElement.offsetWidth documentation> 
+getOffsetWidth ::
+               (MonadIO m, IsHTMLElement self) => self -> m Double
+getOffsetWidth self
+  = liftIO (js_getOffsetWidth (toHTMLElement self))
+ 
+foreign import javascript unsafe "$1[\"offsetHeight\"]"
+        js_getOffsetHeight :: HTMLElement -> IO Double
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetHeight Mozilla HTMLElement.offsetHeight documentation> 
+getOffsetHeight ::
+                (MonadIO m, IsHTMLElement self) => self -> m Double
+getOffsetHeight self
+  = liftIO (js_getOffsetHeight (toHTMLElement self))
+ 
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
         js_setOuterText :: HTMLElement -> Optional JSString -> IO ()
 
@@ -320,54 +416,6 @@ getOuterTextUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$>
          (js_getOuterText (toHTMLElement self)))
- 
-foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
-        js_setContentEditable :: HTMLElement -> JSString -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
-setContentEditable ::
-                   (MonadIO m, IsHTMLElement self, ToJSString val) =>
-                     self -> val -> m ()
-setContentEditable self val
-  = liftIO
-      (js_setContentEditable (toHTMLElement self) (toJSString val))
- 
-foreign import javascript unsafe "$1[\"contentEditable\"]"
-        js_getContentEditable :: HTMLElement -> IO JSString
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
-getContentEditable ::
-                   (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                     self -> m result
-getContentEditable self
-  = liftIO
-      (fromJSString <$> (js_getContentEditable (toHTMLElement self)))
- 
-foreign import javascript unsafe
-        "($1[\"isContentEditable\"] ? 1 : 0)" js_getIsContentEditable ::
-        HTMLElement -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.isContentEditable Mozilla HTMLElement.isContentEditable documentation> 
-getIsContentEditable ::
-                     (MonadIO m, IsHTMLElement self) => self -> m Bool
-getIsContentEditable self
-  = liftIO (js_getIsContentEditable (toHTMLElement self))
- 
-foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
-        js_setSpellcheck :: HTMLElement -> Bool -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
-setSpellcheck ::
-              (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
-setSpellcheck self val
-  = liftIO (js_setSpellcheck (toHTMLElement self) val)
- 
-foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
-        js_getSpellcheck :: HTMLElement -> IO Bool
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
-getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
-getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
         js_setAutocorrect :: HTMLElement -> Bool -> IO ()
@@ -429,10 +477,24 @@ getAutocapitalizeUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getAutocapitalize (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
-        HTMLElement -> IO DOMStringMap
+foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
+        js_setWebkitdropzone :: HTMLElement -> JSString -> IO ()
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dataset Mozilla HTMLElement.dataset documentation> 
-getDataset ::
-           (MonadIO m, IsHTMLElement self) => self -> m DOMStringMap
-getDataset self = liftIO (js_getDataset (toHTMLElement self))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
+setWebkitdropzone ::
+                  (MonadIO m, IsHTMLElement self, ToJSString val) =>
+                    self -> val -> m ()
+setWebkitdropzone self val
+  = liftIO
+      (js_setWebkitdropzone (toHTMLElement self) (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"webkitdropzone\"]"
+        js_getWebkitdropzone :: HTMLElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
+getWebkitdropzone ::
+                  (MonadIO m, IsHTMLElement self, FromJSString result) =>
+                    self -> m result
+getWebkitdropzone self
+  = liftIO
+      (fromJSString <$> (js_getWebkitdropzone (toHTMLElement self)))

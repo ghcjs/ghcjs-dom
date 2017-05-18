@@ -67,13 +67,12 @@ foreign import javascript unsafe
                         Optional Int ->
                           Optional Int ->
                             Bool ->
-                              Bool ->
-                                Bool -> Bool -> Optional Word -> Optional EventTarget -> IO ()
+                              Bool -> Bool -> Bool -> Optional Word -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.initMouseEvent Mozilla MouseEvent.initMouseEvent documentation> 
 initMouseEvent ::
                (MonadIO m, IsMouseEvent self, ToJSString type',
-                IsEventTarget relatedTarget) =>
+                ToJSVal relatedTarget) =>
                  self ->
                    Maybe type' ->
                      Bool ->
@@ -91,21 +90,23 @@ initMouseEvent self type' canBubble cancelable view detail screenX
   screenY clientX clientY ctrlKey altKey shiftKey metaKey button
   relatedTarget
   = liftIO
-      (js_initMouseEvent (toMouseEvent self) (toOptionalJSString type')
-         canBubble
-         cancelable
-         (maybeToOptional view)
-         (maybeToOptional detail)
-         (maybeToOptional screenX)
-         (maybeToOptional screenY)
-         (maybeToOptional clientX)
-         (maybeToOptional clientY)
-         ctrlKey
-         altKey
-         shiftKey
-         metaKey
-         (maybeToOptional button)
-         (maybeToOptional (fmap toEventTarget relatedTarget)))
+      (mapM toJSVal relatedTarget >>=
+         \ relatedTarget' ->
+           js_initMouseEvent (toMouseEvent self) (toOptionalJSString type')
+             canBubble
+             cancelable
+             (maybeToOptional view)
+             (maybeToOptional detail)
+             (maybeToOptional screenX)
+             (maybeToOptional screenY)
+             (maybeToOptional clientX)
+             (maybeToOptional clientY)
+             ctrlKey
+             altKey
+             shiftKey
+             metaKey
+             (maybeToOptional button)
+             (maybeToOptional relatedTarget'))
 pattern WEBKIT_FORCE_AT_MOUSE_DOWN = 1
 pattern WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN = 2
  

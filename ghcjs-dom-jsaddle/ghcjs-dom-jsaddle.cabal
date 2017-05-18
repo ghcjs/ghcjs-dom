@@ -1,5 +1,5 @@
 name: ghcjs-dom-jsaddle
-version: 0.8.0.0
+version: 0.9.0.0
 cabal-version: >=1.22
 build-type: Simple
 license: MIT
@@ -18,7 +18,7 @@ Source-Repository head
   subdir:       ghcjs-dom-jsaddle
 
 library
-    build-depends: jsaddle-dom >=0.8.0.0 && <0.9
+    build-depends: jsaddle-dom >=0.9.0.0 && <0.10
 
     default-language: Haskell2010
 
@@ -39,6 +39,7 @@ library
           , JSDOM.Animatable as GHCJS.DOM.Animatable
           , JSDOM.Animation as GHCJS.DOM.Animation
           , JSDOM.AnimationEvent as GHCJS.DOM.AnimationEvent
+          , JSDOM.ApplePayError as GHCJS.DOM.ApplePayError
           , JSDOM.ApplePayPaymentAuthorizedEvent as GHCJS.DOM.ApplePayPaymentAuthorizedEvent
           , JSDOM.ApplePayPaymentMethodSelectedEvent as GHCJS.DOM.ApplePayPaymentMethodSelectedEvent
           , JSDOM.ApplePaySession as GHCJS.DOM.ApplePaySession
@@ -60,10 +61,12 @@ library
           , JSDOM.AudioTrackList as GHCJS.DOM.AudioTrackList
           , JSDOM.AutocompleteErrorEvent as GHCJS.DOM.AutocompleteErrorEvent
           , JSDOM.BarProp as GHCJS.DOM.BarProp
+          , JSDOM.BasicCredential as GHCJS.DOM.BasicCredential
           , JSDOM.BeforeLoadEvent as GHCJS.DOM.BeforeLoadEvent
           , JSDOM.BeforeUnloadEvent as GHCJS.DOM.BeforeUnloadEvent
           , JSDOM.BiquadFilterNode as GHCJS.DOM.BiquadFilterNode
           , JSDOM.Blob as GHCJS.DOM.Blob
+          , JSDOM.BlobCallback as GHCJS.DOM.BlobCallback
           , JSDOM.Body as GHCJS.DOM.Body
           , JSDOM.ByteLengthQueuingStrategy as GHCJS.DOM.ByteLengthQueuingStrategy
           , JSDOM.CSS as GHCJS.DOM.CSS
@@ -84,13 +87,12 @@ library
           , JSDOM.CSSSupportsRule as GHCJS.DOM.CSSSupportsRule
           , JSDOM.CSSValue as GHCJS.DOM.CSSValue
           , JSDOM.CSSValueList as GHCJS.DOM.CSSValueList
+          , JSDOM.CanvasCaptureMediaStreamTrack as GHCJS.DOM.CanvasCaptureMediaStreamTrack
           , JSDOM.CanvasGradient as GHCJS.DOM.CanvasGradient
           , JSDOM.CanvasPath as GHCJS.DOM.CanvasPath
           , JSDOM.CanvasRenderingContext2D as GHCJS.DOM.CanvasRenderingContext2D
           , JSDOM.CharacterData as GHCJS.DOM.CharacterData
           , JSDOM.ChildNode as GHCJS.DOM.ChildNode
-          , JSDOM.ClientRect as GHCJS.DOM.ClientRect
-          , JSDOM.ClientRectList as GHCJS.DOM.ClientRectList
           , JSDOM.ClipboardEvent as GHCJS.DOM.ClipboardEvent
           , JSDOM.CloseEvent as GHCJS.DOM.CloseEvent
           , JSDOM.CommandLineAPIHost as GHCJS.DOM.CommandLineAPIHost
@@ -128,6 +130,7 @@ library
           , JSDOM.DeviceOrientationEvent as GHCJS.DOM.DeviceOrientationEvent
           , JSDOM.DeviceProximityEvent as GHCJS.DOM.DeviceProximityEvent
           , JSDOM.Document as GHCJS.DOM.Document
+          , JSDOM.DocumentAndElementEventHandlers as GHCJS.DOM.DocumentAndElementEventHandlers
           , JSDOM.DocumentFragment as GHCJS.DOM.DocumentFragment
           , JSDOM.DocumentOrShadowRoot as GHCJS.DOM.DocumentOrShadowRoot
           , JSDOM.DocumentTimeline as GHCJS.DOM.DocumentTimeline
@@ -137,6 +140,7 @@ library
           , JSDOM.EXTTextureFilterAnisotropic as GHCJS.DOM.EXTTextureFilterAnisotropic
           , JSDOM.EXTsRGB as GHCJS.DOM.EXTsRGB
           , JSDOM.Element as GHCJS.DOM.Element
+          , JSDOM.ElementCSSInlineStyle as GHCJS.DOM.ElementCSSInlineStyle
           , JSDOM.Enums as GHCJS.DOM.Enums
           , JSDOM.ErrorEvent as GHCJS.DOM.ErrorEvent
           , JSDOM.Event as GHCJS.DOM.Event
@@ -309,7 +313,6 @@ library
           , JSDOM.NonDocumentTypeChildNode as GHCJS.DOM.NonDocumentTypeChildNode
           , JSDOM.NonElementParentNode as GHCJS.DOM.NonElementParentNode
           , JSDOM.Notification as GHCJS.DOM.Notification
-          , JSDOM.NotificationCenter as GHCJS.DOM.NotificationCenter
           , JSDOM.NotificationPermissionCallback as GHCJS.DOM.NotificationPermissionCallback
           , JSDOM.OESStandardDerivatives as GHCJS.DOM.OESStandardDerivatives
           , JSDOM.OESTextureHalfFloat as GHCJS.DOM.OESTextureHalfFloat
@@ -323,6 +326,7 @@ library
           , JSDOM.PageTransitionEvent as GHCJS.DOM.PageTransitionEvent
           , JSDOM.PannerNode as GHCJS.DOM.PannerNode
           , JSDOM.ParentNode as GHCJS.DOM.ParentNode
+          , JSDOM.PasswordCredential as GHCJS.DOM.PasswordCredential
           , JSDOM.Path2D as GHCJS.DOM.Path2D
           , JSDOM.Performance as GHCJS.DOM.Performance
           , JSDOM.PerformanceEntry as GHCJS.DOM.PerformanceEntry
@@ -340,6 +344,7 @@ library
           , JSDOM.PositionErrorCallback as GHCJS.DOM.PositionErrorCallback
           , JSDOM.ProcessingInstruction as GHCJS.DOM.ProcessingInstruction
           , JSDOM.ProgressEvent as GHCJS.DOM.ProgressEvent
+          , JSDOM.PromiseRejectionEvent as GHCJS.DOM.PromiseRejectionEvent
           , JSDOM.QuickTimePluginReplacement as GHCJS.DOM.QuickTimePluginReplacement
           , JSDOM.RGBColor as GHCJS.DOM.RGBColor
           , JSDOM.RTCDTMFSender as GHCJS.DOM.RTCDTMFSender
@@ -348,7 +353,9 @@ library
           , JSDOM.RTCDataChannelEvent as GHCJS.DOM.RTCDataChannelEvent
           , JSDOM.RTCIceCandidate as GHCJS.DOM.RTCIceCandidate
           , JSDOM.RTCIceCandidateEvent as GHCJS.DOM.RTCIceCandidateEvent
+          , JSDOM.RTCIceTransport as GHCJS.DOM.RTCIceTransport
           , JSDOM.RTCPeerConnection as GHCJS.DOM.RTCPeerConnection
+          , JSDOM.RTCPeerConnectionIceEvent as GHCJS.DOM.RTCPeerConnectionIceEvent
           , JSDOM.RTCRtpReceiver as GHCJS.DOM.RTCRtpReceiver
           , JSDOM.RTCRtpSender as GHCJS.DOM.RTCRtpSender
           , JSDOM.RTCRtpTransceiver as GHCJS.DOM.RTCRtpTransceiver
@@ -358,6 +365,8 @@ library
           , JSDOM.Range as GHCJS.DOM.Range
           , JSDOM.ReadableByteStreamController as GHCJS.DOM.ReadableByteStreamController
           , JSDOM.ReadableStream as GHCJS.DOM.ReadableStream
+          , JSDOM.ReadableStreamBYOBReader as GHCJS.DOM.ReadableStreamBYOBReader
+          , JSDOM.ReadableStreamBYOBRequest as GHCJS.DOM.ReadableStreamBYOBRequest
           , JSDOM.ReadableStreamDefaultController as GHCJS.DOM.ReadableStreamDefaultController
           , JSDOM.ReadableStreamDefaultReader as GHCJS.DOM.ReadableStreamDefaultReader
           , JSDOM.ReadableStreamSource as GHCJS.DOM.ReadableStreamSource
@@ -488,6 +497,7 @@ library
           , JSDOM.SecurityPolicyViolationEvent as GHCJS.DOM.SecurityPolicyViolationEvent
           , JSDOM.Selection as GHCJS.DOM.Selection
           , JSDOM.ShadowRoot as GHCJS.DOM.ShadowRoot
+          , JSDOM.SiteBoundCredential as GHCJS.DOM.SiteBoundCredential
           , JSDOM.Slotable as GHCJS.DOM.Slotable
           , JSDOM.SourceBuffer as GHCJS.DOM.SourceBuffer
           , JSDOM.SourceBufferList as GHCJS.DOM.SourceBufferList
@@ -550,6 +560,26 @@ library
           , JSDOM.WebGLLoseContext as GHCJS.DOM.WebGLLoseContext
           , JSDOM.WebGLRenderingContextBase as GHCJS.DOM.WebGLRenderingContextBase
           , JSDOM.WebGLShaderPrecisionFormat as GHCJS.DOM.WebGLShaderPrecisionFormat
+          , JSDOM.WebGPUBuffer as GHCJS.DOM.WebGPUBuffer
+          , JSDOM.WebGPUCommandBuffer as GHCJS.DOM.WebGPUCommandBuffer
+          , JSDOM.WebGPUCommandQueue as GHCJS.DOM.WebGPUCommandQueue
+          , JSDOM.WebGPUComputeCommandEncoder as GHCJS.DOM.WebGPUComputeCommandEncoder
+          , JSDOM.WebGPUDepthStencilDescriptor as GHCJS.DOM.WebGPUDepthStencilDescriptor
+          , JSDOM.WebGPUDepthStencilState as GHCJS.DOM.WebGPUDepthStencilState
+          , JSDOM.WebGPUDrawable as GHCJS.DOM.WebGPUDrawable
+          , JSDOM.WebGPUFunction as GHCJS.DOM.WebGPUFunction
+          , JSDOM.WebGPULibrary as GHCJS.DOM.WebGPULibrary
+          , JSDOM.WebGPURenderCommandEncoder as GHCJS.DOM.WebGPURenderCommandEncoder
+          , JSDOM.WebGPURenderPassAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassAttachmentDescriptor
+          , JSDOM.WebGPURenderPassColorAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassColorAttachmentDescriptor
+          , JSDOM.WebGPURenderPassDepthAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassDepthAttachmentDescriptor
+          , JSDOM.WebGPURenderPassDescriptor as GHCJS.DOM.WebGPURenderPassDescriptor
+          , JSDOM.WebGPURenderPipelineColorAttachmentDescriptor as GHCJS.DOM.WebGPURenderPipelineColorAttachmentDescriptor
+          , JSDOM.WebGPURenderPipelineDescriptor as GHCJS.DOM.WebGPURenderPipelineDescriptor
+          , JSDOM.WebGPURenderPipelineState as GHCJS.DOM.WebGPURenderPipelineState
+          , JSDOM.WebGPURenderingContext as GHCJS.DOM.WebGPURenderingContext
+          , JSDOM.WebGPUTexture as GHCJS.DOM.WebGPUTexture
+          , JSDOM.WebGPUTextureDescriptor as GHCJS.DOM.WebGPUTextureDescriptor
           , JSDOM.WebKitAnimationEvent as GHCJS.DOM.WebKitAnimationEvent
           , JSDOM.WebKitCSSMatrix as GHCJS.DOM.WebKitCSSMatrix
           , JSDOM.WebKitCSSRegionRule as GHCJS.DOM.WebKitCSSRegionRule

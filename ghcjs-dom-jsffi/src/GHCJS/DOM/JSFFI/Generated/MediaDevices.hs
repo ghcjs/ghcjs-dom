@@ -4,10 +4,10 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MediaDevices
-       (js_getSupportedConstraints, getSupportedConstraints,
+       (js_enumerateDevices, enumerateDevices, enumerateDevices_,
+        js_getSupportedConstraints, getSupportedConstraints,
         getSupportedConstraints_, js_getUserMedia, getUserMedia,
-        getUserMedia_, js_enumerateDevices, enumerateDevices,
-        enumerateDevices_, MediaDevices(..), gTypeMediaDevices)
+        getUserMedia_, devicechange, MediaDevices(..), gTypeMediaDevices)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -27,6 +27,20 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+ 
+foreign import javascript interruptible
+        "$1[\"enumerateDevices\"]().\nthen($c);" js_enumerateDevices ::
+        MediaDevices -> IO JSVal
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
+enumerateDevices ::
+                 (MonadIO m) => MediaDevices -> m [MediaDeviceInfo]
+enumerateDevices self
+  = liftIO ((js_enumerateDevices self) >>= fromJSValUnchecked)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
+enumerateDevices_ :: (MonadIO m) => MediaDevices -> m ()
+enumerateDevices_ self = liftIO (void (js_enumerateDevices self))
  
 foreign import javascript unsafe
         "$1[\"getSupportedConstraints\"]()" js_getSupportedConstraints ::
@@ -60,17 +74,7 @@ getUserMedia_ ::
 getUserMedia_ self constraints
   = liftIO
       (void (js_getUserMedia self (maybeToOptional constraints)))
- 
-foreign import javascript interruptible
-        "$1[\"enumerateDevices\"]().\nthen($c);" js_enumerateDevices ::
-        MediaDevices -> IO JSVal
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
-enumerateDevices ::
-                 (MonadIO m) => MediaDevices -> m [MediaDeviceInfo]
-enumerateDevices self
-  = liftIO ((js_enumerateDevices self) >>= fromJSValUnchecked)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
-enumerateDevices_ :: (MonadIO m) => MediaDevices -> m ()
-enumerateDevices_ self = liftIO (void (js_enumerateDevices self))
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.ondevicechange Mozilla MediaDevices.ondevicechange documentation> 
+devicechange :: EventName MediaDevices ondevicechange
+devicechange = unsafeEventName (toJSString "devicechange")

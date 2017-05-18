@@ -5,8 +5,8 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.MutationObserver
        (js_newMutationObserver, newMutationObserver, js_observe, observe,
-        js_takeRecords, takeRecords, takeRecords_, js_disconnect,
-        disconnect, MutationObserver(..), gTypeMutationObserver)
+        js_disconnect, disconnect, js_takeRecords, takeRecords,
+        takeRecords_, MutationObserver(..), gTypeMutationObserver)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -50,6 +50,13 @@ observe self target options
   = liftIO
       (js_observe self (toNode target) (maybeToOptional options))
  
+foreign import javascript unsafe "$1[\"disconnect\"]()"
+        js_disconnect :: MutationObserver -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.disconnect Mozilla MutationObserver.disconnect documentation> 
+disconnect :: (MonadIO m) => MutationObserver -> m ()
+disconnect self = liftIO (js_disconnect self)
+ 
 foreign import javascript unsafe "$1[\"takeRecords\"]()"
         js_takeRecords :: MutationObserver -> IO JSVal
 
@@ -62,10 +69,3 @@ takeRecords self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.takeRecords Mozilla MutationObserver.takeRecords documentation> 
 takeRecords_ :: (MonadIO m) => MutationObserver -> m ()
 takeRecords_ self = liftIO (void (js_takeRecords self))
- 
-foreign import javascript unsafe "$1[\"disconnect\"]()"
-        js_disconnect :: MutationObserver -> IO ()
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.disconnect Mozilla MutationObserver.disconnect documentation> 
-disconnect :: (MonadIO m) => MutationObserver -> m ()
-disconnect self = liftIO (js_disconnect self)

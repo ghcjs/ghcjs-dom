@@ -4,8 +4,7 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.CharacterData
-       (js_substringData, substringData, substringData_,
-        substringDataUnsafe, substringDataUnchecked, js_appendData,
+       (js_substringData, substringData, substringData_, js_appendData,
         appendData, js_insertData, insertData, js_deleteData, deleteData,
         js_replaceData, replaceData, js_setData, setData, js_getData,
         getData, getDataUnsafe, getDataUnchecked, js_getLength, getLength,
@@ -32,44 +31,23 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
-        js_substringData ::
-        CharacterData -> Word -> Word -> IO (Nullable JSString)
+        js_substringData :: CharacterData -> Word -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
 substringData ::
               (MonadIO m, IsCharacterData self, FromJSString result) =>
-                self -> Word -> Word -> m (Maybe result)
-substringData self offset length
+                self -> Word -> Word -> m result
+substringData self offset count
   = liftIO
-      (fromMaybeJSString <$>
-         (js_substringData (toCharacterData self) offset length))
+      (fromJSString <$>
+         (js_substringData (toCharacterData self) offset count))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
 substringData_ ::
                (MonadIO m, IsCharacterData self) => self -> Word -> Word -> m ()
-substringData_ self offset length
+substringData_ self offset count
   = liftIO
-      (void (js_substringData (toCharacterData self) offset length))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
-substringDataUnsafe ::
-                    (MonadIO m, IsCharacterData self, HasCallStack,
-                     FromJSString result) =>
-                      self -> Word -> Word -> m result
-substringDataUnsafe self offset length
-  = liftIO
-      ((fromMaybeJSString <$>
-          (js_substringData (toCharacterData self) offset length))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
-substringDataUnchecked ::
-                       (MonadIO m, IsCharacterData self, FromJSString result) =>
-                         self -> Word -> Word -> m result
-substringDataUnchecked self offset length
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_substringData (toCharacterData self) offset length))
+      (void (js_substringData (toCharacterData self) offset count))
  
 foreign import javascript unsafe "$1[\"appendData\"]($2)"
         js_appendData :: CharacterData -> JSString -> IO ()
@@ -98,8 +76,8 @@ foreign import javascript unsafe "$1[\"deleteData\"]($2, $3)"
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.deleteData Mozilla CharacterData.deleteData documentation> 
 deleteData ::
            (MonadIO m, IsCharacterData self) => self -> Word -> Word -> m ()
-deleteData self offset length
-  = liftIO (js_deleteData (toCharacterData self) offset length)
+deleteData self offset count
+  = liftIO (js_deleteData (toCharacterData self) offset count)
  
 foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
         js_replaceData ::
@@ -109,9 +87,9 @@ foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
 replaceData ::
             (MonadIO m, IsCharacterData self, ToJSString data') =>
               self -> Word -> Word -> data' -> m ()
-replaceData self offset length data'
+replaceData self offset count data'
   = liftIO
-      (js_replaceData (toCharacterData self) offset length
+      (js_replaceData (toCharacterData self) offset count
          (toJSString data'))
  
 foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::

@@ -1,5 +1,5 @@
 name: ghcjs-dom-jsffi
-version: 0.8.0.0
+version: 0.9.0.0
 cabal-version: >=1.24
 build-type: Simple
 license: MIT
@@ -63,6 +63,7 @@ library
           GHCJS.DOM.JSFFI.Generated.Animatable
           GHCJS.DOM.JSFFI.Generated.Animation
           GHCJS.DOM.JSFFI.Generated.AnimationEvent
+          GHCJS.DOM.JSFFI.Generated.ApplePayError
           GHCJS.DOM.JSFFI.Generated.ApplePayPaymentAuthorizedEvent
           GHCJS.DOM.JSFFI.Generated.ApplePayPaymentMethodSelectedEvent
           GHCJS.DOM.JSFFI.Generated.ApplePaySession
@@ -84,10 +85,12 @@ library
           GHCJS.DOM.JSFFI.Generated.AudioTrackList
           GHCJS.DOM.JSFFI.Generated.AutocompleteErrorEvent
           GHCJS.DOM.JSFFI.Generated.BarProp
+          GHCJS.DOM.JSFFI.Generated.BasicCredential
           GHCJS.DOM.JSFFI.Generated.BeforeLoadEvent
           GHCJS.DOM.JSFFI.Generated.BeforeUnloadEvent
           GHCJS.DOM.JSFFI.Generated.BiquadFilterNode
           GHCJS.DOM.JSFFI.Generated.Blob
+          GHCJS.DOM.JSFFI.Generated.BlobCallback
           GHCJS.DOM.JSFFI.Generated.Body
           GHCJS.DOM.JSFFI.Generated.ByteLengthQueuingStrategy
           GHCJS.DOM.JSFFI.Generated.CSS
@@ -108,13 +111,12 @@ library
           GHCJS.DOM.JSFFI.Generated.CSSSupportsRule
           GHCJS.DOM.JSFFI.Generated.CSSValue
           GHCJS.DOM.JSFFI.Generated.CSSValueList
+          GHCJS.DOM.JSFFI.Generated.CanvasCaptureMediaStreamTrack
           GHCJS.DOM.JSFFI.Generated.CanvasGradient
           GHCJS.DOM.JSFFI.Generated.CanvasPath
           GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D
           GHCJS.DOM.JSFFI.Generated.CharacterData
           GHCJS.DOM.JSFFI.Generated.ChildNode
-          GHCJS.DOM.JSFFI.Generated.ClientRect
-          GHCJS.DOM.JSFFI.Generated.ClientRectList
           GHCJS.DOM.JSFFI.Generated.ClipboardEvent
           GHCJS.DOM.JSFFI.Generated.CloseEvent
           GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost
@@ -152,6 +154,7 @@ library
           GHCJS.DOM.JSFFI.Generated.DeviceOrientationEvent
           GHCJS.DOM.JSFFI.Generated.DeviceProximityEvent
           GHCJS.DOM.JSFFI.Generated.Document
+          GHCJS.DOM.JSFFI.Generated.DocumentAndElementEventHandlers
           GHCJS.DOM.JSFFI.Generated.DocumentFragment
           GHCJS.DOM.JSFFI.Generated.DocumentOrShadowRoot
           GHCJS.DOM.JSFFI.Generated.DocumentTimeline
@@ -161,6 +164,7 @@ library
           GHCJS.DOM.JSFFI.Generated.EXTTextureFilterAnisotropic
           GHCJS.DOM.JSFFI.Generated.EXTsRGB
           GHCJS.DOM.JSFFI.Generated.Element
+          GHCJS.DOM.JSFFI.Generated.ElementCSSInlineStyle
           GHCJS.DOM.JSFFI.Generated.Enums
           GHCJS.DOM.JSFFI.Generated.ErrorEvent
           GHCJS.DOM.JSFFI.Generated.Event
@@ -333,7 +337,6 @@ library
           GHCJS.DOM.JSFFI.Generated.NonDocumentTypeChildNode
           GHCJS.DOM.JSFFI.Generated.NonElementParentNode
           GHCJS.DOM.JSFFI.Generated.Notification
-          GHCJS.DOM.JSFFI.Generated.NotificationCenter
           GHCJS.DOM.JSFFI.Generated.NotificationPermissionCallback
           GHCJS.DOM.JSFFI.Generated.OESStandardDerivatives
           GHCJS.DOM.JSFFI.Generated.OESTextureHalfFloat
@@ -347,6 +350,7 @@ library
           GHCJS.DOM.JSFFI.Generated.PageTransitionEvent
           GHCJS.DOM.JSFFI.Generated.PannerNode
           GHCJS.DOM.JSFFI.Generated.ParentNode
+          GHCJS.DOM.JSFFI.Generated.PasswordCredential
           GHCJS.DOM.JSFFI.Generated.Path2D
           GHCJS.DOM.JSFFI.Generated.Performance
           GHCJS.DOM.JSFFI.Generated.PerformanceEntry
@@ -364,6 +368,7 @@ library
           GHCJS.DOM.JSFFI.Generated.PositionErrorCallback
           GHCJS.DOM.JSFFI.Generated.ProcessingInstruction
           GHCJS.DOM.JSFFI.Generated.ProgressEvent
+          GHCJS.DOM.JSFFI.Generated.PromiseRejectionEvent
           GHCJS.DOM.JSFFI.Generated.QuickTimePluginReplacement
           GHCJS.DOM.JSFFI.Generated.RGBColor
           GHCJS.DOM.JSFFI.Generated.RTCDTMFSender
@@ -372,7 +377,9 @@ library
           GHCJS.DOM.JSFFI.Generated.RTCDataChannelEvent
           GHCJS.DOM.JSFFI.Generated.RTCIceCandidate
           GHCJS.DOM.JSFFI.Generated.RTCIceCandidateEvent
+          GHCJS.DOM.JSFFI.Generated.RTCIceTransport
           GHCJS.DOM.JSFFI.Generated.RTCPeerConnection
+          GHCJS.DOM.JSFFI.Generated.RTCPeerConnectionIceEvent
           GHCJS.DOM.JSFFI.Generated.RTCRtpReceiver
           GHCJS.DOM.JSFFI.Generated.RTCRtpSender
           GHCJS.DOM.JSFFI.Generated.RTCRtpTransceiver
@@ -382,6 +389,8 @@ library
           GHCJS.DOM.JSFFI.Generated.Range
           GHCJS.DOM.JSFFI.Generated.ReadableByteStreamController
           GHCJS.DOM.JSFFI.Generated.ReadableStream
+          GHCJS.DOM.JSFFI.Generated.ReadableStreamBYOBReader
+          GHCJS.DOM.JSFFI.Generated.ReadableStreamBYOBRequest
           GHCJS.DOM.JSFFI.Generated.ReadableStreamDefaultController
           GHCJS.DOM.JSFFI.Generated.ReadableStreamDefaultReader
           GHCJS.DOM.JSFFI.Generated.ReadableStreamSource
@@ -512,6 +521,7 @@ library
           GHCJS.DOM.JSFFI.Generated.SecurityPolicyViolationEvent
           GHCJS.DOM.JSFFI.Generated.Selection
           GHCJS.DOM.JSFFI.Generated.ShadowRoot
+          GHCJS.DOM.JSFFI.Generated.SiteBoundCredential
           GHCJS.DOM.JSFFI.Generated.Slotable
           GHCJS.DOM.JSFFI.Generated.SourceBuffer
           GHCJS.DOM.JSFFI.Generated.SourceBufferList
@@ -574,6 +584,26 @@ library
           GHCJS.DOM.JSFFI.Generated.WebGLLoseContext
           GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase
           GHCJS.DOM.JSFFI.Generated.WebGLShaderPrecisionFormat
+          GHCJS.DOM.JSFFI.Generated.WebGPUBuffer
+          GHCJS.DOM.JSFFI.Generated.WebGPUCommandBuffer
+          GHCJS.DOM.JSFFI.Generated.WebGPUCommandQueue
+          GHCJS.DOM.JSFFI.Generated.WebGPUComputeCommandEncoder
+          GHCJS.DOM.JSFFI.Generated.WebGPUDepthStencilDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPUDepthStencilState
+          GHCJS.DOM.JSFFI.Generated.WebGPUDrawable
+          GHCJS.DOM.JSFFI.Generated.WebGPUFunction
+          GHCJS.DOM.JSFFI.Generated.WebGPULibrary
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderCommandEncoder
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPassAttachmentDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPassColorAttachmentDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPassDepthAttachmentDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPassDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineColorAttachmentDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineDescriptor
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineState
+          GHCJS.DOM.JSFFI.Generated.WebGPURenderingContext
+          GHCJS.DOM.JSFFI.Generated.WebGPUTexture
+          GHCJS.DOM.JSFFI.Generated.WebGPUTextureDescriptor
           GHCJS.DOM.JSFFI.Generated.WebKitAnimationEvent
           GHCJS.DOM.JSFFI.Generated.WebKitCSSMatrix
           GHCJS.DOM.JSFFI.Generated.WebKitCSSRegionRule
@@ -611,6 +641,7 @@ library
           GHCJS.DOM.JSFFI.Generated.XSLTProcessor
 
     reexported-modules:
+          -- cat ghcjs-dom-jsffi/reexported-modules.txt | pbcopy
           -- Generated by domconv-webkit-jsffi
             GHCJS.DOM.JSFFI.Generated.ANGLEInstancedArrays as GHCJS.DOM.ANGLEInstancedArrays
           , GHCJS.DOM.JSFFI.Generated.AbstractWorker as GHCJS.DOM.AbstractWorker
@@ -618,6 +649,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.Animatable as GHCJS.DOM.Animatable
           , GHCJS.DOM.JSFFI.Generated.Animation as GHCJS.DOM.Animation
           , GHCJS.DOM.JSFFI.Generated.AnimationEvent as GHCJS.DOM.AnimationEvent
+          , GHCJS.DOM.JSFFI.Generated.ApplePayError as GHCJS.DOM.ApplePayError
           , GHCJS.DOM.JSFFI.Generated.ApplePayPaymentAuthorizedEvent as GHCJS.DOM.ApplePayPaymentAuthorizedEvent
           , GHCJS.DOM.JSFFI.Generated.ApplePayPaymentMethodSelectedEvent as GHCJS.DOM.ApplePayPaymentMethodSelectedEvent
           , GHCJS.DOM.JSFFI.Generated.ApplePaySession as GHCJS.DOM.ApplePaySession
@@ -639,10 +671,12 @@ library
           , GHCJS.DOM.JSFFI.Generated.AudioTrackList as GHCJS.DOM.AudioTrackList
           , GHCJS.DOM.JSFFI.Generated.AutocompleteErrorEvent as GHCJS.DOM.AutocompleteErrorEvent
           , GHCJS.DOM.JSFFI.Generated.BarProp as GHCJS.DOM.BarProp
+          , GHCJS.DOM.JSFFI.Generated.BasicCredential as GHCJS.DOM.BasicCredential
           , GHCJS.DOM.JSFFI.Generated.BeforeLoadEvent as GHCJS.DOM.BeforeLoadEvent
           , GHCJS.DOM.JSFFI.Generated.BeforeUnloadEvent as GHCJS.DOM.BeforeUnloadEvent
           , GHCJS.DOM.JSFFI.Generated.BiquadFilterNode as GHCJS.DOM.BiquadFilterNode
           , GHCJS.DOM.JSFFI.Generated.Blob as GHCJS.DOM.Blob
+          , GHCJS.DOM.JSFFI.Generated.BlobCallback as GHCJS.DOM.BlobCallback
           , GHCJS.DOM.JSFFI.Generated.Body as GHCJS.DOM.Body
           , GHCJS.DOM.JSFFI.Generated.ByteLengthQueuingStrategy as GHCJS.DOM.ByteLengthQueuingStrategy
           , GHCJS.DOM.JSFFI.Generated.CSS as GHCJS.DOM.CSS
@@ -663,13 +697,12 @@ library
           , GHCJS.DOM.JSFFI.Generated.CSSSupportsRule as GHCJS.DOM.CSSSupportsRule
           , GHCJS.DOM.JSFFI.Generated.CSSValue as GHCJS.DOM.CSSValue
           , GHCJS.DOM.JSFFI.Generated.CSSValueList as GHCJS.DOM.CSSValueList
+          , GHCJS.DOM.JSFFI.Generated.CanvasCaptureMediaStreamTrack as GHCJS.DOM.CanvasCaptureMediaStreamTrack
           , GHCJS.DOM.JSFFI.Generated.CanvasGradient as GHCJS.DOM.CanvasGradient
           , GHCJS.DOM.JSFFI.Generated.CanvasPath as GHCJS.DOM.CanvasPath
           , GHCJS.DOM.JSFFI.Generated.CanvasRenderingContext2D as GHCJS.DOM.CanvasRenderingContext2D
           , GHCJS.DOM.JSFFI.Generated.CharacterData as GHCJS.DOM.CharacterData
           , GHCJS.DOM.JSFFI.Generated.ChildNode as GHCJS.DOM.ChildNode
-          , GHCJS.DOM.JSFFI.Generated.ClientRect as GHCJS.DOM.ClientRect
-          , GHCJS.DOM.JSFFI.Generated.ClientRectList as GHCJS.DOM.ClientRectList
           , GHCJS.DOM.JSFFI.Generated.ClipboardEvent as GHCJS.DOM.ClipboardEvent
           , GHCJS.DOM.JSFFI.Generated.CloseEvent as GHCJS.DOM.CloseEvent
           , GHCJS.DOM.JSFFI.Generated.CommandLineAPIHost as GHCJS.DOM.CommandLineAPIHost
@@ -707,6 +740,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.DeviceOrientationEvent as GHCJS.DOM.DeviceOrientationEvent
           , GHCJS.DOM.JSFFI.Generated.DeviceProximityEvent as GHCJS.DOM.DeviceProximityEvent
           , GHCJS.DOM.JSFFI.Generated.Document as GHCJS.DOM.Document
+          , GHCJS.DOM.JSFFI.Generated.DocumentAndElementEventHandlers as GHCJS.DOM.DocumentAndElementEventHandlers
           , GHCJS.DOM.JSFFI.Generated.DocumentFragment as GHCJS.DOM.DocumentFragment
           , GHCJS.DOM.JSFFI.Generated.DocumentOrShadowRoot as GHCJS.DOM.DocumentOrShadowRoot
           , GHCJS.DOM.JSFFI.Generated.DocumentTimeline as GHCJS.DOM.DocumentTimeline
@@ -716,6 +750,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.EXTTextureFilterAnisotropic as GHCJS.DOM.EXTTextureFilterAnisotropic
           , GHCJS.DOM.JSFFI.Generated.EXTsRGB as GHCJS.DOM.EXTsRGB
           , GHCJS.DOM.JSFFI.Generated.Element as GHCJS.DOM.Element
+          , GHCJS.DOM.JSFFI.Generated.ElementCSSInlineStyle as GHCJS.DOM.ElementCSSInlineStyle
           , GHCJS.DOM.JSFFI.Generated.Enums as GHCJS.DOM.Enums
           , GHCJS.DOM.JSFFI.Generated.ErrorEvent as GHCJS.DOM.ErrorEvent
           , GHCJS.DOM.JSFFI.Generated.Event as GHCJS.DOM.Event
@@ -888,7 +923,6 @@ library
           , GHCJS.DOM.JSFFI.Generated.NonDocumentTypeChildNode as GHCJS.DOM.NonDocumentTypeChildNode
           , GHCJS.DOM.JSFFI.Generated.NonElementParentNode as GHCJS.DOM.NonElementParentNode
           , GHCJS.DOM.JSFFI.Generated.Notification as GHCJS.DOM.Notification
-          , GHCJS.DOM.JSFFI.Generated.NotificationCenter as GHCJS.DOM.NotificationCenter
           , GHCJS.DOM.JSFFI.Generated.NotificationPermissionCallback as GHCJS.DOM.NotificationPermissionCallback
           , GHCJS.DOM.JSFFI.Generated.OESStandardDerivatives as GHCJS.DOM.OESStandardDerivatives
           , GHCJS.DOM.JSFFI.Generated.OESTextureHalfFloat as GHCJS.DOM.OESTextureHalfFloat
@@ -902,6 +936,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.PageTransitionEvent as GHCJS.DOM.PageTransitionEvent
           , GHCJS.DOM.JSFFI.Generated.PannerNode as GHCJS.DOM.PannerNode
           , GHCJS.DOM.JSFFI.Generated.ParentNode as GHCJS.DOM.ParentNode
+          , GHCJS.DOM.JSFFI.Generated.PasswordCredential as GHCJS.DOM.PasswordCredential
           , GHCJS.DOM.JSFFI.Generated.Path2D as GHCJS.DOM.Path2D
           , GHCJS.DOM.JSFFI.Generated.Performance as GHCJS.DOM.Performance
           , GHCJS.DOM.JSFFI.Generated.PerformanceEntry as GHCJS.DOM.PerformanceEntry
@@ -919,6 +954,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.PositionErrorCallback as GHCJS.DOM.PositionErrorCallback
           , GHCJS.DOM.JSFFI.Generated.ProcessingInstruction as GHCJS.DOM.ProcessingInstruction
           , GHCJS.DOM.JSFFI.Generated.ProgressEvent as GHCJS.DOM.ProgressEvent
+          , GHCJS.DOM.JSFFI.Generated.PromiseRejectionEvent as GHCJS.DOM.PromiseRejectionEvent
           , GHCJS.DOM.JSFFI.Generated.QuickTimePluginReplacement as GHCJS.DOM.QuickTimePluginReplacement
           , GHCJS.DOM.JSFFI.Generated.RGBColor as GHCJS.DOM.RGBColor
           , GHCJS.DOM.JSFFI.Generated.RTCDTMFSender as GHCJS.DOM.RTCDTMFSender
@@ -927,7 +963,9 @@ library
           , GHCJS.DOM.JSFFI.Generated.RTCDataChannelEvent as GHCJS.DOM.RTCDataChannelEvent
           , GHCJS.DOM.JSFFI.Generated.RTCIceCandidate as GHCJS.DOM.RTCIceCandidate
           , GHCJS.DOM.JSFFI.Generated.RTCIceCandidateEvent as GHCJS.DOM.RTCIceCandidateEvent
+          , GHCJS.DOM.JSFFI.Generated.RTCIceTransport as GHCJS.DOM.RTCIceTransport
           , GHCJS.DOM.JSFFI.Generated.RTCPeerConnection as GHCJS.DOM.RTCPeerConnection
+          , GHCJS.DOM.JSFFI.Generated.RTCPeerConnectionIceEvent as GHCJS.DOM.RTCPeerConnectionIceEvent
           , GHCJS.DOM.JSFFI.Generated.RTCRtpReceiver as GHCJS.DOM.RTCRtpReceiver
           , GHCJS.DOM.JSFFI.Generated.RTCRtpSender as GHCJS.DOM.RTCRtpSender
           , GHCJS.DOM.JSFFI.Generated.RTCRtpTransceiver as GHCJS.DOM.RTCRtpTransceiver
@@ -937,6 +975,8 @@ library
           , GHCJS.DOM.JSFFI.Generated.Range as GHCJS.DOM.Range
           , GHCJS.DOM.JSFFI.Generated.ReadableByteStreamController as GHCJS.DOM.ReadableByteStreamController
           , GHCJS.DOM.JSFFI.Generated.ReadableStream as GHCJS.DOM.ReadableStream
+          , GHCJS.DOM.JSFFI.Generated.ReadableStreamBYOBReader as GHCJS.DOM.ReadableStreamBYOBReader
+          , GHCJS.DOM.JSFFI.Generated.ReadableStreamBYOBRequest as GHCJS.DOM.ReadableStreamBYOBRequest
           , GHCJS.DOM.JSFFI.Generated.ReadableStreamDefaultController as GHCJS.DOM.ReadableStreamDefaultController
           , GHCJS.DOM.JSFFI.Generated.ReadableStreamDefaultReader as GHCJS.DOM.ReadableStreamDefaultReader
           , GHCJS.DOM.JSFFI.Generated.ReadableStreamSource as GHCJS.DOM.ReadableStreamSource
@@ -1067,6 +1107,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.SecurityPolicyViolationEvent as GHCJS.DOM.SecurityPolicyViolationEvent
           , GHCJS.DOM.JSFFI.Generated.Selection as GHCJS.DOM.Selection
           , GHCJS.DOM.JSFFI.Generated.ShadowRoot as GHCJS.DOM.ShadowRoot
+          , GHCJS.DOM.JSFFI.Generated.SiteBoundCredential as GHCJS.DOM.SiteBoundCredential
           , GHCJS.DOM.JSFFI.Generated.Slotable as GHCJS.DOM.Slotable
           , GHCJS.DOM.JSFFI.Generated.SourceBuffer as GHCJS.DOM.SourceBuffer
           , GHCJS.DOM.JSFFI.Generated.SourceBufferList as GHCJS.DOM.SourceBufferList
@@ -1129,6 +1170,26 @@ library
           , GHCJS.DOM.JSFFI.Generated.WebGLLoseContext as GHCJS.DOM.WebGLLoseContext
           , GHCJS.DOM.JSFFI.Generated.WebGLRenderingContextBase as GHCJS.DOM.WebGLRenderingContextBase
           , GHCJS.DOM.JSFFI.Generated.WebGLShaderPrecisionFormat as GHCJS.DOM.WebGLShaderPrecisionFormat
+          , GHCJS.DOM.JSFFI.Generated.WebGPUBuffer as GHCJS.DOM.WebGPUBuffer
+          , GHCJS.DOM.JSFFI.Generated.WebGPUCommandBuffer as GHCJS.DOM.WebGPUCommandBuffer
+          , GHCJS.DOM.JSFFI.Generated.WebGPUCommandQueue as GHCJS.DOM.WebGPUCommandQueue
+          , GHCJS.DOM.JSFFI.Generated.WebGPUComputeCommandEncoder as GHCJS.DOM.WebGPUComputeCommandEncoder
+          , GHCJS.DOM.JSFFI.Generated.WebGPUDepthStencilDescriptor as GHCJS.DOM.WebGPUDepthStencilDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPUDepthStencilState as GHCJS.DOM.WebGPUDepthStencilState
+          , GHCJS.DOM.JSFFI.Generated.WebGPUDrawable as GHCJS.DOM.WebGPUDrawable
+          , GHCJS.DOM.JSFFI.Generated.WebGPUFunction as GHCJS.DOM.WebGPUFunction
+          , GHCJS.DOM.JSFFI.Generated.WebGPULibrary as GHCJS.DOM.WebGPULibrary
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderCommandEncoder as GHCJS.DOM.WebGPURenderCommandEncoder
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPassAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassAttachmentDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPassColorAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassColorAttachmentDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPassDepthAttachmentDescriptor as GHCJS.DOM.WebGPURenderPassDepthAttachmentDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPassDescriptor as GHCJS.DOM.WebGPURenderPassDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineColorAttachmentDescriptor as GHCJS.DOM.WebGPURenderPipelineColorAttachmentDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineDescriptor as GHCJS.DOM.WebGPURenderPipelineDescriptor
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderPipelineState as GHCJS.DOM.WebGPURenderPipelineState
+          , GHCJS.DOM.JSFFI.Generated.WebGPURenderingContext as GHCJS.DOM.WebGPURenderingContext
+          , GHCJS.DOM.JSFFI.Generated.WebGPUTexture as GHCJS.DOM.WebGPUTexture
+          , GHCJS.DOM.JSFFI.Generated.WebGPUTextureDescriptor as GHCJS.DOM.WebGPUTextureDescriptor
           , GHCJS.DOM.JSFFI.Generated.WebKitAnimationEvent as GHCJS.DOM.WebKitAnimationEvent
           , GHCJS.DOM.JSFFI.Generated.WebKitCSSMatrix as GHCJS.DOM.WebKitCSSMatrix
           , GHCJS.DOM.JSFFI.Generated.WebKitCSSRegionRule as GHCJS.DOM.WebKitCSSRegionRule

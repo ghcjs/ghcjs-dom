@@ -11,7 +11,13 @@ module GHCJS.DOM.JSFFI.Generated.ApplePaySession
         canMakePaymentsWithActiveCard_, js_openPaymentSetup,
         openPaymentSetup, openPaymentSetup_, js_begin, begin, js_abort,
         abort, js_completeMerchantValidation, completeMerchantValidation,
-        js_completeShippingMethodSelection,
+        js_completeShippingMethodSelectionUpdate,
+        completeShippingMethodSelectionUpdate,
+        js_completeShippingContactSelectionUpdate,
+        completeShippingContactSelectionUpdate,
+        js_completePaymentMethodSelectionUpdate,
+        completePaymentMethodSelectionUpdate, js_completePaymentResult,
+        completePaymentResult, js_completeShippingMethodSelection,
         completeShippingMethodSelection,
         js_completeShippingContactSelection,
         completeShippingContactSelection,
@@ -152,6 +158,53 @@ completeMerchantValidation self merchantSession
       (toJSVal merchantSession >>=
          \ merchantSession' ->
            js_completeMerchantValidation self merchantSession')
+ 
+foreign import javascript unsafe
+        "$1[\"completeShippingMethodSelection\"]($2)"
+        js_completeShippingMethodSelectionUpdate ::
+        ApplePaySession -> ApplePayShippingMethodUpdate -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completeShippingMethodSelection Mozilla ApplePaySession.completeShippingMethodSelection documentation> 
+completeShippingMethodSelectionUpdate ::
+                                      (MonadIO m) =>
+                                        ApplePaySession -> ApplePayShippingMethodUpdate -> m ()
+completeShippingMethodSelectionUpdate self update
+  = liftIO (js_completeShippingMethodSelectionUpdate self update)
+ 
+foreign import javascript unsafe
+        "$1[\"completeShippingContactSelection\"]($2)"
+        js_completeShippingContactSelectionUpdate ::
+        ApplePaySession -> ApplePayShippingContactUpdate -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completeShippingContactSelection Mozilla ApplePaySession.completeShippingContactSelection documentation> 
+completeShippingContactSelectionUpdate ::
+                                       (MonadIO m) =>
+                                         ApplePaySession -> ApplePayShippingContactUpdate -> m ()
+completeShippingContactSelectionUpdate self update
+  = liftIO (js_completeShippingContactSelectionUpdate self update)
+ 
+foreign import javascript unsafe
+        "$1[\"completePaymentMethodSelection\"]($2)"
+        js_completePaymentMethodSelectionUpdate ::
+        ApplePaySession -> ApplePayPaymentMethodUpdate -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completePaymentMethodSelection Mozilla ApplePaySession.completePaymentMethodSelection documentation> 
+completePaymentMethodSelectionUpdate ::
+                                     (MonadIO m) =>
+                                       ApplePaySession -> ApplePayPaymentMethodUpdate -> m ()
+completePaymentMethodSelectionUpdate self update
+  = liftIO (js_completePaymentMethodSelectionUpdate self update)
+ 
+foreign import javascript unsafe "$1[\"completePayment\"]($2)"
+        js_completePaymentResult ::
+        ApplePaySession -> ApplePayPaymentAuthorizationResult -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completePayment Mozilla ApplePaySession.completePayment documentation> 
+completePaymentResult ::
+                      (MonadIO m) =>
+                        ApplePaySession -> ApplePayPaymentAuthorizationResult -> m ()
+completePaymentResult self result
+  = liftIO (js_completePaymentResult self result)
  
 foreign import javascript unsafe
         "$1[\"completeShippingMethodSelection\"]($2,\n$3, $4)"

@@ -4,8 +4,8 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.NodeList
-       (js_item, item, item_, js_getLength, getLength, NodeList(..),
-        gTypeNodeList, IsNodeList, toNodeList)
+       (js_item, item, item_, itemUnsafe, itemUnchecked, js_getLength,
+        getLength, NodeList(..), gTypeNodeList, IsNodeList, toNodeList)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -27,15 +27,33 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[$2]" js_item ::
-        NodeList -> Word -> IO Node
+        NodeList -> Word -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
-item :: (MonadIO m, IsNodeList self) => self -> Word -> m Node
-item self index = liftIO (js_item (toNodeList self) index)
+item ::
+     (MonadIO m, IsNodeList self) => self -> Word -> m (Maybe Node)
+item self index
+  = liftIO (nullableToMaybe <$> (js_item (toNodeList self) index))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
 item_ :: (MonadIO m, IsNodeList self) => self -> Word -> m ()
 item_ self index = liftIO (void (js_item (toNodeList self) index))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
+itemUnsafe ::
+           (MonadIO m, IsNodeList self, HasCallStack) =>
+             self -> Word -> m Node
+itemUnsafe self index
+  = liftIO
+      ((nullableToMaybe <$> (js_item (toNodeList self) index)) >>=
+         maybe (Prelude.error "Nothing to return") return)
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeList.item Mozilla NodeList.item documentation> 
+itemUnchecked ::
+              (MonadIO m, IsNodeList self) => self -> Word -> m Node
+itemUnchecked self index
+  = liftIO
+      (fromJust . nullableToMaybe <$> (js_item (toNodeList self) index))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         NodeList -> IO Word

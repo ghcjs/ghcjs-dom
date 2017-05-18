@@ -15,7 +15,9 @@ module GHCJS.DOM.JSFFI.Generated.HTMLLinkElement
         setCrossOrigin, js_getCrossOrigin, getCrossOrigin,
         getCrossOriginUnsafe, getCrossOriginUnchecked, js_getSheet,
         getSheet, js_getRelList, getRelList, js_setNonce, setNonce,
-        js_getNonce, getNonce, HTMLLinkElement(..), gTypeHTMLLinkElement)
+        js_getNonce, getNonce, js_setIntegrity, setIntegrity,
+        js_getIntegrity, getIntegrity, HTMLLinkElement(..),
+        gTypeHTMLLinkElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -266,3 +268,21 @@ foreign import javascript unsafe "$1[\"nonce\"]" js_getNonce ::
 getNonce ::
          (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getNonce self = liftIO (fromJSString <$> (js_getNonce self))
+ 
+foreign import javascript unsafe "$1[\"integrity\"] = $2;"
+        js_setIntegrity :: HTMLLinkElement -> JSString -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.integrity Mozilla HTMLLinkElement.integrity documentation> 
+setIntegrity ::
+             (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
+setIntegrity self val
+  = liftIO (js_setIntegrity self (toJSString val))
+ 
+foreign import javascript unsafe "$1[\"integrity\"]"
+        js_getIntegrity :: HTMLLinkElement -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.integrity Mozilla HTMLLinkElement.integrity documentation> 
+getIntegrity ::
+             (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
+getIntegrity self
+  = liftIO (fromJSString <$> (js_getIntegrity self))

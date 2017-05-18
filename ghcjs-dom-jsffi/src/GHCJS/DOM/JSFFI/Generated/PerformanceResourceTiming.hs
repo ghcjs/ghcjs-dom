@@ -4,9 +4,10 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.PerformanceResourceTiming
-       (js_getInitiatorType, getInitiatorType, js_getWorkerStart,
-        getWorkerStart, js_getRedirectStart, getRedirectStart,
-        js_getRedirectEnd, getRedirectEnd, js_getFetchStart, getFetchStart,
+       (js_getInitiatorType, getInitiatorType, js_getNextHopProtocol,
+        getNextHopProtocol, js_getWorkerStart, getWorkerStart,
+        js_getRedirectStart, getRedirectStart, js_getRedirectEnd,
+        getRedirectEnd, js_getFetchStart, getFetchStart,
         js_getDomainLookupStart, getDomainLookupStart,
         js_getDomainLookupEnd, getDomainLookupEnd, js_getConnectStart,
         getConnectStart, js_getConnectEnd, getConnectEnd,
@@ -43,6 +44,16 @@ getInitiatorType ::
                    PerformanceResourceTiming -> m result
 getInitiatorType self
   = liftIO (fromJSString <$> (js_getInitiatorType self))
+ 
+foreign import javascript unsafe "$1[\"nextHopProtocol\"]"
+        js_getNextHopProtocol :: PerformanceResourceTiming -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.nextHopProtocol Mozilla PerformanceResourceTiming.nextHopProtocol documentation> 
+getNextHopProtocol ::
+                   (MonadIO m, FromJSString result) =>
+                     PerformanceResourceTiming -> m result
+getNextHopProtocol self
+  = liftIO (fromJSString <$> (js_getNextHopProtocol self))
  
 foreign import javascript unsafe "$1[\"workerStart\"]"
         js_getWorkerStart ::

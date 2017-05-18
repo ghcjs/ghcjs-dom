@@ -6,7 +6,9 @@
 module GHCJS.DOM.JSFFI.Generated.History
        (js_back, back, js_forward, forward, js_go, go, js_pushState,
         pushState, js_replaceState, replaceState, js_getLength, getLength,
-        js_getState, getState, History(..), gTypeHistory)
+        js_setScrollRestoration, setScrollRestoration,
+        js_getScrollRestoration, getScrollRestoration, js_getState,
+        getState, History(..), gTypeHistory)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -82,6 +84,24 @@ foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.length Mozilla History.length documentation> 
 getLength :: (MonadIO m) => History -> m Word
 getLength self = liftIO (js_getLength self)
+ 
+foreign import javascript unsafe "$1[\"scrollRestoration\"] = $2;"
+        js_setScrollRestoration :: History -> JSVal -> IO ()
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 
+setScrollRestoration ::
+                     (MonadIO m) => History -> ScrollRestoration -> m ()
+setScrollRestoration self val
+  = liftIO (js_setScrollRestoration self (pToJSVal val))
+ 
+foreign import javascript unsafe "$1[\"scrollRestoration\"]"
+        js_getScrollRestoration :: History -> IO JSVal
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 
+getScrollRestoration ::
+                     (MonadIO m) => History -> m ScrollRestoration
+getScrollRestoration self
+  = liftIO ((js_getScrollRestoration self) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
         History -> IO SerializedScriptValue

@@ -11,7 +11,7 @@ module GHCJS.DOM.JSFFI.Generated.MediaStream
         getTracks, getTracks_, js_getTrackById, getTrackById,
         getTrackById_, js_addTrack, addTrack, js_removeTrack, removeTrack,
         js_clone, clone, clone_, js_getId, getId, js_getActive, getActive,
-        active, inactive, addTrackEvent, removeTrackEvent, MediaStream(..),
+        addTrackEvent, removeTrackEvent, active, inactive, MediaStream(..),
         gTypeMediaStream)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -55,7 +55,7 @@ foreign import javascript unsafe
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
 newMediaStream'' ::
-                 (MonadIO m) => [MediaStreamTrack] -> m MediaStream
+                 (MonadIO m, IsMediaStreamTrack tracks) => [tracks] -> m MediaStream
 newMediaStream'' tracks
   = liftIO
       (toJSVal tracks >>= \ tracks' -> js_newMediaStream'' tracks')
@@ -118,16 +118,21 @@ foreign import javascript unsafe "$1[\"addTrack\"]($2)" js_addTrack
         :: MediaStream -> MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.addTrack Mozilla webkitMediaStream.addTrack documentation> 
-addTrack :: (MonadIO m) => MediaStream -> MediaStreamTrack -> m ()
-addTrack self track = liftIO (js_addTrack self track)
+addTrack ::
+         (MonadIO m, IsMediaStreamTrack track) =>
+           MediaStream -> track -> m ()
+addTrack self track
+  = liftIO (js_addTrack self (toMediaStreamTrack track))
  
 foreign import javascript unsafe "$1[\"removeTrack\"]($2)"
         js_removeTrack :: MediaStream -> MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.removeTrack Mozilla webkitMediaStream.removeTrack documentation> 
 removeTrack ::
-            (MonadIO m) => MediaStream -> MediaStreamTrack -> m ()
-removeTrack self track = liftIO (js_removeTrack self track)
+            (MonadIO m, IsMediaStreamTrack track) =>
+              MediaStream -> track -> m ()
+removeTrack self track
+  = liftIO (js_removeTrack self (toMediaStreamTrack track))
  
 foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
         MediaStream -> IO MediaStream
@@ -155,14 +160,6 @@ foreign import javascript unsafe "($1[\"active\"] ? 1 : 0)"
 getActive :: (MonadIO m) => MediaStream -> m Bool
 getActive self = liftIO (js_getActive self)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onactive Mozilla webkitMediaStream.onactive documentation> 
-active :: EventName MediaStream Event
-active = unsafeEventName (toJSString "active")
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.oninactive Mozilla webkitMediaStream.oninactive documentation> 
-inactive :: EventName MediaStream Event
-inactive = unsafeEventName (toJSString "inactive")
-
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onaddtrack Mozilla webkitMediaStream.onaddtrack documentation> 
 addTrackEvent :: EventName MediaStream Event
 addTrackEvent = unsafeEventName (toJSString "addtrack")
@@ -170,3 +167,11 @@ addTrackEvent = unsafeEventName (toJSString "addtrack")
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onremovetrack Mozilla webkitMediaStream.onremovetrack documentation> 
 removeTrackEvent :: EventName MediaStream Event
 removeTrackEvent = unsafeEventName (toJSString "removetrack")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.onactive Mozilla webkitMediaStream.onactive documentation> 
+active :: EventName MediaStream Event
+active = unsafeEventName (toJSString "active")
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.oninactive Mozilla webkitMediaStream.oninactive documentation> 
+inactive :: EventName MediaStream Event
+inactive = unsafeEventName (toJSString "inactive")
