@@ -34,6 +34,9 @@
 
 // Use this file with the domconv-webkit tool update the Haskell webkit DOM bindings
 module core {
+// Functions provided directly be JavaScriptCore
+#include "idl/JavaScriptCore.idl"
+
 // These have been removed, but we still need them
 #include "idl/old/NavigatorUserMediaError.idl"
 #include "idl/old/NavigatorUserMediaErrorCallback.idl"

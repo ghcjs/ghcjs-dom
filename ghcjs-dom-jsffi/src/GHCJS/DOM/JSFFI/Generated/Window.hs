@@ -4,13 +4,17 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.Window
-       (js_fetch, fetch, fetch_, js_openDatabase, openDatabase,
-        openDatabase_, openDatabaseUnsafe, openDatabaseUnchecked, js_close,
-        close, js_stop, stop, js_focus, focus, js_blur, blur, js_open,
-        open, open_, openUnsafe, openUnchecked, js_alertNoMessage,
-        alertNoMessage, js_alert, alert, js_confirm, confirm, confirm_,
-        js_prompt, prompt, prompt_, promptUnsafe, promptUnchecked,
-        js_print, print, js_requestAnimationFrame, requestAnimationFrame,
+       (js_decodeURI, decodeURI, decodeURI_, js_decodeURIComponent,
+        decodeURIComponent, decodeURIComponent_, js_encodeURI, encodeURI,
+        encodeURI_, js_encodeURIComponent, encodeURIComponent,
+        encodeURIComponent_, js_fetch, fetch, fetch_, js_openDatabase,
+        openDatabase, openDatabase_, openDatabaseUnsafe,
+        openDatabaseUnchecked, js_close, close, js_stop, stop, js_focus,
+        focus, js_blur, blur, js_open, open, open_, openUnsafe,
+        openUnchecked, js_alertNoMessage, alertNoMessage, js_alert, alert,
+        js_confirm, confirm, confirm_, js_prompt, prompt, prompt_,
+        promptUnsafe, promptUnchecked, js_print, print,
+        js_requestAnimationFrame, requestAnimationFrame,
         requestAnimationFrame_, js_cancelAnimationFrame,
         cancelAnimationFrame, js_postMessage, postMessage,
         js_captureEvents, captureEvents, js_releaseEvents, releaseEvents,
@@ -93,6 +97,70 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
+ 
+foreign import javascript unsafe "$1[\"decodeURI\"]($2)"
+        js_decodeURI :: Window -> JSString -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURI Mozilla Window.decodeURI documentation> 
+decodeURI ::
+          (MonadIO m, ToJSString uri, FromJSString result) =>
+            Window -> uri -> m result
+decodeURI self uri
+  = liftIO (fromJSString <$> (js_decodeURI self (toJSString uri)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURI Mozilla Window.decodeURI documentation> 
+decodeURI_ :: (MonadIO m, ToJSString uri) => Window -> uri -> m ()
+decodeURI_ self uri
+  = liftIO (void (js_decodeURI self (toJSString uri)))
+ 
+foreign import javascript unsafe "$1[\"decodeURIComponent\"]($2)"
+        js_decodeURIComponent :: Window -> JSString -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURIComponent Mozilla Window.decodeURIComponent documentation> 
+decodeURIComponent ::
+                   (MonadIO m, ToJSString uri, FromJSString result) =>
+                     Window -> uri -> m result
+decodeURIComponent self uri
+  = liftIO
+      (fromJSString <$> (js_decodeURIComponent self (toJSString uri)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURIComponent Mozilla Window.decodeURIComponent documentation> 
+decodeURIComponent_ ::
+                    (MonadIO m, ToJSString uri) => Window -> uri -> m ()
+decodeURIComponent_ self uri
+  = liftIO (void (js_decodeURIComponent self (toJSString uri)))
+ 
+foreign import javascript unsafe "$1[\"encodeURI\"]($2)"
+        js_encodeURI :: Window -> JSString -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURI Mozilla Window.encodeURI documentation> 
+encodeURI ::
+          (MonadIO m, ToJSString uri, FromJSString result) =>
+            Window -> uri -> m result
+encodeURI self uri
+  = liftIO (fromJSString <$> (js_encodeURI self (toJSString uri)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURI Mozilla Window.encodeURI documentation> 
+encodeURI_ :: (MonadIO m, ToJSString uri) => Window -> uri -> m ()
+encodeURI_ self uri
+  = liftIO (void (js_encodeURI self (toJSString uri)))
+ 
+foreign import javascript unsafe "$1[\"encodeURIComponent\"]($2)"
+        js_encodeURIComponent :: Window -> JSString -> IO JSString
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURIComponent Mozilla Window.encodeURIComponent documentation> 
+encodeURIComponent ::
+                   (MonadIO m, ToJSString uri, FromJSString result) =>
+                     Window -> uri -> m result
+encodeURIComponent self uri
+  = liftIO
+      (fromJSString <$> (js_encodeURIComponent self (toJSString uri)))
+
+-- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURIComponent Mozilla Window.encodeURIComponent documentation> 
+encodeURIComponent_ ::
+                    (MonadIO m, ToJSString uri) => Window -> uri -> m ()
+encodeURIComponent_ self uri
+  = liftIO (void (js_encodeURIComponent self (toJSString uri)))
  
 foreign import javascript interruptible
         "$1[\"fetch\"]($2, $3).then($c);" js_fetch ::

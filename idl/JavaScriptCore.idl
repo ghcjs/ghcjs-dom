@@ -1,0 +1,10 @@
+// These are functions indluded in the JavaScriptCore global context but not listed in the WebKit IDL files
+
+partial interface DOMWindow {
+  DOMString decodeURI(DOMString uri);
+  DOMString decodeURIComponent(DOMString uri);
+  DOMString encodeURI(DOMString uri);
+  DOMString encodeURIComponent(DOMString uri);
+};
+
+
