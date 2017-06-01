@@ -5,8 +5,8 @@
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.ShadowRoot
        (js_getMode, getMode, js_getHost, getHost, js_setInnerHTML,
-        setInnerHTML, js_getInnerHTML, getInnerHTML, getInnerHTMLUnsafe,
-        getInnerHTMLUnchecked, ShadowRoot(..), gTypeShadowRoot)
+        setInnerHTML, js_getInnerHTML, getInnerHTML, ShadowRoot(..),
+        gTypeShadowRoot)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -42,34 +42,19 @@ getHost :: (MonadIO m) => ShadowRoot -> m Element
 getHost self = liftIO (js_getHost self)
  
 foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
-        js_setInnerHTML :: ShadowRoot -> Optional JSString -> IO ()
+        js_setInnerHTML :: ShadowRoot -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot.innerHTML Mozilla ShadowRoot.innerHTML documentation> 
 setInnerHTML ::
-             (MonadIO m, ToJSString val) => ShadowRoot -> Maybe val -> m ()
+             (MonadIO m, ToJSString val) => ShadowRoot -> val -> m ()
 setInnerHTML self val
-  = liftIO (js_setInnerHTML self (toOptionalJSString val))
+  = liftIO (js_setInnerHTML self (toJSString val))
  
 foreign import javascript unsafe "$1[\"innerHTML\"]"
-        js_getInnerHTML :: ShadowRoot -> IO (Nullable JSString)
+        js_getInnerHTML :: ShadowRoot -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot.innerHTML Mozilla ShadowRoot.innerHTML documentation> 
 getInnerHTML ::
-             (MonadIO m, FromJSString result) => ShadowRoot -> m (Maybe result)
+             (MonadIO m, FromJSString result) => ShadowRoot -> m result
 getInnerHTML self
-  = liftIO (fromMaybeJSString <$> (js_getInnerHTML self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot.innerHTML Mozilla ShadowRoot.innerHTML documentation> 
-getInnerHTMLUnsafe ::
-                   (MonadIO m, HasCallStack, FromJSString result) =>
-                     ShadowRoot -> m result
-getInnerHTMLUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getInnerHTML self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot.innerHTML Mozilla ShadowRoot.innerHTML documentation> 
-getInnerHTMLUnchecked ::
-                      (MonadIO m, FromJSString result) => ShadowRoot -> m result
-getInnerHTMLUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getInnerHTML self))
+  = liftIO (fromJSString <$> (js_getInnerHTML self))

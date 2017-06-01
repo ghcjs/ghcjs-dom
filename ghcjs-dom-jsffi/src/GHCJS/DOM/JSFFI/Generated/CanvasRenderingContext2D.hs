@@ -895,53 +895,50 @@ createRadialGradient_ self x0 y0 r0 x1 y1 r1
 foreign import javascript unsafe "$1[\"createPattern\"]($2, $3)"
         js_createPattern ::
         CanvasRenderingContext2D ->
-          CanvasImageSource ->
-            Optional JSString -> IO (Nullable CanvasPattern)
+          CanvasImageSource -> JSString -> IO (Nullable CanvasPattern)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPattern ::
               (MonadIO m, IsCanvasImageSource image, ToJSString repetition) =>
                 CanvasRenderingContext2D ->
-                  image -> Maybe repetition -> m (Maybe CanvasPattern)
+                  image -> repetition -> m (Maybe CanvasPattern)
 createPattern self image repetition
   = liftIO
       (nullableToMaybe <$>
          (js_createPattern self (toCanvasImageSource image)
-            (toOptionalJSString repetition)))
+            (toJSString repetition)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPattern_ ::
                (MonadIO m, IsCanvasImageSource image, ToJSString repetition) =>
-                 CanvasRenderingContext2D -> image -> Maybe repetition -> m ()
+                 CanvasRenderingContext2D -> image -> repetition -> m ()
 createPattern_ self image repetition
   = liftIO
       (void
          (js_createPattern self (toCanvasImageSource image)
-            (toOptionalJSString repetition)))
+            (toJSString repetition)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPatternUnsafe ::
                     (MonadIO m, IsCanvasImageSource image, ToJSString repetition,
                      HasCallStack) =>
-                      CanvasRenderingContext2D ->
-                        image -> Maybe repetition -> m CanvasPattern
+                      CanvasRenderingContext2D -> image -> repetition -> m CanvasPattern
 createPatternUnsafe self image repetition
   = liftIO
       ((nullableToMaybe <$>
           (js_createPattern self (toCanvasImageSource image)
-             (toOptionalJSString repetition)))
+             (toJSString repetition)))
          >>= maybe (Prelude.error "Nothing to return") return)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.createPattern Mozilla CanvasRenderingContext2D.createPattern documentation> 
 createPatternUnchecked ::
                        (MonadIO m, IsCanvasImageSource image, ToJSString repetition) =>
-                         CanvasRenderingContext2D ->
-                           image -> Maybe repetition -> m CanvasPattern
+                         CanvasRenderingContext2D -> image -> repetition -> m CanvasPattern
 createPatternUnchecked self image repetition
   = liftIO
       (fromJust . nullableToMaybe <$>
          (js_createPattern self (toCanvasImageSource image)
-            (toOptionalJSString repetition)))
+            (toJSString repetition)))
  
 foreign import javascript unsafe
         "$1[\"getImageData\"]($2, $3, $4,\n$5)" js_getImageData ::

@@ -6,22 +6,21 @@
 module GHCJS.DOM.JSFFI.Generated.HTMLImageElement
        (js_setName, setName, js_getName, getName, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setAlt, setAlt, js_getAlt, getAlt,
-        js_setBorder, setBorder, js_getBorder, getBorder, getBorderUnsafe,
-        getBorderUnchecked, js_setCrossOrigin, setCrossOrigin,
-        js_getCrossOrigin, getCrossOrigin, getCrossOriginUnsafe,
-        getCrossOriginUnchecked, js_setHeight, setHeight, js_getHeight,
-        getHeight, js_setHspace, setHspace, js_getHspace, getHspace,
-        js_setIsMap, setIsMap, js_getIsMap, getIsMap, js_setLongDesc,
-        setLongDesc, js_getLongDesc, getLongDesc, js_setSrc, setSrc,
-        js_getSrc, getSrc, js_setSrcset, setSrcset, js_getSrcset,
-        getSrcset, js_setSizes, setSizes, js_getSizes, getSizes,
-        js_getCurrentSrc, getCurrentSrc, js_setUseMap, setUseMap,
-        js_getUseMap, getUseMap, js_setVspace, setVspace, js_getVspace,
-        getVspace, js_setWidth, setWidth, js_getWidth, getWidth,
-        js_getComplete, getComplete, js_setLowsrc, setLowsrc, js_getLowsrc,
-        getLowsrc, js_getNaturalHeight, getNaturalHeight,
-        js_getNaturalWidth, getNaturalWidth, js_getX, getX, js_getY, getY,
-        HTMLImageElement(..), gTypeHTMLImageElement)
+        js_setBorder, setBorder, js_getBorder, getBorder,
+        js_setCrossOrigin, setCrossOrigin, js_getCrossOrigin,
+        getCrossOrigin, getCrossOriginUnsafe, getCrossOriginUnchecked,
+        js_setHeight, setHeight, js_getHeight, getHeight, js_setHspace,
+        setHspace, js_getHspace, getHspace, js_setIsMap, setIsMap,
+        js_getIsMap, getIsMap, js_setLongDesc, setLongDesc, js_getLongDesc,
+        getLongDesc, js_setSrc, setSrc, js_getSrc, getSrc, js_setSrcset,
+        setSrcset, js_getSrcset, getSrcset, js_setSizes, setSizes,
+        js_getSizes, getSizes, js_getCurrentSrc, getCurrentSrc,
+        js_setUseMap, setUseMap, js_getUseMap, getUseMap, js_setVspace,
+        setVspace, js_getVspace, getVspace, js_setWidth, setWidth,
+        js_getWidth, getWidth, js_getComplete, getComplete, js_setLowsrc,
+        setLowsrc, js_getLowsrc, getLowsrc, js_getNaturalHeight,
+        getNaturalHeight, js_getNaturalWidth, getNaturalWidth, js_getX,
+        getX, js_getY, getY, HTMLImageElement(..), gTypeHTMLImageElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -91,38 +90,20 @@ getAlt ::
 getAlt self = liftIO (fromJSString <$> (js_getAlt self))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
-        js_setBorder :: HTMLImageElement -> Optional JSString -> IO ()
+        js_setBorder :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
 setBorder ::
-          (MonadIO m, ToJSString val) =>
-            HTMLImageElement -> Maybe val -> m ()
-setBorder self val
-  = liftIO (js_setBorder self (toOptionalJSString val))
+          (MonadIO m, ToJSString val) => HTMLImageElement -> val -> m ()
+setBorder self val = liftIO (js_setBorder self (toJSString val))
  
 foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
-        HTMLImageElement -> IO (Nullable JSString)
+        HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
 getBorder ::
-          (MonadIO m, FromJSString result) =>
-            HTMLImageElement -> m (Maybe result)
-getBorder self = liftIO (fromMaybeJSString <$> (js_getBorder self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
-getBorderUnsafe ::
-                (MonadIO m, HasCallStack, FromJSString result) =>
-                  HTMLImageElement -> m result
-getBorderUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBorder self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
-getBorderUnchecked ::
-                   (MonadIO m, FromJSString result) => HTMLImageElement -> m result
-getBorderUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBorder self))
+          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
+getBorder self = liftIO (fromJSString <$> (js_getBorder self))
  
 foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
         js_setCrossOrigin :: HTMLImageElement -> Optional JSString -> IO ()

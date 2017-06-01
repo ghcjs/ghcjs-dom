@@ -16,15 +16,13 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableElement
         getTFootUnsafe, getTFootUnchecked, js_getRows, getRows,
         js_getTBodies, getTBodies, js_setAlign, setAlign, js_getAlign,
         getAlign, js_setBgColor, setBgColor, js_getBgColor, getBgColor,
-        getBgColorUnsafe, getBgColorUnchecked, js_setBorder, setBorder,
-        js_getBorder, getBorder, js_setCellPadding, setCellPadding,
-        js_getCellPadding, getCellPadding, getCellPaddingUnsafe,
-        getCellPaddingUnchecked, js_setCellSpacing, setCellSpacing,
-        js_getCellSpacing, getCellSpacing, getCellSpacingUnsafe,
-        getCellSpacingUnchecked, js_setFrame, setFrame, js_getFrame,
-        getFrame, js_setRules, setRules, js_getRules, getRules,
-        js_setSummary, setSummary, js_getSummary, getSummary, js_setWidth,
-        setWidth, js_getWidth, getWidth, HTMLTableElement(..),
+        js_setBorder, setBorder, js_getBorder, getBorder,
+        js_setCellPadding, setCellPadding, js_getCellPadding,
+        getCellPadding, js_setCellSpacing, setCellSpacing,
+        js_getCellSpacing, getCellSpacing, js_setFrame, setFrame,
+        js_getFrame, getFrame, js_setRules, setRules, js_getRules,
+        getRules, js_setSummary, setSummary, js_getSummary, getSummary,
+        js_setWidth, setWidth, js_getWidth, getWidth, HTMLTableElement(..),
         gTypeHTMLTableElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
@@ -264,39 +262,20 @@ getAlign ::
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: HTMLTableElement -> Optional JSString -> IO ()
+        js_setBgColor :: HTMLTableElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 setBgColor ::
-           (MonadIO m, ToJSString val) =>
-             HTMLTableElement -> Maybe val -> m ()
-setBgColor self val
-  = liftIO (js_setBgColor self (toOptionalJSString val))
+           (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
+setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        HTMLTableElement -> IO (Nullable JSString)
+        HTMLTableElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
 getBgColor ::
-           (MonadIO m, FromJSString result) =>
-             HTMLTableElement -> m (Maybe result)
-getBgColor self
-  = liftIO (fromMaybeJSString <$> (js_getBgColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
-getBgColorUnsafe ::
-                 (MonadIO m, HasCallStack, FromJSString result) =>
-                   HTMLTableElement -> m result
-getBgColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBgColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.bgColor Mozilla HTMLTableElement.bgColor documentation> 
-getBgColorUnchecked ::
-                    (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getBgColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor self))
+           (MonadIO m, FromJSString result) => HTMLTableElement -> m result
+getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
         js_setBorder :: HTMLTableElement -> JSString -> IO ()
@@ -315,76 +294,40 @@ getBorder ::
 getBorder self = liftIO (fromJSString <$> (js_getBorder self))
  
 foreign import javascript unsafe "$1[\"cellPadding\"] = $2;"
-        js_setCellPadding :: HTMLTableElement -> Optional JSString -> IO ()
+        js_setCellPadding :: HTMLTableElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 setCellPadding ::
-               (MonadIO m, ToJSString val) =>
-                 HTMLTableElement -> Maybe val -> m ()
+               (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
 setCellPadding self val
-  = liftIO (js_setCellPadding self (toOptionalJSString val))
+  = liftIO (js_setCellPadding self (toJSString val))
  
 foreign import javascript unsafe "$1[\"cellPadding\"]"
-        js_getCellPadding :: HTMLTableElement -> IO (Nullable JSString)
+        js_getCellPadding :: HTMLTableElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
 getCellPadding ::
-               (MonadIO m, FromJSString result) =>
-                 HTMLTableElement -> m (Maybe result)
+               (MonadIO m, FromJSString result) => HTMLTableElement -> m result
 getCellPadding self
-  = liftIO (fromMaybeJSString <$> (js_getCellPadding self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
-getCellPaddingUnsafe ::
-                     (MonadIO m, HasCallStack, FromJSString result) =>
-                       HTMLTableElement -> m result
-getCellPaddingUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getCellPadding self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellPadding Mozilla HTMLTableElement.cellPadding documentation> 
-getCellPaddingUnchecked ::
-                        (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getCellPaddingUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getCellPadding self))
+  = liftIO (fromJSString <$> (js_getCellPadding self))
  
 foreign import javascript unsafe "$1[\"cellSpacing\"] = $2;"
-        js_setCellSpacing :: HTMLTableElement -> Optional JSString -> IO ()
+        js_setCellSpacing :: HTMLTableElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 setCellSpacing ::
-               (MonadIO m, ToJSString val) =>
-                 HTMLTableElement -> Maybe val -> m ()
+               (MonadIO m, ToJSString val) => HTMLTableElement -> val -> m ()
 setCellSpacing self val
-  = liftIO (js_setCellSpacing self (toOptionalJSString val))
+  = liftIO (js_setCellSpacing self (toJSString val))
  
 foreign import javascript unsafe "$1[\"cellSpacing\"]"
-        js_getCellSpacing :: HTMLTableElement -> IO (Nullable JSString)
+        js_getCellSpacing :: HTMLTableElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
 getCellSpacing ::
-               (MonadIO m, FromJSString result) =>
-                 HTMLTableElement -> m (Maybe result)
+               (MonadIO m, FromJSString result) => HTMLTableElement -> m result
 getCellSpacing self
-  = liftIO (fromMaybeJSString <$> (js_getCellSpacing self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
-getCellSpacingUnsafe ::
-                     (MonadIO m, HasCallStack, FromJSString result) =>
-                       HTMLTableElement -> m result
-getCellSpacingUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getCellSpacing self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement.cellSpacing Mozilla HTMLTableElement.cellSpacing documentation> 
-getCellSpacingUnchecked ::
-                        (MonadIO m, FromJSString result) => HTMLTableElement -> m result
-getCellSpacingUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getCellSpacing self))
+  = liftIO (fromJSString <$> (js_getCellSpacing self))
  
 foreign import javascript unsafe "$1[\"frame\"] = $2;" js_setFrame
         :: HTMLTableElement -> JSString -> IO ()

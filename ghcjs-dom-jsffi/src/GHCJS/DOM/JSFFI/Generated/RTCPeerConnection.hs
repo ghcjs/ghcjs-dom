@@ -269,28 +269,26 @@ addTransceiverTrack_ self track init
 foreign import javascript unsafe
         "$1[\"createDataChannel\"]($2, $3)" js_createDataChannel ::
         RTCPeerConnection ->
-          Optional JSString ->
-            Optional RTCDataChannelInit -> IO RTCDataChannel
+          JSString -> Optional RTCDataChannelInit -> IO RTCDataChannel
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
 createDataChannel ::
                   (MonadIO m, ToJSString label) =>
                     RTCPeerConnection ->
-                      Maybe label -> Maybe RTCDataChannelInit -> m RTCDataChannel
+                      label -> Maybe RTCDataChannelInit -> m RTCDataChannel
 createDataChannel self label options
   = liftIO
-      (js_createDataChannel self (toOptionalJSString label)
+      (js_createDataChannel self (toJSString label)
          (maybeToOptional options))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createDataChannel Mozilla webkitRTCPeerConnection.createDataChannel documentation> 
 createDataChannel_ ::
                    (MonadIO m, ToJSString label) =>
-                     RTCPeerConnection ->
-                       Maybe label -> Maybe RTCDataChannelInit -> m ()
+                     RTCPeerConnection -> label -> Maybe RTCDataChannelInit -> m ()
 createDataChannel_ self label options
   = liftIO
       (void
-         (js_createDataChannel self (toOptionalJSString label)
+         (js_createDataChannel self (toJSString label)
             (maybeToOptional options)))
  
 foreign import javascript interruptible

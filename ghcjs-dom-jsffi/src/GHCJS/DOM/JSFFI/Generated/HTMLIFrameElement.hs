@@ -9,16 +9,14 @@ module GHCJS.DOM.JSFFI.Generated.HTMLIFrameElement
         js_getFrameBorder, getFrameBorder, js_setHeight, setHeight,
         js_getHeight, getHeight, js_setLongDesc, setLongDesc,
         js_getLongDesc, getLongDesc, js_setMarginHeight, setMarginHeight,
-        js_getMarginHeight, getMarginHeight, getMarginHeightUnsafe,
-        getMarginHeightUnchecked, js_setMarginWidth, setMarginWidth,
-        js_getMarginWidth, getMarginWidth, getMarginWidthUnsafe,
-        getMarginWidthUnchecked, js_setName, setName, js_getName, getName,
-        js_getSandbox, getSandbox, js_setAllowFullscreen,
-        setAllowFullscreen, js_getAllowFullscreen, getAllowFullscreen,
-        js_setScrolling, setScrolling, js_getScrolling, getScrolling,
-        js_setSrc, setSrc, js_getSrc, getSrc, js_setSrcdoc, setSrcdoc,
-        js_getSrcdoc, getSrcdoc, js_setWidth, setWidth, js_getWidth,
-        getWidth, js_getContentDocument, getContentDocument,
+        js_getMarginHeight, getMarginHeight, js_setMarginWidth,
+        setMarginWidth, js_getMarginWidth, getMarginWidth, js_setName,
+        setName, js_getName, getName, js_getSandbox, getSandbox,
+        js_setAllowFullscreen, setAllowFullscreen, js_getAllowFullscreen,
+        getAllowFullscreen, js_setScrolling, setScrolling, js_getScrolling,
+        getScrolling, js_setSrc, setSrc, js_getSrc, getSrc, js_setSrcdoc,
+        setSrcdoc, js_getSrcdoc, getSrcdoc, js_setWidth, setWidth,
+        js_getWidth, getWidth, js_getContentDocument, getContentDocument,
         js_getContentWindow, getContentWindow, HTMLIFrameElement(..),
         gTypeHTMLIFrameElement)
        where
@@ -120,78 +118,40 @@ getLongDesc ::
 getLongDesc self = liftIO (fromJSString <$> (js_getLongDesc self))
  
 foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
-        js_setMarginHeight ::
-        HTMLIFrameElement -> Optional JSString -> IO ()
+        js_setMarginHeight :: HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
 setMarginHeight ::
-                (MonadIO m, ToJSString val) =>
-                  HTMLIFrameElement -> Maybe val -> m ()
+                (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setMarginHeight self val
-  = liftIO (js_setMarginHeight self (toOptionalJSString val))
+  = liftIO (js_setMarginHeight self (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginHeight\"]"
-        js_getMarginHeight :: HTMLIFrameElement -> IO (Nullable JSString)
+        js_getMarginHeight :: HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
 getMarginHeight ::
-                (MonadIO m, FromJSString result) =>
-                  HTMLIFrameElement -> m (Maybe result)
+                (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
 getMarginHeight self
-  = liftIO (fromMaybeJSString <$> (js_getMarginHeight self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
-getMarginHeightUnsafe ::
-                      (MonadIO m, HasCallStack, FromJSString result) =>
-                        HTMLIFrameElement -> m result
-getMarginHeightUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getMarginHeight self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginHeight Mozilla HTMLIFrameElement.marginHeight documentation> 
-getMarginHeightUnchecked ::
-                         (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
-getMarginHeightUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getMarginHeight self))
+  = liftIO (fromJSString <$> (js_getMarginHeight self))
  
 foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
-        js_setMarginWidth ::
-        HTMLIFrameElement -> Optional JSString -> IO ()
+        js_setMarginWidth :: HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
 setMarginWidth ::
-               (MonadIO m, ToJSString val) =>
-                 HTMLIFrameElement -> Maybe val -> m ()
+               (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setMarginWidth self val
-  = liftIO (js_setMarginWidth self (toOptionalJSString val))
+  = liftIO (js_setMarginWidth self (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginWidth\"]"
-        js_getMarginWidth :: HTMLIFrameElement -> IO (Nullable JSString)
+        js_getMarginWidth :: HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
 getMarginWidth ::
-               (MonadIO m, FromJSString result) =>
-                 HTMLIFrameElement -> m (Maybe result)
+               (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
 getMarginWidth self
-  = liftIO (fromMaybeJSString <$> (js_getMarginWidth self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
-getMarginWidthUnsafe ::
-                     (MonadIO m, HasCallStack, FromJSString result) =>
-                       HTMLIFrameElement -> m result
-getMarginWidthUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getMarginWidth self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.marginWidth Mozilla HTMLIFrameElement.marginWidth documentation> 
-getMarginWidthUnchecked ::
-                        (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
-getMarginWidthUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getMarginWidth self))
+  = liftIO (fromJSString <$> (js_getMarginWidth self))
  
 foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
         HTMLIFrameElement -> JSString -> IO ()

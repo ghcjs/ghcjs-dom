@@ -13,12 +13,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLFrameElement
         getNoResize, js_getContentDocument, getContentDocument,
         js_getContentWindow, getContentWindow, js_setMarginHeight,
         setMarginHeight, js_getMarginHeight, getMarginHeight,
-        getMarginHeightUnsafe, getMarginHeightUnchecked, js_setMarginWidth,
-        setMarginWidth, js_getMarginWidth, getMarginWidth,
-        getMarginWidthUnsafe, getMarginWidthUnchecked, js_getWidth,
-        getWidth, js_getHeight, getHeight, js_setLocation, setLocation,
-        js_getLocation, getLocation, getLocationUnsafe,
-        getLocationUnchecked, HTMLFrameElement(..), gTypeHTMLFrameElement)
+        js_setMarginWidth, setMarginWidth, js_getMarginWidth,
+        getMarginWidth, js_getWidth, getWidth, js_getHeight, getHeight,
+        js_setLocation, setLocation, js_getLocation, getLocation,
+        getLocationUnsafe, getLocationUnchecked, HTMLFrameElement(..),
+        gTypeHTMLFrameElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -164,77 +163,40 @@ getContentWindow :: (MonadIO m) => HTMLFrameElement -> m Window
 getContentWindow self = liftIO (js_getContentWindow self)
  
 foreign import javascript unsafe "$1[\"marginHeight\"] = $2;"
-        js_setMarginHeight ::
-        HTMLFrameElement -> Optional JSString -> IO ()
+        js_setMarginHeight :: HTMLFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
 setMarginHeight ::
-                (MonadIO m, ToJSString val) =>
-                  HTMLFrameElement -> Maybe val -> m ()
+                (MonadIO m, ToJSString val) => HTMLFrameElement -> val -> m ()
 setMarginHeight self val
-  = liftIO (js_setMarginHeight self (toOptionalJSString val))
+  = liftIO (js_setMarginHeight self (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginHeight\"]"
-        js_getMarginHeight :: HTMLFrameElement -> IO (Nullable JSString)
+        js_getMarginHeight :: HTMLFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
 getMarginHeight ::
-                (MonadIO m, FromJSString result) =>
-                  HTMLFrameElement -> m (Maybe result)
+                (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
 getMarginHeight self
-  = liftIO (fromMaybeJSString <$> (js_getMarginHeight self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
-getMarginHeightUnsafe ::
-                      (MonadIO m, HasCallStack, FromJSString result) =>
-                        HTMLFrameElement -> m result
-getMarginHeightUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getMarginHeight self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginHeight Mozilla HTMLFrameElement.marginHeight documentation> 
-getMarginHeightUnchecked ::
-                         (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
-getMarginHeightUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getMarginHeight self))
+  = liftIO (fromJSString <$> (js_getMarginHeight self))
  
 foreign import javascript unsafe "$1[\"marginWidth\"] = $2;"
-        js_setMarginWidth :: HTMLFrameElement -> Optional JSString -> IO ()
+        js_setMarginWidth :: HTMLFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
 setMarginWidth ::
-               (MonadIO m, ToJSString val) =>
-                 HTMLFrameElement -> Maybe val -> m ()
+               (MonadIO m, ToJSString val) => HTMLFrameElement -> val -> m ()
 setMarginWidth self val
-  = liftIO (js_setMarginWidth self (toOptionalJSString val))
+  = liftIO (js_setMarginWidth self (toJSString val))
  
 foreign import javascript unsafe "$1[\"marginWidth\"]"
-        js_getMarginWidth :: HTMLFrameElement -> IO (Nullable JSString)
+        js_getMarginWidth :: HTMLFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
 getMarginWidth ::
-               (MonadIO m, FromJSString result) =>
-                 HTMLFrameElement -> m (Maybe result)
+               (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
 getMarginWidth self
-  = liftIO (fromMaybeJSString <$> (js_getMarginWidth self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
-getMarginWidthUnsafe ::
-                     (MonadIO m, HasCallStack, FromJSString result) =>
-                       HTMLFrameElement -> m result
-getMarginWidthUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getMarginWidth self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.marginWidth Mozilla HTMLFrameElement.marginWidth documentation> 
-getMarginWidthUnchecked ::
-                        (MonadIO m, FromJSString result) => HTMLFrameElement -> m result
-getMarginWidthUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getMarginWidth self))
+  = liftIO (fromJSString <$> (js_getMarginWidth self))
  
 foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
         HTMLFrameElement -> IO Int

@@ -163,18 +163,17 @@ getPropertyPriorityUnchecked self propertyName
 foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
         js_setProperty ::
         CSSStyleDeclaration ->
-          JSString -> Optional JSString -> Optional JSString -> IO ()
+          JSString -> JSString -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.setProperty Mozilla CSSStyleDeclaration.setProperty documentation> 
 setProperty ::
             (MonadIO m, ToJSString propertyName, ToJSString value,
              ToJSString priority) =>
               CSSStyleDeclaration ->
-                propertyName -> Maybe value -> Maybe priority -> m ()
+                propertyName -> value -> Maybe priority -> m ()
 setProperty self propertyName value priority
   = liftIO
-      (js_setProperty self (toJSString propertyName)
-         (toOptionalJSString value)
+      (js_setProperty self (toJSString propertyName) (toJSString value)
          (toOptionalJSString priority))
  
 foreign import javascript unsafe "$1[$2]" js_item ::

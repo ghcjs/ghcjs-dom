@@ -58,10 +58,8 @@ module GHCJS.DOM.JSFFI.Generated.Element
         js_getScrollHeight, getScrollHeight, js_getClientTop, getClientTop,
         js_getClientLeft, getClientLeft, js_getClientWidth, getClientWidth,
         js_getClientHeight, getClientHeight, js_setInnerHTML, setInnerHTML,
-        js_getInnerHTML, getInnerHTML, getInnerHTMLUnsafe,
-        getInnerHTMLUnchecked, js_setOuterHTML, setOuterHTML,
-        js_getOuterHTML, getOuterHTML, getOuterHTMLUnsafe,
-        getOuterHTMLUnchecked, js_getWebkitRegionOverset,
+        js_getInnerHTML, getInnerHTML, js_setOuterHTML, setOuterHTML,
+        js_getOuterHTML, getOuterHTML, js_getWebkitRegionOverset,
         getWebkitRegionOverset, selectStart, gestureChange, gestureEnd,
         gestureStart, webKitAnimationEnd, webKitAnimationIteration,
         webKitAnimationStart, webKitTransitionEnd, webKitFullscreenChange,
@@ -1129,82 +1127,42 @@ getClientHeight :: (MonadIO m, IsElement self) => self -> m Double
 getClientHeight self = liftIO (js_getClientHeight (toElement self))
  
 foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
-        js_setInnerHTML :: Element -> Optional JSString -> IO ()
+        js_setInnerHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
 setInnerHTML ::
-             (MonadIO m, IsElement self, ToJSString val) =>
-               self -> Maybe val -> m ()
+             (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
 setInnerHTML self val
-  = liftIO
-      (js_setInnerHTML (toElement self) (toOptionalJSString val))
+  = liftIO (js_setInnerHTML (toElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"innerHTML\"]"
-        js_getInnerHTML :: Element -> IO (Nullable JSString)
+        js_getInnerHTML :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
 getInnerHTML ::
              (MonadIO m, IsElement self, FromJSString result) =>
-               self -> m (Maybe result)
+               self -> m result
 getInnerHTML self
-  = liftIO (fromMaybeJSString <$> (js_getInnerHTML (toElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
-getInnerHTMLUnsafe ::
-                   (MonadIO m, IsElement self, HasCallStack, FromJSString result) =>
-                     self -> m result
-getInnerHTMLUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getInnerHTML (toElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
-getInnerHTMLUnchecked ::
-                      (MonadIO m, IsElement self, FromJSString result) =>
-                        self -> m result
-getInnerHTMLUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getInnerHTML (toElement self)))
+  = liftIO (fromJSString <$> (js_getInnerHTML (toElement self)))
  
 foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
-        js_setOuterHTML :: Element -> Optional JSString -> IO ()
+        js_setOuterHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
 setOuterHTML ::
-             (MonadIO m, IsElement self, ToJSString val) =>
-               self -> Maybe val -> m ()
+             (MonadIO m, IsElement self, ToJSString val) => self -> val -> m ()
 setOuterHTML self val
-  = liftIO
-      (js_setOuterHTML (toElement self) (toOptionalJSString val))
+  = liftIO (js_setOuterHTML (toElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"outerHTML\"]"
-        js_getOuterHTML :: Element -> IO (Nullable JSString)
+        js_getOuterHTML :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
 getOuterHTML ::
              (MonadIO m, IsElement self, FromJSString result) =>
-               self -> m (Maybe result)
+               self -> m result
 getOuterHTML self
-  = liftIO (fromMaybeJSString <$> (js_getOuterHTML (toElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
-getOuterHTMLUnsafe ::
-                   (MonadIO m, IsElement self, HasCallStack, FromJSString result) =>
-                     self -> m result
-getOuterHTMLUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getOuterHTML (toElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
-getOuterHTMLUnchecked ::
-                      (MonadIO m, IsElement self, FromJSString result) =>
-                        self -> m result
-getOuterHTMLUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getOuterHTML (toElement self)))
+  = liftIO (fromJSString <$> (js_getOuterHTML (toElement self)))
  
 foreign import javascript unsafe "$1[\"webkitRegionOverset\"]"
         js_getWebkitRegionOverset :: Element -> IO JSString

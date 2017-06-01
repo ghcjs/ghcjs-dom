@@ -62,31 +62,30 @@ foreign import javascript unsafe
         "$1[\"createDocument\"]($2, $3, $4)" js_createDocument ::
         DOMImplementation ->
           Optional JSString ->
-            Optional JSString -> Optional DocumentType -> IO XMLDocument
+            JSString -> Optional DocumentType -> IO XMLDocument
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 createDocument ::
                (MonadIO m, ToJSString namespaceURI, ToJSString qualifiedName) =>
                  DOMImplementation ->
                    Maybe namespaceURI ->
-                     Maybe qualifiedName -> Maybe DocumentType -> m XMLDocument
+                     qualifiedName -> Maybe DocumentType -> m XMLDocument
 createDocument self namespaceURI qualifiedName doctype
   = liftIO
       (js_createDocument self (toOptionalJSString namespaceURI)
-         (toOptionalJSString qualifiedName)
+         (toJSString qualifiedName)
          (maybeToOptional doctype))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createDocument Mozilla DOMImplementation.createDocument documentation> 
 createDocument_ ::
                 (MonadIO m, ToJSString namespaceURI, ToJSString qualifiedName) =>
                   DOMImplementation ->
-                    Maybe namespaceURI ->
-                      Maybe qualifiedName -> Maybe DocumentType -> m ()
+                    Maybe namespaceURI -> qualifiedName -> Maybe DocumentType -> m ()
 createDocument_ self namespaceURI qualifiedName doctype
   = liftIO
       (void
          (js_createDocument self (toOptionalJSString namespaceURI)
-            (toOptionalJSString qualifiedName)
+            (toJSString qualifiedName)
             (maybeToOptional doctype)))
  
 foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"

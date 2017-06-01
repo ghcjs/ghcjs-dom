@@ -8,10 +8,10 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTableRowElement
         js_getRowIndex, getRowIndex, js_getSectionRowIndex,
         getSectionRowIndex, js_getCells, getCells, js_setAlign, setAlign,
         js_getAlign, getAlign, js_setBgColor, setBgColor, js_getBgColor,
-        getBgColor, getBgColorUnsafe, getBgColorUnchecked, js_setCh, setCh,
-        js_getCh, getCh, js_setChOff, setChOff, js_getChOff, getChOff,
-        js_setVAlign, setVAlign, js_getVAlign, getVAlign,
-        HTMLTableRowElement(..), gTypeHTMLTableRowElement)
+        getBgColor, js_setCh, setCh, js_getCh, getCh, js_setChOff,
+        setChOff, js_getChOff, getChOff, js_setVAlign, setVAlign,
+        js_getVAlign, getVAlign, HTMLTableRowElement(..),
+        gTypeHTMLTableRowElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -93,39 +93,20 @@ getAlign ::
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: HTMLTableRowElement -> Optional JSString -> IO ()
+        js_setBgColor :: HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
 setBgColor ::
-           (MonadIO m, ToJSString val) =>
-             HTMLTableRowElement -> Maybe val -> m ()
-setBgColor self val
-  = liftIO (js_setBgColor self (toOptionalJSString val))
+           (MonadIO m, ToJSString val) => HTMLTableRowElement -> val -> m ()
+setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        HTMLTableRowElement -> IO (Nullable JSString)
+        HTMLTableRowElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
 getBgColor ::
-           (MonadIO m, FromJSString result) =>
-             HTMLTableRowElement -> m (Maybe result)
-getBgColor self
-  = liftIO (fromMaybeJSString <$> (js_getBgColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
-getBgColorUnsafe ::
-                 (MonadIO m, HasCallStack, FromJSString result) =>
-                   HTMLTableRowElement -> m result
-getBgColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBgColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
-getBgColorUnchecked ::
-                    (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
-getBgColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor self))
+           (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
+getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
 foreign import javascript unsafe "$1[\"ch\"] = $2;" js_setCh ::
         HTMLTableRowElement -> JSString -> IO ()

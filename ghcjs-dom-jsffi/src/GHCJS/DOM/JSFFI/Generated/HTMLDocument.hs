@@ -7,15 +7,12 @@ module GHCJS.DOM.JSFFI.Generated.HTMLDocument
        (js_open, open, js_close, close, js_write, write, js_writeln,
         writeln, js_clear, clear, js_captureEvents, captureEvents,
         js_releaseEvents, releaseEvents, js_getAll, getAll, js_setBgColor,
-        setBgColor, js_getBgColor, getBgColor, getBgColorUnsafe,
-        getBgColorUnchecked, js_setFgColor, setFgColor, js_getFgColor,
-        getFgColor, getFgColorUnsafe, getFgColorUnchecked,
-        js_setAlinkColor, setAlinkColor, js_getAlinkColor, getAlinkColor,
-        getAlinkColorUnsafe, getAlinkColorUnchecked, js_setLinkColor,
-        setLinkColor, js_getLinkColor, getLinkColor, getLinkColorUnsafe,
-        getLinkColorUnchecked, js_setVlinkColor, setVlinkColor,
-        js_getVlinkColor, getVlinkColor, getVlinkColorUnsafe,
-        getVlinkColorUnchecked, HTMLDocument(..), gTypeHTMLDocument)
+        setBgColor, js_getBgColor, getBgColor, js_setFgColor, setFgColor,
+        js_getFgColor, getFgColor, js_setAlinkColor, setAlinkColor,
+        js_getAlinkColor, getAlinkColor, js_setLinkColor, setLinkColor,
+        js_getLinkColor, getLinkColor, js_setVlinkColor, setVlinkColor,
+        js_getVlinkColor, getVlinkColor, HTMLDocument(..),
+        gTypeHTMLDocument)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -96,171 +93,87 @@ getAll :: (MonadIO m) => HTMLDocument -> m HTMLAllCollection
 getAll self = liftIO (js_getAll self)
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: HTMLDocument -> Optional JSString -> IO ()
+        js_setBgColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
 setBgColor ::
-           (MonadIO m, ToJSString val) => HTMLDocument -> Maybe val -> m ()
-setBgColor self val
-  = liftIO (js_setBgColor self (toOptionalJSString val))
+           (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        HTMLDocument -> IO (Nullable JSString)
+        HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
 getBgColor ::
-           (MonadIO m, FromJSString result) =>
-             HTMLDocument -> m (Maybe result)
-getBgColor self
-  = liftIO (fromMaybeJSString <$> (js_getBgColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
-getBgColorUnsafe ::
-                 (MonadIO m, HasCallStack, FromJSString result) =>
-                   HTMLDocument -> m result
-getBgColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBgColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
-getBgColorUnchecked ::
-                    (MonadIO m, FromJSString result) => HTMLDocument -> m result
-getBgColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor self))
+           (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
 foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
-        js_setFgColor :: HTMLDocument -> Optional JSString -> IO ()
+        js_setFgColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
 setFgColor ::
-           (MonadIO m, ToJSString val) => HTMLDocument -> Maybe val -> m ()
-setFgColor self val
-  = liftIO (js_setFgColor self (toOptionalJSString val))
+           (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
+setFgColor self val = liftIO (js_setFgColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"fgColor\"]" js_getFgColor ::
-        HTMLDocument -> IO (Nullable JSString)
+        HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
 getFgColor ::
-           (MonadIO m, FromJSString result) =>
-             HTMLDocument -> m (Maybe result)
-getFgColor self
-  = liftIO (fromMaybeJSString <$> (js_getFgColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
-getFgColorUnsafe ::
-                 (MonadIO m, HasCallStack, FromJSString result) =>
-                   HTMLDocument -> m result
-getFgColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getFgColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
-getFgColorUnchecked ::
-                    (MonadIO m, FromJSString result) => HTMLDocument -> m result
-getFgColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getFgColor self))
+           (MonadIO m, FromJSString result) => HTMLDocument -> m result
+getFgColor self = liftIO (fromJSString <$> (js_getFgColor self))
  
 foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
-        js_setAlinkColor :: HTMLDocument -> Optional JSString -> IO ()
+        js_setAlinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
 setAlinkColor ::
-              (MonadIO m, ToJSString val) => HTMLDocument -> Maybe val -> m ()
+              (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
 setAlinkColor self val
-  = liftIO (js_setAlinkColor self (toOptionalJSString val))
+  = liftIO (js_setAlinkColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"alinkColor\"]"
-        js_getAlinkColor :: HTMLDocument -> IO (Nullable JSString)
+        js_getAlinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
 getAlinkColor ::
-              (MonadIO m, FromJSString result) =>
-                HTMLDocument -> m (Maybe result)
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
 getAlinkColor self
-  = liftIO (fromMaybeJSString <$> (js_getAlinkColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
-getAlinkColorUnsafe ::
-                    (MonadIO m, HasCallStack, FromJSString result) =>
-                      HTMLDocument -> m result
-getAlinkColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getAlinkColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
-getAlinkColorUnchecked ::
-                       (MonadIO m, FromJSString result) => HTMLDocument -> m result
-getAlinkColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getAlinkColor self))
+  = liftIO (fromJSString <$> (js_getAlinkColor self))
  
 foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
-        js_setLinkColor :: HTMLDocument -> Optional JSString -> IO ()
+        js_setLinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
 setLinkColor ::
-             (MonadIO m, ToJSString val) => HTMLDocument -> Maybe val -> m ()
+             (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
 setLinkColor self val
-  = liftIO (js_setLinkColor self (toOptionalJSString val))
+  = liftIO (js_setLinkColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"linkColor\"]"
-        js_getLinkColor :: HTMLDocument -> IO (Nullable JSString)
+        js_getLinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
 getLinkColor ::
-             (MonadIO m, FromJSString result) =>
-               HTMLDocument -> m (Maybe result)
+             (MonadIO m, FromJSString result) => HTMLDocument -> m result
 getLinkColor self
-  = liftIO (fromMaybeJSString <$> (js_getLinkColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
-getLinkColorUnsafe ::
-                   (MonadIO m, HasCallStack, FromJSString result) =>
-                     HTMLDocument -> m result
-getLinkColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getLinkColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
-getLinkColorUnchecked ::
-                      (MonadIO m, FromJSString result) => HTMLDocument -> m result
-getLinkColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getLinkColor self))
+  = liftIO (fromJSString <$> (js_getLinkColor self))
  
 foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
-        js_setVlinkColor :: HTMLDocument -> Optional JSString -> IO ()
+        js_setVlinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
 setVlinkColor ::
-              (MonadIO m, ToJSString val) => HTMLDocument -> Maybe val -> m ()
+              (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
 setVlinkColor self val
-  = liftIO (js_setVlinkColor self (toOptionalJSString val))
+  = liftIO (js_setVlinkColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"vlinkColor\"]"
-        js_getVlinkColor :: HTMLDocument -> IO (Nullable JSString)
+        js_getVlinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
 getVlinkColor ::
-              (MonadIO m, FromJSString result) =>
-                HTMLDocument -> m (Maybe result)
+              (MonadIO m, FromJSString result) => HTMLDocument -> m result
 getVlinkColor self
-  = liftIO (fromMaybeJSString <$> (js_getVlinkColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
-getVlinkColorUnsafe ::
-                    (MonadIO m, HasCallStack, FromJSString result) =>
-                      HTMLDocument -> m result
-getVlinkColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getVlinkColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
-getVlinkColorUnchecked ::
-                       (MonadIO m, FromJSString result) => HTMLDocument -> m result
-getVlinkColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getVlinkColor self))
+  = liftIO (fromJSString <$> (js_getVlinkColor self))

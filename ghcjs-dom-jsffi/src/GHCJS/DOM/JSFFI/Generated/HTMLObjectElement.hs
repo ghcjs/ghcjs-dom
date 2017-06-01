@@ -10,18 +10,18 @@ module GHCJS.DOM.JSFFI.Generated.HTMLObjectElement
         getSVGDocument, getSVGDocument_, js_getForm, getForm, js_setCode,
         setCode, js_getCode, getCode, js_setAlign, setAlign, js_getAlign,
         getAlign, js_setArchive, setArchive, js_getArchive, getArchive,
-        js_setBorder, setBorder, js_getBorder, getBorder, getBorderUnsafe,
-        getBorderUnchecked, js_setCodeBase, setCodeBase, js_getCodeBase,
-        getCodeBase, js_setCodeType, setCodeType, js_getCodeType,
-        getCodeType, js_setData, setData, js_getData, getData,
-        js_setDeclare, setDeclare, js_getDeclare, getDeclare, js_setHeight,
-        setHeight, js_getHeight, getHeight, js_setHspace, setHspace,
-        js_getHspace, getHspace, js_setName, setName, js_getName, getName,
-        js_setStandby, setStandby, js_getStandby, getStandby, js_setType,
-        setType, js_getType, getType, js_setUseMap, setUseMap,
-        js_getUseMap, getUseMap, js_setVspace, setVspace, js_getVspace,
-        getVspace, js_setWidth, setWidth, js_getWidth, getWidth,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        js_setBorder, setBorder, js_getBorder, getBorder, js_setCodeBase,
+        setCodeBase, js_getCodeBase, getCodeBase, js_setCodeType,
+        setCodeType, js_getCodeType, getCodeType, js_setData, setData,
+        js_getData, getData, js_setDeclare, setDeclare, js_getDeclare,
+        getDeclare, js_setHeight, setHeight, js_getHeight, getHeight,
+        js_setHspace, setHspace, js_getHspace, getHspace, js_setName,
+        setName, js_getName, getName, js_setStandby, setStandby,
+        js_getStandby, getStandby, js_setType, setType, js_getType,
+        getType, js_setUseMap, setUseMap, js_getUseMap, getUseMap,
+        js_setVspace, setVspace, js_getVspace, getVspace, js_setWidth,
+        setWidth, js_getWidth, getWidth, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage,
         js_getContentDocument, getContentDocument, HTMLObjectElement(..),
         gTypeHTMLObjectElement)
@@ -145,38 +145,20 @@ getArchive ::
 getArchive self = liftIO (fromJSString <$> (js_getArchive self))
  
 foreign import javascript unsafe "$1[\"border\"] = $2;"
-        js_setBorder :: HTMLObjectElement -> Optional JSString -> IO ()
+        js_setBorder :: HTMLObjectElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
 setBorder ::
-          (MonadIO m, ToJSString val) =>
-            HTMLObjectElement -> Maybe val -> m ()
-setBorder self val
-  = liftIO (js_setBorder self (toOptionalJSString val))
+          (MonadIO m, ToJSString val) => HTMLObjectElement -> val -> m ()
+setBorder self val = liftIO (js_setBorder self (toJSString val))
  
 foreign import javascript unsafe "$1[\"border\"]" js_getBorder ::
-        HTMLObjectElement -> IO (Nullable JSString)
+        HTMLObjectElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
 getBorder ::
-          (MonadIO m, FromJSString result) =>
-            HTMLObjectElement -> m (Maybe result)
-getBorder self = liftIO (fromMaybeJSString <$> (js_getBorder self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
-getBorderUnsafe ::
-                (MonadIO m, HasCallStack, FromJSString result) =>
-                  HTMLObjectElement -> m result
-getBorderUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBorder self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.border Mozilla HTMLObjectElement.border documentation> 
-getBorderUnchecked ::
-                   (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
-getBorderUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBorder self))
+          (MonadIO m, FromJSString result) => HTMLObjectElement -> m result
+getBorder self = liftIO (fromJSString <$> (js_getBorder self))
  
 foreign import javascript unsafe "$1[\"codeBase\"] = $2;"
         js_setCodeBase :: HTMLObjectElement -> JSString -> IO ()

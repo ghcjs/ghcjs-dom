@@ -7,9 +7,8 @@ module GHCJS.DOM.JSFFI.Generated.CharacterData
        (js_substringData, substringData, substringData_, js_appendData,
         appendData, js_insertData, insertData, js_deleteData, deleteData,
         js_replaceData, replaceData, js_setData, setData, js_getData,
-        getData, getDataUnsafe, getDataUnchecked, js_getLength, getLength,
-        CharacterData(..), gTypeCharacterData, IsCharacterData,
-        toCharacterData)
+        getData, js_getLength, getLength, CharacterData(..),
+        gTypeCharacterData, IsCharacterData, toCharacterData)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -93,45 +92,24 @@ replaceData self offset count data'
          (toJSString data'))
  
 foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
-        CharacterData -> Optional JSString -> IO ()
+        CharacterData -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 setData ::
         (MonadIO m, IsCharacterData self, ToJSString val) =>
-          self -> Maybe val -> m ()
+          self -> val -> m ()
 setData self val
-  = liftIO
-      (js_setData (toCharacterData self) (toOptionalJSString val))
+  = liftIO (js_setData (toCharacterData self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"data\"]" js_getData ::
-        CharacterData -> IO (Nullable JSString)
+        CharacterData -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
 getData ::
         (MonadIO m, IsCharacterData self, FromJSString result) =>
-          self -> m (Maybe result)
+          self -> m result
 getData self
-  = liftIO
-      (fromMaybeJSString <$> (js_getData (toCharacterData self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
-getDataUnsafe ::
-              (MonadIO m, IsCharacterData self, HasCallStack,
-               FromJSString result) =>
-                self -> m result
-getDataUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getData (toCharacterData self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
-getDataUnchecked ::
-                 (MonadIO m, IsCharacterData self, FromJSString result) =>
-                   self -> m result
-getDataUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getData (toCharacterData self)))
+  = liftIO (fromJSString <$> (js_getData (toCharacterData self)))
  
 foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
         CharacterData -> IO Word

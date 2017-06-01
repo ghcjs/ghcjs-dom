@@ -22,8 +22,8 @@ module GHCJS.DOM.JSFFI.Generated.HTMLTextAreaElement
         setWrap, js_getWrap, getWrap, js_getType, getType,
         js_setDefaultValue, setDefaultValue, js_getDefaultValue,
         getDefaultValue, js_setValue, setValue, js_getValue, getValue,
-        getValueUnsafe, getValueUnchecked, js_getTextLength, getTextLength,
-        js_getWillValidate, getWillValidate, js_getValidity, getValidity,
+        js_getTextLength, getTextLength, js_getWillValidate,
+        getWillValidate, js_getValidity, getValidity,
         js_getValidationMessage, getValidationMessage, js_getLabels,
         getLabels, js_setSelectionStart, setSelectionStart,
         js_getSelectionStart, getSelectionStart, js_setSelectionEnd,
@@ -346,38 +346,20 @@ getDefaultValue self
   = liftIO (fromJSString <$> (js_getDefaultValue self))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: HTMLTextAreaElement -> Optional JSString -> IO ()
+        :: HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
 setValue ::
-         (MonadIO m, ToJSString val) =>
-           HTMLTextAreaElement -> Maybe val -> m ()
-setValue self val
-  = liftIO (js_setValue self (toOptionalJSString val))
+         (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
+setValue self val = liftIO (js_setValue self (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        HTMLTextAreaElement -> IO (Nullable JSString)
+        HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
 getValue ::
-         (MonadIO m, FromJSString result) =>
-           HTMLTextAreaElement -> m (Maybe result)
-getValue self = liftIO (fromMaybeJSString <$> (js_getValue self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
-getValueUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) =>
-                 HTMLTextAreaElement -> m result
-getValueUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getValue self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
-getValueUnchecked ::
-                  (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
-getValueUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue self))
+         (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
+getValue self = liftIO (fromJSString <$> (js_getValue self))
  
 foreign import javascript unsafe "$1[\"textLength\"]"
         js_getTextLength :: HTMLTextAreaElement -> IO Word

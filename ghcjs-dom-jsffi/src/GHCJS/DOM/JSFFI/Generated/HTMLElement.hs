@@ -14,19 +14,16 @@ module GHCJS.DOM.JSFFI.Generated.HTMLElement
         js_getAccessKey, getAccessKey, js_setDraggable, setDraggable,
         js_getDraggable, getDraggable, js_setSpellcheck, setSpellcheck,
         js_getSpellcheck, getSpellcheck, js_setInnerText, setInnerText,
-        js_getInnerText, getInnerText, getInnerTextUnsafe,
-        getInnerTextUnchecked, js_setContentEditable, setContentEditable,
-        js_getContentEditable, getContentEditable, js_getIsContentEditable,
-        getIsContentEditable, js_getOffsetParent, getOffsetParent,
-        getOffsetParentUnsafe, getOffsetParentUnchecked, js_getOffsetTop,
-        getOffsetTop, js_getOffsetLeft, getOffsetLeft, js_getOffsetWidth,
-        getOffsetWidth, js_getOffsetHeight, getOffsetHeight,
-        js_setOuterText, setOuterText, js_getOuterText, getOuterText,
-        getOuterTextUnsafe, getOuterTextUnchecked, js_setAutocorrect,
-        setAutocorrect, js_getAutocorrect, getAutocorrect,
-        js_setAutocapitalize, setAutocapitalize, js_getAutocapitalize,
-        getAutocapitalize, getAutocapitalizeUnsafe,
-        getAutocapitalizeUnchecked, js_setWebkitdropzone,
+        js_getInnerText, getInnerText, js_setContentEditable,
+        setContentEditable, js_getContentEditable, getContentEditable,
+        js_getIsContentEditable, getIsContentEditable, js_getOffsetParent,
+        getOffsetParent, getOffsetParentUnsafe, getOffsetParentUnchecked,
+        js_getOffsetTop, getOffsetTop, js_getOffsetLeft, getOffsetLeft,
+        js_getOffsetWidth, getOffsetWidth, js_getOffsetHeight,
+        getOffsetHeight, js_setOuterText, setOuterText, js_getOuterText,
+        getOuterText, js_setAutocorrect, setAutocorrect, js_getAutocorrect,
+        getAutocorrect, js_setAutocapitalize, setAutocapitalize,
+        js_getAutocapitalize, getAutocapitalize, js_setWebkitdropzone,
         setWebkitdropzone, js_getWebkitdropzone, getWebkitdropzone,
         HTMLElement(..), gTypeHTMLElement, IsHTMLElement, toHTMLElement)
        where
@@ -245,45 +242,24 @@ getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"innerText\"] = $2;"
-        js_setInnerText :: HTMLElement -> Optional JSString -> IO ()
+        js_setInnerText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 setInnerText ::
              (MonadIO m, IsHTMLElement self, ToJSString val) =>
-               self -> Maybe val -> m ()
+               self -> val -> m ()
 setInnerText self val
-  = liftIO
-      (js_setInnerText (toHTMLElement self) (toOptionalJSString val))
+  = liftIO (js_setInnerText (toHTMLElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"innerText\"]"
-        js_getInnerText :: HTMLElement -> IO (Nullable JSString)
+        js_getInnerText :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
 getInnerText ::
              (MonadIO m, IsHTMLElement self, FromJSString result) =>
-               self -> m (Maybe result)
+               self -> m result
 getInnerText self
-  = liftIO
-      (fromMaybeJSString <$> (js_getInnerText (toHTMLElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
-getInnerTextUnsafe ::
-                   (MonadIO m, IsHTMLElement self, HasCallStack,
-                    FromJSString result) =>
-                     self -> m result
-getInnerTextUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getInnerText (toHTMLElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
-getInnerTextUnchecked ::
-                      (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                        self -> m result
-getInnerTextUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getInnerText (toHTMLElement self)))
+  = liftIO (fromJSString <$> (js_getInnerText (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
         js_setContentEditable :: HTMLElement -> JSString -> IO ()
@@ -377,45 +353,24 @@ getOffsetHeight self
   = liftIO (js_getOffsetHeight (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"outerText\"] = $2;"
-        js_setOuterText :: HTMLElement -> Optional JSString -> IO ()
+        js_setOuterText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 setOuterText ::
              (MonadIO m, IsHTMLElement self, ToJSString val) =>
-               self -> Maybe val -> m ()
+               self -> val -> m ()
 setOuterText self val
-  = liftIO
-      (js_setOuterText (toHTMLElement self) (toOptionalJSString val))
+  = liftIO (js_setOuterText (toHTMLElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"outerText\"]"
-        js_getOuterText :: HTMLElement -> IO (Nullable JSString)
+        js_getOuterText :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
 getOuterText ::
              (MonadIO m, IsHTMLElement self, FromJSString result) =>
-               self -> m (Maybe result)
+               self -> m result
 getOuterText self
-  = liftIO
-      (fromMaybeJSString <$> (js_getOuterText (toHTMLElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
-getOuterTextUnsafe ::
-                   (MonadIO m, IsHTMLElement self, HasCallStack,
-                    FromJSString result) =>
-                     self -> m result
-getOuterTextUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getOuterText (toHTMLElement self))) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
-getOuterTextUnchecked ::
-                      (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                        self -> m result
-getOuterTextUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getOuterText (toHTMLElement self)))
+  = liftIO (fromJSString <$> (js_getOuterText (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
         js_setAutocorrect :: HTMLElement -> Bool -> IO ()
@@ -435,47 +390,26 @@ getAutocorrect self
   = liftIO (js_getAutocorrect (toHTMLElement self))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
-        js_setAutocapitalize :: HTMLElement -> Optional JSString -> IO ()
+        js_setAutocapitalize :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
 setAutocapitalize ::
                   (MonadIO m, IsHTMLElement self, ToJSString val) =>
-                    self -> Maybe val -> m ()
+                    self -> val -> m ()
 setAutocapitalize self val
   = liftIO
-      (js_setAutocapitalize (toHTMLElement self)
-         (toOptionalJSString val))
+      (js_setAutocapitalize (toHTMLElement self) (toJSString val))
  
 foreign import javascript unsafe "$1[\"autocapitalize\"]"
-        js_getAutocapitalize :: HTMLElement -> IO (Nullable JSString)
+        js_getAutocapitalize :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
 getAutocapitalize ::
                   (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                    self -> m (Maybe result)
+                    self -> m result
 getAutocapitalize self
   = liftIO
-      (fromMaybeJSString <$> (js_getAutocapitalize (toHTMLElement self)))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
-getAutocapitalizeUnsafe ::
-                        (MonadIO m, IsHTMLElement self, HasCallStack,
-                         FromJSString result) =>
-                          self -> m result
-getAutocapitalizeUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$>
-          (js_getAutocapitalize (toHTMLElement self)))
-         >>= maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
-getAutocapitalizeUnchecked ::
-                           (MonadIO m, IsHTMLElement self, FromJSString result) =>
-                             self -> m result
-getAutocapitalizeUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$>
-         (js_getAutocapitalize (toHTMLElement self)))
+      (fromJSString <$> (js_getAutocapitalize (toHTMLElement self)))
  
 foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
         js_setWebkitdropzone :: HTMLElement -> JSString -> IO ()

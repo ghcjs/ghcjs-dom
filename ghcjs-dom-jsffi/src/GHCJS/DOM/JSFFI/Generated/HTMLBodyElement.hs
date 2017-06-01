@@ -4,18 +4,14 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLBodyElement
-       (js_setALink, setALink, js_getALink, getALink, getALinkUnsafe,
-        getALinkUnchecked, js_setBackground, setBackground,
-        js_getBackground, getBackground, js_setBgColor, setBgColor,
-        js_getBgColor, getBgColor, getBgColorUnsafe, getBgColorUnchecked,
-        js_setLink, setLink, js_getLink, getLink, getLinkUnsafe,
-        getLinkUnchecked, js_setText, setText, js_getText, getText,
-        getTextUnsafe, getTextUnchecked, js_setVLink, setVLink,
-        js_getVLink, getVLink, getVLinkUnsafe, getVLinkUnchecked, blur,
-        error, focus, focusin, focusout, load, resize, scroll,
-        webKitMouseForcechanged, webKitMouseForcedown,
-        webKitMouseForcewillbegin, webKitMouseForceup,
-        webKitWillRevealBottom, webKitWillRevealLeft,
+       (js_setALink, setALink, js_getALink, getALink, js_setBackground,
+        setBackground, js_getBackground, getBackground, js_setBgColor,
+        setBgColor, js_getBgColor, getBgColor, js_setLink, setLink,
+        js_getLink, getLink, js_setText, setText, js_getText, getText,
+        js_setVLink, setVLink, js_getVLink, getVLink, blur, error, focus,
+        focusin, focusout, load, resize, scroll, webKitMouseForcechanged,
+        webKitMouseForcedown, webKitMouseForcewillbegin,
+        webKitMouseForceup, webKitWillRevealBottom, webKitWillRevealLeft,
         webKitWillRevealRight, webKitWillRevealTop, selectionchange,
         HTMLBodyElement(..), gTypeHTMLBodyElement)
        where
@@ -39,37 +35,20 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"aLink\"] = $2;" js_setALink
-        :: HTMLBodyElement -> Optional JSString -> IO ()
+        :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
 setALink ::
-         (MonadIO m, ToJSString val) => HTMLBodyElement -> Maybe val -> m ()
-setALink self val
-  = liftIO (js_setALink self (toOptionalJSString val))
+         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setALink self val = liftIO (js_setALink self (toJSString val))
  
 foreign import javascript unsafe "$1[\"aLink\"]" js_getALink ::
-        HTMLBodyElement -> IO (Nullable JSString)
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
 getALink ::
-         (MonadIO m, FromJSString result) =>
-           HTMLBodyElement -> m (Maybe result)
-getALink self = liftIO (fromMaybeJSString <$> (js_getALink self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
-getALinkUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) =>
-                 HTMLBodyElement -> m result
-getALinkUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getALink self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.aLink Mozilla HTMLBodyElement.aLink documentation> 
-getALinkUnchecked ::
-                  (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getALinkUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getALink self))
+         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getALink self = liftIO (fromJSString <$> (js_getALink self))
  
 foreign import javascript unsafe "$1[\"background\"] = $2;"
         js_setBackground :: HTMLBodyElement -> JSString -> IO ()
@@ -90,137 +69,68 @@ getBackground self
   = liftIO (fromJSString <$> (js_getBackground self))
  
 foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
-        js_setBgColor :: HTMLBodyElement -> Optional JSString -> IO ()
+        js_setBgColor :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
 setBgColor ::
-           (MonadIO m, ToJSString val) => HTMLBodyElement -> Maybe val -> m ()
-setBgColor self val
-  = liftIO (js_setBgColor self (toOptionalJSString val))
+           (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
-        HTMLBodyElement -> IO (Nullable JSString)
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
 getBgColor ::
-           (MonadIO m, FromJSString result) =>
-             HTMLBodyElement -> m (Maybe result)
-getBgColor self
-  = liftIO (fromMaybeJSString <$> (js_getBgColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
-getBgColorUnsafe ::
-                 (MonadIO m, HasCallStack, FromJSString result) =>
-                   HTMLBodyElement -> m result
-getBgColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getBgColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 
-getBgColorUnchecked ::
-                    (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getBgColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getBgColor self))
+           (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
 foreign import javascript unsafe "$1[\"link\"] = $2;" js_setLink ::
-        HTMLBodyElement -> Optional JSString -> IO ()
+        HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
 setLink ::
-        (MonadIO m, ToJSString val) => HTMLBodyElement -> Maybe val -> m ()
-setLink self val
-  = liftIO (js_setLink self (toOptionalJSString val))
+        (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setLink self val = liftIO (js_setLink self (toJSString val))
  
 foreign import javascript unsafe "$1[\"link\"]" js_getLink ::
-        HTMLBodyElement -> IO (Nullable JSString)
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
 getLink ::
-        (MonadIO m, FromJSString result) =>
-          HTMLBodyElement -> m (Maybe result)
-getLink self = liftIO (fromMaybeJSString <$> (js_getLink self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
-getLinkUnsafe ::
-              (MonadIO m, HasCallStack, FromJSString result) =>
-                HTMLBodyElement -> m result
-getLinkUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getLink self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.link Mozilla HTMLBodyElement.link documentation> 
-getLinkUnchecked ::
-                 (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getLinkUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getLink self))
+        (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getLink self = liftIO (fromJSString <$> (js_getLink self))
  
 foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
-        HTMLBodyElement -> Optional JSString -> IO ()
+        HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
 setText ::
-        (MonadIO m, ToJSString val) => HTMLBodyElement -> Maybe val -> m ()
-setText self val
-  = liftIO (js_setText self (toOptionalJSString val))
+        (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setText self val = liftIO (js_setText self (toJSString val))
  
 foreign import javascript unsafe "$1[\"text\"]" js_getText ::
-        HTMLBodyElement -> IO (Nullable JSString)
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
 getText ::
-        (MonadIO m, FromJSString result) =>
-          HTMLBodyElement -> m (Maybe result)
-getText self = liftIO (fromMaybeJSString <$> (js_getText self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
-getTextUnsafe ::
-              (MonadIO m, HasCallStack, FromJSString result) =>
-                HTMLBodyElement -> m result
-getTextUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getText self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.text Mozilla HTMLBodyElement.text documentation> 
-getTextUnchecked ::
-                 (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getTextUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getText self))
+        (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getText self = liftIO (fromJSString <$> (js_getText self))
  
 foreign import javascript unsafe "$1[\"vLink\"] = $2;" js_setVLink
-        :: HTMLBodyElement -> Optional JSString -> IO ()
+        :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
 setVLink ::
-         (MonadIO m, ToJSString val) => HTMLBodyElement -> Maybe val -> m ()
-setVLink self val
-  = liftIO (js_setVLink self (toOptionalJSString val))
+         (MonadIO m, ToJSString val) => HTMLBodyElement -> val -> m ()
+setVLink self val = liftIO (js_setVLink self (toJSString val))
  
 foreign import javascript unsafe "$1[\"vLink\"]" js_getVLink ::
-        HTMLBodyElement -> IO (Nullable JSString)
+        HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
 getVLink ::
-         (MonadIO m, FromJSString result) =>
-           HTMLBodyElement -> m (Maybe result)
-getVLink self = liftIO (fromMaybeJSString <$> (js_getVLink self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
-getVLinkUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) =>
-                 HTMLBodyElement -> m result
-getVLinkUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getVLink self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.vLink Mozilla HTMLBodyElement.vLink documentation> 
-getVLinkUnchecked ::
-                  (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
-getVLinkUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getVLink self))
+         (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
+getVLink self = liftIO (fromJSString <$> (js_getVLink self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onblur Mozilla HTMLBodyElement.onblur documentation> 
 blur :: EventName HTMLBodyElement FocusEvent

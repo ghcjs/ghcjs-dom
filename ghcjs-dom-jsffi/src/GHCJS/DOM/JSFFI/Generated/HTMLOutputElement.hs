@@ -9,12 +9,11 @@ module GHCJS.DOM.JSFFI.Generated.HTMLOutputElement
         js_setCustomValidity, setCustomValidity, js_getHtmlFor, getHtmlFor,
         js_getForm, getForm, js_setName, setName, js_getName, getName,
         js_getType, getType, js_setDefaultValue, setDefaultValue,
-        js_getDefaultValue, getDefaultValue, getDefaultValueUnsafe,
-        getDefaultValueUnchecked, js_setValue, setValue, js_getValue,
-        getValue, getValueUnsafe, getValueUnchecked, js_getWillValidate,
-        getWillValidate, js_getValidity, getValidity,
-        js_getValidationMessage, getValidationMessage, js_getLabels,
-        getLabels, HTMLOutputElement(..), gTypeHTMLOutputElement)
+        js_getDefaultValue, getDefaultValue, js_setValue, setValue,
+        js_getValue, getValue, js_getWillValidate, getWillValidate,
+        js_getValidity, getValidity, js_getValidationMessage,
+        getValidationMessage, js_getLabels, getLabels,
+        HTMLOutputElement(..), gTypeHTMLOutputElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -107,75 +106,38 @@ getType ::
 getType self = liftIO (fromJSString <$> (js_getType self))
  
 foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
-        js_setDefaultValue ::
-        HTMLOutputElement -> Optional JSString -> IO ()
+        js_setDefaultValue :: HTMLOutputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 setDefaultValue ::
-                (MonadIO m, ToJSString val) =>
-                  HTMLOutputElement -> Maybe val -> m ()
+                (MonadIO m, ToJSString val) => HTMLOutputElement -> val -> m ()
 setDefaultValue self val
-  = liftIO (js_setDefaultValue self (toOptionalJSString val))
+  = liftIO (js_setDefaultValue self (toJSString val))
  
 foreign import javascript unsafe "$1[\"defaultValue\"]"
-        js_getDefaultValue :: HTMLOutputElement -> IO (Nullable JSString)
+        js_getDefaultValue :: HTMLOutputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
 getDefaultValue ::
-                (MonadIO m, FromJSString result) =>
-                  HTMLOutputElement -> m (Maybe result)
+                (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
 getDefaultValue self
-  = liftIO (fromMaybeJSString <$> (js_getDefaultValue self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
-getDefaultValueUnsafe ::
-                      (MonadIO m, HasCallStack, FromJSString result) =>
-                        HTMLOutputElement -> m result
-getDefaultValueUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getDefaultValue self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
-getDefaultValueUnchecked ::
-                         (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
-getDefaultValueUnchecked self
-  = liftIO
-      (fromJust . fromMaybeJSString <$> (js_getDefaultValue self))
+  = liftIO (fromJSString <$> (js_getDefaultValue self))
  
 foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: HTMLOutputElement -> Optional JSString -> IO ()
+        :: HTMLOutputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 setValue ::
-         (MonadIO m, ToJSString val) =>
-           HTMLOutputElement -> Maybe val -> m ()
-setValue self val
-  = liftIO (js_setValue self (toOptionalJSString val))
+         (MonadIO m, ToJSString val) => HTMLOutputElement -> val -> m ()
+setValue self val = liftIO (js_setValue self (toJSString val))
  
 foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
-        HTMLOutputElement -> IO (Nullable JSString)
+        HTMLOutputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
 getValue ::
-         (MonadIO m, FromJSString result) =>
-           HTMLOutputElement -> m (Maybe result)
-getValue self = liftIO (fromMaybeJSString <$> (js_getValue self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
-getValueUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) =>
-                 HTMLOutputElement -> m result
-getValueUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getValue self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.value Mozilla HTMLOutputElement.value documentation> 
-getValueUnchecked ::
-                  (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
-getValueUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getValue self))
+         (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
+getValue self = liftIO (fromJSString <$> (js_getValue self))
  
 foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
         js_getWillValidate :: HTMLOutputElement -> IO Bool

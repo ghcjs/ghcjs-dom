@@ -4,10 +4,9 @@
 -- For HasCallStack compatibility
 {-# LANGUAGE ImplicitParams, ConstraintKinds, KindSignatures #-}
 module GHCJS.DOM.JSFFI.Generated.HTMLFontElement
-       (js_setColor, setColor, js_getColor, getColor, getColorUnsafe,
-        getColorUnchecked, js_setFace, setFace, js_getFace, getFace,
-        js_setSize, setSize, js_getSize, getSize, HTMLFontElement(..),
-        gTypeHTMLFontElement)
+       (js_setColor, setColor, js_getColor, getColor, js_setFace, setFace,
+        js_getFace, getFace, js_setSize, setSize, js_getSize, getSize,
+        HTMLFontElement(..), gTypeHTMLFontElement)
        where
 import Prelude ((.), (==), (>>=), return, IO, Int, Float, Double, Bool(..), Maybe, maybe, fromIntegral, round, fmap, Show, Read, Eq, Ord)
 import qualified Prelude (error)
@@ -29,37 +28,20 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"color\"] = $2;" js_setColor
-        :: HTMLFontElement -> Optional JSString -> IO ()
+        :: HTMLFontElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
 setColor ::
-         (MonadIO m, ToJSString val) => HTMLFontElement -> Maybe val -> m ()
-setColor self val
-  = liftIO (js_setColor self (toOptionalJSString val))
+         (MonadIO m, ToJSString val) => HTMLFontElement -> val -> m ()
+setColor self val = liftIO (js_setColor self (toJSString val))
  
 foreign import javascript unsafe "$1[\"color\"]" js_getColor ::
-        HTMLFontElement -> IO (Nullable JSString)
+        HTMLFontElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
 getColor ::
-         (MonadIO m, FromJSString result) =>
-           HTMLFontElement -> m (Maybe result)
-getColor self = liftIO (fromMaybeJSString <$> (js_getColor self))
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
-getColorUnsafe ::
-               (MonadIO m, HasCallStack, FromJSString result) =>
-                 HTMLFontElement -> m result
-getColorUnsafe self
-  = liftIO
-      ((fromMaybeJSString <$> (js_getColor self)) >>=
-         maybe (Prelude.error "Nothing to return") return)
-
--- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFontElement.color Mozilla HTMLFontElement.color documentation> 
-getColorUnchecked ::
-                  (MonadIO m, FromJSString result) => HTMLFontElement -> m result
-getColorUnchecked self
-  = liftIO (fromJust . fromMaybeJSString <$> (js_getColor self))
+         (MonadIO m, FromJSString result) => HTMLFontElement -> m result
+getColor self = liftIO (fromJSString <$> (js_getColor self))
  
 foreign import javascript unsafe "$1[\"face\"] = $2;" js_setFace ::
         HTMLFontElement -> JSString -> IO ()
