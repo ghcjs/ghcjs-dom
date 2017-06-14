@@ -41,6 +41,7 @@ library
             GHCJS.DOM
           , GHCJS.DOM.Types
           , GHCJS.DOM.EventM
+          , GHCJS.DOM.EventTargetClosures
           -- (cd src/JSDOM/Generated && for a in *.hs; do echo "          , GHCJS.DOM.${a%.*}"; done | pbcopy)
           , GHCJS.DOM.ANGLEInstancedArrays
           , GHCJS.DOM.AbstractWorker
