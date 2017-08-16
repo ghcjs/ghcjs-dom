@@ -101,8 +101,9 @@ getSettings_ self
   = liftIO (void (js_getSettings (toMediaStreamTrack self)))
  
 foreign import javascript interruptible
-        "$1[\"applyConstraints\"]($2).\nthen($c);" js_applyConstraints ::
-        MediaStreamTrack -> Optional MediaTrackConstraints -> IO ()
+        "$1[\"applyConstraints\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_applyConstraints ::
+        MediaStreamTrack -> Optional MediaTrackConstraints -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.applyConstraints Mozilla MediaStreamTrack.applyConstraints documentation> 
 applyConstraints ::
@@ -110,8 +111,9 @@ applyConstraints ::
                    self -> Maybe MediaTrackConstraints -> m ()
 applyConstraints self constraints
   = liftIO
-      (js_applyConstraints (toMediaStreamTrack self)
-         (maybeToOptional constraints))
+      ((js_applyConstraints (toMediaStreamTrack self)
+          (maybeToOptional constraints))
+         >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
         MediaStreamTrack -> IO JSString

@@ -163,8 +163,9 @@ encodeURIComponent_ self uri
   = liftIO (void (js_encodeURIComponent self (toJSString uri)))
  
 foreign import javascript interruptible
-        "$1[\"fetch\"]($2, $3).then($c);" js_fetch ::
-        Window -> JSVal -> Optional RequestInit -> IO Response
+        "$1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_fetch ::
+        Window -> JSVal -> Optional RequestInit -> IO (JSVal, Response)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.fetch Mozilla Window.fetch documentation> 
 fetch ::
@@ -172,8 +173,9 @@ fetch ::
         Window -> input -> Maybe RequestInit -> m Response
 fetch self input init
   = liftIO
-      (toJSVal input >>= \ input' -> js_fetch self input'
-         (maybeToOptional init))
+      ((toJSVal input >>= \ input' -> js_fetch self input'
+          (maybeToOptional init))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.fetch Mozilla Window.fetch documentation> 
 fetch_ ::

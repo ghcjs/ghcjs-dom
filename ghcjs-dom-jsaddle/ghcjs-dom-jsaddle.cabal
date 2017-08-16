@@ -1,5 +1,5 @@
 name: ghcjs-dom-jsaddle
-version: 0.9.1.0
+version: 0.9.2.0
 cabal-version: >=1.22
 build-type: Simple
 license: MIT
@@ -18,7 +18,7 @@ Source-Repository head
   subdir:       ghcjs-dom-jsaddle
 
 library
-    build-depends: jsaddle-dom >=0.9.1.0 && <0.10
+    build-depends: jsaddle-dom >=0.9.2.0 && <0.10
 
     default-language: Haskell2010
 

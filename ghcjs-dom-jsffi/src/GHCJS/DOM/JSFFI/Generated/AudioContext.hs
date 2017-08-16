@@ -63,25 +63,34 @@ newAudioContext :: (MonadIO m) => m AudioContext
 newAudioContext = liftIO (js_newAudioContext)
  
 foreign import javascript interruptible
-        "$1[\"suspend\"]().then($c);" js_suspend :: AudioContext -> IO ()
+        "$1[\"suspend\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_suspend :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.suspend Mozilla AudioContext.suspend documentation> 
 suspend :: (MonadIO m, IsAudioContext self) => self -> m ()
-suspend self = liftIO (js_suspend (toAudioContext self))
+suspend self
+  = liftIO
+      ((js_suspend (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"resume\"]().then($c);" js_resume :: AudioContext -> IO ()
+        "$1[\"resume\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_resume :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.resume Mozilla AudioContext.resume documentation> 
 resume :: (MonadIO m, IsAudioContext self) => self -> m ()
-resume self = liftIO (js_resume (toAudioContext self))
+resume self
+  = liftIO
+      ((js_resume (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"close\"]().then($c);" js_close :: AudioContext -> IO ()
+        "$1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_close :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.close Mozilla AudioContext.close documentation> 
 close :: (MonadIO m, IsAudioContext self) => self -> m ()
-close self = liftIO (js_close (toAudioContext self))
+close self
+  = liftIO
+      ((js_close (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3, $4)"
         js_createBuffer ::

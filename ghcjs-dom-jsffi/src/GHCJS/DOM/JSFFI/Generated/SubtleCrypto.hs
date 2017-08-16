@@ -33,8 +33,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"encrypt\"]($2, $3, $4).\nthen($c);" js_encrypt ::
-        SubtleCrypto -> JSString -> CryptoKey -> BufferSource -> IO JSVal
+        "$1[\"encrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_encrypt ::
+        SubtleCrypto ->
+          JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.encrypt Mozilla WebKitSubtleCrypto.encrypt documentation> 
 encrypt ::
@@ -42,7 +44,9 @@ encrypt ::
           SubtleCrypto -> algorithm -> CryptoKey -> data' -> m JSVal
 encrypt self algorithm key data'
   = liftIO
-      (js_encrypt self (toJSString algorithm) key (toBufferSource data'))
+      ((js_encrypt self (toJSString algorithm) key
+          (toBufferSource data'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.encrypt Mozilla WebKitSubtleCrypto.encrypt documentation> 
 encrypt_ ::
@@ -55,8 +59,10 @@ encrypt_ self algorithm key data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"decrypt\"]($2, $3, $4).\nthen($c);" js_decrypt ::
-        SubtleCrypto -> JSString -> CryptoKey -> BufferSource -> IO JSVal
+        "$1[\"decrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_decrypt ::
+        SubtleCrypto ->
+          JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.decrypt Mozilla WebKitSubtleCrypto.decrypt documentation> 
 decrypt ::
@@ -64,7 +70,9 @@ decrypt ::
           SubtleCrypto -> algorithm -> CryptoKey -> data' -> m JSVal
 decrypt self algorithm key data'
   = liftIO
-      (js_decrypt self (toJSString algorithm) key (toBufferSource data'))
+      ((js_decrypt self (toJSString algorithm) key
+          (toBufferSource data'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.decrypt Mozilla WebKitSubtleCrypto.decrypt documentation> 
 decrypt_ ::
@@ -77,8 +85,10 @@ decrypt_ self algorithm key data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"sign\"]($2, $3, $4).then($c);" js_sign ::
-        SubtleCrypto -> JSString -> CryptoKey -> BufferSource -> IO JSVal
+        "$1[\"sign\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_sign ::
+        SubtleCrypto ->
+          JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.sign Mozilla WebKitSubtleCrypto.sign documentation> 
 sign ::
@@ -86,7 +96,8 @@ sign ::
        SubtleCrypto -> algorithm -> CryptoKey -> data' -> m JSVal
 sign self algorithm key data'
   = liftIO
-      (js_sign self (toJSString algorithm) key (toBufferSource data'))
+      ((js_sign self (toJSString algorithm) key (toBufferSource data'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.sign Mozilla WebKitSubtleCrypto.sign documentation> 
 sign_ ::
@@ -98,9 +109,11 @@ sign_ self algorithm key data'
          (js_sign self (toJSString algorithm) key (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"verify\"]($2, $3, $4, $5).\nthen($c);" js_verify ::
+        "$1[\"verify\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_verify ::
         SubtleCrypto ->
-          JSString -> CryptoKey -> BufferSource -> BufferSource -> IO JSVal
+          JSString ->
+            CryptoKey -> BufferSource -> BufferSource -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.verify Mozilla WebKitSubtleCrypto.verify documentation> 
 verify ::
@@ -110,9 +123,10 @@ verify ::
            algorithm -> CryptoKey -> signature -> data' -> m JSVal
 verify self algorithm key signature data'
   = liftIO
-      (js_verify self (toJSString algorithm) key
-         (toBufferSource signature)
-         (toBufferSource data'))
+      ((js_verify self (toJSString algorithm) key
+          (toBufferSource signature)
+          (toBufferSource data'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.verify Mozilla WebKitSubtleCrypto.verify documentation> 
 verify_ ::
@@ -128,8 +142,9 @@ verify_ self algorithm key signature data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"digest\"]($2, $3).then($c);" js_digest ::
-        SubtleCrypto -> JSString -> BufferSource -> IO JSVal
+        "$1[\"digest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_digest ::
+        SubtleCrypto -> JSString -> BufferSource -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.digest Mozilla WebKitSubtleCrypto.digest documentation> 
 digest ::
@@ -137,7 +152,8 @@ digest ::
          SubtleCrypto -> algorithm -> data' -> m JSVal
 digest self algorithm data'
   = liftIO
-      (js_digest self (toJSString algorithm) (toBufferSource data'))
+      ((js_digest self (toJSString algorithm) (toBufferSource data')) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.digest Mozilla WebKitSubtleCrypto.digest documentation> 
 digest_ ::
@@ -149,10 +165,11 @@ digest_ self algorithm data'
          (js_digest self (toJSString algorithm) (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"deriveKey\"]($2, $3, $4, $5,\n$6).\nthen($c);" js_deriveKey
-        ::
+        "$1[\"deriveKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_deriveKey ::
         SubtleCrypto ->
-          JSString -> CryptoKey -> JSString -> Bool -> JSVal -> IO JSVal
+          JSString ->
+            CryptoKey -> JSString -> Bool -> JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.deriveKey Mozilla WebKitSubtleCrypto.deriveKey documentation> 
 deriveKey ::
@@ -163,12 +180,13 @@ deriveKey ::
 deriveKey self algorithm baseKey derivedKeyType extractable
   keyUsages
   = liftIO
-      (toJSVal keyUsages >>=
-         \ keyUsages' ->
-           js_deriveKey self (toJSString algorithm) baseKey
-             (toJSString derivedKeyType)
-             extractable
-             keyUsages')
+      ((toJSVal keyUsages >>=
+          \ keyUsages' ->
+            js_deriveKey self (toJSString algorithm) baseKey
+              (toJSString derivedKeyType)
+              extractable
+              keyUsages')
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.deriveKey Mozilla WebKitSubtleCrypto.deriveKey documentation> 
 deriveKey_ ::
@@ -188,15 +206,19 @@ deriveKey_ self algorithm baseKey derivedKeyType extractable
                 keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"deriveBits\"]($2, $3, $4).\nthen($c);" js_deriveBits ::
-        SubtleCrypto -> JSString -> CryptoKey -> Word -> IO ArrayBuffer
+        "$1[\"deriveBits\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_deriveBits ::
+        SubtleCrypto ->
+          JSString -> CryptoKey -> Word -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.deriveBits Mozilla WebKitSubtleCrypto.deriveBits documentation> 
 deriveBits ::
            (MonadIO m, ToJSString algorithm) =>
              SubtleCrypto -> algorithm -> CryptoKey -> Word -> m ArrayBuffer
 deriveBits self algorithm baseKey length
-  = liftIO (js_deriveBits self (toJSString algorithm) baseKey length)
+  = liftIO
+      ((js_deriveBits self (toJSString algorithm) baseKey length) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.deriveBits Mozilla WebKitSubtleCrypto.deriveBits documentation> 
 deriveBits_ ::
@@ -207,8 +229,9 @@ deriveBits_ self algorithm baseKey length
       (void (js_deriveBits self (toJSString algorithm) baseKey length))
  
 foreign import javascript interruptible
-        "$1[\"generateKey\"]($2, $3, $4).\nthen($c);" js_generateKey ::
-        SubtleCrypto -> JSString -> Bool -> JSVal -> IO JSVal
+        "$1[\"generateKey\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_generateKey ::
+        SubtleCrypto -> JSString -> Bool -> JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.generateKey Mozilla WebKitSubtleCrypto.generateKey documentation> 
 generateKey ::
@@ -216,9 +239,10 @@ generateKey ::
               SubtleCrypto -> algorithm -> Bool -> [CryptoKeyUsage] -> m JSVal
 generateKey self algorithm extractable keyUsages
   = liftIO
-      (toJSVal keyUsages >>=
-         \ keyUsages' ->
-           js_generateKey self (toJSString algorithm) extractable keyUsages')
+      ((toJSVal keyUsages >>=
+          \ keyUsages' ->
+            js_generateKey self (toJSString algorithm) extractable keyUsages')
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.generateKey Mozilla WebKitSubtleCrypto.generateKey documentation> 
 generateKey_ ::
@@ -232,10 +256,11 @@ generateKey_ self algorithm extractable keyUsages
               js_generateKey self (toJSString algorithm) extractable keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"importKey\"]($2, $3, $4, $5,\n$6).\nthen($c);" js_importKey
-        ::
+        "$1[\"importKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_importKey ::
         SubtleCrypto ->
-          JSString -> KeyData -> JSString -> Bool -> JSVal -> IO CryptoKey
+          JSString ->
+            KeyData -> JSString -> Bool -> JSVal -> IO (JSVal, CryptoKey)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.importKey Mozilla WebKitSubtleCrypto.importKey documentation> 
 importKey ::
@@ -246,14 +271,15 @@ importKey ::
                 keyData -> algorithm -> Bool -> [CryptoKeyUsage] -> m CryptoKey
 importKey self format keyData algorithm extractable keyUsages
   = liftIO
-      (toJSVal keyUsages >>=
-         \ keyUsages' ->
-           toJSVal keyData >>=
-             \ keyData' ->
-               js_importKey self (toJSString format) (KeyData keyData')
-             (toJSString algorithm)
-             extractable
-             keyUsages')
+      ((toJSVal keyUsages >>=
+          \ keyUsages' ->
+            toJSVal keyData >>=
+              \ keyData' ->
+                js_importKey self (toJSString format) (KeyData keyData')
+              (toJSString algorithm)
+              extractable
+              keyUsages')
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.importKey Mozilla WebKitSubtleCrypto.importKey documentation> 
 importKey_ ::
@@ -274,15 +300,18 @@ importKey_ self format keyData algorithm extractable keyUsages
                 keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"exportKey\"]($2, $3).\nthen($c);" js_exportKey ::
-        SubtleCrypto -> JSString -> CryptoKey -> IO JSVal
+        "$1[\"exportKey\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_exportKey ::
+        SubtleCrypto -> JSString -> CryptoKey -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.exportKey Mozilla WebKitSubtleCrypto.exportKey documentation> 
 exportKey ::
           (MonadIO m, ToJSString format) =>
             SubtleCrypto -> format -> CryptoKey -> m JSVal
 exportKey self format key
-  = liftIO (js_exportKey self (toJSString format) key)
+  = liftIO
+      ((js_exportKey self (toJSString format) key) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.exportKey Mozilla WebKitSubtleCrypto.exportKey documentation> 
 exportKey_ ::
@@ -292,9 +321,10 @@ exportKey_ self format key
   = liftIO (void (js_exportKey self (toJSString format) key))
  
 foreign import javascript interruptible
-        "$1[\"wrapKey\"]($2, $3, $4, $5).\nthen($c);" js_wrapKey ::
+        "$1[\"wrapKey\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_wrapKey ::
         SubtleCrypto ->
-          JSString -> CryptoKey -> CryptoKey -> JSString -> IO JSVal
+          JSString -> CryptoKey -> CryptoKey -> JSString -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.wrapKey Mozilla WebKitSubtleCrypto.wrapKey documentation> 
 wrapKey ::
@@ -303,8 +333,9 @@ wrapKey ::
             format -> CryptoKey -> CryptoKey -> wrapAlgorithm -> m JSVal
 wrapKey self format key wrappingKey wrapAlgorithm
   = liftIO
-      (js_wrapKey self (toJSString format) key wrappingKey
-         (toJSString wrapAlgorithm))
+      ((js_wrapKey self (toJSString format) key wrappingKey
+          (toJSString wrapAlgorithm))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.wrapKey Mozilla WebKitSubtleCrypto.wrapKey documentation> 
 wrapKey_ ::
@@ -318,12 +349,13 @@ wrapKey_ self format key wrappingKey wrapAlgorithm
             (toJSString wrapAlgorithm)))
  
 foreign import javascript interruptible
-        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).\nthen($c);"
+        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_unwrapKey ::
         SubtleCrypto ->
           JSString ->
             BufferSource ->
-              CryptoKey -> JSString -> JSString -> Bool -> JSVal -> IO CryptoKey
+              CryptoKey ->
+                JSString -> JSString -> Bool -> JSVal -> IO (JSVal, CryptoKey)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.unwrapKey Mozilla WebKitSubtleCrypto.unwrapKey documentation> 
 unwrapKey ::
@@ -338,14 +370,15 @@ unwrapKey ::
 unwrapKey self format wrappedKey unwrappingKey unwrapAlgorithm
   unwrappedKeyAlgorithm extractable keyUsages
   = liftIO
-      (toJSVal keyUsages >>=
-         \ keyUsages' ->
-           js_unwrapKey self (toJSString format) (toBufferSource wrappedKey)
-             unwrappingKey
-             (toJSString unwrapAlgorithm)
-             (toJSString unwrappedKeyAlgorithm)
-             extractable
-             keyUsages')
+      ((toJSVal keyUsages >>=
+          \ keyUsages' ->
+            js_unwrapKey self (toJSString format) (toBufferSource wrappedKey)
+              unwrappingKey
+              (toJSString unwrapAlgorithm)
+              (toJSString unwrappedKeyAlgorithm)
+              extractable
+              keyUsages')
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitSubtleCrypto.unwrapKey Mozilla WebKitSubtleCrypto.unwrapKey documentation> 
 unwrapKey_ ::

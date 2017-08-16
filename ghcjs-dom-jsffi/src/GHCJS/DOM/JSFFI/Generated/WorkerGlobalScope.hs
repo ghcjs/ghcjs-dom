@@ -30,8 +30,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"fetch\"]($2, $3).then($c);" js_fetch ::
-        WorkerGlobalScope -> JSVal -> Optional RequestInit -> IO Response
+        "$1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_fetch ::
+        WorkerGlobalScope ->
+          JSVal -> Optional RequestInit -> IO (JSVal, Response)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.fetch Mozilla WorkerGlobalScope.fetch documentation> 
 fetch ::
@@ -39,9 +41,10 @@ fetch ::
         self -> input -> Maybe RequestInit -> m Response
 fetch self input init
   = liftIO
-      (toJSVal input >>=
-         \ input' -> js_fetch (toWorkerGlobalScope self) input'
-         (maybeToOptional init))
+      ((toJSVal input >>=
+          \ input' -> js_fetch (toWorkerGlobalScope self) input'
+          (maybeToOptional init))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.fetch Mozilla WorkerGlobalScope.fetch documentation> 
 fetch_ ::

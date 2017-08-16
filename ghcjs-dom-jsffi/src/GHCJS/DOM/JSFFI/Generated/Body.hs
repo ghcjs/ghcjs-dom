@@ -28,46 +28,52 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"arrayBuffer\"]().then($c);" js_arrayBuffer ::
-        Body -> IO ArrayBuffer
+        "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_arrayBuffer :: Body -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.arrayBuffer Mozilla Body.arrayBuffer documentation> 
 arrayBuffer :: (MonadIO m, IsBody self) => self -> m ArrayBuffer
-arrayBuffer self = liftIO (js_arrayBuffer (toBody self))
+arrayBuffer self
+  = liftIO ((js_arrayBuffer (toBody self)) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.arrayBuffer Mozilla Body.arrayBuffer documentation> 
 arrayBuffer_ :: (MonadIO m, IsBody self) => self -> m ()
 arrayBuffer_ self = liftIO (void (js_arrayBuffer (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"blob\"]().then($c);" js_blob :: Body -> IO Blob
+        "$1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_blob :: Body -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.blob Mozilla Body.blob documentation> 
 blob :: (MonadIO m, IsBody self) => self -> m Blob
-blob self = liftIO (js_blob (toBody self))
+blob self = liftIO ((js_blob (toBody self)) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.blob Mozilla Body.blob documentation> 
 blob_ :: (MonadIO m, IsBody self) => self -> m ()
 blob_ self = liftIO (void (js_blob (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"json\"]().then($c);" js_json :: Body -> IO JSVal
+        "$1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_json :: Body -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.json Mozilla Body.json documentation> 
 json :: (MonadIO m, IsBody self) => self -> m JSVal
-json self = liftIO (js_json (toBody self))
+json self = liftIO ((js_json (toBody self)) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.json Mozilla Body.json documentation> 
 json_ :: (MonadIO m, IsBody self) => self -> m ()
 json_ self = liftIO (void (js_json (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"text\"]().then($c);" js_text :: Body -> IO JSString
+        "$1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_text :: Body -> IO (JSVal, JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.text Mozilla Body.text documentation> 
 text ::
      (MonadIO m, IsBody self, FromJSString result) => self -> m result
-text self = liftIO (fromJSString <$> (js_text (toBody self)))
+text self
+  = liftIO
+      (fromJSString <$> ((js_text (toBody self)) >>= checkPromiseResult))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.text Mozilla Body.text documentation> 
 text_ :: (MonadIO m, IsBody self) => self -> m ()

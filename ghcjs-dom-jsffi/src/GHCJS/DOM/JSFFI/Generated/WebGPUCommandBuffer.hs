@@ -92,9 +92,10 @@ presentDrawable self drawable
   = liftIO (js_presentDrawable self drawable)
  
 foreign import javascript interruptible
-        "$1[\"completed\"].then($c);" js_getCompleted ::
-        WebGPUCommandBuffer -> IO ()
+        "$1[\"completed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getCompleted :: WebGPUCommandBuffer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandBuffer.completed Mozilla WebGPUCommandBuffer.completed documentation> 
 getCompleted :: (MonadIO m) => WebGPUCommandBuffer -> m ()
-getCompleted self = liftIO (js_getCompleted self)
+getCompleted self
+  = liftIO ((js_getCompleted self) >>= maybeThrowPromiseRejected)

@@ -43,13 +43,14 @@ getConfiguration_ :: (MonadIO m) => MediaKeySystemAccess -> m ()
 getConfiguration_ self = liftIO (void (js_getConfiguration self))
  
 foreign import javascript interruptible
-        "$1[\"createMediaKeys\"]().\nthen($c);" js_createMediaKeys ::
-        MediaKeySystemAccess -> IO MediaKeys
+        "$1[\"createMediaKeys\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_createMediaKeys :: MediaKeySystemAccess -> IO (JSVal, MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess.createMediaKeys Mozilla MediaKeySystemAccess.createMediaKeys documentation> 
 createMediaKeys ::
                 (MonadIO m) => MediaKeySystemAccess -> m MediaKeys
-createMediaKeys self = liftIO (js_createMediaKeys self)
+createMediaKeys self
+  = liftIO ((js_createMediaKeys self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess.createMediaKeys Mozilla MediaKeySystemAccess.createMediaKeys documentation> 
 createMediaKeys_ :: (MonadIO m) => MediaKeySystemAccess -> m ()

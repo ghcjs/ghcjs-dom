@@ -47,8 +47,8 @@ newReadableStream underlyingSource options
              (maybeToOptional options'))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then($c);" js_cancel ::
-        ReadableStream -> Optional JSVal -> IO JSVal
+        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_cancel :: ReadableStream -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
 cancel ::
@@ -56,8 +56,9 @@ cancel ::
          ReadableStream -> Maybe reason -> m JSVal
 cancel self reason
   = liftIO
-      (mapM toJSVal reason >>=
-         \ reason' -> js_cancel self (maybeToOptional reason'))
+      ((mapM toJSVal reason >>=
+          \ reason' -> js_cancel self (maybeToOptional reason'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
 cancel_ ::
@@ -92,8 +93,9 @@ getReader_ self options
             \ options' -> js_getReader self (maybeToOptional options')))
  
 foreign import javascript interruptible
-        "$1[\"pipeTo\"]($2, $3).then($c);" js_pipeTo ::
-        ReadableStream -> JSVal -> Optional JSVal -> IO JSVal
+        "$1[\"pipeTo\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_pipeTo ::
+        ReadableStream -> JSVal -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
 pipeTo ::
@@ -101,10 +103,11 @@ pipeTo ::
          ReadableStream -> streams -> Maybe options -> m JSVal
 pipeTo self streams options
   = liftIO
-      (mapM toJSVal options >>=
-         \ options' ->
-           toJSVal streams >>= \ streams' -> js_pipeTo self streams'
-             (maybeToOptional options'))
+      ((mapM toJSVal options >>=
+          \ options' ->
+            toJSVal streams >>= \ streams' -> js_pipeTo self streams'
+              (maybeToOptional options'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeTo Mozilla ReadableStream.pipeTo documentation> 
 pipeTo_ ::

@@ -89,9 +89,9 @@ canMakePayments_ :: (MonadIO m) => ApplePaySession -> m ()
 canMakePayments_ self = liftIO (void (js_canMakePayments self))
  
 foreign import javascript interruptible
-        "$1[\"canMakePaymentsWithActiveCard\"]($2).\nthen($c);"
+        "$1[\"canMakePaymentsWithActiveCard\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_canMakePaymentsWithActiveCard ::
-        ApplePaySession -> JSString -> IO Bool
+        ApplePaySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard ::
@@ -99,8 +99,9 @@ canMakePaymentsWithActiveCard ::
                                 ApplePaySession -> merchantIdentifier -> m Bool
 canMakePaymentsWithActiveCard self merchantIdentifier
   = liftIO
-      (js_canMakePaymentsWithActiveCard self
-         (toJSString merchantIdentifier))
+      ((js_canMakePaymentsWithActiveCard self
+          (toJSString merchantIdentifier))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard_ ::
@@ -113,15 +114,18 @@ canMakePaymentsWithActiveCard_ self merchantIdentifier
             (toJSString merchantIdentifier)))
  
 foreign import javascript interruptible
-        "$1[\"openPaymentSetup\"]($2).\nthen($c);" js_openPaymentSetup ::
-        ApplePaySession -> JSString -> IO Bool
+        "$1[\"openPaymentSetup\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_openPaymentSetup ::
+        ApplePaySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup ::
                  (MonadIO m, ToJSString merchantIdentifier) =>
                    ApplePaySession -> merchantIdentifier -> m Bool
 openPaymentSetup self merchantIdentifier
-  = liftIO (js_openPaymentSetup self (toJSString merchantIdentifier))
+  = liftIO
+      ((js_openPaymentSetup self (toJSString merchantIdentifier)) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup_ ::

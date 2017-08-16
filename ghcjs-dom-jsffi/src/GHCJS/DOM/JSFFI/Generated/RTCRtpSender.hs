@@ -39,8 +39,9 @@ getParameters_ :: (MonadIO m) => RTCRtpSender -> m ()
 getParameters_ self = liftIO (void (js_getParameters self))
  
 foreign import javascript interruptible
-        "$1[\"replaceTrack\"]($2).then($c);" js_replaceTrack ::
-        RTCRtpSender -> Optional MediaStreamTrack -> IO ()
+        "$1[\"replaceTrack\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_replaceTrack ::
+        RTCRtpSender -> Optional MediaStreamTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpSender.replaceTrack Mozilla RTCRtpSender.replaceTrack documentation> 
 replaceTrack ::
@@ -48,8 +49,9 @@ replaceTrack ::
                RTCRtpSender -> Maybe withTrack -> m ()
 replaceTrack self withTrack
   = liftIO
-      (js_replaceTrack self
-         (maybeToOptional (fmap toMediaStreamTrack withTrack)))
+      ((js_replaceTrack self
+          (maybeToOptional (fmap toMediaStreamTrack withTrack)))
+         >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
         RTCRtpSender -> IO (Nullable MediaStreamTrack)

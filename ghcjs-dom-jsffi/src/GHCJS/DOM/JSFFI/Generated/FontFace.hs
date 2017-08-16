@@ -50,11 +50,12 @@ newFontFace family' source descriptors
          (maybeToOptional descriptors))
  
 foreign import javascript interruptible
-        "$1[\"load\"]().then($c);" js_load :: FontFace -> IO FontFace
+        "$1[\"load\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_load :: FontFace -> IO (JSVal, FontFace)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.load Mozilla FontFace.load documentation> 
 load :: (MonadIO m) => FontFace -> m FontFace
-load self = liftIO (js_load self)
+load self = liftIO ((js_load self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.load Mozilla FontFace.load documentation> 
 load_ :: (MonadIO m) => FontFace -> m ()
@@ -182,8 +183,10 @@ getStatus self
   = liftIO ((js_getStatus self) >>= fromJSValUnchecked)
  
 foreign import javascript interruptible
-        "$1[\"loaded\"].then($c);" js_getLoaded :: FontFace -> IO FontFace
+        "$1[\"loaded\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getLoaded :: FontFace -> IO (JSVal, FontFace)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.loaded Mozilla FontFace.loaded documentation> 
 getLoaded :: (MonadIO m) => FontFace -> m FontFace
-getLoaded self = liftIO (js_getLoaded self)
+getLoaded self
+  = liftIO ((js_getLoaded self) >>= checkPromiseResult)

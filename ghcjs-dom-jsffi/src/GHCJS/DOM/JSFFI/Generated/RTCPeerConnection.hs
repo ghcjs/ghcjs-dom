@@ -60,9 +60,10 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"createOffer\"]($2).then($c);" js_createOffer ::
+        "$1[\"createOffer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_createOffer ::
         RTCPeerConnection ->
-          Optional RTCOfferOptions -> IO RTCSessionDescriptionInit
+          Optional RTCOfferOptions -> IO (JSVal, RTCSessionDescriptionInit)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createOffer Mozilla webkitRTCPeerConnection.createOffer documentation> 
 createOffer ::
@@ -70,7 +71,9 @@ createOffer ::
               RTCPeerConnection ->
                 Maybe RTCOfferOptions -> m RTCSessionDescriptionInit
 createOffer self offerOptions
-  = liftIO (js_createOffer self (maybeToOptional offerOptions))
+  = liftIO
+      ((js_createOffer self (maybeToOptional offerOptions)) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createOffer Mozilla webkitRTCPeerConnection.createOffer documentation> 
 createOffer_ ::
@@ -80,9 +83,10 @@ createOffer_ self offerOptions
       (void (js_createOffer self (maybeToOptional offerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"createAnswer\"]($2).then($c);" js_createAnswer ::
+        "$1[\"createAnswer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_createAnswer ::
         RTCPeerConnection ->
-          Optional RTCAnswerOptions -> IO RTCSessionDescriptionInit
+          Optional RTCAnswerOptions -> IO (JSVal, RTCSessionDescriptionInit)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createAnswer Mozilla webkitRTCPeerConnection.createAnswer documentation> 
 createAnswer ::
@@ -90,7 +94,9 @@ createAnswer ::
                RTCPeerConnection ->
                  Maybe RTCAnswerOptions -> m RTCSessionDescriptionInit
 createAnswer self answerOptions
-  = liftIO (js_createAnswer self (maybeToOptional answerOptions))
+  = liftIO
+      ((js_createAnswer self (maybeToOptional answerOptions)) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.createAnswer Mozilla webkitRTCPeerConnection.createAnswer documentation> 
 createAnswer_ ::
@@ -100,32 +106,37 @@ createAnswer_ self answerOptions
       (void (js_createAnswer self (maybeToOptional answerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"setLocalDescription\"]($2).\nthen($c);"
+        "$1[\"setLocalDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_setLocalDescription ::
-        RTCPeerConnection -> RTCSessionDescriptionInit -> IO ()
+        RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.setLocalDescription Mozilla webkitRTCPeerConnection.setLocalDescription documentation> 
 setLocalDescription ::
                     (MonadIO m) =>
                       RTCPeerConnection -> RTCSessionDescriptionInit -> m ()
 setLocalDescription self description
-  = liftIO (js_setLocalDescription self description)
+  = liftIO
+      ((js_setLocalDescription self description) >>=
+         maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"setRemoteDescription\"]($2).\nthen($c);"
+        "$1[\"setRemoteDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_setRemoteDescription ::
-        RTCPeerConnection -> RTCSessionDescriptionInit -> IO ()
+        RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.setRemoteDescription Mozilla webkitRTCPeerConnection.setRemoteDescription documentation> 
 setRemoteDescription ::
                      (MonadIO m) =>
                        RTCPeerConnection -> RTCSessionDescriptionInit -> m ()
 setRemoteDescription self description
-  = liftIO (js_setRemoteDescription self description)
+  = liftIO
+      ((js_setRemoteDescription self description) >>=
+         maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"addIceCandidate\"]($2).\nthen($c);" js_addIceCandidate ::
-        RTCPeerConnection -> RTCIceCandidateOrInit -> IO ()
+        "$1[\"addIceCandidate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_addIceCandidate ::
+        RTCPeerConnection -> RTCIceCandidateOrInit -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.addIceCandidate Mozilla webkitRTCPeerConnection.addIceCandidate documentation> 
 addIceCandidate ::
@@ -133,9 +144,10 @@ addIceCandidate ::
                   RTCPeerConnection -> candidate -> m ()
 addIceCandidate self candidate
   = liftIO
-      (toJSVal candidate >>=
-         \ candidate' ->
-           js_addIceCandidate self (RTCIceCandidateOrInit candidate'))
+      ((toJSVal candidate >>=
+          \ candidate' ->
+            js_addIceCandidate self (RTCIceCandidateOrInit candidate'))
+         >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"getConfiguration\"]()"
         js_getConfiguration :: RTCPeerConnection -> IO RTCConfiguration
@@ -292,8 +304,10 @@ createDataChannel_ self label options
             (maybeToOptional options)))
  
 foreign import javascript interruptible
-        "$1[\"getStats\"]($2).then($c);" js_getStats ::
-        RTCPeerConnection -> Optional MediaStreamTrack -> IO RTCStatsReport
+        "$1[\"getStats\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getStats ::
+        RTCPeerConnection ->
+          Optional MediaStreamTrack -> IO (JSVal, RTCStatsReport)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStats Mozilla webkitRTCPeerConnection.getStats documentation> 
 getStats ::
@@ -301,8 +315,9 @@ getStats ::
            RTCPeerConnection -> Maybe selector -> m RTCStatsReport
 getStats self selector
   = liftIO
-      (js_getStats self
-         (maybeToOptional (fmap toMediaStreamTrack selector)))
+      ((js_getStats self
+          (maybeToOptional (fmap toMediaStreamTrack selector)))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStats Mozilla webkitRTCPeerConnection.getStats documentation> 
 getStats_ ::

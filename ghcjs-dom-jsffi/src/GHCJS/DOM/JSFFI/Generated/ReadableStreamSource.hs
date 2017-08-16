@@ -28,24 +28,28 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"start\"]($2).then($c);" js_start ::
-        ReadableStreamSource -> ReadableStreamDefaultController -> IO ()
+        "$1[\"start\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_start ::
+        ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamSource.start Mozilla ReadableStreamSource.start documentation> 
 start ::
       (MonadIO m) =>
         ReadableStreamSource -> ReadableStreamDefaultController -> m ()
-start self controller = liftIO (js_start self controller)
+start self controller
+  = liftIO ((js_start self controller) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"pull\"]($2).then($c);" js_pull ::
-        ReadableStreamSource -> ReadableStreamDefaultController -> IO ()
+        "$1[\"pull\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_pull ::
+        ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamSource.pull Mozilla ReadableStreamSource.pull documentation> 
 pull ::
      (MonadIO m) =>
        ReadableStreamSource -> ReadableStreamDefaultController -> m ()
-pull self controller = liftIO (js_pull self controller)
+pull self controller
+  = liftIO ((js_pull self controller) >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"cancel\"]($2)" js_cancel ::
         ReadableStreamSource -> JSVal -> IO ()

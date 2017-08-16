@@ -29,14 +29,16 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"enumerateDevices\"]().\nthen($c);" js_enumerateDevices ::
-        MediaDevices -> IO JSVal
+        "$1[\"enumerateDevices\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_enumerateDevices :: MediaDevices -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
 enumerateDevices ::
                  (MonadIO m) => MediaDevices -> m [MediaDeviceInfo]
 enumerateDevices self
-  = liftIO ((js_enumerateDevices self) >>= fromJSValUnchecked)
+  = liftIO
+      (((js_enumerateDevices self) >>= checkPromiseResult) >>=
+         fromJSValUnchecked)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
 enumerateDevices_ :: (MonadIO m) => MediaDevices -> m ()
@@ -58,15 +60,19 @@ getSupportedConstraints_ self
   = liftIO (void (js_getSupportedConstraints self))
  
 foreign import javascript interruptible
-        "$1[\"getUserMedia\"]($2).then($c);" js_getUserMedia ::
-        MediaDevices -> Optional MediaStreamConstraints -> IO MediaStream
+        "$1[\"getUserMedia\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getUserMedia ::
+        MediaDevices ->
+          Optional MediaStreamConstraints -> IO (JSVal, MediaStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.getUserMedia Mozilla MediaDevices.getUserMedia documentation> 
 getUserMedia ::
              (MonadIO m) =>
                MediaDevices -> Maybe MediaStreamConstraints -> m MediaStream
 getUserMedia self constraints
-  = liftIO (js_getUserMedia self (maybeToOptional constraints))
+  = liftIO
+      ((js_getUserMedia self (maybeToOptional constraints)) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.getUserMedia Mozilla MediaDevices.getUserMedia documentation> 
 getUserMedia_ ::

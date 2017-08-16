@@ -41,12 +41,13 @@ newPromiseRejectionEvent type' eventInitDict
       (js_newPromiseRejectionEvent (toJSString type') eventInitDict)
  
 foreign import javascript interruptible
-        "$1[\"promise\"].then($c);" js_getPromise ::
-        PromiseRejectionEvent -> IO JSVal
+        "$1[\"promise\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getPromise :: PromiseRejectionEvent -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PromiseRejectionEvent.promise Mozilla PromiseRejectionEvent.promise documentation> 
 getPromise :: (MonadIO m) => PromiseRejectionEvent -> m JSVal
-getPromise self = liftIO (js_getPromise self)
+getPromise self
+  = liftIO ((js_getPromise self) >>= checkPromiseResult)
  
 foreign import javascript unsafe "$1[\"reason\"]" js_getReason ::
         PromiseRejectionEvent -> IO JSVal
