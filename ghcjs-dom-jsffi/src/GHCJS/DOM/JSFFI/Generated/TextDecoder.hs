@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"TextDecoder\"]($1,\n$2)" js_newTextDecoder ::
         Optional JSString -> Optional TextDecoderOptions -> IO TextDecoder
 
@@ -40,7 +40,7 @@ newTextDecoder label options
       (js_newTextDecoder (toOptionalJSString label)
          (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"decode\"]($2, $3)" js_decode
+foreign import javascript safe "$1[\"decode\"]($2, $3)" js_decode
         ::
         TextDecoder ->
           Optional BufferSource -> Optional TextDecodeOptions -> IO JSString

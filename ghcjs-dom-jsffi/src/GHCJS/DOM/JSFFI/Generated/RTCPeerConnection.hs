@@ -161,7 +161,7 @@ getConfiguration self = liftIO (js_getConfiguration self)
 getConfiguration_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getConfiguration_ self = liftIO (void (js_getConfiguration self))
  
-foreign import javascript unsafe "$1[\"setConfiguration\"]($2)"
+foreign import javascript safe "$1[\"setConfiguration\"]($2)"
         js_setConfiguration ::
         RTCPeerConnection -> RTCConfiguration -> IO ()
 
@@ -216,7 +216,7 @@ getTransceivers self
 getTransceivers_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getTransceivers_ self = liftIO (void (js_getTransceivers self))
  
-foreign import javascript unsafe "$1[\"addTrack\"]($2, $3)"
+foreign import javascript safe "$1[\"addTrack\"]($2, $3)"
         js_addTrack ::
         RTCPeerConnection -> MediaStreamTrack -> JSVal -> IO RTCRtpSender
 
@@ -240,7 +240,7 @@ addTrack_ self track streams
             \ streams' ->
               js_addTrack self (toMediaStreamTrack track) streams'))
  
-foreign import javascript unsafe "$1[\"removeTrack\"]($2)"
+foreign import javascript safe "$1[\"removeTrack\"]($2)"
         js_removeTrack :: RTCPeerConnection -> RTCRtpSender -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.removeTrack Mozilla webkitRTCPeerConnection.removeTrack documentation> 
@@ -248,7 +248,7 @@ removeTrack ::
             (MonadIO m) => RTCPeerConnection -> RTCRtpSender -> m ()
 removeTrack self sender = liftIO (js_removeTrack self sender)
  
-foreign import javascript unsafe "$1[\"addTransceiver\"]($2, $3)"
+foreign import javascript safe "$1[\"addTransceiver\"]($2, $3)"
         js_addTransceiverTrack ::
         RTCPeerConnection ->
           MediaStreamTrackOrKind ->
@@ -278,8 +278,8 @@ addTransceiverTrack_ self track init
               js_addTransceiverTrack self (MediaStreamTrackOrKind track')
             (maybeToOptional init)))
  
-foreign import javascript unsafe
-        "$1[\"createDataChannel\"]($2, $3)" js_createDataChannel ::
+foreign import javascript safe "$1[\"createDataChannel\"]($2, $3)"
+        js_createDataChannel ::
         RTCPeerConnection ->
           JSString -> Optional RTCDataChannelInit -> IO RTCDataChannel
 

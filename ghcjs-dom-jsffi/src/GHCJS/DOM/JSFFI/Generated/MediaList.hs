@@ -57,7 +57,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_item self index))
  
-foreign import javascript unsafe "$1[\"deleteMedium\"]($2)"
+foreign import javascript safe "$1[\"deleteMedium\"]($2)"
         js_deleteMedium :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.deleteMedium Mozilla MediaList.deleteMedium documentation> 
@@ -66,7 +66,7 @@ deleteMedium ::
 deleteMedium self oldMedium
   = liftIO (js_deleteMedium self (toJSString oldMedium))
  
-foreign import javascript unsafe "$1[\"appendMedium\"]($2)"
+foreign import javascript safe "$1[\"appendMedium\"]($2)"
         js_appendMedium :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.appendMedium Mozilla MediaList.appendMedium documentation> 
@@ -75,7 +75,7 @@ appendMedium ::
 appendMedium self newMedium
   = liftIO (js_appendMedium self (toJSString newMedium))
  
-foreign import javascript unsafe "$1[\"mediaText\"] = $2;"
+foreign import javascript safe "$1[\"mediaText\"] = $2;"
         js_setMediaText :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 

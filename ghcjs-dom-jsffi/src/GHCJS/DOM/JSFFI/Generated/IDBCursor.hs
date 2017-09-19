@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"update\"]($2)" js_update ::
+foreign import javascript safe "$1[\"update\"]($2)" js_update ::
         IDBCursor -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.update Mozilla IDBCursor.update documentation> 
@@ -50,14 +50,14 @@ update_ self value
          (toJSVal value >>=
             \ value' -> js_update (toIDBCursor self) value'))
  
-foreign import javascript unsafe "$1[\"advance\"]($2)" js_advance
-        :: IDBCursor -> Word -> IO ()
+foreign import javascript safe "$1[\"advance\"]($2)" js_advance ::
+        IDBCursor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.advance Mozilla IDBCursor.advance documentation> 
 advance :: (MonadIO m, IsIDBCursor self) => self -> Word -> m ()
 advance self count = liftIO (js_advance (toIDBCursor self) count)
  
-foreign import javascript unsafe "$1[\"continue\"]($2)" js_continue
+foreign import javascript safe "$1[\"continue\"]($2)" js_continue
         :: IDBCursor -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.continue Mozilla IDBCursor.continue documentation> 
@@ -69,9 +69,8 @@ continue self key
       (mapM toJSVal key >>=
          \ key' -> js_continue (toIDBCursor self) (maybeToOptional key'))
  
-foreign import javascript unsafe
-        "$1[\"continuePrimaryKey\"]($2, $3)" js_continuePrimaryKey ::
-        IDBCursor -> JSVal -> JSVal -> IO ()
+foreign import javascript safe "$1[\"continuePrimaryKey\"]($2, $3)"
+        js_continuePrimaryKey :: IDBCursor -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.continuePrimaryKey Mozilla IDBCursor.continuePrimaryKey documentation> 
 continuePrimaryKey ::
@@ -85,7 +84,7 @@ continuePrimaryKey self key primaryKey
              \ key' -> js_continuePrimaryKey (toIDBCursor self) key'
              primaryKey')
  
-foreign import javascript unsafe "$1[\"delete\"]()" js_delete ::
+foreign import javascript safe "$1[\"delete\"]()" js_delete ::
         IDBCursor -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.delete Mozilla IDBCursor.delete documentation> 

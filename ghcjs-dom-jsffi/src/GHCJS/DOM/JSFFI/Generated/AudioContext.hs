@@ -92,7 +92,7 @@ close self
   = liftIO
       ((js_close (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"createBuffer\"]($2, $3, $4)"
         js_createBuffer ::
         AudioContext -> Word -> Word -> Float -> IO AudioBuffer
 
@@ -117,7 +117,7 @@ createBuffer_ self numberOfChannels numberOfFrames sampleRate
             numberOfFrames
             sampleRate))
  
-foreign import javascript unsafe "$1[\"createBuffer\"]($2, $3)"
+foreign import javascript safe "$1[\"createBuffer\"]($2, $3)"
         js_createBufferFromArrayBuffer ::
         AudioContext -> ArrayBuffer -> Bool -> IO AudioBuffer
 
@@ -176,7 +176,7 @@ createBufferSource_ ::
 createBufferSource_ self
   = liftIO (void (js_createBufferSource (toAudioContext self)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createMediaElementSource\"]($2)" js_createMediaElementSource
         ::
         AudioContext -> HTMLMediaElement -> IO MediaElementAudioSourceNode
@@ -202,7 +202,7 @@ createMediaElementSource_ self mediaElement
          (js_createMediaElementSource (toAudioContext self)
             (toHTMLMediaElement mediaElement)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createMediaStreamSource\"]($2)" js_createMediaStreamSource ::
         AudioContext -> MediaStream -> IO MediaStreamAudioSourceNode
 
@@ -254,7 +254,7 @@ createGain_ :: (MonadIO m, IsAudioContext self) => self -> m ()
 createGain_ self
   = liftIO (void (js_createGain (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createDelay\"]($2)"
+foreign import javascript safe "$1[\"createDelay\"]($2)"
         js_createDelay :: AudioContext -> Optional Double -> IO DelayNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelay Mozilla AudioContext.createDelay documentation> 
@@ -364,7 +364,7 @@ createAnalyser_ :: (MonadIO m, IsAudioContext self) => self -> m ()
 createAnalyser_ self
   = liftIO (void (js_createAnalyser (toAudioContext self)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createScriptProcessor\"]($2,\n$3, $4)"
         js_createScriptProcessor ::
         AudioContext ->
@@ -408,8 +408,8 @@ createOscillator_ ::
 createOscillator_ self
   = liftIO (void (js_createOscillator (toAudioContext self)))
  
-foreign import javascript unsafe
-        "$1[\"createPeriodicWave\"]($2, $3)" js_createPeriodicWave ::
+foreign import javascript safe "$1[\"createPeriodicWave\"]($2, $3)"
+        js_createPeriodicWave ::
         AudioContext -> Float32Array -> Float32Array -> IO PeriodicWave
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPeriodicWave Mozilla AudioContext.createPeriodicWave documentation> 
@@ -433,8 +433,8 @@ createPeriodicWave_ self real imag
          (js_createPeriodicWave (toAudioContext self) (toFloat32Array real)
             (toFloat32Array imag)))
  
-foreign import javascript unsafe
-        "$1[\"createChannelSplitter\"]($2)" js_createChannelSplitter ::
+foreign import javascript safe "$1[\"createChannelSplitter\"]($2)"
+        js_createChannelSplitter ::
         AudioContext -> Optional Word -> IO ChannelSplitterNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createChannelSplitter Mozilla AudioContext.createChannelSplitter documentation> 
@@ -455,7 +455,7 @@ createChannelSplitter_ self numberOfOutputs
          (js_createChannelSplitter (toAudioContext self)
             (maybeToOptional numberOfOutputs)))
  
-foreign import javascript unsafe "$1[\"createChannelMerger\"]($2)"
+foreign import javascript safe "$1[\"createChannelMerger\"]($2)"
         js_createChannelMerger ::
         AudioContext -> Optional Word -> IO ChannelMergerNode
 

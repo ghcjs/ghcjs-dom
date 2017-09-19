@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getRandomValues\"]($2)"
+foreign import javascript safe "$1[\"getRandomValues\"]($2)"
         js_getRandomValues ::
         Crypto -> ArrayBufferView -> IO ArrayBufferView
 
@@ -51,7 +51,7 @@ foreign import javascript unsafe "$1[\"subtle\"]" js_getSubtle ::
 getSubtle :: (MonadIO m) => Crypto -> m SubtleCrypto
 getSubtle self = liftIO (js_getSubtle self)
  
-foreign import javascript unsafe "$1[\"webkitSubtle\"]"
+foreign import javascript safe "$1[\"webkitSubtle\"]"
         js_getWebkitSubtle :: Crypto -> IO WebKitSubtleCrypto
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 

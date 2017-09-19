@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
+foreign import javascript safe "$1[\"getSVGDocument\"]()"
         js_getSVGDocument :: HTMLEmbedElement -> IO Document
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLEmbedElement.getSVGDocument Mozilla HTMLEmbedElement.getSVGDocument documentation> 

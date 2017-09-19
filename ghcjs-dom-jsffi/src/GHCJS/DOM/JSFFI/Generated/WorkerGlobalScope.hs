@@ -64,7 +64,7 @@ foreign import javascript unsafe "$1[\"close\"]()" js_close ::
 close :: (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
 close self = liftIO (js_close (toWorkerGlobalScope self))
  
-foreign import javascript unsafe "$1[\"importScripts\"]($2)"
+foreign import javascript safe "$1[\"importScripts\"]($2)"
         js_importScripts :: WorkerGlobalScope -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.importScripts Mozilla WorkerGlobalScope.importScripts documentation> 

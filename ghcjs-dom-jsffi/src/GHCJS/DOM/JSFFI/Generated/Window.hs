@@ -187,7 +187,7 @@ fetch_ self input init
          (toJSVal input >>= \ input' -> js_fetch self input'
             (maybeToOptional init)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"openDatabase\"]($2, $3, $4,\n$5, $6)" js_openDatabase ::
         Window ->
           JSString ->
@@ -454,7 +454,7 @@ cancelAnimationFrame :: (MonadIO m) => Window -> Int -> m ()
 cancelAnimationFrame self handle
   = liftIO (js_cancelAnimationFrame self handle)
  
-foreign import javascript unsafe "$1[\"postMessage\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"postMessage\"]($2, $3, $4)"
         js_postMessage :: Window -> JSVal -> JSString -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage Mozilla Window.postMessage documentation> 
@@ -814,7 +814,7 @@ webkitConvertPointFromNodeToPage_ self node p
             (maybeToOptional (fmap toNode node))
             (maybeToOptional p)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"collectMatchingElementsInFlatTree\"]($2,\n$3)"
         js_collectMatchingElementsInFlatTree ::
         Window -> Node -> JSString -> IO NodeList
@@ -838,7 +838,7 @@ collectMatchingElementsInFlatTree_ self scope selectors
          (js_collectMatchingElementsInFlatTree self (toNode scope)
             (toJSString selectors)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"matchingElementInFlatTree\"]($2,\n$3)"
         js_matchingElementInFlatTree ::
         Window -> Node -> JSString -> IO (Nullable Element)
@@ -1138,14 +1138,14 @@ foreign import javascript unsafe "$1[\"applicationCache\"]"
 getApplicationCache :: (MonadIO m) => Window -> m ApplicationCache
 getApplicationCache self = liftIO (js_getApplicationCache self)
  
-foreign import javascript unsafe "$1[\"sessionStorage\"]"
+foreign import javascript safe "$1[\"sessionStorage\"]"
         js_getSessionStorage :: Window -> IO Storage
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
 getSessionStorage :: (MonadIO m) => Window -> m Storage
 getSessionStorage self = liftIO (js_getSessionStorage self)
  
-foreign import javascript unsafe "$1[\"localStorage\"]"
+foreign import javascript safe "$1[\"localStorage\"]"
         js_getLocalStorage :: Window -> IO Storage
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 

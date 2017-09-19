@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"appendBuffer\"]($2)"
+foreign import javascript safe "$1[\"appendBuffer\"]($2)"
         js_appendBuffer :: SourceBuffer -> BufferSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.appendBuffer Mozilla SourceBuffer.appendBuffer documentation> 
@@ -44,21 +44,21 @@ appendBuffer ::
 appendBuffer self data'
   = liftIO (js_appendBuffer self (toBufferSource data'))
  
-foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
+foreign import javascript safe "$1[\"abort\"]()" js_abort ::
         SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.abort Mozilla SourceBuffer.abort documentation> 
 abort :: (MonadIO m) => SourceBuffer -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript unsafe "$1[\"remove\"]($2, $3)" js_remove
+foreign import javascript safe "$1[\"remove\"]($2, $3)" js_remove
         :: SourceBuffer -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.remove Mozilla SourceBuffer.remove documentation> 
 remove :: (MonadIO m) => SourceBuffer -> Double -> Double -> m ()
 remove self start end = liftIO (js_remove self start end)
  
-foreign import javascript unsafe "$1[\"mode\"] = $2;" js_setMode ::
+foreign import javascript safe "$1[\"mode\"] = $2;" js_setMode ::
         SourceBuffer -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.mode Mozilla SourceBuffer.mode documentation> 
@@ -79,14 +79,14 @@ foreign import javascript unsafe "($1[\"updating\"] ? 1 : 0)"
 getUpdating :: (MonadIO m) => SourceBuffer -> m Bool
 getUpdating self = liftIO (js_getUpdating self)
  
-foreign import javascript unsafe "$1[\"buffered\"]" js_getBuffered
-        :: SourceBuffer -> IO TimeRanges
+foreign import javascript safe "$1[\"buffered\"]" js_getBuffered ::
+        SourceBuffer -> IO TimeRanges
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 
 getBuffered :: (MonadIO m) => SourceBuffer -> m TimeRanges
 getBuffered self = liftIO (js_getBuffered self)
  
-foreign import javascript unsafe "$1[\"timestampOffset\"] = $2;"
+foreign import javascript safe "$1[\"timestampOffset\"] = $2;"
         js_setTimestampOffset :: SourceBuffer -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.timestampOffset Mozilla SourceBuffer.timestampOffset documentation> 
@@ -122,7 +122,7 @@ foreign import javascript unsafe "$1[\"textTracks\"]"
 getTextTracks :: (MonadIO m) => SourceBuffer -> m TextTrackList
 getTextTracks self = liftIO (js_getTextTracks self)
  
-foreign import javascript unsafe "$1[\"appendWindowStart\"] = $2;"
+foreign import javascript safe "$1[\"appendWindowStart\"] = $2;"
         js_setAppendWindowStart :: SourceBuffer -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.appendWindowStart Mozilla SourceBuffer.appendWindowStart documentation> 
@@ -138,7 +138,7 @@ foreign import javascript unsafe "$1[\"appendWindowStart\"]"
 getAppendWindowStart :: (MonadIO m) => SourceBuffer -> m Double
 getAppendWindowStart self = liftIO (js_getAppendWindowStart self)
  
-foreign import javascript unsafe "$1[\"appendWindowEnd\"] = $2;"
+foreign import javascript safe "$1[\"appendWindowEnd\"] = $2;"
         js_setAppendWindowEnd :: SourceBuffer -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.appendWindowEnd Mozilla SourceBuffer.appendWindowEnd documentation> 

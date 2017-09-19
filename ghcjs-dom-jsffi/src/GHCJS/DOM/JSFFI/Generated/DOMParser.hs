@@ -33,7 +33,7 @@ foreign import javascript unsafe "new window[\"DOMParser\"]()"
 newDOMParser :: (MonadIO m) => m DOMParser
 newDOMParser = liftIO (js_newDOMParser)
  
-foreign import javascript unsafe "$1[\"parseFromString\"]($2, $3)"
+foreign import javascript safe "$1[\"parseFromString\"]($2, $3)"
         js_parseFromString ::
         DOMParser -> JSString -> JSString -> IO Document
 

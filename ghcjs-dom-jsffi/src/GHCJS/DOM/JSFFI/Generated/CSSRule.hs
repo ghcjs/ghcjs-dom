@@ -59,7 +59,7 @@ foreign import javascript unsafe "$1[\"type\"]" js_getType ::
 getType :: (MonadIO m, IsCSSRule self) => self -> m Word
 getType self = liftIO (js_getType (toCSSRule self))
  
-foreign import javascript unsafe "$1[\"cssText\"] = $2;"
+foreign import javascript safe "$1[\"cssText\"] = $2;"
         js_setCssText :: CSSRule -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 

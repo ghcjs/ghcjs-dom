@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "$1[\"clear\"]()" js_clear ::
         SVGPathSegList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.clear Mozilla SVGPathSegList.clear documentation> 
 clear :: (MonadIO m) => SVGPathSegList -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript unsafe "$1[\"initialize\"]($2)"
+foreign import javascript safe "$1[\"initialize\"]($2)"
         js_initialize ::
         SVGPathSegList -> Optional SVGPathSeg -> IO SVGPathSeg
 
@@ -58,8 +58,8 @@ initialize_ self newItem
       (void
          (js_initialize self (maybeToOptional (fmap toSVGPathSeg newItem))))
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: SVGPathSegList -> Word -> IO SVGPathSeg
+foreign import javascript safe "$1[\"getItem\"]($2)" js_getItem ::
+        SVGPathSegList -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.getItem Mozilla SVGPathSegList.getItem documentation> 
 getItem :: (MonadIO m) => SVGPathSegList -> Word -> m SVGPathSeg
@@ -69,7 +69,7 @@ getItem self index = liftIO (js_getItem self index)
 getItem_ :: (MonadIO m) => SVGPathSegList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem self index))
  
-foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
+foreign import javascript safe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
         SVGPathSegList -> Optional SVGPathSeg -> Word -> IO SVGPathSeg
 
@@ -94,7 +94,7 @@ insertItemBefore_ self newItem index
             (maybeToOptional (fmap toSVGPathSeg newItem))
             index))
  
-foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
+foreign import javascript safe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
         SVGPathSegList -> Optional SVGPathSeg -> Word -> IO SVGPathSeg
 
@@ -117,7 +117,7 @@ replaceItem_ self newItem index
          (js_replaceItem self (maybeToOptional (fmap toSVGPathSeg newItem))
             index))
  
-foreign import javascript unsafe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "$1[\"removeItem\"]($2)"
         js_removeItem :: SVGPathSegList -> Word -> IO SVGPathSeg
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegList.removeItem Mozilla SVGPathSegList.removeItem documentation> 
@@ -128,7 +128,7 @@ removeItem self index = liftIO (js_removeItem self index)
 removeItem_ :: (MonadIO m) => SVGPathSegList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem self index))
  
-foreign import javascript unsafe "$1[\"appendItem\"]($2)"
+foreign import javascript safe "$1[\"appendItem\"]($2)"
         js_appendItem ::
         SVGPathSegList -> Optional SVGPathSeg -> IO SVGPathSeg
 

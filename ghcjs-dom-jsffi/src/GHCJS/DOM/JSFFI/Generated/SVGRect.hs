@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript safe "$1[\"x\"] = $2;" js_setX ::
         SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.x Mozilla SVGRect.x documentation> 
@@ -41,7 +41,7 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX :: (MonadIO m) => SVGRect -> m Float
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript safe "$1[\"y\"] = $2;" js_setY ::
         SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.y Mozilla SVGRect.y documentation> 
@@ -55,8 +55,8 @@ foreign import javascript unsafe "$1[\"y\"]" js_getY ::
 getY :: (MonadIO m) => SVGRect -> m Float
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
-        :: SVGRect -> Float -> IO ()
+foreign import javascript safe "$1[\"width\"] = $2;" js_setWidth ::
+        SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.width Mozilla SVGRect.width documentation> 
 setWidth :: (MonadIO m) => SVGRect -> Float -> m ()
@@ -69,8 +69,8 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth :: (MonadIO m) => SVGRect -> m Float
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
-        js_setHeight :: SVGRect -> Float -> IO ()
+foreign import javascript safe "$1[\"height\"] = $2;" js_setHeight
+        :: SVGRect -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGRect.height Mozilla SVGRect.height documentation> 
 setHeight :: (MonadIO m) => SVGRect -> Float -> m ()

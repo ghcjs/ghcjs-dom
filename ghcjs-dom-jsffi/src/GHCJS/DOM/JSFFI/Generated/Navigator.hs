@@ -101,7 +101,7 @@ getUserMedia self constraints successCallback errorCallback
   = liftIO
       (js_getUserMedia self constraints successCallback errorCallback)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"registerProtocolHandler\"]($2,\n$3, $4)"
         js_registerProtocolHandler ::
         Navigator -> JSString -> JSString -> JSString -> IO ()
@@ -116,7 +116,7 @@ registerProtocolHandler self scheme url title
          (toJSString url)
          (toJSString title))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"isProtocolHandlerRegistered\"]($2,\n$3)"
         js_isProtocolHandlerRegistered ::
         Navigator -> JSString -> JSString -> IO JSString
@@ -142,7 +142,7 @@ isProtocolHandlerRegistered_ self scheme url
          (js_isProtocolHandlerRegistered self (toJSString scheme)
             (toJSString url)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"unregisterProtocolHandler\"]($2,\n$3)"
         js_unregisterProtocolHandler ::
         Navigator -> JSString -> JSString -> IO ()

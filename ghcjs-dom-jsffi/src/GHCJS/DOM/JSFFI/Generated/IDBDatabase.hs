@@ -30,8 +30,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
-        "$1[\"createObjectStore\"]($2, $3)" js_createObjectStore ::
+foreign import javascript safe "$1[\"createObjectStore\"]($2, $3)"
+        js_createObjectStore ::
         IDBDatabase ->
           JSString -> Optional IDBObjectStoreParameters -> IO IDBObjectStore
 
@@ -55,7 +55,7 @@ createObjectStore_ self name parameters
          (js_createObjectStore self (toJSString name)
             (maybeToOptional parameters)))
  
-foreign import javascript unsafe "$1[\"deleteObjectStore\"]($2)"
+foreign import javascript safe "$1[\"deleteObjectStore\"]($2)"
         js_deleteObjectStore :: IDBDatabase -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.deleteObjectStore Mozilla IDBDatabase.deleteObjectStore documentation> 
@@ -64,7 +64,7 @@ deleteObjectStore ::
 deleteObjectStore self name
   = liftIO (js_deleteObjectStore self (toJSString name))
  
-foreign import javascript unsafe "$1[\"transaction\"]($2, $3)"
+foreign import javascript safe "$1[\"transaction\"]($2, $3)"
         js_transaction ::
         IDBDatabase ->
           StringOrStrings -> Optional IDBTransactionMode -> IO IDBTransaction

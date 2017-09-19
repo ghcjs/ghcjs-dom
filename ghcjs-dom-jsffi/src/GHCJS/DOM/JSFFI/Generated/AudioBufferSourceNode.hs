@@ -34,8 +34,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"start\"]($2, $3, $4)"
-        js_start ::
+foreign import javascript safe "$1[\"start\"]($2, $3, $4)" js_start
+        ::
         AudioBufferSourceNode ->
           Optional Double -> Optional Double -> Optional Double -> IO ()
 
@@ -49,7 +49,7 @@ start self when grainOffset grainDuration
       (js_start self (maybeToOptional when) (maybeToOptional grainOffset)
          (maybeToOptional grainDuration))
  
-foreign import javascript unsafe "$1[\"stop\"]($2)" js_stop ::
+foreign import javascript safe "$1[\"stop\"]($2)" js_stop ::
         AudioBufferSourceNode -> Optional Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.stop Mozilla AudioBufferSourceNode.stop documentation> 

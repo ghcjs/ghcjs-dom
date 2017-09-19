@@ -78,7 +78,7 @@ setCustomValidity ::
 setCustomValidity self error
   = liftIO (js_setCustomValidity self (toJSString error))
  
-foreign import javascript unsafe "$1[\"getSVGDocument\"]()"
+foreign import javascript safe "$1[\"getSVGDocument\"]()"
         js_getSVGDocument :: HTMLObjectElement -> IO Document
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement.getSVGDocument Mozilla HTMLObjectElement.getSVGDocument documentation> 

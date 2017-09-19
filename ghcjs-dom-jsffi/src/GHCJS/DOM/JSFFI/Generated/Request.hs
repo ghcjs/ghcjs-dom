@@ -43,7 +43,7 @@ newRequest input init
       (toJSVal input >>= \ input' -> js_newRequest input'
          (maybeToOptional init))
  
-foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
+foreign import javascript safe "$1[\"clone\"]()" js_clone ::
         Request -> IO Request
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request.clone Mozilla Request.clone documentation> 

@@ -27,8 +27,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"buffer\"] = $2;"
-        js_setBuffer :: ConvolverNode -> Optional AudioBuffer -> IO ()
+foreign import javascript safe "$1[\"buffer\"] = $2;" js_setBuffer
+        :: ConvolverNode -> Optional AudioBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
 setBuffer ::

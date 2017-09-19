@@ -81,7 +81,7 @@ getViewTargetString ::
 getViewTargetString self
   = liftIO (fromJSString <$> (js_getViewTargetString self))
  
-foreign import javascript unsafe "$1[\"zoomAndPan\"] = $2;"
+foreign import javascript safe "$1[\"zoomAndPan\"] = $2;"
         js_setZoomAndPan :: SVGViewSpec -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.zoomAndPan Mozilla SVGViewSpec.zoomAndPan documentation> 

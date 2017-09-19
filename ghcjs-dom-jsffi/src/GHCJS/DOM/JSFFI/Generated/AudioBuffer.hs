@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getChannelData\"]($2)"
+foreign import javascript safe "$1[\"getChannelData\"]($2)"
         js_getChannelData :: AudioBuffer -> Word -> IO Float32Array
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.getChannelData Mozilla AudioBuffer.getChannelData documentation> 

@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_addBefore
+foreign import javascript safe "$1[\"add\"]($2, $3)" js_addBefore
         ::
         HTMLOptionsCollection ->
           HTMLOptionElementOrGroup -> Optional HTMLElementOrLong -> IO ()
@@ -120,8 +120,8 @@ namedItemUnchecked self name
       (fromJust . nullableToMaybe <$>
          (js_namedItem self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"length\"] = $2;"
-        js_setLength :: HTMLOptionsCollection -> Word -> IO ()
+foreign import javascript safe "$1[\"length\"] = $2;" js_setLength
+        :: HTMLOptionsCollection -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 setLength :: (MonadIO m) => HTMLOptionsCollection -> Word -> m ()

@@ -2192,7 +2192,7 @@ texImage2DView self target level internalformat width height border
          type'
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)" js_texImage2D ::
         WebGLRenderingContextBase ->
           GLenum ->
@@ -2248,7 +2248,7 @@ texSubImage2DView self target level xoffset yoffset width height
          type'
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8)"
         js_texSubImage2D ::
         WebGLRenderingContextBase ->

@@ -39,7 +39,7 @@ foreign import javascript unsafe "new window[\"FileReader\"]()"
 newFileReader :: (MonadIO m) => m FileReader
 newFileReader = liftIO (js_newFileReader)
  
-foreign import javascript unsafe "$1[\"readAsArrayBuffer\"]($2)"
+foreign import javascript safe "$1[\"readAsArrayBuffer\"]($2)"
         js_readAsArrayBuffer :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsArrayBuffer Mozilla FileReader.readAsArrayBuffer documentation> 
@@ -49,7 +49,7 @@ readAsArrayBuffer self blob
   = liftIO
       (js_readAsArrayBuffer self (maybeToOptional (fmap toBlob blob)))
  
-foreign import javascript unsafe "$1[\"readAsBinaryString\"]($2)"
+foreign import javascript safe "$1[\"readAsBinaryString\"]($2)"
         js_readAsBinaryString :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsBinaryString Mozilla FileReader.readAsBinaryString documentation> 
@@ -59,7 +59,7 @@ readAsBinaryString self blob
   = liftIO
       (js_readAsBinaryString self (maybeToOptional (fmap toBlob blob)))
  
-foreign import javascript unsafe "$1[\"readAsText\"]($2, $3)"
+foreign import javascript safe "$1[\"readAsText\"]($2, $3)"
         js_readAsText ::
         FileReader -> Optional Blob -> Optional JSString -> IO ()
 
@@ -72,7 +72,7 @@ readAsText self blob encoding
       (js_readAsText self (maybeToOptional (fmap toBlob blob))
          (toOptionalJSString encoding))
  
-foreign import javascript unsafe "$1[\"readAsDataURL\"]($2)"
+foreign import javascript safe "$1[\"readAsDataURL\"]($2)"
         js_readAsDataURL :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsDataURL Mozilla FileReader.readAsDataURL documentation> 

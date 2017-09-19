@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_send ::
+foreign import javascript safe "$1[\"send\"]($2)" js_send ::
         RTCDataChannel -> ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -47,7 +47,7 @@ send ::
      (MonadIO m, IsArrayBuffer data') => RTCDataChannel -> data' -> m ()
 send self data' = liftIO (js_send self (toArrayBuffer data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendView ::
+foreign import javascript safe "$1[\"send\"]($2)" js_sendView ::
         RTCDataChannel -> ArrayBufferView -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -57,7 +57,7 @@ sendView ::
 sendView self data'
   = liftIO (js_sendView self (toArrayBufferView data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendBlob ::
+foreign import javascript safe "$1[\"send\"]($2)" js_sendBlob ::
         RTCDataChannel -> Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -65,8 +65,8 @@ sendBlob ::
          (MonadIO m, IsBlob data') => RTCDataChannel -> data' -> m ()
 sendBlob self data' = liftIO (js_sendBlob self (toBlob data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendString
-        :: RTCDataChannel -> JSString -> IO ()
+foreign import javascript safe "$1[\"send\"]($2)" js_sendString ::
+        RTCDataChannel -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
 sendString ::
@@ -215,7 +215,7 @@ getBufferedAmountLowThreshold ::
 getBufferedAmountLowThreshold self
   = liftIO (js_getBufferedAmountLowThreshold self)
  
-foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
+foreign import javascript safe "$1[\"binaryType\"] = $2;"
         js_setBinaryType :: RTCDataChannel -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.binaryType Mozilla RTCDataChannel.binaryType documentation> 

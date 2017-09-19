@@ -33,7 +33,7 @@ pattern CSS_PRIMITIVE_VALUE = 1
 pattern CSS_VALUE_LIST = 2
 pattern CSS_CUSTOM = 3
  
-foreign import javascript unsafe "$1[\"cssText\"] = $2;"
+foreign import javascript safe "$1[\"cssText\"] = $2;"
         js_setCssText :: CSSValue -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssText Mozilla CSSValue.cssText documentation> 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"only\"]($2)" js_only ::
+foreign import javascript safe "$1[\"only\"]($2)" js_only ::
         IDBKeyRange -> JSVal -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
@@ -43,7 +43,7 @@ only_ :: (MonadIO m, ToJSVal value) => IDBKeyRange -> value -> m ()
 only_ self value
   = liftIO (void (toJSVal value >>= \ value' -> js_only self value'))
  
-foreign import javascript unsafe "$1[\"lowerBound\"]($2, $3)"
+foreign import javascript safe "$1[\"lowerBound\"]($2, $3)"
         js_lowerBound :: IDBKeyRange -> JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
@@ -62,7 +62,7 @@ lowerBound_ self lower open
       (void
          (toJSVal lower >>= \ lower' -> js_lowerBound self lower' open))
  
-foreign import javascript unsafe "$1[\"upperBound\"]($2, $3)"
+foreign import javascript safe "$1[\"upperBound\"]($2, $3)"
         js_upperBound :: IDBKeyRange -> JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
@@ -81,7 +81,7 @@ upperBound_ self upper open
       (void
          (toJSVal upper >>= \ upper' -> js_upperBound self upper' open))
  
-foreign import javascript unsafe "$1[\"bound\"]($2, $3, $4, $5)"
+foreign import javascript safe "$1[\"bound\"]($2, $3, $4, $5)"
         js_bound ::
         IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> IO IDBKeyRange
 
@@ -110,7 +110,7 @@ bound_ self lower upper lowerOpen upperOpen
             lowerOpen
             upperOpen))
  
-foreign import javascript unsafe "($1[\"includes\"]($2) ? 1 : 0)"
+foreign import javascript safe "($1[\"includes\"]($2) ? 1 : 0)"
         js_includes :: IDBKeyRange -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.includes Mozilla IDBKeyRange.includes documentation> 

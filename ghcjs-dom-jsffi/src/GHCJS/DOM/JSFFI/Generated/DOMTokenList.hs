@@ -73,7 +73,7 @@ contains_ ::
 contains_ self token
   = liftIO (void (js_contains self (toJSString token)))
  
-foreign import javascript unsafe "$1[\"add\"]($2)" js_add ::
+foreign import javascript safe "$1[\"add\"]($2)" js_add ::
         DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.add Mozilla DOMTokenList.add documentation> 
@@ -82,7 +82,7 @@ add ::
 add self tokens
   = liftIO (toJSVal tokens >>= \ tokens' -> js_add self tokens')
  
-foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::
+foreign import javascript safe "$1[\"remove\"]($2)" js_remove ::
         DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.remove Mozilla DOMTokenList.remove documentation> 
@@ -91,7 +91,7 @@ remove ::
 remove self tokens
   = liftIO (toJSVal tokens >>= \ tokens' -> js_remove self tokens')
  
-foreign import javascript unsafe "($1[\"toggle\"]($2, $3) ? 1 : 0)"
+foreign import javascript safe "($1[\"toggle\"]($2, $3) ? 1 : 0)"
         js_toggle :: DOMTokenList -> JSString -> Bool -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.toggle Mozilla DOMTokenList.toggle documentation> 
@@ -108,8 +108,8 @@ toggle_ ::
 toggle_ self token force
   = liftIO (void (js_toggle self (toJSString token) force))
  
-foreign import javascript unsafe "$1[\"replace\"]($2, $3)"
-        js_replace :: DOMTokenList -> JSString -> JSString -> IO ()
+foreign import javascript safe "$1[\"replace\"]($2, $3)" js_replace
+        :: DOMTokenList -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.replace Mozilla DOMTokenList.replace documentation> 
 replace ::
@@ -118,7 +118,7 @@ replace ::
 replace self token newToken
   = liftIO (js_replace self (toJSString token) (toJSString newToken))
  
-foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
+foreign import javascript safe "($1[\"supports\"]($2) ? 1 : 0)"
         js_supports :: DOMTokenList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.supports Mozilla DOMTokenList.supports documentation> 

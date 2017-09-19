@@ -71,8 +71,8 @@ getComputedTextLength_ self
   = liftIO
       (void (js_getComputedTextLength (toSVGTextContentElement self)))
  
-foreign import javascript unsafe
-        "$1[\"getSubStringLength\"]($2, $3)" js_getSubStringLength ::
+foreign import javascript safe "$1[\"getSubStringLength\"]($2, $3)"
+        js_getSubStringLength ::
         SVGTextContentElement -> Optional Word -> Optional Word -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getSubStringLength Mozilla SVGTextContentElement.getSubStringLength documentation> 
@@ -96,8 +96,8 @@ getSubStringLength_ self offset length
             (maybeToOptional offset)
             (maybeToOptional length)))
  
-foreign import javascript unsafe
-        "$1[\"getStartPositionOfChar\"]($2)" js_getStartPositionOfChar ::
+foreign import javascript safe "$1[\"getStartPositionOfChar\"]($2)"
+        js_getStartPositionOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getStartPositionOfChar Mozilla SVGTextContentElement.getStartPositionOfChar documentation> 
@@ -119,7 +119,7 @@ getStartPositionOfChar_ self offset
          (js_getStartPositionOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript unsafe "$1[\"getEndPositionOfChar\"]($2)"
+foreign import javascript safe "$1[\"getEndPositionOfChar\"]($2)"
         js_getEndPositionOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGPoint
 
@@ -142,7 +142,7 @@ getEndPositionOfChar_ self offset
          (js_getEndPositionOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript unsafe "$1[\"getExtentOfChar\"]($2)"
+foreign import javascript safe "$1[\"getExtentOfChar\"]($2)"
         js_getExtentOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGRect
 
@@ -165,7 +165,7 @@ getExtentOfChar_ self offset
          (js_getExtentOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript unsafe "$1[\"getRotationOfChar\"]($2)"
+foreign import javascript safe "$1[\"getRotationOfChar\"]($2)"
         js_getRotationOfChar ::
         SVGTextContentElement -> Optional Word -> IO Float
 
@@ -209,7 +209,7 @@ getCharNumAtPosition_ self point
       (void
          (js_getCharNumAtPosition (toSVGTextContentElement self) point))
  
-foreign import javascript unsafe "$1[\"selectSubString\"]($2, $3)"
+foreign import javascript safe "$1[\"selectSubString\"]($2, $3)"
         js_selectSubString ::
         SVGTextContentElement -> Optional Word -> Optional Word -> IO ()
 

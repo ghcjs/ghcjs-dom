@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"item\"]($2)" js_item ::
+foreign import javascript safe "$1[\"item\"]($2)" js_item ::
         SQLResultSetRowList -> Word -> IO (Record DOMString SQLValue)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSetRowList.item Mozilla SQLResultSetRowList.item documentation> 

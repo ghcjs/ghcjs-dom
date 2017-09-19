@@ -46,7 +46,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"webkitEnterFullscreen\"]()"
+foreign import javascript safe "$1[\"webkitEnterFullscreen\"]()"
         js_webkitEnterFullscreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullscreen Mozilla HTMLVideoElement.webkitEnterFullscreen documentation> 
@@ -60,7 +60,7 @@ foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
 webkitExitFullscreen :: (MonadIO m) => HTMLVideoElement -> m ()
 webkitExitFullscreen self = liftIO (js_webkitExitFullscreen self)
  
-foreign import javascript unsafe "$1[\"webkitEnterFullScreen\"]()"
+foreign import javascript safe "$1[\"webkitEnterFullScreen\"]()"
         js_webkitEnterFullScreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullScreen Mozilla HTMLVideoElement.webkitEnterFullScreen documentation> 

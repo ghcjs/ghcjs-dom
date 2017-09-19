@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertDTMF\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"insertDTMF\"]($2, $3, $4)"
         js_insertDTMF ::
         RTCDTMFSender -> JSString -> Optional Int -> Optional Int -> IO ()
 

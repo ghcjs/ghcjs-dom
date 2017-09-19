@@ -131,7 +131,7 @@ foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
 getHspace :: (MonadIO m) => HTMLMarqueeElement -> m Word
 getHspace self = liftIO (js_getHspace self)
  
-foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
+foreign import javascript safe "$1[\"loop\"] = $2;" js_setLoop ::
         HTMLMarqueeElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.loop Mozilla HTMLMarqueeElement.loop documentation> 

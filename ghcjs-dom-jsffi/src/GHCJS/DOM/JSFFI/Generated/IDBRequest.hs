@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
+foreign import javascript safe "$1[\"result\"]" js_getResult ::
         IDBRequest -> IO (Nullable IDBRequestResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.result Mozilla IDBRequest.result documentation> 
@@ -56,7 +56,7 @@ getResultUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getResult (toIDBRequest self)))
  
-foreign import javascript unsafe "$1[\"error\"]" js_getError ::
+foreign import javascript safe "$1[\"error\"]" js_getError ::
         IDBRequest -> IO (Nullable DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.error Mozilla IDBRequest.error documentation> 

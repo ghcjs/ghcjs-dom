@@ -102,7 +102,7 @@ load_ self font text
   = liftIO
       (void (js_load self (toJSString font) (toOptionalJSString text)))
  
-foreign import javascript unsafe "($1[\"check\"]($2, $3) ? 1 : 0)"
+foreign import javascript safe "($1[\"check\"]($2, $3) ? 1 : 0)"
         js_check :: FontFaceSet -> JSString -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.check Mozilla FontFaceSet.check documentation> 

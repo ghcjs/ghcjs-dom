@@ -33,7 +33,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"connect\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"connect\"]($2, $3, $4)"
         js_connect ::
         AudioNode -> AudioNode -> Optional Word -> Optional Word -> IO ()
 
@@ -47,7 +47,7 @@ connect self destination output input
          (maybeToOptional output)
          (maybeToOptional input))
  
-foreign import javascript unsafe "$1[\"connect\"]($2, $3)"
+foreign import javascript safe "$1[\"connect\"]($2, $3)"
         js_connectParam ::
         AudioNode -> AudioParam -> Optional Word -> IO ()
 
@@ -60,7 +60,7 @@ connectParam self destination output
       (js_connectParam (toAudioNode self) destination
          (maybeToOptional output))
  
-foreign import javascript unsafe "$1[\"disconnect\"]($2)"
+foreign import javascript safe "$1[\"disconnect\"]($2)"
         js_disconnect :: AudioNode -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.disconnect Mozilla AudioNode.disconnect documentation> 
@@ -96,7 +96,7 @@ getNumberOfOutputs ::
 getNumberOfOutputs self
   = liftIO (js_getNumberOfOutputs (toAudioNode self))
  
-foreign import javascript unsafe "$1[\"channelCount\"] = $2;"
+foreign import javascript safe "$1[\"channelCount\"] = $2;"
         js_setChannelCount :: AudioNode -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCount Mozilla AudioNode.channelCount documentation> 
@@ -113,7 +113,7 @@ getChannelCount :: (MonadIO m, IsAudioNode self) => self -> m Word
 getChannelCount self
   = liftIO (js_getChannelCount (toAudioNode self))
  
-foreign import javascript unsafe "$1[\"channelCountMode\"] = $2;"
+foreign import javascript safe "$1[\"channelCountMode\"] = $2;"
         js_setChannelCountMode :: AudioNode -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelCountMode Mozilla AudioNode.channelCountMode documentation> 
@@ -135,7 +135,7 @@ getChannelCountMode self
   = liftIO
       (fromJSString <$> (js_getChannelCountMode (toAudioNode self)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"channelInterpretation\"] = $2;" js_setChannelInterpretation
         :: AudioNode -> JSString -> IO ()
 

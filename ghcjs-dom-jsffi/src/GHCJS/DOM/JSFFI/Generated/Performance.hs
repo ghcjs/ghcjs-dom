@@ -116,7 +116,7 @@ setResourceTimingBufferSize ::
 setResourceTimingBufferSize self maxSize
   = liftIO (js_setResourceTimingBufferSize self maxSize)
  
-foreign import javascript unsafe "$1[\"mark\"]($2)" js_mark ::
+foreign import javascript safe "$1[\"mark\"]($2)" js_mark ::
         Performance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.mark Mozilla Performance.mark documentation> 
@@ -134,7 +134,7 @@ clearMarks ::
 clearMarks self markName
   = liftIO (js_clearMarks self (toOptionalJSString markName))
  
-foreign import javascript unsafe "$1[\"measure\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"measure\"]($2, $3, $4)"
         js_measure ::
         Performance ->
           JSString -> Optional JSString -> Optional JSString -> IO ()

@@ -33,8 +33,8 @@ foreign import javascript unsafe "new window[\"Text\"]($1)"
 newText :: (MonadIO m, ToJSString data') => Maybe data' -> m Text
 newText data' = liftIO (js_newText (toOptionalJSString data'))
  
-foreign import javascript unsafe "$1[\"splitText\"]($2)"
-        js_splitText :: Text -> Word -> IO Text
+foreign import javascript safe "$1[\"splitText\"]($2)" js_splitText
+        :: Text -> Word -> IO Text
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.splitText Mozilla Text.splitText documentation> 
 splitText :: (MonadIO m, IsText self) => self -> Word -> m Text

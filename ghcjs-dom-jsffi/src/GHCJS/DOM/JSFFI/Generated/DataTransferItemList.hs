@@ -54,7 +54,7 @@ addFile ::
         (MonadIO m) => DataTransferItemList -> Maybe File -> m ()
 addFile self file = liftIO (js_addFile self (maybeToOptional file))
  
-foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_add ::
+foreign import javascript safe "$1[\"add\"]($2, $3)" js_add ::
         DataTransferItemList ->
           Optional JSString -> Optional JSString -> IO ()
 

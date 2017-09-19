@@ -155,8 +155,8 @@ foreign import javascript unsafe "$1[\"playbackRate\"]"
 getPlaybackRate :: (MonadIO m) => MediaController -> m Double
 getPlaybackRate self = liftIO (js_getPlaybackRate self)
  
-foreign import javascript unsafe "$1[\"volume\"] = $2;"
-        js_setVolume :: MediaController -> Double -> IO ()
+foreign import javascript safe "$1[\"volume\"] = $2;" js_setVolume
+        :: MediaController -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.volume Mozilla MediaController.volume documentation> 
 setVolume :: (MonadIO m) => MediaController -> Double -> m ()

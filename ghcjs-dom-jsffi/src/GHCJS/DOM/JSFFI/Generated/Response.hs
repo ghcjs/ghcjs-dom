@@ -44,7 +44,7 @@ error self = liftIO (js_error self)
 error_ :: (MonadIO m) => Response -> m ()
 error_ self = liftIO (void (js_error self))
  
-foreign import javascript unsafe "$1[\"redirect\"]($2, $3)"
+foreign import javascript safe "$1[\"redirect\"]($2, $3)"
         js_redirect :: Response -> JSString -> Optional Word -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 

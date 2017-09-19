@@ -78,8 +78,8 @@ bezierCurveTo self cp1x cp1y cp2x cp2y x y
   = liftIO
       (js_bezierCurveTo (toCanvasPath self) cp1x cp1y cp2x cp2y x y)
  
-foreign import javascript unsafe
-        "$1[\"arcTo\"]($2, $3, $4, $5, $6)" js_arcTo ::
+foreign import javascript safe "$1[\"arcTo\"]($2, $3, $4, $5, $6)"
+        js_arcTo ::
         CanvasPath ->
           Double -> Double -> Double -> Double -> Double -> IO ()
 
@@ -100,7 +100,7 @@ rect ::
        self -> Double -> Double -> Double -> Double -> m ()
 rect self x y w h = liftIO (js_rect (toCanvasPath self) x y w h)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"arc\"]($2, $3, $4, $5, $6,\n$7)" js_arc ::
         CanvasPath ->
           Double -> Double -> Double -> Double -> Double -> Bool -> IO ()
@@ -115,7 +115,7 @@ arc self x y radius startAngle endAngle anticlockwise
       (js_arc (toCanvasPath self) x y radius startAngle endAngle
          anticlockwise)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"ellipse\"]($2, $3, $4, $5,\n$6, $7, $8, $9)" js_ellipse ::
         CanvasPath ->
           Double ->
