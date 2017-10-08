@@ -1476,7 +1476,8 @@ getDesignMode self
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.onreadystatechange Mozilla Document.onreadystatechange documentation> 
 readyStateChange ::
                  (IsDocument self, IsEventTarget self) => EventName self Event
-readyStateChange = unsafeEventName (toJSString "readystatechange")
+readyStateChange
+  = unsafeEventNameAsync (toJSString "readystatechange")
  
 foreign import javascript unsafe "$1[\"styleSheets\"]"
         js_getStyleSheets :: Document -> IO StyleSheetList

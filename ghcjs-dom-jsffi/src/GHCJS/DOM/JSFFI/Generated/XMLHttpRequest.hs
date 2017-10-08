@@ -177,7 +177,8 @@ pattern DONE = 4
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onreadystatechange Mozilla XMLHttpRequest.onreadystatechange documentation> 
 readyStateChange :: EventName XMLHttpRequest Event
-readyStateChange = unsafeEventName (toJSString "readystatechange")
+readyStateChange
+  = unsafeEventNameAsync (toJSString "readystatechange")
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: XMLHttpRequest -> IO Word
