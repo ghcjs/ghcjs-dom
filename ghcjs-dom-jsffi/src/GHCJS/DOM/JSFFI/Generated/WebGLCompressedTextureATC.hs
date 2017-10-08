@@ -25,7 +25,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern COMPRESSED_RGB_ATC_WEBGL = 35986
 pattern COMPRESSED_RGBA_ATC_EXPLICIT_ALPHA_WEBGL = 35987

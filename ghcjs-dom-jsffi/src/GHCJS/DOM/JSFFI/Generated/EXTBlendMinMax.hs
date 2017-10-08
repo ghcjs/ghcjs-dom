@@ -23,7 +23,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern MIN_EXT = 32775
 pattern MAX_EXT = 32776

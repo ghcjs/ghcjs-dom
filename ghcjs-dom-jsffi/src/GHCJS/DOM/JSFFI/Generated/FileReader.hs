@@ -29,7 +29,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "new window[\"FileReader\"]()"
@@ -130,24 +130,24 @@ getError self = liftIO (js_getError self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onloadstart Mozilla FileReader.onloadstart documentation> 
 loadStart :: EventName FileReader ProgressEvent
-loadStart = unsafeEventName (toJSString "loadstart")
+loadStart = unsafeEventNameAsync (toJSString "loadstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onprogress Mozilla FileReader.onprogress documentation> 
 progress :: EventName FileReader ProgressEvent
-progress = unsafeEventName (toJSString "progress")
+progress = unsafeEventNameAsync (toJSString "progress")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onload Mozilla FileReader.onload documentation> 
 load :: EventName FileReader UIEvent
-load = unsafeEventName (toJSString "load")
+load = unsafeEventNameAsync (toJSString "load")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onabort Mozilla FileReader.onabort documentation> 
 abortEvent :: EventName FileReader UIEvent
-abortEvent = unsafeEventName (toJSString "abort")
+abortEvent = unsafeEventNameAsync (toJSString "abort")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onerror Mozilla FileReader.onerror documentation> 
 error :: EventName FileReader UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.onloadend Mozilla FileReader.onloadend documentation> 
 loadEnd :: EventName FileReader ProgressEvent
-loadEnd = unsafeEventName (toJSString "loadend")
+loadEnd = unsafeEventNameAsync (toJSString "loadend")

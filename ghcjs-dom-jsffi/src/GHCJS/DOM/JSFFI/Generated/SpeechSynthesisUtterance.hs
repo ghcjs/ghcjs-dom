@@ -29,7 +29,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
@@ -168,7 +168,7 @@ end = unsafeEventName (toJSString "end")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onerror Mozilla SpeechSynthesisUtterance.onerror documentation> 
 error :: EventName SpeechSynthesisUtterance UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.onpause Mozilla SpeechSynthesisUtterance.onpause documentation> 
 pause :: EventName SpeechSynthesisUtterance Event

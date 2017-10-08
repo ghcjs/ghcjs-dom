@@ -17,7 +17,11 @@ module GHCJS.DOM.EventM
 , removeListener
 , releaseListener
 , on
--- * DOM Event interface
+, onSync
+, onAsync
+, onTheseSync
+, onTheseAsync
+-- * Event interface
 , event
 , eventTarget
 , target
@@ -108,13 +112,13 @@ newListenerAsync f = SaferEventListener <$> eventListenerNewAsync (runReaderT f)
 
 -- | Add an EventListener to an EventTarget.
 addListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEventListener t e -> Bool -> IO ()
-addListener target (EventName eventName) (SaferEventListener l) useCapture =
-    addEventListener target eventName (Just l) useCapture
+addListener target eventName (SaferEventListener l) useCapture =
+    addEventListener target (eventNameString eventName) (Just l) useCapture
 
 -- | Remove an EventListener from an EventTarget.
 removeListener :: (IsEventTarget t, IsEvent e) => t -> EventName t e -> SaferEventListener t e -> Bool -> IO ()
-removeListener target (EventName eventName) (SaferEventListener l) useCapture =
-    removeEventListener target eventName (Just l) useCapture
+removeListener target eventName (SaferEventListener l) useCapture =
+    removeEventListener target (eventNameString eventName) (Just l) useCapture
 
 -- | Release the listener (deallocates callbacks).
 releaseListener :: (IsEventTarget t, IsEvent e) => SaferEventListener t e -> IO ()
@@ -123,9 +127,9 @@ releaseListener (SaferEventListener l) = eventListenerRelease l
 -- | Shortcut for create, add and release:
 --
 -- @
--- releaseAction <- on element 'GHCJS.DOM.JSFFI.Generated.Document.click' $ do
---     Just w <- 'GHCJS.DOM.currentWindow'
---     'GHCJS.DOM.JSFFI.Generated.Window.alert' w "I was clicked!"
+-- releaseAction <- on element 'GHCJS.DOM.Document.click' $ do
+--     w <- 'GHCJS.DOM.currentWindowUnchecked'
+--     'GHCJS.DOM.Window.alert' w "I was clicked!"
 -- -- remove click handler again
 -- releaseAction
 -- @
@@ -134,17 +138,50 @@ on :: (IsEventTarget t, IsEvent e)
    -> EventName t e -- ^ event
    -> EventM t e () -- ^ action
    -> IO (IO ())    -- ^ @IO@ action that removes the listener from the element
-on target eventName callback = do
-    l <- newListener callback
+on target eventName@(EventNameSyncDefault _) = onSync target eventName
+on target eventName@(EventNameAsyncDefault _) = onAsync target eventName
+
+-- | Like 'on' but always uses 'newListenerSync'
+onSync :: (IsEventTarget t, IsEvent e)
+   => t             -- ^ target
+   -> EventName t e -- ^ event
+   -> EventM t e () -- ^ action
+   -> IO (IO ())    -- ^ @IO@ action that removes the listener from the element
+onSync target eventName callback = do
+    l <- newListenerSync callback
     addListener target eventName l False
     return (removeListener target eventName l False >> releaseListener l)
 
--- | 'on' for multiple targets & events.
+-- | Like 'on' but uses 'newListenerAsync'
+onAsync :: (IsEventTarget t, IsEvent e)
+   => t             -- ^ target
+   -> EventName t e -- ^ event
+   -> EventM t e () -- ^ action
+   -> IO (IO ())    -- ^ @IO@ action that removes the listener from the element
+onAsync target eventName callback = do
+    l <- newListenerAsync callback
+    addListener target eventName l False
+    return (removeListener target eventName l False >> releaseListener l)
+
+-- | 'onSync' for multiple targets & events.
 --
 --   The returned @IO@ action removes them all at once.
-onThese :: (IsEventTarget t, IsEvent e) => [(t, EventName t e)] -> EventM t e () -> IO (IO ())
-onThese targetsAndEventNames callback = do
-    l <- newListener callback
+onTheseSync :: (IsEventTarget t, IsEvent e) => [(t, EventName t e)] -> EventM t e () -> IO (IO ())
+onTheseSync targetsAndEventNames callback = do
+    l <- newListenerSync callback
+    forM_ targetsAndEventNames $ \(target, eventName) ->
+        addListener target eventName l False
+    return (do
+        forM_ targetsAndEventNames (\(target, eventName) ->
+            removeListener target eventName l False)
+        releaseListener l)
+
+-- | 'onAsync' for multiple targets & events.
+--
+--   The returned @IO@ action removes them all at once.
+onTheseAsync :: (IsEventTarget t, IsEvent e) => [(t, EventName t e)] -> EventM t e () -> IO (IO ())
+onTheseAsync targetsAndEventNames callback = do
+    l <- newListenerAsync callback
     forM_ targetsAndEventNames $ \(target, eventName) ->
         addListener target eventName l False
     return (do

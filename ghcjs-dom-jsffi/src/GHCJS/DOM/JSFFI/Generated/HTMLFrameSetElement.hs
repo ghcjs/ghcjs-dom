@@ -26,7 +26,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"cols\"] = $2;" js_setCols ::
@@ -63,15 +63,15 @@ getRows self = liftIO (fromJSString <$> (js_getRows self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onblur Mozilla HTMLFrameSetElement.onblur documentation> 
 blur :: EventName HTMLFrameSetElement FocusEvent
-blur = unsafeEventName (toJSString "blur")
+blur = unsafeEventNameAsync (toJSString "blur")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onerror Mozilla HTMLFrameSetElement.onerror documentation> 
 error :: EventName HTMLFrameSetElement UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onfocus Mozilla HTMLFrameSetElement.onfocus documentation> 
 focus :: EventName HTMLFrameSetElement FocusEvent
-focus = unsafeEventName (toJSString "focus")
+focus = unsafeEventNameAsync (toJSString "focus")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onfocusin Mozilla HTMLFrameSetElement.onfocusin documentation> 
 focusin :: EventName HTMLFrameSetElement onfocusin
@@ -83,7 +83,7 @@ focusout = unsafeEventName (toJSString "focusout")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onload Mozilla HTMLFrameSetElement.onload documentation> 
 load :: EventName HTMLFrameSetElement UIEvent
-load = unsafeEventName (toJSString "load")
+load = unsafeEventNameAsync (toJSString "load")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.onresize Mozilla HTMLFrameSetElement.onresize documentation> 
 resize :: EventName HTMLFrameSetElement UIEvent

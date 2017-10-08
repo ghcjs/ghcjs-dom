@@ -27,7 +27,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe "$1[\"update\"]()" js_update ::
@@ -70,7 +70,7 @@ checking = unsafeEventName (toJSString "checking")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onerror Mozilla ApplicationCache.onerror documentation> 
 error :: EventName ApplicationCache UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onnoupdate Mozilla ApplicationCache.onnoupdate documentation> 
 noUpdate :: EventName ApplicationCache Event
@@ -82,7 +82,7 @@ downloading = unsafeEventName (toJSString "downloading")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onprogress Mozilla ApplicationCache.onprogress documentation> 
 progress :: EventName ApplicationCache ProgressEvent
-progress = unsafeEventName (toJSString "progress")
+progress = unsafeEventNameAsync (toJSString "progress")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.onupdateready Mozilla ApplicationCache.onupdateready documentation> 
 updateReady :: EventName ApplicationCache Event

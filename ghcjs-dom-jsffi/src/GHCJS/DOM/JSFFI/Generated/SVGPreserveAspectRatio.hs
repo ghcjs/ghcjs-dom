@@ -37,7 +37,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern SVG_PRESERVEASPECTRATIO_UNKNOWN = 0
 pattern SVG_PRESERVEASPECTRATIO_NONE = 1

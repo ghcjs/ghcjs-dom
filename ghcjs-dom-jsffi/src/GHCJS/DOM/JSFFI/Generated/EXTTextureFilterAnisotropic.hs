@@ -24,7 +24,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern TEXTURE_MAX_ANISOTROPY_EXT = 34046
 pattern MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047

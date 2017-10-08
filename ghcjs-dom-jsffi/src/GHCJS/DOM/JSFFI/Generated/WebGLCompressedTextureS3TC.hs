@@ -26,7 +26,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern COMPRESSED_RGB_S3TC_DXT1_EXT = 33776
 pattern COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777
