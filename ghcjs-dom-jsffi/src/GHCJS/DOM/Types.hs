@@ -796,6 +796,13 @@ module GHCJS.DOM.Types (
   , SpeechSynthesisEvent(SpeechSynthesisEvent), unSpeechSynthesisEvent, noSpeechSynthesisEvent, gTypeSpeechSynthesisEvent
   , SpeechSynthesisUtterance(SpeechSynthesisUtterance), unSpeechSynthesisUtterance, noSpeechSynthesisUtterance, gTypeSpeechSynthesisUtterance
   , SpeechSynthesisVoice(SpeechSynthesisVoice), unSpeechSynthesisVoice, noSpeechSynthesisVoice, gTypeSpeechSynthesisVoice
+  , SpeechGrammar(SpeechGrammar), unSpeechGrammar, noSpeechGrammar, gTypeSpeechGrammar
+  , SpeechGrammarList(SpeechGrammarList), unSpeechGrammarList, noSpeechGrammarList, gTypeSpeechGrammarList
+  , SpeechRecognition(SpeechRecognition), unSpeechRecognition, noSpeechRecognition, gTypeSpeechRecognition
+  , SpeechRecognitionAlternative(SpeechRecognitionAlternative), unSpeechRecognitionAlternative, noSpeechRecognitionAlternative, gTypeSpeechRecognitionAlternative
+  , SpeechRecognitionEvent(SpeechRecognitionEvent), unSpeechRecognitionEvent, noSpeechRecognitionEvent, gTypeSpeechRecognitionEvent
+  , SpeechRecognitionResult(SpeechRecognitionResult), unSpeechRecognitionResult, noSpeechRecognitionResult, gTypeSpeechRecognitionResult
+  , SpeechRecognitionResultList(SpeechRecognitionResultList), unSpeechRecognitionResultList, noSpeechRecognitionResultList, gTypeSpeechRecognitionResultList
   , StaticRange(StaticRange), unStaticRange, noStaticRange, gTypeStaticRange
   , Storage(Storage), unStorage, noStorage, gTypeStorage
   , StorageEvent(StorageEvent), unStorageEvent, noStorageEvent, gTypeStorageEvent
@@ -30490,6 +30497,246 @@ noSourceBufferList = Nothing
 
 foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList :: GType
 
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechGrammar".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechGrammar Mozilla SpeechGrammar documentation>
+newtype SpeechGrammar = SpeechGrammar { unSpeechGrammar :: JSVal }
+
+instance Eq (SpeechGrammar) where
+  (SpeechGrammar a) == (SpeechGrammar b) = js_eq a b
+
+instance PToJSVal SpeechGrammar where
+  pToJSVal = unSpeechGrammar
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechGrammar where
+  pFromJSVal = SpeechGrammar
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechGrammar where
+  toJSVal = return . unSpeechGrammar
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechGrammar where
+  fromJSVal = return . fmap SpeechGrammar . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechGrammar where
+  typeGType _ = gTypeSpeechGrammar
+  {-# INLINE typeGType #-}
+
+noSpeechGrammar :: Maybe SpeechGrammar
+noSpeechGrammar = Nothing
+{-# INLINE noSpeechGrammar #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechGrammar\"]" gTypeSpeechGrammar :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechGrammar".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechGrammarList Mozilla SpeechGrammarList documentation>
+newtype SpeechGrammarList = SpeechGrammarList { unSpeechGrammarList :: JSVal }
+
+instance Eq (SpeechGrammarList) where
+  (SpeechGrammarList a) == (SpeechGrammarList b) = js_eq a b
+
+instance PToJSVal SpeechGrammarList where
+  pToJSVal = unSpeechGrammarList
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechGrammarList where
+  pFromJSVal = SpeechGrammarList
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechGrammarList where
+  toJSVal = return . unSpeechGrammarList
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechGrammarList where
+  fromJSVal = return . fmap SpeechGrammarList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechGrammarList where
+  typeGType _ = gTypeSpeechGrammarList
+  {-# INLINE typeGType #-}
+
+noSpeechGrammarList :: Maybe SpeechGrammarList
+noSpeechGrammarList = Nothing
+{-# INLINE noSpeechGrammarList #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechGrammarList\"]" gTypeSpeechGrammarList :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognition".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition Mozilla SpeechRecognition documentation>
+newtype SpeechRecognition = SpeechRecognition { unSpeechRecognition :: JSVal }
+
+instance Eq (SpeechRecognition) where
+  (SpeechRecognition a) == (SpeechRecognition b) = js_eq a b
+
+instance PToJSVal SpeechRecognition where
+  pToJSVal = unSpeechRecognition
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognition where
+  pFromJSVal = SpeechRecognition
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognition where
+  toJSVal = return . unSpeechRecognition
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognition where
+  fromJSVal = return . fmap SpeechRecognition . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEventTarget SpeechRecognition
+instance IsGObject SpeechRecognition where
+  typeGType _ = gTypeSpeechRecognition
+  {-# INLINE typeGType #-}
+
+noSpeechRecognition :: Maybe SpeechRecognition
+noSpeechRecognition = Nothing
+{-# INLINE noSpeechRecognition #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognition\"]" gTypeSpeechRecognition :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionEvent Mozilla SpeechRecognition documentation>
+newtype SpeechRecognitionEvent = SpeechRecognitionEvent { unSpeechRecognitionEvent :: JSVal }
+
+instance Eq (SpeechRecognitionEvent) where
+  (SpeechRecognitionEvent a) == (SpeechRecognitionEvent b) = js_eq a b
+
+instance PToJSVal SpeechRecognitionEvent where
+  pToJSVal = unSpeechRecognitionEvent
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognitionEvent where
+  pFromJSVal = SpeechRecognitionEvent
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognitionEvent where
+  toJSVal = return . unSpeechRecognitionEvent
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognitionEvent where
+  fromJSVal = return . fmap SpeechRecognitionEvent . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsEvent SpeechRecognitionEvent
+instance IsGObject SpeechRecognitionEvent where
+  typeGType _ = gTypeSpeechRecognitionEvent
+  {-# INLINE typeGType #-}
+
+noSpeechRecognitionEvent :: Maybe SpeechRecognitionEvent
+noSpeechRecognitionEvent = Nothing
+{-# INLINE noSpeechRecognitionEvent #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognitionEvent\"]" gTypeSpeechRecognitionEvent :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative Mozilla SpeechRecognitionAlternative documentation>
+newtype SpeechRecognitionAlternative = SpeechRecognitionAlternative { unSpeechRecognitionAlternative :: JSVal }
+
+instance Eq (SpeechRecognitionAlternative) where
+  (SpeechRecognitionAlternative a) == (SpeechRecognitionAlternative b) = js_eq a b
+
+instance PToJSVal SpeechRecognitionAlternative where
+  pToJSVal = unSpeechRecognitionAlternative
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognitionAlternative where
+  pFromJSVal = SpeechRecognitionAlternative
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognitionAlternative where
+  toJSVal = return . unSpeechRecognitionAlternative
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognitionAlternative where
+  fromJSVal = return . fmap SpeechRecognitionAlternative . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechRecognitionAlternative where
+  typeGType _ = gTypeSpeechRecognitionAlternative
+  {-# INLINE typeGType #-}
+
+noSpeechRecognitionAlternative :: Maybe SpeechRecognitionAlternative
+noSpeechRecognitionAlternative = Nothing
+{-# INLINE noSpeechRecognitionAlternative #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognitionAlternative\"]" gTypeSpeechRecognitionAlternative :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionResult Mozilla SpeechRecognitionResult documentation>
+newtype SpeechRecognitionResult = SpeechRecognitionResult { unSpeechRecognitionResult :: JSVal }
+
+instance Eq (SpeechRecognitionResult) where
+  (SpeechRecognitionResult a) == (SpeechRecognitionResult b) = js_eq a b
+
+instance PToJSVal SpeechRecognitionResult where
+  pToJSVal = unSpeechRecognitionResult
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognitionResult where
+  pFromJSVal = SpeechRecognitionResult
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognitionResult where
+  toJSVal = return . unSpeechRecognitionResult
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognitionResult where
+  fromJSVal = return . fmap SpeechRecognitionResult . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechRecognitionResult where
+  typeGType _ = gTypeSpeechRecognitionResult
+  {-# INLINE typeGType #-}
+
+noSpeechRecognitionResult :: Maybe SpeechRecognitionResult
+noSpeechRecognitionResult = Nothing
+{-# INLINE noSpeechRecognitionResult #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognitionResult\"]" gTypeSpeechRecognitionResult :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionResultList Mozilla SpeechRecognitionResultList documentation>
+newtype SpeechRecognitionResultList = SpeechRecognitionResultList { unSpeechRecognitionResultList :: JSVal }
+
+instance Eq (SpeechRecognitionResultList) where
+  (SpeechRecognitionResultList a) == (SpeechRecognitionResultList b) = js_eq a b
+
+instance PToJSVal SpeechRecognitionResultList where
+  pToJSVal = unSpeechRecognitionResultList
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognitionResultList where
+  pFromJSVal = SpeechRecognitionResultList
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognitionResultList where
+  toJSVal = return . unSpeechRecognitionResultList
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognitionResultList where
+  fromJSVal = return . fmap SpeechRecognitionResultList . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechRecognitionResultList where
+  typeGType _ = gTypeSpeechRecognitionResultList
+  {-# INLINE typeGType #-}
+
+noSpeechRecognitionResultList :: Maybe SpeechRecognitionResultList
+noSpeechRecognitionResultList = Nothing
+{-# INLINE noSpeechRecognitionResultList #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognitionResultList\"]" gTypeSpeechRecognitionResultList :: GType
+
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --
 -- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis Mozilla SpeechSynthesis documentation>
@@ -35545,4 +35792,3 @@ noXSLTProcessor = Nothing
 {-# INLINE noXSLTProcessor #-}
 
 foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor :: GType
-
