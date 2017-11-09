@@ -41,7 +41,7 @@ foreign import javascript unsafe "$1[\"terminate\"]()" js_terminate
 terminate :: (MonadIO m) => Worker -> m ()
 terminate self = liftIO (js_terminate self)
  
-foreign import javascript unsafe "$1[\"postMessage\"]($2, $3)"
+foreign import javascript safe "$1[\"postMessage\"]($2, $3)"
         js_postMessage :: Worker -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.postMessage Mozilla Worker.postMessage documentation> 

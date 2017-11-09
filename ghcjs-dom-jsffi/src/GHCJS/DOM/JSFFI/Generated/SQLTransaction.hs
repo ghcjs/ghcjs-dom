@@ -26,8 +26,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
-        "$1[\"executeSql\"]($2, $3, $4, $5)" js_executeSql ::
+foreign import javascript safe "$1[\"executeSql\"]($2, $3, $4, $5)"
+        js_executeSql ::
         SQLTransaction ->
           JSString ->
             JSVal ->

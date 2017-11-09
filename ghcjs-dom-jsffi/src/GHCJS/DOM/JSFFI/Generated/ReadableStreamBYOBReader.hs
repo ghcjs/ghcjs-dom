@@ -40,8 +40,9 @@ newReadableStreamBYOBReader stream
   = liftIO (js_newReadableStreamBYOBReader stream)
  
 foreign import javascript interruptible
-        "$1[\"read\"]($2).then($c);" js_read ::
-        ReadableStreamBYOBReader -> Optional JSVal -> IO JSVal
+        "$1[\"read\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_read ::
+        ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.read Mozilla ReadableStreamBYOBReader.read documentation> 
 read ::
@@ -49,8 +50,9 @@ read ::
        ReadableStreamBYOBReader -> Maybe view -> m JSVal
 read self view
   = liftIO
-      (mapM toJSVal view >>=
-         \ view' -> js_read self (maybeToOptional view'))
+      ((mapM toJSVal view >>=
+          \ view' -> js_read self (maybeToOptional view'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.read Mozilla ReadableStreamBYOBReader.read documentation> 
 read_ ::
@@ -63,8 +65,9 @@ read_ self view
             \ view' -> js_read self (maybeToOptional view')))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then($c);" js_cancel ::
-        ReadableStreamBYOBReader -> Optional JSVal -> IO JSVal
+        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_cancel ::
+        ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.cancel Mozilla ReadableStreamBYOBReader.cancel documentation> 
 cancel ::
@@ -72,8 +75,9 @@ cancel ::
          ReadableStreamBYOBReader -> Maybe reason -> m JSVal
 cancel self reason
   = liftIO
-      (mapM toJSVal reason >>=
-         \ reason' -> js_cancel self (maybeToOptional reason'))
+      ((mapM toJSVal reason >>=
+          \ reason' -> js_cancel self (maybeToOptional reason'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.cancel Mozilla ReadableStreamBYOBReader.cancel documentation> 
 cancel_ ::
@@ -93,9 +97,10 @@ releaseLock :: (MonadIO m) => ReadableStreamBYOBReader -> m ()
 releaseLock self = liftIO (js_releaseLock self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then($c);" js_getClosed ::
-        ReadableStreamBYOBReader -> IO Bool
+        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getClosed :: ReadableStreamBYOBReader -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.closed Mozilla ReadableStreamBYOBReader.closed documentation> 
 getClosed :: (MonadIO m) => ReadableStreamBYOBReader -> m Bool
-getClosed self = liftIO (js_getClosed self)
+getClosed self
+  = liftIO ((js_getClosed self) >>= checkPromiseResult)

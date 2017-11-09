@@ -50,7 +50,7 @@ foreign import javascript unsafe "$1[\"go\"]($2)" js_go ::
 go :: (MonadIO m) => History -> Maybe Int -> m ()
 go self distance = liftIO (js_go self (maybeToOptional distance))
  
-foreign import javascript unsafe "$1[\"pushState\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"pushState\"]($2, $3, $4)"
         js_pushState ::
         History -> JSVal -> JSString -> Optional JSString -> IO ()
 
@@ -64,7 +64,7 @@ pushState self data' title url
          (toJSString title)
          (toOptionalJSString url))
  
-foreign import javascript unsafe "$1[\"replaceState\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"replaceState\"]($2, $3, $4)"
         js_replaceState ::
         History -> JSVal -> JSString -> Optional JSString -> IO ()
 
@@ -85,7 +85,7 @@ foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
 getLength :: (MonadIO m) => History -> m Word
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript unsafe "$1[\"scrollRestoration\"] = $2;"
+foreign import javascript safe "$1[\"scrollRestoration\"] = $2;"
         js_setScrollRestoration :: History -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 
@@ -94,7 +94,7 @@ setScrollRestoration ::
 setScrollRestoration self val
   = liftIO (js_setScrollRestoration self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"scrollRestoration\"]"
+foreign import javascript safe "$1[\"scrollRestoration\"]"
         js_getScrollRestoration :: History -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 

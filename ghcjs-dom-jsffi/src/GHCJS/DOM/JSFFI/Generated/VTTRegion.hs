@@ -62,8 +62,8 @@ foreign import javascript unsafe "$1[\"id\"]" js_getId ::
 getId :: (MonadIO m, FromJSString result) => VTTRegion -> m result
 getId self = liftIO (fromJSString <$> (js_getId self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
-        :: VTTRegion -> Double -> IO ()
+foreign import javascript safe "$1[\"width\"] = $2;" js_setWidth ::
+        VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.width Mozilla VTTRegion.width documentation> 
 setWidth :: (MonadIO m) => VTTRegion -> Double -> m ()
@@ -76,8 +76,8 @@ foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
 getWidth :: (MonadIO m) => VTTRegion -> m Double
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
-        js_setHeight :: VTTRegion -> Int -> IO ()
+foreign import javascript safe "$1[\"height\"] = $2;" js_setHeight
+        :: VTTRegion -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.height Mozilla VTTRegion.height documentation> 
 setHeight :: (MonadIO m) => VTTRegion -> Int -> m ()
@@ -90,7 +90,7 @@ foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
 getHeight :: (MonadIO m) => VTTRegion -> m Int
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"regionAnchorX\"] = $2;"
+foreign import javascript safe "$1[\"regionAnchorX\"] = $2;"
         js_setRegionAnchorX :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorX Mozilla VTTRegion.regionAnchorX documentation> 
@@ -104,7 +104,7 @@ foreign import javascript unsafe "$1[\"regionAnchorX\"]"
 getRegionAnchorX :: (MonadIO m) => VTTRegion -> m Double
 getRegionAnchorX self = liftIO (js_getRegionAnchorX self)
  
-foreign import javascript unsafe "$1[\"regionAnchorY\"] = $2;"
+foreign import javascript safe "$1[\"regionAnchorY\"] = $2;"
         js_setRegionAnchorY :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorY Mozilla VTTRegion.regionAnchorY documentation> 
@@ -118,7 +118,7 @@ foreign import javascript unsafe "$1[\"regionAnchorY\"]"
 getRegionAnchorY :: (MonadIO m) => VTTRegion -> m Double
 getRegionAnchorY self = liftIO (js_getRegionAnchorY self)
  
-foreign import javascript unsafe "$1[\"viewportAnchorX\"] = $2;"
+foreign import javascript safe "$1[\"viewportAnchorX\"] = $2;"
         js_setViewportAnchorX :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorX Mozilla VTTRegion.viewportAnchorX documentation> 
@@ -133,7 +133,7 @@ foreign import javascript unsafe "$1[\"viewportAnchorX\"]"
 getViewportAnchorX :: (MonadIO m) => VTTRegion -> m Double
 getViewportAnchorX self = liftIO (js_getViewportAnchorX self)
  
-foreign import javascript unsafe "$1[\"viewportAnchorY\"] = $2;"
+foreign import javascript safe "$1[\"viewportAnchorY\"] = $2;"
         js_setViewportAnchorY :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorY Mozilla VTTRegion.viewportAnchorY documentation> 
@@ -148,8 +148,8 @@ foreign import javascript unsafe "$1[\"viewportAnchorY\"]"
 getViewportAnchorY :: (MonadIO m) => VTTRegion -> m Double
 getViewportAnchorY self = liftIO (js_getViewportAnchorY self)
  
-foreign import javascript unsafe "$1[\"scroll\"] = $2;"
-        js_setScroll :: VTTRegion -> JSString -> IO ()
+foreign import javascript safe "$1[\"scroll\"] = $2;" js_setScroll
+        :: VTTRegion -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.scroll Mozilla VTTRegion.scroll documentation> 
 setScroll ::

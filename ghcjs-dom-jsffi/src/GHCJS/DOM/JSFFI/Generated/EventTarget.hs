@@ -66,7 +66,7 @@ removeEventListener self type' callback options
              (maybeToOptional callback)
              (EventListenerOptionsOrBool options'))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "($1[\"dispatchEvent\"]($2) ? 1 : 0)" js_dispatchEvent ::
         EventTarget -> Event -> IO Bool
 

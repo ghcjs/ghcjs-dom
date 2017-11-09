@@ -40,20 +40,21 @@ newReadableStreamDefaultReader stream
   = liftIO (js_newReadableStreamDefaultReader stream)
  
 foreign import javascript interruptible
-        "$1[\"read\"]().then($c);" js_read ::
-        ReadableStreamDefaultReader -> IO JSVal
+        "$1[\"read\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_read :: ReadableStreamDefaultReader -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.read Mozilla ReadableStreamDefaultReader.read documentation> 
 read :: (MonadIO m) => ReadableStreamDefaultReader -> m JSVal
-read self = liftIO (js_read self)
+read self = liftIO ((js_read self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.read Mozilla ReadableStreamDefaultReader.read documentation> 
 read_ :: (MonadIO m) => ReadableStreamDefaultReader -> m ()
 read_ self = liftIO (void (js_read self))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then($c);" js_cancel ::
-        ReadableStreamDefaultReader -> Optional JSVal -> IO JSVal
+        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_cancel ::
+        ReadableStreamDefaultReader -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.cancel Mozilla ReadableStreamDefaultReader.cancel documentation> 
 cancel ::
@@ -61,8 +62,9 @@ cancel ::
          ReadableStreamDefaultReader -> Maybe reason -> m JSVal
 cancel self reason
   = liftIO
-      (mapM toJSVal reason >>=
-         \ reason' -> js_cancel self (maybeToOptional reason'))
+      ((mapM toJSVal reason >>=
+          \ reason' -> js_cancel self (maybeToOptional reason'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.cancel Mozilla ReadableStreamDefaultReader.cancel documentation> 
 cancel_ ::
@@ -82,9 +84,10 @@ releaseLock :: (MonadIO m) => ReadableStreamDefaultReader -> m ()
 releaseLock self = liftIO (js_releaseLock self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then($c);" js_getClosed ::
-        ReadableStreamDefaultReader -> IO Bool
+        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getClosed :: ReadableStreamDefaultReader -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.closed Mozilla ReadableStreamDefaultReader.closed documentation> 
 getClosed :: (MonadIO m) => ReadableStreamDefaultReader -> m Bool
-getClosed self = liftIO (js_getClosed self)
+getClosed self
+  = liftIO ((js_getClosed self) >>= checkPromiseResult)

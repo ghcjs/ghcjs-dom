@@ -41,9 +41,9 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"requestMediaKeySystemAccess\"]($2,\n$3).\nthen($c);"
+        "$1[\"requestMediaKeySystemAccess\"]($2,\n$3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_requestMediaKeySystemAccess ::
-        Navigator -> JSString -> JSVal -> IO MediaKeySystemAccess
+        Navigator -> JSString -> JSVal -> IO (JSVal, MediaKeySystemAccess)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.requestMediaKeySystemAccess Mozilla Navigator.requestMediaKeySystemAccess documentation> 
 requestMediaKeySystemAccess ::
@@ -53,10 +53,11 @@ requestMediaKeySystemAccess ::
                                   [MediaKeySystemConfiguration] -> m MediaKeySystemAccess
 requestMediaKeySystemAccess self keySystem supportedConfiguration
   = liftIO
-      (toJSVal supportedConfiguration >>=
-         \ supportedConfiguration' ->
-           js_requestMediaKeySystemAccess self (toJSString keySystem)
-             supportedConfiguration')
+      ((toJSVal supportedConfiguration >>=
+          \ supportedConfiguration' ->
+            js_requestMediaKeySystemAccess self (toJSString keySystem)
+              supportedConfiguration')
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.requestMediaKeySystemAccess Mozilla Navigator.requestMediaKeySystemAccess documentation> 
 requestMediaKeySystemAccess_ ::
@@ -100,7 +101,7 @@ getUserMedia self constraints successCallback errorCallback
   = liftIO
       (js_getUserMedia self constraints successCallback errorCallback)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"registerProtocolHandler\"]($2,\n$3, $4)"
         js_registerProtocolHandler ::
         Navigator -> JSString -> JSString -> JSString -> IO ()
@@ -115,7 +116,7 @@ registerProtocolHandler self scheme url title
          (toJSString url)
          (toJSString title))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"isProtocolHandlerRegistered\"]($2,\n$3)"
         js_isProtocolHandlerRegistered ::
         Navigator -> JSString -> JSString -> IO JSString
@@ -141,7 +142,7 @@ isProtocolHandlerRegistered_ self scheme url
          (js_isProtocolHandlerRegistered self (toJSString scheme)
             (toJSString url)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"unregisterProtocolHandler\"]($2,\n$3)"
         js_unregisterProtocolHandler ::
         Navigator -> JSString -> JSString -> IO ()

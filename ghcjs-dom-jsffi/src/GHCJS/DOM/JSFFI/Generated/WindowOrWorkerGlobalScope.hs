@@ -110,7 +110,7 @@ clearInterval self handle
       (js_clearInterval (toWindowOrWorkerGlobalScope self)
          (maybeToOptional handle))
  
-foreign import javascript unsafe "$1[\"atob\"]($2)" js_atob ::
+foreign import javascript safe "$1[\"atob\"]($2)" js_atob ::
         WindowOrWorkerGlobalScope -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope.atob Mozilla WindowOrWorkerGlobalScope.atob documentation> 
@@ -132,7 +132,7 @@ atob_ self string
       (void
          (js_atob (toWindowOrWorkerGlobalScope self) (toJSString string)))
  
-foreign import javascript unsafe "$1[\"btoa\"]($2)" js_btoa ::
+foreign import javascript safe "$1[\"btoa\"]($2)" js_btoa ::
         WindowOrWorkerGlobalScope -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope.btoa Mozilla WindowOrWorkerGlobalScope.btoa documentation> 

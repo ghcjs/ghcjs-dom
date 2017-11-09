@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"ImageData\"]($1, $2,\n$3)" js_newImageData ::
         Uint8ClampedArray -> Word -> Optional Word -> IO ImageData
 
@@ -40,9 +40,8 @@ newImageData data' sw sh
       (js_newImageData (toUint8ClampedArray data') sw
          (maybeToOptional sh))
  
-foreign import javascript unsafe
-        "new window[\"ImageData\"]($1, $2)" js_newImageData' ::
-        Word -> Word -> IO ImageData
+foreign import javascript safe "new window[\"ImageData\"]($1, $2)"
+        js_newImageData' :: Word -> Word -> IO ImageData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData Mozilla ImageData documentation> 
 newImageData' :: (MonadIO m) => Word -> Word -> m ImageData

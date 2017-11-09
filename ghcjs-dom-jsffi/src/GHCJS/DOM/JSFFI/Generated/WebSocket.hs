@@ -35,9 +35,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
-        "new window[\"WebSocket\"]($1, $2)" js_newWebSocket ::
-        JSString -> JSVal -> IO WebSocket
+foreign import javascript safe "new window[\"WebSocket\"]($1, $2)"
+        js_newWebSocket :: JSString -> JSVal -> IO WebSocket
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
 newWebSocket ::
@@ -48,9 +47,8 @@ newWebSocket url protocols
       (toJSVal protocols >>=
          \ protocols' -> js_newWebSocket (toJSString url) protocols')
  
-foreign import javascript unsafe
-        "new window[\"WebSocket\"]($1, $2)" js_newWebSocket' ::
-        JSString -> JSString -> IO WebSocket
+foreign import javascript safe "new window[\"WebSocket\"]($1, $2)"
+        js_newWebSocket' :: JSString -> JSString -> IO WebSocket
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
 newWebSocket' ::
@@ -59,7 +57,7 @@ newWebSocket' ::
 newWebSocket' url protocol
   = liftIO (js_newWebSocket' (toJSString url) (toJSString protocol))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_send ::
+foreign import javascript safe "$1[\"send\"]($2)" js_send ::
         WebSocket -> ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
@@ -67,7 +65,7 @@ send ::
      (MonadIO m, IsArrayBuffer data') => WebSocket -> data' -> m ()
 send self data' = liftIO (js_send self (toArrayBuffer data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendView ::
+foreign import javascript safe "$1[\"send\"]($2)" js_sendView ::
         WebSocket -> ArrayBufferView -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
@@ -76,15 +74,15 @@ sendView ::
 sendView self data'
   = liftIO (js_sendView self (toArrayBufferView data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendBlob ::
+foreign import javascript safe "$1[\"send\"]($2)" js_sendBlob ::
         WebSocket -> Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
 sendBlob :: (MonadIO m, IsBlob data') => WebSocket -> data' -> m ()
 sendBlob self data' = liftIO (js_sendBlob self (toBlob data'))
  
-foreign import javascript unsafe "$1[\"send\"]($2)" js_sendString
-        :: WebSocket -> JSString -> IO ()
+foreign import javascript safe "$1[\"send\"]($2)" js_sendString ::
+        WebSocket -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
 sendString ::
@@ -92,8 +90,8 @@ sendString ::
 sendString self data'
   = liftIO (js_sendString self (toJSString data'))
  
-foreign import javascript unsafe "$1[\"close\"]($2, $3)" js_close
-        :: WebSocket -> Optional Word -> Optional JSString -> IO ()
+foreign import javascript safe "$1[\"close\"]($2, $3)" js_close ::
+        WebSocket -> Optional Word -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.close Mozilla WebSocket.close documentation> 
 close ::
@@ -192,7 +190,7 @@ getExtensionsUnchecked ::
 getExtensionsUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getExtensions self))
  
-foreign import javascript unsafe "$1[\"binaryType\"] = $2;"
+foreign import javascript safe "$1[\"binaryType\"] = $2;"
         js_setBinaryType :: WebSocket -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.binaryType Mozilla WebSocket.binaryType documentation> 

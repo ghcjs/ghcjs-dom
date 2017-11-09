@@ -40,6 +40,8 @@ module GHCJS.DOM.Types (
 
   , Function(Function), unFunction, IsFunction, toFunction, noFunction
 
+  , PromiseRejected(..), noPromiseRejected, maybeThrowPromiseRejected, checkPromiseResult
+
   -- * Callbacks
   , AudioBufferCallback(..), noAudioBufferCallback
   , BlobCallback(..), noBlobCallback
@@ -960,7 +962,8 @@ import Data.Word (Word8, Word16, Word32, Word64)
 import Data.Coerce (coerce, Coercible)
 import Data.Monoid ((<>))
 import Data.Typeable (Typeable)
-import Control.Exception (Exception(..))
+import Control.Monad (unless)
+import Control.Exception (throwIO, Exception(..))
 #if MIN_VERSION_base(4,9,0)
 import GHC.Stack (HasCallStack)
 #else
@@ -1275,6 +1278,14 @@ newtype PromiseRejected = PromiseRejected { rejectionReason :: JSVal } deriving 
 noPromiseRejected :: Maybe PromiseRejected
 noPromiseRejected = Nothing
 {-# INLINE noPromiseRejected #-}
+
+maybeThrowPromiseRejected :: JSVal -> IO ()
+maybeThrowPromiseRejected e = unless (isNull e) $ throwIO (PromiseRejected e)
+{-# INLINE maybeThrowPromiseRejected #-}
+
+checkPromiseResult :: (JSVal, a) -> IO a
+checkPromiseResult (e, a) = maybeThrowPromiseRejected e >> return a
+{-# INLINE checkPromiseResult #-}
 
 instance Show PromiseRejected where
     show _ = "A promise was rejected"

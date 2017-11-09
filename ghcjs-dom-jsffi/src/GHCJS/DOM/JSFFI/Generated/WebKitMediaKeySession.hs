@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"update\"]($2)" js_update ::
+foreign import javascript safe "$1[\"update\"]($2)" js_update ::
         WebKitMediaKeySession -> Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.update Mozilla WebKitMediaKeySession.update documentation> 

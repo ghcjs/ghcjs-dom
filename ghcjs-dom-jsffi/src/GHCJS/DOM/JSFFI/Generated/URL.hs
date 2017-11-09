@@ -38,14 +38,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"URL\"]($1)"
-        js_newURL :: JSString -> IO URL
+foreign import javascript safe "new window[\"URL\"]($1)" js_newURL
+        :: JSString -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
 newURL :: (MonadIO m, ToJSString url) => url -> m URL
 newURL url = liftIO (js_newURL (toJSString url))
  
-foreign import javascript unsafe "new window[\"URL\"]($1, $2)"
+foreign import javascript safe "new window[\"URL\"]($1, $2)"
         js_newURL' :: JSString -> JSString -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
@@ -55,7 +55,7 @@ newURL' ::
 newURL' url base
   = liftIO (js_newURL' (toJSString url) (toJSString base))
  
-foreign import javascript unsafe "new window[\"URL\"]($1, $2)"
+foreign import javascript safe "new window[\"URL\"]($1, $2)"
         js_newURL'' :: JSString -> URL -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
@@ -111,7 +111,7 @@ createObjectURLSource_ :: (MonadIO m) => URL -> MediaSource -> m ()
 createObjectURLSource_ self source
   = liftIO (void (js_createObjectURLSource self source))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
+foreign import javascript safe "$1[\"href\"] = $2;" js_setHref ::
         URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.href Mozilla URL.href documentation> 

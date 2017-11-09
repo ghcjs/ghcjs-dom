@@ -31,8 +31,9 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"generateRequest\"]($2, $3).\nthen($c);" js_generateRequest ::
-        MediaKeySession -> JSString -> BufferSource -> IO ()
+        "$1[\"generateRequest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_generateRequest ::
+        MediaKeySession -> JSString -> BufferSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.generateRequest Mozilla WebKitMediaKeySession.generateRequest documentation> 
 generateRequest ::
@@ -40,18 +41,21 @@ generateRequest ::
                   MediaKeySession -> initDataType -> initData -> m ()
 generateRequest self initDataType initData
   = liftIO
-      (js_generateRequest self (toJSString initDataType)
-         (toBufferSource initData))
+      ((js_generateRequest self (toJSString initDataType)
+          (toBufferSource initData))
+         >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"load\"]($2).then($c);" js_load ::
-        MediaKeySession -> JSString -> IO Bool
+        "$1[\"load\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_load :: MediaKeySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.load Mozilla WebKitMediaKeySession.load documentation> 
 load ::
      (MonadIO m, ToJSString sessionId) =>
        MediaKeySession -> sessionId -> m Bool
-load self sessionId = liftIO (js_load self (toJSString sessionId))
+load self sessionId
+  = liftIO
+      ((js_load self (toJSString sessionId)) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.load Mozilla WebKitMediaKeySession.load documentation> 
 load_ ::
@@ -61,29 +65,34 @@ load_ self sessionId
   = liftIO (void (js_load self (toJSString sessionId)))
  
 foreign import javascript interruptible
-        "$1[\"update\"]($2).then($c);" js_update ::
-        MediaKeySession -> BufferSource -> IO ()
+        "$1[\"update\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_update :: MediaKeySession -> BufferSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.update Mozilla WebKitMediaKeySession.update documentation> 
 update ::
        (MonadIO m, IsBufferSource response) =>
          MediaKeySession -> response -> m ()
 update self response
-  = liftIO (js_update self (toBufferSource response))
+  = liftIO
+      ((js_update self (toBufferSource response)) >>=
+         maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"close\"]().then($c);" js_close :: MediaKeySession -> IO ()
+        "$1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_close :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.close Mozilla WebKitMediaKeySession.close documentation> 
 close :: (MonadIO m) => MediaKeySession -> m ()
-close self = liftIO (js_close self)
+close self = liftIO ((js_close self) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"remove\"]().then($c);" js_remove :: MediaKeySession -> IO ()
+        "$1[\"remove\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_remove :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.remove Mozilla WebKitMediaKeySession.remove documentation> 
 remove :: (MonadIO m) => MediaKeySession -> m ()
-remove self = liftIO (js_remove self)
+remove self
+  = liftIO ((js_remove self) >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"sessionId\"]"
         js_getSessionId :: MediaKeySession -> IO JSString
@@ -102,11 +111,13 @@ getExpiration :: (MonadIO m) => MediaKeySession -> m Double
 getExpiration self = liftIO (js_getExpiration self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then($c);" js_getClosed :: MediaKeySession -> IO ()
+        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getClosed :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.closed Mozilla WebKitMediaKeySession.closed documentation> 
 getClosed :: (MonadIO m) => MediaKeySession -> m ()
-getClosed self = liftIO (js_getClosed self)
+getClosed self
+  = liftIO ((js_getClosed self) >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"keyStatuses\"]"
         js_getKeyStatuses :: MediaKeySession -> IO MediaKeyStatusMap

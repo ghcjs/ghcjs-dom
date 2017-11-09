@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"substringData\"]($2, $3)"
+foreign import javascript safe "$1[\"substringData\"]($2, $3)"
         js_substringData :: CharacterData -> Word -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
@@ -58,7 +58,7 @@ appendData ::
 appendData self data'
   = liftIO (js_appendData (toCharacterData self) (toJSString data'))
  
-foreign import javascript unsafe "$1[\"insertData\"]($2, $3)"
+foreign import javascript safe "$1[\"insertData\"]($2, $3)"
         js_insertData :: CharacterData -> Word -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.insertData Mozilla CharacterData.insertData documentation> 
@@ -69,7 +69,7 @@ insertData self offset data'
   = liftIO
       (js_insertData (toCharacterData self) offset (toJSString data'))
  
-foreign import javascript unsafe "$1[\"deleteData\"]($2, $3)"
+foreign import javascript safe "$1[\"deleteData\"]($2, $3)"
         js_deleteData :: CharacterData -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.deleteData Mozilla CharacterData.deleteData documentation> 
@@ -78,7 +78,7 @@ deleteData ::
 deleteData self offset count
   = liftIO (js_deleteData (toCharacterData self) offset count)
  
-foreign import javascript unsafe "$1[\"replaceData\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"replaceData\"]($2, $3, $4)"
         js_replaceData ::
         CharacterData -> Word -> Word -> JSString -> IO ()
 

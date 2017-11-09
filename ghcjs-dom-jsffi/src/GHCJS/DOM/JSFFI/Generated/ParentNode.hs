@@ -34,8 +34,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"prepend\"]($2)" js_prepend
-        :: ParentNode -> JSVal -> IO ()
+foreign import javascript safe "$1[\"prepend\"]($2)" js_prepend ::
+        ParentNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.prepend Mozilla ParentNode.prepend documentation> 
 prepend ::
@@ -46,7 +46,7 @@ prepend self nodes
       (toJSVal nodes >>=
          \ nodes' -> js_prepend (toParentNode self) nodes')
  
-foreign import javascript unsafe "$1[\"append\"]($2)" js_append ::
+foreign import javascript safe "$1[\"append\"]($2)" js_append ::
         ParentNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.append Mozilla ParentNode.append documentation> 
@@ -58,7 +58,7 @@ append self nodes
       (toJSVal nodes >>=
          \ nodes' -> js_append (toParentNode self) nodes')
  
-foreign import javascript unsafe "$1[\"querySelector\"]($2)"
+foreign import javascript safe "$1[\"querySelector\"]($2)"
         js_querySelector :: ParentNode -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
@@ -99,7 +99,7 @@ querySelectorUnchecked self selectors
       (fromJust . nullableToMaybe <$>
          (js_querySelector (toParentNode self) (toJSString selectors)))
  
-foreign import javascript unsafe "$1[\"querySelectorAll\"]($2)"
+foreign import javascript safe "$1[\"querySelectorAll\"]($2)"
         js_querySelectorAll :: ParentNode -> JSString -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelectorAll Mozilla ParentNode.querySelectorAll documentation> 

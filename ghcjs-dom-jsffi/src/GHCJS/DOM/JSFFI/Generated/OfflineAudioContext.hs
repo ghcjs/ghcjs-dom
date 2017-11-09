@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"OfflineAudioContext\"]($1,\n$2, $3)"
         js_newOfflineAudioContext ::
         Word -> Word -> Float -> IO OfflineAudioContext

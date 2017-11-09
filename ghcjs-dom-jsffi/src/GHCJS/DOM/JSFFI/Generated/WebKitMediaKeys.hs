@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"WebKitMediaKeys\"]($1)" js_newWebKitMediaKeys ::
         JSString -> IO WebKitMediaKeys
 
@@ -38,7 +38,7 @@ newWebKitMediaKeys ::
 newWebKitMediaKeys keySystem
   = liftIO (js_newWebKitMediaKeys (toJSString keySystem))
  
-foreign import javascript unsafe "$1[\"createSession\"]($2, $3)"
+foreign import javascript safe "$1[\"createSession\"]($2, $3)"
         js_createSession ::
         WebKitMediaKeys ->
           JSString -> Uint8Array -> IO WebKitMediaKeySession

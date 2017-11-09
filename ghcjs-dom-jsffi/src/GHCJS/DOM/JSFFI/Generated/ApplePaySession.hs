@@ -52,7 +52,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"ApplePaySession\"]($1,\n$2)" js_newApplePaySession ::
         Word -> ApplePayPaymentRequest -> IO ApplePaySession
 
@@ -62,7 +62,7 @@ newApplePaySession ::
 newApplePaySession version paymentRequest
   = liftIO (js_newApplePaySession version paymentRequest)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "($1[\"supportsVersion\"]($2) ? 1 : 0)" js_supportsVersion ::
         ApplePaySession -> Word -> IO Bool
 
@@ -76,7 +76,7 @@ supportsVersion_ :: (MonadIO m) => ApplePaySession -> Word -> m ()
 supportsVersion_ self version
   = liftIO (void (js_supportsVersion self version))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "($1[\"canMakePayments\"]() ? 1 : 0)" js_canMakePayments ::
         ApplePaySession -> IO Bool
 
@@ -89,9 +89,9 @@ canMakePayments_ :: (MonadIO m) => ApplePaySession -> m ()
 canMakePayments_ self = liftIO (void (js_canMakePayments self))
  
 foreign import javascript interruptible
-        "$1[\"canMakePaymentsWithActiveCard\"]($2).\nthen($c);"
+        "$1[\"canMakePaymentsWithActiveCard\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
         js_canMakePaymentsWithActiveCard ::
-        ApplePaySession -> JSString -> IO Bool
+        ApplePaySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard ::
@@ -99,8 +99,9 @@ canMakePaymentsWithActiveCard ::
                                 ApplePaySession -> merchantIdentifier -> m Bool
 canMakePaymentsWithActiveCard self merchantIdentifier
   = liftIO
-      (js_canMakePaymentsWithActiveCard self
-         (toJSString merchantIdentifier))
+      ((js_canMakePaymentsWithActiveCard self
+          (toJSString merchantIdentifier))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard_ ::
@@ -113,15 +114,18 @@ canMakePaymentsWithActiveCard_ self merchantIdentifier
             (toJSString merchantIdentifier)))
  
 foreign import javascript interruptible
-        "$1[\"openPaymentSetup\"]($2).\nthen($c);" js_openPaymentSetup ::
-        ApplePaySession -> JSString -> IO Bool
+        "$1[\"openPaymentSetup\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_openPaymentSetup ::
+        ApplePaySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup ::
                  (MonadIO m, ToJSString merchantIdentifier) =>
                    ApplePaySession -> merchantIdentifier -> m Bool
 openPaymentSetup self merchantIdentifier
-  = liftIO (js_openPaymentSetup self (toJSString merchantIdentifier))
+  = liftIO
+      ((js_openPaymentSetup self (toJSString merchantIdentifier)) >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup_ ::
@@ -131,21 +135,21 @@ openPaymentSetup_ self merchantIdentifier
   = liftIO
       (void (js_openPaymentSetup self (toJSString merchantIdentifier)))
  
-foreign import javascript unsafe "$1[\"begin\"]()" js_begin ::
+foreign import javascript safe "$1[\"begin\"]()" js_begin ::
         ApplePaySession -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.begin Mozilla ApplePaySession.begin documentation> 
 begin :: (MonadIO m) => ApplePaySession -> m ()
 begin self = liftIO (js_begin self)
  
-foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
+foreign import javascript safe "$1[\"abort\"]()" js_abort ::
         ApplePaySession -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.abort Mozilla ApplePaySession.abort documentation> 
 abort :: (MonadIO m) => ApplePaySession -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completeMerchantValidation\"]($2)"
         js_completeMerchantValidation :: ApplePaySession -> JSVal -> IO ()
 
@@ -159,7 +163,7 @@ completeMerchantValidation self merchantSession
          \ merchantSession' ->
            js_completeMerchantValidation self merchantSession')
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completeShippingMethodSelection\"]($2)"
         js_completeShippingMethodSelectionUpdate ::
         ApplePaySession -> ApplePayShippingMethodUpdate -> IO ()
@@ -171,7 +175,7 @@ completeShippingMethodSelectionUpdate ::
 completeShippingMethodSelectionUpdate self update
   = liftIO (js_completeShippingMethodSelectionUpdate self update)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completeShippingContactSelection\"]($2)"
         js_completeShippingContactSelectionUpdate ::
         ApplePaySession -> ApplePayShippingContactUpdate -> IO ()
@@ -183,7 +187,7 @@ completeShippingContactSelectionUpdate ::
 completeShippingContactSelectionUpdate self update
   = liftIO (js_completeShippingContactSelectionUpdate self update)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completePaymentMethodSelection\"]($2)"
         js_completePaymentMethodSelectionUpdate ::
         ApplePaySession -> ApplePayPaymentMethodUpdate -> IO ()
@@ -195,7 +199,7 @@ completePaymentMethodSelectionUpdate ::
 completePaymentMethodSelectionUpdate self update
   = liftIO (js_completePaymentMethodSelectionUpdate self update)
  
-foreign import javascript unsafe "$1[\"completePayment\"]($2)"
+foreign import javascript safe "$1[\"completePayment\"]($2)"
         js_completePaymentResult ::
         ApplePaySession -> ApplePayPaymentAuthorizationResult -> IO ()
 
@@ -206,7 +210,7 @@ completePaymentResult ::
 completePaymentResult self result
   = liftIO (js_completePaymentResult self result)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completeShippingMethodSelection\"]($2,\n$3, $4)"
         js_completeShippingMethodSelection ::
         ApplePaySession -> Word -> ApplePayLineItem -> JSVal -> IO ()
@@ -223,7 +227,7 @@ completeShippingMethodSelection self status newTotal newLineItems
            js_completeShippingMethodSelection self status newTotal
              newLineItems')
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completeShippingContactSelection\"]($2,\n$3, $4, $5)"
         js_completeShippingContactSelection ::
         ApplePaySession ->
@@ -247,7 +251,7 @@ completeShippingContactSelection self status newShippingMethods
              newTotal
              newLineItems')
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"completePaymentMethodSelection\"]($2,\n$3)"
         js_completePaymentMethodSelection ::
         ApplePaySession -> ApplePayLineItem -> JSVal -> IO ()
@@ -262,7 +266,7 @@ completePaymentMethodSelection self newTotal newLineItems
          \ newLineItems' ->
            js_completePaymentMethodSelection self newTotal newLineItems')
  
-foreign import javascript unsafe "$1[\"completePayment\"]($2)"
+foreign import javascript safe "$1[\"completePayment\"]($2)"
         js_completePayment :: ApplePaySession -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completePayment Mozilla ApplePaySession.completePayment documentation> 

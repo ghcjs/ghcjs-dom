@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"EventSource\"]($1,\n$2)" js_newEventSource ::
         JSString -> Optional EventSourceInit -> IO EventSource
 

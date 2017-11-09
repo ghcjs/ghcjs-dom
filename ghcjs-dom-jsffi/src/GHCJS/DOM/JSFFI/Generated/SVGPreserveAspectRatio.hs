@@ -54,8 +54,8 @@ pattern SVG_MEETORSLICE_UNKNOWN = 0
 pattern SVG_MEETORSLICE_MEET = 1
 pattern SVG_MEETORSLICE_SLICE = 2
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
-        :: SVGPreserveAspectRatio -> Word -> IO ()
+foreign import javascript safe "$1[\"align\"] = $2;" js_setAlign ::
+        SVGPreserveAspectRatio -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.align Mozilla SVGPreserveAspectRatio.align documentation> 
 setAlign :: (MonadIO m) => SVGPreserveAspectRatio -> Word -> m ()
@@ -68,7 +68,7 @@ foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
 getAlign :: (MonadIO m) => SVGPreserveAspectRatio -> m Word
 getAlign self = liftIO (js_getAlign self)
  
-foreign import javascript unsafe "$1[\"meetOrSlice\"] = $2;"
+foreign import javascript safe "$1[\"meetOrSlice\"] = $2;"
         js_setMeetOrSlice :: SVGPreserveAspectRatio -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.meetOrSlice Mozilla SVGPreserveAspectRatio.meetOrSlice documentation> 

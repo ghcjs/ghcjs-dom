@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createDocumentType\"]($2, $3,\n$4)" js_createDocumentType ::
         DOMImplementation ->
           JSString -> JSString -> JSString -> IO DocumentType
@@ -58,8 +58,8 @@ createDocumentType_ self qualifiedName publicId systemId
             (toJSString publicId)
             (toJSString systemId)))
  
-foreign import javascript unsafe
-        "$1[\"createDocument\"]($2, $3, $4)" js_createDocument ::
+foreign import javascript safe "$1[\"createDocument\"]($2, $3, $4)"
+        js_createDocument ::
         DOMImplementation ->
           Optional JSString ->
             JSString -> Optional DocumentType -> IO XMLDocument

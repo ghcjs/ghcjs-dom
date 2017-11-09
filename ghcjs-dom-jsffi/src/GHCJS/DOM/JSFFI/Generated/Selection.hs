@@ -54,14 +54,14 @@ collapse self node offset
       (js_collapse self (maybeToOptional (fmap toNode node))
          (maybeToOptional offset))
  
-foreign import javascript unsafe "$1[\"collapseToEnd\"]()"
+foreign import javascript safe "$1[\"collapseToEnd\"]()"
         js_collapseToEnd :: Selection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.collapseToEnd Mozilla Selection.collapseToEnd documentation> 
 collapseToEnd :: (MonadIO m) => Selection -> m ()
 collapseToEnd self = liftIO (js_collapseToEnd self)
  
-foreign import javascript unsafe "$1[\"collapseToStart\"]()"
+foreign import javascript safe "$1[\"collapseToStart\"]()"
         js_collapseToStart :: Selection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.collapseToStart Mozilla Selection.collapseToStart documentation> 
@@ -100,7 +100,7 @@ selectAllChildren ::
 selectAllChildren self node
   = liftIO (js_selectAllChildren self (toNode node))
  
-foreign import javascript unsafe "$1[\"extend\"]($2, $3)" js_extend
+foreign import javascript safe "$1[\"extend\"]($2, $3)" js_extend
         :: Selection -> Node -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extend Mozilla Selection.extend documentation> 
@@ -109,7 +109,7 @@ extend ::
 extend self node offset
   = liftIO (js_extend self (toNode node) (maybeToOptional offset))
  
-foreign import javascript unsafe "$1[\"getRangeAt\"]($2)"
+foreign import javascript safe "$1[\"getRangeAt\"]($2)"
         js_getRangeAt :: Selection -> Word -> IO Range
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.getRangeAt Mozilla Selection.getRangeAt documentation> 

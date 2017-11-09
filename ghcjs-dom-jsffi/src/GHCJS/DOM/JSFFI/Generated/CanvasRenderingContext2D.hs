@@ -600,7 +600,7 @@ strokeRect ::
 strokeRect self x y width height
   = liftIO (js_strokeRect self x y width height)
  
-foreign import javascript unsafe "$1[\"drawImage\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"drawImage\"]($2, $3, $4)"
         js_drawImage ::
         CanvasRenderingContext2D ->
           CanvasImageSource -> Float -> Float -> IO ()
@@ -612,7 +612,7 @@ drawImage ::
 drawImage self image x y
   = liftIO (js_drawImage self (toCanvasImageSource image) x y)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"drawImage\"]($2, $3, $4, $5,\n$6)" js_drawImageScaled ::
         CanvasRenderingContext2D ->
           CanvasImageSource -> Float -> Float -> Float -> Float -> IO ()
@@ -627,7 +627,7 @@ drawImageScaled self image x y width height
       (js_drawImageScaled self (toCanvasImageSource image) x y width
          height)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"drawImage\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10)"
         js_drawImagePart ::
         CanvasRenderingContext2D ->
@@ -811,7 +811,7 @@ webkitPutImageDataHDDirty self imagedata dx dy dirtyX dirtyY
          dirtyWidth
          dirtyHeight)
  
-foreign import javascript unsafe "$1[\"createImageData\"]($2)"
+foreign import javascript safe "$1[\"createImageData\"]($2)"
         js_createImageData ::
         CanvasRenderingContext2D -> Optional ImageData -> IO ImageData
 
@@ -829,7 +829,7 @@ createImageData_ self imagedata
   = liftIO
       (void (js_createImageData self (maybeToOptional imagedata)))
  
-foreign import javascript unsafe "$1[\"createImageData\"]($2, $3)"
+foreign import javascript safe "$1[\"createImageData\"]($2, $3)"
         js_createImageDataSize ::
         CanvasRenderingContext2D -> Float -> Float -> IO ImageData
 
@@ -846,7 +846,7 @@ createImageDataSize_ ::
 createImageDataSize_ self sw sh
   = liftIO (void (js_createImageDataSize self sw sh))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createLinearGradient\"]($2,\n$3, $4, $5)"
         js_createLinearGradient ::
         CanvasRenderingContext2D ->
@@ -868,7 +868,7 @@ createLinearGradient_ ::
 createLinearGradient_ self x0 y0 x1 y1
   = liftIO (void (js_createLinearGradient self x0 y0 x1 y1))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createRadialGradient\"]($2,\n$3, $4, $5, $6, $7)"
         js_createRadialGradient ::
         CanvasRenderingContext2D ->
@@ -892,7 +892,7 @@ createRadialGradient_ ::
 createRadialGradient_ self x0 y0 r0 x1 y1 r1
   = liftIO (void (js_createRadialGradient self x0 y0 r0 x1 y1 r1))
  
-foreign import javascript unsafe "$1[\"createPattern\"]($2, $3)"
+foreign import javascript safe "$1[\"createPattern\"]($2, $3)"
         js_createPattern ::
         CanvasRenderingContext2D ->
           CanvasImageSource -> JSString -> IO (Nullable CanvasPattern)
@@ -940,7 +940,7 @@ createPatternUnchecked self image repetition
          (js_createPattern self (toCanvasImageSource image)
             (toJSString repetition)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"getImageData\"]($2, $3, $4,\n$5)" js_getImageData ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ImageData
@@ -961,7 +961,7 @@ getImageData_ ::
 getImageData_ self sx sy sw sh
   = liftIO (void (js_getImageData self sx sy sw sh))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"webkitGetImageDataHD\"]($2,\n$3, $4, $5)"
         js_webkitGetImageDataHD ::
         CanvasRenderingContext2D ->

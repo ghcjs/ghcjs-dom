@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"before\"]($2)" js_before ::
+foreign import javascript safe "$1[\"before\"]($2)" js_before ::
         ChildNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode.before Mozilla ChildNode.before documentation> 
@@ -38,7 +38,7 @@ before self nodes
   = liftIO
       (toJSVal nodes >>= \ nodes' -> js_before (toChildNode self) nodes')
  
-foreign import javascript unsafe "$1[\"after\"]($2)" js_after ::
+foreign import javascript safe "$1[\"after\"]($2)" js_after ::
         ChildNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode.after Mozilla ChildNode.after documentation> 
@@ -49,7 +49,7 @@ after self nodes
   = liftIO
       (toJSVal nodes >>= \ nodes' -> js_after (toChildNode self) nodes')
  
-foreign import javascript unsafe "$1[\"replaceWith\"]($2)"
+foreign import javascript safe "$1[\"replaceWith\"]($2)"
         js_replaceWith :: ChildNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode.replaceWith Mozilla ChildNode.replaceWith documentation> 
@@ -61,7 +61,7 @@ replaceWith self nodes
       (toJSVal nodes >>=
          \ nodes' -> js_replaceWith (toChildNode self) nodes')
  
-foreign import javascript unsafe "$1[\"remove\"]()" js_remove ::
+foreign import javascript safe "$1[\"remove\"]()" js_remove ::
         ChildNode -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode.remove Mozilla ChildNode.remove documentation> 

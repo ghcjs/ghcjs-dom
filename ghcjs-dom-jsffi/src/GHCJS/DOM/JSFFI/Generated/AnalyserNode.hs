@@ -73,7 +73,7 @@ getByteTimeDomainData self array
       (js_getByteTimeDomainData self
          (maybeToOptional (fmap toUint8Array array)))
  
-foreign import javascript unsafe "$1[\"fftSize\"] = $2;"
+foreign import javascript safe "$1[\"fftSize\"] = $2;"
         js_setFftSize :: AnalyserNode -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.fftSize Mozilla AnalyserNode.fftSize documentation> 
@@ -94,7 +94,7 @@ foreign import javascript unsafe "$1[\"frequencyBinCount\"]"
 getFrequencyBinCount :: (MonadIO m) => AnalyserNode -> m Word
 getFrequencyBinCount self = liftIO (js_getFrequencyBinCount self)
  
-foreign import javascript unsafe "$1[\"minDecibels\"] = $2;"
+foreign import javascript safe "$1[\"minDecibels\"] = $2;"
         js_setMinDecibels :: AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.minDecibels Mozilla AnalyserNode.minDecibels documentation> 
@@ -108,7 +108,7 @@ foreign import javascript unsafe "$1[\"minDecibels\"]"
 getMinDecibels :: (MonadIO m) => AnalyserNode -> m Double
 getMinDecibels self = liftIO (js_getMinDecibels self)
  
-foreign import javascript unsafe "$1[\"maxDecibels\"] = $2;"
+foreign import javascript safe "$1[\"maxDecibels\"] = $2;"
         js_setMaxDecibels :: AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.maxDecibels Mozilla AnalyserNode.maxDecibels documentation> 
@@ -122,7 +122,7 @@ foreign import javascript unsafe "$1[\"maxDecibels\"]"
 getMaxDecibels :: (MonadIO m) => AnalyserNode -> m Double
 getMaxDecibels self = liftIO (js_getMaxDecibels self)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"smoothingTimeConstant\"] = $2;" js_setSmoothingTimeConstant
         :: AnalyserNode -> Double -> IO ()
 

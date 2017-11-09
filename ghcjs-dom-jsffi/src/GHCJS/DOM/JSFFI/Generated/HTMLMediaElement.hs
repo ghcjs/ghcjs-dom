@@ -119,11 +119,14 @@ getStartDate_ self
   = liftIO (void (js_getStartDate (toHTMLMediaElement self)))
  
 foreign import javascript interruptible
-        "$1[\"play\"]().then($c);" js_play :: HTMLMediaElement -> IO ()
+        "$1[\"play\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_play :: HTMLMediaElement -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.play Mozilla HTMLMediaElement.play documentation> 
 play :: (MonadIO m, IsHTMLMediaElement self) => self -> m ()
-play self = liftIO (js_play (toHTMLMediaElement self))
+play self
+  = liftIO
+      ((js_play (toHTMLMediaElement self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript unsafe "$1[\"pause\"]()" js_pause ::
         HTMLMediaElement -> IO ()
@@ -155,8 +158,9 @@ webkitSetMediaKeys self mediaKeys
          (maybeToOptional mediaKeys))
  
 foreign import javascript interruptible
-        "$1[\"setMediaKeys\"]($2).then($c);" js_setMediaKeys ::
-        HTMLMediaElement -> Optional MediaKeys -> IO ()
+        "$1[\"setMediaKeys\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_setMediaKeys ::
+        HTMLMediaElement -> Optional MediaKeys -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.setMediaKeys Mozilla HTMLMediaElement.setMediaKeys documentation> 
 setMediaKeys ::
@@ -164,10 +168,11 @@ setMediaKeys ::
                self -> Maybe MediaKeys -> m ()
 setMediaKeys self mediaKeys
   = liftIO
-      (js_setMediaKeys (toHTMLMediaElement self)
-         (maybeToOptional mediaKeys))
+      ((js_setMediaKeys (toHTMLMediaElement self)
+          (maybeToOptional mediaKeys))
+         >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"addTextTrack\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"addTextTrack\"]($2, $3, $4)"
         js_addTextTrack ::
         HTMLMediaElement ->
           JSString -> Optional JSString -> Optional JSString -> IO TextTrack
@@ -413,7 +418,7 @@ getSeeking ::
            (MonadIO m, IsHTMLMediaElement self) => self -> m Bool
 getSeeking self = liftIO (js_getSeeking (toHTMLMediaElement self))
  
-foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
+foreign import javascript safe "$1[\"currentTime\"] = $2;"
         js_setCurrentTime :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.currentTime Mozilla HTMLMediaElement.currentTime documentation> 
@@ -560,8 +565,8 @@ getControls ::
 getControls self
   = liftIO (js_getControls (toHTMLMediaElement self))
  
-foreign import javascript unsafe "$1[\"volume\"] = $2;"
-        js_setVolume :: HTMLMediaElement -> Double -> IO ()
+foreign import javascript safe "$1[\"volume\"] = $2;" js_setVolume
+        :: HTMLMediaElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.volume Mozilla HTMLMediaElement.volume documentation> 
 setVolume ::

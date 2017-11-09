@@ -26,8 +26,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: SVGNumber -> Float -> IO ()
+foreign import javascript safe "$1[\"value\"] = $2;" js_setValue ::
+        SVGNumber -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumber.value Mozilla SVGNumber.value documentation> 
 setValue :: (MonadIO m) => SVGNumber -> Float -> m ()

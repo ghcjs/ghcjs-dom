@@ -73,8 +73,8 @@ getScreenCTM_ ::
 getScreenCTM_ self
   = liftIO (void (js_getScreenCTM (toSVGGraphicsElement self)))
  
-foreign import javascript unsafe
-        "$1[\"getTransformToElement\"]($2)" js_getTransformToElement ::
+foreign import javascript safe "$1[\"getTransformToElement\"]($2)"
+        js_getTransformToElement ::
         SVGGraphicsElement -> Optional SVGElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getTransformToElement Mozilla SVGGraphicsElement.getTransformToElement documentation> 

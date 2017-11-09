@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"addCue\"]($2)" js_addCue ::
+foreign import javascript safe "$1[\"addCue\"]($2)" js_addCue ::
         TextTrack -> TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.addCue Mozilla TextTrack.addCue documentation> 
@@ -43,8 +43,8 @@ addCue ::
        (MonadIO m, IsTextTrackCue cue) => TextTrack -> cue -> m ()
 addCue self cue = liftIO (js_addCue self (toTextTrackCue cue))
  
-foreign import javascript unsafe "$1[\"removeCue\"]($2)"
-        js_removeCue :: TextTrack -> TextTrackCue -> IO ()
+foreign import javascript safe "$1[\"removeCue\"]($2)" js_removeCue
+        :: TextTrack -> TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeCue Mozilla TextTrack.removeCue documentation> 
 removeCue ::
@@ -60,7 +60,7 @@ addRegion :: (MonadIO m) => TextTrack -> Maybe VTTRegion -> m ()
 addRegion self region
   = liftIO (js_addRegion self (maybeToOptional region))
  
-foreign import javascript unsafe "$1[\"removeRegion\"]($2)"
+foreign import javascript safe "$1[\"removeRegion\"]($2)"
         js_removeRegion :: TextTrack -> Optional VTTRegion -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeRegion Mozilla TextTrack.removeRegion documentation> 

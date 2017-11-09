@@ -40,7 +40,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setFloatValue\"]($2, $3)"
+foreign import javascript safe "$1[\"setFloatValue\"]($2, $3)"
         js_setFloatValue ::
         CSSPrimitiveValue -> Optional Word -> Optional Float -> IO ()
 
@@ -53,7 +53,7 @@ setFloatValue self unitType floatValue
       (js_setFloatValue self (maybeToOptional unitType)
          (maybeToOptional floatValue))
  
-foreign import javascript unsafe "$1[\"getFloatValue\"]($2)"
+foreign import javascript safe "$1[\"getFloatValue\"]($2)"
         js_getFloatValue :: CSSPrimitiveValue -> Optional Word -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getFloatValue Mozilla CSSPrimitiveValue.getFloatValue documentation> 
@@ -68,7 +68,7 @@ getFloatValue_ ::
 getFloatValue_ self unitType
   = liftIO (void (js_getFloatValue self (maybeToOptional unitType)))
  
-foreign import javascript unsafe "$1[\"setStringValue\"]($2, $3)"
+foreign import javascript safe "$1[\"setStringValue\"]($2, $3)"
         js_setStringValue ::
         CSSPrimitiveValue -> Optional Word -> Optional JSString -> IO ()
 
@@ -81,7 +81,7 @@ setStringValue self stringType stringValue
       (js_setStringValue self (maybeToOptional stringType)
          (toOptionalJSString stringValue))
  
-foreign import javascript unsafe "$1[\"getStringValue\"]()"
+foreign import javascript safe "$1[\"getStringValue\"]()"
         js_getStringValue :: CSSPrimitiveValue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getStringValue Mozilla CSSPrimitiveValue.getStringValue documentation> 
@@ -94,7 +94,7 @@ getStringValue self
 getStringValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getStringValue_ self = liftIO (void (js_getStringValue self))
  
-foreign import javascript unsafe "$1[\"getCounterValue\"]()"
+foreign import javascript safe "$1[\"getCounterValue\"]()"
         js_getCounterValue :: CSSPrimitiveValue -> IO Counter
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getCounterValue Mozilla CSSPrimitiveValue.getCounterValue documentation> 
@@ -105,7 +105,7 @@ getCounterValue self = liftIO (js_getCounterValue self)
 getCounterValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getCounterValue_ self = liftIO (void (js_getCounterValue self))
  
-foreign import javascript unsafe "$1[\"getRectValue\"]()"
+foreign import javascript safe "$1[\"getRectValue\"]()"
         js_getRectValue :: CSSPrimitiveValue -> IO Rect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRectValue Mozilla CSSPrimitiveValue.getRectValue documentation> 
@@ -116,7 +116,7 @@ getRectValue self = liftIO (js_getRectValue self)
 getRectValue_ :: (MonadIO m) => CSSPrimitiveValue -> m ()
 getRectValue_ self = liftIO (void (js_getRectValue self))
  
-foreign import javascript unsafe "$1[\"getRGBColorValue\"]()"
+foreign import javascript safe "$1[\"getRGBColorValue\"]()"
         js_getRGBColorValue :: CSSPrimitiveValue -> IO RGBColor
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPrimitiveValue.getRGBColorValue Mozilla CSSPrimitiveValue.getRGBColorValue documentation> 

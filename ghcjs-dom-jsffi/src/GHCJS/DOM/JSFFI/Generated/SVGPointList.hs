@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "$1[\"clear\"]()" js_clear ::
         SVGPointList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.clear Mozilla SVGPointList.clear documentation> 
 clear :: (MonadIO m) => SVGPointList -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript unsafe "$1[\"initialize\"]($2)"
+foreign import javascript safe "$1[\"initialize\"]($2)"
         js_initialize :: SVGPointList -> SVGPoint -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.initialize Mozilla SVGPointList.initialize documentation> 
@@ -48,8 +48,8 @@ initialize self item = liftIO (js_initialize self item)
 initialize_ :: (MonadIO m) => SVGPointList -> SVGPoint -> m ()
 initialize_ self item = liftIO (void (js_initialize self item))
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: SVGPointList -> Word -> IO SVGPoint
+foreign import javascript safe "$1[\"getItem\"]($2)" js_getItem ::
+        SVGPointList -> Word -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.getItem Mozilla SVGPointList.getItem documentation> 
 getItem :: (MonadIO m) => SVGPointList -> Word -> m SVGPoint
@@ -59,7 +59,7 @@ getItem self index = liftIO (js_getItem self index)
 getItem_ :: (MonadIO m) => SVGPointList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem self index))
  
-foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
+foreign import javascript safe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
         SVGPointList -> SVGPoint -> Word -> IO SVGPoint
 
@@ -75,7 +75,7 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO (void (js_insertItemBefore self item index))
  
-foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
+foreign import javascript safe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem :: SVGPointList -> SVGPoint -> Word -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.replaceItem Mozilla SVGPointList.replaceItem documentation> 
@@ -90,7 +90,7 @@ replaceItem_ ::
 replaceItem_ self item index
   = liftIO (void (js_replaceItem self item index))
  
-foreign import javascript unsafe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "$1[\"removeItem\"]($2)"
         js_removeItem :: SVGPointList -> Word -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.removeItem Mozilla SVGPointList.removeItem documentation> 
@@ -101,7 +101,7 @@ removeItem self index = liftIO (js_removeItem self index)
 removeItem_ :: (MonadIO m) => SVGPointList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem self index))
  
-foreign import javascript unsafe "$1[\"appendItem\"]($2)"
+foreign import javascript safe "$1[\"appendItem\"]($2)"
         js_appendItem :: SVGPointList -> SVGPoint -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPointList.appendItem Mozilla SVGPointList.appendItem documentation> 

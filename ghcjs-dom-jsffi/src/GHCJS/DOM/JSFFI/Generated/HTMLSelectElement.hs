@@ -108,7 +108,7 @@ namedItemUnchecked self name
       (fromJust . nullableToMaybe <$>
          (js_namedItem self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"add\"]($2, $3)" js_addBefore
+foreign import javascript safe "$1[\"add\"]($2, $3)" js_addBefore
         ::
         HTMLSelectElement ->
           HTMLOptionElementOrGroup -> Optional HTMLElementOrLong -> IO ()
@@ -126,8 +126,8 @@ addBefore self element before
              \ element' -> js_addBefore self (HTMLOptionElementOrGroup element')
              (maybeToOptional (fmap HTMLElementOrLong before')))
  
-foreign import javascript unsafe "$1[\"remove\"]()" js_removeThis
-        :: HTMLSelectElement -> IO ()
+foreign import javascript safe "$1[\"remove\"]()" js_removeThis ::
+        HTMLSelectElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.remove Mozilla HTMLSelectElement.remove documentation> 
 removeThis :: (MonadIO m) => HTMLSelectElement -> m ()
@@ -297,8 +297,8 @@ getOptions ::
            (MonadIO m) => HTMLSelectElement -> m HTMLOptionsCollection
 getOptions self = liftIO (js_getOptions self)
  
-foreign import javascript unsafe "$1[\"length\"] = $2;"
-        js_setLength :: HTMLSelectElement -> Word -> IO ()
+foreign import javascript safe "$1[\"length\"] = $2;" js_setLength
+        :: HTMLSelectElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement.length Mozilla HTMLSelectElement.length documentation> 
 setLength :: (MonadIO m) => HTMLSelectElement -> Word -> m ()

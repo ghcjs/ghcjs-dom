@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"addColorStop\"]($2, $3)"
+foreign import javascript safe "$1[\"addColorStop\"]($2, $3)"
         js_addColorStop :: CanvasGradient -> Float -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient.addColorStop Mozilla CanvasGradient.addColorStop documentation> 

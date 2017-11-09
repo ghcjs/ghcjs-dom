@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertCell\"]($2)"
+foreign import javascript safe "$1[\"insertCell\"]($2)"
         js_insertCell ::
         HTMLTableRowElement -> Optional Int -> IO HTMLElement
 
@@ -48,7 +48,7 @@ insertCell_ ::
 insertCell_ self index
   = liftIO (void (js_insertCell self (maybeToOptional index)))
  
-foreign import javascript unsafe "$1[\"deleteCell\"]($2)"
+foreign import javascript safe "$1[\"deleteCell\"]($2)"
         js_deleteCell :: HTMLTableRowElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.deleteCell Mozilla HTMLTableRowElement.deleteCell documentation> 

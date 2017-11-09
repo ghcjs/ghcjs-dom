@@ -55,7 +55,7 @@ getCueAsHTML self = liftIO (js_getCueAsHTML self)
 getCueAsHTML_ :: (MonadIO m) => VTTCue -> m ()
 getCueAsHTML_ self = liftIO (void (js_getCueAsHTML self))
  
-foreign import javascript unsafe "$1[\"vertical\"] = $2;"
+foreign import javascript safe "$1[\"vertical\"] = $2;"
         js_setVertical :: VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
@@ -85,7 +85,7 @@ foreign import javascript unsafe "($1[\"snapToLines\"] ? 1 : 0)"
 getSnapToLines :: (MonadIO m) => VTTCue -> m Bool
 getSnapToLines self = liftIO (js_getSnapToLines self)
  
-foreign import javascript unsafe "$1[\"line\"] = $2;" js_setLine ::
+foreign import javascript safe "$1[\"line\"] = $2;" js_setLine ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
@@ -99,7 +99,7 @@ foreign import javascript unsafe "$1[\"line\"]" js_getLine ::
 getLine :: (MonadIO m) => VTTCue -> m Double
 getLine self = liftIO (js_getLine self)
  
-foreign import javascript unsafe "$1[\"position\"] = $2;"
+foreign import javascript safe "$1[\"position\"] = $2;"
         js_setPosition :: VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
@@ -113,7 +113,7 @@ foreign import javascript unsafe "$1[\"position\"]" js_getPosition
 getPosition :: (MonadIO m) => VTTCue -> m Double
 getPosition self = liftIO (js_getPosition self)
  
-foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
+foreign import javascript safe "$1[\"size\"] = $2;" js_setSize ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
@@ -127,8 +127,8 @@ foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
 getSize :: (MonadIO m) => VTTCue -> m Double
 getSize self = liftIO (js_getSize self)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
-        :: VTTCue -> JSString -> IO ()
+foreign import javascript safe "$1[\"align\"] = $2;" js_setAlign ::
+        VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
 setAlign :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()

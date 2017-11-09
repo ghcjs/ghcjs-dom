@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"matrixTransform\"]($2)"
+foreign import javascript safe "$1[\"matrixTransform\"]($2)"
         js_matrixTransform :: SVGPoint -> SVGMatrix -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.matrixTransform Mozilla SVGPoint.matrixTransform documentation> 
@@ -41,7 +41,7 @@ matrixTransform_ :: (MonadIO m) => SVGPoint -> SVGMatrix -> m ()
 matrixTransform_ self matrix
   = liftIO (void (js_matrixTransform self matrix))
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript safe "$1[\"x\"] = $2;" js_setX ::
         SVGPoint -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.x Mozilla SVGPoint.x documentation> 
@@ -55,7 +55,7 @@ foreign import javascript unsafe "$1[\"x\"]" js_getX ::
 getX :: (MonadIO m) => SVGPoint -> m Float
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript safe "$1[\"y\"] = $2;" js_setY ::
         SVGPoint -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPoint.y Mozilla SVGPoint.y documentation> 

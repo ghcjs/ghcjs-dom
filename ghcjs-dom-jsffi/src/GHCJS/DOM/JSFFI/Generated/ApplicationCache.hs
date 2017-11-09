@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"update\"]()" js_update ::
+foreign import javascript safe "$1[\"update\"]()" js_update ::
         ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.update Mozilla ApplicationCache.update documentation> 
 update :: (MonadIO m) => ApplicationCache -> m ()
 update self = liftIO (js_update self)
  
-foreign import javascript unsafe "$1[\"swapCache\"]()" js_swapCache
+foreign import javascript safe "$1[\"swapCache\"]()" js_swapCache
         :: ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.swapCache Mozilla ApplicationCache.swapCache documentation> 

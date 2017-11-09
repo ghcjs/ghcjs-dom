@@ -43,7 +43,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "new window[\"WebKitCSSMatrix\"]($1)" js_newWebKitCSSMatrix ::
         Optional JSString -> IO WebKitCSSMatrix
 
@@ -54,7 +54,7 @@ newWebKitCSSMatrix ::
 newWebKitCSSMatrix cssValue
   = liftIO (js_newWebKitCSSMatrix (toOptionalJSString cssValue))
  
-foreign import javascript unsafe "$1[\"setMatrixValue\"]($2)"
+foreign import javascript safe "$1[\"setMatrixValue\"]($2)"
         js_setMatrixValue :: WebKitCSSMatrix -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.setMatrixValue Mozilla WebKitCSSMatrix.setMatrixValue documentation> 
@@ -81,7 +81,7 @@ multiply_ ::
 multiply_ self secondMatrix
   = liftIO (void (js_multiply self (maybeToOptional secondMatrix)))
  
-foreign import javascript unsafe "$1[\"inverse\"]()" js_inverse ::
+foreign import javascript safe "$1[\"inverse\"]()" js_inverse ::
         WebKitCSSMatrix -> IO WebKitCSSMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.inverse Mozilla WebKitCSSMatrix.inverse documentation> 

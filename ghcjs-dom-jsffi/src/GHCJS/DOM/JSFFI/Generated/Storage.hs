@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"key\"]($2)" js_key ::
+foreign import javascript safe "$1[\"key\"]($2)" js_key ::
         Storage -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
@@ -56,7 +56,7 @@ keyUnchecked ::
 keyUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_key self index))
  
-foreign import javascript unsafe "$1[$2]" js_getItem ::
+foreign import javascript safe "$1[$2]" js_getItem ::
         Storage -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
@@ -89,8 +89,8 @@ getItemUnchecked self key
       (fromJust . fromMaybeJSString <$>
          (js_getItem self (toJSString key)))
  
-foreign import javascript unsafe "$1[\"setItem\"]($2, $3)"
-        js_setItem :: Storage -> JSString -> JSString -> IO ()
+foreign import javascript safe "$1[\"setItem\"]($2, $3)" js_setItem
+        :: Storage -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.setItem Mozilla Storage.setItem documentation> 
 setItem ::
@@ -99,21 +99,21 @@ setItem ::
 setItem self key data'
   = liftIO (js_setItem self (toJSString key) (toJSString data'))
  
-foreign import javascript unsafe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "$1[\"removeItem\"]($2)"
         js_removeItem :: Storage -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.removeItem Mozilla Storage.removeItem documentation> 
 removeItem :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
 removeItem self key = liftIO (js_removeItem self (toJSString key))
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "$1[\"clear\"]()" js_clear ::
         Storage -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.clear Mozilla Storage.clear documentation> 
 clear :: (MonadIO m) => Storage -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript safe "$1[\"length\"]" js_getLength ::
         Storage -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.length Mozilla Storage.length documentation> 

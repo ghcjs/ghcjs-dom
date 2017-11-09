@@ -37,7 +37,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"newValueSpecifiedUnits\"]($2,\n$3)" js_newValueSpecifiedUnits
         :: SVGLength -> Word -> Float -> IO ()
 
@@ -48,7 +48,7 @@ newValueSpecifiedUnits self unitType valueInSpecifiedUnits
   = liftIO
       (js_newValueSpecifiedUnits self unitType valueInSpecifiedUnits)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"convertToSpecifiedUnits\"]($2)" js_convertToSpecifiedUnits ::
         SVGLength -> Word -> IO ()
 
@@ -75,21 +75,21 @@ foreign import javascript unsafe "$1[\"unitType\"]" js_getUnitType
 getUnitType :: (MonadIO m) => SVGLength -> m Word
 getUnitType self = liftIO (js_getUnitType self)
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: SVGLength -> Float -> IO ()
+foreign import javascript safe "$1[\"value\"] = $2;" js_setValue ::
+        SVGLength -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
 setValue :: (MonadIO m) => SVGLength -> Float -> m ()
 setValue self val = liftIO (js_setValue self val)
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript safe "$1[\"value\"]" js_getValue ::
         SVGLength -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.value Mozilla SVGLength.value documentation> 
 getValue :: (MonadIO m) => SVGLength -> m Float
 getValue self = liftIO (js_getValue self)
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"valueInSpecifiedUnits\"] = $2;" js_setValueInSpecifiedUnits
         :: SVGLength -> Float -> IO ()
 
@@ -107,7 +107,7 @@ getValueInSpecifiedUnits :: (MonadIO m) => SVGLength -> m Float
 getValueInSpecifiedUnits self
   = liftIO (js_getValueInSpecifiedUnits self)
  
-foreign import javascript unsafe "$1[\"valueAsString\"] = $2;"
+foreign import javascript safe "$1[\"valueAsString\"] = $2;"
         js_setValueAsString :: SVGLength -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 

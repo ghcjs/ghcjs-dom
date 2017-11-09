@@ -210,7 +210,7 @@ getElementsByClassName_ self classNames
          (js_getElementsByClassName (toDocument self)
             (toJSString classNames)))
  
-foreign import javascript unsafe "$1[\"createElement\"]($2)"
+foreign import javascript safe "$1[\"createElement\"]($2)"
         js_createElement :: Document -> JSString -> IO Element
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement Mozilla Document.createElement documentation> 
@@ -229,7 +229,7 @@ createElement_ self localName
   = liftIO
       (void (js_createElement (toDocument self) (toJSString localName)))
  
-foreign import javascript unsafe "$1[\"createElementNS\"]($2, $3)"
+foreign import javascript safe "$1[\"createElementNS\"]($2, $3)"
         js_createElementNS ::
         Document -> Optional JSString -> JSString -> IO Element
 
@@ -289,7 +289,7 @@ createTextNode_ self data'
   = liftIO
       (void (js_createTextNode (toDocument self) (toJSString data')))
  
-foreign import javascript unsafe "$1[\"createCDATASection\"]($2)"
+foreign import javascript safe "$1[\"createCDATASection\"]($2)"
         js_createCDATASection :: Document -> JSString -> IO CDATASection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createCDATASection Mozilla Document.createCDATASection documentation> 
@@ -326,7 +326,7 @@ createComment_ self data'
   = liftIO
       (void (js_createComment (toDocument self) (toJSString data')))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"createProcessingInstruction\"]($2,\n$3)"
         js_createProcessingInstruction ::
         Document -> JSString -> JSString -> IO ProcessingInstruction
@@ -354,7 +354,7 @@ createProcessingInstruction_ self target data'
             (toJSString target)
             (toJSString data')))
  
-foreign import javascript unsafe "$1[\"importNode\"]($2, $3)"
+foreign import javascript safe "$1[\"importNode\"]($2, $3)"
         js_importNode :: Document -> Node -> Bool -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.importNode Mozilla Document.importNode documentation> 
@@ -372,8 +372,8 @@ importNode_ self node deep
   = liftIO
       (void (js_importNode (toDocument self) (toNode node) deep))
  
-foreign import javascript unsafe "$1[\"adoptNode\"]($2)"
-        js_adoptNode :: Document -> Node -> IO Node
+foreign import javascript safe "$1[\"adoptNode\"]($2)" js_adoptNode
+        :: Document -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
 adoptNode ::
@@ -387,7 +387,7 @@ adoptNode_ ::
 adoptNode_ self node
   = liftIO (void (js_adoptNode (toDocument self) (toNode node)))
  
-foreign import javascript unsafe "$1[\"createAttribute\"]($2)"
+foreign import javascript safe "$1[\"createAttribute\"]($2)"
         js_createAttribute :: Document -> JSString -> IO Attr
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttribute Mozilla Document.createAttribute documentation> 
@@ -407,8 +407,8 @@ createAttribute_ self localName
       (void
          (js_createAttribute (toDocument self) (toJSString localName)))
  
-foreign import javascript unsafe
-        "$1[\"createAttributeNS\"]($2, $3)" js_createAttributeNS ::
+foreign import javascript safe "$1[\"createAttributeNS\"]($2, $3)"
+        js_createAttributeNS ::
         Document -> Optional JSString -> JSString -> IO Attr
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createAttributeNS Mozilla Document.createAttributeNS documentation> 
@@ -434,7 +434,7 @@ createAttributeNS_ self namespaceURI qualifiedName
             (toOptionalJSString namespaceURI)
             (toJSString qualifiedName)))
  
-foreign import javascript unsafe "$1[\"createEvent\"]($2)"
+foreign import javascript safe "$1[\"createEvent\"]($2)"
         js_createEvent :: Document -> JSString -> IO Event
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.createEvent Mozilla Document.createEvent documentation> 
@@ -709,7 +709,7 @@ getSelectionUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getSelection (toDocument self)))
  
-foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
+foreign import javascript safe "$1[\"createExpression\"]($2, $3)"
         js_createExpression ::
         Document ->
           Optional JSString -> Optional XPathNSResolver -> IO XPathExpression
@@ -759,7 +759,7 @@ createNSResolver_ self nodeResolver
          (js_createNSResolver (toDocument self)
             (maybeToOptional (fmap toNode nodeResolver))))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
         Document ->
           Optional JSString ->
@@ -1186,8 +1186,8 @@ getLocationUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getLocation (toDocument self)))
  
-foreign import javascript unsafe "$1[\"domain\"] = $2;"
-        js_setDomain :: Document -> JSString -> IO ()
+foreign import javascript safe "$1[\"domain\"] = $2;" js_setDomain
+        :: Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
 setDomain ::
@@ -1215,8 +1215,8 @@ getReferrer ::
 getReferrer self
   = liftIO (fromJSString <$> (js_getReferrer (toDocument self)))
  
-foreign import javascript unsafe "$1[\"cookie\"] = $2;"
-        js_setCookie :: Document -> JSString -> IO ()
+foreign import javascript safe "$1[\"cookie\"] = $2;" js_setCookie
+        :: Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
 setCookie ::
@@ -1224,7 +1224,7 @@ setCookie ::
 setCookie self val
   = liftIO (js_setCookie (toDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"cookie\"]" js_getCookie ::
+foreign import javascript safe "$1[\"cookie\"]" js_getCookie ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
@@ -1292,7 +1292,7 @@ getDir ::
 getDir self
   = liftIO (fromJSString <$> (js_getDir (toDocument self)))
  
-foreign import javascript unsafe "$1[\"body\"] = $2;" js_setBody ::
+foreign import javascript safe "$1[\"body\"] = $2;" js_setBody ::
         Document -> Optional HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
@@ -1753,7 +1753,7 @@ getXmlEncodingUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getXmlEncoding (toDocument self)))
  
-foreign import javascript unsafe "$1[\"xmlVersion\"] = $2;"
+foreign import javascript safe "$1[\"xmlVersion\"] = $2;"
         js_setXmlVersion :: Document -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.xmlVersion Mozilla Document.xmlVersion documentation> 

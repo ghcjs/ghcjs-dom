@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertRule\"]($2, $3)"
+foreign import javascript safe "$1[\"insertRule\"]($2, $3)"
         js_insertRule :: CSSSupportsRule -> JSString -> Word -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule.insertRule Mozilla CSSSupportsRule.insertRule documentation> 
@@ -44,7 +44,7 @@ insertRule_ ::
 insertRule_ self rule index
   = liftIO (void (js_insertRule self (toJSString rule) index))
  
-foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
+foreign import javascript safe "$1[\"deleteRule\"]($2)"
         js_deleteRule :: CSSSupportsRule -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule.deleteRule Mozilla CSSSupportsRule.deleteRule documentation> 

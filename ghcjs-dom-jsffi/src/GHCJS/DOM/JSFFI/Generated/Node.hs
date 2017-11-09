@@ -104,8 +104,8 @@ foreign import javascript unsafe "$1[\"normalize\"]()" js_normalize
 normalize :: (MonadIO m, IsNode self) => self -> m ()
 normalize self = liftIO (js_normalize (toNode self))
  
-foreign import javascript unsafe "$1[\"cloneNode\"]($2)"
-        js_cloneNode :: Node -> Bool -> IO Node
+foreign import javascript safe "$1[\"cloneNode\"]($2)" js_cloneNode
+        :: Node -> Bool -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
 cloneNode :: (MonadIO m, IsNode self) => self -> Bool -> m Node
@@ -306,7 +306,7 @@ isDefaultNamespace_ self namespaceURI
          (js_isDefaultNamespace (toNode self)
             (toOptionalJSString namespaceURI)))
  
-foreign import javascript unsafe "$1[\"insertBefore\"]($2, $3)"
+foreign import javascript safe "$1[\"insertBefore\"]($2, $3)"
         js_insertBefore :: Node -> Node -> Optional Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
@@ -328,7 +328,7 @@ insertBefore_ self node child
          (js_insertBefore (toNode self) (toNode node)
             (maybeToOptional (fmap toNode child))))
  
-foreign import javascript unsafe "$1[\"appendChild\"]($2)"
+foreign import javascript safe "$1[\"appendChild\"]($2)"
         js_appendChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
@@ -343,7 +343,7 @@ appendChild_ ::
 appendChild_ self node
   = liftIO (void (js_appendChild (toNode self) (toNode node)))
  
-foreign import javascript unsafe "$1[\"replaceChild\"]($2, $3)"
+foreign import javascript safe "$1[\"replaceChild\"]($2, $3)"
         js_replaceChild :: Node -> Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
@@ -362,7 +362,7 @@ replaceChild_ self node child
   = liftIO
       (void (js_replaceChild (toNode self) (toNode node) (toNode child)))
  
-foreign import javascript unsafe "$1[\"removeChild\"]($2)"
+foreign import javascript safe "$1[\"removeChild\"]($2)"
         js_removeChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
@@ -602,7 +602,7 @@ getNextSiblingUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getNextSibling (toNode self)))
  
-foreign import javascript unsafe "$1[\"nodeValue\"] = $2;"
+foreign import javascript safe "$1[\"nodeValue\"] = $2;"
         js_setNodeValue :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
@@ -638,7 +638,7 @@ getNodeValueUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getNodeValue (toNode self)))
  
-foreign import javascript unsafe "$1[\"textContent\"] = $2;"
+foreign import javascript safe "$1[\"textContent\"] = $2;"
         js_setTextContent :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 

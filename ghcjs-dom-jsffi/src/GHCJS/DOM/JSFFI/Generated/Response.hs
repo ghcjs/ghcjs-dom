@@ -44,7 +44,7 @@ error self = liftIO (js_error self)
 error_ :: (MonadIO m) => Response -> m ()
 error_ self = liftIO (void (js_error self))
  
-foreign import javascript unsafe "$1[\"redirect\"]($2, $3)"
+foreign import javascript safe "$1[\"redirect\"]($2, $3)"
         js_redirect :: Response -> JSString -> Optional Word -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 
@@ -64,56 +64,62 @@ redirect_ self url status
       (void (js_redirect self (toJSString url) (maybeToOptional status)))
  
 foreign import javascript interruptible
-        "$1[\"arrayBuffer\"]().then($c);" js_arrayBuffer ::
-        Response -> IO ArrayBuffer
+        "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_arrayBuffer :: Response -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.arrayBuffer Mozilla Response.arrayBuffer documentation> 
 arrayBuffer :: (MonadIO m) => Response -> m ArrayBuffer
-arrayBuffer self = liftIO (js_arrayBuffer self)
+arrayBuffer self
+  = liftIO ((js_arrayBuffer self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.arrayBuffer Mozilla Response.arrayBuffer documentation> 
 arrayBuffer_ :: (MonadIO m) => Response -> m ()
 arrayBuffer_ self = liftIO (void (js_arrayBuffer self))
  
 foreign import javascript interruptible
-        "$1[\"blob\"]().then($c);" js_blob :: Response -> IO Blob
+        "$1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_blob :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.blob Mozilla Response.blob documentation> 
 blob :: (MonadIO m) => Response -> m Blob
-blob self = liftIO (js_blob self)
+blob self = liftIO ((js_blob self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.blob Mozilla Response.blob documentation> 
 blob_ :: (MonadIO m) => Response -> m ()
 blob_ self = liftIO (void (js_blob self))
  
 foreign import javascript interruptible
-        "$1[\"formData\"]().then($c);" js_formData :: Response -> IO Blob
+        "$1[\"formData\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_formData :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.formData Mozilla Response.formData documentation> 
 formData :: (MonadIO m) => Response -> m Blob
-formData self = liftIO (js_formData self)
+formData self = liftIO ((js_formData self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.formData Mozilla Response.formData documentation> 
 formData_ :: (MonadIO m) => Response -> m ()
 formData_ self = liftIO (void (js_formData self))
  
 foreign import javascript interruptible
-        "$1[\"json\"]().then($c);" js_json :: Response -> IO JSVal
+        "$1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_json :: Response -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.json Mozilla Response.json documentation> 
 json :: (MonadIO m) => Response -> m JSVal
-json self = liftIO (js_json self)
+json self = liftIO ((js_json self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.json Mozilla Response.json documentation> 
 json_ :: (MonadIO m) => Response -> m ()
 json_ self = liftIO (void (js_json self))
  
 foreign import javascript interruptible
-        "$1[\"text\"]().then($c);" js_text :: Response -> IO JSString
+        "$1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_text :: Response -> IO (JSVal, JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.text Mozilla Response.text documentation> 
 text :: (MonadIO m, FromJSString result) => Response -> m result
-text self = liftIO (fromJSString <$> (js_text self))
+text self
+  = liftIO (fromJSString <$> ((js_text self) >>= checkPromiseResult))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.text Mozilla Response.text documentation> 
 text_ :: (MonadIO m) => Response -> m ()

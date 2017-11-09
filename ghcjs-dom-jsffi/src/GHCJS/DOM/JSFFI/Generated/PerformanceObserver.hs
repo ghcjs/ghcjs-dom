@@ -37,8 +37,8 @@ newPerformanceObserver ::
 newPerformanceObserver callback
   = liftIO (js_newPerformanceObserver callback)
  
-foreign import javascript unsafe "$1[\"observe\"]($2)" js_observe
-        :: PerformanceObserver -> PerformanceObserverInit -> IO ()
+foreign import javascript safe "$1[\"observe\"]($2)" js_observe ::
+        PerformanceObserver -> PerformanceObserverInit -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver.observe Mozilla PerformanceObserver.observe documentation> 
 observe ::

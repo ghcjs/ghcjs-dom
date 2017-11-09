@@ -69,7 +69,7 @@ foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
 getHref :: (MonadIO m, FromJSString result) => Location -> m result
 getHref self = liftIO (fromJSString <$> (js_getHref self))
  
-foreign import javascript unsafe "$1[\"protocol\"] = $2;"
+foreign import javascript safe "$1[\"protocol\"] = $2;"
         js_setProtocol :: Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 

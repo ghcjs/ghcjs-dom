@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertRule\"]($2, $3)"
+foreign import javascript safe "$1[\"insertRule\"]($2, $3)"
         js_insertRule ::
         CSSMediaRule -> Optional JSString -> Optional Word -> IO Word
 
@@ -50,7 +50,7 @@ insertRule_ self rule index
          (js_insertRule self (toOptionalJSString rule)
             (maybeToOptional index)))
  
-foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
+foreign import javascript safe "$1[\"deleteRule\"]($2)"
         js_deleteRule :: CSSMediaRule -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.deleteRule Mozilla CSSMediaRule.deleteRule documentation> 

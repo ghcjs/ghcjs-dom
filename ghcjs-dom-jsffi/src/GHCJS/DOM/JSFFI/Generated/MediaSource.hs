@@ -42,7 +42,7 @@ foreign import javascript unsafe "new window[\"MediaSource\"]()"
 newMediaSource :: (MonadIO m) => m MediaSource
 newMediaSource = liftIO (js_newMediaSource)
  
-foreign import javascript unsafe "$1[\"addSourceBuffer\"]($2)"
+foreign import javascript safe "$1[\"addSourceBuffer\"]($2)"
         js_addSourceBuffer :: MediaSource -> JSString -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
@@ -58,7 +58,7 @@ addSourceBuffer_ ::
 addSourceBuffer_ self type'
   = liftIO (void (js_addSourceBuffer self (toJSString type')))
  
-foreign import javascript unsafe "$1[\"removeSourceBuffer\"]($2)"
+foreign import javascript safe "$1[\"removeSourceBuffer\"]($2)"
         js_removeSourceBuffer :: MediaSource -> SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.removeSourceBuffer Mozilla MediaSource.removeSourceBuffer documentation> 
@@ -67,7 +67,7 @@ removeSourceBuffer ::
 removeSourceBuffer self buffer
   = liftIO (js_removeSourceBuffer self buffer)
  
-foreign import javascript unsafe "$1[\"endOfStream\"]($2)"
+foreign import javascript safe "$1[\"endOfStream\"]($2)"
         js_endOfStream :: MediaSource -> Optional EndOfStreamError -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.endOfStream Mozilla MediaSource.endOfStream documentation> 
@@ -92,7 +92,7 @@ isTypeSupported_ ::
 isTypeSupported_ self type'
   = liftIO (void (js_isTypeSupported self (toJSString type')))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"setLiveSeekableRange\"]($2,\n$3)" js_setLiveSeekableRange ::
         MediaSource -> Double -> Double -> IO ()
 
@@ -102,7 +102,7 @@ setLiveSeekableRange ::
 setLiveSeekableRange self start end
   = liftIO (js_setLiveSeekableRange self start end)
  
-foreign import javascript unsafe "$1[\"clearLiveSeekableRange\"]()"
+foreign import javascript safe "$1[\"clearLiveSeekableRange\"]()"
         js_clearLiveSeekableRange :: MediaSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.clearLiveSeekableRange Mozilla MediaSource.clearLiveSeekableRange documentation> 
@@ -127,7 +127,7 @@ getActiveSourceBuffers ::
 getActiveSourceBuffers self
   = liftIO (js_getActiveSourceBuffers self)
  
-foreign import javascript unsafe "$1[\"duration\"] = $2;"
+foreign import javascript safe "$1[\"duration\"] = $2;"
         js_setDuration :: MediaSource -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 

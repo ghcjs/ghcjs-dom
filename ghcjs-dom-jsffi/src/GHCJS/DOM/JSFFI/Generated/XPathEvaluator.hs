@@ -35,7 +35,7 @@ foreign import javascript unsafe "new window[\"XPathEvaluator\"]()"
 newXPathEvaluator :: (MonadIO m) => m XPathEvaluator
 newXPathEvaluator = liftIO (js_newXPathEvaluator)
  
-foreign import javascript unsafe "$1[\"createExpression\"]($2, $3)"
+foreign import javascript safe "$1[\"createExpression\"]($2, $3)"
         js_createExpression ::
         XPathEvaluator ->
           Optional JSString -> Optional XPathNSResolver -> IO XPathExpression
@@ -83,7 +83,7 @@ createNSResolver_ self nodeResolver
          (js_createNSResolver self
             (maybeToOptional (fmap toNode nodeResolver))))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
         XPathEvaluator ->
           Optional JSString ->

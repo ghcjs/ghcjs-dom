@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"createSession\"]($2)"
+foreign import javascript safe "$1[\"createSession\"]($2)"
         js_createSession ::
         MediaKeys -> Optional MediaKeySessionType -> IO MediaKeySession
 
@@ -46,8 +46,9 @@ createSession_ self sessionType
       (void (js_createSession self (maybeToOptional sessionType)))
  
 foreign import javascript interruptible
-        "$1[\"setServerCertificate\"]($2).\nthen($c);"
-        js_setServerCertificate :: MediaKeys -> BufferSource -> IO Bool
+        "$1[\"setServerCertificate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_setServerCertificate ::
+        MediaKeys -> BufferSource -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.setServerCertificate Mozilla WebKitMediaKeys.setServerCertificate documentation> 
 setServerCertificate ::
@@ -55,7 +56,8 @@ setServerCertificate ::
                        MediaKeys -> serverCertificate -> m Bool
 setServerCertificate self serverCertificate
   = liftIO
-      (js_setServerCertificate self (toBufferSource serverCertificate))
+      ((js_setServerCertificate self (toBufferSource serverCertificate))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.setServerCertificate Mozilla WebKitMediaKeys.setServerCertificate documentation> 
 setServerCertificate_ ::

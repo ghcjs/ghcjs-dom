@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "$1[\"clear\"]()" js_clear ::
         SVGLengthList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.clear Mozilla SVGLengthList.clear documentation> 
 clear :: (MonadIO m) => SVGLengthList -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript unsafe "$1[\"initialize\"]($2)"
+foreign import javascript safe "$1[\"initialize\"]($2)"
         js_initialize :: SVGLengthList -> SVGLength -> IO SVGLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.initialize Mozilla SVGLengthList.initialize documentation> 
@@ -49,8 +49,8 @@ initialize self item = liftIO (js_initialize self item)
 initialize_ :: (MonadIO m) => SVGLengthList -> SVGLength -> m ()
 initialize_ self item = liftIO (void (js_initialize self item))
  
-foreign import javascript unsafe "$1[\"getItem\"]($2)" js_getItem
-        :: SVGLengthList -> Word -> IO SVGLength
+foreign import javascript safe "$1[\"getItem\"]($2)" js_getItem ::
+        SVGLengthList -> Word -> IO SVGLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.getItem Mozilla SVGLengthList.getItem documentation> 
 getItem :: (MonadIO m) => SVGLengthList -> Word -> m SVGLength
@@ -60,7 +60,7 @@ getItem self index = liftIO (js_getItem self index)
 getItem_ :: (MonadIO m) => SVGLengthList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem self index))
  
-foreign import javascript unsafe "$1[\"insertItemBefore\"]($2, $3)"
+foreign import javascript safe "$1[\"insertItemBefore\"]($2, $3)"
         js_insertItemBefore ::
         SVGLengthList -> SVGLength -> Word -> IO SVGLength
 
@@ -76,7 +76,7 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO (void (js_insertItemBefore self item index))
  
-foreign import javascript unsafe "$1[\"replaceItem\"]($2, $3)"
+foreign import javascript safe "$1[\"replaceItem\"]($2, $3)"
         js_replaceItem ::
         SVGLengthList -> SVGLength -> Word -> IO SVGLength
 
@@ -92,7 +92,7 @@ replaceItem_ ::
 replaceItem_ self item index
   = liftIO (void (js_replaceItem self item index))
  
-foreign import javascript unsafe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "$1[\"removeItem\"]($2)"
         js_removeItem :: SVGLengthList -> Word -> IO SVGLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.removeItem Mozilla SVGLengthList.removeItem documentation> 
@@ -103,7 +103,7 @@ removeItem self index = liftIO (js_removeItem self index)
 removeItem_ :: (MonadIO m) => SVGLengthList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem self index))
  
-foreign import javascript unsafe "$1[\"appendItem\"]($2)"
+foreign import javascript safe "$1[\"appendItem\"]($2)"
         js_appendItem :: SVGLengthList -> SVGLength -> IO SVGLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLengthList.appendItem Mozilla SVGLengthList.appendItem documentation> 

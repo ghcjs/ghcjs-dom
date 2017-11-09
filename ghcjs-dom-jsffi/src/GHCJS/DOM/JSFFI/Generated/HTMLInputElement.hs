@@ -76,14 +76,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"stepUp\"]($2)" js_stepUp ::
+foreign import javascript safe "$1[\"stepUp\"]($2)" js_stepUp ::
         HTMLInputElement -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepUp Mozilla HTMLInputElement.stepUp documentation> 
 stepUp :: (MonadIO m) => HTMLInputElement -> Maybe Int -> m ()
 stepUp self n = liftIO (js_stepUp self (maybeToOptional n))
  
-foreign import javascript unsafe "$1[\"stepDown\"]($2)" js_stepDown
+foreign import javascript safe "$1[\"stepDown\"]($2)" js_stepDown
         :: HTMLInputElement -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepDown Mozilla HTMLInputElement.stepDown documentation> 
@@ -130,7 +130,7 @@ foreign import javascript unsafe "$1[\"select\"]()" js_select ::
 select :: (MonadIO m) => HTMLInputElement -> m ()
 select self = liftIO (js_select self)
  
-foreign import javascript unsafe "$1[\"setRangeText\"]($2)"
+foreign import javascript safe "$1[\"setRangeText\"]($2)"
         js_setRangeText :: HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.setRangeText Mozilla HTMLInputElement.setRangeText documentation> 
@@ -140,7 +140,7 @@ setRangeText ::
 setRangeText self replacement
   = liftIO (js_setRangeText self (toJSString replacement))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"setRangeText\"]($2, $3, $4,\n$5)" js_setRangeText4 ::
         HTMLInputElement ->
           JSString -> Word -> Word -> Optional JSString -> IO ()
@@ -155,7 +155,7 @@ setRangeText4 self replacement start end selectionMode
       (js_setRangeText4 self (toJSString replacement) start end
          (toOptionalJSString selectionMode))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"setSelectionRange\"]($2, $3,\n$4)" js_setSelectionRange ::
         HTMLInputElement -> Int -> Int -> Optional JSString -> IO ()
 
@@ -464,7 +464,7 @@ getMax ::
        (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getMax self = liftIO (fromJSString <$> (js_getMax self))
  
-foreign import javascript unsafe "$1[\"minLength\"] = $2;"
+foreign import javascript safe "$1[\"minLength\"] = $2;"
         js_setMinLength :: HTMLInputElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.minLength Mozilla HTMLInputElement.minLength documentation> 
@@ -478,7 +478,7 @@ foreign import javascript unsafe "$1[\"minLength\"]"
 getMinLength :: (MonadIO m) => HTMLInputElement -> m Int
 getMinLength self = liftIO (js_getMinLength self)
  
-foreign import javascript unsafe "$1[\"maxLength\"] = $2;"
+foreign import javascript safe "$1[\"maxLength\"] = $2;"
         js_setMaxLength :: HTMLInputElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.maxLength Mozilla HTMLInputElement.maxLength documentation> 
@@ -600,7 +600,7 @@ foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
 getRequired :: (MonadIO m) => HTMLInputElement -> m Bool
 getRequired self = liftIO (js_getRequired self)
  
-foreign import javascript unsafe "$1[\"size\"] = $2;" js_setSize ::
+foreign import javascript safe "$1[\"size\"] = $2;" js_setSize ::
         HTMLInputElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.size Mozilla HTMLInputElement.size documentation> 
@@ -680,8 +680,8 @@ getDefaultValue ::
 getDefaultValue self
   = liftIO (fromJSString <$> (js_getDefaultValue self))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
-        :: HTMLInputElement -> JSString -> IO ()
+foreign import javascript safe "$1[\"value\"] = $2;" js_setValue ::
+        HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
 setValue ::
@@ -696,7 +696,7 @@ getValue ::
          (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "$1[\"valueAsDate\"] = $2;"
+foreign import javascript safe "$1[\"valueAsDate\"] = $2;"
         js_setValueAsDate :: HTMLInputElement -> Optional Date -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsDate Mozilla HTMLInputElement.valueAsDate documentation> 
@@ -728,7 +728,7 @@ getValueAsDateUnchecked ::
 getValueAsDateUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getValueAsDate self))
  
-foreign import javascript unsafe "$1[\"valueAsNumber\"] = $2;"
+foreign import javascript safe "$1[\"valueAsNumber\"] = $2;"
         js_setValueAsNumber :: HTMLInputElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.valueAsNumber Mozilla HTMLInputElement.valueAsNumber documentation> 
@@ -787,35 +787,35 @@ foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
 getLabels :: (MonadIO m) => HTMLInputElement -> m NodeList
 getLabels self = liftIO (js_getLabels self)
  
-foreign import javascript unsafe "$1[\"selectionStart\"] = $2;"
+foreign import javascript safe "$1[\"selectionStart\"] = $2;"
         js_setSelectionStart :: HTMLInputElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionStart Mozilla HTMLInputElement.selectionStart documentation> 
 setSelectionStart :: (MonadIO m) => HTMLInputElement -> Int -> m ()
 setSelectionStart self val = liftIO (js_setSelectionStart self val)
  
-foreign import javascript unsafe "$1[\"selectionStart\"]"
+foreign import javascript safe "$1[\"selectionStart\"]"
         js_getSelectionStart :: HTMLInputElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionStart Mozilla HTMLInputElement.selectionStart documentation> 
 getSelectionStart :: (MonadIO m) => HTMLInputElement -> m Int
 getSelectionStart self = liftIO (js_getSelectionStart self)
  
-foreign import javascript unsafe "$1[\"selectionEnd\"] = $2;"
+foreign import javascript safe "$1[\"selectionEnd\"] = $2;"
         js_setSelectionEnd :: HTMLInputElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionEnd Mozilla HTMLInputElement.selectionEnd documentation> 
 setSelectionEnd :: (MonadIO m) => HTMLInputElement -> Int -> m ()
 setSelectionEnd self val = liftIO (js_setSelectionEnd self val)
  
-foreign import javascript unsafe "$1[\"selectionEnd\"]"
+foreign import javascript safe "$1[\"selectionEnd\"]"
         js_getSelectionEnd :: HTMLInputElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionEnd Mozilla HTMLInputElement.selectionEnd documentation> 
 getSelectionEnd :: (MonadIO m) => HTMLInputElement -> m Int
 getSelectionEnd self = liftIO (js_getSelectionEnd self)
  
-foreign import javascript unsafe "$1[\"selectionDirection\"] = $2;"
+foreign import javascript safe "$1[\"selectionDirection\"] = $2;"
         js_setSelectionDirection :: HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionDirection Mozilla HTMLInputElement.selectionDirection documentation> 
@@ -824,7 +824,7 @@ setSelectionDirection ::
 setSelectionDirection self val
   = liftIO (js_setSelectionDirection self (toJSString val))
  
-foreign import javascript unsafe "$1[\"selectionDirection\"]"
+foreign import javascript safe "$1[\"selectionDirection\"]"
         js_getSelectionDirection :: HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.selectionDirection Mozilla HTMLInputElement.selectionDirection documentation> 

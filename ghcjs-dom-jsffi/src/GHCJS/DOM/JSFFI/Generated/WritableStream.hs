@@ -36,8 +36,8 @@ newWritableStream :: (MonadIO m) => m WritableStream
 newWritableStream = liftIO (js_newWritableStream)
  
 foreign import javascript interruptible
-        "$1[\"abort\"]($2).then($c);" js_abort ::
-        WritableStream -> Optional JSVal -> IO JSVal
+        "$1[\"abort\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_abort :: WritableStream -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.abort Mozilla WritableStream.abort documentation> 
 abort ::
@@ -45,8 +45,9 @@ abort ::
         WritableStream -> Maybe reason -> m JSVal
 abort self reason
   = liftIO
-      (mapM toJSVal reason >>=
-         \ reason' -> js_abort self (maybeToOptional reason'))
+      ((mapM toJSVal reason >>=
+          \ reason' -> js_abort self (maybeToOptional reason'))
+         >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.abort Mozilla WritableStream.abort documentation> 
 abort_ ::
@@ -59,25 +60,28 @@ abort_ self reason
             \ reason' -> js_abort self (maybeToOptional reason')))
  
 foreign import javascript interruptible
-        "$1[\"close\"]().then($c);" js_close :: WritableStream -> IO JSVal
+        "$1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_close :: WritableStream -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.close Mozilla WritableStream.close documentation> 
 close :: (MonadIO m) => WritableStream -> m JSVal
-close self = liftIO (js_close self)
+close self = liftIO ((js_close self) >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.close Mozilla WritableStream.close documentation> 
 close_ :: (MonadIO m) => WritableStream -> m ()
 close_ self = liftIO (void (js_close self))
  
 foreign import javascript interruptible
-        "$1[\"write\"]($2).then($c);" js_write ::
-        WritableStream -> JSVal -> IO JSVal
+        "$1[\"write\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_write :: WritableStream -> JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.write Mozilla WritableStream.write documentation> 
 write ::
       (MonadIO m, ToJSVal chunk) => WritableStream -> chunk -> m JSVal
 write self chunk
-  = liftIO (toJSVal chunk >>= \ chunk' -> js_write self chunk')
+  = liftIO
+      ((toJSVal chunk >>= \ chunk' -> js_write self chunk') >>=
+         checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.write Mozilla WritableStream.write documentation> 
 write_ ::
@@ -87,19 +91,21 @@ write_ self chunk
       (void (toJSVal chunk >>= \ chunk' -> js_write self chunk'))
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then($c);" js_getClosed ::
-        WritableStream -> IO Bool
+        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getClosed :: WritableStream -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.closed Mozilla WritableStream.closed documentation> 
 getClosed :: (MonadIO m) => WritableStream -> m Bool
-getClosed self = liftIO (js_getClosed self)
+getClosed self
+  = liftIO ((js_getClosed self) >>= checkPromiseResult)
  
 foreign import javascript interruptible
-        "$1[\"ready\"].then($c);" js_getReady :: WritableStream -> IO Bool
+        "$1[\"ready\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_getReady :: WritableStream -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.ready Mozilla WritableStream.ready documentation> 
 getReady :: (MonadIO m) => WritableStream -> m Bool
-getReady self = liftIO (js_getReady self)
+getReady self = liftIO ((js_getReady self) >>= checkPromiseResult)
  
 foreign import javascript unsafe "$1[\"state\"]" js_getState ::
         WritableStream -> IO JSString

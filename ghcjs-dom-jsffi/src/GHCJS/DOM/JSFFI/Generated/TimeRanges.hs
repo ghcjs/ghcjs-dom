@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"start\"]($2)" js_start ::
+foreign import javascript safe "$1[\"start\"]($2)" js_start ::
         TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.start Mozilla TimeRanges.start documentation> 
@@ -37,7 +37,7 @@ start self index = liftIO (js_start self index)
 start_ :: (MonadIO m) => TimeRanges -> Word -> m ()
 start_ self index = liftIO (void (js_start self index))
  
-foreign import javascript unsafe "$1[\"end\"]($2)" js_end ::
+foreign import javascript safe "$1[\"end\"]($2)" js_end ::
         TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.end Mozilla TimeRanges.end documentation> 

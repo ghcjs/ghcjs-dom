@@ -29,9 +29,8 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertRow\"]($2)"
-        js_insertRow ::
-        HTMLTableSectionElement -> Optional Int -> IO HTMLElement
+foreign import javascript safe "$1[\"insertRow\"]($2)" js_insertRow
+        :: HTMLTableSectionElement -> Optional Int -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
 insertRow ::
@@ -46,8 +45,8 @@ insertRow_ ::
 insertRow_ self index
   = liftIO (void (js_insertRow self (maybeToOptional index)))
  
-foreign import javascript unsafe "$1[\"deleteRow\"]($2)"
-        js_deleteRow :: HTMLTableSectionElement -> Int -> IO ()
+foreign import javascript safe "$1[\"deleteRow\"]($2)" js_deleteRow
+        :: HTMLTableSectionElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.deleteRow Mozilla HTMLTableSectionElement.deleteRow documentation> 
 deleteRow :: (MonadIO m) => HTMLTableSectionElement -> Int -> m ()

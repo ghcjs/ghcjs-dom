@@ -213,7 +213,7 @@ getAttributeNSUnchecked self namespaceURI localName
             (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript unsafe "$1[\"setAttribute\"]($2, $3)"
+foreign import javascript safe "$1[\"setAttribute\"]($2, $3)"
         js_setAttribute :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttribute Mozilla Element.setAttribute documentation> 
@@ -226,8 +226,8 @@ setAttribute self qualifiedName value
       (js_setAttribute (toElement self) (toJSString qualifiedName)
          (toJSString value))
  
-foreign import javascript unsafe
-        "$1[\"setAttributeNS\"]($2, $3, $4)" js_setAttributeNS ::
+foreign import javascript safe "$1[\"setAttributeNS\"]($2, $3, $4)"
+        js_setAttributeNS ::
         Element -> Optional JSString -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNS Mozilla Element.setAttributeNS documentation> 
@@ -410,7 +410,7 @@ getAttributeNodeNSUnchecked self namespaceURI localName
             (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript unsafe "$1[\"setAttributeNode\"]($2)"
+foreign import javascript safe "$1[\"setAttributeNode\"]($2)"
         js_setAttributeNode :: Element -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNode Mozilla Element.setAttributeNode documentation> 
@@ -442,7 +442,7 @@ setAttributeNodeUnchecked self attr
       (fromJust . nullableToMaybe <$>
          (js_setAttributeNode (toElement self) attr))
  
-foreign import javascript unsafe "$1[\"setAttributeNodeNS\"]($2)"
+foreign import javascript safe "$1[\"setAttributeNodeNS\"]($2)"
         js_setAttributeNodeNS :: Element -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNodeNS Mozilla Element.setAttributeNodeNS documentation> 
@@ -475,7 +475,7 @@ setAttributeNodeNSUnchecked self attr
       (fromJust . nullableToMaybe <$>
          (js_setAttributeNodeNS (toElement self) attr))
  
-foreign import javascript unsafe "$1[\"removeAttributeNode\"]($2)"
+foreign import javascript safe "$1[\"removeAttributeNode\"]($2)"
         js_removeAttributeNode :: Element -> Attr -> IO Attr
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNode Mozilla Element.removeAttributeNode documentation> 
@@ -490,7 +490,7 @@ removeAttributeNode_ ::
 removeAttributeNode_ self attr
   = liftIO (void (js_removeAttributeNode (toElement self) attr))
  
-foreign import javascript unsafe "$1[\"attachShadow\"]($2)"
+foreign import javascript safe "$1[\"attachShadow\"]($2)"
         js_attachShadow :: Element -> ShadowRootInit -> IO ShadowRoot
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attachShadow Mozilla Element.attachShadow documentation> 
@@ -506,8 +506,8 @@ attachShadow_ ::
 attachShadow_ self init
   = liftIO (void (js_attachShadow (toElement self) init))
  
-foreign import javascript unsafe "$1[\"closest\"]($2)" js_closest
-        :: Element -> JSString -> IO (Nullable Element)
+foreign import javascript safe "$1[\"closest\"]($2)" js_closest ::
+        Element -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.closest Mozilla Element.closest documentation> 
 closest ::
@@ -545,7 +545,7 @@ closestUnchecked self selectors
       (fromJust . nullableToMaybe <$>
          (js_closest (toElement self) (toJSString selectors)))
  
-foreign import javascript unsafe "($1[\"matches\"]($2) ? 1 : 0)"
+foreign import javascript safe "($1[\"matches\"]($2) ? 1 : 0)"
         js_matches :: Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.matches Mozilla Element.matches documentation> 
@@ -563,7 +563,7 @@ matches_ self selectors
   = liftIO
       (void (js_matches (toElement self) (toJSString selectors)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
         js_webkitMatchesSelector :: Element -> JSString -> IO Bool
 
@@ -654,7 +654,7 @@ getElementsByClassName_ self name
       (void
          (js_getElementsByClassName (toElement self) (toJSString name)))
  
-foreign import javascript unsafe
+foreign import javascript safe
         "$1[\"insertAdjacentElement\"]($2,\n$3)" js_insertAdjacentElement
         :: Element -> JSString -> Element -> IO (Nullable Element)
 
@@ -703,9 +703,8 @@ insertAdjacentElementUnchecked self where' element
          (js_insertAdjacentElement (toElement self) (toJSString where')
             (toElement element)))
  
-foreign import javascript unsafe
-        "$1[\"insertAdjacentText\"]($2, $3)" js_insertAdjacentText ::
-        Element -> JSString -> JSString -> IO ()
+foreign import javascript safe "$1[\"insertAdjacentText\"]($2, $3)"
+        js_insertAdjacentText :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.insertAdjacentText Mozilla Element.insertAdjacentText documentation> 
 insertAdjacentText ::
@@ -810,9 +809,8 @@ scrollBy ::
          (MonadIO m, IsElement self) => self -> Double -> Double -> m ()
 scrollBy self x y = liftIO (js_scrollBy (toElement self) x y)
  
-foreign import javascript unsafe
-        "$1[\"insertAdjacentHTML\"]($2, $3)" js_insertAdjacentHTML ::
-        Element -> JSString -> JSString -> IO ()
+foreign import javascript safe "$1[\"insertAdjacentHTML\"]($2, $3)"
+        js_insertAdjacentHTML :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.insertAdjacentHTML Mozilla Element.insertAdjacentHTML documentation> 
 insertAdjacentHTML ::
@@ -1126,7 +1124,7 @@ foreign import javascript unsafe "$1[\"clientHeight\"]"
 getClientHeight :: (MonadIO m, IsElement self) => self -> m Double
 getClientHeight self = liftIO (js_getClientHeight (toElement self))
  
-foreign import javascript unsafe "$1[\"innerHTML\"] = $2;"
+foreign import javascript safe "$1[\"innerHTML\"] = $2;"
         js_setInnerHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
@@ -1145,7 +1143,7 @@ getInnerHTML ::
 getInnerHTML self
   = liftIO (fromJSString <$> (js_getInnerHTML (toElement self)))
  
-foreign import javascript unsafe "$1[\"outerHTML\"] = $2;"
+foreign import javascript safe "$1[\"outerHTML\"] = $2;"
         js_setOuterHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 

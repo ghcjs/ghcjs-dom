@@ -82,9 +82,8 @@ getContextUnchecked self contextId arguments
             \ arguments' ->
               js_getContext self (toJSString contextId) arguments'))
  
-foreign import javascript unsafe "$1[\"toDataURL\"]($2)"
-        js_toDataURL ::
-        HTMLCanvasElement -> Optional JSString -> IO JSString
+foreign import javascript safe "$1[\"toDataURL\"]($2)" js_toDataURL
+        :: HTMLCanvasElement -> Optional JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
 toDataURL ::
@@ -101,7 +100,7 @@ toDataURL_ ::
 toDataURL_ self type'
   = liftIO (void (js_toDataURL self (toOptionalJSString type')))
  
-foreign import javascript unsafe "$1[\"toBlob\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"toBlob\"]($2, $3, $4)"
         js_toBlob' ::
         HTMLCanvasElement ->
           BlobCallback -> Optional JSString -> Optional JSVal -> IO ()
@@ -118,7 +117,7 @@ toBlob' self callback type' quality
            js_toBlob' self callback (toOptionalJSString type')
              (maybeToOptional quality'))
  
-foreign import javascript unsafe "$1[\"captureStream\"]($2)"
+foreign import javascript safe "$1[\"captureStream\"]($2)"
         js_captureStream ::
         HTMLCanvasElement -> Optional Double -> IO MediaStream
 

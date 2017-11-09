@@ -241,7 +241,7 @@ foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
 getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"innerText\"] = $2;"
+foreign import javascript safe "$1[\"innerText\"] = $2;"
         js_setInnerText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
@@ -261,7 +261,7 @@ getInnerText ::
 getInnerText self
   = liftIO (fromJSString <$> (js_getInnerText (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"contentEditable\"] = $2;"
+foreign import javascript safe "$1[\"contentEditable\"] = $2;"
         js_setContentEditable :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
@@ -352,7 +352,7 @@ getOffsetHeight ::
 getOffsetHeight self
   = liftIO (js_getOffsetHeight (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"outerText\"] = $2;"
+foreign import javascript safe "$1[\"outerText\"] = $2;"
         js_setOuterText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 

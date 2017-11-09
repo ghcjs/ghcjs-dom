@@ -100,7 +100,7 @@ getPropertyCSSValueUnchecked self propertyName
       (fromJust . nullableToMaybe <$>
          (js_getPropertyCSSValue self (toJSString propertyName)))
  
-foreign import javascript unsafe "$1[\"removeProperty\"]($2)"
+foreign import javascript safe "$1[\"removeProperty\"]($2)"
         js_removeProperty :: CSSStyleDeclaration -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.removeProperty Mozilla CSSStyleDeclaration.removeProperty documentation> 
@@ -160,7 +160,7 @@ getPropertyPriorityUnchecked self propertyName
       (fromJust . fromMaybeJSString <$>
          (js_getPropertyPriority self (toJSString propertyName)))
  
-foreign import javascript unsafe "$1[\"setProperty\"]($2, $3, $4)"
+foreign import javascript safe "$1[\"setProperty\"]($2, $3, $4)"
         js_setProperty ::
         CSSStyleDeclaration ->
           JSString -> JSString -> Optional JSString -> IO ()
@@ -252,7 +252,7 @@ isPropertyImplicit_ self propertyName
       (void
          (js_isPropertyImplicit self (toOptionalJSString propertyName)))
  
-foreign import javascript unsafe "$1[\"cssText\"] = $2;"
+foreign import javascript safe "$1[\"cssText\"] = $2;"
         js_setCssText :: CSSStyleDeclaration -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 

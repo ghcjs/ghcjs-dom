@@ -38,8 +38,8 @@ newMutationObserver ::
 newMutationObserver callback
   = liftIO (js_newMutationObserver (toMutationCallback callback))
  
-foreign import javascript unsafe "$1[\"observe\"]($2, $3)"
-        js_observe ::
+foreign import javascript safe "$1[\"observe\"]($2, $3)" js_observe
+        ::
         MutationObserver -> Node -> Optional MutationObserverInit -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.observe Mozilla MutationObserver.observe documentation> 
