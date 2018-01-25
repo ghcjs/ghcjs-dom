@@ -803,6 +803,7 @@ module GHCJS.DOM.Types (
   , SpeechRecognitionEvent(SpeechRecognitionEvent), unSpeechRecognitionEvent, noSpeechRecognitionEvent, gTypeSpeechRecognitionEvent
   , SpeechRecognitionResult(SpeechRecognitionResult), unSpeechRecognitionResult, noSpeechRecognitionResult, gTypeSpeechRecognitionResult
   , SpeechRecognitionResultList(SpeechRecognitionResultList), unSpeechRecognitionResultList, noSpeechRecognitionResultList, gTypeSpeechRecognitionResultList
+  , SpeechRecognitionError(SpeechRecognitionError), unSpeechRecognitionError, noSpeechRecognitionError, gTypeSpeechRecognitionError
   , StaticRange(StaticRange), unStaticRange, noStaticRange, gTypeStaticRange
   , Storage(Storage), unStorage, noStorage, gTypeStorage
   , StorageEvent(StorageEvent), unStorageEvent, noStorageEvent, gTypeStorageEvent
@@ -30736,6 +30737,40 @@ noSpeechRecognitionResultList = Nothing
 {-# INLINE noSpeechRecognitionResultList #-}
 
 foreign import javascript unsafe "window[\"webkitSpeechRecognitionResultList\"]" gTypeSpeechRecognitionResultList :: GType
+
+-- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionError".
+--
+-- <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionError Mozilla SpeechRecognitionError documentation>
+newtype SpeechRecognitionError = SpeechRecognitionError { unSpeechRecognitionError :: JSVal }
+
+instance Eq (SpeechRecognitionError) where
+  (SpeechRecognitionError a) == (SpeechRecognitionError b) = js_eq a b
+
+instance PToJSVal SpeechRecognitionError where
+  pToJSVal = unSpeechRecognitionError
+  {-# INLINE pToJSVal #-}
+
+instance PFromJSVal SpeechRecognitionError where
+  pFromJSVal = SpeechRecognitionError
+  {-# INLINE pFromJSVal #-}
+
+instance ToJSVal SpeechRecognitionError where
+  toJSVal = return . unSpeechRecognitionError
+  {-# INLINE toJSVal #-}
+
+instance FromJSVal SpeechRecognitionError where
+  fromJSVal = return . fmap SpeechRecognitionError . maybeJSNullOrUndefined
+  {-# INLINE fromJSVal #-}
+
+instance IsGObject SpeechRecognitionError where
+  typeGType _ = gTypeSpeechRecognitionError
+  {-# INLINE typeGType #-}
+
+noSpeechRecognitionError :: Maybe SpeechRecognitionError
+noSpeechRecognitionError = Nothing
+{-# INLINE noSpeechRecognitionError #-}
+
+foreign import javascript unsafe "window[\"webkitSpeechRecognitionError\"]" gTypeSpeechRecognitionError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --

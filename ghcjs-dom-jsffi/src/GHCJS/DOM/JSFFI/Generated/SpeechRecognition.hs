@@ -148,19 +148,19 @@ setContinuous self val
   = liftIO (js_speechRecognitionSetContinuous self val)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onaudiostart Mozilla SpeechRecognition.onaudiostart documentation>
-audiostart :: EventName SpeechRecognition SpeechRecognitionEvent
+audiostart :: EventName SpeechRecognition ()
 audiostart = unsafeEventName (toJSString "audiostart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onaudioend Mozilla SpeechRecognition.onaudioend documentation>
-audioend :: EventName SpeechRecognition SpeechRecognitionEvent
+audioend :: EventName SpeechRecognition ()
 audioend = unsafeEventName (toJSString "audioend")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onend Mozilla SpeechRecognition.onend documentation>
-end :: EventName SpeechRecognition SpeechRecognitionEvent
+end :: EventName SpeechRecognition ()
 end = unsafeEventName (toJSString "end")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onerror Mozilla SpeechRecognition.onerror documentation>
-error :: EventName SpeechRecognition SpeechRecognitionEvent
+error :: EventName SpeechRecognition SpeechRecognitionError
 error = unsafeEventName (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onnomatch Mozilla SpeechRecognition.onnomatch documentation>
@@ -172,23 +172,23 @@ result :: EventName SpeechRecognition SpeechRecognitionEvent
 result = unsafeEventName (toJSString "result")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onsoundstart Mozilla SpeechRecognition.onsoundstart documentation>
-soundstart :: EventName SpeechRecognition SpeechRecognitionEvent
+soundstart :: EventName SpeechRecognition ()
 soundstart = unsafeEventName (toJSString "soundstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onsoundend Mozilla SpeechRecognition.onsoundend documentation>
-soundend :: EventName SpeechRecognition SpeechRecognitionEvent
+soundend :: EventName SpeechRecognition ()
 soundend = unsafeEventName (toJSString "soundend")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onspeechstart Mozilla SpeechRecognition.onspeechstart documentation>
-speechstart :: EventName SpeechRecognition SpeechRecognitionEvent
+speechstart :: EventName SpeechRecognition ()
 speechstart = unsafeEventName (toJSString "speechstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onspeechend Mozilla SpeechRecognition.onspeechend documentation>
-speechend :: EventName SpeechRecognition SpeechRecognitionEvent
+speechend :: EventName SpeechRecognition ()
 speechend = unsafeEventName (toJSString "speechend")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition.onstart Mozilla SpeechRecognition.onstart documentation>
-start :: EventName SpeechRecognition SpeechRecognitionEvent
+start :: EventName SpeechRecognition ()
 start = unsafeEventName (toJSString "start")
 
 foreign import javascript unsafe

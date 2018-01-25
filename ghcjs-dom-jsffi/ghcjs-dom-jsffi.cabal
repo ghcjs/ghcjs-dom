@@ -527,6 +527,7 @@ library
           GHCJS.DOM.JSFFI.Generated.SourceBufferList
           GHCJS.DOM.JSFFI.Generated.SpeechGrammar
           GHCJS.DOM.JSFFI.Generated.SpeechRecognition
+          GHCJS.DOM.JSFFI.Generated.SpeechRecognitionError
           GHCJS.DOM.JSFFI.Generated.SpeechRecognitionEvent
           GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
           GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent
@@ -1116,6 +1117,7 @@ library
           , GHCJS.DOM.JSFFI.Generated.SourceBufferList as GHCJS.DOM.SourceBufferList
           , GHCJS.DOM.JSFFI.Generated.SpeechGrammar as GHCJS.DOM.SpeechGrammar
           , GHCJS.DOM.JSFFI.Generated.SpeechRecognition as GHCJS.DOM.SpeechRecognition
+          , GHCJS.DOM.JSFFI.Generated.SpeechRecognitionError as GHCJS.DOM.SpeechRecognitionError
           , GHCJS.DOM.JSFFI.Generated.SpeechRecognitionEvent as GHCJS.DOM.SpeechRecognitionEvent
           , GHCJS.DOM.JSFFI.Generated.SpeechSynthesis as GHCJS.DOM.SpeechSynthesis
           , GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent as GHCJS.DOM.SpeechSynthesisEvent
