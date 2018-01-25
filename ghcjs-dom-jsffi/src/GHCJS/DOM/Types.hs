@@ -30762,6 +30762,7 @@ instance FromJSVal SpeechRecognitionError where
   fromJSVal = return . fmap SpeechRecognitionError . maybeJSNullOrUndefined
   {-# INLINE fromJSVal #-}
 
+instance IsEvent SpeechRecognitionError
 instance IsGObject SpeechRecognitionError where
   typeGType _ = gTypeSpeechRecognitionError
   {-# INLINE typeGType #-}
