@@ -13,7 +13,7 @@ package (scroll down to find the modules with doumentation).
 This documentation should be accurate for `ghcjs-dom`
 appart from the module names:
 
-* Add `ghcjs-dom` to your `build-depends:` (not `jsaddle-dom).
+* Add `ghcjs-dom` to your `build-depends:` (not `jsaddle-dom`).
 * Import `GHCJS.DOM.*` instead of `JSDOM.Custom.*`, `JSDOM.Generated.*` or `JSDOM.*`.
 
 ## Debug
