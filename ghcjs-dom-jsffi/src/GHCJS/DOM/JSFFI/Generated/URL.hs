@@ -73,43 +73,43 @@ toJSON self = liftIO (fromJSString <$> (js_toJSON self))
 toJSON_ :: (MonadIO m) => URL -> m ()
 toJSON_ self = liftIO (void (js_toJSON self))
  
-foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        js_createObjectURL :: URL -> Blob -> IO JSString
+foreign import javascript unsafe
+        "window[\"URL\"][\"createObjectURL\"]($1)" js_createObjectURL ::
+        Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURL ::
-                (MonadIO m, IsBlob blob, FromJSString result) =>
-                  URL -> blob -> m result
-createObjectURL self blob
-  = liftIO (fromJSString <$> (js_createObjectURL self (toBlob blob)))
+                (MonadIO m, IsBlob blob, FromJSString result) => blob -> m result
+createObjectURL blob
+  = liftIO (fromJSString <$> (js_createObjectURL (toBlob blob)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
-createObjectURL_ :: (MonadIO m, IsBlob blob) => URL -> blob -> m ()
-createObjectURL_ self blob
-  = liftIO (void (js_createObjectURL self (toBlob blob)))
+createObjectURL_ :: (MonadIO m, IsBlob blob) => blob -> m ()
+createObjectURL_ blob
+  = liftIO (void (js_createObjectURL (toBlob blob)))
  
-foreign import javascript unsafe "$1[\"revokeObjectURL\"]($2)"
-        js_revokeObjectURL :: URL -> JSString -> IO ()
+foreign import javascript unsafe
+        "window[\"URL\"][\"revokeObjectURL\"]($1)" js_revokeObjectURL ::
+        JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.revokeObjectURL Mozilla URL.revokeObjectURL documentation> 
-revokeObjectURL ::
-                (MonadIO m, ToJSString url) => URL -> url -> m ()
-revokeObjectURL self url
-  = liftIO (js_revokeObjectURL self (toJSString url))
+revokeObjectURL :: (MonadIO m, ToJSString url) => url -> m ()
+revokeObjectURL url = liftIO (js_revokeObjectURL (toJSString url))
  
-foreign import javascript unsafe "$1[\"createObjectURL\"]($2)"
-        js_createObjectURLSource :: URL -> MediaSource -> IO JSString
+foreign import javascript unsafe
+        "window[\"URL\"][\"createObjectURL\"]($1)" js_createObjectURLSource
+        :: MediaSource -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
 createObjectURLSource ::
-                      (MonadIO m, FromJSString result) => URL -> MediaSource -> m result
-createObjectURLSource self source
-  = liftIO (fromJSString <$> (js_createObjectURLSource self source))
+                      (MonadIO m, FromJSString result) => MediaSource -> m result
+createObjectURLSource source
+  = liftIO (fromJSString <$> (js_createObjectURLSource source))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
-createObjectURLSource_ :: (MonadIO m) => URL -> MediaSource -> m ()
-createObjectURLSource_ self source
-  = liftIO (void (js_createObjectURLSource self source))
+createObjectURLSource_ :: (MonadIO m) => MediaSource -> m ()
+createObjectURLSource_ source
+  = liftIO (void (js_createObjectURLSource source))
  
 foreign import javascript safe "$1[\"href\"] = $2;" js_setHref ::
         URL -> JSString -> IO ()

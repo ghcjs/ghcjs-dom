@@ -55,18 +55,17 @@ foreign import javascript unsafe "$1[\"close\"]()" js_close ::
 close :: (MonadIO m) => Notification -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"requestPermission\"]($2)"
+foreign import javascript unsafe
+        "window[\"Notification\"][\"requestPermission\"]($1)"
         js_requestPermission ::
-        Notification ->
-          Optional (NotificationPermissionCallback callback) -> IO ()
+        Optional (NotificationPermissionCallback callback) -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.requestPermission Mozilla Notification.requestPermission documentation> 
 requestPermission ::
                   (MonadIO m, ToJSString callback) =>
-                    Notification ->
-                      Maybe (NotificationPermissionCallback callback) -> m ()
-requestPermission self callback
-  = liftIO (js_requestPermission self (maybeToOptional callback))
+                    Maybe (NotificationPermissionCallback callback) -> m ()
+requestPermission callback
+  = liftIO (js_requestPermission (maybeToOptional callback))
  
 foreign import javascript unsafe "$1[\"permission\"]"
         js_getPermission :: Notification -> IO JSString

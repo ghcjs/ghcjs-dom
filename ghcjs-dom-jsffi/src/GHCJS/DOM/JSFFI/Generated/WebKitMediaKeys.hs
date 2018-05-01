@@ -61,26 +61,26 @@ createSession_ self type' initData
          (js_createSession self (toJSString type') (toUint8Array initData)))
  
 foreign import javascript unsafe
-        "($1[\"isTypeSupported\"]($2,\n$3) ? 1 : 0)" js_isTypeSupported ::
-        WebKitMediaKeys -> JSString -> Optional JSString -> IO Bool
+        "(window[\"WebKitMediaKeys\"][\"isTypeSupported\"]($1,\n$2) ? 1 : 0)"
+        js_isTypeSupported :: JSString -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
 isTypeSupported ::
                 (MonadIO m, ToJSString keySystem, ToJSString type') =>
-                  WebKitMediaKeys -> keySystem -> Maybe type' -> m Bool
-isTypeSupported self keySystem type'
+                  keySystem -> Maybe type' -> m Bool
+isTypeSupported keySystem type'
   = liftIO
-      (js_isTypeSupported self (toJSString keySystem)
+      (js_isTypeSupported (toJSString keySystem)
          (toOptionalJSString type'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
 isTypeSupported_ ::
                  (MonadIO m, ToJSString keySystem, ToJSString type') =>
-                   WebKitMediaKeys -> keySystem -> Maybe type' -> m ()
-isTypeSupported_ self keySystem type'
+                   keySystem -> Maybe type' -> m ()
+isTypeSupported_ keySystem type'
   = liftIO
       (void
-         (js_isTypeSupported self (toJSString keySystem)
+         (js_isTypeSupported (toJSString keySystem)
             (toOptionalJSString type')))
  
 foreign import javascript unsafe "$1[\"keySystem\"]"

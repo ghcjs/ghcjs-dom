@@ -29,84 +29,75 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"only\"]($2)" js_only ::
-        IDBKeyRange -> JSVal -> IO IDBKeyRange
+foreign import javascript safe
+        "window[\"IDBKeyRange\"][\"only\"]($1)" js_only ::
+        JSVal -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
-only ::
-     (MonadIO m, ToJSVal value) => IDBKeyRange -> value -> m IDBKeyRange
-only self value
-  = liftIO (toJSVal value >>= \ value' -> js_only self value')
+only :: (MonadIO m, ToJSVal value) => value -> m IDBKeyRange
+only value = liftIO (toJSVal value >>= \ value' -> js_only value')
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
-only_ :: (MonadIO m, ToJSVal value) => IDBKeyRange -> value -> m ()
-only_ self value
-  = liftIO (void (toJSVal value >>= \ value' -> js_only self value'))
+only_ :: (MonadIO m, ToJSVal value) => value -> m ()
+only_ value
+  = liftIO (void (toJSVal value >>= \ value' -> js_only value'))
  
-foreign import javascript safe "$1[\"lowerBound\"]($2, $3)"
-        js_lowerBound :: IDBKeyRange -> JSVal -> Bool -> IO IDBKeyRange
+foreign import javascript safe
+        "window[\"IDBKeyRange\"][\"lowerBound\"]($1,\n$2)" js_lowerBound ::
+        JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
 lowerBound ::
-           (MonadIO m, ToJSVal lower) =>
-             IDBKeyRange -> lower -> Bool -> m IDBKeyRange
-lowerBound self lower open
-  = liftIO
-      (toJSVal lower >>= \ lower' -> js_lowerBound self lower' open)
+           (MonadIO m, ToJSVal lower) => lower -> Bool -> m IDBKeyRange
+lowerBound lower open
+  = liftIO (toJSVal lower >>= \ lower' -> js_lowerBound lower' open)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
-lowerBound_ ::
-            (MonadIO m, ToJSVal lower) => IDBKeyRange -> lower -> Bool -> m ()
-lowerBound_ self lower open
+lowerBound_ :: (MonadIO m, ToJSVal lower) => lower -> Bool -> m ()
+lowerBound_ lower open
   = liftIO
-      (void
-         (toJSVal lower >>= \ lower' -> js_lowerBound self lower' open))
+      (void (toJSVal lower >>= \ lower' -> js_lowerBound lower' open))
  
-foreign import javascript safe "$1[\"upperBound\"]($2, $3)"
-        js_upperBound :: IDBKeyRange -> JSVal -> Bool -> IO IDBKeyRange
+foreign import javascript safe
+        "window[\"IDBKeyRange\"][\"upperBound\"]($1,\n$2)" js_upperBound ::
+        JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
 upperBound ::
-           (MonadIO m, ToJSVal upper) =>
-             IDBKeyRange -> upper -> Bool -> m IDBKeyRange
-upperBound self upper open
-  = liftIO
-      (toJSVal upper >>= \ upper' -> js_upperBound self upper' open)
+           (MonadIO m, ToJSVal upper) => upper -> Bool -> m IDBKeyRange
+upperBound upper open
+  = liftIO (toJSVal upper >>= \ upper' -> js_upperBound upper' open)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
-upperBound_ ::
-            (MonadIO m, ToJSVal upper) => IDBKeyRange -> upper -> Bool -> m ()
-upperBound_ self upper open
+upperBound_ :: (MonadIO m, ToJSVal upper) => upper -> Bool -> m ()
+upperBound_ upper open
   = liftIO
-      (void
-         (toJSVal upper >>= \ upper' -> js_upperBound self upper' open))
+      (void (toJSVal upper >>= \ upper' -> js_upperBound upper' open))
  
-foreign import javascript safe "$1[\"bound\"]($2, $3, $4, $5)"
-        js_bound ::
-        IDBKeyRange -> JSVal -> JSVal -> Bool -> Bool -> IO IDBKeyRange
+foreign import javascript safe
+        "window[\"IDBKeyRange\"][\"bound\"]($1,\n$2, $3, $4)" js_bound ::
+        JSVal -> JSVal -> Bool -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
 bound ::
       (MonadIO m, ToJSVal lower, ToJSVal upper) =>
-        IDBKeyRange -> lower -> upper -> Bool -> Bool -> m IDBKeyRange
-bound self lower upper lowerOpen upperOpen
+        lower -> upper -> Bool -> Bool -> m IDBKeyRange
+bound lower upper lowerOpen upperOpen
   = liftIO
       (toJSVal upper >>=
-         \ upper' ->
-           toJSVal lower >>= \ lower' -> js_bound self lower' upper'
+         \ upper' -> toJSVal lower >>= \ lower' -> js_bound lower' upper'
          lowerOpen
          upperOpen)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
 bound_ ::
        (MonadIO m, ToJSVal lower, ToJSVal upper) =>
-         IDBKeyRange -> lower -> upper -> Bool -> Bool -> m ()
-bound_ self lower upper lowerOpen upperOpen
+         lower -> upper -> Bool -> Bool -> m ()
+bound_ lower upper lowerOpen upperOpen
   = liftIO
       (void
          (toJSVal upper >>=
-            \ upper' ->
-              toJSVal lower >>= \ lower' -> js_bound self lower' upper'
+            \ upper' -> toJSVal lower >>= \ lower' -> js_bound lower' upper'
             lowerOpen
             upperOpen))
  

@@ -27,53 +27,50 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"supports\"]($2, $3) ? 1 : 0)" js_supports2 ::
-        CSS -> JSString -> JSString -> IO Bool
+        "(window[\"CSS\"][\"supports\"]($1,\n$2) ? 1 : 0)" js_supports2 ::
+        JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports2 ::
           (MonadIO m, ToJSString property, ToJSString value) =>
-            CSS -> property -> value -> m Bool
-supports2 self property value
-  = liftIO
-      (js_supports2 self (toJSString property) (toJSString value))
+            property -> value -> m Bool
+supports2 property value
+  = liftIO (js_supports2 (toJSString property) (toJSString value))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports2_ ::
            (MonadIO m, ToJSString property, ToJSString value) =>
-             CSS -> property -> value -> m ()
-supports2_ self property value
+             property -> value -> m ()
+supports2_ property value
   = liftIO
-      (void (js_supports2 self (toJSString property) (toJSString value)))
+      (void (js_supports2 (toJSString property) (toJSString value)))
  
-foreign import javascript unsafe "($1[\"supports\"]($2) ? 1 : 0)"
-        js_supports :: CSS -> JSString -> IO Bool
+foreign import javascript unsafe
+        "(window[\"CSS\"][\"supports\"]($1) ? 1 : 0)" js_supports ::
+        JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports ::
-         (MonadIO m, ToJSString conditionText) =>
-           CSS -> conditionText -> m Bool
-supports self conditionText
-  = liftIO (js_supports self (toJSString conditionText))
+         (MonadIO m, ToJSString conditionText) => conditionText -> m Bool
+supports conditionText
+  = liftIO (js_supports (toJSString conditionText))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
 supports_ ::
-          (MonadIO m, ToJSString conditionText) =>
-            CSS -> conditionText -> m ()
-supports_ self conditionText
-  = liftIO (void (js_supports self (toJSString conditionText)))
+          (MonadIO m, ToJSString conditionText) => conditionText -> m ()
+supports_ conditionText
+  = liftIO (void (js_supports (toJSString conditionText)))
  
-foreign import javascript unsafe "$1[\"escape\"]($2)" js_escape ::
-        CSS -> JSString -> IO JSString
+foreign import javascript unsafe "window[\"CSS\"][\"escape\"]($1)"
+        js_escape :: JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.escape Mozilla CSS.escape documentation> 
 escape ::
        (MonadIO m, ToJSString ident, FromJSString result) =>
-         CSS -> ident -> m result
-escape self ident
-  = liftIO (fromJSString <$> (js_escape self (toJSString ident)))
+         ident -> m result
+escape ident
+  = liftIO (fromJSString <$> (js_escape (toJSString ident)))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.escape Mozilla CSS.escape documentation> 
-escape_ :: (MonadIO m, ToJSString ident) => CSS -> ident -> m ()
-escape_ self ident
-  = liftIO (void (js_escape self (toJSString ident)))
+escape_ :: (MonadIO m, ToJSString ident) => ident -> m ()
+escape_ ident = liftIO (void (js_escape (toJSString ident)))

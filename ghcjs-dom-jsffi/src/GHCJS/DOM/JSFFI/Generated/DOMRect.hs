@@ -44,19 +44,18 @@ newDOMRect x y width height
          (maybeToOptional width)
          (maybeToOptional height))
  
-foreign import javascript unsafe "$1[\"fromRect\"]($2)" js_fromRect
-        :: DOMRect -> Optional DOMRectInit -> IO DOMRect
+foreign import javascript unsafe
+        "window[\"DOMRect\"][\"fromRect\"]($1)" js_fromRect ::
+        Optional DOMRectInit -> IO DOMRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.fromRect Mozilla DOMRect.fromRect documentation> 
-fromRect ::
-         (MonadIO m) => DOMRect -> Maybe DOMRectInit -> m DOMRect
-fromRect self other
-  = liftIO (js_fromRect self (maybeToOptional other))
+fromRect :: (MonadIO m) => Maybe DOMRectInit -> m DOMRect
+fromRect other = liftIO (js_fromRect (maybeToOptional other))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.fromRect Mozilla DOMRect.fromRect documentation> 
-fromRect_ :: (MonadIO m) => DOMRect -> Maybe DOMRectInit -> m ()
-fromRect_ self other
-  = liftIO (void (js_fromRect self (maybeToOptional other)))
+fromRect_ :: (MonadIO m) => Maybe DOMRectInit -> m ()
+fromRect_ other
+  = liftIO (void (js_fromRect (maybeToOptional other)))
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         DOMRect -> Double -> IO ()

@@ -47,25 +47,18 @@ newDOMRectReadOnly x y width height
          (maybeToOptional width)
          (maybeToOptional height))
  
-foreign import javascript unsafe "$1[\"fromRect\"]($2)" js_fromRect
-        :: DOMRectReadOnly -> Optional DOMRectInit -> IO DOMRectReadOnly
+foreign import javascript unsafe
+        "window[\"DOMRectReadOnly\"][\"fromRect\"]($1)" js_fromRect ::
+        Optional DOMRectInit -> IO DOMRectReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.fromRect Mozilla DOMRectReadOnly.fromRect documentation> 
-fromRect ::
-         (MonadIO m, IsDOMRectReadOnly self) =>
-           self -> Maybe DOMRectInit -> m DOMRectReadOnly
-fromRect self other
-  = liftIO
-      (js_fromRect (toDOMRectReadOnly self) (maybeToOptional other))
+fromRect :: (MonadIO m) => Maybe DOMRectInit -> m DOMRectReadOnly
+fromRect other = liftIO (js_fromRect (maybeToOptional other))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.fromRect Mozilla DOMRectReadOnly.fromRect documentation> 
-fromRect_ ::
-          (MonadIO m, IsDOMRectReadOnly self) =>
-            self -> Maybe DOMRectInit -> m ()
-fromRect_ self other
-  = liftIO
-      (void
-         (js_fromRect (toDOMRectReadOnly self) (maybeToOptional other)))
+fromRect_ :: (MonadIO m) => Maybe DOMRectInit -> m ()
+fromRect_ other
+  = liftIO (void (js_fromRect (maybeToOptional other)))
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         DOMRectReadOnly -> IO Double

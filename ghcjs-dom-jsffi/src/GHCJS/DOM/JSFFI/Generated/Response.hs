@@ -33,35 +33,33 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"error\"]()" js_error ::
-        Response -> IO Response
+foreign import javascript unsafe
+        "window[\"Response\"][\"error\"]()" js_error :: IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.error Mozilla Response.error documentation> 
-error :: (MonadIO m) => Response -> m Response
-error self = liftIO (js_error self)
+error :: (MonadIO m) => m Response
+error = liftIO (js_error)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.error Mozilla Response.error documentation> 
-error_ :: (MonadIO m) => Response -> m ()
-error_ self = liftIO (void (js_error self))
+error_ :: (MonadIO m) => m ()
+error_ = liftIO (void (js_error))
  
-foreign import javascript safe "$1[\"redirect\"]($2, $3)"
-        js_redirect :: Response -> JSString -> Optional Word -> IO Response
+foreign import javascript safe
+        "window[\"Response\"][\"redirect\"]($1,\n$2)" js_redirect ::
+        JSString -> Optional Word -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 
 redirect ::
-         (MonadIO m, ToJSString url) =>
-           Response -> url -> Maybe Word -> m Response
-redirect self url status
-  = liftIO
-      (js_redirect self (toJSString url) (maybeToOptional status))
+         (MonadIO m, ToJSString url) => url -> Maybe Word -> m Response
+redirect url status
+  = liftIO (js_redirect (toJSString url) (maybeToOptional status))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 
 redirect_ ::
-          (MonadIO m, ToJSString url) =>
-            Response -> url -> Maybe Word -> m ()
-redirect_ self url status
+          (MonadIO m, ToJSString url) => url -> Maybe Word -> m ()
+redirect_ url status
   = liftIO
-      (void (js_redirect self (toJSString url) (maybeToOptional status)))
+      (void (js_redirect (toJSString url) (maybeToOptional status)))
  
 foreign import javascript interruptible
         "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
