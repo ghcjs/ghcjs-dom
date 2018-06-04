@@ -51,6 +51,10 @@ library
           GHCJS.DOM.JSFFI.NavigatorUserMediaError
           GHCJS.DOM.JSFFI.PositionError
           GHCJS.DOM.JSFFI.RTCPeerConnectionError
+          GHCJS.DOM.JSFFI.SpeechGrammar
+          GHCJS.DOM.JSFFI.SpeechRecognition
+          GHCJS.DOM.JSFFI.SpeechRecognitionError
+          GHCJS.DOM.JSFFI.SpeechRecognitionEvent
           GHCJS.DOM.JSFFI.SQLError
           GHCJS.DOM.JSFFI.SQLTransaction
           GHCJS.DOM.JSFFI.Window
