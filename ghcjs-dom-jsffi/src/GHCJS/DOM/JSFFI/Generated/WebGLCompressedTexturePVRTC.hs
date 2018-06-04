@@ -26,7 +26,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 pattern COMPRESSED_RGB_PVRTC_4BPPV1_IMG = 35840
 pattern COMPRESSED_RGB_PVRTC_2BPPV1_IMG = 35841

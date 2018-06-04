@@ -26,7 +26,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers.onbeforeunload Mozilla WindowEventHandlers.onbeforeunload documentation> 
@@ -51,7 +51,7 @@ languagechange = unsafeEventName (toJSString "languagechange")
 message ::
         (IsWindowEventHandlers self, IsEventTarget self) =>
           EventName self MessageEvent
-message = unsafeEventName (toJSString "message")
+message = unsafeEventNameAsync (toJSString "message")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers.onoffline Mozilla WindowEventHandlers.onoffline documentation> 
 offline ::

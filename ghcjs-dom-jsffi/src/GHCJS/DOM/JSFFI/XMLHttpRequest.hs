@@ -12,7 +12,7 @@ module GHCJS.DOM.JSFFI.XMLHttpRequest (
 ) where
 
 import Control.Monad.IO.Class (MonadIO(..))
-import Control.Exception (Exception(..), throwIO)
+import Control.Exception (Exception(..), throwIO, onException)
 
 import GHCJS.Types (JSVal)
 import GHCJS.Marshal.Internal (PToJSVal(..))
@@ -36,24 +36,24 @@ foreign import javascript interruptible "h$dom$sendXHR($1, $2, $c);" js_send :: 
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 send :: (MonadIO m) => XMLHttpRequest -> m ()
-send self = liftIO $ js_send self jsNull >>= throwXHRError
+send self = liftIO $ (js_send self jsNull >>= throwXHRError) `onException` abort self
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendString :: (MonadIO m, ToJSString str) => XMLHttpRequest -> str -> m ()
-sendString self str = liftIO $ js_send self (pToJSVal str) >>= throwXHRError
+sendString self str = liftIO $ (js_send self (pToJSVal str) >>= throwXHRError) `onException` abort self
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendArrayBuffer :: (MonadIO m, IsArrayBufferView view) => XMLHttpRequest -> view -> m ()
-sendArrayBuffer self view = liftIO $ js_send self (unArrayBufferView $ toArrayBufferView view) >>= throwXHRError
+sendArrayBuffer self view = liftIO $ (js_send self (unArrayBufferView $ toArrayBufferView view) >>= throwXHRError) `onException` abort self
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendBlob :: (MonadIO m, IsBlob blob) => XMLHttpRequest -> blob -> m ()
-sendBlob self blob = liftIO $ js_send self (unBlob $ toBlob blob) >>= throwXHRError
+sendBlob self blob = liftIO $ (js_send self (unBlob $ toBlob blob) >>= throwXHRError) `onException` abort self
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendDocument :: (MonadIO m, IsDocument doc) => XMLHttpRequest -> doc -> m ()
-sendDocument self doc = liftIO $ js_send self (unDocument $ toDocument doc) >>= throwXHRError
+sendDocument self doc = liftIO $ (js_send self (unDocument $ toDocument doc) >>= throwXHRError) `onException` abort self
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 sendFormData :: (MonadIO m) => XMLHttpRequest -> FormData -> m ()
-sendFormData self formData = liftIO $ js_send self (unFormData formData) >>= throwXHRError
+sendFormData self formData = liftIO $ (js_send self (unFormData formData) >>= throwXHRError) `onException` abort self

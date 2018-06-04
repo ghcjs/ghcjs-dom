@@ -26,7 +26,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
@@ -56,26 +56,19 @@ newDOMPointReadOnly' x y z w
          (maybeToOptional z)
          (maybeToOptional w))
  
-foreign import javascript unsafe "$1[\"fromPoint\"]($2)"
-        js_fromPoint ::
-        DOMPointReadOnly -> Optional DOMPointInit -> IO DOMPointReadOnly
+foreign import javascript unsafe
+        "window[\"DOMPointReadOnly\"][\"fromPoint\"]($1)" js_fromPoint ::
+        Optional DOMPointInit -> IO DOMPointReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.fromPoint Mozilla DOMPointReadOnly.fromPoint documentation> 
 fromPoint ::
-          (MonadIO m, IsDOMPointReadOnly self) =>
-            self -> Maybe DOMPointInit -> m DOMPointReadOnly
-fromPoint self other
-  = liftIO
-      (js_fromPoint (toDOMPointReadOnly self) (maybeToOptional other))
+          (MonadIO m) => Maybe DOMPointInit -> m DOMPointReadOnly
+fromPoint other = liftIO (js_fromPoint (maybeToOptional other))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.fromPoint Mozilla DOMPointReadOnly.fromPoint documentation> 
-fromPoint_ ::
-           (MonadIO m, IsDOMPointReadOnly self) =>
-             self -> Maybe DOMPointInit -> m ()
-fromPoint_ self other
-  = liftIO
-      (void
-         (js_fromPoint (toDOMPointReadOnly self) (maybeToOptional other)))
+fromPoint_ :: (MonadIO m) => Maybe DOMPointInit -> m ()
+fromPoint_ other
+  = liftIO (void (js_fromPoint (maybeToOptional other)))
  
 foreign import javascript unsafe "$1[\"x\"]" js_getX ::
         DOMPointReadOnly -> IO Double

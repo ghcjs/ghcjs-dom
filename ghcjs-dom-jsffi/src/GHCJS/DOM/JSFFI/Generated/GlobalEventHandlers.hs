@@ -39,14 +39,14 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onabort Mozilla GlobalEventHandlers.onabort documentation> 
 abort ::
       (IsGlobalEventHandlers self, IsEventTarget self) =>
         EventName self UIEvent
-abort = unsafeEventName (toJSString "abort")
+abort = unsafeEventNameAsync (toJSString "abort")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onautocomplete Mozilla GlobalEventHandlers.onautocomplete documentation> 
 autocomplete ::
@@ -65,7 +65,7 @@ autocompleteerror
 blur ::
      (IsGlobalEventHandlers self, IsEventTarget self) =>
        EventName self FocusEvent
-blur = unsafeEventName (toJSString "blur")
+blur = unsafeEventNameAsync (toJSString "blur")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.oncanplay Mozilla GlobalEventHandlers.oncanplay documentation> 
 canPlay ::
@@ -173,13 +173,13 @@ ended = unsafeEventName (toJSString "ended")
 error ::
       (IsGlobalEventHandlers self, IsEventTarget self) =>
         EventName self UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onfocus Mozilla GlobalEventHandlers.onfocus documentation> 
 focus ::
       (IsGlobalEventHandlers self, IsEventTarget self) =>
         EventName self FocusEvent
-focus = unsafeEventName (toJSString "focus")
+focus = unsafeEventNameAsync (toJSString "focus")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.oninput Mozilla GlobalEventHandlers.oninput documentation> 
 input ::
@@ -215,7 +215,7 @@ keyUp = unsafeEventName (toJSString "keyup")
 load ::
      (IsGlobalEventHandlers self, IsEventTarget self) =>
        EventName self UIEvent
-load = unsafeEventName (toJSString "load")
+load = unsafeEventNameAsync (toJSString "load")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onloadeddata Mozilla GlobalEventHandlers.onloadeddata documentation> 
 loadedData ::
@@ -233,7 +233,7 @@ loadedMetadata = unsafeEventName (toJSString "loadedmetadata")
 loadStart ::
           (IsGlobalEventHandlers self, IsEventTarget self) =>
             EventName self ProgressEvent
-loadStart = unsafeEventName (toJSString "loadstart")
+loadStart = unsafeEventNameAsync (toJSString "loadstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onmousedown Mozilla GlobalEventHandlers.onmousedown documentation> 
 mouseDown ::
@@ -305,7 +305,7 @@ playing = unsafeEventName (toJSString "playing")
 progress ::
          (IsGlobalEventHandlers self, IsEventTarget self) =>
            EventName self ProgressEvent
-progress = unsafeEventName (toJSString "progress")
+progress = unsafeEventNameAsync (toJSString "progress")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers.onratechange Mozilla GlobalEventHandlers.onratechange documentation> 
 rateChange ::

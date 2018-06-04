@@ -24,47 +24,47 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onloadstart Mozilla XMLHttpRequestEventTarget.onloadstart documentation> 
 loadStart ::
           (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
             EventName self ProgressEvent
-loadStart = unsafeEventName (toJSString "loadstart")
+loadStart = unsafeEventNameAsync (toJSString "loadstart")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onprogress Mozilla XMLHttpRequestEventTarget.onprogress documentation> 
 progress ::
          (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
            EventName self XMLHttpRequestProgressEvent
-progress = unsafeEventName (toJSString "progress")
+progress = unsafeEventNameAsync (toJSString "progress")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onabort Mozilla XMLHttpRequestEventTarget.onabort documentation> 
 abortEvent ::
            (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
              EventName self XMLHttpRequestProgressEvent
-abortEvent = unsafeEventName (toJSString "abort")
+abortEvent = unsafeEventNameAsync (toJSString "abort")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onerror Mozilla XMLHttpRequestEventTarget.onerror documentation> 
 error ::
       (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
         EventName self XMLHttpRequestProgressEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onload Mozilla XMLHttpRequestEventTarget.onload documentation> 
 load ::
      (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
        EventName self XMLHttpRequestProgressEvent
-load = unsafeEventName (toJSString "load")
+load = unsafeEventNameAsync (toJSString "load")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.ontimeout Mozilla XMLHttpRequestEventTarget.ontimeout documentation> 
 timeout ::
         (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
           EventName self ProgressEvent
-timeout = unsafeEventName (toJSString "timeout")
+timeout = unsafeEventNameAsync (toJSString "timeout")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget.onloadend Mozilla XMLHttpRequestEventTarget.onloadend documentation> 
 loadEnd ::
         (IsXMLHttpRequestEventTarget self, IsEventTarget self) =>
           EventName self ProgressEvent
-loadEnd = unsafeEventName (toJSString "loadend")
+loadEnd = unsafeEventNameAsync (toJSString "loadend")

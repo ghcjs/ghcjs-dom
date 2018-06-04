@@ -32,7 +32,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "new window[\"MediaSource\"]()"
@@ -77,20 +77,18 @@ endOfStream self error
   = liftIO (js_endOfStream self (maybeToOptional error))
  
 foreign import javascript unsafe
-        "($1[\"isTypeSupported\"]($2) ? 1 : 0)" js_isTypeSupported ::
-        MediaSource -> JSString -> IO Bool
+        "(window[\"MediaSource\"][\"isTypeSupported\"]($1) ? 1 : 0)"
+        js_isTypeSupported :: JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.isTypeSupported Mozilla MediaSource.isTypeSupported documentation> 
-isTypeSupported ::
-                (MonadIO m, ToJSString type') => MediaSource -> type' -> m Bool
-isTypeSupported self type'
-  = liftIO (js_isTypeSupported self (toJSString type'))
+isTypeSupported :: (MonadIO m, ToJSString type') => type' -> m Bool
+isTypeSupported type'
+  = liftIO (js_isTypeSupported (toJSString type'))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.isTypeSupported Mozilla MediaSource.isTypeSupported documentation> 
-isTypeSupported_ ::
-                 (MonadIO m, ToJSString type') => MediaSource -> type' -> m ()
-isTypeSupported_ self type'
-  = liftIO (void (js_isTypeSupported self (toJSString type')))
+isTypeSupported_ :: (MonadIO m, ToJSString type') => type' -> m ()
+isTypeSupported_ type'
+  = liftIO (void (js_isTypeSupported (toJSString type')))
  
 foreign import javascript safe
         "$1[\"setLiveSeekableRange\"]($2,\n$3)" js_setLiveSeekableRange ::

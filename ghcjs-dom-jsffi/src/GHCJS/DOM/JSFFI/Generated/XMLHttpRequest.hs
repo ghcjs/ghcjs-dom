@@ -39,7 +39,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "new window[\"XMLHttpRequest\"]()"
@@ -177,7 +177,8 @@ pattern DONE = 4
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.onreadystatechange Mozilla XMLHttpRequest.onreadystatechange documentation> 
 readyStateChange :: EventName XMLHttpRequest Event
-readyStateChange = unsafeEventName (toJSString "readystatechange")
+readyStateChange
+  = unsafeEventNameAsync (toJSString "readystatechange")
  
 foreign import javascript unsafe "$1[\"readyState\"]"
         js_getReadyState :: XMLHttpRequest -> IO Word

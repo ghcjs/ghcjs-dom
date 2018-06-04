@@ -31,7 +31,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "$1[\"aLink\"] = $2;" js_setALink
@@ -134,15 +134,15 @@ getVLink self = liftIO (fromJSString <$> (js_getVLink self))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onblur Mozilla HTMLBodyElement.onblur documentation> 
 blur :: EventName HTMLBodyElement FocusEvent
-blur = unsafeEventName (toJSString "blur")
+blur = unsafeEventNameAsync (toJSString "blur")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onerror Mozilla HTMLBodyElement.onerror documentation> 
 error :: EventName HTMLBodyElement UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onfocus Mozilla HTMLBodyElement.onfocus documentation> 
 focus :: EventName HTMLBodyElement FocusEvent
-focus = unsafeEventName (toJSString "focus")
+focus = unsafeEventNameAsync (toJSString "focus")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onfocusin Mozilla HTMLBodyElement.onfocusin documentation> 
 focusin :: EventName HTMLBodyElement onfocusin
@@ -154,7 +154,7 @@ focusout = unsafeEventName (toJSString "focusout")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onload Mozilla HTMLBodyElement.onload documentation> 
 load :: EventName HTMLBodyElement UIEvent
-load = unsafeEventName (toJSString "load")
+load = unsafeEventNameAsync (toJSString "load")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.onresize Mozilla HTMLBodyElement.onresize documentation> 
 resize :: EventName HTMLBodyElement UIEvent

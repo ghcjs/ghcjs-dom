@@ -27,7 +27,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe "$1[\"createObjectStore\"]($2, $3)"
@@ -127,7 +127,7 @@ abort = unsafeEventName (toJSString "abort")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onclose Mozilla IDBDatabase.onclose documentation> 
 closeEvent :: EventName IDBDatabase CloseEvent
-closeEvent = unsafeEventName (toJSString "close")
+closeEvent = unsafeEventNameAsync (toJSString "close")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.onerror Mozilla IDBDatabase.onerror documentation> 
 error :: EventName IDBDatabase Event

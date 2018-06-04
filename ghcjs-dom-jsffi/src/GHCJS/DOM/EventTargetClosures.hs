@@ -7,7 +7,9 @@ module GHCJS.DOM.EventTargetClosures
          --   lead to confusion.
          EventName(..)
        , SaferEventListener(..)
+       , eventNameString
        , unsafeEventName
+       , unsafeEventNameAsync
        -- * Creation and Destruction
        -- | __Note:__ Don’t forget to release your event listeners, or you will leak memory.
        , eventListenerNew
@@ -31,7 +33,11 @@ import GHCJS.Foreign.Callback.Internal
 --
 --   Many @GHCJS.DOM@ modules export @EventName@s, for example
 --   "GHCJS.DOM.JSFFI.Generated.Window".
-newtype EventName t e = EventName DOMString
+data EventName t e = EventNameSyncDefault DOMString | EventNameAsyncDefault DOMString
+
+eventNameString :: EventName t e -> DOMString
+eventNameString (EventNameSyncDefault s) = s
+eventNameString (EventNameAsyncDefault s) = s
 
 -- | Plain JS 'EventListener' that carries the same phantom types as 'EventName'.
 newtype SaferEventListener t e = SaferEventListener EventListener
@@ -46,7 +52,10 @@ instance PFromJSVal (SaferEventListener t e) where
 
 -- | Forces the phantom parameters.
 unsafeEventName :: DOMString -> EventName t e
-unsafeEventName = EventName
+unsafeEventName = EventNameSyncDefault
+
+unsafeEventNameAsync :: DOMString -> EventName t e
+unsafeEventNameAsync = EventNameAsyncDefault
 
 -- | Create an EventListener that will try to run the callback synchronously,
 --   but fork a thread if it takes too long to execute ('ContinueAsync').

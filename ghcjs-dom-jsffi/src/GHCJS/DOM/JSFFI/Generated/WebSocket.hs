@@ -32,7 +32,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe "new window[\"WebSocket\"]($1, $2)"
@@ -128,19 +128,19 @@ getBufferedAmount self = liftIO (js_getBufferedAmount self)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onopen Mozilla WebSocket.onopen documentation> 
 open :: EventName WebSocket Event
-open = unsafeEventName (toJSString "open")
+open = unsafeEventNameAsync (toJSString "open")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onmessage Mozilla WebSocket.onmessage documentation> 
 message :: EventName WebSocket MessageEvent
-message = unsafeEventName (toJSString "message")
+message = unsafeEventNameAsync (toJSString "message")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onerror Mozilla WebSocket.onerror documentation> 
 error :: EventName WebSocket UIEvent
-error = unsafeEventName (toJSString "error")
+error = unsafeEventNameAsync (toJSString "error")
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.onclose Mozilla WebSocket.onclose documentation> 
 closeEvent :: EventName WebSocket CloseEvent
-closeEvent = unsafeEventName (toJSString "close")
+closeEvent = unsafeEventNameAsync (toJSString "close")
  
 foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
         :: WebSocket -> IO (Nullable JSString)

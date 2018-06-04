@@ -25,7 +25,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe "new window[\"DOMPoint\"]($1)"
@@ -52,19 +52,18 @@ newDOMPoint' x y z w
          (maybeToOptional z)
          (maybeToOptional w))
  
-foreign import javascript unsafe "$1[\"fromPoint\"]($2)"
-        js_fromPoint :: DOMPoint -> Optional DOMPointInit -> IO DOMPoint
+foreign import javascript unsafe
+        "window[\"DOMPoint\"][\"fromPoint\"]($1)" js_fromPoint ::
+        Optional DOMPointInit -> IO DOMPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.fromPoint Mozilla DOMPoint.fromPoint documentation> 
-fromPoint ::
-          (MonadIO m) => DOMPoint -> Maybe DOMPointInit -> m DOMPoint
-fromPoint self other
-  = liftIO (js_fromPoint self (maybeToOptional other))
+fromPoint :: (MonadIO m) => Maybe DOMPointInit -> m DOMPoint
+fromPoint other = liftIO (js_fromPoint (maybeToOptional other))
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.fromPoint Mozilla DOMPoint.fromPoint documentation> 
-fromPoint_ :: (MonadIO m) => DOMPoint -> Maybe DOMPointInit -> m ()
-fromPoint_ self other
-  = liftIO (void (js_fromPoint self (maybeToOptional other)))
+fromPoint_ :: (MonadIO m) => Maybe DOMPointInit -> m ()
+fromPoint_ other
+  = liftIO (void (js_fromPoint (maybeToOptional other)))
  
 foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
         DOMPoint -> Double -> IO ()

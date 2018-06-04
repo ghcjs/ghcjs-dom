@@ -49,7 +49,7 @@ import Data.Maybe (fromJust)
 import Data.Traversable (mapM)
 import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
-import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName)
+import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
@@ -63,77 +63,72 @@ newApplePaySession version paymentRequest
   = liftIO (js_newApplePaySession version paymentRequest)
  
 foreign import javascript safe
-        "($1[\"supportsVersion\"]($2) ? 1 : 0)" js_supportsVersion ::
-        ApplePaySession -> Word -> IO Bool
+        "(window[\"ApplePaySession\"][\"supportsVersion\"]($1) ? 1 : 0)"
+        js_supportsVersion :: Word -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.supportsVersion Mozilla ApplePaySession.supportsVersion documentation> 
-supportsVersion :: (MonadIO m) => ApplePaySession -> Word -> m Bool
-supportsVersion self version
-  = liftIO (js_supportsVersion self version)
+supportsVersion :: (MonadIO m) => Word -> m Bool
+supportsVersion version = liftIO (js_supportsVersion version)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.supportsVersion Mozilla ApplePaySession.supportsVersion documentation> 
-supportsVersion_ :: (MonadIO m) => ApplePaySession -> Word -> m ()
-supportsVersion_ self version
-  = liftIO (void (js_supportsVersion self version))
+supportsVersion_ :: (MonadIO m) => Word -> m ()
+supportsVersion_ version
+  = liftIO (void (js_supportsVersion version))
  
 foreign import javascript safe
-        "($1[\"canMakePayments\"]() ? 1 : 0)" js_canMakePayments ::
-        ApplePaySession -> IO Bool
+        "(window[\"ApplePaySession\"][\"canMakePayments\"]() ? 1 : 0)"
+        js_canMakePayments :: IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePayments Mozilla ApplePaySession.canMakePayments documentation> 
-canMakePayments :: (MonadIO m) => ApplePaySession -> m Bool
-canMakePayments self = liftIO (js_canMakePayments self)
+canMakePayments :: (MonadIO m) => m Bool
+canMakePayments = liftIO (js_canMakePayments)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePayments Mozilla ApplePaySession.canMakePayments documentation> 
-canMakePayments_ :: (MonadIO m) => ApplePaySession -> m ()
-canMakePayments_ self = liftIO (void (js_canMakePayments self))
+canMakePayments_ :: (MonadIO m) => m ()
+canMakePayments_ = liftIO (void (js_canMakePayments))
  
 foreign import javascript interruptible
-        "$1[\"canMakePaymentsWithActiveCard\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
-        js_canMakePaymentsWithActiveCard ::
-        ApplePaySession -> JSString -> IO (JSVal, Bool)
+        "window[\"ApplePaySession\"][\"canMakePaymentsWithActiveCard\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_canMakePaymentsWithActiveCard :: JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard ::
                               (MonadIO m, ToJSString merchantIdentifier) =>
-                                ApplePaySession -> merchantIdentifier -> m Bool
-canMakePaymentsWithActiveCard self merchantIdentifier
+                                merchantIdentifier -> m Bool
+canMakePaymentsWithActiveCard merchantIdentifier
   = liftIO
-      ((js_canMakePaymentsWithActiveCard self
-          (toJSString merchantIdentifier))
+      ((js_canMakePaymentsWithActiveCard (toJSString merchantIdentifier))
          >>= checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
 canMakePaymentsWithActiveCard_ ::
                                (MonadIO m, ToJSString merchantIdentifier) =>
-                                 ApplePaySession -> merchantIdentifier -> m ()
-canMakePaymentsWithActiveCard_ self merchantIdentifier
+                                 merchantIdentifier -> m ()
+canMakePaymentsWithActiveCard_ merchantIdentifier
   = liftIO
       (void
-         (js_canMakePaymentsWithActiveCard self
-            (toJSString merchantIdentifier)))
+         (js_canMakePaymentsWithActiveCard (toJSString merchantIdentifier)))
  
 foreign import javascript interruptible
-        "$1[\"openPaymentSetup\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
-        js_openPaymentSetup ::
-        ApplePaySession -> JSString -> IO (JSVal, Bool)
+        "window[\"ApplePaySession\"][\"openPaymentSetup\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        js_openPaymentSetup :: JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup ::
                  (MonadIO m, ToJSString merchantIdentifier) =>
-                   ApplePaySession -> merchantIdentifier -> m Bool
-openPaymentSetup self merchantIdentifier
+                   merchantIdentifier -> m Bool
+openPaymentSetup merchantIdentifier
   = liftIO
-      ((js_openPaymentSetup self (toJSString merchantIdentifier)) >>=
+      ((js_openPaymentSetup (toJSString merchantIdentifier)) >>=
          checkPromiseResult)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 
 openPaymentSetup_ ::
                   (MonadIO m, ToJSString merchantIdentifier) =>
-                    ApplePaySession -> merchantIdentifier -> m ()
-openPaymentSetup_ self merchantIdentifier
+                    merchantIdentifier -> m ()
+openPaymentSetup_ merchantIdentifier
   = liftIO
-      (void (js_openPaymentSetup self (toJSString merchantIdentifier)))
+      (void (js_openPaymentSetup (toJSString merchantIdentifier)))
  
 foreign import javascript safe "$1[\"begin\"]()" js_begin ::
         ApplePaySession -> IO ()
