@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.DOM.JSFFI.Generated.SpeechRecognitionError
+module GHCJS.DOM.JSFFI.SpeechRecognitionError
        (getError, getMessage,
         SpeechRecognitionError(..), gTypeSpeechRecognitionError)
        where

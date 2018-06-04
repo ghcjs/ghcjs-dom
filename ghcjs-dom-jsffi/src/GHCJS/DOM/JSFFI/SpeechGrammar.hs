@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.DOM.JSFFI.Generated.SpeechGrammar
+module GHCJS.DOM.JSFFI.SpeechGrammar
        (newSpeechGrammarList, addFromURI, addFromString,
         getLength, getSrc, setSrc,
         getWeight, setWeight, item, item_,

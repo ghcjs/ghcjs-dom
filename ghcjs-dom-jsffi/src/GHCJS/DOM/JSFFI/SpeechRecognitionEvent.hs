@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.DOM.JSFFI.Generated.SpeechRecognitionEvent
+module GHCJS.DOM.JSFFI.SpeechRecognitionEvent
        (getResultList, getResultListLength, getResultLength,
         getResult, getAlternative, getTranscript, getConfidence,
         getResultIsFinal, getBestAlternative,

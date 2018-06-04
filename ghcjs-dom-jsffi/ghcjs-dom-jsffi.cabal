@@ -51,6 +51,10 @@ library
           GHCJS.DOM.JSFFI.NavigatorUserMediaError
           GHCJS.DOM.JSFFI.PositionError
           GHCJS.DOM.JSFFI.RTCPeerConnectionError
+          GHCJS.DOM.JSFFI.SpeechGrammar
+          GHCJS.DOM.JSFFI.SpeechRecognition
+          GHCJS.DOM.JSFFI.SpeechRecognitionError
+          GHCJS.DOM.JSFFI.SpeechRecognitionEvent
           GHCJS.DOM.JSFFI.SQLError
           GHCJS.DOM.JSFFI.SQLTransaction
           GHCJS.DOM.JSFFI.Window
@@ -525,10 +529,6 @@ library
           GHCJS.DOM.JSFFI.Generated.Slotable
           GHCJS.DOM.JSFFI.Generated.SourceBuffer
           GHCJS.DOM.JSFFI.Generated.SourceBufferList
-          GHCJS.DOM.JSFFI.Generated.SpeechGrammar
-          GHCJS.DOM.JSFFI.Generated.SpeechRecognition
-          GHCJS.DOM.JSFFI.Generated.SpeechRecognitionError
-          GHCJS.DOM.JSFFI.Generated.SpeechRecognitionEvent
           GHCJS.DOM.JSFFI.Generated.SpeechSynthesis
           GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent
           GHCJS.DOM.JSFFI.Generated.SpeechSynthesisUtterance
@@ -1115,10 +1115,6 @@ library
           , GHCJS.DOM.JSFFI.Generated.Slotable as GHCJS.DOM.Slotable
           , GHCJS.DOM.JSFFI.Generated.SourceBuffer as GHCJS.DOM.SourceBuffer
           , GHCJS.DOM.JSFFI.Generated.SourceBufferList as GHCJS.DOM.SourceBufferList
-          , GHCJS.DOM.JSFFI.Generated.SpeechGrammar as GHCJS.DOM.SpeechGrammar
-          , GHCJS.DOM.JSFFI.Generated.SpeechRecognition as GHCJS.DOM.SpeechRecognition
-          , GHCJS.DOM.JSFFI.Generated.SpeechRecognitionError as GHCJS.DOM.SpeechRecognitionError
-          , GHCJS.DOM.JSFFI.Generated.SpeechRecognitionEvent as GHCJS.DOM.SpeechRecognitionEvent
           , GHCJS.DOM.JSFFI.Generated.SpeechSynthesis as GHCJS.DOM.SpeechSynthesis
           , GHCJS.DOM.JSFFI.Generated.SpeechSynthesisEvent as GHCJS.DOM.SpeechSynthesisEvent
           , GHCJS.DOM.JSFFI.Generated.SpeechSynthesisUtterance as GHCJS.DOM.SpeechSynthesisUtterance

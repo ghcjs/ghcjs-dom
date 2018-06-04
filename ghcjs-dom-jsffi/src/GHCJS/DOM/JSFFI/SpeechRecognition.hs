@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE JavaScriptFFI #-}
-module GHCJS.DOM.JSFFI.Generated.SpeechRecognition
+module GHCJS.DOM.JSFFI.SpeechRecognition
        (newSpeechRecognition, getMaxAlternatives, setMaxAlternatives,
         getGrammars, setGrammars, getLang, setLang,
         getInterimResults, setInterimResults,
