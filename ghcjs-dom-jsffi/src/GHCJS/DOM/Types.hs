@@ -1090,7 +1090,7 @@ unsafeCastTo constructor obj = liftJSM $ do
 --   will probably crash later on in some unpredictable way.
 --
 -- > element <- uncheckedCastTo Element x
-uncheckedCastTo :: (IsGObject obj, IsGObject obj') => (JSVal -> obj') -> obj -> obj'
+uncheckedCastTo :: (Coercible obj JSVal, IsGObject obj') => (JSVal -> obj') -> obj -> obj'
 uncheckedCastTo constructor = constructor . coerce
 
 -- | Determine if this is an instance of a particular type
