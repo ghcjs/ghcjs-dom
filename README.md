@@ -16,6 +16,25 @@ appart from the module names:
 * Add `ghcjs-dom` to your `build-depends:` (not `jsaddle-dom`).
 * Import `GHCJS.DOM.*` instead of `JSDOM.Custom.*`, `JSDOM.Generated.*` or `JSDOM.*`.
 
+## Building
+
+This package depends on the `ghcjs-base` package which is not yet available on
+Hackage. You can use the `ghcjs-base` package directly from the github
+repository as follows:
+
+```
+compiler: ghcjs
+packages: pkg.cabal
+
+source-repository-package
+  type: git
+  location: https://github.com/ghcjs/ghcjs-base
+  tag: b8d51f65ae1921b2f031710bf75e17f216de442a
+```
+
+Similar configuration can be used with `stack` as well. See the stack user
+guide for details.
+
 ## Debug
 
 This feature makes it easier to identify the code responsible for the creating
