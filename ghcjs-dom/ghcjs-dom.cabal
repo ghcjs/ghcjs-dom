@@ -30,7 +30,7 @@ flag debug
 
 library
     build-depends: base <5,
-                   containers >=0.5.7.1 && <0.6,
+                   containers >=0.5.7.1 && <0.7,
                    transformers >=0.2 && <0.6,
                    text >= 0.11.0.6 && < 1.3
 
