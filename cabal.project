@@ -1,0 +1,4 @@
+packages:
+  ghcjs-dom
+  ghcjs-dom-jsaddle
+  ghcjs-dom-jsffi
