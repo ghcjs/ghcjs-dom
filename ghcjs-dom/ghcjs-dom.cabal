@@ -13,9 +13,9 @@ category: Web
 author: Hamish Mackenzie
 
 source-repository head
-    type: git
-    location: https://github.com/ghcjs/ghcjs-dom
-    subdir: ghcjs-dom
+  type:         git
+  location:     https://github.com/ghcjs/ghcjs-dom
+  subdir:       ghcjs-dom
 
 flag jsffi
     description:
