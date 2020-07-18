@@ -12,10 +12,14 @@ description:
 category: Web
 author: Hamish Mackenzie
 
+tested-with:
+  GHC == 8.8.1 || == 8.6.5 ||  == 8.4.4 || == 8.2.2 || == 8.0.2 || == 7.10.3,
+  GHCJS == 8.4 || == 8.2
+
 source-repository head
-    type: git
-    location: https://github.com/ghcjs/ghcjs-dom
-    subdir: ghcjs-dom
+  type:         git
+  location:     https://github.com/ghcjs/ghcjs-dom
+  subdir:       ghcjs-dom
 
 flag jsffi
     description:
