@@ -1,7 +1,9 @@
 {-# LANGUAGE CPP, ForeignFunctionInterface, OverloadedStrings #-}
 {-# LANGUAGE JavaScriptFFI #-}
 module GHCJS.DOM (
-  currentWindow
+  globalThis
+, globalThisUnchecked
+, currentWindow
 , currentWindowUnchecked
 , currentDocument
 , currentDocumentUnchecked
@@ -26,11 +28,17 @@ import JavaScript.Web.AnimationFrame (waitForAnimationFrame, AnimationFrameHandl
 
 import GHCJS.DOM.Types
 
+foreign import javascript unsafe "$r = globalThis"
+  ghcjs_globalThis :: IO (Nullable GlobalThis)
 foreign import javascript unsafe "$r = window"
   ghcjs_currentWindow :: IO (Nullable Window)
 foreign import javascript unsafe "$r = document"
   ghcjs_currentDocument :: IO (Nullable Document)
 
+globalThis :: MonadDOM m => m (Maybe GlobalThis)
+globalThis = liftDOM $ nullableToMaybe <$> ghcjs_globalThis
+globalThisUnchecked :: MonadDOM m => m GlobalThis
+globalThisUnchecked = liftDOM $ fromJust <$> globalThis
 currentWindow :: MonadDOM m => m (Maybe Window)
 currentWindow = liftDOM $ nullableToMaybe <$> ghcjs_currentWindow
 currentWindowUnchecked :: MonadDOM m => m Window
