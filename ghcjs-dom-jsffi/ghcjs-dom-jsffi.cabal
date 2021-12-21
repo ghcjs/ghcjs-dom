@@ -9,7 +9,6 @@ synopsis: DOM library using JSFFI and GHCJS
 description: Documentent Object Model (DOM) functions that work with
              GHCJS.
 author: Hamish Mackenzie
-data-dir: ""
 category: Web
 
 Tested-With:
