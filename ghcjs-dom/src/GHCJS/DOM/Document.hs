@@ -75,8 +75,8 @@ createElementNS_ doc namespaceURI qualifiedName = void $ createElementNS doc nam
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #else
-import "jsaddle-dom" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
-import "jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-jsaddle-dom" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #endif
 
 #endif
