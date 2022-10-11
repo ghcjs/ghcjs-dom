@@ -27,8 +27,8 @@ import GHCJS.DOM.Element (setAttribute, getAttribute)
 import qualified "ghcjs-dom-jsffi" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #else
-import qualified "jsaddle-dom" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
-import "jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
+import qualified "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #endif
 
 
