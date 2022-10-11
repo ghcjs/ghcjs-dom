@@ -27,8 +27,8 @@ import GHCJS.DOM.Element (setAttribute, getAttribute)
 import qualified "ghcjs-dom-jsffi" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #else
-import qualified "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
-import "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
+import qualified "ghcjs-dom-jsaddle" GHCJS.DOM.Document as Raw (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-dom-jsaddle" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #endif
 
 
@@ -75,8 +75,8 @@ createElementNS_ doc namespaceURI qualifiedName = void $ createElementNS doc nam
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #else
-import "ghcjs-jsaddle-dom" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
-import "ghcjs-jsaddle-dom" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-dom-jsaddle" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
+import "ghcjs-dom-jsaddle" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
 #endif
 
 #endif
