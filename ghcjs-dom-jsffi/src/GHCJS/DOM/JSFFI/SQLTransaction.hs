@@ -1,5 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, GHCForeignImportPrim,
-             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase #-}
+             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase, CPP #-}
 module GHCJS.DOM.JSFFI.SQLTransaction (
     module Generated
   , js_executeSql
@@ -14,7 +14,11 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 import Control.Monad (void)
 import Control.Monad.IO.Class (MonadIO(..))
 
+#if __GHCJS__
 import GHCJS.Prim (JSVal(..))
+#elif defined(javascript_HOST_ARCH)
+import GHC.JS.Prim (JSVal(..))
+#endif
 import GHCJS.Types (JSString)
 import GHCJS.DOM.Types
 
