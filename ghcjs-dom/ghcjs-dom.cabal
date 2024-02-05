@@ -50,7 +50,7 @@ library
     if flag(debug)
         cpp-options: -DGHCJS_DOM_DEBUG
 
-    if (impl(ghcjs -any) && flag(jsffi)) || (impl(ghc -any) && arch(javascript))
+    if flag(jsffi) && (impl(ghcjs -any) || (impl(ghc -any) && arch(javascript)))
         build-depends:
             ghcjs-dom-jsffi ==0.9.5.0
     else
