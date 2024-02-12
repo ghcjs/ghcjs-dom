@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -63,7 +63,7 @@ setVertical :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setVertical self val
   = liftIO (js_setVertical self (toJSString val))
  
-foreign import javascript unsafe "$1[\"vertical\"]" js_getVertical
+foreign import javascript unsafe "(($1) => { return $1[\"vertical\"]; })" js_getVertical
         :: VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
@@ -85,14 +85,14 @@ foreign import javascript unsafe "($1[\"snapToLines\"] ? 1 : 0)"
 getSnapToLines :: (MonadIO m) => VTTCue -> m Bool
 getSnapToLines self = liftIO (js_getSnapToLines self)
  
-foreign import javascript safe "$1[\"line\"] = $2;" js_setLine ::
+foreign import javascript safe "(($1, $2) => { $1[\"line\"] = $2; })" js_setLine ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
 setLine :: (MonadIO m) => VTTCue -> Double -> m ()
 setLine self val = liftIO (js_setLine self val)
  
-foreign import javascript unsafe "$1[\"line\"]" js_getLine ::
+foreign import javascript unsafe "(($1) => { return $1[\"line\"]; })" js_getLine ::
         VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.line Mozilla VTTCue.line documentation> 
@@ -106,49 +106,49 @@ foreign import javascript safe "$1[\"position\"] = $2;"
 setPosition :: (MonadIO m) => VTTCue -> Double -> m ()
 setPosition self val = liftIO (js_setPosition self val)
  
-foreign import javascript unsafe "$1[\"position\"]" js_getPosition
+foreign import javascript unsafe "(($1) => { return $1[\"position\"]; })" js_getPosition
         :: VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
 getPosition :: (MonadIO m) => VTTCue -> m Double
 getPosition self = liftIO (js_getPosition self)
  
-foreign import javascript safe "$1[\"size\"] = $2;" js_setSize ::
+foreign import javascript safe "(($1, $2) => { $1[\"size\"] = $2; })" js_setSize ::
         VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
 setSize :: (MonadIO m) => VTTCue -> Double -> m ()
 setSize self val = liftIO (js_setSize self val)
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         VTTCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.size Mozilla VTTCue.size documentation> 
 getSize :: (MonadIO m) => VTTCue -> m Double
 getSize self = liftIO (js_getSize self)
  
-foreign import javascript safe "$1[\"align\"] = $2;" js_setAlign ::
+foreign import javascript safe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign ::
         VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
 setAlign :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setAlign self val = liftIO (js_setAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.align Mozilla VTTCue.align documentation> 
 getAlign :: (MonadIO m, FromJSString result) => VTTCue -> m result
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
-foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"text\"] = $2; })" js_setText ::
         VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
 setText :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setText self val = liftIO (js_setText self (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]" js_getText ::
+foreign import javascript unsafe "(($1) => { return $1[\"text\"]; })" js_getText ::
         VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.text Mozilla VTTCue.text documentation> 
@@ -163,7 +163,7 @@ setRegionId :: (MonadIO m, ToJSString val) => VTTCue -> val -> m ()
 setRegionId self val
   = liftIO (js_setRegionId self (toJSString val))
  
-foreign import javascript unsafe "$1[\"regionId\"]" js_getRegionId
+foreign import javascript unsafe "(($1) => { return $1[\"regionId\"]; })" js_getRegionId
         :: VTTCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 

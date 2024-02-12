@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -61,14 +61,14 @@ foreign import javascript unsafe "($1[\"canInsertDTMF\"] ? 1 : 0)"
 getCanInsertDTMF :: (MonadIO m) => RTCDTMFSender -> m Bool
 getCanInsertDTMF self = liftIO (js_getCanInsertDTMF self)
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         RTCDTMFSender -> IO MediaStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.track Mozilla RTCDTMFSender.track documentation> 
 getTrack :: (MonadIO m) => RTCDTMFSender -> m MediaStreamTrack
 getTrack self = liftIO (js_getTrack self)
  
-foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
+foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_getDuration
         :: RTCDTMFSender -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.duration Mozilla RTCDTMFSender.duration documentation> 

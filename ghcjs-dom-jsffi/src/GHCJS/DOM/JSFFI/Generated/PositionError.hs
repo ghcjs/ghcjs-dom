@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,14 +30,14 @@ pattern PERMISSION_DENIED = 1
 pattern POSITION_UNAVAILABLE = 2
 pattern TIMEOUT = 3
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         PositionError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.code Mozilla PositionError.code documentation> 
 getCode :: (MonadIO m) => PositionError -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         PositionError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PositionError.message Mozilla PositionError.message documentation> 

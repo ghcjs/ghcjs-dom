@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"setRenderPipelineState\"]($2)" js_setRenderPipelineState ::
+        "(($1, $2) => { return $1[\"setRenderPipelineState\"]($2); })" js_setRenderPipelineState ::
         WebGPURenderCommandEncoder -> WebGPURenderPipelineState -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder.setRenderPipelineState Mozilla WebGPURenderCommandEncoder.setRenderPipelineState documentation> 
@@ -52,7 +52,7 @@ setDepthStencilState self depthStencilState
   = liftIO (js_setDepthStencilState self depthStencilState)
  
 foreign import javascript unsafe
-        "$1[\"setVertexBuffer\"]($2, $3,\n$4)" js_setVertexBuffer ::
+        "(($1, $2, $3, $4) => { return $1[\"setVertexBuffer\"]($2, $3,\n$4); })" js_setVertexBuffer ::
         WebGPURenderCommandEncoder -> WebGPUBuffer -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder.setVertexBuffer Mozilla WebGPURenderCommandEncoder.setVertexBuffer documentation> 
@@ -63,7 +63,7 @@ setVertexBuffer self buffer offset index
   = liftIO (js_setVertexBuffer self buffer offset index)
  
 foreign import javascript unsafe
-        "$1[\"setFragmentBuffer\"]($2, $3,\n$4)" js_setFragmentBuffer ::
+        "(($1, $2, $3, $4) => { return $1[\"setFragmentBuffer\"]($2, $3,\n$4); })" js_setFragmentBuffer ::
         WebGPURenderCommandEncoder -> WebGPUBuffer -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder.setFragmentBuffer Mozilla WebGPURenderCommandEncoder.setFragmentBuffer documentation> 
@@ -74,7 +74,7 @@ setFragmentBuffer self buffer offset index
   = liftIO (js_setFragmentBuffer self buffer offset index)
  
 foreign import javascript unsafe
-        "$1[\"drawPrimitives\"]($2, $3, $4)" js_drawPrimitives ::
+        "(($1, $2, $3, $4) => { return $1[\"drawPrimitives\"]($2, $3, $4); })" js_drawPrimitives ::
         WebGPURenderCommandEncoder -> Word -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder.drawPrimitives Mozilla WebGPURenderCommandEncoder.drawPrimitives documentation> 

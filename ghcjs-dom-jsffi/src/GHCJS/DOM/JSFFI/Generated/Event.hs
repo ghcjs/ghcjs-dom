@@ -26,7 +26,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -72,7 +72,7 @@ stopPropagation :: (MonadIO m, IsEvent self) => self -> m ()
 stopPropagation self = liftIO (js_stopPropagation (toEvent self))
  
 foreign import javascript unsafe
-        "$1[\"stopImmediatePropagation\"]()" js_stopImmediatePropagation ::
+        "(($1) => { return $1[\"stopImmediatePropagation\"](); })" js_stopImmediatePropagation ::
         Event -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.stopImmediatePropagation Mozilla Event.stopImmediatePropagation documentation> 
@@ -103,7 +103,7 @@ pattern CAPTURING_PHASE = 1
 pattern AT_TARGET = 2
 pattern BUBBLING_PHASE = 3
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Event -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.type Mozilla Event.type documentation> 
@@ -112,7 +112,7 @@ getType ::
 getType self
   = liftIO (fromJSString <$> (js_getType (toEvent self)))
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         Event -> IO (Nullable EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Event.target Mozilla Event.target documentation> 

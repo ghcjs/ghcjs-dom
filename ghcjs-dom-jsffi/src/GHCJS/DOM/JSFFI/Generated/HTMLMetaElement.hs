@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,7 +36,7 @@ setContent ::
            (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
 setContent self val = liftIO (js_setContent self (toJSString val))
  
-foreign import javascript unsafe "$1[\"content\"]" js_getContent ::
+foreign import javascript unsafe "(($1) => { return $1[\"content\"]; })" js_getContent ::
         HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.content Mozilla HTMLMetaElement.content documentation> 
@@ -62,7 +62,7 @@ getHttpEquiv ::
 getHttpEquiv self
   = liftIO (fromJSString <$> (js_getHttpEquiv self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.name Mozilla HTMLMetaElement.name documentation> 
@@ -70,7 +70,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.name Mozilla HTMLMetaElement.name documentation> 
@@ -86,7 +86,7 @@ setScheme ::
           (MonadIO m, ToJSString val) => HTMLMetaElement -> val -> m ()
 setScheme self val = liftIO (js_setScheme self (toJSString val))
  
-foreign import javascript unsafe "$1[\"scheme\"]" js_getScheme ::
+foreign import javascript unsafe "(($1) => { return $1[\"scheme\"]; })" js_getScheme ::
         HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.scheme Mozilla HTMLMetaElement.scheme documentation> 

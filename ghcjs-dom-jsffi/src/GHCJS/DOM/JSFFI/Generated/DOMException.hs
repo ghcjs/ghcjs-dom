@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -52,7 +52,7 @@ newDOMException message name
       (js_newDOMException (toOptionalJSString message)
          (toOptionalJSString name))
  
-foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+foreign import javascript unsafe "(($1) => { return $1[\"toString\"](); })" js_toString
         :: DOMException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMException.toString Mozilla DOMException.toString documentation> 
@@ -89,14 +89,14 @@ pattern TIMEOUT_ERR = 23
 pattern INVALID_NODE_TYPE_ERR = 24
 pattern DATA_CLONE_ERR = 25
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         DOMException -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMException.code Mozilla DOMException.code documentation> 
 getCode :: (MonadIO m) => DOMException -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         DOMException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMException.name Mozilla DOMException.name documentation> 
@@ -104,7 +104,7 @@ getName ::
         (MonadIO m, FromJSString result) => DOMException -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         DOMException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMException.message Mozilla DOMException.message documentation> 

@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"changeVersion\"]($2, $3, $4,\n$5, $6)" js_changeVersion ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"changeVersion\"]($2, $3, $4,\n$5, $6); })" js_changeVersion ::
         Database ->
           JSString ->
             JSString ->
@@ -72,7 +72,7 @@ transaction self callback errorCallback successCallback
          (maybeToOptional successCallback))
  
 foreign import javascript unsafe
-        "$1[\"readTransaction\"]($2, $3,\n$4)" js_readTransaction ::
+        "(($1, $2, $3, $4) => { return $1[\"readTransaction\"]($2, $3,\n$4); })" js_readTransaction ::
         Database ->
           SQLTransactionCallback ->
             Optional SQLTransactionErrorCallback ->
@@ -89,7 +89,7 @@ readTransaction self callback errorCallback successCallback
       (js_readTransaction self callback (maybeToOptional errorCallback)
          (maybeToOptional successCallback))
  
-foreign import javascript unsafe "$1[\"version\"]" js_getVersion ::
+foreign import javascript unsafe "(($1) => { return $1[\"version\"]; })" js_getVersion ::
         Database -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Database.version Mozilla Database.version documentation> 

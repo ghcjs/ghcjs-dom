@@ -24,7 +24,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -49,7 +49,7 @@ getSVGDocument self = liftIO (js_getSVGDocument self)
 getSVGDocument_ :: (MonadIO m) => HTMLFrameElement -> m ()
 getSVGDocument_ self = liftIO (void (js_getSVGDocument self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.name Mozilla HTMLFrameElement.name documentation> 
@@ -57,7 +57,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLFrameElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.name Mozilla HTMLFrameElement.name documentation> 
@@ -83,7 +83,7 @@ getScrolling ::
 getScrolling self
   = liftIO (fromJSString <$> (js_getScrolling self))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"src\"] = $2; })" js_setSrc ::
         HTMLFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.src Mozilla HTMLFrameElement.src documentation> 
@@ -91,7 +91,7 @@ setSrc ::
        (MonadIO m, ToJSString val) => HTMLFrameElement -> val -> m ()
 setSrc self val = liftIO (js_setSrc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
+foreign import javascript unsafe "(($1) => { return $1[\"src\"]; })" js_getSrc ::
         HTMLFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.src Mozilla HTMLFrameElement.src documentation> 
@@ -126,7 +126,7 @@ setLongDesc ::
 setLongDesc self val
   = liftIO (js_setLongDesc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"longDesc\"]" js_getLongDesc
+foreign import javascript unsafe "(($1) => { return $1[\"longDesc\"]; })" js_getLongDesc
         :: HTMLFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.longDesc Mozilla HTMLFrameElement.longDesc documentation> 
@@ -198,14 +198,14 @@ getMarginWidth ::
 getMarginWidth self
   = liftIO (fromJSString <$> (js_getMarginWidth self))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLFrameElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.width Mozilla HTMLFrameElement.width documentation> 
 getWidth :: (MonadIO m) => HTMLFrameElement -> m Int
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLFrameElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.height Mozilla HTMLFrameElement.height documentation> 
@@ -222,7 +222,7 @@ setLocation ::
 setLocation self val
   = liftIO (js_setLocation self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"location\"]" js_getLocation
+foreign import javascript unsafe "(($1) => { return $1[\"location\"]; })" js_getLocation
         :: HTMLFrameElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameElement.location Mozilla HTMLFrameElement.location documentation> 

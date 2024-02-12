@@ -37,7 +37,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -67,7 +67,7 @@ setStart ::
 setStart self node offset
   = liftIO (js_setStart self (toNode node) offset)
  
-foreign import javascript safe "$1[\"setEnd\"]($2, $3)" js_setEnd
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setEnd\"]($2, $3); })" js_setEnd
         :: Range -> Node -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEnd Mozilla Range.setEnd documentation> 
@@ -106,7 +106,7 @@ foreign import javascript safe "$1[\"setEndAfter\"]($2)"
 setEndAfter :: (MonadIO m, IsNode node) => Range -> node -> m ()
 setEndAfter self node = liftIO (js_setEndAfter self (toNode node))
  
-foreign import javascript unsafe "$1[\"collapse\"]($2)" js_collapse
+foreign import javascript unsafe "(($1, $2) => { return $1[\"collapse\"]($2); })" js_collapse
         :: Range -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.collapse Mozilla Range.collapse documentation> 
@@ -130,7 +130,7 @@ selectNodeContents self node
   = liftIO (js_selectNodeContents self (toNode node))
  
 foreign import javascript safe
-        "$1[\"compareBoundaryPoints\"]($2,\n$3)" js_compareBoundaryPoints
+        "(($1, $2, $3) => { return $1[\"compareBoundaryPoints\"]($2,\n$3); })" js_compareBoundaryPoints
         :: Range -> Word -> Range -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareBoundaryPoints Mozilla Range.compareBoundaryPoints documentation> 
@@ -201,7 +201,7 @@ cloneRange self = liftIO (js_cloneRange self)
 cloneRange_ :: (MonadIO m) => Range -> m ()
 cloneRange_ self = liftIO (void (js_cloneRange self))
  
-foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
+foreign import javascript unsafe "(($1) => { return $1[\"detach\"](); })" js_detach ::
         Range -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.detach Mozilla Range.detach documentation> 
@@ -255,7 +255,7 @@ intersectsNode_ ::
 intersectsNode_ self node
   = liftIO (void (js_intersectsNode self (toNode node)))
  
-foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+foreign import javascript unsafe "(($1) => { return $1[\"toString\"](); })" js_toString
         :: Range -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.toString Mozilla Range.toString documentation> 
@@ -291,7 +291,7 @@ getBoundingClientRect_ self
   = liftIO (void (js_getBoundingClientRect self))
  
 foreign import javascript safe
-        "$1[\"createContextualFragment\"]($2)" js_createContextualFragment
+        "(($1, $2) => { return $1[\"createContextualFragment\"]($2); })" js_createContextualFragment
         :: Range -> JSString -> IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.createContextualFragment Mozilla Range.createContextualFragment documentation> 
@@ -308,7 +308,7 @@ createContextualFragment_ self fragment
   = liftIO
       (void (js_createContextualFragment self (toJSString fragment)))
  
-foreign import javascript safe "$1[\"expand\"]($2)" js_expand ::
+foreign import javascript safe "(($1, $2) => { return $1[\"expand\"]($2); })" js_expand ::
         Range -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.expand Mozilla Range.expand documentation> 

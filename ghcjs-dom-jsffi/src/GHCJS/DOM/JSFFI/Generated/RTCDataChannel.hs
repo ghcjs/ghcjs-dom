@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"send\"]($2)" js_send ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_send ::
         RTCDataChannel -> ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -47,7 +47,7 @@ send ::
      (MonadIO m, IsArrayBuffer data') => RTCDataChannel -> data' -> m ()
 send self data' = liftIO (js_send self (toArrayBuffer data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendView ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendView ::
         RTCDataChannel -> ArrayBufferView -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -57,7 +57,7 @@ sendView ::
 sendView self data'
   = liftIO (js_sendView self (toArrayBufferView data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendBlob ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendBlob ::
         RTCDataChannel -> Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -65,7 +65,7 @@ sendBlob ::
          (MonadIO m, IsBlob data') => RTCDataChannel -> data' -> m ()
 sendBlob self data' = liftIO (js_sendBlob self (toBlob data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendString ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendString ::
         RTCDataChannel -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -74,14 +74,14 @@ sendString ::
 sendString self data'
   = liftIO (js_sendString self (toJSString data'))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         RTCDataChannel -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.close Mozilla RTCDataChannel.close documentation> 
 close :: (MonadIO m) => RTCDataChannel -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         RTCDataChannel -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.label Mozilla RTCDataChannel.label documentation> 
@@ -144,7 +144,7 @@ getMaxRetransmitsUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getMaxRetransmits self))
  
-foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+foreign import javascript unsafe "(($1) => { return $1[\"protocol\"]; })" js_getProtocol
         :: RTCDataChannel -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.protocol Mozilla RTCDataChannel.protocol documentation> 
@@ -159,7 +159,7 @@ foreign import javascript unsafe "($1[\"negotiated\"] ? 1 : 0)"
 getNegotiated :: (MonadIO m) => RTCDataChannel -> m Bool
 getNegotiated self = liftIO (js_getNegotiated self)
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         RTCDataChannel -> IO (Nullable Word)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.id Mozilla RTCDataChannel.id documentation> 

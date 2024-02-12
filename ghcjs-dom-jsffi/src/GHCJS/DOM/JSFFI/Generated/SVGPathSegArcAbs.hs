@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,70 +30,70 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"x\"] = $2; })" js_setX ::
         SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.x Mozilla SVGPathSegArcAbs.x documentation> 
 setX :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
 setX self val = liftIO (js_setX self val)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.x Mozilla SVGPathSegArcAbs.x documentation> 
 getX :: (MonadIO m) => SVGPathSegArcAbs -> m Float
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"y\"] = $2; })" js_setY ::
         SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.y Mozilla SVGPathSegArcAbs.y documentation> 
 setY :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
 setY self val = liftIO (js_setY self val)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.y Mozilla SVGPathSegArcAbs.y documentation> 
 getY :: (MonadIO m) => SVGPathSegArcAbs -> m Float
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"r1\"] = $2;" js_setR1 ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"r1\"] = $2; })" js_setR1 ::
         SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r1 Mozilla SVGPathSegArcAbs.r1 documentation> 
 setR1 :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
 setR1 self val = liftIO (js_setR1 self val)
  
-foreign import javascript unsafe "$1[\"r1\"]" js_getR1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"r1\"]; })" js_getR1 ::
         SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r1 Mozilla SVGPathSegArcAbs.r1 documentation> 
 getR1 :: (MonadIO m) => SVGPathSegArcAbs -> m Float
 getR1 self = liftIO (js_getR1 self)
  
-foreign import javascript unsafe "$1[\"r2\"] = $2;" js_setR2 ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"r2\"] = $2; })" js_setR2 ::
         SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r2 Mozilla SVGPathSegArcAbs.r2 documentation> 
 setR2 :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
 setR2 self val = liftIO (js_setR2 self val)
  
-foreign import javascript unsafe "$1[\"r2\"]" js_getR2 ::
+foreign import javascript unsafe "(($1) => { return $1[\"r2\"]; })" js_getR2 ::
         SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.r2 Mozilla SVGPathSegArcAbs.r2 documentation> 
 getR2 :: (MonadIO m) => SVGPathSegArcAbs -> m Float
 getR2 self = liftIO (js_getR2 self)
  
-foreign import javascript unsafe "$1[\"angle\"] = $2;" js_setAngle
+foreign import javascript unsafe "(($1, $2) => { $1[\"angle\"] = $2; })" js_setAngle
         :: SVGPathSegArcAbs -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.angle Mozilla SVGPathSegArcAbs.angle documentation> 
 setAngle :: (MonadIO m) => SVGPathSegArcAbs -> Float -> m ()
 setAngle self val = liftIO (js_setAngle self val)
  
-foreign import javascript unsafe "$1[\"angle\"]" js_getAngle ::
+foreign import javascript unsafe "(($1) => { return $1[\"angle\"]; })" js_getAngle ::
         SVGPathSegArcAbs -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcAbs.angle Mozilla SVGPathSegArcAbs.angle documentation> 

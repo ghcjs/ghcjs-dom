@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,7 +33,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"now\"]()" js_now ::
+foreign import javascript unsafe "(($1) => { return $1[\"now\"](); })" js_now ::
         Performance -> IO DOMHighResTimeStamp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.now Mozilla Performance.now documentation> 
@@ -116,7 +116,7 @@ setResourceTimingBufferSize ::
 setResourceTimingBufferSize self maxSize
   = liftIO (js_setResourceTimingBufferSize self maxSize)
  
-foreign import javascript safe "$1[\"mark\"]($2)" js_mark ::
+foreign import javascript safe "(($1, $2) => { return $1[\"mark\"]($2); })" js_mark ::
         Performance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.mark Mozilla Performance.mark documentation> 
@@ -169,7 +169,7 @@ getNavigation ::
               (MonadIO m) => Performance -> m PerformanceNavigation
 getNavigation self = liftIO (js_getNavigation self)
  
-foreign import javascript unsafe "$1[\"timing\"]" js_getTiming ::
+foreign import javascript unsafe "(($1) => { return $1[\"timing\"]; })" js_getTiming ::
         Performance -> IO PerformanceTiming
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.timing Mozilla Performance.timing documentation> 

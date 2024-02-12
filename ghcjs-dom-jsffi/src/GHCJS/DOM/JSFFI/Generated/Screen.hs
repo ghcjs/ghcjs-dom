@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,14 +29,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.height Mozilla Screen.height documentation> 
 getHeight :: (MonadIO m) => Screen -> m Word
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.width Mozilla Screen.width documentation> 
@@ -64,7 +64,7 @@ foreign import javascript unsafe "$1[\"availLeft\"]"
 getAvailLeft :: (MonadIO m) => Screen -> m Int
 getAvailLeft self = liftIO (js_getAvailLeft self)
  
-foreign import javascript unsafe "$1[\"availTop\"]" js_getAvailTop
+foreign import javascript unsafe "(($1) => { return $1[\"availTop\"]; })" js_getAvailTop
         :: Screen -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availTop Mozilla Screen.availTop documentation> 

@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -38,14 +38,14 @@ newRTCSessionDescription ::
 newRTCSessionDescription descriptionInitDict
   = liftIO (js_newRTCSessionDescription descriptionInitDict)
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         RTCSessionDescription -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.type Mozilla RTCSessionDescription.type documentation> 
 getType :: (MonadIO m) => RTCSessionDescription -> m RTCSdpType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"sdp\"]" js_getSdp ::
+foreign import javascript unsafe "(($1) => { return $1[\"sdp\"]; })" js_getSdp ::
         RTCSessionDescription -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCSessionDescription.sdp Mozilla RTCSessionDescription.sdp documentation> 

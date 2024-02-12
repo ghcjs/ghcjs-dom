@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -45,7 +45,7 @@ newWebKitMediaKeyMessageEvent type' eventInitDict
       (js_newWebKitMediaKeyMessageEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         WebKitMediaKeyMessageEvent -> IO Uint8Array
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.message Mozilla WebKitMediaKeyMessageEvent.message documentation> 

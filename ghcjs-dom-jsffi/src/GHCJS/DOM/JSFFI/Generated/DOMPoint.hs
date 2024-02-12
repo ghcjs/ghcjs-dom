@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -65,56 +65,56 @@ fromPoint_ :: (MonadIO m) => Maybe DOMPointInit -> m ()
 fromPoint_ other
   = liftIO (void (js_fromPoint (maybeToOptional other)))
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"x\"] = $2; })" js_setX ::
         DOMPoint -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.x Mozilla DOMPoint.x documentation> 
 setX :: (MonadIO m) => DOMPoint -> Double -> m ()
 setX self val = liftIO (js_setX self val)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         DOMPoint -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.x Mozilla DOMPoint.x documentation> 
 getX :: (MonadIO m) => DOMPoint -> m Double
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"y\"] = $2; })" js_setY ::
         DOMPoint -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.y Mozilla DOMPoint.y documentation> 
 setY :: (MonadIO m) => DOMPoint -> Double -> m ()
 setY self val = liftIO (js_setY self val)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         DOMPoint -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.y Mozilla DOMPoint.y documentation> 
 getY :: (MonadIO m) => DOMPoint -> m Double
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"z\"] = $2;" js_setZ ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"z\"] = $2; })" js_setZ ::
         DOMPoint -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.z Mozilla DOMPoint.z documentation> 
 setZ :: (MonadIO m) => DOMPoint -> Double -> m ()
 setZ self val = liftIO (js_setZ self val)
  
-foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
+foreign import javascript unsafe "(($1) => { return $1[\"z\"]; })" js_getZ ::
         DOMPoint -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.z Mozilla DOMPoint.z documentation> 
 getZ :: (MonadIO m) => DOMPoint -> m Double
 getZ self = liftIO (js_getZ self)
  
-foreign import javascript unsafe "$1[\"w\"] = $2;" js_setW ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"w\"] = $2; })" js_setW ::
         DOMPoint -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.w Mozilla DOMPoint.w documentation> 
 setW :: (MonadIO m) => DOMPoint -> Double -> m ()
 setW self val = liftIO (js_setW self val)
  
-foreign import javascript unsafe "$1[\"w\"]" js_getW ::
+foreign import javascript unsafe "(($1) => { return $1[\"w\"]; })" js_getW ::
         DOMPoint -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.w Mozilla DOMPoint.w documentation> 

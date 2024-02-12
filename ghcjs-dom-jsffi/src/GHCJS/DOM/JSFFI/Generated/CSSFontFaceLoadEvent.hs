@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -44,7 +44,7 @@ newCSSFontFaceLoadEvent type' eventInit
       (js_newCSSFontFaceLoadEvent (toJSString type')
          (maybeToOptional eventInit))
  
-foreign import javascript unsafe "$1[\"fontface\"]" js_getFontface
+foreign import javascript unsafe "(($1) => { return $1[\"fontface\"]; })" js_getFontface
         :: CSSFontFaceLoadEvent -> IO (Nullable CSSFontFaceRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.fontface Mozilla CSSFontFaceLoadEvent.fontface documentation> 
@@ -68,7 +68,7 @@ getFontfaceUnchecked ::
 getFontfaceUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getFontface self))
  
-foreign import javascript unsafe "$1[\"error\"]" js_getError ::
+foreign import javascript unsafe "(($1) => { return $1[\"error\"]; })" js_getError ::
         CSSFontFaceLoadEvent -> IO (Nullable DOMError)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSFontFaceLoadEvent.error Mozilla CSSFontFaceLoadEvent.error documentation> 

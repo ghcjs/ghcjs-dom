@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -80,7 +80,7 @@ initMessageEvent self type' bubbles cancelable data' originArg
                  (maybeToOptional (fmap MessageEventSource source'))
              messagePorts')
  
-foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+foreign import javascript unsafe "(($1) => { return $1[\"origin\"]; })" js_getOrigin ::
         MessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.origin Mozilla MessageEvent.origin documentation> 
@@ -97,7 +97,7 @@ getLastEventId ::
 getLastEventId self
   = liftIO (fromJSString <$> (js_getLastEventId self))
  
-foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
+foreign import javascript unsafe "(($1) => { return $1[\"source\"]; })" js_getSource ::
         MessageEvent -> IO (Nullable EventTarget)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.source Mozilla MessageEvent.source documentation> 
@@ -117,14 +117,14 @@ getSourceUnchecked :: (MonadIO m) => MessageEvent -> m EventTarget
 getSourceUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getSource self))
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         MessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.data Mozilla MessageEvent.data documentation> 
 getData :: (MonadIO m) => MessageEvent -> m JSVal
 getData self = liftIO (js_getData self)
  
-foreign import javascript unsafe "$1[\"ports\"]" js_getPorts ::
+foreign import javascript unsafe "(($1) => { return $1[\"ports\"]; })" js_getPorts ::
         MessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.ports Mozilla MessageEvent.ports documentation> 

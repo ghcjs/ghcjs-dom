@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -84,7 +84,7 @@ createNSResolver_ self nodeResolver
             (maybeToOptional (fmap toNode nodeResolver))))
  
 foreign import javascript safe
-        "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"evaluate\"]($2, $3, $4, $5,\n$6); })" js_evaluate ::
         XPathEvaluator ->
           Optional JSString ->
             Optional Node ->

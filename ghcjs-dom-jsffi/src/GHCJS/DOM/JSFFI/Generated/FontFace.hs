@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -61,14 +61,14 @@ load self = liftIO ((js_load self) >>= checkPromiseResult)
 load_ :: (MonadIO m) => FontFace -> m ()
 load_ self = liftIO (void (js_load self))
  
-foreign import javascript safe "$1[\"family\"] = $2;" js_setFamily
+foreign import javascript safe "(($1, $2) => { $1[\"family\"] = $2; })" js_setFamily
         :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.family Mozilla FontFace.family documentation> 
 setFamily :: (MonadIO m, ToJSString val) => FontFace -> val -> m ()
 setFamily self val = liftIO (js_setFamily self (toJSString val))
  
-foreign import javascript unsafe "$1[\"family\"]" js_getFamily ::
+foreign import javascript unsafe "(($1) => { return $1[\"family\"]; })" js_getFamily ::
         FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.family Mozilla FontFace.family documentation> 
@@ -76,14 +76,14 @@ getFamily ::
           (MonadIO m, FromJSString result) => FontFace -> m result
 getFamily self = liftIO (fromJSString <$> (js_getFamily self))
  
-foreign import javascript safe "$1[\"style\"] = $2;" js_setStyle ::
+foreign import javascript safe "(($1, $2) => { $1[\"style\"] = $2; })" js_setStyle ::
         FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.style Mozilla FontFace.style documentation> 
 setStyle :: (MonadIO m, ToJSString val) => FontFace -> val -> m ()
 setStyle self val = liftIO (js_setStyle self (toJSString val))
  
-foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
+foreign import javascript unsafe "(($1) => { return $1[\"style\"]; })" js_getStyle ::
         FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.style Mozilla FontFace.style documentation> 
@@ -91,14 +91,14 @@ getStyle ::
          (MonadIO m, FromJSString result) => FontFace -> m result
 getStyle self = liftIO (fromJSString <$> (js_getStyle self))
  
-foreign import javascript safe "$1[\"weight\"] = $2;" js_setWeight
+foreign import javascript safe "(($1, $2) => { $1[\"weight\"] = $2; })" js_setWeight
         :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.weight Mozilla FontFace.weight documentation> 
 setWeight :: (MonadIO m, ToJSString val) => FontFace -> val -> m ()
 setWeight self val = liftIO (js_setWeight self (toJSString val))
  
-foreign import javascript unsafe "$1[\"weight\"]" js_getWeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"weight\"]; })" js_getWeight ::
         FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.weight Mozilla FontFace.weight documentation> 
@@ -114,7 +114,7 @@ setStretch ::
            (MonadIO m, ToJSString val) => FontFace -> val -> m ()
 setStretch self val = liftIO (js_setStretch self (toJSString val))
  
-foreign import javascript unsafe "$1[\"stretch\"]" js_getStretch ::
+foreign import javascript unsafe "(($1) => { return $1[\"stretch\"]; })" js_getStretch ::
         FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.stretch Mozilla FontFace.stretch documentation> 
@@ -148,7 +148,7 @@ setVariant ::
            (MonadIO m, ToJSString val) => FontFace -> val -> m ()
 setVariant self val = liftIO (js_setVariant self (toJSString val))
  
-foreign import javascript unsafe "$1[\"variant\"]" js_getVariant ::
+foreign import javascript unsafe "(($1) => { return $1[\"variant\"]; })" js_getVariant ::
         FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.variant Mozilla FontFace.variant documentation> 
@@ -174,7 +174,7 @@ getFeatureSettings ::
 getFeatureSettings self
   = liftIO (fromJSString <$> (js_getFeatureSettings self))
  
-foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
+foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getStatus ::
         FontFace -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.status Mozilla FontFace.status documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,14 +39,14 @@ setDirection ::
 setDirection self direction
   = liftIO (js_setDirection self (pToJSVal direction))
  
-foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
+foreign import javascript unsafe "(($1) => { return $1[\"stop\"](); })" js_stop ::
         RTCRtpTransceiver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.stop Mozilla RTCRtpTransceiver.stop documentation> 
 stop :: (MonadIO m) => RTCRtpTransceiver -> m ()
 stop self = liftIO (js_stop self)
  
-foreign import javascript unsafe "$1[\"mid\"]" js_getMid ::
+foreign import javascript unsafe "(($1) => { return $1[\"mid\"]; })" js_getMid ::
         RTCRtpTransceiver -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.mid Mozilla RTCRtpTransceiver.mid documentation> 
@@ -70,14 +70,14 @@ getMidUnchecked ::
 getMidUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getMid self))
  
-foreign import javascript unsafe "$1[\"sender\"]" js_getSender ::
+foreign import javascript unsafe "(($1) => { return $1[\"sender\"]; })" js_getSender ::
         RTCRtpTransceiver -> IO RTCRtpSender
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.sender Mozilla RTCRtpTransceiver.sender documentation> 
 getSender :: (MonadIO m) => RTCRtpTransceiver -> m RTCRtpSender
 getSender self = liftIO (js_getSender self)
  
-foreign import javascript unsafe "$1[\"receiver\"]" js_getReceiver
+foreign import javascript unsafe "(($1) => { return $1[\"receiver\"]; })" js_getReceiver
         :: RTCRtpTransceiver -> IO RTCRtpReceiver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.receiver Mozilla RTCRtpTransceiver.receiver documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -58,28 +58,28 @@ getPrimitiveUnits ::
                   (MonadIO m) => SVGFilterElement -> m SVGAnimatedEnumeration
 getPrimitiveUnits self = liftIO (js_getPrimitiveUnits self)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGFilterElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.x Mozilla SVGFilterElement.x documentation> 
 getX :: (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGFilterElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.y Mozilla SVGFilterElement.y documentation> 
 getY :: (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGFilterElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.width Mozilla SVGFilterElement.width documentation> 
 getWidth :: (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGFilterElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.height Mozilla SVGFilterElement.height documentation> 

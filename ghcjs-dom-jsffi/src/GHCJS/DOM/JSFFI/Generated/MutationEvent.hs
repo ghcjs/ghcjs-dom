@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -96,7 +96,7 @@ getPrevValue ::
 getPrevValue self
   = liftIO (fromJSString <$> (js_getPrevValue self))
  
-foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
+foreign import javascript unsafe "(($1) => { return $1[\"newValue\"]; })" js_getNewValue
         :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.newValue Mozilla MutationEvent.newValue documentation> 
@@ -104,7 +104,7 @@ getNewValue ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
 getNewValue self = liftIO (fromJSString <$> (js_getNewValue self))
  
-foreign import javascript unsafe "$1[\"attrName\"]" js_getAttrName
+foreign import javascript unsafe "(($1) => { return $1[\"attrName\"]; })" js_getAttrName
         :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrName Mozilla MutationEvent.attrName documentation> 

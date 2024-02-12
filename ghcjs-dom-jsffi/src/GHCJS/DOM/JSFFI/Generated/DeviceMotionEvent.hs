@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -141,7 +141,7 @@ getRotationRateUnchecked ::
 getRotationRateUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRotationRate self))
  
-foreign import javascript unsafe "$1[\"interval\"]" js_getInterval
+foreign import javascript unsafe "(($1) => { return $1[\"interval\"]; })" js_getInterval
         :: DeviceMotionEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.interval Mozilla DeviceMotionEvent.interval documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[$2]" js_item ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_item ::
         DOMTokenList -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.item Mozilla DOMTokenList.item documentation> 
@@ -73,7 +73,7 @@ contains_ ::
 contains_ self token
   = liftIO (void (js_contains self (toJSString token)))
  
-foreign import javascript safe "$1[\"add\"]($2)" js_add ::
+foreign import javascript safe "(($1, $2) => { return $1[\"add\"]($2); })" js_add ::
         DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.add Mozilla DOMTokenList.add documentation> 
@@ -82,7 +82,7 @@ add ::
 add self tokens
   = liftIO (toJSVal tokens >>= \ tokens' -> js_add self tokens')
  
-foreign import javascript safe "$1[\"remove\"]($2)" js_remove ::
+foreign import javascript safe "(($1, $2) => { return $1[\"remove\"]($2); })" js_remove ::
         DOMTokenList -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.remove Mozilla DOMTokenList.remove documentation> 
@@ -108,7 +108,7 @@ toggle_ ::
 toggle_ self token force
   = liftIO (void (js_toggle self (toJSString token) force))
  
-foreign import javascript safe "$1[\"replace\"]($2, $3)" js_replace
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"replace\"]($2, $3); })" js_replace
         :: DOMTokenList -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.replace Mozilla DOMTokenList.replace documentation> 
@@ -132,14 +132,14 @@ supports_ ::
 supports_ self token
   = liftIO (void (js_supports self (toJSString token)))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         DOMTokenList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.length Mozilla DOMTokenList.length documentation> 
 getLength :: (MonadIO m) => DOMTokenList -> m Word
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+foreign import javascript unsafe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue
         :: DOMTokenList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.value Mozilla DOMTokenList.value documentation> 
@@ -147,7 +147,7 @@ setValue ::
          (MonadIO m, ToJSString val) => DOMTokenList -> val -> m ()
 setValue self val = liftIO (js_setValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         DOMTokenList -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.value Mozilla DOMTokenList.value documentation> 

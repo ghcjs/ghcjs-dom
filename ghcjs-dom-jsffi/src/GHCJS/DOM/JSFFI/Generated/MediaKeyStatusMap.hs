@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,7 +42,7 @@ has_ ::
 has_ self keyId
   = liftIO (void (js_has self (toBufferSource keyId)))
  
-foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         MediaKeyStatusMap -> BufferSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyStatusMap.get Mozilla MediaKeyStatusMap.get documentation> 
@@ -58,7 +58,7 @@ get_ ::
 get_ self keyId
   = liftIO (void (js_get self (toBufferSource keyId)))
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         MediaKeyStatusMap -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyStatusMap.size Mozilla MediaKeyStatusMap.size documentation> 

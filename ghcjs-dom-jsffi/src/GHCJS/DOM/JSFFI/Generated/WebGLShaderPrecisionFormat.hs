@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,14 +27,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"rangeMin\"]" js_getRangeMin
+foreign import javascript unsafe "(($1) => { return $1[\"rangeMin\"]; })" js_getRangeMin
         :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMin Mozilla WebGLShaderPrecisionFormat.rangeMin documentation> 
 getRangeMin :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
 getRangeMin self = liftIO (js_getRangeMin self)
  
-foreign import javascript unsafe "$1[\"rangeMax\"]" js_getRangeMax
+foreign import javascript unsafe "(($1) => { return $1[\"rangeMax\"]; })" js_getRangeMax
         :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.rangeMax Mozilla WebGLShaderPrecisionFormat.rangeMax documentation> 

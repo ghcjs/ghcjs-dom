@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -38,7 +38,7 @@ getAsString ::
 getAsString self callback
   = liftIO (js_getAsString self (maybeToOptional callback))
  
-foreign import javascript unsafe "$1[\"getAsFile\"]()" js_getAsFile
+foreign import javascript unsafe "(($1) => { return $1[\"getAsFile\"](); })" js_getAsFile
         :: DataTransferItem -> IO (Nullable Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.getAsFile Mozilla DataTransferItem.getAsFile documentation> 
@@ -62,7 +62,7 @@ getAsFileUnchecked :: (MonadIO m) => DataTransferItem -> m Blob
 getAsFileUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getAsFile self))
  
-foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+foreign import javascript unsafe "(($1) => { return $1[\"kind\"]; })" js_getKind ::
         DataTransferItem -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.kind Mozilla DataTransferItem.kind documentation> 
@@ -70,7 +70,7 @@ getKind ::
         (MonadIO m, FromJSString result) => DataTransferItem -> m result
 getKind self = liftIO (fromJSString <$> (js_getKind self))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         DataTransferItem -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem.type Mozilla DataTransferItem.type documentation> 

@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -41,7 +41,7 @@ newCustomEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initCustomEvent\"]($2, $3,\n$4, $5)" js_initCustomEvent ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"initCustomEvent\"]($2, $3,\n$4, $5); })" js_initCustomEvent ::
         CustomEvent -> JSString -> Bool -> Bool -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.initCustomEvent Mozilla CustomEvent.initCustomEvent documentation> 
@@ -55,7 +55,7 @@ initCustomEvent self type' bubbles cancelable detail
            js_initCustomEvent self (toJSString type') bubbles cancelable
              (maybeToOptional detail'))
  
-foreign import javascript unsafe "$1[\"detail\"]" js_getDetail ::
+foreign import javascript unsafe "(($1) => { return $1[\"detail\"]; })" js_getDetail ::
         CustomEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.detail Mozilla CustomEvent.detail documentation> 

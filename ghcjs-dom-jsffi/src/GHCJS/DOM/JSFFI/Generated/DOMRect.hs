@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -57,42 +57,42 @@ fromRect_ :: (MonadIO m) => Maybe DOMRectInit -> m ()
 fromRect_ other
   = liftIO (void (js_fromRect (maybeToOptional other)))
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"x\"] = $2; })" js_setX ::
         DOMRect -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.x Mozilla DOMRect.x documentation> 
 setX :: (MonadIO m) => DOMRect -> Double -> m ()
 setX self val = liftIO (js_setX self val)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         DOMRect -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.x Mozilla DOMRect.x documentation> 
 getX :: (MonadIO m) => DOMRect -> m Double
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"y\"] = $2; })" js_setY ::
         DOMRect -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.y Mozilla DOMRect.y documentation> 
 setY :: (MonadIO m) => DOMRect -> Double -> m ()
 setY self val = liftIO (js_setY self val)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         DOMRect -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.y Mozilla DOMRect.y documentation> 
 getY :: (MonadIO m) => DOMRect -> m Double
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: DOMRect -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.width Mozilla DOMRect.width documentation> 
 setWidth :: (MonadIO m) => DOMRect -> Double -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         DOMRect -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.width Mozilla DOMRect.width documentation> 
@@ -106,7 +106,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 setHeight :: (MonadIO m) => DOMRect -> Double -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         DOMRect -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.height Mozilla DOMRect.height documentation> 

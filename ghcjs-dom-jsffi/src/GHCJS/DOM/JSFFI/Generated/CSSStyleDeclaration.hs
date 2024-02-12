@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -176,7 +176,7 @@ setProperty self propertyName value priority
       (js_setProperty self (toJSString propertyName) (toJSString value)
          (toOptionalJSString priority))
  
-foreign import javascript unsafe "$1[$2]" js_item ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_item ::
         CSSStyleDeclaration -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.item Mozilla CSSStyleDeclaration.item documentation> 
@@ -260,7 +260,7 @@ setCssText ::
            (MonadIO m, ToJSString val) => CSSStyleDeclaration -> val -> m ()
 setCssText self val = liftIO (js_setCssText self (toJSString val))
  
-foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
+foreign import javascript unsafe "(($1) => { return $1[\"cssText\"]; })" js_getCssText ::
         CSSStyleDeclaration -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.cssText Mozilla CSSStyleDeclaration.cssText documentation> 
@@ -268,7 +268,7 @@ getCssText ::
            (MonadIO m, FromJSString result) => CSSStyleDeclaration -> m result
 getCssText self = liftIO (fromJSString <$> (js_getCssText self))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         CSSStyleDeclaration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration.length Mozilla CSSStyleDeclaration.length documentation> 

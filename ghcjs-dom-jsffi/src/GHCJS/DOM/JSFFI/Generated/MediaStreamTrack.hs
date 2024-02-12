@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,7 +33,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
+foreign import javascript unsafe "(($1) => { return $1[\"clone\"](); })" js_clone ::
         MediaStreamTrack -> IO MediaStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.clone Mozilla MediaStreamTrack.clone documentation> 
@@ -45,7 +45,7 @@ clone self = liftIO (js_clone (toMediaStreamTrack self))
 clone_ :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
 clone_ self = liftIO (void (js_clone (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
+foreign import javascript unsafe "(($1) => { return $1[\"stop\"](); })" js_stop ::
         MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.stop Mozilla MediaStreamTrack.stop documentation> 
@@ -115,7 +115,7 @@ applyConstraints self constraints
           (maybeToOptional constraints))
          >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+foreign import javascript unsafe "(($1) => { return $1[\"kind\"]; })" js_getKind ::
         MediaStreamTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.kind Mozilla MediaStreamTrack.kind documentation> 
@@ -125,7 +125,7 @@ getKind ::
 getKind self
   = liftIO (fromJSString <$> (js_getKind (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         MediaStreamTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.id Mozilla MediaStreamTrack.id documentation> 
@@ -135,7 +135,7 @@ getId ::
 getId self
   = liftIO (fromJSString <$> (js_getId (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         MediaStreamTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.label Mozilla MediaStreamTrack.label documentation> 

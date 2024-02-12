@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,28 +27,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGImageElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.x Mozilla SVGImageElement.x documentation> 
 getX :: (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGImageElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.y Mozilla SVGImageElement.y documentation> 
 getY :: (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGImageElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.width Mozilla SVGImageElement.width documentation> 
 getWidth :: (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGImageElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGImageElement.height Mozilla SVGImageElement.height documentation> 

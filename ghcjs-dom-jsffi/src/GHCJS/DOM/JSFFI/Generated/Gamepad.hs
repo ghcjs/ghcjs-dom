@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,14 +28,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         Gamepad -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.id Mozilla Gamepad.id documentation> 
 getId :: (MonadIO m, FromJSString result) => Gamepad -> m result
 getId self = liftIO (fromJSString <$> (js_getId self))
  
-foreign import javascript unsafe "$1[\"index\"]" js_getIndex ::
+foreign import javascript unsafe "(($1) => { return $1[\"index\"]; })" js_getIndex ::
         Gamepad -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.index Mozilla Gamepad.index documentation> 
@@ -56,7 +56,7 @@ foreign import javascript unsafe "$1[\"timestamp\"]"
 getTimestamp :: (MonadIO m) => Gamepad -> m Double
 getTimestamp self = liftIO (js_getTimestamp self)
  
-foreign import javascript unsafe "$1[\"mapping\"]" js_getMapping ::
+foreign import javascript unsafe "(($1) => { return $1[\"mapping\"]; })" js_getMapping ::
         Gamepad -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.mapping Mozilla Gamepad.mapping documentation> 
@@ -64,14 +64,14 @@ getMapping ::
            (MonadIO m, FromJSString result) => Gamepad -> m result
 getMapping self = liftIO (fromJSString <$> (js_getMapping self))
  
-foreign import javascript unsafe "$1[\"axes\"]" js_getAxes ::
+foreign import javascript unsafe "(($1) => { return $1[\"axes\"]; })" js_getAxes ::
         Gamepad -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.axes Mozilla Gamepad.axes documentation> 
 getAxes :: (MonadIO m) => Gamepad -> m [Double]
 getAxes self = liftIO ((js_getAxes self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"buttons\"]" js_getButtons ::
+foreign import javascript unsafe "(($1) => { return $1[\"buttons\"]; })" js_getButtons ::
         Gamepad -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.buttons Mozilla Gamepad.buttons documentation> 

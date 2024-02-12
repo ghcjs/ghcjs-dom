@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -38,7 +38,7 @@ setGlyphRef ::
 setGlyphRef self val
   = liftIO (js_setGlyphRef self (toJSString val))
  
-foreign import javascript unsafe "$1[\"glyphRef\"]" js_getGlyphRef
+foreign import javascript unsafe "(($1) => { return $1[\"glyphRef\"]; })" js_getGlyphRef
         :: SVGGlyphRefElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.glyphRef Mozilla SVGGlyphRefElement.glyphRef documentation> 
@@ -54,7 +54,7 @@ setFormat ::
           (MonadIO m, ToJSString val) => SVGGlyphRefElement -> val -> m ()
 setFormat self val = liftIO (js_setFormat self (toJSString val))
  
-foreign import javascript unsafe "$1[\"format\"]" js_getFormat ::
+foreign import javascript unsafe "(($1) => { return $1[\"format\"]; })" js_getFormat ::
         SVGGlyphRefElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.format Mozilla SVGGlyphRefElement.format documentation> 
@@ -62,56 +62,56 @@ getFormat ::
           (MonadIO m, FromJSString result) => SVGGlyphRefElement -> m result
 getFormat self = liftIO (fromJSString <$> (js_getFormat self))
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"x\"] = $2; })" js_setX ::
         SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 setX :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
 setX self val = liftIO (js_setX self val)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.x Mozilla SVGGlyphRefElement.x documentation> 
 getX :: (MonadIO m) => SVGGlyphRefElement -> m Float
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"y\"] = $2; })" js_setY ::
         SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 setY :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
 setY self val = liftIO (js_setY self val)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.y Mozilla SVGGlyphRefElement.y documentation> 
 getY :: (MonadIO m) => SVGGlyphRefElement -> m Float
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"dx\"] = $2;" js_setDx ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"dx\"] = $2; })" js_setDx ::
         SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 setDx :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
 setDx self val = liftIO (js_setDx self val)
  
-foreign import javascript unsafe "$1[\"dx\"]" js_getDx ::
+foreign import javascript unsafe "(($1) => { return $1[\"dx\"]; })" js_getDx ::
         SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dx Mozilla SVGGlyphRefElement.dx documentation> 
 getDx :: (MonadIO m) => SVGGlyphRefElement -> m Float
 getDx self = liftIO (js_getDx self)
  
-foreign import javascript unsafe "$1[\"dy\"] = $2;" js_setDy ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"dy\"] = $2; })" js_setDy ::
         SVGGlyphRefElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 
 setDy :: (MonadIO m) => SVGGlyphRefElement -> Float -> m ()
 setDy self val = liftIO (js_setDy self val)
  
-foreign import javascript unsafe "$1[\"dy\"]" js_getDy ::
+foreign import javascript unsafe "(($1) => { return $1[\"dy\"]; })" js_getDy ::
         SVGGlyphRefElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGlyphRefElement.dy Mozilla SVGGlyphRefElement.dy documentation> 

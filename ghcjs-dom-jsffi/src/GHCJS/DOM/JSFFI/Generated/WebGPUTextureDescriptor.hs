@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -61,14 +61,14 @@ foreign import javascript unsafe "$1[\"textureType\"]"
 getTextureType :: (MonadIO m) => WebGPUTextureDescriptor -> m Word
 getTextureType self = liftIO (js_getTextureType self)
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.width Mozilla WebGPUTextureDescriptor.width documentation> 
 setWidth :: (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.width Mozilla WebGPUTextureDescriptor.width documentation> 
@@ -82,7 +82,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 setHeight :: (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.height Mozilla WebGPUTextureDescriptor.height documentation> 
@@ -119,14 +119,14 @@ foreign import javascript unsafe "$1[\"storageMode\"]"
 getStorageMode :: (MonadIO m) => WebGPUTextureDescriptor -> m Word
 getStorageMode self = liftIO (js_getStorageMode self)
  
-foreign import javascript unsafe "$1[\"usage\"] = $2;" js_setUsage
+foreign import javascript unsafe "(($1, $2) => { $1[\"usage\"] = $2; })" js_setUsage
         :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.usage Mozilla WebGPUTextureDescriptor.usage documentation> 
 setUsage :: (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setUsage self val = liftIO (js_setUsage self val)
  
-foreign import javascript unsafe "$1[\"usage\"]" js_getUsage ::
+foreign import javascript unsafe "(($1) => { return $1[\"usage\"]; })" js_getUsage ::
         WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.usage Mozilla WebGPUTextureDescriptor.usage documentation> 

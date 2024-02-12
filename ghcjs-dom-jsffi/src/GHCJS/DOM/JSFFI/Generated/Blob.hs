@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -64,14 +64,14 @@ slice_ self start end contentType
             (maybeToOptional (fmap fromIntegral end))
             (toOptionalJSString contentType)))
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         Blob -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.size Mozilla Blob.size documentation> 
 getSize :: (MonadIO m, IsBlob self) => self -> m Word64
 getSize self = liftIO (round <$> (js_getSize (toBlob self)))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.type Mozilla Blob.type documentation> 

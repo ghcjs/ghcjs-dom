@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"insertRow\"]($2)" js_insertRow
+foreign import javascript safe "(($1, $2) => { return $1[\"insertRow\"]($2); })" js_insertRow
         :: HTMLTableSectionElement -> Optional Int -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.insertRow Mozilla HTMLTableSectionElement.insertRow documentation> 
@@ -45,14 +45,14 @@ insertRow_ ::
 insertRow_ self index
   = liftIO (void (js_insertRow self (maybeToOptional index)))
  
-foreign import javascript safe "$1[\"deleteRow\"]($2)" js_deleteRow
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteRow\"]($2); })" js_deleteRow
         :: HTMLTableSectionElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.deleteRow Mozilla HTMLTableSectionElement.deleteRow documentation> 
 deleteRow :: (MonadIO m) => HTMLTableSectionElement -> Int -> m ()
 deleteRow self index = liftIO (js_deleteRow self index)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+foreign import javascript unsafe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign
         :: HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.align Mozilla HTMLTableSectionElement.align documentation> 
@@ -61,7 +61,7 @@ setAlign ::
            HTMLTableSectionElement -> val -> m ()
 setAlign self val = liftIO (js_setAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.align Mozilla HTMLTableSectionElement.align documentation> 
@@ -70,7 +70,7 @@ getAlign ::
            HTMLTableSectionElement -> m result
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
-foreign import javascript unsafe "$1[\"ch\"] = $2;" js_setCh ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"ch\"] = $2; })" js_setCh ::
         HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.ch Mozilla HTMLTableSectionElement.ch documentation> 
@@ -79,7 +79,7 @@ setCh ::
         HTMLTableSectionElement -> val -> m ()
 setCh self val = liftIO (js_setCh self (toJSString val))
  
-foreign import javascript unsafe "$1[\"ch\"]" js_getCh ::
+foreign import javascript unsafe "(($1) => { return $1[\"ch\"]; })" js_getCh ::
         HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.ch Mozilla HTMLTableSectionElement.ch documentation> 
@@ -88,7 +88,7 @@ getCh ::
         HTMLTableSectionElement -> m result
 getCh self = liftIO (fromJSString <$> (js_getCh self))
  
-foreign import javascript unsafe "$1[\"chOff\"] = $2;" js_setChOff
+foreign import javascript unsafe "(($1, $2) => { $1[\"chOff\"] = $2; })" js_setChOff
         :: HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.chOff Mozilla HTMLTableSectionElement.chOff documentation> 
@@ -97,7 +97,7 @@ setChOff ::
            HTMLTableSectionElement -> val -> m ()
 setChOff self val = liftIO (js_setChOff self (toJSString val))
  
-foreign import javascript unsafe "$1[\"chOff\"]" js_getChOff ::
+foreign import javascript unsafe "(($1) => { return $1[\"chOff\"]; })" js_getChOff ::
         HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.chOff Mozilla HTMLTableSectionElement.chOff documentation> 
@@ -115,7 +115,7 @@ setVAlign ::
             HTMLTableSectionElement -> val -> m ()
 setVAlign self val = liftIO (js_setVAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"vAlign\"]" js_getVAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"vAlign\"]; })" js_getVAlign ::
         HTMLTableSectionElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.vAlign Mozilla HTMLTableSectionElement.vAlign documentation> 
@@ -124,7 +124,7 @@ getVAlign ::
             HTMLTableSectionElement -> m result
 getVAlign self = liftIO (fromJSString <$> (js_getVAlign self))
  
-foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
+foreign import javascript unsafe "(($1) => { return $1[\"rows\"]; })" js_getRows ::
         HTMLTableSectionElement -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.rows Mozilla HTMLTableSectionElement.rows documentation> 

@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         MutationRecord -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.type Mozilla MutationRecord.type documentation> 
@@ -43,7 +43,7 @@ getType ::
         (MonadIO m, FromJSString result) => MutationRecord -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         MutationRecord -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.target Mozilla MutationRecord.target documentation> 
@@ -162,7 +162,7 @@ getAttributeNamespaceUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getAttributeNamespace self))
  
-foreign import javascript unsafe "$1[\"oldValue\"]" js_getOldValue
+foreign import javascript unsafe "(($1) => { return $1[\"oldValue\"]; })" js_getOldValue
         :: MutationRecord -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.oldValue Mozilla MutationRecord.oldValue documentation> 

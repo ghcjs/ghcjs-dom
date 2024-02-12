@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "$1[\"newValueSpecifiedUnits\"]($2,\n$3)" js_newValueSpecifiedUnits
+        "(($1, $2, $3) => { return $1[\"newValueSpecifiedUnits\"]($2,\n$3); })" js_newValueSpecifiedUnits
         :: SVGAngle -> Word -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.newValueSpecifiedUnits Mozilla SVGAngle.newValueSpecifiedUnits documentation> 
@@ -46,7 +46,7 @@ newValueSpecifiedUnits self unitType valueInSpecifiedUnits
       (js_newValueSpecifiedUnits self unitType valueInSpecifiedUnits)
  
 foreign import javascript safe
-        "$1[\"convertToSpecifiedUnits\"]($2)" js_convertToSpecifiedUnits ::
+        "(($1, $2) => { return $1[\"convertToSpecifiedUnits\"]($2); })" js_convertToSpecifiedUnits ::
         SVGAngle -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.convertToSpecifiedUnits Mozilla SVGAngle.convertToSpecifiedUnits documentation> 
@@ -59,21 +59,21 @@ pattern SVG_ANGLETYPE_DEG = 2
 pattern SVG_ANGLETYPE_RAD = 3
 pattern SVG_ANGLETYPE_GRAD = 4
  
-foreign import javascript unsafe "$1[\"unitType\"]" js_getUnitType
+foreign import javascript unsafe "(($1) => { return $1[\"unitType\"]; })" js_getUnitType
         :: SVGAngle -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.unitType Mozilla SVGAngle.unitType documentation> 
 getUnitType :: (MonadIO m) => SVGAngle -> m Word
 getUnitType self = liftIO (js_getUnitType self)
  
-foreign import javascript safe "$1[\"value\"] = $2;" js_setValue ::
+foreign import javascript safe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue ::
         SVGAngle -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.value Mozilla SVGAngle.value documentation> 
 setValue :: (MonadIO m) => SVGAngle -> Float -> m ()
 setValue self val = liftIO (js_setValue self val)
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         SVGAngle -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.value Mozilla SVGAngle.value documentation> 
@@ -81,7 +81,7 @@ getValue :: (MonadIO m) => SVGAngle -> m Float
 getValue self = liftIO (js_getValue self)
  
 foreign import javascript safe
-        "$1[\"valueInSpecifiedUnits\"] = $2;" js_setValueInSpecifiedUnits
+        "(($1, $2) => { $1[\"valueInSpecifiedUnits\"] = $2; })" js_setValueInSpecifiedUnits
         :: SVGAngle -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueInSpecifiedUnits Mozilla SVGAngle.valueInSpecifiedUnits documentation> 

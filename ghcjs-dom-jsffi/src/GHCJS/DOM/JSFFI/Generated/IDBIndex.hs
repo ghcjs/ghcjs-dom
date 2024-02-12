@@ -24,7 +24,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -136,7 +136,7 @@ openKeyCursor_ self key direction
          (toJSVal key >>= \ key' -> js_openKeyCursor self key'
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"get\"]($2)" js_getRange ::
+foreign import javascript safe "(($1, $2) => { return $1[\"get\"]($2); })" js_getRange ::
         IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
@@ -149,7 +149,7 @@ getRange_ :: (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m ()
 getRange_ self key
   = liftIO (void (js_getRange self (maybeToOptional key)))
  
-foreign import javascript safe "$1[\"get\"]($2)" js_get ::
+foreign import javascript safe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.get Mozilla IDBIndex.get documentation> 
@@ -161,7 +161,7 @@ get_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
 get_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_get self key'))
  
-foreign import javascript safe "$1[\"getKey\"]($2)" js_getKeyRange
+foreign import javascript safe "(($1, $2) => { return $1[\"getKey\"]($2); })" js_getKeyRange
         :: IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
@@ -176,7 +176,7 @@ getKeyRange_ ::
 getKeyRange_ self key
   = liftIO (void (js_getKeyRange self (maybeToOptional key)))
  
-foreign import javascript safe "$1[\"getKey\"]($2)" js_getKey ::
+foreign import javascript safe "(($1, $2) => { return $1[\"getKey\"]($2); })" js_getKey ::
         IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getKey Mozilla IDBIndex.getKey documentation> 
@@ -212,7 +212,7 @@ getAllRange_ self range count
          (js_getAllRange self (maybeToOptional range)
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAll\"]($2, $3)" js_getAll
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAll\"]($2, $3); })" js_getAll
         :: IDBIndex -> JSVal -> Optional Word -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.getAll Mozilla IDBIndex.getAll documentation> 
@@ -277,7 +277,7 @@ getAllKeys_ self key count
          (toJSVal key >>= \ key' -> js_getAllKeys self key'
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"count\"]($2)" js_countRange ::
+foreign import javascript safe "(($1, $2) => { return $1[\"count\"]($2); })" js_countRange ::
         IDBIndex -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
@@ -291,7 +291,7 @@ countRange_ :: (MonadIO m) => IDBIndex -> Maybe IDBKeyRange -> m ()
 countRange_ self range
   = liftIO (void (js_countRange self (maybeToOptional range)))
  
-foreign import javascript safe "$1[\"count\"]($2)" js_count ::
+foreign import javascript safe "(($1, $2) => { return $1[\"count\"]($2); })" js_count ::
         IDBIndex -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.count Mozilla IDBIndex.count documentation> 
@@ -305,14 +305,14 @@ count_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
 count_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_count self key'))
  
-foreign import javascript safe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript safe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         IDBIndex -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.name Mozilla IDBIndex.name documentation> 
 setName :: (MonadIO m, ToJSString val) => IDBIndex -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         IDBIndex -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.name Mozilla IDBIndex.name documentation> 
@@ -326,7 +326,7 @@ foreign import javascript unsafe "$1[\"objectStore\"]"
 getObjectStore :: (MonadIO m) => IDBIndex -> m IDBObjectStore
 getObjectStore self = liftIO (js_getObjectStore self)
  
-foreign import javascript unsafe "$1[\"keyPath\"]" js_getKeyPath ::
+foreign import javascript unsafe "(($1) => { return $1[\"keyPath\"]; })" js_getKeyPath ::
         IDBIndex -> IO (Nullable IDBKeyPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.keyPath Mozilla IDBIndex.keyPath documentation> 

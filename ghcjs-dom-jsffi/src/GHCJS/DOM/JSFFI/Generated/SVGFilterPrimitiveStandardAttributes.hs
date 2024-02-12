@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGFilterPrimitiveStandardAttributes -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.x Mozilla SVGFilterPrimitiveStandardAttributes.x documentation> 
@@ -40,7 +40,7 @@ getX ::
 getX self
   = liftIO (js_getX (toSVGFilterPrimitiveStandardAttributes self))
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGFilterPrimitiveStandardAttributes -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.y Mozilla SVGFilterPrimitiveStandardAttributes.y documentation> 
@@ -50,7 +50,7 @@ getY ::
 getY self
   = liftIO (js_getY (toSVGFilterPrimitiveStandardAttributes self))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGFilterPrimitiveStandardAttributes -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.width Mozilla SVGFilterPrimitiveStandardAttributes.width documentation> 
@@ -61,7 +61,7 @@ getWidth self
   = liftIO
       (js_getWidth (toSVGFilterPrimitiveStandardAttributes self))
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGFilterPrimitiveStandardAttributes -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.height Mozilla SVGFilterPrimitiveStandardAttributes.height documentation> 
@@ -72,7 +72,7 @@ getHeight self
   = liftIO
       (js_getHeight (toSVGFilterPrimitiveStandardAttributes self))
  
-foreign import javascript unsafe "$1[\"result\"]" js_getResult ::
+foreign import javascript unsafe "(($1) => { return $1[\"result\"]; })" js_getResult ::
         SVGFilterPrimitiveStandardAttributes -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterPrimitiveStandardAttributes.result Mozilla SVGFilterPrimitiveStandardAttributes.result documentation> 

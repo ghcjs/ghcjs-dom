@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         SVGStringList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.clear Mozilla SVGStringList.clear documentation> 
@@ -53,7 +53,7 @@ initialize_ ::
 initialize_ self item
   = liftIO (void (js_initialize self (toJSString item)))
  
-foreign import javascript safe "$1[\"getItem\"]($2)" js_getItem ::
+foreign import javascript safe "(($1, $2) => { return $1[\"getItem\"]($2); })" js_getItem ::
         SVGStringList -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStringList.getItem Mozilla SVGStringList.getItem documentation> 

@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,14 +36,14 @@ pattern SYNTAX_ERR = 5
 pattern CONSTRAINT_ERR = 6
 pattern TIMEOUT_ERR = 7
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         SQLException -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLException.code Mozilla SQLException.code documentation> 
 getCode :: (MonadIO m) => SQLException -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         SQLException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLException.message Mozilla SQLException.message documentation> 

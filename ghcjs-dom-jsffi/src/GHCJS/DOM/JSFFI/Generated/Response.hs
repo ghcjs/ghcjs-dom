@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -123,7 +123,7 @@ text self
 text_ :: (MonadIO m) => Response -> m ()
 text_ self = liftIO (void (js_text self))
  
-foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
+foreign import javascript unsafe "(($1) => { return $1[\"clone\"](); })" js_clone ::
         Response -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.clone Mozilla Response.clone documentation> 
@@ -134,14 +134,14 @@ clone self = liftIO (js_clone self)
 clone_ :: (MonadIO m) => Response -> m ()
 clone_ self = liftIO (void (js_clone self))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Response -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.type Mozilla Response.type documentation> 
 getType :: (MonadIO m) => Response -> m ResponseType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         Response -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.url Mozilla Response.url documentation> 
@@ -155,7 +155,7 @@ foreign import javascript unsafe "($1[\"redirected\"] ? 1 : 0)"
 getRedirected :: (MonadIO m) => Response -> m Bool
 getRedirected self = liftIO (js_getRedirected self)
  
-foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
+foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getStatus ::
         Response -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.status Mozilla Response.status documentation> 
@@ -178,14 +178,14 @@ getStatusText ::
 getStatusText self
   = liftIO (fromJSString <$> (js_getStatusText self))
  
-foreign import javascript unsafe "$1[\"headers\"]" js_getHeaders ::
+foreign import javascript unsafe "(($1) => { return $1[\"headers\"]; })" js_getHeaders ::
         Response -> IO Headers
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.headers Mozilla Response.headers documentation> 
 getHeaders :: (MonadIO m) => Response -> m Headers
 getHeaders self = liftIO (js_getHeaders self)
  
-foreign import javascript unsafe "$1[\"body\"]" js_getBody ::
+foreign import javascript unsafe "(($1) => { return $1[\"body\"]; })" js_getBody ::
         Response -> IO (Nullable ReadableStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.body Mozilla Response.body documentation> 

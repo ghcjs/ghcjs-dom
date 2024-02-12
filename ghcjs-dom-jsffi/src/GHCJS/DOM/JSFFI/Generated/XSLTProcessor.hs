@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -52,7 +52,7 @@ importStylesheet self stylesheet
          (maybeToOptional (fmap toNode stylesheet)))
  
 foreign import javascript unsafe
-        "$1[\"transformToFragment\"]($2,\n$3)" js_transformToFragment ::
+        "(($1, $2, $3) => { return $1[\"transformToFragment\"]($2,\n$3); })" js_transformToFragment ::
         XSLTProcessor ->
           Optional Node -> Optional Document -> IO DocumentFragment
 
@@ -185,7 +185,7 @@ foreign import javascript unsafe "$1[\"clearParameters\"]()"
 clearParameters :: (MonadIO m) => XSLTProcessor -> m ()
 clearParameters self = liftIO (js_clearParameters self)
  
-foreign import javascript unsafe "$1[\"reset\"]()" js_reset ::
+foreign import javascript unsafe "(($1) => { return $1[\"reset\"](); })" js_reset ::
         XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.reset Mozilla XSLTProcessor.reset documentation> 

@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"nextNode\"]()" js_nextNode
+foreign import javascript unsafe "(($1) => { return $1[\"nextNode\"](); })" js_nextNode
         :: NodeIterator -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.nextNode Mozilla NodeIterator.nextNode documentation> 
@@ -80,14 +80,14 @@ previousNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
 previousNodeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_previousNode self))
  
-foreign import javascript unsafe "$1[\"detach\"]()" js_detach ::
+foreign import javascript unsafe "(($1) => { return $1[\"detach\"](); })" js_detach ::
         NodeIterator -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.detach Mozilla NodeIterator.detach documentation> 
 detach :: (MonadIO m) => NodeIterator -> m ()
 detach self = liftIO (js_detach self)
  
-foreign import javascript unsafe "$1[\"root\"]" js_getRoot ::
+foreign import javascript unsafe "(($1) => { return $1[\"root\"]; })" js_getRoot ::
         NodeIterator -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.root Mozilla NodeIterator.root documentation> 

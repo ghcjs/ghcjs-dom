@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"define\"]($2, $3)" js_define
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"define\"]($2, $3); })" js_define
         :: CustomElementRegistry -> JSString -> Function -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry.define Mozilla CustomElementRegistry.define documentation> 
@@ -37,7 +37,7 @@ define self name constructor
   = liftIO
       (js_define self (toJSString name) (toFunction constructor))
  
-foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         CustomElementRegistry -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry.get Mozilla CustomElementRegistry.get documentation> 

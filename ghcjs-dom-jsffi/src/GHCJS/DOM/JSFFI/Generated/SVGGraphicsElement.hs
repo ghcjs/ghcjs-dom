@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getBBox\"]()" js_getBBox ::
+foreign import javascript unsafe "(($1) => { return $1[\"getBBox\"](); })" js_getBBox ::
         SVGGraphicsElement -> IO SVGRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getBBox Mozilla SVGGraphicsElement.getBBox documentation> 
@@ -45,7 +45,7 @@ getBBox_ :: (MonadIO m, IsSVGGraphicsElement self) => self -> m ()
 getBBox_ self
   = liftIO (void (js_getBBox (toSVGGraphicsElement self)))
  
-foreign import javascript unsafe "$1[\"getCTM\"]()" js_getCTM ::
+foreign import javascript unsafe "(($1) => { return $1[\"getCTM\"](); })" js_getCTM ::
         SVGGraphicsElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getCTM Mozilla SVGGraphicsElement.getCTM documentation> 

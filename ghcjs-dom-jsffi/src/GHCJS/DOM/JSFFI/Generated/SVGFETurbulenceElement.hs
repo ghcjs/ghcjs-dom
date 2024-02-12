@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -65,7 +65,7 @@ getNumOctaves ::
               (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedInteger
 getNumOctaves self = liftIO (js_getNumOctaves self)
  
-foreign import javascript unsafe "$1[\"seed\"]" js_getSeed ::
+foreign import javascript unsafe "(($1) => { return $1[\"seed\"]; })" js_getSeed ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
@@ -82,7 +82,7 @@ getStitchTiles ::
                (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedEnumeration
 getStitchTiles self = liftIO (js_getStitchTiles self)
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         SVGFETurbulenceElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.type Mozilla SVGFETurbulenceElement.type documentation> 

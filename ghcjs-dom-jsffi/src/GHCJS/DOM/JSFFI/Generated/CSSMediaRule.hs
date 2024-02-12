@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -58,14 +58,14 @@ deleteRule :: (MonadIO m) => CSSMediaRule -> Maybe Word -> m ()
 deleteRule self index
   = liftIO (js_deleteRule self (maybeToOptional index))
  
-foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
+foreign import javascript unsafe "(($1) => { return $1[\"media\"]; })" js_getMedia ::
         CSSMediaRule -> IO MediaList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.media Mozilla CSSMediaRule.media documentation> 
 getMedia :: (MonadIO m) => CSSMediaRule -> m MediaList
 getMedia self = liftIO (js_getMedia self)
  
-foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
+foreign import javascript unsafe "(($1) => { return $1[\"cssRules\"]; })" js_getCssRules
         :: CSSMediaRule -> IO CSSRuleList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSMediaRule.cssRules Mozilla CSSMediaRule.cssRules documentation> 

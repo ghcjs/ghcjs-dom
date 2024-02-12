@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -63,7 +63,7 @@ getInputType ::
 getInputType self
   = liftIO (fromJSString <$> (js_getInputType self))
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         InputEvent -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent.data Mozilla InputEvent.data documentation> 

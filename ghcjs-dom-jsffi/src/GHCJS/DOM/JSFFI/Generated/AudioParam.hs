@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -64,7 +64,7 @@ exponentialRampToValueAtTime self value time
   = liftIO (js_exponentialRampToValueAtTime self value time)
  
 foreign import javascript unsafe
-        "$1[\"setTargetAtTime\"]($2, $3,\n$4)" js_setTargetAtTime ::
+        "(($1, $2, $3, $4) => { return $1[\"setTargetAtTime\"]($2, $3,\n$4); })" js_setTargetAtTime ::
         AudioParam -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.setTargetAtTime Mozilla AudioParam.setTargetAtTime documentation> 
@@ -74,7 +74,7 @@ setTargetAtTime self target time timeConstant
   = liftIO (js_setTargetAtTime self target time timeConstant)
  
 foreign import javascript unsafe
-        "$1[\"setValueCurveAtTime\"]($2,\n$3, $4)" js_setValueCurveAtTime
+        "(($1, $2, $3, $4) => { return $1[\"setValueCurveAtTime\"]($2,\n$3, $4); })" js_setValueCurveAtTime
         :: AudioParam -> Optional Float32Array -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.setValueCurveAtTime Mozilla AudioParam.setValueCurveAtTime documentation> 
@@ -89,7 +89,7 @@ setValueCurveAtTime self values time duration
          duration)
  
 foreign import javascript unsafe
-        "$1[\"cancelScheduledValues\"]($2)" js_cancelScheduledValues ::
+        "(($1, $2) => { return $1[\"cancelScheduledValues\"]($2); })" js_cancelScheduledValues ::
         AudioParam -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.cancelScheduledValues Mozilla AudioParam.cancelScheduledValues documentation> 
@@ -97,28 +97,28 @@ cancelScheduledValues :: (MonadIO m) => AudioParam -> Float -> m ()
 cancelScheduledValues self startTime
   = liftIO (js_cancelScheduledValues self startTime)
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+foreign import javascript unsafe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue
         :: AudioParam -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.value Mozilla AudioParam.value documentation> 
 setValue :: (MonadIO m) => AudioParam -> Float -> m ()
 setValue self val = liftIO (js_setValue self val)
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         AudioParam -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.value Mozilla AudioParam.value documentation> 
 getValue :: (MonadIO m) => AudioParam -> m Float
 getValue self = liftIO (js_getValue self)
  
-foreign import javascript unsafe "$1[\"minValue\"]" js_getMinValue
+foreign import javascript unsafe "(($1) => { return $1[\"minValue\"]; })" js_getMinValue
         :: AudioParam -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.minValue Mozilla AudioParam.minValue documentation> 
 getMinValue :: (MonadIO m) => AudioParam -> m Float
 getMinValue self = liftIO (js_getMinValue self)
  
-foreign import javascript unsafe "$1[\"maxValue\"]" js_getMaxValue
+foreign import javascript unsafe "(($1) => { return $1[\"maxValue\"]; })" js_getMaxValue
         :: AudioParam -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.maxValue Mozilla AudioParam.maxValue documentation> 
@@ -132,7 +132,7 @@ foreign import javascript unsafe "$1[\"defaultValue\"]"
 getDefaultValue :: (MonadIO m) => AudioParam -> m Float
 getDefaultValue self = liftIO (js_getDefaultValue self)
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         AudioParam -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.name Mozilla AudioParam.name documentation> 
@@ -140,7 +140,7 @@ getName ::
         (MonadIO m, FromJSString result) => AudioParam -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"units\"]" js_getUnits ::
+foreign import javascript unsafe "(($1) => { return $1[\"units\"]; })" js_getUnits ::
         AudioParam -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.units Mozilla AudioParam.units documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ pattern SVG_CHANNEL_G = 2
 pattern SVG_CHANNEL_B = 3
 pattern SVG_CHANNEL_A = 4
  
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in1\"]; })" js_getIn1 ::
         SVGFEDisplacementMapElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in1 Mozilla SVGFEDisplacementMapElement.in1 documentation> 
@@ -43,7 +43,7 @@ getIn1 ::
        (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedString
 getIn1 self = liftIO (js_getIn1 self)
  
-foreign import javascript unsafe "$1[\"in2\"]" js_getIn2 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in2\"]; })" js_getIn2 ::
         SVGFEDisplacementMapElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.in2 Mozilla SVGFEDisplacementMapElement.in2 documentation> 
@@ -51,7 +51,7 @@ getIn2 ::
        (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedString
 getIn2 self = liftIO (js_getIn2 self)
  
-foreign import javascript unsafe "$1[\"scale\"]" js_getScale ::
+foreign import javascript unsafe "(($1) => { return $1[\"scale\"]; })" js_getScale ::
         SVGFEDisplacementMapElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDisplacementMapElement.scale Mozilla SVGFEDisplacementMapElement.scale documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -48,7 +48,7 @@ pattern SVG_EDGEMODE_DUPLICATE = 1
 pattern SVG_EDGEMODE_WRAP = 2
 pattern SVG_EDGEMODE_NONE = 3
  
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in1\"]; })" js_getIn1 ::
         SVGFEGaussianBlurElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.in1 Mozilla SVGFEGaussianBlurElement.in1 documentation> 
@@ -74,7 +74,7 @@ getStdDeviationY ::
                  (MonadIO m) => SVGFEGaussianBlurElement -> m SVGAnimatedNumber
 getStdDeviationY self = liftIO (js_getStdDeviationY self)
  
-foreign import javascript unsafe "$1[\"edgeMode\"]" js_getEdgeMode
+foreign import javascript unsafe "(($1) => { return $1[\"edgeMode\"]; })" js_getEdgeMode
         :: SVGFEGaussianBlurElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEGaussianBlurElement.edgeMode Mozilla SVGFEGaussianBlurElement.edgeMode documentation> 

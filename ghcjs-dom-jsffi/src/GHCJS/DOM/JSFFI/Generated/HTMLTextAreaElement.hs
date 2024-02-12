@@ -38,7 +38,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -86,7 +86,7 @@ setCustomValidity ::
 setCustomValidity self error
   = liftIO (js_setCustomValidity self (toJSString error))
  
-foreign import javascript unsafe "$1[\"select\"]()" js_select ::
+foreign import javascript unsafe "(($1) => { return $1[\"select\"](); })" js_select ::
         HTMLTextAreaElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.select Mozilla HTMLTextAreaElement.select documentation> 
@@ -104,7 +104,7 @@ setRangeText self replacement
   = liftIO (js_setRangeText self (toJSString replacement))
  
 foreign import javascript safe
-        "$1[\"setRangeText\"]($2, $3, $4,\n$5)" js_setRangeText4 ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"setRangeText\"]($2, $3, $4,\n$5); })" js_setRangeText4 ::
         HTMLTextAreaElement ->
           JSString -> Word -> Word -> Optional JSString -> IO ()
 
@@ -119,7 +119,7 @@ setRangeText4 self replacement start end selectionMode
          (toOptionalJSString selectionMode))
  
 foreign import javascript unsafe
-        "$1[\"setSelectionRange\"]($2, $3,\n$4)" js_setSelectionRange ::
+        "(($1, $2, $3, $4) => { return $1[\"setSelectionRange\"]($2, $3,\n$4); })" js_setSelectionRange ::
         HTMLTextAreaElement ->
           Optional Int -> Optional Int -> Optional JSString -> IO ()
 
@@ -156,7 +156,7 @@ setDirName ::
            (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
 setDirName self val = liftIO (js_setDirName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"dirName\"]" js_getDirName ::
+foreign import javascript unsafe "(($1) => { return $1[\"dirName\"]; })" js_getDirName ::
         HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.dirName Mozilla HTMLTextAreaElement.dirName documentation> 
@@ -178,7 +178,7 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 getDisabled :: (MonadIO m) => HTMLTextAreaElement -> m Bool
 getDisabled self = liftIO (js_getDisabled self)
  
-foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
+foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm ::
         HTMLTextAreaElement -> IO HTMLFormElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.form Mozilla HTMLTextAreaElement.form documentation> 
@@ -213,7 +213,7 @@ foreign import javascript unsafe "$1[\"maxLength\"]"
 getMaxLength :: (MonadIO m) => HTMLTextAreaElement -> m Int
 getMaxLength self = liftIO (js_getMaxLength self)
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.name Mozilla HTMLTextAreaElement.name documentation> 
@@ -221,7 +221,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.name Mozilla HTMLTextAreaElement.name documentation> 
@@ -275,35 +275,35 @@ foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
 getRequired :: (MonadIO m) => HTMLTextAreaElement -> m Bool
 getRequired self = liftIO (js_getRequired self)
  
-foreign import javascript unsafe "$1[\"rows\"] = $2;" js_setRows ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"rows\"] = $2; })" js_setRows ::
         HTMLTextAreaElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rows Mozilla HTMLTextAreaElement.rows documentation> 
 setRows :: (MonadIO m) => HTMLTextAreaElement -> Word -> m ()
 setRows self val = liftIO (js_setRows self val)
  
-foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
+foreign import javascript unsafe "(($1) => { return $1[\"rows\"]; })" js_getRows ::
         HTMLTextAreaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.rows Mozilla HTMLTextAreaElement.rows documentation> 
 getRows :: (MonadIO m) => HTMLTextAreaElement -> m Word
 getRows self = liftIO (js_getRows self)
  
-foreign import javascript unsafe "$1[\"cols\"] = $2;" js_setCols ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"cols\"] = $2; })" js_setCols ::
         HTMLTextAreaElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.cols Mozilla HTMLTextAreaElement.cols documentation> 
 setCols :: (MonadIO m) => HTMLTextAreaElement -> Word -> m ()
 setCols self val = liftIO (js_setCols self val)
  
-foreign import javascript unsafe "$1[\"cols\"]" js_getCols ::
+foreign import javascript unsafe "(($1) => { return $1[\"cols\"]; })" js_getCols ::
         HTMLTextAreaElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.cols Mozilla HTMLTextAreaElement.cols documentation> 
 getCols :: (MonadIO m) => HTMLTextAreaElement -> m Word
 getCols self = liftIO (js_getCols self)
  
-foreign import javascript unsafe "$1[\"wrap\"] = $2;" js_setWrap ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"wrap\"] = $2; })" js_setWrap ::
         HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.wrap Mozilla HTMLTextAreaElement.wrap documentation> 
@@ -311,7 +311,7 @@ setWrap ::
         (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
 setWrap self val = liftIO (js_setWrap self (toJSString val))
  
-foreign import javascript unsafe "$1[\"wrap\"]" js_getWrap ::
+foreign import javascript unsafe "(($1) => { return $1[\"wrap\"]; })" js_getWrap ::
         HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.wrap Mozilla HTMLTextAreaElement.wrap documentation> 
@@ -319,7 +319,7 @@ getWrap ::
         (MonadIO m, FromJSString result) => HTMLTextAreaElement -> m result
 getWrap self = liftIO (fromJSString <$> (js_getWrap self))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.type Mozilla HTMLTextAreaElement.type documentation> 
@@ -345,7 +345,7 @@ getDefaultValue ::
 getDefaultValue self
   = liftIO (fromJSString <$> (js_getDefaultValue self))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+foreign import javascript unsafe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue
         :: HTMLTextAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
@@ -353,7 +353,7 @@ setValue ::
          (MonadIO m, ToJSString val) => HTMLTextAreaElement -> val -> m ()
 setValue self val = liftIO (js_setValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         HTMLTextAreaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.value Mozilla HTMLTextAreaElement.value documentation> 
@@ -375,7 +375,7 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 getWillValidate :: (MonadIO m) => HTMLTextAreaElement -> m Bool
 getWillValidate self = liftIO (js_getWillValidate self)
  
-foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+foreign import javascript unsafe "(($1) => { return $1[\"validity\"]; })" js_getValidity
         :: HTMLTextAreaElement -> IO ValidityState
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.validity Mozilla HTMLTextAreaElement.validity documentation> 
@@ -392,7 +392,7 @@ getValidationMessage ::
 getValidationMessage self
   = liftIO (fromJSString <$> (js_getValidationMessage self))
  
-foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
+foreign import javascript unsafe "(($1) => { return $1[\"labels\"]; })" js_getLabels ::
         HTMLTextAreaElement -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement.labels Mozilla HTMLTextAreaElement.labels documentation> 

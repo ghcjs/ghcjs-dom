@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -60,7 +60,7 @@ initHashChangeEvent self type' canBubble cancelable oldURL newURL
          (toOptionalJSString oldURL)
          (toOptionalJSString newURL))
  
-foreign import javascript unsafe "$1[\"oldURL\"]" js_getOldURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"oldURL\"]; })" js_getOldURL ::
         HashChangeEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.oldURL Mozilla HashChangeEvent.oldURL documentation> 
@@ -68,7 +68,7 @@ getOldURL ::
           (MonadIO m, FromJSString result) => HashChangeEvent -> m result
 getOldURL self = liftIO (fromJSString <$> (js_getOldURL self))
  
-foreign import javascript unsafe "$1[\"newURL\"]" js_getNewURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"newURL\"]; })" js_getNewURL ::
         HashChangeEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.newURL Mozilla HashChangeEvent.newURL documentation> 

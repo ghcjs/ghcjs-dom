@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,14 +36,14 @@ getThreshold ::
              (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getThreshold self = liftIO (js_getThreshold self)
  
-foreign import javascript unsafe "$1[\"knee\"]" js_getKnee ::
+foreign import javascript unsafe "(($1) => { return $1[\"knee\"]; })" js_getKnee ::
         DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.knee Mozilla DynamicsCompressorNode.knee documentation> 
 getKnee :: (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getKnee self = liftIO (js_getKnee self)
  
-foreign import javascript unsafe "$1[\"ratio\"]" js_getRatio ::
+foreign import javascript unsafe "(($1) => { return $1[\"ratio\"]; })" js_getRatio ::
         DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.ratio Mozilla DynamicsCompressorNode.ratio documentation> 
@@ -58,14 +58,14 @@ getReduction ::
              (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getReduction self = liftIO (js_getReduction self)
  
-foreign import javascript unsafe "$1[\"attack\"]" js_getAttack ::
+foreign import javascript unsafe "(($1) => { return $1[\"attack\"]; })" js_getAttack ::
         DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.attack Mozilla DynamicsCompressorNode.attack documentation> 
 getAttack :: (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getAttack self = liftIO (js_getAttack self)
  
-foreign import javascript unsafe "$1[\"release\"]" js_getRelease ::
+foreign import javascript unsafe "(($1) => { return $1[\"release\"]; })" js_getRelease ::
         DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.release Mozilla DynamicsCompressorNode.release documentation> 

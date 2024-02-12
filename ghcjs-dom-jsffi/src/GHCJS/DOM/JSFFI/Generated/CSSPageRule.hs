@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -61,7 +61,7 @@ getSelectorTextUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getSelectorText self))
  
-foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
+foreign import javascript unsafe "(($1) => { return $1[\"style\"]; })" js_getStyle ::
         CSSPageRule -> IO CSSStyleDeclaration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSPageRule.style Mozilla CSSPageRule.style documentation> 

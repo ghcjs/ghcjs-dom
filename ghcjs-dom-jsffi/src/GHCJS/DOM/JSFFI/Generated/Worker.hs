@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -34,7 +34,7 @@ newWorker ::
           (MonadIO m, ToJSString scriptUrl) => scriptUrl -> m Worker
 newWorker scriptUrl = liftIO (js_newWorker (toJSString scriptUrl))
  
-foreign import javascript unsafe "$1[\"terminate\"]()" js_terminate
+foreign import javascript unsafe "(($1) => { return $1[\"terminate\"](); })" js_terminate
         :: Worker -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.terminate Mozilla Worker.terminate documentation> 

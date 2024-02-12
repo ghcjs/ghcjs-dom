@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -107,7 +107,7 @@ foreign import javascript interruptible
 getReady :: (MonadIO m) => WritableStream -> m Bool
 getReady self = liftIO ((js_getReady self) >>= checkPromiseResult)
  
-foreign import javascript unsafe "$1[\"state\"]" js_getState ::
+foreign import javascript unsafe "(($1) => { return $1[\"state\"]; })" js_getState ::
         WritableStream -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream.state Mozilla WritableStream.state documentation> 

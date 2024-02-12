@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -50,7 +50,7 @@ has self font = liftIO (js_has self font)
 has_ :: (MonadIO m) => FontFaceSet -> FontFace -> m ()
 has_ self font = liftIO (void (js_has self font))
  
-foreign import javascript unsafe "$1[\"add\"]($2)" js_add ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"add\"]($2); })" js_add ::
         FontFaceSet -> FontFace -> IO FontFaceSet
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.add Mozilla FontFaceSet.add documentation> 
@@ -72,7 +72,7 @@ delete self font = liftIO (js_delete self font)
 delete_ :: (MonadIO m) => FontFaceSet -> FontFace -> m ()
 delete_ self font = liftIO (void (js_delete self font))
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript unsafe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         FontFaceSet -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.clear Mozilla FontFaceSet.clear documentation> 
@@ -121,7 +121,7 @@ check_ self font text
   = liftIO
       (void (js_check self (toJSString font) (toOptionalJSString text)))
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         FontFaceSet -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.size Mozilla FontFaceSet.size documentation> 
@@ -148,7 +148,7 @@ foreign import javascript interruptible
 getReady :: (MonadIO m) => FontFaceSet -> m FontFaceSet
 getReady self = liftIO ((js_getReady self) >>= checkPromiseResult)
  
-foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
+foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getStatus ::
         FontFaceSet -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.status Mozilla FontFaceSet.status documentation> 

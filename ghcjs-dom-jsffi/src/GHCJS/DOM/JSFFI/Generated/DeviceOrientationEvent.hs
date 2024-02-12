@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -60,7 +60,7 @@ initDeviceOrientationEvent self type' bubbles cancelable alpha beta
          (maybeToOptional gamma)
          (maybeToOptional absolute))
  
-foreign import javascript unsafe "$1[\"alpha\"]" js_getAlpha ::
+foreign import javascript unsafe "(($1) => { return $1[\"alpha\"]; })" js_getAlpha ::
         DeviceOrientationEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.alpha Mozilla DeviceOrientationEvent.alpha documentation> 
@@ -82,7 +82,7 @@ getAlphaUnchecked ::
 getAlphaUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getAlpha self))
  
-foreign import javascript unsafe "$1[\"beta\"]" js_getBeta ::
+foreign import javascript unsafe "(($1) => { return $1[\"beta\"]; })" js_getBeta ::
         DeviceOrientationEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.beta Mozilla DeviceOrientationEvent.beta documentation> 
@@ -104,7 +104,7 @@ getBetaUnchecked ::
 getBetaUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBeta self))
  
-foreign import javascript unsafe "$1[\"gamma\"]" js_getGamma ::
+foreign import javascript unsafe "(($1) => { return $1[\"gamma\"]; })" js_getGamma ::
         DeviceOrientationEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.gamma Mozilla DeviceOrientationEvent.gamma documentation> 
@@ -126,7 +126,7 @@ getGammaUnchecked ::
 getGammaUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getGamma self))
  
-foreign import javascript unsafe "$1[\"absolute\"]" js_getAbsolute
+foreign import javascript unsafe "(($1) => { return $1[\"absolute\"]; })" js_getAbsolute
         :: DeviceOrientationEvent -> IO (Nullable Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent.absolute Mozilla DeviceOrientationEvent.absolute documentation> 

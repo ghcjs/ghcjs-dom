@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -44,28 +44,28 @@ appendBuffer ::
 appendBuffer self data'
   = liftIO (js_appendBuffer self (toBufferSource data'))
  
-foreign import javascript safe "$1[\"abort\"]()" js_abort ::
+foreign import javascript safe "(($1) => { return $1[\"abort\"](); })" js_abort ::
         SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.abort Mozilla SourceBuffer.abort documentation> 
 abort :: (MonadIO m) => SourceBuffer -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript safe "$1[\"remove\"]($2, $3)" js_remove
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"remove\"]($2, $3); })" js_remove
         :: SourceBuffer -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.remove Mozilla SourceBuffer.remove documentation> 
 remove :: (MonadIO m) => SourceBuffer -> Double -> Double -> m ()
 remove self start end = liftIO (js_remove self start end)
  
-foreign import javascript safe "$1[\"mode\"] = $2;" js_setMode ::
+foreign import javascript safe "(($1, $2) => { $1[\"mode\"] = $2; })" js_setMode ::
         SourceBuffer -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.mode Mozilla SourceBuffer.mode documentation> 
 setMode :: (MonadIO m) => SourceBuffer -> AppendMode -> m ()
 setMode self val = liftIO (js_setMode self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
+foreign import javascript unsafe "(($1) => { return $1[\"mode\"]; })" js_getMode ::
         SourceBuffer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.mode Mozilla SourceBuffer.mode documentation> 
@@ -79,7 +79,7 @@ foreign import javascript unsafe "($1[\"updating\"] ? 1 : 0)"
 getUpdating :: (MonadIO m) => SourceBuffer -> m Bool
 getUpdating self = liftIO (js_getUpdating self)
  
-foreign import javascript safe "$1[\"buffered\"]" js_getBuffered ::
+foreign import javascript safe "(($1) => { return $1[\"buffered\"]; })" js_getBuffered ::
         SourceBuffer -> IO TimeRanges
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer.buffered Mozilla SourceBuffer.buffered documentation> 

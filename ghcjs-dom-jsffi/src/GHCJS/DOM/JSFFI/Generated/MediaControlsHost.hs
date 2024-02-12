@@ -39,7 +39,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -54,7 +54,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenu ::
+        "(($1, $2) => { return $1[\"sortedTrackListForMenu\"]($2); })" js_sortedTrackListForMenu ::
         MediaControlsHost -> TextTrackList -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
@@ -71,7 +71,7 @@ sortedTrackListForMenu_ self trackList
   = liftIO (void (js_sortedTrackListForMenu self trackList))
  
 foreign import javascript unsafe
-        "$1[\"sortedTrackListForMenu\"]($2)" js_sortedTrackListForMenuAudio
+        "(($1, $2) => { return $1[\"sortedTrackListForMenu\"]($2); })" js_sortedTrackListForMenuAudio
         :: MediaControlsHost -> AudioTrackList -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.sortedTrackListForMenu Mozilla MediaControlsHost.sortedTrackListForMenu documentation> 
@@ -137,7 +137,7 @@ setPreparedToReturnVideoLayerToInline self prepared
   = liftIO (js_setPreparedToReturnVideoLayerToInline self prepared)
  
 foreign import javascript unsafe
-        "$1[\"updateTextTrackContainer\"]()" js_updateTextTrackContainer ::
+        "(($1) => { return $1[\"updateTextTrackContainer\"](); })" js_updateTextTrackContainer ::
         MediaControlsHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.updateTextTrackContainer Mozilla MediaControlsHost.updateTextTrackContainer documentation> 
@@ -288,7 +288,7 @@ getShouldForceControlsDisplay self
   = liftIO (js_getShouldForceControlsDisplay self)
  
 foreign import javascript unsafe
-        "$1[\"externalDeviceDisplayName\"]" js_getExternalDeviceDisplayName
+        "(($1) => { return $1[\"externalDeviceDisplayName\"]; })" js_getExternalDeviceDisplayName
         :: MediaControlsHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.externalDeviceDisplayName Mozilla MediaControlsHost.externalDeviceDisplayName documentation> 

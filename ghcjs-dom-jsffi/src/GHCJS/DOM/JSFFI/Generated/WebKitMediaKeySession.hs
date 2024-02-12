@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"update\"]($2)" js_update ::
+foreign import javascript safe "(($1, $2) => { return $1[\"update\"]($2); })" js_update ::
         WebKitMediaKeySession -> Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.update Mozilla WebKitMediaKeySession.update documentation> 
@@ -37,14 +37,14 @@ update ::
          WebKitMediaKeySession -> key -> m ()
 update self key = liftIO (js_update self (toUint8Array key))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         WebKitMediaKeySession -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.close Mozilla WebKitMediaKeySession.close documentation> 
 close :: (MonadIO m) => WebKitMediaKeySession -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"error\"]" js_getError ::
+foreign import javascript unsafe "(($1) => { return $1[\"error\"]; })" js_getError ::
         WebKitMediaKeySession -> IO WebKitMediaKeyError
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.error Mozilla WebKitMediaKeySession.error documentation> 

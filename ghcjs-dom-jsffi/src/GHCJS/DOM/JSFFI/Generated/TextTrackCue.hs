@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         TextTrackCue -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
 getTrack :: (MonadIO m, IsTextTrackCue self) => self -> m TextTrack
 getTrack self = liftIO (js_getTrack (toTextTrackCue self))
  
-foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"id\"] = $2; })" js_setId ::
         TextTrackCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
@@ -47,7 +47,7 @@ setId ::
 setId self val
   = liftIO (js_setId (toTextTrackCue self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         TextTrackCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
@@ -83,7 +83,7 @@ setEndTime ::
 setEndTime self val
   = liftIO (js_setEndTime (toTextTrackCue self) val)
  
-foreign import javascript unsafe "$1[\"endTime\"]" js_getEndTime ::
+foreign import javascript unsafe "(($1) => { return $1[\"endTime\"]; })" js_getEndTime ::
         TextTrackCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.endTime Mozilla TextTrackCue.endTime documentation> 

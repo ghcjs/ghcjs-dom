@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -50,7 +50,7 @@ getSVGDocument self = liftIO (js_getSVGDocument self)
 getSVGDocument_ :: (MonadIO m) => HTMLIFrameElement -> m ()
 getSVGDocument_ self = liftIO (void (js_getSVGDocument self))
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+foreign import javascript unsafe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign
         :: HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.align Mozilla HTMLIFrameElement.align documentation> 
@@ -58,7 +58,7 @@ setAlign ::
          (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setAlign self val = liftIO (js_setAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.align Mozilla HTMLIFrameElement.align documentation> 
@@ -92,7 +92,7 @@ setHeight ::
           (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setHeight self val = liftIO (js_setHeight self (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.height Mozilla HTMLIFrameElement.height documentation> 
@@ -109,7 +109,7 @@ setLongDesc ::
 setLongDesc self val
   = liftIO (js_setLongDesc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"longDesc\"]" js_getLongDesc
+foreign import javascript unsafe "(($1) => { return $1[\"longDesc\"]; })" js_getLongDesc
         :: HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.longDesc Mozilla HTMLIFrameElement.longDesc documentation> 
@@ -153,7 +153,7 @@ getMarginWidth ::
 getMarginWidth self
   = liftIO (fromJSString <$> (js_getMarginWidth self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.name Mozilla HTMLIFrameElement.name documentation> 
@@ -161,7 +161,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.name Mozilla HTMLIFrameElement.name documentation> 
@@ -169,7 +169,7 @@ getName ::
         (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"sandbox\"]" js_getSandbox ::
+foreign import javascript unsafe "(($1) => { return $1[\"sandbox\"]; })" js_getSandbox ::
         HTMLIFrameElement -> IO DOMTokenList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.sandbox Mozilla HTMLIFrameElement.sandbox documentation> 
@@ -211,7 +211,7 @@ getScrolling ::
 getScrolling self
   = liftIO (fromJSString <$> (js_getScrolling self))
  
-foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"src\"] = $2; })" js_setSrc ::
         HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.src Mozilla HTMLIFrameElement.src documentation> 
@@ -219,7 +219,7 @@ setSrc ::
        (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setSrc self val = liftIO (js_setSrc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
+foreign import javascript unsafe "(($1) => { return $1[\"src\"]; })" js_getSrc ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.src Mozilla HTMLIFrameElement.src documentation> 
@@ -235,7 +235,7 @@ setSrcdoc ::
           (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setSrcdoc self val = liftIO (js_setSrcdoc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"srcdoc\"]" js_getSrcdoc ::
+foreign import javascript unsafe "(($1) => { return $1[\"srcdoc\"]; })" js_getSrcdoc ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.srcdoc Mozilla HTMLIFrameElement.srcdoc documentation> 
@@ -243,7 +243,7 @@ getSrcdoc ::
           (MonadIO m, FromJSString result) => HTMLIFrameElement -> m result
 getSrcdoc self = liftIO (fromJSString <$> (js_getSrcdoc self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLIFrameElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.width Mozilla HTMLIFrameElement.width documentation> 
@@ -251,7 +251,7 @@ setWidth ::
          (MonadIO m, ToJSString val) => HTMLIFrameElement -> val -> m ()
 setWidth self val = liftIO (js_setWidth self (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLIFrameElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement.width Mozilla HTMLIFrameElement.width documentation> 

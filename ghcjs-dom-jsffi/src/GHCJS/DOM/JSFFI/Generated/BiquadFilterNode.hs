@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"getFrequencyResponse\"]($2,\n$3, $4)" js_getFrequencyResponse
+        "(($1, $2, $3, $4) => { return $1[\"getFrequencyResponse\"]($2,\n$3, $4); })" js_getFrequencyResponse
         ::
         BiquadFilterNode ->
           Optional Float32Array ->
@@ -49,7 +49,7 @@ getFrequencyResponse self frequencyHz magResponse phaseResponse
          (maybeToOptional (fmap toFloat32Array magResponse))
          (maybeToOptional (fmap toFloat32Array phaseResponse)))
  
-foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"type\"] = $2; })" js_setType ::
         BiquadFilterNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.type Mozilla BiquadFilterNode.type documentation> 
@@ -57,7 +57,7 @@ setType ::
         (MonadIO m) => BiquadFilterNode -> BiquadFilterType -> m ()
 setType self val = liftIO (js_setType self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         BiquadFilterNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.type Mozilla BiquadFilterNode.type documentation> 
@@ -71,21 +71,21 @@ foreign import javascript unsafe "$1[\"frequency\"]"
 getFrequency :: (MonadIO m) => BiquadFilterNode -> m AudioParam
 getFrequency self = liftIO (js_getFrequency self)
  
-foreign import javascript unsafe "$1[\"detune\"]" js_getDetune ::
+foreign import javascript unsafe "(($1) => { return $1[\"detune\"]; })" js_getDetune ::
         BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.detune Mozilla BiquadFilterNode.detune documentation> 
 getDetune :: (MonadIO m) => BiquadFilterNode -> m AudioParam
 getDetune self = liftIO (js_getDetune self)
  
-foreign import javascript unsafe "$1[\"Q\"]" js_getQ ::
+foreign import javascript unsafe "(($1) => { return $1[\"Q\"]; })" js_getQ ::
         BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.Q Mozilla BiquadFilterNode.Q documentation> 
 getQ :: (MonadIO m) => BiquadFilterNode -> m AudioParam
 getQ self = liftIO (js_getQ self)
  
-foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
+foreign import javascript unsafe "(($1) => { return $1[\"gain\"]; })" js_getGain ::
         BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.gain Mozilla BiquadFilterNode.gain documentation> 

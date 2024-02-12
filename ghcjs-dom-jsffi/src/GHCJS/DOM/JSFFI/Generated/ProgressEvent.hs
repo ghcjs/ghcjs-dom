@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -51,7 +51,7 @@ getLengthComputable ::
 getLengthComputable self
   = liftIO (js_getLengthComputable (toProgressEvent self))
  
-foreign import javascript unsafe "$1[\"loaded\"]" js_getLoaded ::
+foreign import javascript unsafe "(($1) => { return $1[\"loaded\"]; })" js_getLoaded ::
         ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.loaded Mozilla ProgressEvent.loaded documentation> 
@@ -59,7 +59,7 @@ getLoaded :: (MonadIO m, IsProgressEvent self) => self -> m Word64
 getLoaded self
   = liftIO (round <$> (js_getLoaded (toProgressEvent self)))
  
-foreign import javascript unsafe "$1[\"total\"]" js_getTotal ::
+foreign import javascript unsafe "(($1) => { return $1[\"total\"]; })" js_getTotal ::
         ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.total Mozilla ProgressEvent.total documentation> 

@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -44,7 +44,7 @@ newSpeechSynthesisUtterance ::
 newSpeechSynthesisUtterance text
   = liftIO (js_newSpeechSynthesisUtterance (toOptionalJSString text))
  
-foreign import javascript unsafe "$1[\"text\"] = $2;" js_setText ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"text\"] = $2; })" js_setText ::
         SpeechSynthesisUtterance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.text Mozilla SpeechSynthesisUtterance.text documentation> 
@@ -53,7 +53,7 @@ setText ::
           SpeechSynthesisUtterance -> val -> m ()
 setText self val = liftIO (js_setText self (toJSString val))
  
-foreign import javascript unsafe "$1[\"text\"]" js_getText ::
+foreign import javascript unsafe "(($1) => { return $1[\"text\"]; })" js_getText ::
         SpeechSynthesisUtterance -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.text Mozilla SpeechSynthesisUtterance.text documentation> 
@@ -62,7 +62,7 @@ getText ::
           SpeechSynthesisUtterance -> m result
 getText self = liftIO (fromJSString <$> (js_getText self))
  
-foreign import javascript unsafe "$1[\"lang\"] = $2;" js_setLang ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"lang\"] = $2; })" js_setLang ::
         SpeechSynthesisUtterance -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.lang Mozilla SpeechSynthesisUtterance.lang documentation> 
@@ -71,7 +71,7 @@ setLang ::
           SpeechSynthesisUtterance -> val -> m ()
 setLang self val = liftIO (js_setLang self (toJSString val))
  
-foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
+foreign import javascript unsafe "(($1) => { return $1[\"lang\"]; })" js_getLang ::
         SpeechSynthesisUtterance -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.lang Mozilla SpeechSynthesisUtterance.lang documentation> 
@@ -80,7 +80,7 @@ getLang ::
           SpeechSynthesisUtterance -> m result
 getLang self = liftIO (fromJSString <$> (js_getLang self))
  
-foreign import javascript unsafe "$1[\"voice\"] = $2;" js_setVoice
+foreign import javascript unsafe "(($1, $2) => { $1[\"voice\"] = $2; })" js_setVoice
         ::
         SpeechSynthesisUtterance -> Optional SpeechSynthesisVoice -> IO ()
 
@@ -90,7 +90,7 @@ setVoice ::
            SpeechSynthesisUtterance -> Maybe SpeechSynthesisVoice -> m ()
 setVoice self val = liftIO (js_setVoice self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"voice\"]" js_getVoice ::
+foreign import javascript unsafe "(($1) => { return $1[\"voice\"]; })" js_getVoice ::
         SpeechSynthesisUtterance -> IO (Nullable SpeechSynthesisVoice)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.voice Mozilla SpeechSynthesisUtterance.voice documentation> 
@@ -122,28 +122,28 @@ setVolume ::
           (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
 setVolume self val = liftIO (js_setVolume self val)
  
-foreign import javascript unsafe "$1[\"volume\"]" js_getVolume ::
+foreign import javascript unsafe "(($1) => { return $1[\"volume\"]; })" js_getVolume ::
         SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.volume Mozilla SpeechSynthesisUtterance.volume documentation> 
 getVolume :: (MonadIO m) => SpeechSynthesisUtterance -> m Float
 getVolume self = liftIO (js_getVolume self)
  
-foreign import javascript unsafe "$1[\"rate\"] = $2;" js_setRate ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"rate\"] = $2; })" js_setRate ::
         SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.rate Mozilla SpeechSynthesisUtterance.rate documentation> 
 setRate :: (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
 setRate self val = liftIO (js_setRate self val)
  
-foreign import javascript unsafe "$1[\"rate\"]" js_getRate ::
+foreign import javascript unsafe "(($1) => { return $1[\"rate\"]; })" js_getRate ::
         SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.rate Mozilla SpeechSynthesisUtterance.rate documentation> 
 getRate :: (MonadIO m) => SpeechSynthesisUtterance -> m Float
 getRate self = liftIO (js_getRate self)
  
-foreign import javascript unsafe "$1[\"pitch\"] = $2;" js_setPitch
+foreign import javascript unsafe "(($1, $2) => { $1[\"pitch\"] = $2; })" js_setPitch
         :: SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.pitch Mozilla SpeechSynthesisUtterance.pitch documentation> 
@@ -151,7 +151,7 @@ setPitch ::
          (MonadIO m) => SpeechSynthesisUtterance -> Float -> m ()
 setPitch self val = liftIO (js_setPitch self val)
  
-foreign import javascript unsafe "$1[\"pitch\"]" js_getPitch ::
+foreign import javascript unsafe "(($1) => { return $1[\"pitch\"]; })" js_getPitch ::
         SpeechSynthesisUtterance -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.pitch Mozilla SpeechSynthesisUtterance.pitch documentation> 

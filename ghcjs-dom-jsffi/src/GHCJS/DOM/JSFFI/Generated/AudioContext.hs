@@ -40,7 +40,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -143,7 +143,7 @@ createBufferFromArrayBuffer_ self buffer mixToMono
             mixToMono))
  
 foreign import javascript unsafe
-        "$1[\"decodeAudioData\"]($2, $3,\n$4)" js_decodeAudioData ::
+        "(($1, $2, $3, $4) => { return $1[\"decodeAudioData\"]($2, $3,\n$4); })" js_decodeAudioData ::
         AudioContext ->
           ArrayBuffer ->
             Optional AudioBufferCallback ->
@@ -177,7 +177,7 @@ createBufferSource_ self
   = liftIO (void (js_createBufferSource (toAudioContext self)))
  
 foreign import javascript safe
-        "$1[\"createMediaElementSource\"]($2)" js_createMediaElementSource
+        "(($1, $2) => { return $1[\"createMediaElementSource\"]($2); })" js_createMediaElementSource
         ::
         AudioContext -> HTMLMediaElement -> IO MediaElementAudioSourceNode
 
@@ -203,7 +203,7 @@ createMediaElementSource_ self mediaElement
             (toHTMLMediaElement mediaElement)))
  
 foreign import javascript safe
-        "$1[\"createMediaStreamSource\"]($2)" js_createMediaStreamSource ::
+        "(($1, $2) => { return $1[\"createMediaStreamSource\"]($2); })" js_createMediaStreamSource ::
         AudioContext -> MediaStream -> IO MediaStreamAudioSourceNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createMediaStreamSource Mozilla AudioContext.createMediaStreamSource documentation> 
@@ -334,7 +334,7 @@ createConvolver_ self
   = liftIO (void (js_createConvolver (toAudioContext self)))
  
 foreign import javascript unsafe
-        "$1[\"createDynamicsCompressor\"]()" js_createDynamicsCompressor ::
+        "(($1) => { return $1[\"createDynamicsCompressor\"](); })" js_createDynamicsCompressor ::
         AudioContext -> IO DynamicsCompressorNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDynamicsCompressor Mozilla AudioContext.createDynamicsCompressor documentation> 
@@ -512,7 +512,7 @@ getSampleRate ::
 getSampleRate self
   = liftIO (js_getSampleRate (toAudioContext self))
  
-foreign import javascript unsafe "$1[\"listener\"]" js_getListener
+foreign import javascript unsafe "(($1) => { return $1[\"listener\"]; })" js_getListener
         :: AudioContext -> IO AudioListener
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.listener Mozilla AudioContext.listener documentation> 
@@ -520,7 +520,7 @@ getListener ::
             (MonadIO m, IsAudioContext self) => self -> m AudioListener
 getListener self = liftIO (js_getListener (toAudioContext self))
  
-foreign import javascript unsafe "$1[\"state\"]" js_getState ::
+foreign import javascript unsafe "(($1) => { return $1[\"state\"]; })" js_getState ::
         AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.state Mozilla AudioContext.state documentation> 

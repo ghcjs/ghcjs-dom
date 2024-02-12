@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,7 +33,7 @@ foreign import javascript unsafe "new window[\"FormData\"]($1)"
 newFormData :: (MonadIO m) => Maybe HTMLFormElement -> m FormData
 newFormData form = liftIO (js_newFormData (maybeToOptional form))
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3)" js_append
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"append\"]($2, $3); })" js_append
         :: FormData -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData.append Mozilla FormData.append documentation> 

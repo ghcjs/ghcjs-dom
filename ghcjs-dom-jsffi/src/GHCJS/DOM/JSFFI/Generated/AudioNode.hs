@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -70,7 +70,7 @@ disconnect self output
   = liftIO
       (js_disconnect (toAudioNode self) (maybeToOptional output))
  
-foreign import javascript unsafe "$1[\"context\"]" js_getContext ::
+foreign import javascript unsafe "(($1) => { return $1[\"context\"]; })" js_getContext ::
         AudioNode -> IO AudioContext
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.context Mozilla AudioNode.context documentation> 
@@ -136,7 +136,7 @@ getChannelCountMode self
       (fromJSString <$> (js_getChannelCountMode (toAudioNode self)))
  
 foreign import javascript safe
-        "$1[\"channelInterpretation\"] = $2;" js_setChannelInterpretation
+        "(($1, $2) => { $1[\"channelInterpretation\"] = $2; })" js_setChannelInterpretation
         :: AudioNode -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.channelInterpretation Mozilla AudioNode.channelInterpretation documentation> 

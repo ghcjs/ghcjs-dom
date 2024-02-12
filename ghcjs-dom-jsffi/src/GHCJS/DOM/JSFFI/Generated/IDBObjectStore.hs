@@ -28,7 +28,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,7 +42,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"put\"]($2, $3)" js_put ::
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"put\"]($2, $3); })" js_put ::
         IDBObjectStore -> JSVal -> Optional JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.put Mozilla IDBObjectStore.put documentation> 
@@ -68,7 +68,7 @@ put_ self value key
               toJSVal value >>= \ value' -> js_put self value'
                 (maybeToOptional key')))
  
-foreign import javascript safe "$1[\"add\"]($2, $3)" js_add ::
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"add\"]($2, $3); })" js_add ::
         IDBObjectStore -> JSVal -> Optional JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.add Mozilla IDBObjectStore.add documentation> 
@@ -94,7 +94,7 @@ add_ self value key
               toJSVal value >>= \ value' -> js_add self value'
                 (maybeToOptional key')))
  
-foreign import javascript safe "$1[\"delete\"]($2)" js_deleteRange
+foreign import javascript safe "(($1, $2) => { return $1[\"delete\"]($2); })" js_deleteRange
         :: IDBObjectStore -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
@@ -109,7 +109,7 @@ deleteRange_ ::
 deleteRange_ self keyRange
   = liftIO (void (js_deleteRange self (maybeToOptional keyRange)))
  
-foreign import javascript safe "$1[\"delete\"]($2)" js_delete ::
+foreign import javascript safe "(($1, $2) => { return $1[\"delete\"]($2); })" js_delete ::
         IDBObjectStore -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.delete Mozilla IDBObjectStore.delete documentation> 
@@ -124,7 +124,7 @@ delete_ ::
 delete_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_delete self key'))
  
-foreign import javascript safe "$1[\"get\"]($2)" js_getRange ::
+foreign import javascript safe "(($1, $2) => { return $1[\"get\"]($2); })" js_getRange ::
         IDBObjectStore -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
@@ -138,7 +138,7 @@ getRange_ ::
 getRange_ self key
   = liftIO (void (js_getRange self (maybeToOptional key)))
  
-foreign import javascript safe "$1[\"get\"]($2)" js_get ::
+foreign import javascript safe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         IDBObjectStore -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.get Mozilla IDBObjectStore.get documentation> 
@@ -151,7 +151,7 @@ get_ :: (MonadIO m, ToJSVal key) => IDBObjectStore -> key -> m ()
 get_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_get self key'))
  
-foreign import javascript safe "$1[\"getKey\"]($2)" js_getKeyRange
+foreign import javascript safe "(($1, $2) => { return $1[\"getKey\"]($2); })" js_getKeyRange
         :: IDBObjectStore -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.getKey Mozilla IDBObjectStore.getKey documentation> 
@@ -166,7 +166,7 @@ getKeyRange_ ::
 getKeyRange_ self key
   = liftIO (void (js_getKeyRange self (maybeToOptional key)))
  
-foreign import javascript safe "$1[\"getKey\"]($2)" js_getKey ::
+foreign import javascript safe "(($1, $2) => { return $1[\"getKey\"]($2); })" js_getKey ::
         IDBObjectStore -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.getKey Mozilla IDBObjectStore.getKey documentation> 
@@ -181,7 +181,7 @@ getKey_ ::
 getKey_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_getKey self key'))
  
-foreign import javascript safe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         IDBObjectStore -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.clear Mozilla IDBObjectStore.clear documentation> 
@@ -318,7 +318,7 @@ getAllRange_ self range count
          (js_getAllRange self (maybeToOptional range)
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAll\"]($2, $3)" js_getAll
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAll\"]($2, $3); })" js_getAll
         :: IDBObjectStore -> JSVal -> Optional Word -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.getAll Mozilla IDBObjectStore.getAll documentation> 
@@ -418,7 +418,7 @@ createIndex_ self name keyPath options
               js_createIndex self (toJSString name) (StringOrStrings keyPath')
             (maybeToOptional options)))
  
-foreign import javascript safe "$1[\"index\"]($2)" js_index ::
+foreign import javascript safe "(($1, $2) => { return $1[\"index\"]($2); })" js_index ::
         IDBObjectStore -> JSString -> IO IDBIndex
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.index Mozilla IDBObjectStore.index documentation> 
@@ -441,7 +441,7 @@ deleteIndex ::
 deleteIndex self name
   = liftIO (js_deleteIndex self (toJSString name))
  
-foreign import javascript safe "$1[\"count\"]($2)" js_countRange ::
+foreign import javascript safe "(($1, $2) => { return $1[\"count\"]($2); })" js_countRange ::
         IDBObjectStore -> Optional IDBKeyRange -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
@@ -456,7 +456,7 @@ countRange_ ::
 countRange_ self range
   = liftIO (void (js_countRange self (maybeToOptional range)))
  
-foreign import javascript safe "$1[\"count\"]($2)" js_count ::
+foreign import javascript safe "(($1, $2) => { return $1[\"count\"]($2); })" js_count ::
         IDBObjectStore -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.count Mozilla IDBObjectStore.count documentation> 
@@ -470,7 +470,7 @@ count_ :: (MonadIO m, ToJSVal key) => IDBObjectStore -> key -> m ()
 count_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_count self key'))
  
-foreign import javascript safe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript safe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         IDBObjectStore -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
@@ -478,7 +478,7 @@ setName ::
         (MonadIO m, ToJSString val) => IDBObjectStore -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         IDBObjectStore -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.name Mozilla IDBObjectStore.name documentation> 
@@ -486,7 +486,7 @@ getName ::
         (MonadIO m, FromJSString result) => IDBObjectStore -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"keyPath\"]" js_getKeyPath ::
+foreign import javascript unsafe "(($1) => { return $1[\"keyPath\"]; })" js_getKeyPath ::
         IDBObjectStore -> IO (Nullable IDBKeyPath)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.keyPath Mozilla IDBObjectStore.keyPath documentation> 

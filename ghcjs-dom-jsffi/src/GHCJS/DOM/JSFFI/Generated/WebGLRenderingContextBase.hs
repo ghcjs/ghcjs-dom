@@ -247,7 +247,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -288,7 +288,7 @@ attachShader self program shader
          (maybeToOptional shader))
  
 foreign import javascript unsafe
-        "$1[\"bindAttribLocation\"]($2, $3,\n$4)" js_bindAttribLocation ::
+        "(($1, $2, $3, $4) => { return $1[\"bindAttribLocation\"]($2, $3,\n$4); })" js_bindAttribLocation ::
         WebGLRenderingContextBase ->
           Optional WebGLProgram -> GLuint -> JSString -> IO ()
 
@@ -360,7 +360,7 @@ bindTexture self target texture
          (maybeToOptional texture))
  
 foreign import javascript unsafe
-        "$1[\"blendColor\"]($2, $3, $4, $5)" js_blendColor ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"blendColor\"]($2, $3, $4, $5); })" js_blendColor ::
         WebGLRenderingContextBase ->
           GLclampf -> GLclampf -> GLclampf -> GLclampf -> IO ()
 
@@ -384,7 +384,7 @@ blendEquation self mode
   = liftIO (js_blendEquation (toWebGLRenderingContextBase self) mode)
  
 foreign import javascript unsafe
-        "$1[\"blendEquationSeparate\"]($2,\n$3)" js_blendEquationSeparate
+        "(($1, $2, $3) => { return $1[\"blendEquationSeparate\"]($2,\n$3); })" js_blendEquationSeparate
         :: WebGLRenderingContextBase -> GLenum -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.blendEquationSeparate Mozilla WebGLRenderingContextBase.blendEquationSeparate documentation> 
@@ -410,7 +410,7 @@ blendFunc self sfactor dfactor
       (js_blendFunc (toWebGLRenderingContextBase self) sfactor dfactor)
  
 foreign import javascript unsafe
-        "$1[\"blendFuncSeparate\"]($2, $3,\n$4, $5)" js_blendFuncSeparate
+        "(($1, $2, $3, $4, $5) => { return $1[\"blendFuncSeparate\"]($2, $3,\n$4, $5); })" js_blendFuncSeparate
         ::
         WebGLRenderingContextBase ->
           GLenum -> GLenum -> GLenum -> GLenum -> IO ()
@@ -457,7 +457,7 @@ bufferDataPtr self target size usage
          usage)
  
 foreign import javascript unsafe
-        "$1[\"bufferSubData\"]($2, $3, $4)" js_bufferSubData ::
+        "(($1, $2, $3, $4) => { return $1[\"bufferSubData\"]($2, $3, $4); })" js_bufferSubData ::
         WebGLRenderingContextBase ->
           GLenum -> Double -> Optional BufferDataSource -> IO ()
 
@@ -473,7 +473,7 @@ bufferSubData self target offset data'
          (maybeToOptional (fmap toBufferDataSource data')))
  
 foreign import javascript unsafe
-        "$1[\"checkFramebufferStatus\"]($2)" js_checkFramebufferStatus ::
+        "(($1, $2) => { return $1[\"checkFramebufferStatus\"]($2); })" js_checkFramebufferStatus ::
         WebGLRenderingContextBase -> GLenum -> IO GLenum
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.checkFramebufferStatus Mozilla WebGLRenderingContextBase.checkFramebufferStatus documentation> 
@@ -495,7 +495,7 @@ checkFramebufferStatus_ self target
          (js_checkFramebufferStatus (toWebGLRenderingContextBase self)
             target))
  
-foreign import javascript unsafe "$1[\"clear\"]($2)" js_clear ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clear\"]($2); })" js_clear ::
         WebGLRenderingContextBase -> GLbitfield -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.clear Mozilla WebGLRenderingContextBase.clear documentation> 
@@ -506,7 +506,7 @@ clear self mask
   = liftIO (js_clear (toWebGLRenderingContextBase self) mask)
  
 foreign import javascript unsafe
-        "$1[\"clearColor\"]($2, $3, $4, $5)" js_clearColor ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"clearColor\"]($2, $3, $4, $5); })" js_clearColor ::
         WebGLRenderingContextBase ->
           GLclampf -> GLclampf -> GLclampf -> GLclampf -> IO ()
 
@@ -540,7 +540,7 @@ clearStencil self s
   = liftIO (js_clearStencil (toWebGLRenderingContextBase self) s)
  
 foreign import javascript unsafe
-        "$1[\"colorMask\"]($2, $3, $4, $5)" js_colorMask ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"colorMask\"]($2, $3, $4, $5); })" js_colorMask ::
         WebGLRenderingContextBase ->
           GLboolean -> GLboolean -> GLboolean -> GLboolean -> IO ()
 
@@ -781,7 +781,7 @@ createTexture_ self
   = liftIO
       (void (js_createTexture (toWebGLRenderingContextBase self)))
  
-foreign import javascript unsafe "$1[\"cullFace\"]($2)" js_cullFace
+foreign import javascript unsafe "(($1, $2) => { return $1[\"cullFace\"]($2); })" js_cullFace
         :: WebGLRenderingContextBase -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.cullFace Mozilla WebGLRenderingContextBase.cullFace documentation> 
@@ -916,7 +916,7 @@ detachShader self program shader
          (maybeToOptional program)
          (maybeToOptional shader))
  
-foreign import javascript unsafe "$1[\"disable\"]($2)" js_disable
+foreign import javascript unsafe "(($1, $2) => { return $1[\"disable\"]($2); })" js_disable
         :: WebGLRenderingContextBase -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.disable Mozilla WebGLRenderingContextBase.disable documentation> 
@@ -927,7 +927,7 @@ disable self cap
   = liftIO (js_disable (toWebGLRenderingContextBase self) cap)
  
 foreign import javascript unsafe
-        "$1[\"disableVertexAttribArray\"]($2)" js_disableVertexAttribArray
+        "(($1, $2) => { return $1[\"disableVertexAttribArray\"]($2); })" js_disableVertexAttribArray
         :: WebGLRenderingContextBase -> GLuint -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.disableVertexAttribArray Mozilla WebGLRenderingContextBase.disableVertexAttribArray documentation> 
@@ -952,7 +952,7 @@ drawArrays self mode first count
       (js_drawArrays (toWebGLRenderingContextBase self) mode first count)
  
 foreign import javascript unsafe
-        "$1[\"drawElements\"]($2, $3, $4,\n$5)" js_drawElements ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"drawElements\"]($2, $3, $4,\n$5); })" js_drawElements ::
         WebGLRenderingContextBase ->
           GLenum -> GLsizei -> GLenum -> Double -> IO ()
 
@@ -966,7 +966,7 @@ drawElements self mode count type' offset
          type'
          (fromIntegral offset))
  
-foreign import javascript unsafe "$1[\"enable\"]($2)" js_enable ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"enable\"]($2); })" js_enable ::
         WebGLRenderingContextBase -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.enable Mozilla WebGLRenderingContextBase.enable documentation> 
@@ -977,7 +977,7 @@ enable self cap
   = liftIO (js_enable (toWebGLRenderingContextBase self) cap)
  
 foreign import javascript unsafe
-        "$1[\"enableVertexAttribArray\"]($2)" js_enableVertexAttribArray ::
+        "(($1, $2) => { return $1[\"enableVertexAttribArray\"]($2); })" js_enableVertexAttribArray ::
         WebGLRenderingContextBase -> GLuint -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.enableVertexAttribArray Mozilla WebGLRenderingContextBase.enableVertexAttribArray documentation> 
@@ -989,7 +989,7 @@ enableVertexAttribArray self index
       (js_enableVertexAttribArray (toWebGLRenderingContextBase self)
          index)
  
-foreign import javascript unsafe "$1[\"finish\"]()" js_finish ::
+foreign import javascript unsafe "(($1) => { return $1[\"finish\"](); })" js_finish ::
         WebGLRenderingContextBase -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.finish Mozilla WebGLRenderingContextBase.finish documentation> 
@@ -997,7 +997,7 @@ finish ::
        (MonadIO m, IsWebGLRenderingContextBase self) => self -> m ()
 finish self = liftIO (js_finish (toWebGLRenderingContextBase self))
  
-foreign import javascript unsafe "$1[\"flush\"]()" js_flush ::
+foreign import javascript unsafe "(($1) => { return $1[\"flush\"](); })" js_flush ::
         WebGLRenderingContextBase -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.flush Mozilla WebGLRenderingContextBase.flush documentation> 
@@ -1143,7 +1143,7 @@ getAttachedShaders_ self program
             (maybeToOptional program)))
  
 foreign import javascript unsafe
-        "$1[\"getAttribLocation\"]($2, $3)" js_getAttribLocation ::
+        "(($1, $2, $3) => { return $1[\"getAttribLocation\"]($2, $3); })" js_getAttribLocation ::
         WebGLRenderingContextBase ->
           Optional WebGLProgram -> JSString -> IO GLint
 
@@ -1169,7 +1169,7 @@ getAttribLocation_ self program name
             (toJSString name)))
  
 foreign import javascript unsafe
-        "$1[\"getBufferParameter\"]($2, $3)" js_getBufferParameter ::
+        "(($1, $2, $3) => { return $1[\"getBufferParameter\"]($2, $3); })" js_getBufferParameter ::
         WebGLRenderingContextBase -> GLenum -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getBufferParameter Mozilla WebGLRenderingContextBase.getBufferParameter documentation> 
@@ -1230,7 +1230,7 @@ getContextAttributesUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getContextAttributes (toWebGLRenderingContextBase self)))
  
-foreign import javascript unsafe "$1[\"getError\"]()" js_getError
+foreign import javascript unsafe "(($1) => { return $1[\"getError\"](); })" js_getError
         :: WebGLRenderingContextBase -> IO GLenum
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getError Mozilla WebGLRenderingContextBase.getError documentation> 
@@ -1361,7 +1361,7 @@ getParameter_ self pname
       (void (js_getParameter (toWebGLRenderingContextBase self) pname))
  
 foreign import javascript unsafe
-        "$1[\"getProgramParameter\"]($2,\n$3)" js_getProgramParameter ::
+        "(($1, $2, $3) => { return $1[\"getProgramParameter\"]($2,\n$3); })" js_getProgramParameter ::
         WebGLRenderingContextBase ->
           Optional WebGLProgram -> GLenum -> IO JSVal
 
@@ -1462,7 +1462,7 @@ getRenderbufferParameter_ self target pname
             pname))
  
 foreign import javascript unsafe
-        "$1[\"getShaderParameter\"]($2, $3)" js_getShaderParameter ::
+        "(($1, $2, $3) => { return $1[\"getShaderParameter\"]($2, $3); })" js_getShaderParameter ::
         WebGLRenderingContextBase ->
           Optional WebGLShader -> GLenum -> IO JSVal
 
@@ -1662,7 +1662,7 @@ getUniform_ self program location
             (maybeToOptional location)))
  
 foreign import javascript unsafe
-        "$1[\"getUniformLocation\"]($2, $3)" js_getUniformLocation ::
+        "(($1, $2, $3) => { return $1[\"getUniformLocation\"]($2, $3); })" js_getUniformLocation ::
         WebGLRenderingContextBase ->
           Optional WebGLProgram -> JSString -> IO WebGLUniformLocation
 
@@ -1710,7 +1710,7 @@ getVertexAttrib_ self index pname
             pname))
  
 foreign import javascript unsafe
-        "$1[\"getVertexAttribOffset\"]($2,\n$3)" js_getVertexAttribOffset
+        "(($1, $2, $3) => { return $1[\"getVertexAttribOffset\"]($2,\n$3); })" js_getVertexAttribOffset
         :: WebGLRenderingContextBase -> GLuint -> GLenum -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.getVertexAttribOffset Mozilla WebGLRenderingContextBase.getVertexAttribOffset documentation> 
@@ -1733,7 +1733,7 @@ getVertexAttribOffset_ self index pname
          (js_getVertexAttribOffset (toWebGLRenderingContextBase self) index
             pname))
  
-foreign import javascript unsafe "$1[\"hint\"]($2, $3)" js_hint ::
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"hint\"]($2, $3); })" js_hint ::
         WebGLRenderingContextBase -> GLenum -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.hint Mozilla WebGLRenderingContextBase.hint documentation> 
@@ -1743,7 +1743,7 @@ hint ::
 hint self target mode
   = liftIO (js_hint (toWebGLRenderingContextBase self) target mode)
  
-foreign import javascript unsafe "$1[\"isBuffer\"]($2)" js_isBuffer
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isBuffer\"]($2); })" js_isBuffer
         ::
         WebGLRenderingContextBase -> Optional WebGLBuffer -> IO GLboolean
 
@@ -1872,7 +1872,7 @@ isRenderbuffer_ self renderbuffer
          (js_isRenderbuffer (toWebGLRenderingContextBase self)
             (maybeToOptional renderbuffer)))
  
-foreign import javascript unsafe "$1[\"isShader\"]($2)" js_isShader
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isShader\"]($2); })" js_isShader
         ::
         WebGLRenderingContextBase -> Optional WebGLShader -> IO GLboolean
 
@@ -1966,7 +1966,7 @@ polygonOffset self factor units
       (js_polygonOffset (toWebGLRenderingContextBase self) factor units)
  
 foreign import javascript unsafe
-        "$1[\"readPixels\"]($2, $3, $4, $5,\n$6, $7, $8)" js_readPixels ::
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"readPixels\"]($2, $3, $4, $5,\n$6, $7, $8); })" js_readPixels ::
         WebGLRenderingContextBase ->
           GLint ->
             GLint ->
@@ -2093,7 +2093,7 @@ stencilMask self mask
   = liftIO (js_stencilMask (toWebGLRenderingContextBase self) mask)
  
 foreign import javascript unsafe
-        "$1[\"stencilMaskSeparate\"]($2,\n$3)" js_stencilMaskSeparate ::
+        "(($1, $2, $3) => { return $1[\"stencilMaskSeparate\"]($2,\n$3); })" js_stencilMaskSeparate ::
         WebGLRenderingContextBase -> GLenum -> GLuint -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.stencilMaskSeparate Mozilla WebGLRenderingContextBase.stencilMaskSeparate documentation> 
@@ -2118,7 +2118,7 @@ stencilOp self fail zfail zpass
       (js_stencilOp (toWebGLRenderingContextBase self) fail zfail zpass)
  
 foreign import javascript unsafe
-        "$1[\"stencilOpSeparate\"]($2, $3,\n$4, $5)" js_stencilOpSeparate
+        "(($1, $2, $3, $4, $5) => { return $1[\"stencilOpSeparate\"]($2, $3,\n$4, $5); })" js_stencilOpSeparate
         ::
         WebGLRenderingContextBase ->
           GLenum -> GLenum -> GLenum -> GLenum -> IO ()
@@ -2134,7 +2134,7 @@ stencilOpSeparate self face fail zfail zpass
          zpass)
  
 foreign import javascript unsafe
-        "$1[\"texParameterf\"]($2, $3, $4)" js_texParameterf ::
+        "(($1, $2, $3, $4) => { return $1[\"texParameterf\"]($2, $3, $4); })" js_texParameterf ::
         WebGLRenderingContextBase -> GLenum -> GLenum -> GLfloat -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.texParameterf Mozilla WebGLRenderingContextBase.texParameterf documentation> 
@@ -2147,7 +2147,7 @@ texParameterf self target pname param
          param)
  
 foreign import javascript unsafe
-        "$1[\"texParameteri\"]($2, $3, $4)" js_texParameteri ::
+        "(($1, $2, $3, $4) => { return $1[\"texParameteri\"]($2, $3, $4); })" js_texParameteri ::
         WebGLRenderingContextBase -> GLenum -> GLenum -> GLint -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.texParameteri Mozilla WebGLRenderingContextBase.texParameteri documentation> 
@@ -2193,7 +2193,7 @@ texImage2DView self target level internalformat width height border
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
 foreign import javascript safe
-        "$1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7)" js_texImage2D ::
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7); })" js_texImage2D ::
         WebGLRenderingContextBase ->
           GLenum ->
             GLint ->
@@ -2305,7 +2305,7 @@ uniform2f self location x y
          y)
  
 foreign import javascript unsafe
-        "$1[\"uniform3f\"]($2, $3, $4, $5)" js_uniform3f ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"uniform3f\"]($2, $3, $4, $5); })" js_uniform3f ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation ->
             GLfloat -> GLfloat -> GLfloat -> IO ()
@@ -2324,7 +2324,7 @@ uniform3f self location x y z
          z)
  
 foreign import javascript unsafe
-        "$1[\"uniform4f\"]($2, $3, $4, $5,\n$6)" js_uniform4f ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"uniform4f\"]($2, $3, $4, $5,\n$6); })" js_uniform4f ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation ->
             GLfloat -> GLfloat -> GLfloat -> GLfloat -> IO ()
@@ -2376,7 +2376,7 @@ uniform2i self location x y
          y)
  
 foreign import javascript unsafe
-        "$1[\"uniform3i\"]($2, $3, $4, $5)" js_uniform3i ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"uniform3i\"]($2, $3, $4, $5); })" js_uniform3i ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation -> GLint -> GLint -> GLint -> IO ()
 
@@ -2394,7 +2394,7 @@ uniform3i self location x y z
          z)
  
 foreign import javascript unsafe
-        "$1[\"uniform4i\"]($2, $3, $4, $5,\n$6)" js_uniform4i ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"uniform4i\"]($2, $3, $4, $5,\n$6); })" js_uniform4i ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation ->
             GLint -> GLint -> GLint -> GLint -> IO ()
@@ -2551,7 +2551,7 @@ uniform4iv self location v
              (Int32List v'))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix2fv\"]($2, $3,\n$4)" js_uniformMatrix2fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix2fv\"]($2, $3,\n$4); })" js_uniformMatrix2fv ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation -> GLboolean -> Float32List -> IO ()
 
@@ -2570,7 +2570,7 @@ uniformMatrix2fv self location transpose array
              (Float32List array'))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix3fv\"]($2, $3,\n$4)" js_uniformMatrix3fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix3fv\"]($2, $3,\n$4); })" js_uniformMatrix3fv ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation -> GLboolean -> Float32List -> IO ()
 
@@ -2589,7 +2589,7 @@ uniformMatrix3fv self location transpose array
              (Float32List array'))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix4fv\"]($2, $3,\n$4)" js_uniformMatrix4fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix4fv\"]($2, $3,\n$4); })" js_uniformMatrix4fv ::
         WebGLRenderingContextBase ->
           Optional WebGLUniformLocation -> GLboolean -> Float32List -> IO ()
 
@@ -2646,7 +2646,7 @@ vertexAttrib1f self index x
       (js_vertexAttrib1f (toWebGLRenderingContextBase self) index x)
  
 foreign import javascript unsafe
-        "$1[\"vertexAttrib2f\"]($2, $3, $4)" js_vertexAttrib2f ::
+        "(($1, $2, $3, $4) => { return $1[\"vertexAttrib2f\"]($2, $3, $4); })" js_vertexAttrib2f ::
         WebGLRenderingContextBase -> GLuint -> GLfloat -> GLfloat -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.vertexAttrib2f Mozilla WebGLRenderingContextBase.vertexAttrib2f documentation> 
@@ -2658,7 +2658,7 @@ vertexAttrib2f self index x y
       (js_vertexAttrib2f (toWebGLRenderingContextBase self) index x y)
  
 foreign import javascript unsafe
-        "$1[\"vertexAttrib3f\"]($2, $3, $4,\n$5)" js_vertexAttrib3f ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"vertexAttrib3f\"]($2, $3, $4,\n$5); })" js_vertexAttrib3f ::
         WebGLRenderingContextBase ->
           GLuint -> GLfloat -> GLfloat -> GLfloat -> IO ()
 
@@ -2671,7 +2671,7 @@ vertexAttrib3f self index x y z
       (js_vertexAttrib3f (toWebGLRenderingContextBase self) index x y z)
  
 foreign import javascript unsafe
-        "$1[\"vertexAttrib4f\"]($2, $3, $4,\n$5, $6)" js_vertexAttrib4f ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"vertexAttrib4f\"]($2, $3, $4,\n$5, $6); })" js_vertexAttrib4f ::
         WebGLRenderingContextBase ->
           GLuint -> GLfloat -> GLfloat -> GLfloat -> GLfloat -> IO ()
 
@@ -3080,7 +3080,7 @@ pattern CONTEXT_LOST_WEBGL = 37442
 pattern UNPACK_COLORSPACE_CONVERSION_WEBGL = 37443
 pattern BROWSER_DEFAULT_WEBGL = 37444
  
-foreign import javascript unsafe "$1[\"canvas\"]" js_getCanvas ::
+foreign import javascript unsafe "(($1) => { return $1[\"canvas\"]; })" js_getCanvas ::
         WebGLRenderingContextBase -> IO HTMLCanvasElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContextBase.canvas Mozilla WebGLRenderingContextBase.canvas documentation> 

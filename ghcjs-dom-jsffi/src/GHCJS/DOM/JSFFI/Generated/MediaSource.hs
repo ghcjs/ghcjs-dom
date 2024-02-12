@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -91,7 +91,7 @@ isTypeSupported_ type'
   = liftIO (void (js_isTypeSupported (toJSString type')))
  
 foreign import javascript safe
-        "$1[\"setLiveSeekableRange\"]($2,\n$3)" js_setLiveSeekableRange ::
+        "(($1, $2, $3) => { return $1[\"setLiveSeekableRange\"]($2,\n$3); })" js_setLiveSeekableRange ::
         MediaSource -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.setLiveSeekableRange Mozilla MediaSource.setLiveSeekableRange documentation> 
@@ -132,7 +132,7 @@ foreign import javascript safe "$1[\"duration\"] = $2;"
 setDuration :: (MonadIO m) => MediaSource -> Double -> m ()
 setDuration self val = liftIO (js_setDuration self val)
  
-foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
+foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_getDuration
         :: MediaSource -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -57,7 +57,7 @@ fetch_ self input init
             \ input' -> js_fetch (toWorkerGlobalScope self) input'
             (maybeToOptional init)))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         WorkerGlobalScope -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.close Mozilla WorkerGlobalScope.close documentation> 
@@ -85,7 +85,7 @@ getIndexedDB ::
 getIndexedDB self
   = liftIO (js_getIndexedDB (toWorkerGlobalScope self))
  
-foreign import javascript unsafe "$1[\"self\"]" js_getSelf ::
+foreign import javascript unsafe "(($1) => { return $1[\"self\"]; })" js_getSelf ::
         WorkerGlobalScope -> IO WorkerGlobalScope
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.self Mozilla WorkerGlobalScope.self documentation> 
@@ -94,7 +94,7 @@ getSelf ::
           self -> m WorkerGlobalScope
 getSelf self = liftIO (js_getSelf (toWorkerGlobalScope self))
  
-foreign import javascript unsafe "$1[\"location\"]" js_getLocation
+foreign import javascript unsafe "(($1) => { return $1[\"location\"]; })" js_getLocation
         :: WorkerGlobalScope -> IO WorkerLocation
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.location Mozilla WorkerGlobalScope.location documentation> 

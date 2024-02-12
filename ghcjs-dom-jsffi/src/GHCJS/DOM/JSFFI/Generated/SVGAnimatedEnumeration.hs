@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -34,14 +34,14 @@ foreign import javascript safe "$1[\"baseVal\"] = $2;"
 setBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> Word -> m ()
 setBaseVal self val = liftIO (js_setBaseVal self val)
  
-foreign import javascript unsafe "$1[\"baseVal\"]" js_getBaseVal ::
+foreign import javascript unsafe "(($1) => { return $1[\"baseVal\"]; })" js_getBaseVal ::
         SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.baseVal Mozilla SVGAnimatedEnumeration.baseVal documentation> 
 getBaseVal :: (MonadIO m) => SVGAnimatedEnumeration -> m Word
 getBaseVal self = liftIO (js_getBaseVal self)
  
-foreign import javascript unsafe "$1[\"animVal\"]" js_getAnimVal ::
+foreign import javascript unsafe "(($1) => { return $1[\"animVal\"]; })" js_getAnimVal ::
         SVGAnimatedEnumeration -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedEnumeration.animVal Mozilla SVGAnimatedEnumeration.animVal documentation> 

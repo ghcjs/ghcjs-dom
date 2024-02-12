@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -74,7 +74,7 @@ createComputeCommandEncoder_ ::
 createComputeCommandEncoder_ self
   = liftIO (void (js_createComputeCommandEncoder self))
  
-foreign import javascript unsafe "$1[\"commit\"]()" js_commit ::
+foreign import javascript unsafe "(($1) => { return $1[\"commit\"](); })" js_commit ::
         WebGPUCommandBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandBuffer.commit Mozilla WebGPUCommandBuffer.commit documentation> 

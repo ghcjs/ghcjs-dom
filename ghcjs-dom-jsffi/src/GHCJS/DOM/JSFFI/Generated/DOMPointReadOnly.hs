@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -70,28 +70,28 @@ fromPoint_ :: (MonadIO m) => Maybe DOMPointInit -> m ()
 fromPoint_ other
   = liftIO (void (js_fromPoint (maybeToOptional other)))
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         DOMPointReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.x Mozilla DOMPointReadOnly.x documentation> 
 getX :: (MonadIO m, IsDOMPointReadOnly self) => self -> m Double
 getX self = liftIO (js_getX (toDOMPointReadOnly self))
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         DOMPointReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.y Mozilla DOMPointReadOnly.y documentation> 
 getY :: (MonadIO m, IsDOMPointReadOnly self) => self -> m Double
 getY self = liftIO (js_getY (toDOMPointReadOnly self))
  
-foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
+foreign import javascript unsafe "(($1) => { return $1[\"z\"]; })" js_getZ ::
         DOMPointReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.z Mozilla DOMPointReadOnly.z documentation> 
 getZ :: (MonadIO m, IsDOMPointReadOnly self) => self -> m Double
 getZ self = liftIO (js_getZ (toDOMPointReadOnly self))
  
-foreign import javascript unsafe "$1[\"w\"]" js_getW ::
+foreign import javascript unsafe "(($1) => { return $1[\"w\"]; })" js_getW ::
         DOMPointReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.w Mozilla DOMPointReadOnly.w documentation> 

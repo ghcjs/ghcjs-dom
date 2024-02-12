@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -81,14 +81,14 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 getDisabled :: (MonadIO m) => HTMLFieldSetElement -> m Bool
 getDisabled self = liftIO (js_getDisabled self)
  
-foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
+foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm ::
         HTMLFieldSetElement -> IO HTMLFormElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.form Mozilla HTMLFieldSetElement.form documentation> 
 getForm :: (MonadIO m) => HTMLFieldSetElement -> m HTMLFormElement
 getForm self = liftIO (js_getForm self)
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLFieldSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
@@ -96,7 +96,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLFieldSetElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLFieldSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.name Mozilla HTMLFieldSetElement.name documentation> 
@@ -104,7 +104,7 @@ getName ::
         (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         HTMLFieldSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.type Mozilla HTMLFieldSetElement.type documentation> 
@@ -112,7 +112,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLFieldSetElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"elements\"]" js_getElements
+foreign import javascript unsafe "(($1) => { return $1[\"elements\"]; })" js_getElements
         :: HTMLFieldSetElement -> IO HTMLFormControlsCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.elements Mozilla HTMLFieldSetElement.elements documentation> 
@@ -127,7 +127,7 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 getWillValidate :: (MonadIO m) => HTMLFieldSetElement -> m Bool
 getWillValidate self = liftIO (js_getWillValidate self)
  
-foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+foreign import javascript unsafe "(($1) => { return $1[\"validity\"]; })" js_getValidity
         :: HTMLFieldSetElement -> IO ValidityState
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFieldSetElement.validity Mozilla HTMLFieldSetElement.validity documentation> 

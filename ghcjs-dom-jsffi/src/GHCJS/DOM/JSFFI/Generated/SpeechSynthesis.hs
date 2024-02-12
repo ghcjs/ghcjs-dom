@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"speak\"]($2)" js_speak ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"speak\"]($2); })" js_speak ::
         SpeechSynthesis -> SpeechSynthesisUtterance -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.speak Mozilla SpeechSynthesis.speak documentation> 
@@ -36,28 +36,28 @@ speak ::
       (MonadIO m) => SpeechSynthesis -> SpeechSynthesisUtterance -> m ()
 speak self utterance = liftIO (js_speak self utterance)
  
-foreign import javascript unsafe "$1[\"cancel\"]()" js_cancel ::
+foreign import javascript unsafe "(($1) => { return $1[\"cancel\"](); })" js_cancel ::
         SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.cancel Mozilla SpeechSynthesis.cancel documentation> 
 cancel :: (MonadIO m) => SpeechSynthesis -> m ()
 cancel self = liftIO (js_cancel self)
  
-foreign import javascript unsafe "$1[\"pause\"]()" js_pause ::
+foreign import javascript unsafe "(($1) => { return $1[\"pause\"](); })" js_pause ::
         SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.pause Mozilla SpeechSynthesis.pause documentation> 
 pause :: (MonadIO m) => SpeechSynthesis -> m ()
 pause self = liftIO (js_pause self)
  
-foreign import javascript unsafe "$1[\"resume\"]()" js_resume ::
+foreign import javascript unsafe "(($1) => { return $1[\"resume\"](); })" js_resume ::
         SpeechSynthesis -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.resume Mozilla SpeechSynthesis.resume documentation> 
 resume :: (MonadIO m) => SpeechSynthesis -> m ()
 resume self = liftIO (js_resume self)
  
-foreign import javascript unsafe "$1[\"getVoices\"]()" js_getVoices
+foreign import javascript unsafe "(($1) => { return $1[\"getVoices\"](); })" js_getVoices
         :: SpeechSynthesis -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.getVoices Mozilla SpeechSynthesis.getVoices documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,7 +39,7 @@ newMediaRemoteControls :: (MonadIO m) => m MediaRemoteControls
 newMediaRemoteControls = liftIO (js_newMediaRemoteControls)
  
 foreign import javascript unsafe
-        "$1[\"previousTrackEnabled\"] = $2;" js_setPreviousTrackEnabled ::
+        "(($1, $2) => { $1[\"previousTrackEnabled\"] = $2; })" js_setPreviousTrackEnabled ::
         MediaRemoteControls -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls.previousTrackEnabled Mozilla MediaRemoteControls.previousTrackEnabled documentation> 

@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -56,14 +56,14 @@ pattern SVG_MARKER_ORIENT_UNKNOWN = 0
 pattern SVG_MARKER_ORIENT_AUTO = 1
 pattern SVG_MARKER_ORIENT_ANGLE = 2
  
-foreign import javascript unsafe "$1[\"refX\"]" js_getRefX ::
+foreign import javascript unsafe "(($1) => { return $1[\"refX\"]; })" js_getRefX ::
         SVGMarkerElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refX Mozilla SVGMarkerElement.refX documentation> 
 getRefX :: (MonadIO m) => SVGMarkerElement -> m SVGAnimatedLength
 getRefX self = liftIO (js_getRefX self)
  
-foreign import javascript unsafe "$1[\"refY\"]" js_getRefY ::
+foreign import javascript unsafe "(($1) => { return $1[\"refY\"]; })" js_getRefY ::
         SVGMarkerElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMarkerElement.refY Mozilla SVGMarkerElement.refY documentation> 

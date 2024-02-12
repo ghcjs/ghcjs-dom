@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -47,14 +47,14 @@ foreign import javascript unsafe "($1[\"wasClean\"] ? 1 : 0)"
 getWasClean :: (MonadIO m) => CloseEvent -> m Bool
 getWasClean self = liftIO (js_getWasClean self)
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         CloseEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.code Mozilla CloseEvent.code documentation> 
 getCode :: (MonadIO m) => CloseEvent -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"reason\"]" js_getReason ::
+foreign import javascript unsafe "(($1) => { return $1[\"reason\"]; })" js_getReason ::
         CloseEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.reason Mozilla CloseEvent.reason documentation> 

@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -34,7 +34,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"start\"]($2, $3, $4)" js_start
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"start\"]($2, $3, $4); })" js_start
         ::
         AudioBufferSourceNode ->
           Optional Double -> Optional Double -> Optional Double -> IO ()
@@ -49,7 +49,7 @@ start self when grainOffset grainDuration
       (js_start self (maybeToOptional when) (maybeToOptional grainOffset)
          (maybeToOptional grainDuration))
  
-foreign import javascript safe "$1[\"stop\"]($2)" js_stop ::
+foreign import javascript safe "(($1, $2) => { return $1[\"stop\"]($2); })" js_stop ::
         AudioBufferSourceNode -> Optional Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.stop Mozilla AudioBufferSourceNode.stop documentation> 
@@ -71,7 +71,7 @@ setBuffer ::
 setBuffer self val
   = liftIO (js_setBuffer self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"buffer\"]" js_getBuffer ::
+foreign import javascript unsafe "(($1) => { return $1[\"buffer\"]; })" js_getBuffer ::
         AudioBufferSourceNode -> IO (Nullable AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.buffer Mozilla AudioBufferSourceNode.buffer documentation> 
@@ -100,7 +100,7 @@ foreign import javascript unsafe "$1[\"playbackState\"]"
 getPlaybackState :: (MonadIO m) => AudioBufferSourceNode -> m Word
 getPlaybackState self = liftIO (js_getPlaybackState self)
  
-foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
+foreign import javascript unsafe "(($1) => { return $1[\"gain\"]; })" js_getGain ::
         AudioBufferSourceNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.gain Mozilla AudioBufferSourceNode.gain documentation> 
@@ -115,7 +115,7 @@ getPlaybackRate ::
                 (MonadIO m) => AudioBufferSourceNode -> m AudioParam
 getPlaybackRate self = liftIO (js_getPlaybackRate self)
  
-foreign import javascript unsafe "$1[\"loop\"] = $2;" js_setLoop ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"loop\"] = $2; })" js_setLoop ::
         AudioBufferSourceNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loop Mozilla AudioBufferSourceNode.loop documentation> 
@@ -152,7 +152,7 @@ setLoopEnd ::
            (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
 setLoopEnd self val = liftIO (js_setLoopEnd self val)
  
-foreign import javascript unsafe "$1[\"loopEnd\"]" js_getLoopEnd ::
+foreign import javascript unsafe "(($1) => { return $1[\"loopEnd\"]; })" js_getLoopEnd ::
         AudioBufferSourceNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopEnd Mozilla AudioBufferSourceNode.loopEnd documentation> 

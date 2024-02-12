@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"addEventListener\"]($2, $3,\n$4)" js_addEventListener ::
+        "(($1, $2, $3, $4) => { return $1[\"addEventListener\"]($2, $3,\n$4); })" js_addEventListener ::
         EventTarget ->
           JSString ->
             Optional EventListener -> AddEventListenerOptionsOrBool -> IO ()
@@ -47,7 +47,7 @@ addEventListener self type' callback options
              (AddEventListenerOptionsOrBool options'))
  
 foreign import javascript unsafe
-        "$1[\"removeEventListener\"]($2,\n$3, $4)" js_removeEventListener
+        "(($1, $2, $3, $4) => { return $1[\"removeEventListener\"]($2,\n$3, $4); })" js_removeEventListener
         ::
         EventTarget ->
           JSString ->

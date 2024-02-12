@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -43,14 +43,14 @@ getChannelData_ :: (MonadIO m) => AudioBuffer -> Word -> m ()
 getChannelData_ self channelIndex
   = liftIO (void (js_getChannelData self channelIndex))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         AudioBuffer -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.length Mozilla AudioBuffer.length documentation> 
 getLength :: (MonadIO m) => AudioBuffer -> m Int
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
+foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_getDuration
         :: AudioBuffer -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.duration Mozilla AudioBuffer.duration documentation> 
@@ -64,14 +64,14 @@ foreign import javascript unsafe "$1[\"sampleRate\"]"
 getSampleRate :: (MonadIO m) => AudioBuffer -> m Float
 getSampleRate self = liftIO (js_getSampleRate self)
  
-foreign import javascript unsafe "$1[\"gain\"] = $2;" js_setGain ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"gain\"] = $2; })" js_setGain ::
         AudioBuffer -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.gain Mozilla AudioBuffer.gain documentation> 
 setGain :: (MonadIO m) => AudioBuffer -> Float -> m ()
 setGain self val = liftIO (js_setGain self val)
  
-foreign import javascript unsafe "$1[\"gain\"]" js_getGain ::
+foreign import javascript unsafe "(($1) => { return $1[\"gain\"]; })" js_getGain ::
         AudioBuffer -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.gain Mozilla AudioBuffer.gain documentation> 

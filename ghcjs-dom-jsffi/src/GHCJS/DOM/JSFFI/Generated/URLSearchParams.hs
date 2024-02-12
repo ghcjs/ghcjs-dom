@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,7 +42,7 @@ newURLSearchParams init
       (toJSVal init >>=
          \ init' -> js_newURLSearchParams (URLSearchParamsInit init'))
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3)" js_append
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"append\"]($2, $3); })" js_append
         :: URLSearchParams -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.append Mozilla URLSearchParams.append documentation> 
@@ -52,7 +52,7 @@ append ::
 append self name value
   = liftIO (js_append self (toJSString name) (toJSString value))
  
-foreign import javascript unsafe "$1[\"delete\"]($2)" js_delete ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"delete\"]($2); })" js_delete ::
         URLSearchParams -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.delete Mozilla URLSearchParams.delete documentation> 
@@ -60,7 +60,7 @@ delete ::
        (MonadIO m, ToJSString name) => URLSearchParams -> name -> m ()
 delete self name = liftIO (js_delete self (toJSString name))
  
-foreign import javascript unsafe "$1[\"get\"]($2)" js_get ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         URLSearchParams -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.get Mozilla URLSearchParams.get documentation> 
@@ -92,7 +92,7 @@ getUnchecked self name
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_get self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"getAll\"]($2)" js_getAll ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getAll\"]($2); })" js_getAll ::
         URLSearchParams -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.getAll Mozilla URLSearchParams.getAll documentation> 
@@ -122,7 +122,7 @@ has_ ::
      (MonadIO m, ToJSString name) => URLSearchParams -> name -> m ()
 has_ self name = liftIO (void (js_has self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"set\"]($2, $3)" js_set ::
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"set\"]($2, $3); })" js_set ::
         URLSearchParams -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.set Mozilla URLSearchParams.set documentation> 
@@ -132,14 +132,14 @@ set ::
 set self name value
   = liftIO (js_set self (toJSString name) (toJSString value))
  
-foreign import javascript unsafe "$1[\"sort\"]()" js_sort ::
+foreign import javascript unsafe "(($1) => { return $1[\"sort\"](); })" js_sort ::
         URLSearchParams -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.sort Mozilla URLSearchParams.sort documentation> 
 sort :: (MonadIO m) => URLSearchParams -> m ()
 sort self = liftIO (js_sort self)
  
-foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+foreign import javascript unsafe "(($1) => { return $1[\"toString\"](); })" js_toString
         :: URLSearchParams -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.toString Mozilla URLSearchParams.toString documentation> 

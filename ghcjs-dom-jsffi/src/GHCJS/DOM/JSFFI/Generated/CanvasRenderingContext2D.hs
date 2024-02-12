@@ -83,7 +83,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -97,28 +97,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"save\"]()" js_save ::
+foreign import javascript unsafe "(($1) => { return $1[\"save\"](); })" js_save ::
         CanvasRenderingContext2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.save Mozilla CanvasRenderingContext2D.save documentation> 
 save :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 save self = liftIO (js_save self)
  
-foreign import javascript unsafe "$1[\"restore\"]()" js_restore ::
+foreign import javascript unsafe "(($1) => { return $1[\"restore\"](); })" js_restore ::
         CanvasRenderingContext2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.restore Mozilla CanvasRenderingContext2D.restore documentation> 
 restore :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 restore self = liftIO (js_restore self)
  
-foreign import javascript unsafe "$1[\"commit\"]()" js_commit ::
+foreign import javascript unsafe "(($1) => { return $1[\"commit\"](); })" js_commit ::
         CanvasRenderingContext2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.commit Mozilla CanvasRenderingContext2D.commit documentation> 
 commit :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 commit self = liftIO (js_commit self)
  
-foreign import javascript unsafe "$1[\"scale\"]($2, $3)" js_scale
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scale\"]($2, $3); })" js_scale
         :: CanvasRenderingContext2D -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.scale Mozilla CanvasRenderingContext2D.scale documentation> 
@@ -126,7 +126,7 @@ scale ::
       (MonadIO m) => CanvasRenderingContext2D -> Float -> Float -> m ()
 scale self sx sy = liftIO (js_scale self sx sy)
  
-foreign import javascript unsafe "$1[\"rotate\"]($2)" js_rotate ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"rotate\"]($2); })" js_rotate ::
         CanvasRenderingContext2D -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.rotate Mozilla CanvasRenderingContext2D.rotate documentation> 
@@ -142,7 +142,7 @@ translate ::
 translate self tx ty = liftIO (js_translate self tx ty)
  
 foreign import javascript unsafe
-        "$1[\"transform\"]($2, $3, $4, $5,\n$6, $7)" js_transform ::
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"transform\"]($2, $3, $4, $5,\n$6, $7); })" js_transform ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> Float -> Float -> IO ()
 
@@ -155,7 +155,7 @@ transform self m11 m12 m21 m22 dx dy
   = liftIO (js_transform self m11 m12 m21 m22 dx dy)
  
 foreign import javascript unsafe
-        "$1[\"setTransform\"]($2, $3, $4,\n$5, $6, $7)" js_setTransform ::
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"setTransform\"]($2, $3, $4,\n$5, $6, $7); })" js_setTransform ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> Float -> Float -> IO ()
 
@@ -196,7 +196,7 @@ getLineDash_ :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 getLineDash_ self = liftIO (void (js_getLineDash self))
  
 foreign import javascript unsafe
-        "$1[\"clearRect\"]($2, $3, $4, $5)" js_clearRect ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"clearRect\"]($2, $3, $4, $5); })" js_clearRect ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ()
 
@@ -221,14 +221,14 @@ fillRect ::
 fillRect self x y width height
   = liftIO (js_fillRect self x y width height)
  
-foreign import javascript unsafe "$1[\"beginPath\"]()" js_beginPath
+foreign import javascript unsafe "(($1) => { return $1[\"beginPath\"](); })" js_beginPath
         :: CanvasRenderingContext2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.beginPath Mozilla CanvasRenderingContext2D.beginPath documentation> 
 beginPath :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 beginPath self = liftIO (js_beginPath self)
  
-foreign import javascript unsafe "$1[\"fill\"]($2, $3)" js_fillPath
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"fill\"]($2, $3); })" js_fillPath
         ::
         CanvasRenderingContext2D ->
           Path2D -> Optional CanvasWindingRule -> IO ()
@@ -241,7 +241,7 @@ fillPath ::
 fillPath self path winding
   = liftIO (js_fillPath self path (maybeToOptional winding))
  
-foreign import javascript unsafe "$1[\"stroke\"]($2)" js_strokePath
+foreign import javascript unsafe "(($1, $2) => { return $1[\"stroke\"]($2); })" js_strokePath
         :: CanvasRenderingContext2D -> Path2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.stroke Mozilla CanvasRenderingContext2D.stroke documentation> 
@@ -249,7 +249,7 @@ strokePath ::
            (MonadIO m) => CanvasRenderingContext2D -> Path2D -> m ()
 strokePath self path = liftIO (js_strokePath self path)
  
-foreign import javascript unsafe "$1[\"clip\"]($2, $3)" js_clipPath
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"clip\"]($2, $3); })" js_clipPath
         ::
         CanvasRenderingContext2D ->
           Path2D -> Optional CanvasWindingRule -> IO ()
@@ -262,7 +262,7 @@ clipPath ::
 clipPath self path winding
   = liftIO (js_clipPath self path (maybeToOptional winding))
  
-foreign import javascript unsafe "$1[\"fill\"]($2)" js_fill ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"fill\"]($2); })" js_fill ::
         CanvasRenderingContext2D -> Optional CanvasWindingRule -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.fill Mozilla CanvasRenderingContext2D.fill documentation> 
@@ -271,14 +271,14 @@ fill ::
        CanvasRenderingContext2D -> Maybe CanvasWindingRule -> m ()
 fill self winding = liftIO (js_fill self (maybeToOptional winding))
  
-foreign import javascript unsafe "$1[\"stroke\"]()" js_stroke ::
+foreign import javascript unsafe "(($1) => { return $1[\"stroke\"](); })" js_stroke ::
         CanvasRenderingContext2D -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.stroke Mozilla CanvasRenderingContext2D.stroke documentation> 
 stroke :: (MonadIO m) => CanvasRenderingContext2D -> m ()
 stroke self = liftIO (js_stroke self)
  
-foreign import javascript unsafe "$1[\"clip\"]($2)" js_clip ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clip\"]($2); })" js_clip ::
         CanvasRenderingContext2D -> Optional CanvasWindingRule -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.clip Mozilla CanvasRenderingContext2D.clip documentation> 
@@ -386,7 +386,7 @@ measureText_ ::
 measureText_ self text
   = liftIO (void (js_measureText self (toJSString text)))
  
-foreign import javascript unsafe "$1[\"setAlpha\"]($2)" js_setAlpha
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setAlpha\"]($2); })" js_setAlpha
         :: CanvasRenderingContext2D -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.setAlpha Mozilla CanvasRenderingContext2D.setAlpha documentation> 
@@ -396,7 +396,7 @@ setAlpha self alpha
   = liftIO (js_setAlpha self (maybeToOptional alpha))
  
 foreign import javascript unsafe
-        "$1[\"setCompositeOperation\"]($2)" js_setCompositeOperation ::
+        "(($1, $2) => { return $1[\"setCompositeOperation\"]($2); })" js_setCompositeOperation ::
         CanvasRenderingContext2D -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.setCompositeOperation Mozilla CanvasRenderingContext2D.setCompositeOperation documentation> 
@@ -472,7 +472,7 @@ fillText self text x y maxWidth
       (js_fillText self (toJSString text) x y (maybeToOptional maxWidth))
  
 foreign import javascript unsafe
-        "$1[\"strokeText\"]($2, $3, $4, $5)" js_strokeText ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"strokeText\"]($2, $3, $4, $5); })" js_strokeText ::
         CanvasRenderingContext2D ->
           JSString -> Float -> Float -> Optional Float -> IO ()
 
@@ -511,7 +511,7 @@ setStrokeColorGray self grayLevel alpha
       (js_setStrokeColorGray self grayLevel (maybeToOptional alpha))
  
 foreign import javascript unsafe
-        "$1[\"setStrokeColor\"]($2, $3, $4,\n$5)" js_setStrokeColorRGB ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"setStrokeColor\"]($2, $3, $4,\n$5); })" js_setStrokeColorRGB ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ()
 
@@ -524,7 +524,7 @@ setStrokeColorRGB self r g b a
   = liftIO (js_setStrokeColorRGB self r g b a)
  
 foreign import javascript unsafe
-        "$1[\"setStrokeColor\"]($2, $3, $4,\n$5, $6)" js_setStrokeColorCYMK
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"setStrokeColor\"]($2, $3, $4,\n$5, $6); })" js_setStrokeColorCYMK
         ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> Float -> IO ()
@@ -562,7 +562,7 @@ setFillColorGray self grayLevel alpha
       (js_setFillColorGray self grayLevel (maybeToOptional alpha))
  
 foreign import javascript unsafe
-        "$1[\"setFillColor\"]($2, $3, $4,\n$5)" js_setFillColorRGB ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"setFillColor\"]($2, $3, $4,\n$5); })" js_setFillColorRGB ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ()
 
@@ -575,7 +575,7 @@ setFillColorRGB self r g b a
   = liftIO (js_setFillColorRGB self r g b a)
  
 foreign import javascript unsafe
-        "$1[\"setFillColor\"]($2, $3, $4,\n$5, $6)" js_setFillColorCYMK ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"setFillColor\"]($2, $3, $4,\n$5, $6); })" js_setFillColorCYMK ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> Float -> IO ()
 
@@ -588,7 +588,7 @@ setFillColorCYMK self c m y k a
   = liftIO (js_setFillColorCYMK self c m y k a)
  
 foreign import javascript unsafe
-        "$1[\"strokeRect\"]($2, $3, $4, $5)" js_strokeRect ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"strokeRect\"]($2, $3, $4, $5); })" js_strokeRect ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ()
 
@@ -613,7 +613,7 @@ drawImage self image x y
   = liftIO (js_drawImage self (toCanvasImageSource image) x y)
  
 foreign import javascript safe
-        "$1[\"drawImage\"]($2, $3, $4, $5,\n$6)" js_drawImageScaled ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"drawImage\"]($2, $3, $4, $5,\n$6); })" js_drawImageScaled ::
         CanvasRenderingContext2D ->
           CanvasImageSource -> Float -> Float -> Float -> Float -> IO ()
 
@@ -689,7 +689,7 @@ drawImageFromRect self image sx sy sw sh dx dy dw dh
          (toOptionalJSString compositeOperation))
  
 foreign import javascript unsafe
-        "$1[\"setShadow\"]($2, $3, $4, $5,\n$6)" js_setShadow ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"setShadow\"]($2, $3, $4, $5,\n$6); })" js_setShadow ::
         CanvasRenderingContext2D ->
           Float ->
             Float -> Float -> Optional JSString -> Optional Float -> IO ()
@@ -705,7 +705,7 @@ setShadow self width height blur color alpha
          (maybeToOptional alpha))
  
 foreign import javascript unsafe
-        "$1[\"setShadow\"]($2, $3, $4, $5,\n$6)" js_setShadowGray ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"setShadow\"]($2, $3, $4, $5,\n$6); })" js_setShadowGray ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> Optional Float -> IO ()
 
@@ -720,7 +720,7 @@ setShadowGray self width height blur grayLevel alpha
          (maybeToOptional alpha))
  
 foreign import javascript unsafe
-        "$1[\"setShadow\"]($2, $3, $4, $5,\n$6, $7, $8)" js_setShadowRGB ::
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"setShadow\"]($2, $3, $4, $5,\n$6, $7, $8); })" js_setShadowRGB ::
         CanvasRenderingContext2D ->
           Float ->
             Float -> Float -> Float -> Float -> Float -> Float -> IO ()
@@ -781,7 +781,7 @@ putImageDataDirty self imagedata dx dy dirtyX dirtyY dirtyWidth
          dirtyHeight)
  
 foreign import javascript unsafe
-        "$1[\"webkitPutImageDataHD\"]($2,\n$3, $4)" js_webkitPutImageDataHD
+        "(($1, $2, $3, $4) => { return $1[\"webkitPutImageDataHD\"]($2,\n$3, $4); })" js_webkitPutImageDataHD
         :: CanvasRenderingContext2D -> ImageData -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitPutImageDataHD Mozilla CanvasRenderingContext2D.webkitPutImageDataHD documentation> 
@@ -941,7 +941,7 @@ createPatternUnchecked self image repetition
             (toJSString repetition)))
  
 foreign import javascript safe
-        "$1[\"getImageData\"]($2, $3, $4,\n$5)" js_getImageData ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"getImageData\"]($2, $3, $4,\n$5); })" js_getImageData ::
         CanvasRenderingContext2D ->
           Float -> Float -> Float -> Float -> IO ImageData
 
@@ -995,7 +995,7 @@ drawFocusIfNeeded self element
   = liftIO (js_drawFocusIfNeeded self (toElement element))
  
 foreign import javascript unsafe
-        "$1[\"drawFocusIfNeeded\"]($2, $3)" js_drawFocusIfNeededPath ::
+        "(($1, $2, $3) => { return $1[\"drawFocusIfNeeded\"]($2, $3); })" js_drawFocusIfNeededPath ::
         CanvasRenderingContext2D -> Path2D -> Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.drawFocusIfNeeded Mozilla CanvasRenderingContext2D.drawFocusIfNeeded documentation> 
@@ -1005,7 +1005,7 @@ drawFocusIfNeededPath ::
 drawFocusIfNeededPath self path element
   = liftIO (js_drawFocusIfNeededPath self path (toElement element))
  
-foreign import javascript unsafe "$1[\"canvas\"]" js_getCanvas ::
+foreign import javascript unsafe "(($1) => { return $1[\"canvas\"]; })" js_getCanvas ::
         CanvasRenderingContext2D -> IO HTMLCanvasElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.canvas Mozilla CanvasRenderingContext2D.canvas documentation> 
@@ -1076,7 +1076,7 @@ setLineCap ::
              CanvasRenderingContext2D -> val -> m ()
 setLineCap self val = liftIO (js_setLineCap self (toJSString val))
  
-foreign import javascript unsafe "$1[\"lineCap\"]" js_getLineCap ::
+foreign import javascript unsafe "(($1) => { return $1[\"lineCap\"]; })" js_getLineCap ::
         CanvasRenderingContext2D -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineCap Mozilla CanvasRenderingContext2D.lineCap documentation> 
@@ -1095,7 +1095,7 @@ setLineJoin ::
 setLineJoin self val
   = liftIO (js_setLineJoin self (toJSString val))
  
-foreign import javascript unsafe "$1[\"lineJoin\"]" js_getLineJoin
+foreign import javascript unsafe "(($1) => { return $1[\"lineJoin\"]; })" js_getLineJoin
         :: CanvasRenderingContext2D -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.lineJoin Mozilla CanvasRenderingContext2D.lineJoin documentation> 
@@ -1221,7 +1221,7 @@ getWebkitLineDash self
   = liftIO ((js_getWebkitLineDash self) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
-        "$1[\"webkitLineDashOffset\"] = $2;" js_setWebkitLineDashOffset ::
+        "(($1, $2) => { $1[\"webkitLineDashOffset\"] = $2; })" js_setWebkitLineDashOffset ::
         CanvasRenderingContext2D -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.webkitLineDashOffset Mozilla CanvasRenderingContext2D.webkitLineDashOffset documentation> 
@@ -1239,7 +1239,7 @@ getWebkitLineDashOffset ::
 getWebkitLineDashOffset self
   = liftIO (js_getWebkitLineDashOffset self)
  
-foreign import javascript unsafe "$1[\"font\"] = $2;" js_setFont ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"font\"] = $2; })" js_setFont ::
         CanvasRenderingContext2D -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.font Mozilla CanvasRenderingContext2D.font documentation> 
@@ -1248,7 +1248,7 @@ setFont ::
           CanvasRenderingContext2D -> val -> m ()
 setFont self val = liftIO (js_setFont self (toJSString val))
  
-foreign import javascript unsafe "$1[\"font\"]" js_getFont ::
+foreign import javascript unsafe "(($1) => { return $1[\"font\"]; })" js_getFont ::
         CanvasRenderingContext2D -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.font Mozilla CanvasRenderingContext2D.font documentation> 
@@ -1369,7 +1369,7 @@ getWebkitBackingStorePixelRatio self
   = liftIO (js_getWebkitBackingStorePixelRatio self)
  
 foreign import javascript unsafe
-        "$1[\"imageSmoothingEnabled\"] = $2;" js_setImageSmoothingEnabled
+        "(($1, $2) => { $1[\"imageSmoothingEnabled\"] = $2; })" js_setImageSmoothingEnabled
         :: CanvasRenderingContext2D -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.imageSmoothingEnabled Mozilla CanvasRenderingContext2D.imageSmoothingEnabled documentation> 
@@ -1411,7 +1411,7 @@ getWebkitImageSmoothingEnabled self
   = liftIO (js_getWebkitImageSmoothingEnabled self)
  
 foreign import javascript unsafe
-        "$1[\"imageSmoothingQuality\"] = $2;" js_setImageSmoothingQuality
+        "(($1, $2) => { $1[\"imageSmoothingQuality\"] = $2; })" js_setImageSmoothingQuality
         :: CanvasRenderingContext2D -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.imageSmoothingQuality Mozilla CanvasRenderingContext2D.imageSmoothingQuality documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -82,7 +82,7 @@ getContextUnchecked self contextId arguments
             \ arguments' ->
               js_getContext self (toJSString contextId) arguments'))
  
-foreign import javascript safe "$1[\"toDataURL\"]($2)" js_toDataURL
+foreign import javascript safe "(($1, $2) => { return $1[\"toDataURL\"]($2); })" js_toDataURL
         :: HTMLCanvasElement -> Optional JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
@@ -134,14 +134,14 @@ captureStream_ self frameRequestRate
   = liftIO
       (void (js_captureStream self (maybeToOptional frameRequestRate)))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLCanvasElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
 setWidth :: (MonadIO m) => HTMLCanvasElement -> Word -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLCanvasElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
@@ -155,7 +155,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 setHeight :: (MonadIO m) => HTMLCanvasElement -> Word -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLCanvasElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 

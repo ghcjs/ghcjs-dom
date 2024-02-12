@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"key\"]($2)" js_key ::
+foreign import javascript safe "(($1, $2) => { return $1[\"key\"]($2); })" js_key ::
         Storage -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.key Mozilla Storage.key documentation> 
@@ -56,7 +56,7 @@ keyUnchecked ::
 keyUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_key self index))
  
-foreign import javascript safe "$1[$2]" js_getItem ::
+foreign import javascript safe "(($1, $2) => { return $1[$2]; })" js_getItem ::
         Storage -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.getItem Mozilla Storage.getItem documentation> 
@@ -89,7 +89,7 @@ getItemUnchecked self key
       (fromJust . fromMaybeJSString <$>
          (js_getItem self (toJSString key)))
  
-foreign import javascript safe "$1[\"setItem\"]($2, $3)" js_setItem
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setItem\"]($2, $3); })" js_setItem
         :: Storage -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.setItem Mozilla Storage.setItem documentation> 
@@ -106,14 +106,14 @@ foreign import javascript safe "$1[\"removeItem\"]($2)"
 removeItem :: (MonadIO m, ToJSString key) => Storage -> key -> m ()
 removeItem self key = liftIO (js_removeItem self (toJSString key))
  
-foreign import javascript safe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         Storage -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.clear Mozilla Storage.clear documentation> 
 clear :: (MonadIO m) => Storage -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript safe "$1[\"length\"]" js_getLength ::
+foreign import javascript safe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         Storage -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.length Mozilla Storage.length documentation> 

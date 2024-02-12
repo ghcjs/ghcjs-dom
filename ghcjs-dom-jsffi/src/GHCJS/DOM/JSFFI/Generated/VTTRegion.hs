@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -41,49 +41,49 @@ foreign import javascript unsafe "new window[\"VTTRegion\"]()"
 newVTTRegion :: (MonadIO m) => m VTTRegion
 newVTTRegion = liftIO (js_newVTTRegion)
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         VTTRegion -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.track Mozilla VTTRegion.track documentation> 
 getTrack :: (MonadIO m) => VTTRegion -> m TextTrack
 getTrack self = liftIO (js_getTrack self)
  
-foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"id\"] = $2; })" js_setId ::
         VTTRegion -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.id Mozilla VTTRegion.id documentation> 
 setId :: (MonadIO m, ToJSString val) => VTTRegion -> val -> m ()
 setId self val = liftIO (js_setId self (toJSString val))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         VTTRegion -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.id Mozilla VTTRegion.id documentation> 
 getId :: (MonadIO m, FromJSString result) => VTTRegion -> m result
 getId self = liftIO (fromJSString <$> (js_getId self))
  
-foreign import javascript safe "$1[\"width\"] = $2;" js_setWidth ::
+foreign import javascript safe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth ::
         VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.width Mozilla VTTRegion.width documentation> 
 setWidth :: (MonadIO m) => VTTRegion -> Double -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         VTTRegion -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.width Mozilla VTTRegion.width documentation> 
 getWidth :: (MonadIO m) => VTTRegion -> m Double
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript safe "$1[\"height\"] = $2;" js_setHeight
+foreign import javascript safe "(($1, $2) => { $1[\"height\"] = $2; })" js_setHeight
         :: VTTRegion -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.height Mozilla VTTRegion.height documentation> 
 setHeight :: (MonadIO m) => VTTRegion -> Int -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         VTTRegion -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.height Mozilla VTTRegion.height documentation> 
@@ -148,7 +148,7 @@ foreign import javascript unsafe "$1[\"viewportAnchorY\"]"
 getViewportAnchorY :: (MonadIO m) => VTTRegion -> m Double
 getViewportAnchorY self = liftIO (js_getViewportAnchorY self)
  
-foreign import javascript safe "$1[\"scroll\"] = $2;" js_setScroll
+foreign import javascript safe "(($1, $2) => { $1[\"scroll\"] = $2; })" js_setScroll
         :: VTTRegion -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.scroll Mozilla VTTRegion.scroll documentation> 
@@ -156,7 +156,7 @@ setScroll ::
           (MonadIO m, ToJSString val) => VTTRegion -> val -> m ()
 setScroll self val = liftIO (js_setScroll self (toJSString val))
  
-foreign import javascript unsafe "$1[\"scroll\"]" js_getScroll ::
+foreign import javascript unsafe "(($1) => { return $1[\"scroll\"]; })" js_getScroll ::
         VTTRegion -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.scroll Mozilla VTTRegion.scroll documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"add\"]($2, $3)" js_addBefore
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"add\"]($2, $3); })" js_addBefore
         ::
         HTMLOptionsCollection ->
           HTMLOptionElementOrGroup -> Optional HTMLElementOrLong -> IO ()
@@ -48,14 +48,14 @@ addBefore self element before
              \ element' -> js_addBefore self (HTMLOptionElementOrGroup element')
              (maybeToOptional (fmap HTMLElementOrLong before')))
  
-foreign import javascript unsafe "$1[\"remove\"]($2)" js_remove ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"remove\"]($2); })" js_remove ::
         HTMLOptionsCollection -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.remove Mozilla HTMLOptionsCollection.remove documentation> 
 remove :: (MonadIO m) => HTMLOptionsCollection -> Int -> m ()
 remove self index = liftIO (js_remove self index)
  
-foreign import javascript unsafe "$1[$2]" js_item ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_item ::
         HTMLOptionsCollection -> Word -> IO (Nullable HTMLOptionElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.item Mozilla HTMLOptionsCollection.item documentation> 
@@ -83,7 +83,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . nullableToMaybe <$> (js_item self index))
  
-foreign import javascript unsafe "$1[$2]" js_namedItem ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_namedItem ::
         HTMLOptionsCollection ->
           JSString -> IO (Nullable HTMLOptionElement)
 
@@ -120,14 +120,14 @@ namedItemUnchecked self name
       (fromJust . nullableToMaybe <$>
          (js_namedItem self (toJSString name)))
  
-foreign import javascript safe "$1[\"length\"] = $2;" js_setLength
+foreign import javascript safe "(($1, $2) => { $1[\"length\"] = $2; })" js_setLength
         :: HTMLOptionsCollection -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 
 setLength :: (MonadIO m) => HTMLOptionsCollection -> Word -> m ()
 setLength self val = liftIO (js_setLength self val)
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         HTMLOptionsCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.length Mozilla HTMLOptionsCollection.length documentation> 

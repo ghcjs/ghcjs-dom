@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -60,28 +60,28 @@ fromRect_ :: (MonadIO m) => Maybe DOMRectInit -> m ()
 fromRect_ other
   = liftIO (void (js_fromRect (maybeToOptional other)))
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.x Mozilla DOMRectReadOnly.x documentation> 
 getX :: (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getX self = liftIO (js_getX (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.y Mozilla DOMRectReadOnly.y documentation> 
 getY :: (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getY self = liftIO (js_getY (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.width Mozilla DOMRectReadOnly.width documentation> 
 getWidth :: (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getWidth self = liftIO (js_getWidth (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.height Mozilla DOMRectReadOnly.height documentation> 
@@ -89,21 +89,21 @@ getHeight ::
           (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getHeight self = liftIO (js_getHeight (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"top\"]" js_getTop ::
+foreign import javascript unsafe "(($1) => { return $1[\"top\"]; })" js_getTop ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.top Mozilla DOMRectReadOnly.top documentation> 
 getTop :: (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getTop self = liftIO (js_getTop (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"right\"]" js_getRight ::
+foreign import javascript unsafe "(($1) => { return $1[\"right\"]; })" js_getRight ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.right Mozilla DOMRectReadOnly.right documentation> 
 getRight :: (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getRight self = liftIO (js_getRight (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"bottom\"]" js_getBottom ::
+foreign import javascript unsafe "(($1) => { return $1[\"bottom\"]; })" js_getBottom ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.bottom Mozilla DOMRectReadOnly.bottom documentation> 
@@ -111,7 +111,7 @@ getBottom ::
           (MonadIO m, IsDOMRectReadOnly self) => self -> m Double
 getBottom self = liftIO (js_getBottom (toDOMRectReadOnly self))
  
-foreign import javascript unsafe "$1[\"left\"]" js_getLeft ::
+foreign import javascript unsafe "(($1) => { return $1[\"left\"]; })" js_getLeft ::
         DOMRectReadOnly -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.left Mozilla DOMRectReadOnly.left documentation> 

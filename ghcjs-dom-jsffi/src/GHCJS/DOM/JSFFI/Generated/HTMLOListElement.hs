@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,14 +42,14 @@ foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
 getCompact :: (MonadIO m) => HTMLOListElement -> m Bool
 getCompact self = liftIO (js_getCompact self)
  
-foreign import javascript unsafe "$1[\"start\"] = $2;" js_setStart
+foreign import javascript unsafe "(($1, $2) => { $1[\"start\"] = $2; })" js_setStart
         :: HTMLOListElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
 setStart :: (MonadIO m) => HTMLOListElement -> Int -> m ()
 setStart self val = liftIO (js_setStart self val)
  
-foreign import javascript unsafe "$1[\"start\"]" js_getStart ::
+foreign import javascript unsafe "(($1) => { return $1[\"start\"]; })" js_getStart ::
         HTMLOListElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.start Mozilla HTMLOListElement.start documentation> 
@@ -70,7 +70,7 @@ foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
 getReversed :: (MonadIO m) => HTMLOListElement -> m Bool
 getReversed self = liftIO (js_getReversed self)
  
-foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"type\"] = $2; })" js_setType ::
         HTMLOListElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 
@@ -78,7 +78,7 @@ setType ::
         (MonadIO m, ToJSString val) => HTMLOListElement -> val -> m ()
 setType self val = liftIO (js_setType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         HTMLOListElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.type Mozilla HTMLOListElement.type documentation> 

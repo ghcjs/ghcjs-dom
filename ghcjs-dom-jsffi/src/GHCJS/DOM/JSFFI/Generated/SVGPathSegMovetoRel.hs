@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,28 +26,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"] = $2;" js_setX ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"x\"] = $2; })" js_setX ::
         SVGPathSegMovetoRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 setX :: (MonadIO m) => SVGPathSegMovetoRel -> Float -> m ()
 setX self val = liftIO (js_setX self val)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGPathSegMovetoRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.x Mozilla SVGPathSegMovetoRel.x documentation> 
 getX :: (MonadIO m) => SVGPathSegMovetoRel -> m Float
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"] = $2;" js_setY ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"y\"] = $2; })" js_setY ::
         SVGPathSegMovetoRel -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 
 setY :: (MonadIO m) => SVGPathSegMovetoRel -> Float -> m ()
 setY self val = liftIO (js_setY self val)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGPathSegMovetoRel -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegMovetoRel.y Mozilla SVGPathSegMovetoRel.y documentation> 

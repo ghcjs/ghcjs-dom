@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -46,7 +46,7 @@ getStartOffset ::
                (MonadIO m) => SVGTextPathElement -> m SVGAnimatedLength
 getStartOffset self = liftIO (js_getStartOffset self)
  
-foreign import javascript unsafe "$1[\"method\"]" js_getMethod ::
+foreign import javascript unsafe "(($1) => { return $1[\"method\"]; })" js_getMethod ::
         SVGTextPathElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.method Mozilla SVGTextPathElement.method documentation> 
@@ -54,7 +54,7 @@ getMethod ::
           (MonadIO m) => SVGTextPathElement -> m SVGAnimatedEnumeration
 getMethod self = liftIO (js_getMethod self)
  
-foreign import javascript unsafe "$1[\"spacing\"]" js_getSpacing ::
+foreign import javascript unsafe "(($1) => { return $1[\"spacing\"]; })" js_getSpacing ::
         SVGTextPathElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.spacing Mozilla SVGTextPathElement.spacing documentation> 

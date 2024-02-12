@@ -28,7 +28,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -100,7 +100,7 @@ selectAllChildren ::
 selectAllChildren self node
   = liftIO (js_selectAllChildren self (toNode node))
  
-foreign import javascript safe "$1[\"extend\"]($2, $3)" js_extend
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"extend\"]($2, $3); })" js_extend
         :: Selection -> Node -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.extend Mozilla Selection.extend documentation> 
@@ -127,14 +127,14 @@ foreign import javascript unsafe "$1[\"removeAllRanges\"]()"
 removeAllRanges :: (MonadIO m) => Selection -> m ()
 removeAllRanges self = liftIO (js_removeAllRanges self)
  
-foreign import javascript unsafe "$1[\"addRange\"]($2)" js_addRange
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addRange\"]($2); })" js_addRange
         :: Selection -> Range -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.addRange Mozilla Selection.addRange documentation> 
 addRange :: (MonadIO m) => Selection -> Range -> m ()
 addRange self range = liftIO (js_addRange self range)
  
-foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+foreign import javascript unsafe "(($1) => { return $1[\"toString\"](); })" js_toString
         :: Selection -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.toString Mozilla Selection.toString documentation> 
@@ -147,7 +147,7 @@ toString_ :: (MonadIO m) => Selection -> m ()
 toString_ self = liftIO (void (js_toString self))
  
 foreign import javascript unsafe
-        "$1[\"setBaseAndExtent\"]($2, $3,\n$4, $5)" js_setBaseAndExtent ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"setBaseAndExtent\"]($2, $3,\n$4, $5); })" js_setBaseAndExtent ::
         Selection ->
           Optional Node -> Word -> Optional Node -> Word -> IO ()
 
@@ -176,7 +176,7 @@ setPosition self node offset
       (js_setPosition self (maybeToOptional (fmap toNode node))
          (maybeToOptional offset))
  
-foreign import javascript unsafe "$1[\"empty\"]()" js_empty ::
+foreign import javascript unsafe "(($1) => { return $1[\"empty\"](); })" js_empty ::
         Selection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.empty Mozilla Selection.empty documentation> 
@@ -271,7 +271,7 @@ foreign import javascript unsafe "$1[\"rangeCount\"]"
 getRangeCount :: (MonadIO m) => Selection -> m Word
 getRangeCount self = liftIO (js_getRangeCount self)
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Selection -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.type Mozilla Selection.type documentation> 
@@ -279,7 +279,7 @@ getType ::
         (MonadIO m, FromJSString result) => Selection -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"baseNode\"]" js_getBaseNode
+foreign import javascript unsafe "(($1) => { return $1[\"baseNode\"]; })" js_getBaseNode
         :: Selection -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Selection.baseNode Mozilla Selection.baseNode documentation> 

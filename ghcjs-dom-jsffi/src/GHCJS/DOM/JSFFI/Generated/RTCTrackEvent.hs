@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,21 +39,21 @@ newRTCTrackEvent ::
 newRTCTrackEvent type' eventInitDict
   = liftIO (js_newRTCTrackEvent (toJSString type') eventInitDict)
  
-foreign import javascript unsafe "$1[\"receiver\"]" js_getReceiver
+foreign import javascript unsafe "(($1) => { return $1[\"receiver\"]; })" js_getReceiver
         :: RTCTrackEvent -> IO RTCRtpReceiver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCTrackEvent.receiver Mozilla RTCTrackEvent.receiver documentation> 
 getReceiver :: (MonadIO m) => RTCTrackEvent -> m RTCRtpReceiver
 getReceiver self = liftIO (js_getReceiver self)
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         RTCTrackEvent -> IO MediaStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCTrackEvent.track Mozilla RTCTrackEvent.track documentation> 
 getTrack :: (MonadIO m) => RTCTrackEvent -> m MediaStreamTrack
 getTrack self = liftIO (js_getTrack self)
  
-foreign import javascript unsafe "$1[\"streams\"]" js_getStreams ::
+foreign import javascript unsafe "(($1) => { return $1[\"streams\"]; })" js_getStreams ::
         RTCTrackEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCTrackEvent.streams Mozilla RTCTrackEvent.streams documentation> 

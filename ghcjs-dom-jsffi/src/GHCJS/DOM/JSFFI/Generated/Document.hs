@@ -101,7 +101,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -161,7 +161,7 @@ getElementsByTagName_ self qualifiedName
             (toJSString qualifiedName)))
  
 foreign import javascript unsafe
-        "$1[\"getElementsByTagNameNS\"]($2,\n$3)" js_getElementsByTagNameNS
+        "(($1, $2, $3) => { return $1[\"getElementsByTagNameNS\"]($2,\n$3); })" js_getElementsByTagNameNS
         :: Document -> Optional JSString -> JSString -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagNameNS Mozilla Document.getElementsByTagNameNS documentation> 
@@ -188,7 +188,7 @@ getElementsByTagNameNS_ self namespaceURI localName
             (toJSString localName)))
  
 foreign import javascript unsafe
-        "$1[\"getElementsByClassName\"]($2)" js_getElementsByClassName ::
+        "(($1, $2) => { return $1[\"getElementsByClassName\"]($2); })" js_getElementsByClassName ::
         Document -> JSString -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByClassName Mozilla Document.getElementsByClassName documentation> 
@@ -372,7 +372,7 @@ importNode_ self node deep
   = liftIO
       (void (js_importNode (toDocument self) (toNode node) deep))
  
-foreign import javascript safe "$1[\"adoptNode\"]($2)" js_adoptNode
+foreign import javascript safe "(($1, $2) => { return $1[\"adoptNode\"]($2); })" js_adoptNode
         :: Document -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.adoptNode Mozilla Document.adoptNode documentation> 
@@ -465,7 +465,7 @@ createRange_ self
   = liftIO (void (js_createRange (toDocument self)))
  
 foreign import javascript unsafe
-        "$1[\"createNodeIterator\"]($2, $3,\n$4)" js_createNodeIterator ::
+        "(($1, $2, $3, $4) => { return $1[\"createNodeIterator\"]($2, $3,\n$4); })" js_createNodeIterator ::
         Document ->
           Node -> Optional Word -> Optional NodeFilter -> IO NodeIterator
 
@@ -491,7 +491,7 @@ createNodeIterator_ self root whatToShow filter
             (maybeToOptional filter)))
  
 foreign import javascript unsafe
-        "$1[\"createTreeWalker\"]($2, $3,\n$4)" js_createTreeWalker ::
+        "(($1, $2, $3, $4) => { return $1[\"createTreeWalker\"]($2, $3,\n$4); })" js_createTreeWalker ::
         Document ->
           Node -> Optional Word -> Optional NodeFilter -> IO TreeWalker
 
@@ -760,7 +760,7 @@ createNSResolver_ self nodeResolver
             (maybeToOptional (fmap toNode nodeResolver))))
  
 foreign import javascript safe
-        "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"evaluate\"]($2, $3, $4, $5,\n$6); })" js_evaluate ::
         Document ->
           Optional JSString ->
             Optional Node ->
@@ -857,7 +857,7 @@ getOverrideStyle_ self element pseudoElement
             (toOptionalJSString pseudoElement)))
  
 foreign import javascript unsafe
-        "$1[\"caretRangeFromPoint\"]($2,\n$3)" js_caretRangeFromPoint ::
+        "(($1, $2, $3) => { return $1[\"caretRangeFromPoint\"]($2,\n$3); })" js_caretRangeFromPoint ::
         Document -> Optional Int -> Optional Int -> IO Range
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.caretRangeFromPoint Mozilla Document.caretRangeFromPoint documentation> 
@@ -1014,7 +1014,7 @@ createTouchList_ self touches
          (toJSVal touches >>=
             \ touches' -> js_createTouchList (toDocument self) touches'))
  
-foreign import javascript unsafe "$1[\"timeline\"]" js_getTimeline
+foreign import javascript unsafe "(($1) => { return $1[\"timeline\"]; })" js_getTimeline
         :: Document -> IO DocumentTimeline
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.timeline Mozilla Document.timeline documentation> 
@@ -1031,7 +1031,7 @@ getImplementation ::
 getImplementation self
   = liftIO (js_getImplementation (toDocument self))
  
-foreign import javascript unsafe "$1[\"URL\"]" js_getURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"URL\"]; })" js_getURL ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.URL Mozilla Document.URL documentation> 
@@ -1051,7 +1051,7 @@ getDocumentURI ::
 getDocumentURI self
   = liftIO (fromJSString <$> (js_getDocumentURI (toDocument self)))
  
-foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+foreign import javascript unsafe "(($1) => { return $1[\"origin\"]; })" js_getOrigin ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.origin Mozilla Document.origin documentation> 
@@ -1081,7 +1081,7 @@ getCharacterSet ::
 getCharacterSet self
   = liftIO (fromJSString <$> (js_getCharacterSet (toDocument self)))
  
-foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
+foreign import javascript unsafe "(($1) => { return $1[\"charset\"]; })" js_getCharset ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.charset Mozilla Document.charset documentation> 
@@ -1111,7 +1111,7 @@ getContentType ::
 getContentType self
   = liftIO (fromJSString <$> (js_getContentType (toDocument self)))
  
-foreign import javascript unsafe "$1[\"doctype\"]" js_getDoctype ::
+foreign import javascript unsafe "(($1) => { return $1[\"doctype\"]; })" js_getDoctype ::
         Document -> IO (Nullable DocumentType)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.doctype Mozilla Document.doctype documentation> 
@@ -1162,7 +1162,7 @@ getDocumentElementUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getDocumentElement (toDocument self)))
  
-foreign import javascript unsafe "$1[\"location\"]" js_getLocation
+foreign import javascript unsafe "(($1) => { return $1[\"location\"]; })" js_getLocation
         :: Document -> IO (Nullable Location)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.location Mozilla Document.location documentation> 
@@ -1186,7 +1186,7 @@ getLocationUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getLocation (toDocument self)))
  
-foreign import javascript safe "$1[\"domain\"] = $2;" js_setDomain
+foreign import javascript safe "(($1, $2) => { $1[\"domain\"] = $2; })" js_setDomain
         :: Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
@@ -1195,7 +1195,7 @@ setDomain ::
 setDomain self val
   = liftIO (js_setDomain (toDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"domain\"]" js_getDomain ::
+foreign import javascript unsafe "(($1) => { return $1[\"domain\"]; })" js_getDomain ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.domain Mozilla Document.domain documentation> 
@@ -1205,7 +1205,7 @@ getDomain ::
 getDomain self
   = liftIO (fromJSString <$> (js_getDomain (toDocument self)))
  
-foreign import javascript unsafe "$1[\"referrer\"]" js_getReferrer
+foreign import javascript unsafe "(($1) => { return $1[\"referrer\"]; })" js_getReferrer
         :: Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.referrer Mozilla Document.referrer documentation> 
@@ -1215,7 +1215,7 @@ getReferrer ::
 getReferrer self
   = liftIO (fromJSString <$> (js_getReferrer (toDocument self)))
  
-foreign import javascript safe "$1[\"cookie\"] = $2;" js_setCookie
+foreign import javascript safe "(($1, $2) => { $1[\"cookie\"] = $2; })" js_setCookie
         :: Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
@@ -1224,7 +1224,7 @@ setCookie ::
 setCookie self val
   = liftIO (js_setCookie (toDocument self) (toJSString val))
  
-foreign import javascript safe "$1[\"cookie\"]" js_getCookie ::
+foreign import javascript safe "(($1) => { return $1[\"cookie\"]; })" js_getCookie ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.cookie Mozilla Document.cookie documentation> 
@@ -1254,7 +1254,7 @@ getReadyState self
   = liftIO
       ((js_getReadyState (toDocument self)) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"title\"] = $2;" js_setTitle
+foreign import javascript unsafe "(($1, $2) => { $1[\"title\"] = $2; })" js_setTitle
         :: Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
@@ -1263,7 +1263,7 @@ setTitle ::
 setTitle self val
   = liftIO (js_setTitle (toDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
+foreign import javascript unsafe "(($1) => { return $1[\"title\"]; })" js_getTitle ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.title Mozilla Document.title documentation> 
@@ -1273,7 +1273,7 @@ getTitle ::
 getTitle self
   = liftIO (fromJSString <$> (js_getTitle (toDocument self)))
  
-foreign import javascript unsafe "$1[\"dir\"] = $2;" js_setDir ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"dir\"] = $2; })" js_setDir ::
         Document -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.dir Mozilla Document.dir documentation> 
@@ -1282,7 +1282,7 @@ setDir ::
 setDir self val
   = liftIO (js_setDir (toDocument self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"dir\"]" js_getDir ::
+foreign import javascript unsafe "(($1) => { return $1[\"dir\"]; })" js_getDir ::
         Document -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.dir Mozilla Document.dir documentation> 
@@ -1292,7 +1292,7 @@ getDir ::
 getDir self
   = liftIO (fromJSString <$> (js_getDir (toDocument self)))
  
-foreign import javascript safe "$1[\"body\"] = $2;" js_setBody ::
+foreign import javascript safe "(($1, $2) => { $1[\"body\"] = $2; })" js_setBody ::
         Document -> Optional HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
@@ -1304,7 +1304,7 @@ setBody self val
       (js_setBody (toDocument self)
          (maybeToOptional (fmap toHTMLElement val)))
  
-foreign import javascript unsafe "$1[\"body\"]" js_getBody ::
+foreign import javascript unsafe "(($1) => { return $1[\"body\"]; })" js_getBody ::
         Document -> IO (Nullable HTMLElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.body Mozilla Document.body documentation> 
@@ -1328,7 +1328,7 @@ getBodyUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getBody (toDocument self)))
  
-foreign import javascript unsafe "$1[\"head\"]" js_getHead ::
+foreign import javascript unsafe "(($1) => { return $1[\"head\"]; })" js_getHead ::
         Document -> IO (Nullable HTMLHeadElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.head Mozilla Document.head documentation> 
@@ -1353,7 +1353,7 @@ getHeadUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getHead (toDocument self)))
  
-foreign import javascript unsafe "$1[\"images\"]" js_getImages ::
+foreign import javascript unsafe "(($1) => { return $1[\"images\"]; })" js_getImages ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.images Mozilla Document.images documentation> 
@@ -1361,7 +1361,7 @@ getImages ::
           (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getImages self = liftIO (js_getImages (toDocument self))
  
-foreign import javascript unsafe "$1[\"embeds\"]" js_getEmbeds ::
+foreign import javascript unsafe "(($1) => { return $1[\"embeds\"]; })" js_getEmbeds ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.embeds Mozilla Document.embeds documentation> 
@@ -1369,7 +1369,7 @@ getEmbeds ::
           (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getEmbeds self = liftIO (js_getEmbeds (toDocument self))
  
-foreign import javascript unsafe "$1[\"plugins\"]" js_getPlugins ::
+foreign import javascript unsafe "(($1) => { return $1[\"plugins\"]; })" js_getPlugins ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.plugins Mozilla Document.plugins documentation> 
@@ -1377,7 +1377,7 @@ getPlugins ::
            (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getPlugins self = liftIO (js_getPlugins (toDocument self))
  
-foreign import javascript unsafe "$1[\"links\"]" js_getLinks ::
+foreign import javascript unsafe "(($1) => { return $1[\"links\"]; })" js_getLinks ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.links Mozilla Document.links documentation> 
@@ -1385,7 +1385,7 @@ getLinks ::
          (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getLinks self = liftIO (js_getLinks (toDocument self))
  
-foreign import javascript unsafe "$1[\"forms\"]" js_getForms ::
+foreign import javascript unsafe "(($1) => { return $1[\"forms\"]; })" js_getForms ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.forms Mozilla Document.forms documentation> 
@@ -1393,7 +1393,7 @@ getForms ::
          (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getForms self = liftIO (js_getForms (toDocument self))
  
-foreign import javascript unsafe "$1[\"scripts\"]" js_getScripts ::
+foreign import javascript unsafe "(($1) => { return $1[\"scripts\"]; })" js_getScripts ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.scripts Mozilla Document.scripts documentation> 
@@ -1605,7 +1605,7 @@ pointerlockerror ::
                  (IsDocument self, IsEventTarget self) => EventName self Event
 pointerlockerror = unsafeEventName (toJSString "pointerlockerror")
  
-foreign import javascript unsafe "$1[\"fonts\"]" js_getFonts ::
+foreign import javascript unsafe "(($1) => { return $1[\"fonts\"]; })" js_getFonts ::
         Document -> IO FontFaceSet
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.fonts Mozilla Document.fonts documentation> 
@@ -1634,7 +1634,7 @@ visibilitychange ::
                  (IsDocument self, IsEventTarget self) => EventName self Event
 visibilitychange = unsafeEventName (toJSString "visibilitychange")
  
-foreign import javascript unsafe "$1[\"applets\"]" js_getApplets ::
+foreign import javascript unsafe "(($1) => { return $1[\"applets\"]; })" js_getApplets ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.applets Mozilla Document.applets documentation> 
@@ -1642,7 +1642,7 @@ getApplets ::
            (MonadIO m, IsDocument self) => self -> m HTMLCollection
 getApplets self = liftIO (js_getApplets (toDocument self))
  
-foreign import javascript unsafe "$1[\"anchors\"]" js_getAnchors ::
+foreign import javascript unsafe "(($1) => { return $1[\"anchors\"]; })" js_getAnchors ::
         Document -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.anchors Mozilla Document.anchors documentation> 
@@ -1682,7 +1682,7 @@ getPreferredStylesheetSetUnchecked self
          (js_getPreferredStylesheetSet (toDocument self)))
  
 foreign import javascript unsafe
-        "$1[\"selectedStylesheetSet\"] = $2;" js_setSelectedStylesheetSet
+        "(($1, $2) => { $1[\"selectedStylesheetSet\"] = $2; })" js_setSelectedStylesheetSet
         :: Document -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Document.selectedStylesheetSet Mozilla Document.selectedStylesheetSet documentation> 

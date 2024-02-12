@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -57,7 +57,7 @@ newWebSocket' ::
 newWebSocket' url protocol
   = liftIO (js_newWebSocket' (toJSString url) (toJSString protocol))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_send ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_send ::
         WebSocket -> ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
@@ -65,7 +65,7 @@ send ::
      (MonadIO m, IsArrayBuffer data') => WebSocket -> data' -> m ()
 send self data' = liftIO (js_send self (toArrayBuffer data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendView ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendView ::
         WebSocket -> ArrayBufferView -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
@@ -74,14 +74,14 @@ sendView ::
 sendView self data'
   = liftIO (js_sendView self (toArrayBufferView data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendBlob ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendBlob ::
         WebSocket -> Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
 sendBlob :: (MonadIO m, IsBlob data') => WebSocket -> data' -> m ()
 sendBlob self data' = liftIO (js_sendBlob self (toBlob data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendString ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendString ::
         WebSocket -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.send Mozilla WebSocket.send documentation> 
@@ -90,7 +90,7 @@ sendString ::
 sendString self data'
   = liftIO (js_sendString self (toJSString data'))
  
-foreign import javascript safe "$1[\"close\"]($2, $3)" js_close ::
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"close\"]($2, $3); })" js_close ::
         WebSocket -> Optional Word -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.close Mozilla WebSocket.close documentation> 
@@ -105,7 +105,7 @@ pattern OPEN = 1
 pattern CLOSING = 2
 pattern CLOSED = 3
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         WebSocket -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.url Mozilla WebSocket.url documentation> 
@@ -142,7 +142,7 @@ error = unsafeEventNameAsync (toJSString "error")
 closeEvent :: EventName WebSocket CloseEvent
 closeEvent = unsafeEventNameAsync (toJSString "close")
  
-foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+foreign import javascript unsafe "(($1) => { return $1[\"protocol\"]; })" js_getProtocol
         :: WebSocket -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.protocol Mozilla WebSocket.protocol documentation> 

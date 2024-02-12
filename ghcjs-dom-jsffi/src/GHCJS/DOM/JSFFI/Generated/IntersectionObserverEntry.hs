@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -44,7 +44,7 @@ newIntersectionObserverEntry intersectionObserverEntryInit
   = liftIO
       (js_newIntersectionObserverEntry intersectionObserverEntryInit)
  
-foreign import javascript unsafe "$1[\"time\"]" js_getTime ::
+foreign import javascript unsafe "(($1) => { return $1[\"time\"]; })" js_getTime ::
         IntersectionObserverEntry -> IO DOMHighResTimeStamp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry.time Mozilla IntersectionObserverEntry.time documentation> 
@@ -86,7 +86,7 @@ getIntersectionRatio ::
                      (MonadIO m) => IntersectionObserverEntry -> m Double
 getIntersectionRatio self = liftIO (js_getIntersectionRatio self)
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         IntersectionObserverEntry -> IO Element
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry.target Mozilla IntersectionObserverEntry.target documentation> 

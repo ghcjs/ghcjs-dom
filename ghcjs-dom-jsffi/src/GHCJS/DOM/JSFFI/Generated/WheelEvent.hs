@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -86,21 +86,21 @@ pattern DOM_DELTA_PIXEL = 0
 pattern DOM_DELTA_LINE = 1
 pattern DOM_DELTA_PAGE = 2
  
-foreign import javascript unsafe "$1[\"deltaX\"]" js_getDeltaX ::
+foreign import javascript unsafe "(($1) => { return $1[\"deltaX\"]; })" js_getDeltaX ::
         WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaX Mozilla WheelEvent.deltaX documentation> 
 getDeltaX :: (MonadIO m) => WheelEvent -> m Double
 getDeltaX self = liftIO (js_getDeltaX self)
  
-foreign import javascript unsafe "$1[\"deltaY\"]" js_getDeltaY ::
+foreign import javascript unsafe "(($1) => { return $1[\"deltaY\"]; })" js_getDeltaY ::
         WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaY Mozilla WheelEvent.deltaY documentation> 
 getDeltaY :: (MonadIO m) => WheelEvent -> m Double
 getDeltaY self = liftIO (js_getDeltaY self)
  
-foreign import javascript unsafe "$1[\"deltaZ\"]" js_getDeltaZ ::
+foreign import javascript unsafe "(($1) => { return $1[\"deltaZ\"]; })" js_getDeltaZ ::
         WheelEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaZ Mozilla WheelEvent.deltaZ documentation> 

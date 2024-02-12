@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -47,21 +47,21 @@ foreign import javascript safe "new window[\"ImageData\"]($1, $2)"
 newImageData' :: (MonadIO m) => Word -> Word -> m ImageData
 newImageData' sw sh = liftIO (js_newImageData' sw sh)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         ImageData -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.width Mozilla ImageData.width documentation> 
 getWidth :: (MonadIO m) => ImageData -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         ImageData -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.height Mozilla ImageData.height documentation> 
 getHeight :: (MonadIO m) => ImageData -> m Word
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         ImageData -> IO Uint8ClampedArray
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ImageData.data Mozilla ImageData.data documentation> 

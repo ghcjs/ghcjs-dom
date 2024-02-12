@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,7 +33,7 @@ foreign import javascript unsafe "new window[\"TextEncoder\"]()"
 newTextEncoder :: (MonadIO m) => m TextEncoder
 newTextEncoder = liftIO (js_newTextEncoder)
  
-foreign import javascript unsafe "$1[\"encode\"]($2)" js_encode ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"encode\"]($2); })" js_encode ::
         TextEncoder -> Optional JSString -> IO Uint8Array
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder.encode Mozilla TextEncoder.encode documentation> 
@@ -49,7 +49,7 @@ encode_ ::
 encode_ self input
   = liftIO (void (js_encode self (toOptionalJSString input)))
  
-foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
+foreign import javascript unsafe "(($1) => { return $1[\"encoding\"]; })" js_getEncoding
         :: TextEncoder -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder.encoding Mozilla TextEncoder.encoding documentation> 

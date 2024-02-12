@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[$2]" js_getAt ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_getAt ::
         HTMLFormElement -> Word -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.get Mozilla HTMLFormElement.get documentation> 
@@ -66,7 +66,7 @@ getAtUnchecked ::
 getAtUnchecked self index
   = liftIO (fromJust . nullableToMaybe <$> (js_getAt self index))
  
-foreign import javascript unsafe "$1[$2]" js_get ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_get ::
         HTMLFormElement -> JSString -> IO (Nullable RadioNodeListOrElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.get Mozilla HTMLFormElement.get documentation> 
@@ -98,14 +98,14 @@ getUnchecked self name
   = liftIO
       (fromJust . nullableToMaybe <$> (js_get self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"submit\"]()" js_submit ::
+foreign import javascript unsafe "(($1) => { return $1[\"submit\"](); })" js_submit ::
         HTMLFormElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.submit Mozilla HTMLFormElement.submit documentation> 
 submit :: (MonadIO m) => HTMLFormElement -> m ()
 submit self = liftIO (js_submit self)
  
-foreign import javascript unsafe "$1[\"reset\"]()" js_reset ::
+foreign import javascript unsafe "(($1) => { return $1[\"reset\"](); })" js_reset ::
         HTMLFormElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.reset Mozilla HTMLFormElement.reset documentation> 
@@ -169,7 +169,7 @@ setAction ::
           (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
 setAction self val = liftIO (js_setAction self (toJSString val))
  
-foreign import javascript unsafe "$1[\"action\"]" js_getAction ::
+foreign import javascript unsafe "(($1) => { return $1[\"action\"]; })" js_getAction ::
         HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.action Mozilla HTMLFormElement.action documentation> 
@@ -203,7 +203,7 @@ setEnctype ::
            (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
 setEnctype self val = liftIO (js_setEnctype self (toJSString val))
  
-foreign import javascript unsafe "$1[\"enctype\"]" js_getEnctype ::
+foreign import javascript unsafe "(($1) => { return $1[\"enctype\"]; })" js_getEnctype ::
         HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.enctype Mozilla HTMLFormElement.enctype documentation> 
@@ -220,7 +220,7 @@ setEncoding ::
 setEncoding self val
   = liftIO (js_setEncoding self (toJSString val))
  
-foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
+foreign import javascript unsafe "(($1) => { return $1[\"encoding\"]; })" js_getEncoding
         :: HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.encoding Mozilla HTMLFormElement.encoding documentation> 
@@ -236,7 +236,7 @@ setMethod ::
           (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
 setMethod self val = liftIO (js_setMethod self (toJSString val))
  
-foreign import javascript unsafe "$1[\"method\"]" js_getMethod ::
+foreign import javascript unsafe "(($1) => { return $1[\"method\"]; })" js_getMethod ::
         HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.method Mozilla HTMLFormElement.method documentation> 
@@ -244,7 +244,7 @@ getMethod ::
           (MonadIO m, FromJSString result) => HTMLFormElement -> m result
 getMethod self = liftIO (fromJSString <$> (js_getMethod self))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLFormElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.name Mozilla HTMLFormElement.name documentation> 
@@ -252,7 +252,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.name Mozilla HTMLFormElement.name documentation> 
@@ -282,7 +282,7 @@ setTarget ::
           (MonadIO m, ToJSString val) => HTMLFormElement -> val -> m ()
 setTarget self val = liftIO (js_setTarget self (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         HTMLFormElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.target Mozilla HTMLFormElement.target documentation> 
@@ -290,7 +290,7 @@ getTarget ::
           (MonadIO m, FromJSString result) => HTMLFormElement -> m result
 getTarget self = liftIO (fromJSString <$> (js_getTarget self))
  
-foreign import javascript unsafe "$1[\"elements\"]" js_getElements
+foreign import javascript unsafe "(($1) => { return $1[\"elements\"]; })" js_getElements
         :: HTMLFormElement -> IO HTMLFormControlsCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.elements Mozilla HTMLFormElement.elements documentation> 
@@ -298,7 +298,7 @@ getElements ::
             (MonadIO m) => HTMLFormElement -> m HTMLFormControlsCollection
 getElements self = liftIO (js_getElements self)
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         HTMLFormElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement.length Mozilla HTMLFormElement.length documentation> 

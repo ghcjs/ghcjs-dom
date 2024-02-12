@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"start\"]($2)" js_start ::
+foreign import javascript safe "(($1, $2) => { return $1[\"start\"]($2); })" js_start ::
         TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.start Mozilla TimeRanges.start documentation> 
@@ -37,7 +37,7 @@ start self index = liftIO (js_start self index)
 start_ :: (MonadIO m) => TimeRanges -> Word -> m ()
 start_ self index = liftIO (void (js_start self index))
  
-foreign import javascript safe "$1[\"end\"]($2)" js_end ::
+foreign import javascript safe "(($1, $2) => { return $1[\"end\"]($2); })" js_end ::
         TimeRanges -> Word -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.end Mozilla TimeRanges.end documentation> 
@@ -48,7 +48,7 @@ end self index = liftIO (js_end self index)
 end_ :: (MonadIO m) => TimeRanges -> Word -> m ()
 end_ self index = liftIO (void (js_end self index))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         TimeRanges -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges.length Mozilla TimeRanges.length documentation> 

@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -43,7 +43,7 @@ newAnimation effect timeline
       (js_newAnimation (maybeToOptional (fmap toAnimationEffect effect))
          (maybeToOptional (fmap toAnimationTimeline timeline)))
  
-foreign import javascript unsafe "$1[\"effect\"]" js_getEffect ::
+foreign import javascript unsafe "(($1) => { return $1[\"effect\"]; })" js_getEffect ::
         Animation -> IO (Nullable AnimationEffect)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Animation.effect Mozilla Animation.effect documentation> 
@@ -63,7 +63,7 @@ getEffectUnchecked :: (MonadIO m) => Animation -> m AnimationEffect
 getEffectUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getEffect self))
  
-foreign import javascript unsafe "$1[\"timeline\"]" js_getTimeline
+foreign import javascript unsafe "(($1) => { return $1[\"timeline\"]; })" js_getTimeline
         :: Animation -> IO (Nullable AnimationTimeline)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Animation.timeline Mozilla Animation.timeline documentation> 

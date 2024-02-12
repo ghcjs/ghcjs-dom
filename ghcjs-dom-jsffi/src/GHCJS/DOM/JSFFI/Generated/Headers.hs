@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"append\"]($2, $3)" js_append
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"append\"]($2, $3); })" js_append
         :: Headers -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Headers.append Mozilla Headers.append documentation> 
@@ -37,14 +37,14 @@ append ::
 append self name value
   = liftIO (js_append self (toJSString name) (toJSString value))
  
-foreign import javascript safe "$1[\"delete\"]($2)" js_delete ::
+foreign import javascript safe "(($1, $2) => { return $1[\"delete\"]($2); })" js_delete ::
         Headers -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Headers.delete Mozilla Headers.delete documentation> 
 delete :: (MonadIO m, ToJSString name) => Headers -> name -> m ()
 delete self name = liftIO (js_delete self (toJSString name))
  
-foreign import javascript safe "$1[\"get\"]($2)" js_get ::
+foreign import javascript safe "(($1, $2) => { return $1[\"get\"]($2); })" js_get ::
         Headers -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Headers.get Mozilla Headers.get documentation> 
@@ -86,7 +86,7 @@ has self name = liftIO (js_has self (toJSString name))
 has_ :: (MonadIO m, ToJSString name) => Headers -> name -> m ()
 has_ self name = liftIO (void (js_has self (toJSString name)))
  
-foreign import javascript safe "$1[\"set\"]($2, $3)" js_set ::
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"set\"]($2, $3); })" js_set ::
         Headers -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Headers.set Mozilla Headers.set documentation> 

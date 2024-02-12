@@ -44,7 +44,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -147,7 +147,7 @@ setCurrentTime self seconds
   = liftIO (js_setCurrentTime self (maybeToOptional seconds))
  
 foreign import javascript unsafe
-        "$1[\"getIntersectionList\"]($2,\n$3)" js_getIntersectionList ::
+        "(($1, $2, $3) => { return $1[\"getIntersectionList\"]($2,\n$3); })" js_getIntersectionList ::
         SVGSVGElement -> SVGRect -> Optional SVGElement -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.getIntersectionList Mozilla SVGSVGElement.getIntersectionList documentation> 
@@ -362,28 +362,28 @@ getElementById_ ::
 getElementById_ self elementId
   = liftIO (void (js_getElementById self (toJSString elementId)))
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.x Mozilla SVGSVGElement.x documentation> 
 getX :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.y Mozilla SVGSVGElement.y documentation> 
 getY :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.width Mozilla SVGSVGElement.width documentation> 
 getWidth :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.height Mozilla SVGSVGElement.height documentation> 
@@ -426,7 +426,7 @@ getContentStyleType ::
 getContentStyleType self
   = liftIO (fromJSString <$> (js_getContentStyleType self))
  
-foreign import javascript unsafe "$1[\"viewport\"]" js_getViewport
+foreign import javascript unsafe "(($1) => { return $1[\"viewport\"]; })" js_getViewport
         :: SVGSVGElement -> IO SVGRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.viewport Mozilla SVGSVGElement.viewport documentation> 

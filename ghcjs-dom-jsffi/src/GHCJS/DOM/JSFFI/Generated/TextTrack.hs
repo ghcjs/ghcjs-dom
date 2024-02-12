@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"addCue\"]($2)" js_addCue ::
+foreign import javascript safe "(($1, $2) => { return $1[\"addCue\"]($2); })" js_addCue ::
         TextTrack -> TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.addCue Mozilla TextTrack.addCue documentation> 
@@ -43,7 +43,7 @@ addCue ::
        (MonadIO m, IsTextTrackCue cue) => TextTrack -> cue -> m ()
 addCue self cue = liftIO (js_addCue self (toTextTrackCue cue))
  
-foreign import javascript safe "$1[\"removeCue\"]($2)" js_removeCue
+foreign import javascript safe "(($1, $2) => { return $1[\"removeCue\"]($2); })" js_removeCue
         :: TextTrack -> TextTrackCue -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeCue Mozilla TextTrack.removeCue documentation> 
@@ -68,28 +68,28 @@ removeRegion :: (MonadIO m) => TextTrack -> Maybe VTTRegion -> m ()
 removeRegion self region
   = liftIO (js_removeRegion self (maybeToOptional region))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.id Mozilla TextTrack.id documentation> 
 getId :: (MonadIO m, FromJSString result) => TextTrack -> m result
 getId self = liftIO (fromJSString <$> (js_getId self))
  
-foreign import javascript unsafe "$1[\"kind\"] = $2;" js_setKind ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"kind\"] = $2; })" js_setKind ::
         TextTrack -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
 setKind :: (MonadIO m) => TextTrack -> TextTrackKind -> m ()
 setKind self val = liftIO (js_setKind self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+foreign import javascript unsafe "(($1) => { return $1[\"kind\"]; })" js_getKind ::
         TextTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.kind Mozilla TextTrack.kind documentation> 
 getKind :: (MonadIO m) => TextTrack -> m TextTrackKind
 getKind self = liftIO ((js_getKind self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.label Mozilla TextTrack.label documentation> 
@@ -106,7 +106,7 @@ setLanguage ::
 setLanguage self val
   = liftIO (js_setLanguage self (toJSString val))
  
-foreign import javascript unsafe "$1[\"language\"]" js_getLanguage
+foreign import javascript unsafe "(($1) => { return $1[\"language\"]; })" js_getLanguage
         :: TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.language Mozilla TextTrack.language documentation> 
@@ -125,21 +125,21 @@ getInBandMetadataTrackDispatchType self
   = liftIO
       (fromJSString <$> (js_getInBandMetadataTrackDispatchType self))
  
-foreign import javascript unsafe "$1[\"mode\"] = $2;" js_setMode ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"mode\"] = $2; })" js_setMode ::
         TextTrack -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
 setMode :: (MonadIO m) => TextTrack -> TextTrackMode -> m ()
 setMode self val = liftIO (js_setMode self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
+foreign import javascript unsafe "(($1) => { return $1[\"mode\"]; })" js_getMode ::
         TextTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.mode Mozilla TextTrack.mode documentation> 
 getMode :: (MonadIO m) => TextTrack -> m TextTrackMode
 getMode self = liftIO ((js_getMode self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"cues\"]" js_getCues ::
+foreign import javascript unsafe "(($1) => { return $1[\"cues\"]; })" js_getCues ::
         TextTrack -> IO (Nullable TextTrackCueList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.cues Mozilla TextTrack.cues documentation> 
@@ -186,7 +186,7 @@ getActiveCuesUnchecked self
 cueChange :: EventName TextTrack Event
 cueChange = unsafeEventName (toJSString "cuechange")
  
-foreign import javascript unsafe "$1[\"regions\"]" js_getRegions ::
+foreign import javascript unsafe "(($1) => { return $1[\"regions\"]; })" js_getRegions ::
         TextTrack -> IO VTTRegionList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.regions Mozilla TextTrack.regions documentation> 

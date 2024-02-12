@@ -32,7 +32,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -53,28 +53,28 @@ foreign import javascript unsafe "new window[\"HTMLElement\"]()"
 newHTMLElement :: (MonadIO m) => m HTMLElement
 newHTMLElement = liftIO (js_newHTMLElement)
  
-foreign import javascript unsafe "$1[\"click\"]()" js_click ::
+foreign import javascript unsafe "(($1) => { return $1[\"click\"](); })" js_click ::
         HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.click Mozilla HTMLElement.click documentation> 
 click :: (MonadIO m, IsHTMLElement self) => self -> m ()
 click self = liftIO (js_click (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"focus\"]()" js_focus ::
+foreign import javascript unsafe "(($1) => { return $1[\"focus\"](); })" js_focus ::
         HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.focus Mozilla HTMLElement.focus documentation> 
 focus :: (MonadIO m, IsHTMLElement self) => self -> m ()
 focus self = liftIO (js_focus (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"blur\"]()" js_blur ::
+foreign import javascript unsafe "(($1) => { return $1[\"blur\"](); })" js_blur ::
         HTMLElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.blur Mozilla HTMLElement.blur documentation> 
 blur :: (MonadIO m, IsHTMLElement self) => self -> m ()
 blur self = liftIO (js_blur (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"title\"] = $2;" js_setTitle
+foreign import javascript unsafe "(($1, $2) => { $1[\"title\"] = $2; })" js_setTitle
         :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.title Mozilla HTMLElement.title documentation> 
@@ -84,7 +84,7 @@ setTitle ::
 setTitle self val
   = liftIO (js_setTitle (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
+foreign import javascript unsafe "(($1) => { return $1[\"title\"]; })" js_getTitle ::
         HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.title Mozilla HTMLElement.title documentation> 
@@ -94,7 +94,7 @@ getTitle ::
 getTitle self
   = liftIO (fromJSString <$> (js_getTitle (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"lang\"] = $2;" js_setLang ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"lang\"] = $2; })" js_setLang ::
         HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.lang Mozilla HTMLElement.lang documentation> 
@@ -104,7 +104,7 @@ setLang ::
 setLang self val
   = liftIO (js_setLang (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"lang\"]" js_getLang ::
+foreign import javascript unsafe "(($1) => { return $1[\"lang\"]; })" js_getLang ::
         HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.lang Mozilla HTMLElement.lang documentation> 
@@ -130,7 +130,7 @@ foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
 getTranslate :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getTranslate self = liftIO (js_getTranslate (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"dir\"] = $2;" js_setDir ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"dir\"] = $2; })" js_setDir ::
         HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dir Mozilla HTMLElement.dir documentation> 
@@ -140,7 +140,7 @@ setDir ::
 setDir self val
   = liftIO (js_setDir (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"dir\"]" js_getDir ::
+foreign import javascript unsafe "(($1) => { return $1[\"dir\"]; })" js_getDir ::
         HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dir Mozilla HTMLElement.dir documentation> 
@@ -150,7 +150,7 @@ getDir ::
 getDir self
   = liftIO (fromJSString <$> (js_getDir (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"dataset\"]" js_getDataset ::
+foreign import javascript unsafe "(($1) => { return $1[\"dataset\"]; })" js_getDataset ::
         HTMLElement -> IO DOMStringMap
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.dataset Mozilla HTMLElement.dataset documentation> 
@@ -182,7 +182,7 @@ setTabIndex ::
 setTabIndex self val
   = liftIO (js_setTabIndex (toHTMLElement self) val)
  
-foreign import javascript unsafe "$1[\"tabIndex\"]" js_getTabIndex
+foreign import javascript unsafe "(($1) => { return $1[\"tabIndex\"]; })" js_getTabIndex
         :: HTMLElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 

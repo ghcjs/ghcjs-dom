@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -45,7 +45,7 @@ newMediaDeviceInfo deviceId label groupId kind
          (toJSString groupId)
          (pToJSVal kind))
  
-foreign import javascript unsafe "$1[\"deviceId\"]" js_getDeviceId
+foreign import javascript unsafe "(($1) => { return $1[\"deviceId\"]; })" js_getDeviceId
         :: MediaDeviceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.deviceId Mozilla MediaDeviceInfo.deviceId documentation> 
@@ -53,14 +53,14 @@ getDeviceId ::
             (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
 getDeviceId self = liftIO (fromJSString <$> (js_getDeviceId self))
  
-foreign import javascript unsafe "$1[\"kind\"]" js_getKind ::
+foreign import javascript unsafe "(($1) => { return $1[\"kind\"]; })" js_getKind ::
         MediaDeviceInfo -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.kind Mozilla MediaDeviceInfo.kind documentation> 
 getKind :: (MonadIO m) => MediaDeviceInfo -> m MediaDeviceKind
 getKind self = liftIO ((js_getKind self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         MediaDeviceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.label Mozilla MediaDeviceInfo.label documentation> 
@@ -68,7 +68,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => MediaDeviceInfo -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"groupId\"]" js_getGroupId ::
+foreign import javascript unsafe "(($1) => { return $1[\"groupId\"]; })" js_getGroupId ::
         MediaDeviceInfo -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo.groupId Mozilla MediaDeviceInfo.groupId documentation> 

@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -86,7 +86,7 @@ getVideoTracks self
 getVideoTracks_ :: (MonadIO m) => MediaStream -> m ()
 getVideoTracks_ self = liftIO (void (js_getVideoTracks self))
  
-foreign import javascript unsafe "$1[\"getTracks\"]()" js_getTracks
+foreign import javascript unsafe "(($1) => { return $1[\"getTracks\"](); })" js_getTracks
         :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTracks Mozilla webkitMediaStream.getTracks documentation> 
@@ -114,7 +114,7 @@ getTrackById_ ::
 getTrackById_ self trackId
   = liftIO (void (js_getTrackById self (toJSString trackId)))
  
-foreign import javascript unsafe "$1[\"addTrack\"]($2)" js_addTrack
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addTrack\"]($2); })" js_addTrack
         :: MediaStream -> MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.addTrack Mozilla webkitMediaStream.addTrack documentation> 
@@ -134,7 +134,7 @@ removeTrack ::
 removeTrack self track
   = liftIO (js_removeTrack self (toMediaStreamTrack track))
  
-foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
+foreign import javascript unsafe "(($1) => { return $1[\"clone\"](); })" js_clone ::
         MediaStream -> IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.clone Mozilla webkitMediaStream.clone documentation> 
@@ -145,7 +145,7 @@ clone self = liftIO (js_clone self)
 clone_ :: (MonadIO m) => MediaStream -> m ()
 clone_ self = liftIO (void (js_clone self))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         MediaStream -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.id Mozilla webkitMediaStream.id documentation> 

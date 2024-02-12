@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,49 +31,49 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clientX\"]" js_getClientX ::
+foreign import javascript unsafe "(($1) => { return $1[\"clientX\"]; })" js_getClientX ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.clientX Mozilla Touch.clientX documentation> 
 getClientX :: (MonadIO m) => Touch -> m Int
 getClientX self = liftIO (js_getClientX self)
  
-foreign import javascript unsafe "$1[\"clientY\"]" js_getClientY ::
+foreign import javascript unsafe "(($1) => { return $1[\"clientY\"]; })" js_getClientY ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.clientY Mozilla Touch.clientY documentation> 
 getClientY :: (MonadIO m) => Touch -> m Int
 getClientY self = liftIO (js_getClientY self)
  
-foreign import javascript unsafe "$1[\"screenX\"]" js_getScreenX ::
+foreign import javascript unsafe "(($1) => { return $1[\"screenX\"]; })" js_getScreenX ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.screenX Mozilla Touch.screenX documentation> 
 getScreenX :: (MonadIO m) => Touch -> m Int
 getScreenX self = liftIO (js_getScreenX self)
  
-foreign import javascript unsafe "$1[\"screenY\"]" js_getScreenY ::
+foreign import javascript unsafe "(($1) => { return $1[\"screenY\"]; })" js_getScreenY ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.screenY Mozilla Touch.screenY documentation> 
 getScreenY :: (MonadIO m) => Touch -> m Int
 getScreenY self = liftIO (js_getScreenY self)
  
-foreign import javascript unsafe "$1[\"pageX\"]" js_getPageX ::
+foreign import javascript unsafe "(($1) => { return $1[\"pageX\"]; })" js_getPageX ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.pageX Mozilla Touch.pageX documentation> 
 getPageX :: (MonadIO m) => Touch -> m Int
 getPageX self = liftIO (js_getPageX self)
  
-foreign import javascript unsafe "$1[\"pageY\"]" js_getPageY ::
+foreign import javascript unsafe "(($1) => { return $1[\"pageY\"]; })" js_getPageY ::
         Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.pageY Mozilla Touch.pageY documentation> 
 getPageY :: (MonadIO m) => Touch -> m Int
 getPageY self = liftIO (js_getPageY self)
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         Touch -> IO EventTarget
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.target Mozilla Touch.target documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -41,7 +41,7 @@ getAppCodeName self
   = liftIO
       (fromJSString <$> (js_getAppCodeName (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"appName\"]" js_getAppName ::
+foreign import javascript unsafe "(($1) => { return $1[\"appName\"]; })" js_getAppName ::
         NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.appName Mozilla NavigatorID.appName documentation> 
@@ -61,7 +61,7 @@ getAppVersion ::
 getAppVersion self
   = liftIO (fromJSString <$> (js_getAppVersion (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"platform\"]" js_getPlatform
+foreign import javascript unsafe "(($1) => { return $1[\"platform\"]; })" js_getPlatform
         :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.platform Mozilla NavigatorID.platform documentation> 
@@ -71,7 +71,7 @@ getPlatform ::
 getPlatform self
   = liftIO (fromJSString <$> (js_getPlatform (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"product\"]" js_getProduct ::
+foreign import javascript unsafe "(($1) => { return $1[\"product\"]; })" js_getProduct ::
         NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.product Mozilla NavigatorID.product documentation> 
@@ -101,7 +101,7 @@ getUserAgent ::
 getUserAgent self
   = liftIO (fromJSString <$> (js_getUserAgent (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"vendor\"]" js_getVendor ::
+foreign import javascript unsafe "(($1) => { return $1[\"vendor\"]; })" js_getVendor ::
         NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.vendor Mozilla NavigatorID.vendor documentation> 

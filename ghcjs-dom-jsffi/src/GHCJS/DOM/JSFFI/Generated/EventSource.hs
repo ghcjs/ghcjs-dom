@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,7 +42,7 @@ newEventSource url eventSourceInitDict
       (js_newEventSource (toJSString url)
          (maybeToOptional eventSourceInitDict))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         EventSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.close Mozilla EventSource.close documentation> 
@@ -52,7 +52,7 @@ pattern CONNECTING = 0
 pattern OPEN = 1
 pattern CLOSED = 2
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         EventSource -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.url Mozilla EventSource.url documentation> 

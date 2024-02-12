@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -114,14 +114,14 @@ foreign import javascript unsafe "$1[\"ownerRule\"]"
 getOwnerRule :: (MonadIO m) => CSSStyleSheet -> m CSSRule
 getOwnerRule self = liftIO (js_getOwnerRule self)
  
-foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
+foreign import javascript unsafe "(($1) => { return $1[\"cssRules\"]; })" js_getCssRules
         :: CSSStyleSheet -> IO CSSRuleList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.cssRules Mozilla CSSStyleSheet.cssRules documentation> 
 getCssRules :: (MonadIO m) => CSSStyleSheet -> m CSSRuleList
 getCssRules self = liftIO (js_getCssRules self)
  
-foreign import javascript unsafe "$1[\"rules\"]" js_getRules ::
+foreign import javascript unsafe "(($1) => { return $1[\"rules\"]; })" js_getRules ::
         CSSStyleSheet -> IO CSSRuleList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.rules Mozilla CSSStyleSheet.rules documentation> 

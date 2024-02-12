@@ -23,7 +23,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -46,7 +46,7 @@ setPosition ::
 setPosition self x y z = liftIO (js_setPosition self x y z)
  
 foreign import javascript unsafe
-        "$1[\"setOrientation\"]($2, $3, $4)" js_setOrientation ::
+        "(($1, $2, $3, $4) => { return $1[\"setOrientation\"]($2, $3, $4); })" js_setOrientation ::
         PannerNode -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.setOrientation Mozilla webkitAudioPannerNode.setOrientation documentation> 

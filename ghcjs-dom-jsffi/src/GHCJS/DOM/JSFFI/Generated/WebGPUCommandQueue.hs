@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -59,7 +59,7 @@ createCommandBufferUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_createCommandBuffer self))
  
-foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
+foreign import javascript unsafe "(($1, $2) => { $1[\"label\"] = $2; })" js_setLabel
         :: WebGPUCommandQueue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandQueue.label Mozilla WebGPUCommandQueue.label documentation> 
@@ -67,7 +67,7 @@ setLabel ::
          (MonadIO m, ToJSString val) => WebGPUCommandQueue -> val -> m ()
 setLabel self val = liftIO (js_setLabel self (toJSString val))
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         WebGPUCommandQueue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandQueue.label Mozilla WebGPUCommandQueue.label documentation> 

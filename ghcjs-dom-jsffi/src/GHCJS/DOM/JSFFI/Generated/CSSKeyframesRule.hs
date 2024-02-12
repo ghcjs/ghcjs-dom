@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -55,7 +55,7 @@ deleteRule ::
            (MonadIO m, ToJSString key) => CSSKeyframesRule -> key -> m ()
 deleteRule self key = liftIO (js_deleteRule self (toJSString key))
  
-foreign import javascript unsafe "$1[\"findRule\"]($2)" js_findRule
+foreign import javascript unsafe "(($1, $2) => { return $1[\"findRule\"]($2); })" js_findRule
         :: CSSKeyframesRule -> JSString -> IO (Nullable CSSKeyframeRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.findRule Mozilla CSSKeyframesRule.findRule documentation> 
@@ -89,7 +89,7 @@ findRuleUnchecked self key
       (fromJust . nullableToMaybe <$>
          (js_findRule self (toJSString key)))
  
-foreign import javascript unsafe "$1[$2]" js_get ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_get ::
         CSSKeyframesRule -> Word -> IO CSSKeyframeRule
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.get Mozilla CSSKeyframesRule.get documentation> 
@@ -100,7 +100,7 @@ get self index = liftIO (js_get self index)
 get_ :: (MonadIO m) => CSSKeyframesRule -> Word -> m ()
 get_ self index = liftIO (void (js_get self index))
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         CSSKeyframesRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
@@ -108,7 +108,7 @@ setName ::
         (MonadIO m, ToJSString val) => CSSKeyframesRule -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         CSSKeyframesRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.name Mozilla CSSKeyframesRule.name documentation> 
@@ -116,7 +116,7 @@ getName ::
         (MonadIO m, FromJSString result) => CSSKeyframesRule -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"cssRules\"]" js_getCssRules
+foreign import javascript unsafe "(($1) => { return $1[\"cssRules\"]; })" js_getCssRules
         :: CSSKeyframesRule -> IO CSSRuleList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.cssRules Mozilla CSSKeyframesRule.cssRules documentation> 

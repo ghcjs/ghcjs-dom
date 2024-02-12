@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
+foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm ::
         HTMLLabelElement -> IO HTMLFormElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.form Mozilla HTMLLabelElement.form documentation> 
@@ -42,7 +42,7 @@ setHtmlFor ::
            (MonadIO m, ToJSString val) => HTMLLabelElement -> val -> m ()
 setHtmlFor self val = liftIO (js_setHtmlFor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"htmlFor\"]" js_getHtmlFor ::
+foreign import javascript unsafe "(($1) => { return $1[\"htmlFor\"]; })" js_getHtmlFor ::
         HTMLLabelElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 
@@ -50,7 +50,7 @@ getHtmlFor ::
            (MonadIO m, FromJSString result) => HTMLLabelElement -> m result
 getHtmlFor self = liftIO (fromJSString <$> (js_getHtmlFor self))
  
-foreign import javascript unsafe "$1[\"control\"]" js_getControl ::
+foreign import javascript unsafe "(($1) => { return $1[\"control\"]; })" js_getControl ::
         HTMLLabelElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.control Mozilla HTMLLabelElement.control documentation> 

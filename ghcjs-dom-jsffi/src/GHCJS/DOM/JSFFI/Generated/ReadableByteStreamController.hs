@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -48,7 +48,7 @@ newReadableByteStreamController stream underlyingByteSource
            js_newReadableByteStreamController stream underlyingByteSource'
          highWaterMark)
  
-foreign import javascript unsafe "$1[\"enqueue\"]($2)" js_enqueue
+foreign import javascript unsafe "(($1, $2) => { return $1[\"enqueue\"]($2); })" js_enqueue
         :: ReadableByteStreamController -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.enqueue Mozilla ReadableByteStreamController.enqueue documentation> 
@@ -60,14 +60,14 @@ enqueue self chunk
       (mapM toJSVal chunk >>=
          \ chunk' -> js_enqueue self (maybeToOptional chunk'))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         ReadableByteStreamController -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.close Mozilla ReadableByteStreamController.close documentation> 
 close :: (MonadIO m) => ReadableByteStreamController -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"error\"]($2)" js_error ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"error\"]($2); })" js_error ::
         ReadableByteStreamController -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.error Mozilla ReadableByteStreamController.error documentation> 

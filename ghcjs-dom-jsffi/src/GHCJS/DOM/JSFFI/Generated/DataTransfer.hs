@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,7 +42,7 @@ setDragImage self image x y
   = liftIO
       (js_setDragImage self (maybeToOptional (fmap toElement image)) x y)
  
-foreign import javascript unsafe "$1[\"getData\"]($2)" js_getData
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getData\"]($2); })" js_getData
         :: DataTransfer -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.getData Mozilla DataTransfer.getData documentation> 
@@ -114,14 +114,14 @@ getEffectAllowed ::
 getEffectAllowed self
   = liftIO (fromJSString <$> (js_getEffectAllowed self))
  
-foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
+foreign import javascript unsafe "(($1) => { return $1[\"items\"]; })" js_getItems ::
         DataTransfer -> IO DataTransferItemList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
 getItems :: (MonadIO m) => DataTransfer -> m DataTransferItemList
 getItems self = liftIO (js_getItems self)
  
-foreign import javascript unsafe "$1[\"types\"]" js_getTypes ::
+foreign import javascript unsafe "(($1) => { return $1[\"types\"]; })" js_getTypes ::
         DataTransfer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
@@ -129,7 +129,7 @@ getTypes ::
          (MonadIO m, FromJSString result) => DataTransfer -> m [result]
 getTypes self = liftIO ((js_getTypes self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
+foreign import javascript unsafe "(($1) => { return $1[\"files\"]; })" js_getFiles ::
         DataTransfer -> IO FileList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 

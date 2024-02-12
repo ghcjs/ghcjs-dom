@@ -74,7 +74,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -254,7 +254,7 @@ removeAttribute self qualifiedName
       (js_removeAttribute (toElement self) (toJSString qualifiedName))
  
 foreign import javascript unsafe
-        "$1[\"removeAttributeNS\"]($2, $3)" js_removeAttributeNS ::
+        "(($1, $2, $3) => { return $1[\"removeAttributeNS\"]($2, $3); })" js_removeAttributeNS ::
         Element -> Optional JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNS Mozilla Element.removeAttributeNS documentation> 
@@ -358,7 +358,7 @@ getAttributeNodeUnchecked self qualifiedName
          (js_getAttributeNode (toElement self) (toJSString qualifiedName)))
  
 foreign import javascript unsafe
-        "$1[\"getAttributeNodeNS\"]($2, $3)" js_getAttributeNodeNS ::
+        "(($1, $2, $3) => { return $1[\"getAttributeNodeNS\"]($2, $3); })" js_getAttributeNodeNS ::
         Element -> Optional JSString -> JSString -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNodeNS Mozilla Element.getAttributeNodeNS documentation> 
@@ -506,7 +506,7 @@ attachShadow_ ::
 attachShadow_ self init
   = liftIO (void (js_attachShadow (toElement self) init))
  
-foreign import javascript safe "$1[\"closest\"]($2)" js_closest ::
+foreign import javascript safe "(($1, $2) => { return $1[\"closest\"]($2); })" js_closest ::
         Element -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.closest Mozilla Element.closest documentation> 
@@ -607,7 +607,7 @@ getElementsByTagName_ self qualifiedName
             (toJSString qualifiedName)))
  
 foreign import javascript unsafe
-        "$1[\"getElementsByTagNameNS\"]($2,\n$3)" js_getElementsByTagNameNS
+        "(($1, $2, $3) => { return $1[\"getElementsByTagNameNS\"]($2,\n$3); })" js_getElementsByTagNameNS
         :: Element -> Optional JSString -> JSString -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagNameNS Mozilla Element.getElementsByTagNameNS documentation> 
@@ -634,7 +634,7 @@ getElementsByTagNameNS_ self namespaceURI localName
             (toJSString localName)))
  
 foreign import javascript unsafe
-        "$1[\"getElementsByClassName\"]($2)" js_getElementsByClassName ::
+        "(($1, $2) => { return $1[\"getElementsByClassName\"]($2); })" js_getElementsByClassName ::
         Element -> JSString -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByClassName Mozilla Element.getElementsByClassName documentation> 
@@ -655,7 +655,7 @@ getElementsByClassName_ self name
          (js_getElementsByClassName (toElement self) (toJSString name)))
  
 foreign import javascript safe
-        "$1[\"insertAdjacentElement\"]($2,\n$3)" js_insertAdjacentElement
+        "(($1, $2, $3) => { return $1[\"insertAdjacentElement\"]($2,\n$3); })" js_insertAdjacentElement
         :: Element -> JSString -> Element -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.insertAdjacentElement Mozilla Element.insertAdjacentElement documentation> 
@@ -754,7 +754,7 @@ scrollIntoView ::
 scrollIntoView self alignWithTop
   = liftIO (js_scrollIntoView (toElement self) alignWithTop)
  
-foreign import javascript unsafe "$1[\"scroll\"]($2)" js_scrollOpt
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scroll\"]($2); })" js_scrollOpt
         :: Element -> Optional ScrollToOptions -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scroll Mozilla Element.scroll documentation> 
@@ -764,7 +764,7 @@ scrollOpt ::
 scrollOpt self options
   = liftIO (js_scrollOpt (toElement self) (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"scroll\"]($2, $3)" js_scroll
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scroll\"]($2, $3); })" js_scroll
         :: Element -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scroll Mozilla Element.scroll documentation> 
@@ -823,7 +823,7 @@ insertAdjacentHTML self position text
          (toJSString text))
  
 foreign import javascript unsafe
-        "$1[\"webkitRequestFullScreen\"]()" js_webkitRequestFullScreen ::
+        "(($1) => { return $1[\"webkitRequestFullScreen\"](); })" js_webkitRequestFullScreen ::
         Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRequestFullScreen Mozilla Element.webkitRequestFullScreen documentation> 
@@ -833,7 +833,7 @@ webkitRequestFullScreen self
   = liftIO (js_webkitRequestFullScreen (toElement self))
  
 foreign import javascript unsafe
-        "$1[\"webkitRequestFullscreen\"]()" js_webkitRequestFullscreen ::
+        "(($1) => { return $1[\"webkitRequestFullscreen\"](); })" js_webkitRequestFullscreen ::
         Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRequestFullscreen Mozilla Element.webkitRequestFullscreen documentation> 
@@ -851,7 +851,7 @@ requestPointerLock self
   = liftIO (js_requestPointerLock (toElement self))
  
 foreign import javascript unsafe
-        "$1[\"webkitGetRegionFlowRanges\"]()" js_webkitGetRegionFlowRanges
+        "(($1) => { return $1[\"webkitGetRegionFlowRanges\"](); })" js_webkitGetRegionFlowRanges
         :: Element -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitGetRegionFlowRanges Mozilla Element.webkitGetRegionFlowRanges documentation> 
@@ -869,7 +869,7 @@ webkitGetRegionFlowRanges_ self
   = liftIO (void (js_webkitGetRegionFlowRanges (toElement self)))
  
 foreign import javascript unsafe
-        "$1[\"scrollIntoViewIfNeeded\"]($2)" js_scrollIntoViewIfNeeded ::
+        "(($1, $2) => { return $1[\"scrollIntoViewIfNeeded\"]($2); })" js_scrollIntoViewIfNeeded ::
         Element -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollIntoViewIfNeeded Mozilla Element.scrollIntoViewIfNeeded documentation> 
@@ -908,7 +908,7 @@ getNamespaceURIUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getNamespaceURI (toElement self)))
  
-foreign import javascript unsafe "$1[\"prefix\"]" js_getPrefix ::
+foreign import javascript unsafe "(($1) => { return $1[\"prefix\"]; })" js_getPrefix ::
         Element -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.prefix Mozilla Element.prefix documentation> 
@@ -945,7 +945,7 @@ getLocalName ::
 getLocalName self
   = liftIO (fromJSString <$> (js_getLocalName (toElement self)))
  
-foreign import javascript unsafe "$1[\"tagName\"]" js_getTagName ::
+foreign import javascript unsafe "(($1) => { return $1[\"tagName\"]; })" js_getTagName ::
         Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.tagName Mozilla Element.tagName documentation> 
@@ -955,7 +955,7 @@ getTagName ::
 getTagName self
   = liftIO (fromJSString <$> (js_getTagName (toElement self)))
  
-foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"id\"] = $2; })" js_setId ::
         Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.id Mozilla Element.id documentation> 
@@ -964,7 +964,7 @@ setId ::
 setId self val
   = liftIO (js_setId (toElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.id Mozilla Element.id documentation> 
@@ -1000,7 +1000,7 @@ getClassList ::
              (MonadIO m, IsElement self) => self -> m DOMTokenList
 getClassList self = liftIO (js_getClassList (toElement self))
  
-foreign import javascript unsafe "$1[\"slot\"] = $2;" js_setSlot ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"slot\"] = $2; })" js_setSlot ::
         Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.slot Mozilla Element.slot documentation> 
@@ -1009,7 +1009,7 @@ setSlot ::
 setSlot self val
   = liftIO (js_setSlot (toElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"slot\"]" js_getSlot ::
+foreign import javascript unsafe "(($1) => { return $1[\"slot\"]; })" js_getSlot ::
         Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.slot Mozilla Element.slot documentation> 

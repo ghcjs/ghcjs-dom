@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"cite\"] = $2;" js_setCite ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"cite\"] = $2; })" js_setCite ::
         HTMLModElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
@@ -35,7 +35,7 @@ setCite ::
         (MonadIO m, ToJSString val) => HTMLModElement -> val -> m ()
 setCite self val = liftIO (js_setCite self (toJSString val))
  
-foreign import javascript unsafe "$1[\"cite\"]" js_getCite ::
+foreign import javascript unsafe "(($1) => { return $1[\"cite\"]; })" js_getCite ::
         HTMLModElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.cite Mozilla HTMLModElement.cite documentation> 
@@ -52,7 +52,7 @@ setDateTime ::
 setDateTime self val
   = liftIO (js_setDateTime self (toJSString val))
  
-foreign import javascript unsafe "$1[\"dateTime\"]" js_getDateTime
+foreign import javascript unsafe "(($1) => { return $1[\"dateTime\"]; })" js_getDateTime
         :: HTMLModElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.dateTime Mozilla HTMLModElement.dateTime documentation> 

@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -40,14 +40,14 @@ postMessage self message transfer
            toJSVal message >>= \ message' -> js_postMessage self message'
              transfer')
  
-foreign import javascript unsafe "$1[\"start\"]()" js_start ::
+foreign import javascript unsafe "(($1) => { return $1[\"start\"](); })" js_start ::
         MessagePort -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.start Mozilla MessagePort.start documentation> 
 start :: (MonadIO m) => MessagePort -> m ()
 start self = liftIO (js_start self)
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         MessagePort -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessagePort.close Mozilla MessagePort.close documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -91,7 +91,7 @@ replaceData self offset count data'
       (js_replaceData (toCharacterData self) offset count
          (toJSString data'))
  
-foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"data\"] = $2; })" js_setData ::
         CharacterData -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
@@ -101,7 +101,7 @@ setData ::
 setData self val
   = liftIO (js_setData (toCharacterData self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         CharacterData -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
@@ -111,7 +111,7 @@ getData ::
 getData self
   = liftIO (fromJSString <$> (js_getData (toCharacterData self)))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         CharacterData -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.length Mozilla CharacterData.length documentation> 

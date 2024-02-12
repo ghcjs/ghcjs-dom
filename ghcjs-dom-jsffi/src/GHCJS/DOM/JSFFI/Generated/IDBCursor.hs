@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"update\"]($2)" js_update ::
+foreign import javascript safe "(($1, $2) => { return $1[\"update\"]($2); })" js_update ::
         IDBCursor -> JSVal -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.update Mozilla IDBCursor.update documentation> 
@@ -50,14 +50,14 @@ update_ self value
          (toJSVal value >>=
             \ value' -> js_update (toIDBCursor self) value'))
  
-foreign import javascript safe "$1[\"advance\"]($2)" js_advance ::
+foreign import javascript safe "(($1, $2) => { return $1[\"advance\"]($2); })" js_advance ::
         IDBCursor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.advance Mozilla IDBCursor.advance documentation> 
 advance :: (MonadIO m, IsIDBCursor self) => self -> Word -> m ()
 advance self count = liftIO (js_advance (toIDBCursor self) count)
  
-foreign import javascript safe "$1[\"continue\"]($2)" js_continue
+foreign import javascript safe "(($1, $2) => { return $1[\"continue\"]($2); })" js_continue
         :: IDBCursor -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.continue Mozilla IDBCursor.continue documentation> 
@@ -84,7 +84,7 @@ continuePrimaryKey self key primaryKey
              \ key' -> js_continuePrimaryKey (toIDBCursor self) key'
              primaryKey')
  
-foreign import javascript safe "$1[\"delete\"]()" js_delete ::
+foreign import javascript safe "(($1) => { return $1[\"delete\"](); })" js_delete ::
         IDBCursor -> IO IDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.delete Mozilla IDBCursor.delete documentation> 
@@ -95,7 +95,7 @@ delete self = liftIO (js_delete (toIDBCursor self))
 delete_ :: (MonadIO m, IsIDBCursor self) => self -> m ()
 delete_ self = liftIO (void (js_delete (toIDBCursor self)))
  
-foreign import javascript unsafe "$1[\"source\"]" js_getSource ::
+foreign import javascript unsafe "(($1) => { return $1[\"source\"]; })" js_getSource ::
         IDBCursor -> IO IDBCursorSource
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.source Mozilla IDBCursor.source documentation> 
@@ -113,7 +113,7 @@ getDirection self
   = liftIO
       ((js_getDirection (toIDBCursor self)) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"key\"]" js_getKey ::
+foreign import javascript unsafe "(($1) => { return $1[\"key\"]; })" js_getKey ::
         IDBCursor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.key Mozilla IDBCursor.key documentation> 

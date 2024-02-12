@@ -32,7 +32,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -46,7 +46,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"loaded\"]()" js_loaded ::
+foreign import javascript unsafe "(($1) => { return $1[\"loaded\"](); })" js_loaded ::
         InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.loaded Mozilla InspectorFrontendHost.loaded documentation> 
@@ -126,7 +126,7 @@ requestSetDockSide self side
   = liftIO (js_requestSetDockSide self (toJSString side))
  
 foreign import javascript unsafe
-        "$1[\"setAttachedWindowHeight\"]($2)" js_setAttachedWindowHeight ::
+        "(($1, $2) => { return $1[\"setAttachedWindowHeight\"]($2); })" js_setAttachedWindowHeight ::
         InspectorFrontendHost -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setAttachedWindowHeight Mozilla InspectorFrontendHost.setAttachedWindowHeight documentation> 
@@ -136,7 +136,7 @@ setAttachedWindowHeight self height
   = liftIO (js_setAttachedWindowHeight self height)
  
 foreign import javascript unsafe
-        "$1[\"setAttachedWindowWidth\"]($2)" js_setAttachedWindowWidth ::
+        "(($1, $2) => { return $1[\"setAttachedWindowWidth\"]($2); })" js_setAttachedWindowWidth ::
         InspectorFrontendHost -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setAttachedWindowWidth Mozilla InspectorFrontendHost.setAttachedWindowWidth documentation> 
@@ -216,7 +216,7 @@ inspectionLevel self = liftIO (js_inspectionLevel self)
 inspectionLevel_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 inspectionLevel_ self = liftIO (void (js_inspectionLevel self))
  
-foreign import javascript unsafe "$1[\"copyText\"]($2)" js_copyText
+foreign import javascript unsafe "(($1, $2) => { return $1[\"copyText\"]($2); })" js_copyText
         :: InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.copyText Mozilla InspectorFrontendHost.copyText documentation> 
@@ -272,7 +272,7 @@ save self url content base64Encoded forceSaveAs
       (js_save self (toJSString url) (toJSString content) base64Encoded
          forceSaveAs)
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3)" js_append
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"append\"]($2, $3); })" js_append
         :: InspectorFrontendHost -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.append Mozilla InspectorFrontendHost.append documentation> 
@@ -282,7 +282,7 @@ append ::
 append self url content
   = liftIO (js_append self (toJSString url) (toJSString content))
  
-foreign import javascript unsafe "$1[\"close\"]($2)" js_close ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"close\"]($2); })" js_close ::
         InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.close Mozilla InspectorFrontendHost.close documentation> 
@@ -290,7 +290,7 @@ close ::
       (MonadIO m, ToJSString url) => InspectorFrontendHost -> url -> m ()
 close self url = liftIO (js_close self (toJSString url))
  
-foreign import javascript unsafe "$1[\"platform\"]()" js_platform
+foreign import javascript unsafe "(($1) => { return $1[\"platform\"](); })" js_platform
         :: InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.platform Mozilla InspectorFrontendHost.platform documentation> 
@@ -303,7 +303,7 @@ platform self = liftIO (fromJSString <$> (js_platform self))
 platform_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 platform_ self = liftIO (void (js_platform self))
  
-foreign import javascript unsafe "$1[\"port\"]()" js_port ::
+foreign import javascript unsafe "(($1) => { return $1[\"port\"](); })" js_port ::
         InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.port Mozilla InspectorFrontendHost.port documentation> 
@@ -375,7 +375,7 @@ isUnderTest self = liftIO (js_isUnderTest self)
 isUnderTest_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 isUnderTest_ self = liftIO (void (js_isUnderTest self))
  
-foreign import javascript unsafe "$1[\"beep\"]()" js_beep ::
+foreign import javascript unsafe "(($1) => { return $1[\"beep\"](); })" js_beep ::
         InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.beep Mozilla InspectorFrontendHost.beep documentation> 

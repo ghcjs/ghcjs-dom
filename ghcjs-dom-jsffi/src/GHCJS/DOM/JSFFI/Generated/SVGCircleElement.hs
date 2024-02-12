@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,21 +26,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"cx\"]" js_getCx ::
+foreign import javascript unsafe "(($1) => { return $1[\"cx\"]; })" js_getCx ::
         SVGCircleElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cx Mozilla SVGCircleElement.cx documentation> 
 getCx :: (MonadIO m) => SVGCircleElement -> m SVGAnimatedLength
 getCx self = liftIO (js_getCx self)
  
-foreign import javascript unsafe "$1[\"cy\"]" js_getCy ::
+foreign import javascript unsafe "(($1) => { return $1[\"cy\"]; })" js_getCy ::
         SVGCircleElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.cy Mozilla SVGCircleElement.cy documentation> 
 getCy :: (MonadIO m) => SVGCircleElement -> m SVGAnimatedLength
 getCy self = liftIO (js_getCy self)
  
-foreign import javascript unsafe "$1[\"r\"]" js_getR ::
+foreign import javascript unsafe "(($1) => { return $1[\"r\"]; })" js_getR ::
         SVGCircleElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGCircleElement.r Mozilla SVGCircleElement.r documentation> 

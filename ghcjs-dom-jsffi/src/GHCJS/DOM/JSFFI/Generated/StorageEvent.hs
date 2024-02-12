@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -78,7 +78,7 @@ initStorageEvent self typeArg canBubbleArg cancelableArg keyArg
          (toOptionalJSString urlArg)
          (maybeToOptional storageAreaArg))
  
-foreign import javascript unsafe "$1[\"key\"]" js_getKey ::
+foreign import javascript unsafe "(($1) => { return $1[\"key\"]; })" js_getKey ::
         StorageEvent -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.key Mozilla StorageEvent.key documentation> 
@@ -102,7 +102,7 @@ getKeyUnchecked ::
 getKeyUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getKey self))
  
-foreign import javascript unsafe "$1[\"oldValue\"]" js_getOldValue
+foreign import javascript unsafe "(($1) => { return $1[\"oldValue\"]; })" js_getOldValue
         :: StorageEvent -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.oldValue Mozilla StorageEvent.oldValue documentation> 
@@ -127,7 +127,7 @@ getOldValueUnchecked ::
 getOldValueUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getOldValue self))
  
-foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
+foreign import javascript unsafe "(($1) => { return $1[\"newValue\"]; })" js_getNewValue
         :: StorageEvent -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.newValue Mozilla StorageEvent.newValue documentation> 
@@ -152,7 +152,7 @@ getNewValueUnchecked ::
 getNewValueUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getNewValue self))
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         StorageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.url Mozilla StorageEvent.url documentation> 

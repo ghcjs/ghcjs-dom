@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         StyleSheet -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.type Mozilla StyleSheet.type documentation> 
@@ -91,7 +91,7 @@ getParentStyleSheet ::
 getParentStyleSheet self
   = liftIO (js_getParentStyleSheet (toStyleSheet self))
  
-foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+foreign import javascript unsafe "(($1) => { return $1[\"href\"]; })" js_getHref ::
         StyleSheet -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.href Mozilla StyleSheet.href documentation> 
@@ -119,7 +119,7 @@ getHrefUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getHref (toStyleSheet self)))
  
-foreign import javascript unsafe "$1[\"title\"]" js_getTitle ::
+foreign import javascript unsafe "(($1) => { return $1[\"title\"]; })" js_getTitle ::
         StyleSheet -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.title Mozilla StyleSheet.title documentation> 
@@ -148,7 +148,7 @@ getTitleUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getTitle (toStyleSheet self)))
  
-foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
+foreign import javascript unsafe "(($1) => { return $1[\"media\"]; })" js_getMedia ::
         StyleSheet -> IO MediaList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleSheet.media Mozilla StyleSheet.media documentation> 

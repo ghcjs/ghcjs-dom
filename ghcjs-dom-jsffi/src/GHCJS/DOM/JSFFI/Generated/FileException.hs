@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"toString\"]()" js_toString
+foreign import javascript unsafe "(($1) => { return $1[\"toString\"](); })" js_toString
         :: FileException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileException.toString Mozilla FileException.toString documentation> 
@@ -56,14 +56,14 @@ pattern QUOTA_EXCEEDED_ERR = 10
 pattern TYPE_MISMATCH_ERR = 11
 pattern PATH_EXISTS_ERR = 12
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         FileException -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileException.code Mozilla FileException.code documentation> 
 getCode :: (MonadIO m) => FileException -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         FileException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileException.name Mozilla FileException.name documentation> 
@@ -71,7 +71,7 @@ getName ::
         (MonadIO m, FromJSString result) => FileException -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         FileException -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileException.message Mozilla FileException.message documentation> 

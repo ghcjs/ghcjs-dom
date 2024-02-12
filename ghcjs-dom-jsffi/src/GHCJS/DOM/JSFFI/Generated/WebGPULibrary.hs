@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -74,7 +74,7 @@ getSourceCode ::
 getSourceCode self
   = liftIO (fromJSString <$> (js_getSourceCode self))
  
-foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
+foreign import javascript unsafe "(($1, $2) => { $1[\"label\"] = $2; })" js_setLabel
         :: WebGPULibrary -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPULibrary.label Mozilla WebGPULibrary.label documentation> 
@@ -82,7 +82,7 @@ setLabel ::
          (MonadIO m, ToJSString val) => WebGPULibrary -> val -> m ()
 setLabel self val = liftIO (js_setLabel self (toJSString val))
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         WebGPULibrary -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPULibrary.label Mozilla WebGPULibrary.label documentation> 

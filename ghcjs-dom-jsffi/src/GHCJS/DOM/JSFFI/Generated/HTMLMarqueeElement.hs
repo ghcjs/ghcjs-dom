@@ -22,7 +22,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,14 +36,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"start\"]()" js_start ::
+foreign import javascript unsafe "(($1) => { return $1[\"start\"](); })" js_start ::
         HTMLMarqueeElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.start Mozilla HTMLMarqueeElement.start documentation> 
 start :: (MonadIO m) => HTMLMarqueeElement -> m ()
 start self = liftIO (js_start self)
  
-foreign import javascript unsafe "$1[\"stop\"]()" js_stop ::
+foreign import javascript unsafe "(($1) => { return $1[\"stop\"](); })" js_stop ::
         HTMLMarqueeElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.stop Mozilla HTMLMarqueeElement.stop documentation> 
@@ -59,7 +59,7 @@ setBehavior ::
 setBehavior self val
   = liftIO (js_setBehavior self (toJSString val))
  
-foreign import javascript unsafe "$1[\"behavior\"]" js_getBehavior
+foreign import javascript unsafe "(($1) => { return $1[\"behavior\"]; })" js_getBehavior
         :: HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.behavior Mozilla HTMLMarqueeElement.behavior documentation> 
@@ -75,7 +75,7 @@ setBgColor ::
            (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
 setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
+foreign import javascript unsafe "(($1) => { return $1[\"bgColor\"]; })" js_getBgColor ::
         HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.bgColor Mozilla HTMLMarqueeElement.bgColor documentation> 
@@ -109,7 +109,7 @@ setHeight ::
           (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
 setHeight self val = liftIO (js_setHeight self (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.height Mozilla HTMLMarqueeElement.height documentation> 
@@ -124,21 +124,21 @@ foreign import javascript unsafe "$1[\"hspace\"] = $2;"
 setHspace :: (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
 setHspace self val = liftIO (js_setHspace self val)
  
-foreign import javascript unsafe "$1[\"hspace\"]" js_getHspace ::
+foreign import javascript unsafe "(($1) => { return $1[\"hspace\"]; })" js_getHspace ::
         HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.hspace Mozilla HTMLMarqueeElement.hspace documentation> 
 getHspace :: (MonadIO m) => HTMLMarqueeElement -> m Word
 getHspace self = liftIO (js_getHspace self)
  
-foreign import javascript safe "$1[\"loop\"] = $2;" js_setLoop ::
+foreign import javascript safe "(($1, $2) => { $1[\"loop\"] = $2; })" js_setLoop ::
         HTMLMarqueeElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.loop Mozilla HTMLMarqueeElement.loop documentation> 
 setLoop :: (MonadIO m) => HTMLMarqueeElement -> Int -> m ()
 setLoop self val = liftIO (js_setLoop self val)
  
-foreign import javascript unsafe "$1[\"loop\"]" js_getLoop ::
+foreign import javascript unsafe "(($1) => { return $1[\"loop\"]; })" js_getLoop ::
         HTMLMarqueeElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.loop Mozilla HTMLMarqueeElement.loop documentation> 
@@ -195,14 +195,14 @@ foreign import javascript unsafe "$1[\"vspace\"] = $2;"
 setVspace :: (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
 setVspace self val = liftIO (js_setVspace self val)
  
-foreign import javascript unsafe "$1[\"vspace\"]" js_getVspace ::
+foreign import javascript unsafe "(($1) => { return $1[\"vspace\"]; })" js_getVspace ::
         HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.vspace Mozilla HTMLMarqueeElement.vspace documentation> 
 getVspace :: (MonadIO m) => HTMLMarqueeElement -> m Word
 getVspace self = liftIO (js_getVspace self)
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.width Mozilla HTMLMarqueeElement.width documentation> 
@@ -210,7 +210,7 @@ setWidth ::
          (MonadIO m, ToJSString val) => HTMLMarqueeElement -> val -> m ()
 setWidth self val = liftIO (js_setWidth self (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.width Mozilla HTMLMarqueeElement.width documentation> 

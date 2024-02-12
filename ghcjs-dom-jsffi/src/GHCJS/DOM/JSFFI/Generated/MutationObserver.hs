@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -38,7 +38,7 @@ newMutationObserver ::
 newMutationObserver callback
   = liftIO (js_newMutationObserver (toMutationCallback callback))
  
-foreign import javascript safe "$1[\"observe\"]($2, $3)" js_observe
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"observe\"]($2, $3); })" js_observe
         ::
         MutationObserver -> Node -> Optional MutationObserverInit -> IO ()
 

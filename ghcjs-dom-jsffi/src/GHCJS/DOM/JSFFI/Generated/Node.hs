@@ -52,7 +52,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -97,14 +97,14 @@ hasChildNodes_ :: (MonadIO m, IsNode self) => self -> m ()
 hasChildNodes_ self
   = liftIO (void (js_hasChildNodes (toNode self)))
  
-foreign import javascript unsafe "$1[\"normalize\"]()" js_normalize
+foreign import javascript unsafe "(($1) => { return $1[\"normalize\"](); })" js_normalize
         :: Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize Mozilla Node.normalize documentation> 
 normalize :: (MonadIO m, IsNode self) => self -> m ()
 normalize self = liftIO (js_normalize (toNode self))
  
-foreign import javascript safe "$1[\"cloneNode\"]($2)" js_cloneNode
+foreign import javascript safe "(($1, $2) => { return $1[\"cloneNode\"]($2); })" js_cloneNode
         :: Node -> Bool -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode Mozilla Node.cloneNode documentation> 
@@ -161,7 +161,7 @@ isSameNode_ self other
             (maybeToOptional (fmap toNode other))))
  
 foreign import javascript unsafe
-        "$1[\"compareDocumentPosition\"]($2)" js_compareDocumentPosition ::
+        "(($1, $2) => { return $1[\"compareDocumentPosition\"]($2); })" js_compareDocumentPosition ::
         Node -> Node -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.compareDocumentPosition Mozilla Node.compareDocumentPosition documentation> 
@@ -395,14 +395,14 @@ pattern DOCUMENT_POSITION_CONTAINS = 8
 pattern DOCUMENT_POSITION_CONTAINED_BY = 16
 pattern DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC = 32
  
-foreign import javascript unsafe "$1[\"nodeType\"]" js_getNodeType
+foreign import javascript unsafe "(($1) => { return $1[\"nodeType\"]; })" js_getNodeType
         :: Node -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeType Mozilla Node.nodeType documentation> 
 getNodeType :: (MonadIO m, IsNode self) => self -> m Word
 getNodeType self = liftIO (js_getNodeType (toNode self))
  
-foreign import javascript unsafe "$1[\"nodeName\"]" js_getNodeName
+foreign import javascript unsafe "(($1) => { return $1[\"nodeName\"]; })" js_getNodeName
         :: Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeName Mozilla Node.nodeName documentation> 
@@ -411,7 +411,7 @@ getNodeName ::
 getNodeName self
   = liftIO (fromJSString <$> (js_getNodeName (toNode self)))
  
-foreign import javascript unsafe "$1[\"baseURI\"]" js_getBaseURI ::
+foreign import javascript unsafe "(($1) => { return $1[\"baseURI\"]; })" js_getBaseURI ::
         Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.baseURI Mozilla Node.baseURI documentation> 

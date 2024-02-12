@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -42,21 +42,21 @@ newDeviceProximityEvent type' eventInitDict
       (js_newDeviceProximityEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         DeviceProximityEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent.value Mozilla DeviceProximityEvent.value documentation> 
 getValue :: (MonadIO m) => DeviceProximityEvent -> m Double
 getValue self = liftIO (js_getValue self)
  
-foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
+foreign import javascript unsafe "(($1) => { return $1[\"min\"]; })" js_getMin ::
         DeviceProximityEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent.min Mozilla DeviceProximityEvent.min documentation> 
 getMin :: (MonadIO m) => DeviceProximityEvent -> m Double
 getMin self = liftIO (js_getMin self)
  
-foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
+foreign import javascript unsafe "(($1) => { return $1[\"max\"]; })" js_getMax ::
         DeviceProximityEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceProximityEvent.max Mozilla DeviceProximityEvent.max documentation> 

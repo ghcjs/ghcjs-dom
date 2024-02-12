@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"cols\"] = $2;" js_setCols ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"cols\"] = $2; })" js_setCols ::
         HTMLFrameSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.cols Mozilla HTMLFrameSetElement.cols documentation> 
@@ -37,7 +37,7 @@ setCols ::
         (MonadIO m, ToJSString val) => HTMLFrameSetElement -> val -> m ()
 setCols self val = liftIO (js_setCols self (toJSString val))
  
-foreign import javascript unsafe "$1[\"cols\"]" js_getCols ::
+foreign import javascript unsafe "(($1) => { return $1[\"cols\"]; })" js_getCols ::
         HTMLFrameSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.cols Mozilla HTMLFrameSetElement.cols documentation> 
@@ -45,7 +45,7 @@ getCols ::
         (MonadIO m, FromJSString result) => HTMLFrameSetElement -> m result
 getCols self = liftIO (fromJSString <$> (js_getCols self))
  
-foreign import javascript unsafe "$1[\"rows\"] = $2;" js_setRows ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"rows\"] = $2; })" js_setRows ::
         HTMLFrameSetElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.rows Mozilla HTMLFrameSetElement.rows documentation> 
@@ -53,7 +53,7 @@ setRows ::
         (MonadIO m, ToJSString val) => HTMLFrameSetElement -> val -> m ()
 setRows self val = liftIO (js_setRows self (toJSString val))
  
-foreign import javascript unsafe "$1[\"rows\"]" js_getRows ::
+foreign import javascript unsafe "(($1) => { return $1[\"rows\"]; })" js_getRows ::
         HTMLFrameSetElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFrameSetElement.rows Mozilla HTMLFrameSetElement.rows documentation> 

@@ -21,7 +21,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"href\"] = $2; })" js_setHref ::
         HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.href Mozilla HTMLHyperlinkElementUtils.href documentation> 
@@ -46,7 +46,7 @@ setHref self val
   = liftIO
       (js_setHref (toHTMLHyperlinkElementUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+foreign import javascript unsafe "(($1) => { return $1[\"href\"]; })" js_getHref ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.href Mozilla HTMLHyperlinkElementUtils.href documentation> 
@@ -58,7 +58,7 @@ getHref self
   = liftIO
       (fromJSString <$> (js_getHref (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"origin\"]" js_getOrigin ::
+foreign import javascript unsafe "(($1) => { return $1[\"origin\"]; })" js_getOrigin ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.origin Mozilla HTMLHyperlinkElementUtils.origin documentation> 
@@ -83,7 +83,7 @@ setProtocol self val
       (js_setProtocol (toHTMLHyperlinkElementUtils self)
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+foreign import javascript unsafe "(($1) => { return $1[\"protocol\"]; })" js_getProtocol
         :: HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.protocol Mozilla HTMLHyperlinkElementUtils.protocol documentation> 
@@ -108,7 +108,7 @@ setUsername self val
       (js_setUsername (toHTMLHyperlinkElementUtils self)
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"username\"]" js_getUsername
+foreign import javascript unsafe "(($1) => { return $1[\"username\"]; })" js_getUsername
         :: HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.username Mozilla HTMLHyperlinkElementUtils.username documentation> 
@@ -133,7 +133,7 @@ setPassword self val
       (js_setPassword (toHTMLHyperlinkElementUtils self)
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"password\"]" js_getPassword
+foreign import javascript unsafe "(($1) => { return $1[\"password\"]; })" js_getPassword
         :: HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.password Mozilla HTMLHyperlinkElementUtils.password documentation> 
@@ -146,7 +146,7 @@ getPassword self
       (fromJSString <$>
          (js_getPassword (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"host\"] = $2;" js_setHost ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"host\"] = $2; })" js_setHost ::
         HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.host Mozilla HTMLHyperlinkElementUtils.host documentation> 
@@ -157,7 +157,7 @@ setHost self val
   = liftIO
       (js_setHost (toHTMLHyperlinkElementUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"host\"]" js_getHost ::
+foreign import javascript unsafe "(($1) => { return $1[\"host\"]; })" js_getHost ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.host Mozilla HTMLHyperlinkElementUtils.host documentation> 
@@ -181,7 +181,7 @@ setHostname self val
       (js_setHostname (toHTMLHyperlinkElementUtils self)
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"hostname\"]" js_getHostname
+foreign import javascript unsafe "(($1) => { return $1[\"hostname\"]; })" js_getHostname
         :: HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.hostname Mozilla HTMLHyperlinkElementUtils.hostname documentation> 
@@ -194,7 +194,7 @@ getHostname self
       (fromJSString <$>
          (js_getHostname (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"port\"] = $2;" js_setPort ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"port\"] = $2; })" js_setPort ::
         HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.port Mozilla HTMLHyperlinkElementUtils.port documentation> 
@@ -205,7 +205,7 @@ setPort self val
   = liftIO
       (js_setPort (toHTMLHyperlinkElementUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"port\"]" js_getPort ::
+foreign import javascript unsafe "(($1) => { return $1[\"port\"]; })" js_getPort ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.port Mozilla HTMLHyperlinkElementUtils.port documentation> 
@@ -229,7 +229,7 @@ setPathname self val
       (js_setPathname (toHTMLHyperlinkElementUtils self)
          (toJSString val))
  
-foreign import javascript unsafe "$1[\"pathname\"]" js_getPathname
+foreign import javascript unsafe "(($1) => { return $1[\"pathname\"]; })" js_getPathname
         :: HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.pathname Mozilla HTMLHyperlinkElementUtils.pathname documentation> 
@@ -253,7 +253,7 @@ setSearch self val
   = liftIO
       (js_setSearch (toHTMLHyperlinkElementUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"search\"]" js_getSearch ::
+foreign import javascript unsafe "(($1) => { return $1[\"search\"]; })" js_getSearch ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.search Mozilla HTMLHyperlinkElementUtils.search documentation> 
@@ -266,7 +266,7 @@ getSearch self
       (fromJSString <$>
          (js_getSearch (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"hash\"] = $2;" js_setHash ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"hash\"] = $2; })" js_setHash ::
         HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.hash Mozilla HTMLHyperlinkElementUtils.hash documentation> 
@@ -277,7 +277,7 @@ setHash self val
   = liftIO
       (js_setHash (toHTMLHyperlinkElementUtils self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"hash\"]" js_getHash ::
+foreign import javascript unsafe "(($1) => { return $1[\"hash\"]; })" js_getHash ::
         HTMLHyperlinkElementUtils -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.hash Mozilla HTMLHyperlinkElementUtils.hash documentation> 

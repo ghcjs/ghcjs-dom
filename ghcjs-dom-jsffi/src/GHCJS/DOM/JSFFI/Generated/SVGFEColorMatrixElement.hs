@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,7 +36,7 @@ pattern SVG_FECOLORMATRIX_TYPE_SATURATE = 2
 pattern SVG_FECOLORMATRIX_TYPE_HUEROTATE = 3
 pattern SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA = 4
  
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in1\"]; })" js_getIn1 ::
         SVGFEColorMatrixElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.in1 Mozilla SVGFEColorMatrixElement.in1 documentation> 
@@ -44,7 +44,7 @@ getIn1 ::
        (MonadIO m) => SVGFEColorMatrixElement -> m SVGAnimatedString
 getIn1 self = liftIO (js_getIn1 self)
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         SVGFEColorMatrixElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.type Mozilla SVGFEColorMatrixElement.type documentation> 
@@ -52,7 +52,7 @@ getType ::
         (MonadIO m) => SVGFEColorMatrixElement -> m SVGAnimatedEnumeration
 getType self = liftIO (js_getType self)
  
-foreign import javascript unsafe "$1[\"values\"]" js_getValues ::
+foreign import javascript unsafe "(($1) => { return $1[\"values\"]; })" js_getValues ::
         SVGFEColorMatrixElement -> IO SVGAnimatedNumberList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEColorMatrixElement.values Mozilla SVGFEColorMatrixElement.values documentation> 

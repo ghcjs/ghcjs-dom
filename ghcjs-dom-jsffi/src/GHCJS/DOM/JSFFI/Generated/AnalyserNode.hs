@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"getFloatFrequencyData\"]($2)" js_getFloatFrequencyData ::
+        "(($1, $2) => { return $1[\"getFloatFrequencyData\"]($2); })" js_getFloatFrequencyData ::
         AnalyserNode -> Optional Float32Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.getFloatFrequencyData Mozilla AnalyserNode.getFloatFrequencyData documentation> 
@@ -61,7 +61,7 @@ getByteFrequencyData self array
          (maybeToOptional (fmap toUint8Array array)))
  
 foreign import javascript unsafe
-        "$1[\"getByteTimeDomainData\"]($2)" js_getByteTimeDomainData ::
+        "(($1, $2) => { return $1[\"getByteTimeDomainData\"]($2); })" js_getByteTimeDomainData ::
         AnalyserNode -> Optional Uint8Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.getByteTimeDomainData Mozilla AnalyserNode.getByteTimeDomainData documentation> 
@@ -80,7 +80,7 @@ foreign import javascript safe "$1[\"fftSize\"] = $2;"
 setFftSize :: (MonadIO m) => AnalyserNode -> Word -> m ()
 setFftSize self val = liftIO (js_setFftSize self val)
  
-foreign import javascript unsafe "$1[\"fftSize\"]" js_getFftSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"fftSize\"]; })" js_getFftSize ::
         AnalyserNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.fftSize Mozilla AnalyserNode.fftSize documentation> 
@@ -123,7 +123,7 @@ getMaxDecibels :: (MonadIO m) => AnalyserNode -> m Double
 getMaxDecibels self = liftIO (js_getMaxDecibels self)
  
 foreign import javascript safe
-        "$1[\"smoothingTimeConstant\"] = $2;" js_setSmoothingTimeConstant
+        "(($1, $2) => { $1[\"smoothingTimeConstant\"] = $2; })" js_setSmoothingTimeConstant
         :: AnalyserNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode.smoothingTimeConstant Mozilla AnalyserNode.smoothingTimeConstant documentation> 

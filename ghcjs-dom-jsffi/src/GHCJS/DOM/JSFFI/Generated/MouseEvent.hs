@@ -27,7 +27,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -110,28 +110,28 @@ initMouseEvent self type' canBubble cancelable view detail screenX
 pattern WEBKIT_FORCE_AT_MOUSE_DOWN = 1
 pattern WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN = 2
  
-foreign import javascript unsafe "$1[\"screenX\"]" js_getScreenX ::
+foreign import javascript unsafe "(($1) => { return $1[\"screenX\"]; })" js_getScreenX ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.screenX Mozilla MouseEvent.screenX documentation> 
 getScreenX :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getScreenX self = liftIO (js_getScreenX (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"screenY\"]" js_getScreenY ::
+foreign import javascript unsafe "(($1) => { return $1[\"screenY\"]; })" js_getScreenY ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.screenY Mozilla MouseEvent.screenY documentation> 
 getScreenY :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getScreenY self = liftIO (js_getScreenY (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"clientX\"]" js_getClientX ::
+foreign import javascript unsafe "(($1) => { return $1[\"clientX\"]; })" js_getClientX ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.clientX Mozilla MouseEvent.clientX documentation> 
 getClientX :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getClientX self = liftIO (js_getClientX (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"clientY\"]" js_getClientY ::
+foreign import javascript unsafe "(($1) => { return $1[\"clientY\"]; })" js_getClientY ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.clientY Mozilla MouseEvent.clientY documentation> 
@@ -166,7 +166,7 @@ foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
 getMetaKey :: (MonadIO m, IsMouseEvent self) => self -> m Bool
 getMetaKey self = liftIO (js_getMetaKey (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"button\"]" js_getButton ::
+foreign import javascript unsafe "(($1) => { return $1[\"button\"]; })" js_getButton ::
         MouseEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.button Mozilla MouseEvent.button documentation> 
@@ -223,28 +223,28 @@ getWebkitForce ::
 getWebkitForce self
   = liftIO (js_getWebkitForce (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"offsetX\"]" js_getOffsetX ::
+foreign import javascript unsafe "(($1) => { return $1[\"offsetX\"]; })" js_getOffsetX ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.offsetX Mozilla MouseEvent.offsetX documentation> 
 getOffsetX :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getOffsetX self = liftIO (js_getOffsetX (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"offsetY\"]" js_getOffsetY ::
+foreign import javascript unsafe "(($1) => { return $1[\"offsetY\"]; })" js_getOffsetY ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.offsetY Mozilla MouseEvent.offsetY documentation> 
 getOffsetY :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getOffsetY self = liftIO (js_getOffsetY (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.x Mozilla MouseEvent.x documentation> 
 getX :: (MonadIO m, IsMouseEvent self) => self -> m Int
 getX self = liftIO (js_getX (toMouseEvent self))
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         MouseEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent.y Mozilla MouseEvent.y documentation> 

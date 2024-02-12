@@ -62,7 +62,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -76,14 +76,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"stepUp\"]($2)" js_stepUp ::
+foreign import javascript safe "(($1, $2) => { return $1[\"stepUp\"]($2); })" js_stepUp ::
         HTMLInputElement -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepUp Mozilla HTMLInputElement.stepUp documentation> 
 stepUp :: (MonadIO m) => HTMLInputElement -> Maybe Int -> m ()
 stepUp self n = liftIO (js_stepUp self (maybeToOptional n))
  
-foreign import javascript safe "$1[\"stepDown\"]($2)" js_stepDown
+foreign import javascript safe "(($1, $2) => { return $1[\"stepDown\"]($2); })" js_stepDown
         :: HTMLInputElement -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.stepDown Mozilla HTMLInputElement.stepDown documentation> 
@@ -123,7 +123,7 @@ setCustomValidity ::
 setCustomValidity self error
   = liftIO (js_setCustomValidity self (toJSString error))
  
-foreign import javascript unsafe "$1[\"select\"]()" js_select ::
+foreign import javascript unsafe "(($1) => { return $1[\"select\"](); })" js_select ::
         HTMLInputElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.select Mozilla HTMLInputElement.select documentation> 
@@ -141,7 +141,7 @@ setRangeText self replacement
   = liftIO (js_setRangeText self (toJSString replacement))
  
 foreign import javascript safe
-        "$1[\"setRangeText\"]($2, $3, $4,\n$5)" js_setRangeText4 ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"setRangeText\"]($2, $3, $4,\n$5); })" js_setRangeText4 ::
         HTMLInputElement ->
           JSString -> Word -> Word -> Optional JSString -> IO ()
 
@@ -156,7 +156,7 @@ setRangeText4 self replacement start end selectionMode
          (toOptionalJSString selectionMode))
  
 foreign import javascript safe
-        "$1[\"setSelectionRange\"]($2, $3,\n$4)" js_setSelectionRange ::
+        "(($1, $2, $3, $4) => { return $1[\"setSelectionRange\"]($2, $3,\n$4); })" js_setSelectionRange ::
         HTMLInputElement -> Int -> Int -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.setSelectionRange Mozilla HTMLInputElement.setSelectionRange documentation> 
@@ -176,7 +176,7 @@ setAccept ::
           (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setAccept self val = liftIO (js_setAccept self (toJSString val))
  
-foreign import javascript unsafe "$1[\"accept\"]" js_getAccept ::
+foreign import javascript unsafe "(($1) => { return $1[\"accept\"]; })" js_getAccept ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.accept Mozilla HTMLInputElement.accept documentation> 
@@ -184,7 +184,7 @@ getAccept ::
           (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getAccept self = liftIO (fromJSString <$> (js_getAccept self))
  
-foreign import javascript unsafe "$1[\"alt\"] = $2;" js_setAlt ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"alt\"] = $2; })" js_setAlt ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.alt Mozilla HTMLInputElement.alt documentation> 
@@ -192,7 +192,7 @@ setAlt ::
        (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setAlt self val = liftIO (js_setAlt self (toJSString val))
  
-foreign import javascript unsafe "$1[\"alt\"]" js_getAlt ::
+foreign import javascript unsafe "(($1) => { return $1[\"alt\"]; })" js_getAlt ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.alt Mozilla HTMLInputElement.alt documentation> 
@@ -269,7 +269,7 @@ setDirName ::
            (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setDirName self val = liftIO (js_setDirName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"dirName\"]" js_getDirName ::
+foreign import javascript unsafe "(($1) => { return $1[\"dirName\"]; })" js_getDirName ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.dirName Mozilla HTMLInputElement.dirName documentation> 
@@ -291,14 +291,14 @@ foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
 getDisabled :: (MonadIO m) => HTMLInputElement -> m Bool
 getDisabled self = liftIO (js_getDisabled self)
  
-foreign import javascript unsafe "$1[\"form\"]" js_getForm ::
+foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm ::
         HTMLInputElement -> IO HTMLFormElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.form Mozilla HTMLInputElement.form documentation> 
 getForm :: (MonadIO m) => HTMLInputElement -> m HTMLFormElement
 getForm self = liftIO (js_getForm self)
  
-foreign import javascript unsafe "$1[\"files\"] = $2;" js_setFiles
+foreign import javascript unsafe "(($1, $2) => { $1[\"files\"] = $2; })" js_setFiles
         :: HTMLInputElement -> Optional FileList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
@@ -306,7 +306,7 @@ setFiles ::
          (MonadIO m) => HTMLInputElement -> Maybe FileList -> m ()
 setFiles self val = liftIO (js_setFiles self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
+foreign import javascript unsafe "(($1) => { return $1[\"files\"]; })" js_getFiles ::
         HTMLInputElement -> IO (Nullable FileList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.files Mozilla HTMLInputElement.files documentation> 
@@ -420,7 +420,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 setHeight :: (MonadIO m) => HTMLInputElement -> Word -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLInputElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.height Mozilla HTMLInputElement.height documentation> 
@@ -441,14 +441,14 @@ foreign import javascript unsafe "($1[\"indeterminate\"] ? 1 : 0)"
 getIndeterminate :: (MonadIO m) => HTMLInputElement -> m Bool
 getIndeterminate self = liftIO (js_getIndeterminate self)
  
-foreign import javascript unsafe "$1[\"list\"]" js_getList ::
+foreign import javascript unsafe "(($1) => { return $1[\"list\"]; })" js_getList ::
         HTMLInputElement -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.list Mozilla HTMLInputElement.list documentation> 
 getList :: (MonadIO m) => HTMLInputElement -> m HTMLElement
 getList self = liftIO (js_getList self)
  
-foreign import javascript unsafe "$1[\"max\"] = $2;" js_setMax ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"max\"] = $2; })" js_setMax ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.max Mozilla HTMLInputElement.max documentation> 
@@ -456,7 +456,7 @@ setMax ::
        (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setMax self val = liftIO (js_setMax self (toJSString val))
  
-foreign import javascript unsafe "$1[\"max\"]" js_getMax ::
+foreign import javascript unsafe "(($1) => { return $1[\"max\"]; })" js_getMax ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.max Mozilla HTMLInputElement.max documentation> 
@@ -492,7 +492,7 @@ foreign import javascript unsafe "$1[\"maxLength\"]"
 getMaxLength :: (MonadIO m) => HTMLInputElement -> m Int
 getMaxLength self = liftIO (js_getMaxLength self)
  
-foreign import javascript unsafe "$1[\"min\"] = $2;" js_setMin ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"min\"] = $2; })" js_setMin ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.min Mozilla HTMLInputElement.min documentation> 
@@ -500,7 +500,7 @@ setMin ::
        (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setMin self val = liftIO (js_setMin self (toJSString val))
  
-foreign import javascript unsafe "$1[\"min\"]" js_getMin ::
+foreign import javascript unsafe "(($1) => { return $1[\"min\"]; })" js_getMin ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.min Mozilla HTMLInputElement.min documentation> 
@@ -522,7 +522,7 @@ foreign import javascript unsafe "($1[\"multiple\"] ? 1 : 0)"
 getMultiple :: (MonadIO m) => HTMLInputElement -> m Bool
 getMultiple self = liftIO (js_getMultiple self)
  
-foreign import javascript unsafe "$1[\"name\"] = $2;" js_setName ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"name\"] = $2; })" js_setName ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.name Mozilla HTMLInputElement.name documentation> 
@@ -530,7 +530,7 @@ setName ::
         (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setName self val = liftIO (js_setName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.name Mozilla HTMLInputElement.name documentation> 
@@ -546,7 +546,7 @@ setPattern ::
            (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setPattern self val = liftIO (js_setPattern self (toJSString val))
  
-foreign import javascript unsafe "$1[\"pattern\"]" js_getPattern ::
+foreign import javascript unsafe "(($1) => { return $1[\"pattern\"]; })" js_getPattern ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.pattern Mozilla HTMLInputElement.pattern documentation> 
@@ -600,21 +600,21 @@ foreign import javascript unsafe "($1[\"required\"] ? 1 : 0)"
 getRequired :: (MonadIO m) => HTMLInputElement -> m Bool
 getRequired self = liftIO (js_getRequired self)
  
-foreign import javascript safe "$1[\"size\"] = $2;" js_setSize ::
+foreign import javascript safe "(($1, $2) => { $1[\"size\"] = $2; })" js_setSize ::
         HTMLInputElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.size Mozilla HTMLInputElement.size documentation> 
 setSize :: (MonadIO m) => HTMLInputElement -> Word -> m ()
 setSize self val = liftIO (js_setSize self val)
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         HTMLInputElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.size Mozilla HTMLInputElement.size documentation> 
 getSize :: (MonadIO m) => HTMLInputElement -> m Word
 getSize self = liftIO (js_getSize self)
  
-foreign import javascript unsafe "$1[\"src\"] = $2;" js_setSrc ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"src\"] = $2; })" js_setSrc ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.src Mozilla HTMLInputElement.src documentation> 
@@ -622,7 +622,7 @@ setSrc ::
        (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setSrc self val = liftIO (js_setSrc self (toJSString val))
  
-foreign import javascript unsafe "$1[\"src\"]" js_getSrc ::
+foreign import javascript unsafe "(($1) => { return $1[\"src\"]; })" js_getSrc ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.src Mozilla HTMLInputElement.src documentation> 
@@ -630,7 +630,7 @@ getSrc ::
        (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getSrc self = liftIO (fromJSString <$> (js_getSrc self))
  
-foreign import javascript unsafe "$1[\"step\"] = $2;" js_setStep ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"step\"] = $2; })" js_setStep ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.step Mozilla HTMLInputElement.step documentation> 
@@ -638,7 +638,7 @@ setStep ::
         (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setStep self val = liftIO (js_setStep self (toJSString val))
  
-foreign import javascript unsafe "$1[\"step\"]" js_getStep ::
+foreign import javascript unsafe "(($1) => { return $1[\"step\"]; })" js_getStep ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.step Mozilla HTMLInputElement.step documentation> 
@@ -646,7 +646,7 @@ getStep ::
         (MonadIO m, FromJSString result) => HTMLInputElement -> m result
 getStep self = liftIO (fromJSString <$> (js_getStep self))
  
-foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"type\"] = $2; })" js_setType ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.type Mozilla HTMLInputElement.type documentation> 
@@ -654,7 +654,7 @@ setType ::
         (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setType self val = liftIO (js_setType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.type Mozilla HTMLInputElement.type documentation> 
@@ -680,7 +680,7 @@ getDefaultValue ::
 getDefaultValue self
   = liftIO (fromJSString <$> (js_getDefaultValue self))
  
-foreign import javascript safe "$1[\"value\"] = $2;" js_setValue ::
+foreign import javascript safe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue ::
         HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
@@ -688,7 +688,7 @@ setValue ::
          (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setValue self val = liftIO (js_setValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.value Mozilla HTMLInputElement.value documentation> 
@@ -743,14 +743,14 @@ foreign import javascript unsafe "$1[\"valueAsNumber\"]"
 getValueAsNumber :: (MonadIO m) => HTMLInputElement -> m Double
 getValueAsNumber self = liftIO (js_getValueAsNumber self)
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLInputElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.width Mozilla HTMLInputElement.width documentation> 
 setWidth :: (MonadIO m) => HTMLInputElement -> Word -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLInputElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.width Mozilla HTMLInputElement.width documentation> 
@@ -764,7 +764,7 @@ foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
 getWillValidate :: (MonadIO m) => HTMLInputElement -> m Bool
 getWillValidate self = liftIO (js_getWillValidate self)
  
-foreign import javascript unsafe "$1[\"validity\"]" js_getValidity
+foreign import javascript unsafe "(($1) => { return $1[\"validity\"]; })" js_getValidity
         :: HTMLInputElement -> IO ValidityState
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.validity Mozilla HTMLInputElement.validity documentation> 
@@ -780,7 +780,7 @@ getValidationMessage ::
 getValidationMessage self
   = liftIO (fromJSString <$> (js_getValidationMessage self))
  
-foreign import javascript unsafe "$1[\"labels\"]" js_getLabels ::
+foreign import javascript unsafe "(($1) => { return $1[\"labels\"]; })" js_getLabels ::
         HTMLInputElement -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.labels Mozilla HTMLInputElement.labels documentation> 
@@ -833,7 +833,7 @@ getSelectionDirection ::
 getSelectionDirection self
   = liftIO (fromJSString <$> (js_getSelectionDirection self))
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+foreign import javascript unsafe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign
         :: HTMLInputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.align Mozilla HTMLInputElement.align documentation> 
@@ -841,7 +841,7 @@ setAlign ::
          (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setAlign self val = liftIO (js_setAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.align Mozilla HTMLInputElement.align documentation> 
@@ -857,7 +857,7 @@ setUseMap ::
           (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setUseMap self val = liftIO (js_setUseMap self (toJSString val))
  
-foreign import javascript unsafe "$1[\"useMap\"]" js_getUseMap ::
+foreign import javascript unsafe "(($1) => { return $1[\"useMap\"]; })" js_getUseMap ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.useMap Mozilla HTMLInputElement.useMap documentation> 
@@ -887,7 +887,7 @@ setCapture ::
            (MonadIO m, ToJSString val) => HTMLInputElement -> val -> m ()
 setCapture self val = liftIO (js_setCapture self (toJSString val))
  
-foreign import javascript unsafe "$1[\"capture\"]" js_getCapture ::
+foreign import javascript unsafe "(($1) => { return $1[\"capture\"]; })" js_getCapture ::
         HTMLInputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement.capture Mozilla HTMLInputElement.capture documentation> 

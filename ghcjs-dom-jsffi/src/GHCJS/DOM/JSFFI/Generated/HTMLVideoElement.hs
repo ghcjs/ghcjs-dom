@@ -32,7 +32,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -102,14 +102,14 @@ webkitSetPresentationMode ::
 webkitSetPresentationMode self mode
   = liftIO (js_webkitSetPresentationMode self (pToJSVal mode))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLVideoElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.width Mozilla HTMLVideoElement.width documentation> 
 setWidth :: (MonadIO m) => HTMLVideoElement -> Word -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.width Mozilla HTMLVideoElement.width documentation> 
@@ -123,7 +123,7 @@ foreign import javascript unsafe "$1[\"height\"] = $2;"
 setHeight :: (MonadIO m) => HTMLVideoElement -> Word -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.height Mozilla HTMLVideoElement.height documentation> 
@@ -152,7 +152,7 @@ setPoster ::
           (MonadIO m, ToJSString val) => HTMLVideoElement -> val -> m ()
 setPoster self val = liftIO (js_setPoster self (toJSString val))
  
-foreign import javascript unsafe "$1[\"poster\"]" js_getPoster ::
+foreign import javascript unsafe "(($1) => { return $1[\"poster\"]; })" js_getPoster ::
         HTMLVideoElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.poster Mozilla HTMLVideoElement.poster documentation> 

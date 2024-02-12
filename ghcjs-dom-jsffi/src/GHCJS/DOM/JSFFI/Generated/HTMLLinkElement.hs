@@ -24,7 +24,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -60,7 +60,7 @@ setCharset ::
            (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setCharset self val = liftIO (js_setCharset self (toJSString val))
  
-foreign import javascript unsafe "$1[\"charset\"]" js_getCharset ::
+foreign import javascript unsafe "(($1) => { return $1[\"charset\"]; })" js_getCharset ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.charset Mozilla HTMLLinkElement.charset documentation> 
@@ -68,7 +68,7 @@ getCharset ::
            (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getCharset self = liftIO (fromJSString <$> (js_getCharset self))
  
-foreign import javascript unsafe "$1[\"href\"] = $2;" js_setHref ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"href\"] = $2; })" js_setHref ::
         HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.href Mozilla HTMLLinkElement.href documentation> 
@@ -76,7 +76,7 @@ setHref ::
         (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setHref self val = liftIO (js_setHref self (toJSString val))
  
-foreign import javascript unsafe "$1[\"href\"]" js_getHref ::
+foreign import javascript unsafe "(($1) => { return $1[\"href\"]; })" js_getHref ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.href Mozilla HTMLLinkElement.href documentation> 
@@ -93,7 +93,7 @@ setHreflang ::
 setHreflang self val
   = liftIO (js_setHreflang self (toJSString val))
  
-foreign import javascript unsafe "$1[\"hreflang\"]" js_getHreflang
+foreign import javascript unsafe "(($1) => { return $1[\"hreflang\"]; })" js_getHreflang
         :: HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.hreflang Mozilla HTMLLinkElement.hreflang documentation> 
@@ -101,7 +101,7 @@ getHreflang ::
             (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getHreflang self = liftIO (fromJSString <$> (js_getHreflang self))
  
-foreign import javascript unsafe "$1[\"media\"] = $2;" js_setMedia
+foreign import javascript unsafe "(($1, $2) => { $1[\"media\"] = $2; })" js_setMedia
         :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.media Mozilla HTMLLinkElement.media documentation> 
@@ -109,7 +109,7 @@ setMedia ::
          (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setMedia self val = liftIO (js_setMedia self (toJSString val))
  
-foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
+foreign import javascript unsafe "(($1) => { return $1[\"media\"]; })" js_getMedia ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.media Mozilla HTMLLinkElement.media documentation> 
@@ -117,7 +117,7 @@ getMedia ::
          (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getMedia self = liftIO (fromJSString <$> (js_getMedia self))
  
-foreign import javascript unsafe "$1[\"rel\"] = $2;" js_setRel ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"rel\"] = $2; })" js_setRel ::
         HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rel Mozilla HTMLLinkElement.rel documentation> 
@@ -125,7 +125,7 @@ setRel ::
        (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setRel self val = liftIO (js_setRel self (toJSString val))
  
-foreign import javascript unsafe "$1[\"rel\"]" js_getRel ::
+foreign import javascript unsafe "(($1) => { return $1[\"rel\"]; })" js_getRel ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rel Mozilla HTMLLinkElement.rel documentation> 
@@ -133,7 +133,7 @@ getRel ::
        (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getRel self = liftIO (fromJSString <$> (js_getRel self))
  
-foreign import javascript unsafe "$1[\"rev\"] = $2;" js_setRev ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"rev\"] = $2; })" js_setRev ::
         HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rev Mozilla HTMLLinkElement.rev documentation> 
@@ -141,7 +141,7 @@ setRev ::
        (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setRev self val = liftIO (js_setRev self (toJSString val))
  
-foreign import javascript unsafe "$1[\"rev\"]" js_getRev ::
+foreign import javascript unsafe "(($1) => { return $1[\"rev\"]; })" js_getRev ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.rev Mozilla HTMLLinkElement.rev documentation> 
@@ -149,7 +149,7 @@ getRev ::
        (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getRev self = liftIO (fromJSString <$> (js_getRev self))
  
-foreign import javascript unsafe "$1[\"sizes\"]" js_getSizes ::
+foreign import javascript unsafe "(($1) => { return $1[\"sizes\"]; })" js_getSizes ::
         HTMLLinkElement -> IO DOMTokenList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sizes Mozilla HTMLLinkElement.sizes documentation> 
@@ -164,7 +164,7 @@ setTarget ::
           (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setTarget self val = liftIO (js_setTarget self (toJSString val))
  
-foreign import javascript unsafe "$1[\"target\"]" js_getTarget ::
+foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTarget ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.target Mozilla HTMLLinkElement.target documentation> 
@@ -172,7 +172,7 @@ getTarget ::
           (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getTarget self = liftIO (fromJSString <$> (js_getTarget self))
  
-foreign import javascript unsafe "$1[\"type\"] = $2;" js_setType ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"type\"] = $2; })" js_setType ::
         HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.type Mozilla HTMLLinkElement.type documentation> 
@@ -180,7 +180,7 @@ setType ::
         (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setType self val = liftIO (js_setType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.type Mozilla HTMLLinkElement.type documentation> 
@@ -188,7 +188,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"as\"] = $2;" js_setAs ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"as\"] = $2; })" js_setAs ::
         HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.as Mozilla HTMLLinkElement.as documentation> 
@@ -196,7 +196,7 @@ setAs ::
       (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setAs self val = liftIO (js_setAs self (toJSString val))
  
-foreign import javascript unsafe "$1[\"as\"]" js_getAs ::
+foreign import javascript unsafe "(($1) => { return $1[\"as\"]; })" js_getAs ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.as Mozilla HTMLLinkElement.as documentation> 
@@ -239,21 +239,21 @@ getCrossOriginUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getCrossOrigin self))
  
-foreign import javascript unsafe "$1[\"sheet\"]" js_getSheet ::
+foreign import javascript unsafe "(($1) => { return $1[\"sheet\"]; })" js_getSheet ::
         HTMLLinkElement -> IO StyleSheet
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.sheet Mozilla HTMLLinkElement.sheet documentation> 
 getSheet :: (MonadIO m) => HTMLLinkElement -> m StyleSheet
 getSheet self = liftIO (js_getSheet self)
  
-foreign import javascript unsafe "$1[\"relList\"]" js_getRelList ::
+foreign import javascript unsafe "(($1) => { return $1[\"relList\"]; })" js_getRelList ::
         HTMLLinkElement -> IO DOMTokenList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.relList Mozilla HTMLLinkElement.relList documentation> 
 getRelList :: (MonadIO m) => HTMLLinkElement -> m DOMTokenList
 getRelList self = liftIO (js_getRelList self)
  
-foreign import javascript unsafe "$1[\"nonce\"] = $2;" js_setNonce
+foreign import javascript unsafe "(($1, $2) => { $1[\"nonce\"] = $2; })" js_setNonce
         :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.nonce Mozilla HTMLLinkElement.nonce documentation> 
@@ -261,7 +261,7 @@ setNonce ::
          (MonadIO m, ToJSString val) => HTMLLinkElement -> val -> m ()
 setNonce self val = liftIO (js_setNonce self (toJSString val))
  
-foreign import javascript unsafe "$1[\"nonce\"]" js_getNonce ::
+foreign import javascript unsafe "(($1) => { return $1[\"nonce\"]; })" js_getNonce ::
         HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.nonce Mozilla HTMLLinkElement.nonce documentation> 

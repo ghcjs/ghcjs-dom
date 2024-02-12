@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -41,7 +41,7 @@ setStdDeviation self stdDeviationX stdDeviationY
       (js_setStdDeviation self (maybeToOptional stdDeviationX)
          (maybeToOptional stdDeviationY))
  
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in1\"]; })" js_getIn1 ::
         SVGFEDropShadowElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.in1 Mozilla SVGFEDropShadowElement.in1 documentation> 
@@ -49,7 +49,7 @@ getIn1 ::
        (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedString
 getIn1 self = liftIO (js_getIn1 self)
  
-foreign import javascript unsafe "$1[\"dx\"]" js_getDx ::
+foreign import javascript unsafe "(($1) => { return $1[\"dx\"]; })" js_getDx ::
         SVGFEDropShadowElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dx Mozilla SVGFEDropShadowElement.dx documentation> 
@@ -57,7 +57,7 @@ getDx ::
       (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedNumber
 getDx self = liftIO (js_getDx self)
  
-foreign import javascript unsafe "$1[\"dy\"]" js_getDy ::
+foreign import javascript unsafe "(($1) => { return $1[\"dy\"]; })" js_getDy ::
         SVGFEDropShadowElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDropShadowElement.dy Mozilla SVGFEDropShadowElement.dy documentation> 

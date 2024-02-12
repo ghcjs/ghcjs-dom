@@ -23,7 +23,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -105,7 +105,7 @@ pattern DOM_KEY_LOCATION_LEFT = 1
 pattern DOM_KEY_LOCATION_RIGHT = 2
 pattern DOM_KEY_LOCATION_NUMPAD = 3
  
-foreign import javascript unsafe "$1[\"key\"]" js_getKey ::
+foreign import javascript unsafe "(($1) => { return $1[\"key\"]; })" js_getKey ::
         KeyboardEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.key Mozilla KeyboardEvent.key documentation> 
@@ -113,7 +113,7 @@ getKey ::
        (MonadIO m, FromJSString result) => KeyboardEvent -> m result
 getKey self = liftIO (fromJSString <$> (js_getKey self))
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         KeyboardEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.code Mozilla KeyboardEvent.code documentation> 
@@ -121,7 +121,7 @@ getCode ::
         (MonadIO m, FromJSString result) => KeyboardEvent -> m result
 getCode self = liftIO (fromJSString <$> (js_getCode self))
  
-foreign import javascript unsafe "$1[\"location\"]" js_getLocation
+foreign import javascript unsafe "(($1) => { return $1[\"location\"]; })" js_getLocation
         :: KeyboardEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.location Mozilla KeyboardEvent.location documentation> 
@@ -193,21 +193,21 @@ foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
 getAltGraphKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getAltGraphKey self = liftIO (js_getAltGraphKey self)
  
-foreign import javascript unsafe "$1[\"charCode\"]" js_getCharCode
+foreign import javascript unsafe "(($1) => { return $1[\"charCode\"]; })" js_getCharCode
         :: KeyboardEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.charCode Mozilla KeyboardEvent.charCode documentation> 
 getCharCode :: (MonadIO m) => KeyboardEvent -> m Word
 getCharCode self = liftIO (js_getCharCode self)
  
-foreign import javascript unsafe "$1[\"keyCode\"]" js_getKeyCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"keyCode\"]; })" js_getKeyCode ::
         KeyboardEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyCode Mozilla KeyboardEvent.keyCode documentation> 
 getKeyCode :: (MonadIO m) => KeyboardEvent -> m Word
 getKeyCode self = liftIO (js_getKeyCode self)
  
-foreign import javascript unsafe "$1[\"which\"]" js_getWhich ::
+foreign import javascript unsafe "(($1) => { return $1[\"which\"]; })" js_getWhich ::
         KeyboardEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.which Mozilla KeyboardEvent.which documentation> 

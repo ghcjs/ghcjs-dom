@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -41,14 +41,14 @@ newNotification title options
   = liftIO
       (js_newNotification (toJSString title) (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"show\"]()" js_show ::
+foreign import javascript unsafe "(($1) => { return $1[\"show\"](); })" js_show ::
         Notification -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.show Mozilla Notification.show documentation> 
 show :: (MonadIO m) => Notification -> m ()
 show self = liftIO (js_show self)
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         Notification -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.close Mozilla Notification.close documentation> 
@@ -96,7 +96,7 @@ display = unsafeEventName (toJSString "display")
 showEvent :: EventName Notification MouseEvent
 showEvent = unsafeEventName (toJSString "show")
  
-foreign import javascript unsafe "$1[\"tag\"] = $2;" js_setTag ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"tag\"] = $2; })" js_setTag ::
         Notification -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.tag Mozilla Notification.tag documentation> 
@@ -104,7 +104,7 @@ setTag ::
        (MonadIO m, ToJSString val) => Notification -> val -> m ()
 setTag self val = liftIO (js_setTag self (toJSString val))
  
-foreign import javascript unsafe "$1[\"tag\"]" js_getTag ::
+foreign import javascript unsafe "(($1) => { return $1[\"tag\"]; })" js_getTag ::
         Notification -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.tag Mozilla Notification.tag documentation> 

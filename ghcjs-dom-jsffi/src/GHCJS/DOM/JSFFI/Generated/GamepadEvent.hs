@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -38,7 +38,7 @@ newGamepadEvent ::
 newGamepadEvent type' eventInitDict
   = liftIO (js_newGamepadEvent (toJSString type') eventInitDict)
  
-foreign import javascript unsafe "$1[\"gamepad\"]" js_getGamepad ::
+foreign import javascript unsafe "(($1) => { return $1[\"gamepad\"]; })" js_getGamepad ::
         GamepadEvent -> IO (Nullable Gamepad)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GamepadEvent.gamepad Mozilla GamepadEvent.gamepad documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -115,14 +115,14 @@ includes_ :: (MonadIO m, ToJSVal key) => IDBKeyRange -> key -> m ()
 includes_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_includes self key'))
  
-foreign import javascript unsafe "$1[\"lower\"]" js_getLower ::
+foreign import javascript unsafe "(($1) => { return $1[\"lower\"]; })" js_getLower ::
         IDBKeyRange -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lower Mozilla IDBKeyRange.lower documentation> 
 getLower :: (MonadIO m) => IDBKeyRange -> m JSVal
 getLower self = liftIO (js_getLower self)
  
-foreign import javascript unsafe "$1[\"upper\"]" js_getUpper ::
+foreign import javascript unsafe "(($1) => { return $1[\"upper\"]; })" js_getUpper ::
         IDBKeyRange -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upper Mozilla IDBKeyRange.upper documentation> 
