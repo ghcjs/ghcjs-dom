@@ -20,11 +20,10 @@ module GHCJS.DOM.EventTargetClosures
 import Control.Applicative ((<$>))
 import Control.Monad ((>=>))
 import GHCJS.Types
-import GHCJS.Foreign.Callback.Internal
-import GHCJS.Foreign.Callback
+import GHC.JS.Foreign.Callback
 import GHCJS.Marshal.Pure
 import GHCJS.DOM.Types
-import GHCJS.Foreign.Callback.Internal
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | Plain JS 'DOMString' that carries two phantom types:
 --
@@ -72,4 +71,4 @@ eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (fro
 
 -- | Release the event listener (deallocate callback).
 eventListenerRelease :: EventListener -> IO ()
-eventListenerRelease (EventListener ref) = releaseCallback (Callback ref)
+eventListenerRelease (EventListener ref) = releaseCallback (unsafeCoerce ref)
