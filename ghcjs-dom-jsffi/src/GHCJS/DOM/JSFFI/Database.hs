@@ -19,10 +19,10 @@ import Control.Exception (Exception, bracket)
 
 import GHCJS.Types (JSVal, JSString)
 import GHCJS.Foreign (jsNull)
-import GHCJS.Foreign.Callback (OnBlocked(..))
+import GHC.JS.Foreign.Callback (OnBlocked(..))
 import GHCJS.Marshal (fromJSVal)
 import GHCJS.Marshal.Pure (pToJSVal)
-import GHCJS.Foreign.Callback (releaseCallback)
+import GHC.JS.Foreign.Callback (releaseCallback)
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.SQLError (throwSQLException)
