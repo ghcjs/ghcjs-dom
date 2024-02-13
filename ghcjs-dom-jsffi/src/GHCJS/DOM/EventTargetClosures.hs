@@ -23,7 +23,7 @@ import GHCJS.Types
 import GHC.JS.Foreign.Callback
 import GHCJS.Marshal.Pure
 import GHCJS.DOM.Types
-import Unsafe.Coerce (unsafeCoerce)
+import GHCJS.DOM.Internal
 
 -- | Plain JS 'DOMString' that carries two phantom types:
 --
@@ -71,4 +71,4 @@ eventListenerNewAsync callback = (EventListener . jsval) <$> asyncCallback1 (fro
 
 -- | Release the event listener (deallocate callback).
 eventListenerRelease :: EventListener -> IO ()
-eventListenerRelease (EventListener ref) = releaseCallback (unsafeCoerce ref)
+eventListenerRelease (EventListener ref) = fromJSValUnchecked ref >>= releaseCallback

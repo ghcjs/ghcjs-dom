@@ -47,6 +47,7 @@ library
           GHCJS.DOM.Types
           GHCJS.DOM.EventM
           GHCJS.DOM.EventTargetClosures
+          GHCJS.DOM.Internal
 
           GHCJS.DOM.JSFFI.AudioContext
           GHCJS.DOM.JSFFI.Database
