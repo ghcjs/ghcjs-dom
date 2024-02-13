@@ -953,7 +953,7 @@ import qualified Data.Text as T (unpack, Text)
 import qualified Data.Text.Lazy as LT (Text)
 import Data.JSString (pack, unpack)
 import Data.JSString.Text (textToJSString, textFromJSString, lazyTextToJSString, lazyTextFromJSString)
-import GHCJS.Types (JSVal(..), nullRef, isNull, isUndefined, JSString(..))
+import GHCJS.Types (JSVal(..), jsval, nullRef, isNull, isUndefined, JSString(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import GHCJS.Nullable (Nullable(..), nullableToMaybe, maybeToNullable)
@@ -965,7 +965,6 @@ import Data.Word (Word8, Word16, Word32, Word64)
 import Data.Coerce (coerce, Coercible)
 import Data.Monoid ((<>))
 import Data.Typeable (Typeable)
-import Unsafe.Coerce (unsafeCoerce)
 import Control.Monad (unless)
 import Control.Exception (throwIO, Exception(..))
 #if MIN_VERSION_base(4,9,0)
@@ -1300,126 +1299,126 @@ newtype AudioBufferCallback = AudioBufferCallback (Callback (JSVal -> IO ()))
 noAudioBufferCallback :: Maybe AudioBufferCallback
 noAudioBufferCallback = Nothing
 {-# INLINE noAudioBufferCallback #-}
-instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback r) = unsafeCoerce r
+instance PToJSVal AudioBufferCallback where pToJSVal (AudioBufferCallback r) = jsval r
 newtype BlobCallback = BlobCallback (Callback (JSVal -> IO ()))
 noBlobCallback :: Maybe BlobCallback
 noBlobCallback = Nothing
 {-# INLINE noBlobCallback #-}
-instance ToJSVal BlobCallback where toJSVal (BlobCallback r) = unsafeCoerce r
+instance ToJSVal BlobCallback where toJSVal (BlobCallback r) = pure (jsval r)
 newtype DatabaseCallback = DatabaseCallback (Callback (JSVal -> IO ()))
 noDatabaseCallback :: Maybe DatabaseCallback
 noDatabaseCallback = Nothing
 {-# INLINE noDatabaseCallback #-}
-instance PToJSVal DatabaseCallback where pToJSVal (DatabaseCallback r) = unsafeCoerce r
+instance PToJSVal DatabaseCallback where pToJSVal (DatabaseCallback r) = jsval r
 newtype IntersectionObserverCallback = IntersectionObserverCallback (Callback (JSVal -> JSVal -> IO ()))
 noIntersectionObserverCallback :: Maybe IntersectionObserverCallback
 noIntersectionObserverCallback = Nothing
 {-# INLINE noIntersectionObserverCallback #-}
-instance PToJSVal IntersectionObserverCallback where pToJSVal (IntersectionObserverCallback r) = unsafeCoerce r
+instance PToJSVal IntersectionObserverCallback where pToJSVal (IntersectionObserverCallback r) = jsval r
 newtype MediaQueryListListener = MediaQueryListListener (Callback (JSVal -> IO ()))
 noMediaQueryListListener :: Maybe MediaQueryListListener
 noMediaQueryListListener = Nothing
 {-# INLINE noMediaQueryListListener #-}
-instance PToJSVal MediaQueryListListener where pToJSVal (MediaQueryListListener r) = unsafeCoerce r
+instance PToJSVal MediaQueryListListener where pToJSVal (MediaQueryListListener r) = jsval r
 newtype MediaStreamTrackSourcesCallback = MediaStreamTrackSourcesCallback (Callback (JSVal -> IO ()))
 noMediaStreamTrackSourcesCallback :: Maybe MediaStreamTrackSourcesCallback
 noMediaStreamTrackSourcesCallback = Nothing
 {-# INLINE noMediaStreamTrackSourcesCallback #-}
-instance PToJSVal MediaStreamTrackSourcesCallback where pToJSVal (MediaStreamTrackSourcesCallback r) = unsafeCoerce r
+instance PToJSVal MediaStreamTrackSourcesCallback where pToJSVal (MediaStreamTrackSourcesCallback r) = jsval r
 newtype NavigatorUserMediaErrorCallback = NavigatorUserMediaErrorCallback (Callback (JSVal -> IO ()))
 noNavigatorUserMediaErrorCallback :: Maybe NavigatorUserMediaErrorCallback
 noNavigatorUserMediaErrorCallback = Nothing
 {-# INLINE noNavigatorUserMediaErrorCallback #-}
-instance PToJSVal NavigatorUserMediaErrorCallback where pToJSVal (NavigatorUserMediaErrorCallback r) = unsafeCoerce r
+instance PToJSVal NavigatorUserMediaErrorCallback where pToJSVal (NavigatorUserMediaErrorCallback r) = jsval r
 newtype NavigatorUserMediaSuccessCallback = NavigatorUserMediaSuccessCallback (Callback (JSVal -> IO ()))
 noNavigatorUserMediaSuccessCallback :: Maybe NavigatorUserMediaSuccessCallback
 noNavigatorUserMediaSuccessCallback = Nothing
 {-# INLINE noNavigatorUserMediaSuccessCallback #-}
-instance PToJSVal NavigatorUserMediaSuccessCallback where pToJSVal (NavigatorUserMediaSuccessCallback r) = unsafeCoerce r
+instance PToJSVal NavigatorUserMediaSuccessCallback where pToJSVal (NavigatorUserMediaSuccessCallback r) = jsval r
 newtype NotificationPermissionCallback permissions = NotificationPermissionCallback (Callback (JSVal -> IO ()))
-instance PToJSVal (NotificationPermissionCallback permissions) where pToJSVal (NotificationPermissionCallback r) = unsafeCoerce r
+instance PToJSVal (NotificationPermissionCallback permissions) where pToJSVal (NotificationPermissionCallback r) = jsval r
 newtype NodeFilter = NodeFilter (Callback (JSVal -> IO ()))
 noNodeFilter :: Maybe NodeFilter
 noNodeFilter = Nothing
 {-# INLINE noNodeFilter #-}
-instance PToJSVal NodeFilter where pToJSVal (NodeFilter r) = unsafeCoerce r
+instance PToJSVal NodeFilter where pToJSVal (NodeFilter r) = jsval r
 newtype PositionCallback = PositionCallback (Callback (JSVal -> IO ()))
 noPositionCallback :: Maybe PositionCallback
 noPositionCallback = Nothing
 {-# INLINE noPositionCallback #-}
-instance PToJSVal PositionCallback where pToJSVal (PositionCallback r) = unsafeCoerce r
+instance PToJSVal PositionCallback where pToJSVal (PositionCallback r) = jsval r
 newtype PositionErrorCallback = PositionErrorCallback (Callback (JSVal -> IO ()))
 noPositionErrorCallback :: Maybe PositionErrorCallback
 noPositionErrorCallback = Nothing
 {-# INLINE noPositionErrorCallback #-}
-instance PToJSVal PositionErrorCallback where pToJSVal (PositionErrorCallback r) = unsafeCoerce r
+instance PToJSVal PositionErrorCallback where pToJSVal (PositionErrorCallback r) = jsval r
 newtype PerformanceObserverCallback = PerformanceObserverCallback (Callback (JSVal -> JSVal -> IO ()))
 noPerformanceObserverCallback :: Maybe PerformanceObserverCallback
 noPerformanceObserverCallback = Nothing
 {-# INLINE noPerformanceObserverCallback #-}
-instance PToJSVal PerformanceObserverCallback where pToJSVal (PerformanceObserverCallback r) = unsafeCoerce r
+instance PToJSVal PerformanceObserverCallback where pToJSVal (PerformanceObserverCallback r) = jsval r
 newtype RequestAnimationFrameCallback = RequestAnimationFrameCallback (Callback (JSVal -> IO ()))
 noRequestAnimationFrameCallback :: Maybe RequestAnimationFrameCallback
 noRequestAnimationFrameCallback = Nothing
 {-# INLINE noRequestAnimationFrameCallback #-}
-instance PToJSVal RequestAnimationFrameCallback where pToJSVal (RequestAnimationFrameCallback r) = unsafeCoerce r
+instance PToJSVal RequestAnimationFrameCallback where pToJSVal (RequestAnimationFrameCallback r) = jsval r
 newtype RTCPeerConnectionErrorCallback = RTCPeerConnectionErrorCallback (Callback (JSVal -> IO ()))
 noRTCPeerConnectionErrorCallback :: Maybe RTCPeerConnectionErrorCallback
 noRTCPeerConnectionErrorCallback = Nothing
 {-# INLINE noRTCPeerConnectionErrorCallback #-}
-instance PToJSVal RTCPeerConnectionErrorCallback where pToJSVal (RTCPeerConnectionErrorCallback r) = unsafeCoerce r
+instance PToJSVal RTCPeerConnectionErrorCallback where pToJSVal (RTCPeerConnectionErrorCallback r) = jsval r
 newtype RTCSessionDescriptionCallback = RTCSessionDescriptionCallback (Callback (JSVal -> IO ()))
 noRTCSessionDescriptionCallback :: Maybe RTCSessionDescriptionCallback
 noRTCSessionDescriptionCallback = Nothing
 {-# INLINE noRTCSessionDescriptionCallback #-}
-instance PToJSVal RTCSessionDescriptionCallback where pToJSVal (RTCSessionDescriptionCallback r) = unsafeCoerce r
+instance PToJSVal RTCSessionDescriptionCallback where pToJSVal (RTCSessionDescriptionCallback r) = jsval r
 newtype RTCStatsCallback = RTCStatsCallback (Callback (JSVal -> IO ()))
 noRTCStatsCallback :: Maybe RTCStatsCallback
 noRTCStatsCallback = Nothing
 {-# INLINE noRTCStatsCallback #-}
-instance PToJSVal RTCStatsCallback where pToJSVal (RTCStatsCallback r) = unsafeCoerce r
+instance PToJSVal RTCStatsCallback where pToJSVal (RTCStatsCallback r) = jsval r
 newtype SQLStatementCallback = SQLStatementCallback (Callback (JSVal -> JSVal -> IO ()))
 noSQLStatementCallback :: Maybe SQLStatementCallback
 noSQLStatementCallback = Nothing
 {-# INLINE noSQLStatementCallback #-}
-instance PToJSVal SQLStatementCallback where pToJSVal (SQLStatementCallback r) = unsafeCoerce r
+instance PToJSVal SQLStatementCallback where pToJSVal (SQLStatementCallback r) = jsval r
 newtype SQLStatementErrorCallback = SQLStatementErrorCallback (Callback (JSVal -> JSVal -> IO ()))
 noSQLStatementErrorCallback :: Maybe SQLStatementErrorCallback
 noSQLStatementErrorCallback = Nothing
 {-# INLINE noSQLStatementErrorCallback #-}
-instance PToJSVal SQLStatementErrorCallback where pToJSVal (SQLStatementErrorCallback r) = unsafeCoerce r
+instance PToJSVal SQLStatementErrorCallback where pToJSVal (SQLStatementErrorCallback r) = jsval r
 newtype SQLTransactionCallback = SQLTransactionCallback (Callback (JSVal -> IO ()))
 noSQLTransactionCallback :: Maybe SQLTransactionCallback
 noSQLTransactionCallback = Nothing
 {-# INLINE noSQLTransactionCallback #-}
-instance PToJSVal SQLTransactionCallback where pToJSVal (SQLTransactionCallback r) = unsafeCoerce r
+instance PToJSVal SQLTransactionCallback where pToJSVal (SQLTransactionCallback r) = jsval r
 newtype SQLTransactionErrorCallback = SQLTransactionErrorCallback (Callback (JSVal -> IO ()))
 noSQLTransactionErrorCallback :: Maybe SQLTransactionErrorCallback
 noSQLTransactionErrorCallback = Nothing
 {-# INLINE noSQLTransactionErrorCallback #-}
-instance PToJSVal SQLTransactionErrorCallback where pToJSVal (SQLTransactionErrorCallback r) = unsafeCoerce r
+instance PToJSVal SQLTransactionErrorCallback where pToJSVal (SQLTransactionErrorCallback r) = jsval r
 newtype StorageErrorCallback = StorageErrorCallback (Callback (JSVal -> IO ()))
 noStorageErrorCallback :: Maybe StorageErrorCallback
 noStorageErrorCallback = Nothing
 {-# INLINE noStorageErrorCallback #-}
-instance PToJSVal StorageErrorCallback where pToJSVal (StorageErrorCallback r) = unsafeCoerce r
+instance PToJSVal StorageErrorCallback where pToJSVal (StorageErrorCallback r) = jsval r
 newtype StorageQuotaCallback = StorageQuotaCallback (Callback (JSVal -> IO ()))
 noStorageQuotaCallback :: Maybe StorageQuotaCallback
 noStorageQuotaCallback = Nothing
 {-# INLINE noStorageQuotaCallback #-}
-instance PToJSVal StorageQuotaCallback where pToJSVal (StorageQuotaCallback r) = unsafeCoerce r
+instance PToJSVal StorageQuotaCallback where pToJSVal (StorageQuotaCallback r) = jsval r
 newtype StorageUsageCallback = StorageUsageCallback (Callback (JSVal -> JSVal -> IO ()))
 noStorageUsageCallback :: Maybe StorageUsageCallback
 noStorageUsageCallback = Nothing
 {-# INLINE noStorageUsageCallback #-}
-instance PToJSVal StorageUsageCallback where pToJSVal (StorageUsageCallback r) = unsafeCoerce r
+instance PToJSVal StorageUsageCallback where pToJSVal (StorageUsageCallback r) = jsval r
 newtype StringCallback s = StringCallback (Callback (JSVal -> IO ()))
-instance PToJSVal (StringCallback s) where pToJSVal (StringCallback r) = unsafeCoerce r
+instance PToJSVal (StringCallback s) where pToJSVal (StringCallback r) = jsval r
 newtype VoidCallback = VoidCallback (Callback (IO ()))
 noVoidCallback :: Maybe VoidCallback
 noVoidCallback = Nothing
 {-# INLINE noVoidCallback #-}
-instance PToJSVal VoidCallback where pToJSVal (VoidCallback r) = unsafeCoerce r
+instance PToJSVal VoidCallback where pToJSVal (VoidCallback r) = jsval r
 
 -- Custom types
 type DOMHighResTimeStamp = Double
