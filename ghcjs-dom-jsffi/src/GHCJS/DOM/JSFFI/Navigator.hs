@@ -1,5 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, GHCForeignImportPrim,
-             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase #-}
+             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase, CPP #-}
 module GHCJS.DOM.JSFFI.Navigator (
     module Generated
   , js_getUserMedia
@@ -11,7 +11,11 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 
 import Control.Monad.IO.Class (MonadIO(..))
 
+#if __GHCJS__
 import GHCJS.Prim (JSVal(..))
+#elif defined(javascript_HOST_ARCH)
+import GHC.JS.Prim (JSVal(..))
+#endif
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.NavigatorUserMediaError (throwUserMediaException)

@@ -1,5 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, GHCForeignImportPrim,
-             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase #-}
+             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase, CPP #-}
 module GHCJS.DOM.JSFFI.Geolocation (
     module Generated
   , js_getCurrentPosition
@@ -12,7 +12,11 @@ import GHC.Prim (RealWorld, State#, ByteArray#)
 
 import Control.Monad.IO.Class (MonadIO(..))
 
+#if __GHCJS__
 import GHCJS.Prim (JSVal(..))
+#elif defined(javascript_HOST_ARCH)
+import GHC.JS.Prim (JSVal(..))
+#endif
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.PositionError (throwPositionException)
