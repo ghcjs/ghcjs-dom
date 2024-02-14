@@ -49,7 +49,7 @@ after self nodes
   = liftIO
       (toJSVal nodes >>= \ nodes' -> js_after (toChildNode self) nodes')
  
-foreign import javascript safe "$1[\"replaceWith\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"replaceWith\"]($2); })"
         js_replaceWith :: ChildNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ChildNode.replaceWith Mozilla ChildNode.replaceWith documentation> 

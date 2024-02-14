@@ -42,7 +42,7 @@ getHref ::
         (MonadIO m, FromJSString result) => HTMLBaseElement -> m result
 getHref self = liftIO (fromJSString <$> (js_getHref self))
  
-foreign import javascript unsafe "$1[\"target\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"target\"] = $2; })"
         js_setTarget :: HTMLBaseElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBaseElement.target Mozilla HTMLBaseElement.target documentation> 

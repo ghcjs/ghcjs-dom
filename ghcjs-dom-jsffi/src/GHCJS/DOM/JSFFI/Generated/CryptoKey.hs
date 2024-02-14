@@ -34,14 +34,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType
 getType :: (MonadIO m) => CryptoKey -> m KeyType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "($1[\"extractable\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"extractable\"] ? 1 : 0); })"
         js_getExtractable :: CryptoKey -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.extractable Mozilla CryptoKey.extractable documentation> 
 getExtractable :: (MonadIO m) => CryptoKey -> m Bool
 getExtractable self = liftIO (js_getExtractable self)
  
-foreign import javascript unsafe "$1[\"algorithm\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"algorithm\"]; })"
         js_getAlgorithm :: CryptoKey -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey.algorithm Mozilla CryptoKey.algorithm documentation> 

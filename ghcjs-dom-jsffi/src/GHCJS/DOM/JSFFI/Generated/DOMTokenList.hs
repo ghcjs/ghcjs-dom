@@ -59,7 +59,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_item self index))
  
-foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"contains\"]($2) ? 1 : 0); })"
         js_contains :: DOMTokenList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.contains Mozilla DOMTokenList.contains documentation> 
@@ -91,7 +91,7 @@ remove ::
 remove self tokens
   = liftIO (toJSVal tokens >>= \ tokens' -> js_remove self tokens')
  
-foreign import javascript safe "($1[\"toggle\"]($2, $3) ? 1 : 0)"
+foreign import javascript safe "(($1, $2, $3) => { return ($1[\"toggle\"]($2, $3) ? 1 : 0); })"
         js_toggle :: DOMTokenList -> JSString -> Bool -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.toggle Mozilla DOMTokenList.toggle documentation> 
@@ -118,7 +118,7 @@ replace ::
 replace self token newToken
   = liftIO (js_replace self (toJSString token) (toJSString newToken))
  
-foreign import javascript safe "($1[\"supports\"]($2) ? 1 : 0)"
+foreign import javascript safe "(($1, $2) => { return ($1[\"supports\"]($2) ? 1 : 0); })"
         js_supports :: DOMTokenList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList.supports Mozilla DOMTokenList.supports documentation> 

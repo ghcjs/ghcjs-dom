@@ -52,7 +52,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"stop\"](); })" js_stop 
 stop :: (MonadIO m, IsMediaStreamTrack self) => self -> m ()
 stop self = liftIO (js_stop (toMediaStreamTrack self))
  
-foreign import javascript unsafe "$1[\"getCapabilities\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getCapabilities\"](); })"
         js_getCapabilities :: MediaStreamTrack -> IO MediaTrackCapabilities
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getCapabilities Mozilla MediaStreamTrack.getCapabilities documentation> 
@@ -68,7 +68,7 @@ getCapabilities_ ::
 getCapabilities_ self
   = liftIO (void (js_getCapabilities (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"getConstraints\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getConstraints\"](); })"
         js_getConstraints :: MediaStreamTrack -> IO MediaTrackConstraints
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getConstraints Mozilla MediaStreamTrack.getConstraints documentation> 
@@ -84,7 +84,7 @@ getConstraints_ ::
 getConstraints_ self
   = liftIO (void (js_getConstraints (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"getSettings\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getSettings\"](); })"
         js_getSettings :: MediaStreamTrack -> IO MediaTrackSettings
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.getSettings Mozilla MediaStreamTrack.getSettings documentation> 
@@ -145,7 +145,7 @@ getLabel ::
 getLabel self
   = liftIO (fromJSString <$> (js_getLabel (toMediaStreamTrack self)))
  
-foreign import javascript unsafe "$1[\"enabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"enabled\"] = $2; })"
         js_setEnabled :: MediaStreamTrack -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.enabled Mozilla MediaStreamTrack.enabled documentation> 
@@ -154,7 +154,7 @@ setEnabled ::
 setEnabled self val
   = liftIO (js_setEnabled (toMediaStreamTrack self) val)
  
-foreign import javascript unsafe "($1[\"enabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"enabled\"] ? 1 : 0); })"
         js_getEnabled :: MediaStreamTrack -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.enabled Mozilla MediaStreamTrack.enabled documentation> 
@@ -162,7 +162,7 @@ getEnabled ::
            (MonadIO m, IsMediaStreamTrack self) => self -> m Bool
 getEnabled self = liftIO (js_getEnabled (toMediaStreamTrack self))
  
-foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"muted\"] ? 1 : 0); })"
         js_getMuted :: MediaStreamTrack -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.muted Mozilla MediaStreamTrack.muted documentation> 
@@ -181,7 +181,7 @@ unmute ::
          EventName self Event
 unmute = unsafeEventName (toJSString "unmute")
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: MediaStreamTrack -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack.readyState Mozilla MediaStreamTrack.readyState documentation> 

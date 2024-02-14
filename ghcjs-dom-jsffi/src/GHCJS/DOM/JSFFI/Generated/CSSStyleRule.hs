@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"selectorText\"] = $2; })"
         js_setSelectorText :: CSSStyleRule -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
@@ -36,7 +36,7 @@ setSelectorText ::
 setSelectorText self val
   = liftIO (js_setSelectorText self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"selectorText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"selectorText\"]; })"
         js_getSelectorText :: CSSStyleRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 

@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"initDeviceOrientationEvent\"]($2,\n$3, $4, $5, $6, $7, $8)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"initDeviceOrientationEvent\"]($2,\n$3, $4, $5, $6, $7, $8); })"
         js_initDeviceOrientationEvent ::
         DeviceOrientationEvent ->
           Optional JSString ->

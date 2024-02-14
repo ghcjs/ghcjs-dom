@@ -78,7 +78,7 @@ bezierCurveTo self cp1x cp1y cp2x cp2y x y
   = liftIO
       (js_bezierCurveTo (toCanvasPath self) cp1x cp1y cp2x cp2y x y)
  
-foreign import javascript safe "$1[\"arcTo\"]($2, $3, $4, $5, $6)"
+foreign import javascript safe "(($1, $2, $3, $4, $5, $6) => { return $1[\"arcTo\"]($2, $3, $4, $5, $6); })"
         js_arcTo ::
         CanvasPath ->
           Double -> Double -> Double -> Double -> Double -> IO ()
@@ -90,7 +90,7 @@ arcTo ::
 arcTo self x1 y1 x2 y2 radius
   = liftIO (js_arcTo (toCanvasPath self) x1 y1 x2 y2 radius)
  
-foreign import javascript unsafe "$1[\"rect\"]($2, $3, $4, $5)"
+foreign import javascript unsafe "(($1, $2, $3, $4, $5) => { return $1[\"rect\"]($2, $3, $4, $5); })"
         js_rect ::
         CanvasPath -> Double -> Double -> Double -> Double -> IO ()
 

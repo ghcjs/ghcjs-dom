@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"validationURL\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"validationURL\"]; })"
         js_getValidationURL :: ApplePayValidateMerchantEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayValidateMerchantEvent.validationURL Mozilla ApplePayValidateMerchantEvent.validationURL documentation> 

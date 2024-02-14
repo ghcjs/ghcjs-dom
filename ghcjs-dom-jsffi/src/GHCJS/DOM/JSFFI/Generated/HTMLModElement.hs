@@ -43,7 +43,7 @@ getCite ::
         (MonadIO m, FromJSString result) => HTMLModElement -> m result
 getCite self = liftIO (fromJSString <$> (js_getCite self))
  
-foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"dateTime\"] = $2; })"
         js_setDateTime :: HTMLModElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLModElement.dateTime Mozilla HTMLModElement.dateTime documentation> 

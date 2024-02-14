@@ -58,7 +58,7 @@ createDocumentType_ self qualifiedName publicId systemId
             (toJSString publicId)
             (toJSString systemId)))
  
-foreign import javascript safe "$1[\"createDocument\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"createDocument\"]($2, $3, $4); })"
         js_createDocument ::
         DOMImplementation ->
           Optional JSString ->
@@ -88,7 +88,7 @@ createDocument_ self namespaceURI qualifiedName doctype
             (toJSString qualifiedName)
             (maybeToOptional doctype)))
  
-foreign import javascript unsafe "$1[\"createHTMLDocument\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"createHTMLDocument\"]($2); })"
         js_createHTMLDocument ::
         DOMImplementation -> Optional JSString -> IO HTMLDocument
 
@@ -107,7 +107,7 @@ createHTMLDocument_ self title
   = liftIO
       (void (js_createHTMLDocument self (toOptionalJSString title)))
  
-foreign import javascript unsafe "($1[\"hasFeature\"]() ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"hasFeature\"]() ? 1 : 0); })"
         js_hasFeature :: DOMImplementation -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.hasFeature Mozilla DOMImplementation.hasFeature documentation> 

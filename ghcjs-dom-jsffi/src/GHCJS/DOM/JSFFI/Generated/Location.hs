@@ -69,7 +69,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"href\"]; })" js_getHref
 getHref :: (MonadIO m, FromJSString result) => Location -> m result
 getHref self = liftIO (fromJSString <$> (js_getHref self))
  
-foreign import javascript safe "$1[\"protocol\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"protocol\"] = $2; })"
         js_setProtocol :: Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.protocol Mozilla Location.protocol documentation> 
@@ -100,7 +100,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"host\"]; })" js_getHost
 getHost :: (MonadIO m, FromJSString result) => Location -> m result
 getHost self = liftIO (fromJSString <$> (js_getHost self))
  
-foreign import javascript unsafe "$1[\"hostname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hostname\"] = $2; })"
         js_setHostname :: Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.hostname Mozilla Location.hostname documentation> 
@@ -131,7 +131,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"port\"]; })" js_getPort
 getPort :: (MonadIO m, FromJSString result) => Location -> m result
 getPort self = liftIO (fromJSString <$> (js_getPort self))
  
-foreign import javascript unsafe "$1[\"pathname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"pathname\"] = $2; })"
         js_setPathname :: Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.pathname Mozilla Location.pathname documentation> 
@@ -148,7 +148,7 @@ getPathname ::
             (MonadIO m, FromJSString result) => Location -> m result
 getPathname self = liftIO (fromJSString <$> (js_getPathname self))
  
-foreign import javascript unsafe "$1[\"search\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"search\"] = $2; })"
         js_setSearch :: Location -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.search Mozilla Location.search documentation> 
@@ -185,7 +185,7 @@ getOrigin ::
           (MonadIO m, FromJSString result) => Location -> m result
 getOrigin self = liftIO (fromJSString <$> (js_getOrigin self))
  
-foreign import javascript unsafe "$1[\"ancestorOrigins\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ancestorOrigins\"]; })"
         js_getAncestorOrigins :: Location -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Location.ancestorOrigins Mozilla Location.ancestorOrigins documentation> 

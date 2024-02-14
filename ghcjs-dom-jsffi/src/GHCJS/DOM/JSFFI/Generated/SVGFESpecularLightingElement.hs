@@ -37,7 +37,7 @@ getIn1 ::
        (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedString
 getIn1 self = liftIO (js_getIn1 self)
  
-foreign import javascript unsafe "$1[\"surfaceScale\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"surfaceScale\"]; })"
         js_getSurfaceScale ::
         SVGFESpecularLightingElement -> IO SVGAnimatedNumber
 
@@ -46,7 +46,7 @@ getSurfaceScale ::
                 (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedNumber
 getSurfaceScale self = liftIO (js_getSurfaceScale self)
  
-foreign import javascript unsafe "$1[\"specularConstant\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"specularConstant\"]; })"
         js_getSpecularConstant ::
         SVGFESpecularLightingElement -> IO SVGAnimatedNumber
 
@@ -55,7 +55,7 @@ getSpecularConstant ::
                     (MonadIO m) => SVGFESpecularLightingElement -> m SVGAnimatedNumber
 getSpecularConstant self = liftIO (js_getSpecularConstant self)
  
-foreign import javascript unsafe "$1[\"specularExponent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"specularExponent\"]; })"
         js_getSpecularExponent ::
         SVGFESpecularLightingElement -> IO SVGAnimatedNumber
 

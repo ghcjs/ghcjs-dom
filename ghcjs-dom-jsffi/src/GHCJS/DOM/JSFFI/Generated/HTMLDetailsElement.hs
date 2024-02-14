@@ -33,7 +33,7 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"open\"] = $2; })" js_setOp
 setOpen :: (MonadIO m) => HTMLDetailsElement -> Bool -> m ()
 setOpen self val = liftIO (js_setOpen self val)
  
-foreign import javascript unsafe "($1[\"open\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"open\"] ? 1 : 0); })"
         js_getOpen :: HTMLDetailsElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement.open Mozilla HTMLDetailsElement.open documentation> 

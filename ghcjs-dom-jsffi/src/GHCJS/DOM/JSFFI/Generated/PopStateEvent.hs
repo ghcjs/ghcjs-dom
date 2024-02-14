@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"PopStateEvent\"]($1,\n$2)" js_newPopStateEvent ::
+        "(($1, $2) => { return new window[\"PopStateEvent\"]($1,\n$2); })" js_newPopStateEvent ::
         JSString -> Optional PopStateEventInit -> IO PopStateEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent Mozilla PopStateEvent documentation> 

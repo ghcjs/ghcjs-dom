@@ -32,7 +32,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"IntersectionObserverEntry\"]($1)"
+        "(($1) => { return new window[\"IntersectionObserverEntry\"]($1); })"
         js_newIntersectionObserverEntry ::
         IntersectionObserverEntryInit -> IO IntersectionObserverEntry
 
@@ -52,7 +52,7 @@ getTime ::
         (MonadIO m) => IntersectionObserverEntry -> m DOMHighResTimeStamp
 getTime self = liftIO (js_getTime self)
  
-foreign import javascript unsafe "$1[\"rootBounds\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"rootBounds\"]; })"
         js_getRootBounds :: IntersectionObserverEntry -> IO DOMRectReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry.rootBounds Mozilla IntersectionObserverEntry.rootBounds documentation> 
@@ -60,7 +60,7 @@ getRootBounds ::
               (MonadIO m) => IntersectionObserverEntry -> m DOMRectReadOnly
 getRootBounds self = liftIO (js_getRootBounds self)
  
-foreign import javascript unsafe "$1[\"boundingClientRect\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"boundingClientRect\"]; })"
         js_getBoundingClientRect ::
         IntersectionObserverEntry -> IO DOMRectReadOnly
 
@@ -69,7 +69,7 @@ getBoundingClientRect ::
                       (MonadIO m) => IntersectionObserverEntry -> m DOMRectReadOnly
 getBoundingClientRect self = liftIO (js_getBoundingClientRect self)
  
-foreign import javascript unsafe "$1[\"intersectionRect\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"intersectionRect\"]; })"
         js_getIntersectionRect ::
         IntersectionObserverEntry -> IO DOMRectReadOnly
 
@@ -78,7 +78,7 @@ getIntersectionRect ::
                     (MonadIO m) => IntersectionObserverEntry -> m DOMRectReadOnly
 getIntersectionRect self = liftIO (js_getIntersectionRect self)
  
-foreign import javascript unsafe "$1[\"intersectionRatio\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"intersectionRatio\"]; })"
         js_getIntersectionRatio :: IntersectionObserverEntry -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry.intersectionRatio Mozilla IntersectionObserverEntry.intersectionRatio documentation> 

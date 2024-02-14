@@ -42,14 +42,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"index\"]; })" js_getInd
 getIndex :: (MonadIO m) => Gamepad -> m Word
 getIndex self = liftIO (js_getIndex self)
  
-foreign import javascript unsafe "($1[\"connected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"connected\"] ? 1 : 0); })"
         js_getConnected :: Gamepad -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.connected Mozilla Gamepad.connected documentation> 
 getConnected :: (MonadIO m) => Gamepad -> m Bool
 getConnected self = liftIO (js_getConnected self)
  
-foreign import javascript unsafe "$1[\"timestamp\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"timestamp\"]; })"
         js_getTimestamp :: Gamepad -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Gamepad.timestamp Mozilla Gamepad.timestamp documentation> 

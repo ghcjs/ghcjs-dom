@@ -53,21 +53,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"loaded\"](); })" js_loa
 loaded :: (MonadIO m) => InspectorFrontendHost -> m ()
 loaded self = liftIO (js_loaded self)
  
-foreign import javascript unsafe "$1[\"closeWindow\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"closeWindow\"](); })"
         js_closeWindow :: InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.closeWindow Mozilla InspectorFrontendHost.closeWindow documentation> 
 closeWindow :: (MonadIO m) => InspectorFrontendHost -> m ()
 closeWindow self = liftIO (js_closeWindow self)
  
-foreign import javascript unsafe "$1[\"bringToFront\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"bringToFront\"](); })"
         js_bringToFront :: InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.bringToFront Mozilla InspectorFrontendHost.bringToFront documentation> 
 bringToFront :: (MonadIO m) => InspectorFrontendHost -> m ()
 bringToFront self = liftIO (js_bringToFront self)
  
-foreign import javascript unsafe "$1[\"inspectedURLChanged\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"inspectedURLChanged\"]($2); })"
         js_inspectedURLChanged ::
         InspectorFrontendHost -> JSString -> IO ()
 
@@ -78,7 +78,7 @@ inspectedURLChanged ::
 inspectedURLChanged self newURL
   = liftIO (js_inspectedURLChanged self (toJSString newURL))
  
-foreign import javascript unsafe "$1[\"setZoomFactor\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setZoomFactor\"]($2); })"
         js_setZoomFactor :: InspectorFrontendHost -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.setZoomFactor Mozilla InspectorFrontendHost.setZoomFactor documentation> 
@@ -86,7 +86,7 @@ setZoomFactor ::
               (MonadIO m) => InspectorFrontendHost -> Float -> m ()
 setZoomFactor self zoom = liftIO (js_setZoomFactor self zoom)
  
-foreign import javascript unsafe "$1[\"zoomFactor\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"zoomFactor\"](); })"
         js_zoomFactor :: InspectorFrontendHost -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.zoomFactor Mozilla InspectorFrontendHost.zoomFactor documentation> 
@@ -98,7 +98,7 @@ zoomFactor_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 zoomFactor_ self = liftIO (void (js_zoomFactor self))
  
 foreign import javascript unsafe
-        "$1[\"userInterfaceLayoutDirection\"]()"
+        "(($1) => { return $1[\"userInterfaceLayoutDirection\"](); })"
         js_userInterfaceLayoutDirection ::
         InspectorFrontendHost -> IO JSString
 
@@ -115,7 +115,7 @@ userInterfaceLayoutDirection_ ::
 userInterfaceLayoutDirection_ self
   = liftIO (void (js_userInterfaceLayoutDirection self))
  
-foreign import javascript unsafe "$1[\"requestSetDockSide\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"requestSetDockSide\"]($2); })"
         js_requestSetDockSide :: InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.requestSetDockSide Mozilla InspectorFrontendHost.requestSetDockSide documentation> 
@@ -145,14 +145,14 @@ setAttachedWindowWidth ::
 setAttachedWindowWidth self width
   = liftIO (js_setAttachedWindowWidth self width)
  
-foreign import javascript unsafe "$1[\"startWindowDrag\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"startWindowDrag\"](); })"
         js_startWindowDrag :: InspectorFrontendHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.startWindowDrag Mozilla InspectorFrontendHost.startWindowDrag documentation> 
 startWindowDrag :: (MonadIO m) => InspectorFrontendHost -> m ()
 startWindowDrag self = liftIO (js_startWindowDrag self)
  
-foreign import javascript unsafe "$1[\"moveWindowBy\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"moveWindowBy\"]($2, $3); })"
         js_moveWindowBy :: InspectorFrontendHost -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.moveWindowBy Mozilla InspectorFrontendHost.moveWindowBy documentation> 
@@ -160,7 +160,7 @@ moveWindowBy ::
              (MonadIO m) => InspectorFrontendHost -> Float -> Float -> m ()
 moveWindowBy self x y = liftIO (js_moveWindowBy self x y)
  
-foreign import javascript unsafe "$1[\"localizedStringsURL\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"localizedStringsURL\"](); })"
         js_localizedStringsURL :: InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.localizedStringsURL Mozilla InspectorFrontendHost.localizedStringsURL documentation> 
@@ -176,7 +176,7 @@ localizedStringsURL_ ::
 localizedStringsURL_ self
   = liftIO (void (js_localizedStringsURL self))
  
-foreign import javascript unsafe "$1[\"backendCommandsURL\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"backendCommandsURL\"](); })"
         js_backendCommandsURL :: InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.backendCommandsURL Mozilla InspectorFrontendHost.backendCommandsURL documentation> 
@@ -191,7 +191,7 @@ backendCommandsURL_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 backendCommandsURL_ self
   = liftIO (void (js_backendCommandsURL self))
  
-foreign import javascript unsafe "$1[\"debuggableType\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"debuggableType\"](); })"
         js_debuggableType :: InspectorFrontendHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.debuggableType Mozilla InspectorFrontendHost.debuggableType documentation> 
@@ -205,7 +205,7 @@ debuggableType self
 debuggableType_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 debuggableType_ self = liftIO (void (js_debuggableType self))
  
-foreign import javascript unsafe "$1[\"inspectionLevel\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"inspectionLevel\"](); })"
         js_inspectionLevel :: InspectorFrontendHost -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.inspectionLevel Mozilla InspectorFrontendHost.inspectionLevel documentation> 
@@ -225,7 +225,7 @@ copyText ::
            InspectorFrontendHost -> text -> m ()
 copyText self text = liftIO (js_copyText self (toJSString text))
  
-foreign import javascript unsafe "$1[\"killText\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"killText\"]($2, $3, $4); })"
         js_killText ::
         InspectorFrontendHost -> JSString -> Bool -> Bool -> IO ()
 
@@ -238,7 +238,7 @@ killText self text shouldPrependToKillRing shouldStartNewSequence
       (js_killText self (toJSString text) shouldPrependToKillRing
          shouldStartNewSequence)
  
-foreign import javascript unsafe "$1[\"openInNewTab\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"openInNewTab\"]($2); })"
         js_openInNewTab :: InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.openInNewTab Mozilla InspectorFrontendHost.openInNewTab documentation> 
@@ -247,7 +247,7 @@ openInNewTab ::
 openInNewTab self url
   = liftIO (js_openInNewTab self (toJSString url))
  
-foreign import javascript unsafe "($1[\"canSave\"]() ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"canSave\"]() ? 1 : 0); })"
         js_canSave :: InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.canSave Mozilla InspectorFrontendHost.canSave documentation> 
@@ -258,7 +258,7 @@ canSave self = liftIO (js_canSave self)
 canSave_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 canSave_ self = liftIO (void (js_canSave self))
  
-foreign import javascript unsafe "$1[\"save\"]($2, $3, $4, $5)"
+foreign import javascript unsafe "(($1, $2, $3, $4, $5) => { return $1[\"save\"]($2, $3, $4, $5); })"
         js_save ::
         InspectorFrontendHost ->
           JSString -> JSString -> Bool -> Bool -> IO ()
@@ -316,7 +316,7 @@ port self = liftIO (fromJSString <$> (js_port self))
 port_ :: (MonadIO m) => InspectorFrontendHost -> m ()
 port_ self = liftIO (void (js_port self))
  
-foreign import javascript unsafe "$1[\"showContextMenu\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"showContextMenu\"]($2, $3); })"
         js_showContextMenu ::
         InspectorFrontendHost -> MouseEvent -> JSVal -> IO ()
 
@@ -330,7 +330,7 @@ showContextMenu self event items
          \ items' -> js_showContextMenu self (toMouseEvent event) items')
  
 foreign import javascript unsafe
-        "$1[\"dispatchEventAsContextMenuEvent\"]($2)"
+        "(($1, $2) => { return $1[\"dispatchEventAsContextMenuEvent\"]($2); })"
         js_dispatchEventAsContextMenuEvent ::
         InspectorFrontendHost -> Optional Event -> IO ()
 
@@ -343,7 +343,7 @@ dispatchEventAsContextMenuEvent self event
       (js_dispatchEventAsContextMenuEvent self
          (maybeToOptional (fmap toEvent event)))
  
-foreign import javascript unsafe "$1[\"sendMessageToBackend\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"sendMessageToBackend\"]($2); })"
         js_sendMessageToBackend ::
         InspectorFrontendHost -> JSString -> IO ()
 
@@ -354,7 +354,7 @@ sendMessageToBackend ::
 sendMessageToBackend self message
   = liftIO (js_sendMessageToBackend self (toJSString message))
  
-foreign import javascript unsafe "$1[\"unbufferedLog\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"unbufferedLog\"]($2); })"
         js_unbufferedLog :: InspectorFrontendHost -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.unbufferedLog Mozilla InspectorFrontendHost.unbufferedLog documentation> 
@@ -364,7 +364,7 @@ unbufferedLog ::
 unbufferedLog self message
   = liftIO (js_unbufferedLog self (toJSString message))
  
-foreign import javascript unsafe "($1[\"isUnderTest\"]() ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"isUnderTest\"]() ? 1 : 0); })"
         js_isUnderTest :: InspectorFrontendHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InspectorFrontendHost.isUnderTest Mozilla InspectorFrontendHost.isUnderTest documentation> 

@@ -52,7 +52,7 @@ removeCue ::
 removeCue self cue
   = liftIO (js_removeCue self (toTextTrackCue cue))
  
-foreign import javascript unsafe "$1[\"addRegion\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addRegion\"]($2); })"
         js_addRegion :: TextTrack -> Optional VTTRegion -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.addRegion Mozilla TextTrack.addRegion documentation> 
@@ -60,7 +60,7 @@ addRegion :: (MonadIO m) => TextTrack -> Maybe VTTRegion -> m ()
 addRegion self region
   = liftIO (js_addRegion self (maybeToOptional region))
  
-foreign import javascript safe "$1[\"removeRegion\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeRegion\"]($2); })"
         js_removeRegion :: TextTrack -> Optional VTTRegion -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.removeRegion Mozilla TextTrack.removeRegion documentation> 
@@ -97,7 +97,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => TextTrack -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"language\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"language\"] = $2; })"
         js_setLanguage :: TextTrack -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.language Mozilla TextTrack.language documentation> 
@@ -115,7 +115,7 @@ getLanguage ::
 getLanguage self = liftIO (fromJSString <$> (js_getLanguage self))
  
 foreign import javascript unsafe
-        "$1[\"inBandMetadataTrackDispatchType\"]"
+        "(($1) => { return $1[\"inBandMetadataTrackDispatchType\"]; })"
         js_getInBandMetadataTrackDispatchType :: TextTrack -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.inBandMetadataTrackDispatchType Mozilla TextTrack.inBandMetadataTrackDispatchType documentation> 
@@ -159,7 +159,7 @@ getCuesUnchecked :: (MonadIO m) => TextTrack -> m TextTrackCueList
 getCuesUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getCues self))
  
-foreign import javascript unsafe "$1[\"activeCues\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"activeCues\"]; })"
         js_getActiveCues :: TextTrack -> IO (Nullable TextTrackCueList)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.activeCues Mozilla TextTrack.activeCues documentation> 
@@ -193,7 +193,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"regions\"]; })" js_getR
 getRegions :: (MonadIO m) => TextTrack -> m VTTRegionList
 getRegions self = liftIO (js_getRegions self)
  
-foreign import javascript unsafe "$1[\"sourceBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceBuffer\"]; })"
         js_getSourceBuffer :: TextTrack -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrack.sourceBuffer Mozilla TextTrack.sourceBuffer documentation> 

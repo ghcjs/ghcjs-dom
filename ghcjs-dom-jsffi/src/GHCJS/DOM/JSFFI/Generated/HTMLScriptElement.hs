@@ -52,7 +52,7 @@ getText ::
         (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
 getText self = liftIO (fromJSString <$> (js_getText self))
  
-foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"htmlFor\"] = $2; })"
         js_setHtmlFor :: HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.htmlFor Mozilla HTMLScriptElement.htmlFor documentation> 
@@ -84,7 +84,7 @@ getEvent ::
          (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
 getEvent self = liftIO (fromJSString <$> (js_getEvent self))
  
-foreign import javascript unsafe "$1[\"charset\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"charset\"] = $2; })"
         js_setCharset :: HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.charset Mozilla HTMLScriptElement.charset documentation> 
@@ -107,7 +107,7 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"async\"] = $2; })" js_setA
 setAsync :: (MonadIO m) => HTMLScriptElement -> Bool -> m ()
 setAsync self val = liftIO (js_setAsync self val)
  
-foreign import javascript unsafe "($1[\"async\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"async\"] ? 1 : 0); })"
         js_getAsync :: HTMLScriptElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.async Mozilla HTMLScriptElement.async documentation> 
@@ -121,7 +121,7 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"defer\"] = $2; })" js_setD
 setDefer :: (MonadIO m) => HTMLScriptElement -> Bool -> m ()
 setDefer self val = liftIO (js_setDefer self val)
  
-foreign import javascript unsafe "($1[\"defer\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"defer\"] ? 1 : 0); })"
         js_getDefer :: HTMLScriptElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.defer Mozilla HTMLScriptElement.defer documentation> 
@@ -160,7 +160,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"crossOrigin\"] = $2; })"
         js_setCrossOrigin ::
         HTMLScriptElement -> Optional JSString -> IO ()
 
@@ -171,7 +171,7 @@ setCrossOrigin ::
 setCrossOrigin self val
   = liftIO (js_setCrossOrigin self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"crossOrigin\"]; })"
         js_getCrossOrigin :: HTMLScriptElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.crossOrigin Mozilla HTMLScriptElement.crossOrigin documentation> 
@@ -213,21 +213,21 @@ getNonce ::
          (MonadIO m, FromJSString result) => HTMLScriptElement -> m result
 getNonce self = liftIO (fromJSString <$> (js_getNonce self))
  
-foreign import javascript unsafe "$1[\"noModule\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"noModule\"] = $2; })"
         js_setNoModule :: HTMLScriptElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.noModule Mozilla HTMLScriptElement.noModule documentation> 
 setNoModule :: (MonadIO m) => HTMLScriptElement -> Bool -> m ()
 setNoModule self val = liftIO (js_setNoModule self val)
  
-foreign import javascript unsafe "($1[\"noModule\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"noModule\"] ? 1 : 0); })"
         js_getNoModule :: HTMLScriptElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.noModule Mozilla HTMLScriptElement.noModule documentation> 
 getNoModule :: (MonadIO m) => HTMLScriptElement -> m Bool
 getNoModule self = liftIO (js_getNoModule self)
  
-foreign import javascript unsafe "$1[\"integrity\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"integrity\"] = $2; })"
         js_setIntegrity :: HTMLScriptElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.integrity Mozilla HTMLScriptElement.integrity documentation> 
@@ -236,7 +236,7 @@ setIntegrity ::
 setIntegrity self val
   = liftIO (js_setIntegrity self (toJSString val))
  
-foreign import javascript unsafe "$1[\"integrity\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"integrity\"]; })"
         js_getIntegrity :: HTMLScriptElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement.integrity Mozilla HTMLScriptElement.integrity documentation> 

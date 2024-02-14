@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaEncryptedEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"MediaEncryptedEvent\"]($1,\n$2); })"
         js_newMediaEncryptedEvent ::
         JSString ->
           Optional MediaEncryptedEventInit -> IO MediaEncryptedEvent
@@ -43,7 +43,7 @@ newMediaEncryptedEvent type' eventInitDict
       (js_newMediaEncryptedEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"initDataType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"initDataType\"]; })"
         js_getInitDataType :: MediaEncryptedEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaEncryptedEvent.initDataType Mozilla MediaEncryptedEvent.initDataType documentation> 

@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9) => { return $1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9); })"
         js_initMutationEvent ::
         MutationEvent ->
           Optional JSString ->
@@ -66,7 +66,7 @@ pattern MODIFICATION = 1
 pattern ADDITION = 2
 pattern REMOVAL = 3
  
-foreign import javascript unsafe "$1[\"relatedNode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"relatedNode\"]; })"
         js_getRelatedNode :: MutationEvent -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
@@ -87,7 +87,7 @@ getRelatedNodeUnchecked :: (MonadIO m) => MutationEvent -> m Node
 getRelatedNodeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRelatedNode self))
  
-foreign import javascript unsafe "$1[\"prevValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"prevValue\"]; })"
         js_getPrevValue :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.prevValue Mozilla MutationEvent.prevValue documentation> 
@@ -112,7 +112,7 @@ getAttrName ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
 getAttrName self = liftIO (fromJSString <$> (js_getAttrName self))
  
-foreign import javascript unsafe "$1[\"attrChange\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"attrChange\"]; })"
         js_getAttrChange :: MutationEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrChange Mozilla MutationEvent.attrChange documentation> 

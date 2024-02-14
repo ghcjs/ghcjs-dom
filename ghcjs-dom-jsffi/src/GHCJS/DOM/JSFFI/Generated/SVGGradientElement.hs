@@ -34,7 +34,7 @@ pattern SVG_SPREADMETHOD_PAD = 1
 pattern SVG_SPREADMETHOD_REFLECT = 2
 pattern SVG_SPREADMETHOD_REPEAT = 3
  
-foreign import javascript unsafe "$1[\"gradientUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"gradientUnits\"]; })"
         js_getGradientUnits ::
         SVGGradientElement -> IO SVGAnimatedEnumeration
 
@@ -45,7 +45,7 @@ getGradientUnits ::
 getGradientUnits self
   = liftIO (js_getGradientUnits (toSVGGradientElement self))
  
-foreign import javascript unsafe "$1[\"gradientTransform\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"gradientTransform\"]; })"
         js_getGradientTransform ::
         SVGGradientElement -> IO SVGAnimatedTransformList
 
@@ -56,7 +56,7 @@ getGradientTransform ::
 getGradientTransform self
   = liftIO (js_getGradientTransform (toSVGGradientElement self))
  
-foreign import javascript unsafe "$1[\"spreadMethod\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"spreadMethod\"]; })"
         js_getSpreadMethod ::
         SVGGradientElement -> IO SVGAnimatedEnumeration
 

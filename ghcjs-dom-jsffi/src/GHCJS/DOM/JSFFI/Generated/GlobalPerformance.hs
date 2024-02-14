@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"performance\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"performance\"]; })"
         js_getPerformance :: GlobalPerformance -> IO Performance
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GlobalPerformance.performance Mozilla GlobalPerformance.performance documentation> 

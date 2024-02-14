@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"CustomEvent\"]($1,\n$2)" js_newCustomEvent ::
+        "(($1, $2) => { return new window[\"CustomEvent\"]($1,\n$2); })" js_newCustomEvent ::
         JSString -> Optional CustomEventInit -> IO CustomEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent Mozilla CustomEvent documentation> 

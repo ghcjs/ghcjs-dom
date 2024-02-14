@@ -89,7 +89,7 @@ getAlt ::
        (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getAlt self = liftIO (fromJSString <$> (js_getAlt self))
  
-foreign import javascript unsafe "$1[\"border\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"border\"] = $2; })"
         js_setBorder :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.border Mozilla HTMLImageElement.border documentation> 
@@ -105,7 +105,7 @@ getBorder ::
           (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getBorder self = liftIO (fromJSString <$> (js_getBorder self))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"crossOrigin\"] = $2; })"
         js_setCrossOrigin :: HTMLImageElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.crossOrigin Mozilla HTMLImageElement.crossOrigin documentation> 
@@ -115,7 +115,7 @@ setCrossOrigin ::
 setCrossOrigin self val
   = liftIO (js_setCrossOrigin self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"crossOrigin\"]; })"
         js_getCrossOrigin :: HTMLImageElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.crossOrigin Mozilla HTMLImageElement.crossOrigin documentation> 
@@ -141,7 +141,7 @@ getCrossOriginUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getCrossOrigin self))
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLImageElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.height Mozilla HTMLImageElement.height documentation> 
@@ -155,7 +155,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => HTMLImageElement -> m Word
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"hspace\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hspace\"] = $2; })"
         js_setHspace :: HTMLImageElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.hspace Mozilla HTMLImageElement.hspace documentation> 
@@ -176,14 +176,14 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"isMap\"] = $2; })" js_setI
 setIsMap :: (MonadIO m) => HTMLImageElement -> Bool -> m ()
 setIsMap self val = liftIO (js_setIsMap self val)
  
-foreign import javascript unsafe "($1[\"isMap\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"isMap\"] ? 1 : 0); })"
         js_getIsMap :: HTMLImageElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.isMap Mozilla HTMLImageElement.isMap documentation> 
 getIsMap :: (MonadIO m) => HTMLImageElement -> m Bool
 getIsMap self = liftIO (js_getIsMap self)
  
-foreign import javascript unsafe "$1[\"longDesc\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"longDesc\"] = $2; })"
         js_setLongDesc :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.longDesc Mozilla HTMLImageElement.longDesc documentation> 
@@ -216,7 +216,7 @@ getSrc ::
        (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getSrc self = liftIO (fromJSString <$> (js_getSrc self))
  
-foreign import javascript unsafe "$1[\"srcset\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"srcset\"] = $2; })"
         js_setSrcset :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.srcset Mozilla HTMLImageElement.srcset documentation> 
@@ -248,7 +248,7 @@ getSizes ::
          (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getSizes self = liftIO (fromJSString <$> (js_getSizes self))
  
-foreign import javascript unsafe "$1[\"currentSrc\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentSrc\"]; })"
         js_getCurrentSrc :: HTMLImageElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.currentSrc Mozilla HTMLImageElement.currentSrc documentation> 
@@ -257,7 +257,7 @@ getCurrentSrc ::
 getCurrentSrc self
   = liftIO (fromJSString <$> (js_getCurrentSrc self))
  
-foreign import javascript unsafe "$1[\"useMap\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"useMap\"] = $2; })"
         js_setUseMap :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.useMap Mozilla HTMLImageElement.useMap documentation> 
@@ -273,7 +273,7 @@ getUseMap ::
           (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getUseMap self = liftIO (fromJSString <$> (js_getUseMap self))
  
-foreign import javascript unsafe "$1[\"vspace\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vspace\"] = $2; })"
         js_setVspace :: HTMLImageElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.vspace Mozilla HTMLImageElement.vspace documentation> 
@@ -301,14 +301,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => HTMLImageElement -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "($1[\"complete\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"complete\"] ? 1 : 0); })"
         js_getComplete :: HTMLImageElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.complete Mozilla HTMLImageElement.complete documentation> 
 getComplete :: (MonadIO m) => HTMLImageElement -> m Bool
 getComplete self = liftIO (js_getComplete self)
  
-foreign import javascript unsafe "$1[\"lowsrc\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"lowsrc\"] = $2; })"
         js_setLowsrc :: HTMLImageElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.lowsrc Mozilla HTMLImageElement.lowsrc documentation> 
@@ -324,14 +324,14 @@ getLowsrc ::
           (MonadIO m, FromJSString result) => HTMLImageElement -> m result
 getLowsrc self = liftIO (fromJSString <$> (js_getLowsrc self))
  
-foreign import javascript unsafe "$1[\"naturalHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"naturalHeight\"]; })"
         js_getNaturalHeight :: HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.naturalHeight Mozilla HTMLImageElement.naturalHeight documentation> 
 getNaturalHeight :: (MonadIO m) => HTMLImageElement -> m Int
 getNaturalHeight self = liftIO (js_getNaturalHeight self)
  
-foreign import javascript unsafe "$1[\"naturalWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"naturalWidth\"]; })"
         js_getNaturalWidth :: HTMLImageElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement.naturalWidth Mozilla HTMLImageElement.naturalWidth documentation> 

@@ -40,7 +40,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DOMException\"]($1,\n$2)" js_newDOMException ::
+        "(($1, $2) => { return new window[\"DOMException\"]($1,\n$2); })" js_newDOMException ::
         Optional JSString -> Optional JSString -> IO DOMException
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMException Mozilla DOMException documentation> 

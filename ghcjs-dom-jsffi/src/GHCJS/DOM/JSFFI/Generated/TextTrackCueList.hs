@@ -38,7 +38,7 @@ item self index = liftIO (js_item self index)
 item_ :: (MonadIO m) => TextTrackCueList -> Word -> m ()
 item_ self index = liftIO (void (js_item self index))
  
-foreign import javascript unsafe "$1[\"getCueById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getCueById\"]($2); })"
         js_getCueById :: TextTrackCueList -> JSString -> IO TextTrackCue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCueList.getCueById Mozilla TextTrackCueList.getCueById documentation> 

@@ -96,7 +96,7 @@ getNamedItemUnchecked self qualifiedName
       (fromJust . nullableToMaybe <$>
          (js_getNamedItem self (toJSString qualifiedName)))
  
-foreign import javascript unsafe "$1[\"getNamedItemNS\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getNamedItemNS\"]($2, $3); })"
         js_getNamedItemNS ::
         NamedNodeMap -> Optional JSString -> JSString -> IO (Nullable Attr)
 
@@ -142,7 +142,7 @@ getNamedItemNSUnchecked self namespaceURI localName
          (js_getNamedItemNS self (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript safe "$1[\"setNamedItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setNamedItem\"]($2); })"
         js_setNamedItem :: NamedNodeMap -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItem Mozilla NamedNodeMap.setNamedItem documentation> 
@@ -170,7 +170,7 @@ setNamedItemUnchecked self attr
   = liftIO
       (fromJust . nullableToMaybe <$> (js_setNamedItem self attr))
  
-foreign import javascript safe "$1[\"setNamedItemNS\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setNamedItemNS\"]($2); })"
         js_setNamedItemNS :: NamedNodeMap -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.setNamedItemNS Mozilla NamedNodeMap.setNamedItemNS documentation> 
@@ -199,7 +199,7 @@ setNamedItemNSUnchecked self attr
   = liftIO
       (fromJust . nullableToMaybe <$> (js_setNamedItemNS self attr))
  
-foreign import javascript safe "$1[\"removeNamedItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeNamedItem\"]($2); })"
         js_removeNamedItem :: NamedNodeMap -> JSString -> IO Attr
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap.removeNamedItem Mozilla NamedNodeMap.removeNamedItem documentation> 
@@ -217,7 +217,7 @@ removeNamedItem_ self qualifiedName
   = liftIO
       (void (js_removeNamedItem self (toJSString qualifiedName)))
  
-foreign import javascript safe "$1[\"removeNamedItemNS\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"removeNamedItemNS\"]($2, $3); })"
         js_removeNamedItemNS ::
         NamedNodeMap -> Optional JSString -> JSString -> IO Attr
 

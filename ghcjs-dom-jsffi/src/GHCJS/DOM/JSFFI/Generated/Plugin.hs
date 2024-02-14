@@ -102,7 +102,7 @@ getFilename ::
             (MonadIO m, FromJSString result) => Plugin -> m result
 getFilename self = liftIO (fromJSString <$> (js_getFilename self))
  
-foreign import javascript unsafe "$1[\"description\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"description\"]; })"
         js_getDescription :: Plugin -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Plugin.description Mozilla Plugin.description documentation> 

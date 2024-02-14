@@ -40,7 +40,7 @@ foreign import javascript safe "(($1) => { return $1[\"clear\"](); })" js_clear 
 clear :: (MonadIO m) => SVGTransformList -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript safe "$1[\"initialize\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"initialize\"]($2); })"
         js_initialize ::
         SVGTransformList -> SVGTransform -> IO SVGTransform
 
@@ -66,7 +66,7 @@ getItem self index = liftIO (js_getItem self index)
 getItem_ :: (MonadIO m) => SVGTransformList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem self index))
  
-foreign import javascript safe "$1[\"insertItemBefore\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertItemBefore\"]($2, $3); })"
         js_insertItemBefore ::
         SVGTransformList -> SVGTransform -> Word -> IO SVGTransform
 
@@ -83,7 +83,7 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO (void (js_insertItemBefore self item index))
  
-foreign import javascript safe "$1[\"replaceItem\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"replaceItem\"]($2, $3); })"
         js_replaceItem ::
         SVGTransformList -> SVGTransform -> Word -> IO SVGTransform
 
@@ -100,7 +100,7 @@ replaceItem_ ::
 replaceItem_ self item index
   = liftIO (void (js_replaceItem self item index))
  
-foreign import javascript safe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeItem\"]($2); })"
         js_removeItem :: SVGTransformList -> Word -> IO SVGTransform
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.removeItem Mozilla SVGTransformList.removeItem documentation> 
@@ -112,7 +112,7 @@ removeItem self index = liftIO (js_removeItem self index)
 removeItem_ :: (MonadIO m) => SVGTransformList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem self index))
  
-foreign import javascript safe "$1[\"appendItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"appendItem\"]($2); })"
         js_appendItem ::
         SVGTransformList -> SVGTransform -> IO SVGTransform
 
@@ -127,7 +127,7 @@ appendItem_ ::
 appendItem_ self item = liftIO (void (js_appendItem self item))
  
 foreign import javascript safe
-        "$1[\"createSVGTransformFromMatrix\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGTransformFromMatrix\"]($2); })"
         js_createSVGTransformFromMatrix ::
         SVGTransformList -> SVGMatrix -> IO SVGTransform
 
@@ -143,7 +143,7 @@ createSVGTransformFromMatrix_ ::
 createSVGTransformFromMatrix_ self matrix
   = liftIO (void (js_createSVGTransformFromMatrix self matrix))
  
-foreign import javascript safe "$1[\"consolidate\"]()"
+foreign import javascript safe "(($1) => { return $1[\"consolidate\"](); })"
         js_consolidate :: SVGTransformList -> IO SVGTransform
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.consolidate Mozilla SVGTransformList.consolidate documentation> 
@@ -154,7 +154,7 @@ consolidate self = liftIO (js_consolidate self)
 consolidate_ :: (MonadIO m) => SVGTransformList -> m ()
 consolidate_ self = liftIO (void (js_consolidate self))
  
-foreign import javascript unsafe "$1[\"numberOfItems\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"numberOfItems\"]; })"
         js_getNumberOfItems :: SVGTransformList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransformList.numberOfItems Mozilla SVGTransformList.numberOfItems documentation> 

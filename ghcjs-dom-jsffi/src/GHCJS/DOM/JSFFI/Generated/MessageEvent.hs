@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MessageEvent\"]($1,\n$2)" js_newMessageEvent ::
+        "(($1, $2) => { return new window[\"MessageEvent\"]($1,\n$2); })" js_newMessageEvent ::
         JSString -> Optional MessageEventInit -> IO MessageEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent Mozilla MessageEvent documentation> 
@@ -43,7 +43,7 @@ newMessageEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initMessageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9) => { return $1[\"initMessageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9); })"
         js_initMessageEvent ::
         MessageEvent ->
           JSString ->
@@ -88,7 +88,7 @@ getOrigin ::
           (MonadIO m, FromJSString result) => MessageEvent -> m result
 getOrigin self = liftIO (fromJSString <$> (js_getOrigin self))
  
-foreign import javascript unsafe "$1[\"lastEventId\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lastEventId\"]; })"
         js_getLastEventId :: MessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent.lastEventId Mozilla MessageEvent.lastEventId documentation> 

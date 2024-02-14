@@ -34,7 +34,7 @@ getState ::
          (MonadIO m) => RTCIceTransport -> m RTCIceTransportState
 getState self = liftIO ((js_getState self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"gatheringState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"gatheringState\"]; })"
         js_getGatheringState :: RTCIceTransport -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCIceTransport.gatheringState Mozilla RTCIceTransport.gatheringState documentation> 

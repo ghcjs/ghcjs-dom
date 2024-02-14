@@ -58,7 +58,7 @@ append self nodes
       (toJSVal nodes >>=
          \ nodes' -> js_append (toParentNode self) nodes')
  
-foreign import javascript safe "$1[\"querySelector\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"querySelector\"]($2); })"
         js_querySelector :: ParentNode -> JSString -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelector Mozilla ParentNode.querySelector documentation> 
@@ -99,7 +99,7 @@ querySelectorUnchecked self selectors
       (fromJust . nullableToMaybe <$>
          (js_querySelector (toParentNode self) (toJSString selectors)))
  
-foreign import javascript safe "$1[\"querySelectorAll\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"querySelectorAll\"]($2); })"
         js_querySelectorAll :: ParentNode -> JSString -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.querySelectorAll Mozilla ParentNode.querySelectorAll documentation> 
@@ -127,7 +127,7 @@ getChildren ::
             (MonadIO m, IsParentNode self) => self -> m HTMLCollection
 getChildren self = liftIO (js_getChildren (toParentNode self))
  
-foreign import javascript unsafe "$1[\"firstElementChild\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"firstElementChild\"]; })"
         js_getFirstElementChild :: ParentNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.firstElementChild Mozilla ParentNode.firstElementChild documentation> 
@@ -154,7 +154,7 @@ getFirstElementChildUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getFirstElementChild (toParentNode self)))
  
-foreign import javascript unsafe "$1[\"lastElementChild\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lastElementChild\"]; })"
         js_getLastElementChild :: ParentNode -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.lastElementChild Mozilla ParentNode.lastElementChild documentation> 
@@ -180,7 +180,7 @@ getLastElementChildUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getLastElementChild (toParentNode self)))
  
-foreign import javascript unsafe "$1[\"childElementCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"childElementCount\"]; })"
         js_getChildElementCount :: ParentNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ParentNode.childElementCount Mozilla ParentNode.childElementCount documentation> 

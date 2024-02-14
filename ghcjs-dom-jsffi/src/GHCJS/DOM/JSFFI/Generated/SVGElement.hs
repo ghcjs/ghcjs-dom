@@ -70,7 +70,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"blur\"](); })" js_blur 
 blur :: (MonadIO m, IsSVGElement self) => self -> m ()
 blur self = liftIO (js_blur (toSVGElement self))
  
-foreign import javascript unsafe "$1[\"ownerSVGElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ownerSVGElement\"]; })"
         js_getOwnerSVGElement :: SVGElement -> IO SVGSVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.ownerSVGElement Mozilla SVGElement.ownerSVGElement documentation> 
@@ -79,7 +79,7 @@ getOwnerSVGElement ::
 getOwnerSVGElement self
   = liftIO (js_getOwnerSVGElement (toSVGElement self))
  
-foreign import javascript unsafe "$1[\"viewportElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewportElement\"]; })"
         js_getViewportElement :: SVGElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.viewportElement Mozilla SVGElement.viewportElement documentation> 
@@ -88,7 +88,7 @@ getViewportElement ::
 getViewportElement self
   = liftIO (js_getViewportElement (toSVGElement self))
  
-foreign import javascript unsafe "$1[\"xmllang\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"xmllang\"] = $2; })"
         js_setXmllang :: SVGElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmllang Mozilla SVGElement.xmllang documentation> 
@@ -108,7 +108,7 @@ getXmllang ::
 getXmllang self
   = liftIO (fromJSString <$> (js_getXmllang (toSVGElement self)))
  
-foreign import javascript unsafe "$1[\"xmlspace\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"xmlspace\"] = $2; })"
         js_setXmlspace :: SVGElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.xmlspace Mozilla SVGElement.xmlspace documentation> 
@@ -128,7 +128,7 @@ getXmlspace ::
 getXmlspace self
   = liftIO (fromJSString <$> (js_getXmlspace (toSVGElement self)))
  
-foreign import javascript unsafe "$1[\"className\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"className\"]; })"
         js_getClassName :: SVGElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.className Mozilla SVGElement.className documentation> 
@@ -136,7 +136,7 @@ getClassName ::
              (MonadIO m, IsSVGElement self) => self -> m SVGAnimatedString
 getClassName self = liftIO (js_getClassName (toSVGElement self))
  
-foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"tabIndex\"] = $2; })"
         js_setTabIndex :: SVGElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGElement.tabIndex Mozilla SVGElement.tabIndex documentation> 

@@ -67,7 +67,7 @@ removeEventListener self type' callback options
              (EventListenerOptionsOrBool options'))
  
 foreign import javascript safe
-        "($1[\"dispatchEvent\"]($2) ? 1 : 0)" js_dispatchEvent ::
+        "(($1, $2) => { return ($1[\"dispatchEvent\"]($2) ? 1 : 0); })" js_dispatchEvent ::
         EventTarget -> Event -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent Mozilla EventTarget.dispatchEvent documentation> 

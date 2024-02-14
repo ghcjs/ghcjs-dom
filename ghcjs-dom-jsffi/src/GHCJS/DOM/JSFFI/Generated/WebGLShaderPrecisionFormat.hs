@@ -41,7 +41,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"rangeMax\"]; })" js_get
 getRangeMax :: (MonadIO m) => WebGLShaderPrecisionFormat -> m Int
 getRangeMax self = liftIO (js_getRangeMax self)
  
-foreign import javascript unsafe "$1[\"precision\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"precision\"]; })"
         js_getPrecision :: WebGLShaderPrecisionFormat -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLShaderPrecisionFormat.precision Mozilla WebGLShaderPrecisionFormat.precision documentation> 

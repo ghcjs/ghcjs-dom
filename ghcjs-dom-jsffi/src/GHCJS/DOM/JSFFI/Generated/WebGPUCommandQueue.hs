@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"createCommandBuffer\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createCommandBuffer\"](); })"
         js_createCommandBuffer ::
         WebGPUCommandQueue -> IO (Nullable WebGPUCommandBuffer)
 

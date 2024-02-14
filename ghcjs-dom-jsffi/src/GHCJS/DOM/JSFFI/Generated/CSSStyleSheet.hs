@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"insertRule\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertRule\"]($2, $3); })"
         js_insertRuleDeprecated ::
         CSSStyleSheet -> JSString -> Word -> IO Word
 
@@ -49,7 +49,7 @@ insertRuleDeprecated_ self rule index
   = liftIO
       (void (js_insertRuleDeprecated self (toJSString rule) index))
  
-foreign import javascript safe "$1[\"insertRule\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"insertRule\"]($2); })"
         js_insertRule :: CSSStyleSheet -> JSString -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.insertRule Mozilla CSSStyleSheet.insertRule documentation> 
@@ -64,14 +64,14 @@ insertRule_ ::
 insertRule_ self rule
   = liftIO (void (js_insertRule self (toJSString rule)))
  
-foreign import javascript safe "$1[\"deleteRule\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteRule\"]($2); })"
         js_deleteRule :: CSSStyleSheet -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.deleteRule Mozilla CSSStyleSheet.deleteRule documentation> 
 deleteRule :: (MonadIO m) => CSSStyleSheet -> Word -> m ()
 deleteRule self index = liftIO (js_deleteRule self index)
  
-foreign import javascript safe "$1[\"addRule\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"addRule\"]($2, $3, $4); })"
         js_addRule ::
         CSSStyleSheet ->
           Optional JSString -> Optional JSString -> Optional Word -> IO Int
@@ -99,7 +99,7 @@ addRule_ self selector style index
             (toOptionalJSString style)
             (maybeToOptional index)))
  
-foreign import javascript safe "$1[\"removeRule\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeRule\"]($2); })"
         js_removeRule :: CSSStyleSheet -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.removeRule Mozilla CSSStyleSheet.removeRule documentation> 
@@ -107,7 +107,7 @@ removeRule :: (MonadIO m) => CSSStyleSheet -> Maybe Word -> m ()
 removeRule self index
   = liftIO (js_removeRule self (maybeToOptional index))
  
-foreign import javascript unsafe "$1[\"ownerRule\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ownerRule\"]; })"
         js_getOwnerRule :: CSSStyleSheet -> IO CSSRule
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet.ownerRule Mozilla CSSStyleSheet.ownerRule documentation> 

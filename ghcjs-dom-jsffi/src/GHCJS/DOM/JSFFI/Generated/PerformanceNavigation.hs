@@ -39,7 +39,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType
 getType :: (MonadIO m) => PerformanceNavigation -> m Word
 getType self = liftIO (js_getType self)
  
-foreign import javascript unsafe "$1[\"redirectCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"redirectCount\"]; })"
         js_getRedirectCount :: PerformanceNavigation -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigation.redirectCount Mozilla PerformanceNavigation.redirectCount documentation> 

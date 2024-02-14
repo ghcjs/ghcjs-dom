@@ -53,7 +53,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"ApplePaySession\"]($1,\n$2)" js_newApplePaySession ::
+        "(($1, $2) => { return new window[\"ApplePaySession\"]($1,\n$2); })" js_newApplePaySession ::
         Word -> ApplePayPaymentRequest -> IO ApplePaySession
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession Mozilla ApplePaySession documentation> 
@@ -63,7 +63,7 @@ newApplePaySession version paymentRequest
   = liftIO (js_newApplePaySession version paymentRequest)
  
 foreign import javascript safe
-        "(window[\"ApplePaySession\"][\"supportsVersion\"]($1) ? 1 : 0)"
+        "(($1) => { return (window[\"ApplePaySession\"][\"supportsVersion\"]($1) ? 1 : 0); })"
         js_supportsVersion :: Word -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.supportsVersion Mozilla ApplePaySession.supportsVersion documentation> 
@@ -76,7 +76,7 @@ supportsVersion_ version
   = liftIO (void (js_supportsVersion version))
  
 foreign import javascript safe
-        "(window[\"ApplePaySession\"][\"canMakePayments\"]() ? 1 : 0)"
+        "(() => { return (window[\"ApplePaySession\"][\"canMakePayments\"]() ? 1 : 0); })"
         js_canMakePayments :: IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePayments Mozilla ApplePaySession.canMakePayments documentation> 
@@ -145,7 +145,7 @@ abort :: (MonadIO m) => ApplePaySession -> m ()
 abort self = liftIO (js_abort self)
  
 foreign import javascript safe
-        "$1[\"completeMerchantValidation\"]($2)"
+        "(($1, $2) => { return $1[\"completeMerchantValidation\"]($2); })"
         js_completeMerchantValidation :: ApplePaySession -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completeMerchantValidation Mozilla ApplePaySession.completeMerchantValidation documentation> 
@@ -159,7 +159,7 @@ completeMerchantValidation self merchantSession
            js_completeMerchantValidation self merchantSession')
  
 foreign import javascript safe
-        "$1[\"completeShippingMethodSelection\"]($2)"
+        "(($1, $2) => { return $1[\"completeShippingMethodSelection\"]($2); })"
         js_completeShippingMethodSelectionUpdate ::
         ApplePaySession -> ApplePayShippingMethodUpdate -> IO ()
 
@@ -171,7 +171,7 @@ completeShippingMethodSelectionUpdate self update
   = liftIO (js_completeShippingMethodSelectionUpdate self update)
  
 foreign import javascript safe
-        "$1[\"completeShippingContactSelection\"]($2)"
+        "(($1, $2) => { return $1[\"completeShippingContactSelection\"]($2); })"
         js_completeShippingContactSelectionUpdate ::
         ApplePaySession -> ApplePayShippingContactUpdate -> IO ()
 
@@ -183,7 +183,7 @@ completeShippingContactSelectionUpdate self update
   = liftIO (js_completeShippingContactSelectionUpdate self update)
  
 foreign import javascript safe
-        "$1[\"completePaymentMethodSelection\"]($2)"
+        "(($1, $2) => { return $1[\"completePaymentMethodSelection\"]($2); })"
         js_completePaymentMethodSelectionUpdate ::
         ApplePaySession -> ApplePayPaymentMethodUpdate -> IO ()
 
@@ -194,7 +194,7 @@ completePaymentMethodSelectionUpdate ::
 completePaymentMethodSelectionUpdate self update
   = liftIO (js_completePaymentMethodSelectionUpdate self update)
  
-foreign import javascript safe "$1[\"completePayment\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"completePayment\"]($2); })"
         js_completePaymentResult ::
         ApplePaySession -> ApplePayPaymentAuthorizationResult -> IO ()
 
@@ -206,7 +206,7 @@ completePaymentResult self result
   = liftIO (js_completePaymentResult self result)
  
 foreign import javascript safe
-        "$1[\"completeShippingMethodSelection\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"completeShippingMethodSelection\"]($2,\n$3, $4); })"
         js_completeShippingMethodSelection ::
         ApplePaySession -> Word -> ApplePayLineItem -> JSVal -> IO ()
 
@@ -223,7 +223,7 @@ completeShippingMethodSelection self status newTotal newLineItems
              newLineItems')
  
 foreign import javascript safe
-        "$1[\"completeShippingContactSelection\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"completeShippingContactSelection\"]($2,\n$3, $4, $5); })"
         js_completeShippingContactSelection ::
         ApplePaySession ->
           Word -> JSVal -> ApplePayLineItem -> JSVal -> IO ()
@@ -247,7 +247,7 @@ completeShippingContactSelection self status newShippingMethods
              newLineItems')
  
 foreign import javascript safe
-        "$1[\"completePaymentMethodSelection\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"completePaymentMethodSelection\"]($2,\n$3); })"
         js_completePaymentMethodSelection ::
         ApplePaySession -> ApplePayLineItem -> JSVal -> IO ()
 
@@ -261,7 +261,7 @@ completePaymentMethodSelection self newTotal newLineItems
          \ newLineItems' ->
            js_completePaymentMethodSelection self newTotal newLineItems')
  
-foreign import javascript safe "$1[\"completePayment\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"completePayment\"]($2); })"
         js_completePayment :: ApplePaySession -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.completePayment Mozilla ApplePaySession.completePayment documentation> 

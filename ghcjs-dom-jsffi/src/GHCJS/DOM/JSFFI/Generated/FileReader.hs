@@ -32,14 +32,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"FileReader\"]()"
+foreign import javascript unsafe "(() => { return new window[\"FileReader\"](); })"
         js_newFileReader :: IO FileReader
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader Mozilla FileReader documentation> 
 newFileReader :: (MonadIO m) => m FileReader
 newFileReader = liftIO (js_newFileReader)
  
-foreign import javascript safe "$1[\"readAsArrayBuffer\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsArrayBuffer\"]($2); })"
         js_readAsArrayBuffer :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsArrayBuffer Mozilla FileReader.readAsArrayBuffer documentation> 
@@ -49,7 +49,7 @@ readAsArrayBuffer self blob
   = liftIO
       (js_readAsArrayBuffer self (maybeToOptional (fmap toBlob blob)))
  
-foreign import javascript safe "$1[\"readAsBinaryString\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsBinaryString\"]($2); })"
         js_readAsBinaryString :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsBinaryString Mozilla FileReader.readAsBinaryString documentation> 
@@ -59,7 +59,7 @@ readAsBinaryString self blob
   = liftIO
       (js_readAsBinaryString self (maybeToOptional (fmap toBlob blob)))
  
-foreign import javascript safe "$1[\"readAsText\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"readAsText\"]($2, $3); })"
         js_readAsText ::
         FileReader -> Optional Blob -> Optional JSString -> IO ()
 
@@ -72,7 +72,7 @@ readAsText self blob encoding
       (js_readAsText self (maybeToOptional (fmap toBlob blob))
          (toOptionalJSString encoding))
  
-foreign import javascript safe "$1[\"readAsDataURL\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsDataURL\"]($2); })"
         js_readAsDataURL :: FileReader -> Optional Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsDataURL Mozilla FileReader.readAsDataURL documentation> 
@@ -92,7 +92,7 @@ pattern EMPTY = 0
 pattern LOADING = 1
 pattern DONE = 2
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: FileReader -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readyState Mozilla FileReader.readyState documentation> 

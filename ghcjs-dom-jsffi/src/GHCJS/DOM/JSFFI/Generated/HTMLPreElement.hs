@@ -47,7 +47,7 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"wrap\"] = $2; })" js_setWr
 setWrap :: (MonadIO m) => HTMLPreElement -> Bool -> m ()
 setWrap self val = liftIO (js_setWrap self val)
  
-foreign import javascript unsafe "($1[\"wrap\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"wrap\"] ? 1 : 0); })"
         js_getWrap :: HTMLPreElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLPreElement.wrap Mozilla HTMLPreElement.wrap documentation> 

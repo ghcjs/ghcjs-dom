@@ -33,7 +33,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setValueAtTime\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setValueAtTime\"]($2, $3); })"
         js_setValueAtTime :: AudioParam -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.setValueAtTime Mozilla AudioParam.setValueAtTime documentation> 
@@ -43,7 +43,7 @@ setValueAtTime self value time
   = liftIO (js_setValueAtTime self value time)
  
 foreign import javascript unsafe
-        "$1[\"linearRampToValueAtTime\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"linearRampToValueAtTime\"]($2,\n$3); })"
         js_linearRampToValueAtTime :: AudioParam -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.linearRampToValueAtTime Mozilla AudioParam.linearRampToValueAtTime documentation> 
@@ -53,7 +53,7 @@ linearRampToValueAtTime self value time
   = liftIO (js_linearRampToValueAtTime self value time)
  
 foreign import javascript unsafe
-        "$1[\"exponentialRampToValueAtTime\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"exponentialRampToValueAtTime\"]($2,\n$3); })"
         js_exponentialRampToValueAtTime ::
         AudioParam -> Float -> Float -> IO ()
 
@@ -125,7 +125,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"maxValue\"]; })" js_get
 getMaxValue :: (MonadIO m) => AudioParam -> m Float
 getMaxValue self = liftIO (js_getMaxValue self)
  
-foreign import javascript unsafe "$1[\"defaultValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"defaultValue\"]; })"
         js_getDefaultValue :: AudioParam -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioParam.defaultValue Mozilla AudioParam.defaultValue documentation> 

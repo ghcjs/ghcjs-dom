@@ -28,7 +28,7 @@ import GHCJS.DOM.Types
 import Control.Applicative ((<$>))
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"UIEvent\"]($1, $2)"
+foreign import javascript unsafe "(($1, $2) => { return new window[\"UIEvent\"]($1, $2); })"
         js_newUIEvent :: JSString -> Optional UIEventInit -> IO UIEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/UIEvent Mozilla UIEvent documentation> 

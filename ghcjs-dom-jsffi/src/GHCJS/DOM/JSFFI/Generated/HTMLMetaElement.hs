@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"content\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"content\"] = $2; })"
         js_setContent :: HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.content Mozilla HTMLMetaElement.content documentation> 
@@ -44,7 +44,7 @@ getContent ::
            (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
 getContent self = liftIO (fromJSString <$> (js_getContent self))
  
-foreign import javascript unsafe "$1[\"httpEquiv\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"httpEquiv\"] = $2; })"
         js_setHttpEquiv :: HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.httpEquiv Mozilla HTMLMetaElement.httpEquiv documentation> 
@@ -53,7 +53,7 @@ setHttpEquiv ::
 setHttpEquiv self val
   = liftIO (js_setHttpEquiv self (toJSString val))
  
-foreign import javascript unsafe "$1[\"httpEquiv\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"httpEquiv\"]; })"
         js_getHttpEquiv :: HTMLMetaElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.httpEquiv Mozilla HTMLMetaElement.httpEquiv documentation> 
@@ -78,7 +78,7 @@ getName ::
         (MonadIO m, FromJSString result) => HTMLMetaElement -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"scheme\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"scheme\"] = $2; })"
         js_setScheme :: HTMLMetaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMetaElement.scheme Mozilla HTMLMetaElement.scheme documentation> 

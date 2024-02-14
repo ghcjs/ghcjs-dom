@@ -56,14 +56,14 @@ getBufferUnchecked :: (MonadIO m) => ConvolverNode -> m AudioBuffer
 getBufferUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBuffer self))
  
-foreign import javascript unsafe "$1[\"normalize\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"normalize\"] = $2; })"
         js_setNormalize :: ConvolverNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
 setNormalize :: (MonadIO m) => ConvolverNode -> Bool -> m ()
 setNormalize self val = liftIO (js_setNormalize self val)
  
-foreign import javascript unsafe "($1[\"normalize\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"normalize\"] ? 1 : 0); })"
         js_getNormalize :: ConvolverNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 

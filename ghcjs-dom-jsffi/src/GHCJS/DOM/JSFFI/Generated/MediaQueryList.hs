@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"addListener\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addListener\"]($2); })"
         js_addListener ::
         MediaQueryList -> Optional MediaQueryListListener -> IO ()
 
@@ -38,7 +38,7 @@ addListener ::
 addListener self listener
   = liftIO (js_addListener self (maybeToOptional listener))
  
-foreign import javascript unsafe "$1[\"removeListener\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"removeListener\"]($2); })"
         js_removeListener ::
         MediaQueryList -> Optional MediaQueryListListener -> IO ()
 
@@ -57,7 +57,7 @@ getMedia ::
          (MonadIO m, FromJSString result) => MediaQueryList -> m result
 getMedia self = liftIO (fromJSString <$> (js_getMedia self))
  
-foreign import javascript unsafe "($1[\"matches\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"matches\"] ? 1 : 0); })"
         js_getMatches :: MediaQueryList -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList.matches Mozilla MediaQueryList.matches documentation> 

@@ -90,7 +90,7 @@ setValueInSpecifiedUnits ::
 setValueInSpecifiedUnits self val
   = liftIO (js_setValueInSpecifiedUnits self val)
  
-foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"valueInSpecifiedUnits\"]; })"
         js_getValueInSpecifiedUnits :: SVGAngle -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueInSpecifiedUnits Mozilla SVGAngle.valueInSpecifiedUnits documentation> 
@@ -98,7 +98,7 @@ getValueInSpecifiedUnits :: (MonadIO m) => SVGAngle -> m Float
 getValueInSpecifiedUnits self
   = liftIO (js_getValueInSpecifiedUnits self)
  
-foreign import javascript safe "$1[\"valueAsString\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"valueAsString\"] = $2; })"
         js_setValueAsString :: SVGAngle -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 
@@ -107,7 +107,7 @@ setValueAsString ::
 setValueAsString self val
   = liftIO (js_setValueAsString self (toJSString val))
  
-foreign import javascript unsafe "$1[\"valueAsString\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"valueAsString\"]; })"
         js_getValueAsString :: SVGAngle -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAngle.valueAsString Mozilla SVGAngle.valueAsString documentation> 

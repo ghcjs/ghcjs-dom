@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "window[\"Response\"][\"error\"]()" js_error :: IO Response
+        "(() => { return window[\"Response\"][\"error\"](); })" js_error :: IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.error Mozilla Response.error documentation> 
 error :: (MonadIO m) => m Response
@@ -45,7 +45,7 @@ error_ :: (MonadIO m) => m ()
 error_ = liftIO (void (js_error))
  
 foreign import javascript safe
-        "window[\"Response\"][\"redirect\"]($1,\n$2)" js_redirect ::
+        "(($1, $2) => { return window[\"Response\"][\"redirect\"]($1,\n$2); })" js_redirect ::
         JSString -> Optional Word -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 
@@ -148,7 +148,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl :
 getUrl :: (MonadIO m, FromJSString result) => Response -> m result
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
-foreign import javascript unsafe "($1[\"redirected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"redirected\"] ? 1 : 0); })"
         js_getRedirected :: Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirected Mozilla Response.redirected documentation> 
@@ -162,14 +162,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getSt
 getStatus :: (MonadIO m) => Response -> m Word
 getStatus self = liftIO (js_getStatus self)
  
-foreign import javascript unsafe "($1[\"ok\"] ? 1 : 0)" js_getOk ::
+foreign import javascript unsafe "(($1) => { return ($1[\"ok\"] ? 1 : 0); })" js_getOk ::
         Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.ok Mozilla Response.ok documentation> 
 getOk :: (MonadIO m) => Response -> m Bool
 getOk self = liftIO (js_getOk self)
  
-foreign import javascript unsafe "$1[\"statusText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"statusText\"]; })"
         js_getStatusText :: Response -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.statusText Mozilla Response.statusText documentation> 
@@ -205,7 +205,7 @@ getBodyUnchecked :: (MonadIO m) => Response -> m ReadableStream
 getBodyUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBody self))
  
-foreign import javascript unsafe "($1[\"bodyUsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"bodyUsed\"] ? 1 : 0); })"
         js_getBodyUsed :: Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.bodyUsed Mozilla Response.bodyUsed documentation> 

@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitPlaybackTargetAvailabilityEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"WebKitPlaybackTargetAvailabilityEvent\"]($1,\n$2); })"
         js_newWebKitPlaybackTargetAvailabilityEvent ::
         JSString ->
           Optional WebKitPlaybackTargetAvailabilityEventInit ->
@@ -46,7 +46,7 @@ newWebKitPlaybackTargetAvailabilityEvent type' eventInitDict
       (js_newWebKitPlaybackTargetAvailabilityEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"availability\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"availability\"]; })"
         js_getAvailability ::
         WebKitPlaybackTargetAvailabilityEvent -> IO JSString
 

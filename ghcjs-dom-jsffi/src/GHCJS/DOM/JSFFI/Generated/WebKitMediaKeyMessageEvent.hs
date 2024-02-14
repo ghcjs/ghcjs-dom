@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2); })"
         js_newWebKitMediaKeyMessageEvent ::
         JSString ->
           Optional WebKitMediaKeyMessageEventInit ->
@@ -53,7 +53,7 @@ getMessage ::
            (MonadIO m) => WebKitMediaKeyMessageEvent -> m Uint8Array
 getMessage self = liftIO (js_getMessage self)
  
-foreign import javascript unsafe "$1[\"destinationURL\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"destinationURL\"]; })"
         js_getDestinationURL :: WebKitMediaKeyMessageEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.destinationURL Mozilla WebKitMediaKeyMessageEvent.destinationURL documentation> 

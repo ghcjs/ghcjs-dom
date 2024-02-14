@@ -58,7 +58,7 @@ getCTM_ :: (MonadIO m, IsSVGGraphicsElement self) => self -> m ()
 getCTM_ self
   = liftIO (void (js_getCTM (toSVGGraphicsElement self)))
  
-foreign import javascript unsafe "$1[\"getScreenCTM\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getScreenCTM\"](); })"
         js_getScreenCTM :: SVGGraphicsElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getScreenCTM Mozilla SVGGraphicsElement.getScreenCTM documentation> 
@@ -73,7 +73,7 @@ getScreenCTM_ ::
 getScreenCTM_ self
   = liftIO (void (js_getScreenCTM (toSVGGraphicsElement self)))
  
-foreign import javascript safe "$1[\"getTransformToElement\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getTransformToElement\"]($2); })"
         js_getTransformToElement ::
         SVGGraphicsElement -> Optional SVGElement -> IO SVGMatrix
 
@@ -96,7 +96,7 @@ getTransformToElement_ self element
          (js_getTransformToElement (toSVGGraphicsElement self)
             (maybeToOptional (fmap toSVGElement element))))
  
-foreign import javascript unsafe "$1[\"transform\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transform\"]; })"
         js_getTransform ::
         SVGGraphicsElement -> IO SVGAnimatedTransformList
 
@@ -107,7 +107,7 @@ getTransform ::
 getTransform self
   = liftIO (js_getTransform (toSVGGraphicsElement self))
  
-foreign import javascript unsafe "$1[\"nearestViewportElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nearestViewportElement\"]; })"
         js_getNearestViewportElement :: SVGGraphicsElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.nearestViewportElement Mozilla SVGGraphicsElement.nearestViewportElement documentation> 
@@ -116,7 +116,7 @@ getNearestViewportElement ::
 getNearestViewportElement self
   = liftIO (js_getNearestViewportElement (toSVGGraphicsElement self))
  
-foreign import javascript unsafe "$1[\"farthestViewportElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"farthestViewportElement\"]; })"
         js_getFarthestViewportElement ::
         SVGGraphicsElement -> IO SVGElement
 

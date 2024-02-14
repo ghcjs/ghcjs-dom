@@ -38,7 +38,7 @@ pattern TEXTPATH_SPACINGTYPE_UNKNOWN = 0
 pattern TEXTPATH_SPACINGTYPE_AUTO = 1
 pattern TEXTPATH_SPACINGTYPE_EXACT = 2
  
-foreign import javascript unsafe "$1[\"startOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startOffset\"]; })"
         js_getStartOffset :: SVGTextPathElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextPathElement.startOffset Mozilla SVGTextPathElement.startOffset documentation> 

@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getAsString\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getAsString\"]($2); })"
         js_getAsString ::
         DataTransferItem -> Optional (StringCallback callback) -> IO ()
 

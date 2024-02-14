@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "(window[\"CSS\"][\"supports\"]($1,\n$2) ? 1 : 0)" js_supports2 ::
+        "(($1, $2) => { return (window[\"CSS\"][\"supports\"]($1,\n$2) ? 1 : 0); })" js_supports2 ::
         JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
@@ -46,7 +46,7 @@ supports2_ property value
       (void (js_supports2 (toJSString property) (toJSString value)))
  
 foreign import javascript unsafe
-        "(window[\"CSS\"][\"supports\"]($1) ? 1 : 0)" js_supports ::
+        "(($1) => { return (window[\"CSS\"][\"supports\"]($1) ? 1 : 0); })" js_supports ::
         JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.supports Mozilla CSS.supports documentation> 
@@ -61,7 +61,7 @@ supports_ ::
 supports_ conditionText
   = liftIO (void (js_supports (toJSString conditionText)))
  
-foreign import javascript unsafe "window[\"CSS\"][\"escape\"]($1)"
+foreign import javascript unsafe "(($1) => { return window[\"CSS\"][\"escape\"]($1); })"
         js_escape :: JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSS.escape Mozilla CSS.escape documentation> 

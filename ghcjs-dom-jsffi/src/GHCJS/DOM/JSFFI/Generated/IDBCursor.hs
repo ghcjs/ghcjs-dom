@@ -69,7 +69,7 @@ continue self key
       (mapM toJSVal key >>=
          \ key' -> js_continue (toIDBCursor self) (maybeToOptional key'))
  
-foreign import javascript safe "$1[\"continuePrimaryKey\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"continuePrimaryKey\"]($2, $3); })"
         js_continuePrimaryKey :: IDBCursor -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.continuePrimaryKey Mozilla IDBCursor.continuePrimaryKey documentation> 
@@ -103,7 +103,7 @@ getSource ::
           (MonadIO m, IsIDBCursor self) => self -> m IDBCursorSource
 getSource self = liftIO (js_getSource (toIDBCursor self))
  
-foreign import javascript unsafe "$1[\"direction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"direction\"]; })"
         js_getDirection :: IDBCursor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.direction Mozilla IDBCursor.direction documentation> 
@@ -120,7 +120,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"key\"]; })" js_getKey :
 getKey :: (MonadIO m, IsIDBCursor self) => self -> m JSVal
 getKey self = liftIO (js_getKey (toIDBCursor self))
  
-foreign import javascript unsafe "$1[\"primaryKey\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"primaryKey\"]; })"
         js_getPrimaryKey :: IDBCursor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor.primaryKey Mozilla IDBCursor.primaryKey documentation> 

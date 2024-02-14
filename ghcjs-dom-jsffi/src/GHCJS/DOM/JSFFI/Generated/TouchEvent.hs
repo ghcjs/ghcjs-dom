@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"TouchEvent\"]($1, $2)" js_newTouchEvent ::
+        "(($1, $2) => { return new window[\"TouchEvent\"]($1, $2); })" js_newTouchEvent ::
         JSString -> Optional TouchEventInit -> IO TouchEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent Mozilla TouchEvent documentation> 
@@ -44,7 +44,7 @@ newTouchEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initTouchEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1, $1, $1) => { return $1[\"initTouchEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14); })"
         js_initTouchEvent ::
         TouchEvent ->
           Optional TouchList ->
@@ -93,42 +93,42 @@ foreign import javascript unsafe "(($1) => { return $1[\"touches\"]; })" js_getT
 getTouches :: (MonadIO m) => TouchEvent -> m TouchList
 getTouches self = liftIO (js_getTouches self)
  
-foreign import javascript unsafe "$1[\"targetTouches\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"targetTouches\"]; })"
         js_getTargetTouches :: TouchEvent -> IO TouchList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.targetTouches Mozilla TouchEvent.targetTouches documentation> 
 getTargetTouches :: (MonadIO m) => TouchEvent -> m TouchList
 getTargetTouches self = liftIO (js_getTargetTouches self)
  
-foreign import javascript unsafe "$1[\"changedTouches\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"changedTouches\"]; })"
         js_getChangedTouches :: TouchEvent -> IO TouchList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.changedTouches Mozilla TouchEvent.changedTouches documentation> 
 getChangedTouches :: (MonadIO m) => TouchEvent -> m TouchList
 getChangedTouches self = liftIO (js_getChangedTouches self)
  
-foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"ctrlKey\"] ? 1 : 0); })"
         js_getCtrlKey :: TouchEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.ctrlKey Mozilla TouchEvent.ctrlKey documentation> 
 getCtrlKey :: (MonadIO m) => TouchEvent -> m Bool
 getCtrlKey self = liftIO (js_getCtrlKey self)
  
-foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"shiftKey\"] ? 1 : 0); })"
         js_getShiftKey :: TouchEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.shiftKey Mozilla TouchEvent.shiftKey documentation> 
 getShiftKey :: (MonadIO m) => TouchEvent -> m Bool
 getShiftKey self = liftIO (js_getShiftKey self)
  
-foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"altKey\"] ? 1 : 0); })"
         js_getAltKey :: TouchEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.altKey Mozilla TouchEvent.altKey documentation> 
 getAltKey :: (MonadIO m) => TouchEvent -> m Bool
 getAltKey self = liftIO (js_getAltKey self)
  
-foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"metaKey\"] ? 1 : 0); })"
         js_getMetaKey :: TouchEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent.metaKey Mozilla TouchEvent.metaKey documentation> 

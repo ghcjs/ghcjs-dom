@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"File\"]($1, $2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return new window[\"File\"]($1, $2, $3); })"
         js_newFile ::
         JSVal -> JSString -> Optional FilePropertyBag -> IO File
 
@@ -47,7 +47,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName
 getName :: (MonadIO m, FromJSString result) => File -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"lastModified\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lastModified\"]; })"
         js_getLastModified :: File -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/File.lastModified Mozilla File.lastModified documentation> 

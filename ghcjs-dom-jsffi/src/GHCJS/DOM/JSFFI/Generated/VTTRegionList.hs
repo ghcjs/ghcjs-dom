@@ -53,7 +53,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . nullableToMaybe <$> (js_item self index))
  
-foreign import javascript unsafe "$1[\"getRegionById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getRegionById\"]($2); })"
         js_getRegionById ::
         VTTRegionList -> JSString -> IO (Nullable VTTRegion)
 

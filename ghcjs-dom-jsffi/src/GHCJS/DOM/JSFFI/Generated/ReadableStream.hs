@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStream\"]($1,\n$2)" js_newReadableStream ::
+        "(($1, $2) => { return new window[\"ReadableStream\"]($1,\n$2); })" js_newReadableStream ::
         Optional JSVal -> Optional JSVal -> IO ReadableStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation> 
@@ -70,7 +70,7 @@ cancel_ self reason
          (mapM toJSVal reason >>=
             \ reason' -> js_cancel self (maybeToOptional reason')))
  
-foreign import javascript unsafe "$1[\"getReader\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getReader\"]($2); })"
         js_getReader :: ReadableStream -> Optional JSVal -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.getReader Mozilla ReadableStream.getReader documentation> 
@@ -121,7 +121,7 @@ pipeTo_ self streams options
               toJSVal streams >>= \ streams' -> js_pipeTo self streams'
                 (maybeToOptional options')))
  
-foreign import javascript unsafe "$1[\"pipeThrough\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"pipeThrough\"]($2, $3); })"
         js_pipeThrough :: ReadableStream -> JSVal -> JSVal -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
@@ -156,7 +156,7 @@ tee self = liftIO (js_tee self)
 tee_ :: (MonadIO m) => ReadableStream -> m ()
 tee_ self = liftIO (void (js_tee self))
  
-foreign import javascript unsafe "($1[\"locked\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"locked\"] ? 1 : 0); })"
         js_getLocked :: ReadableStream -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.locked Mozilla ReadableStream.locked documentation> 

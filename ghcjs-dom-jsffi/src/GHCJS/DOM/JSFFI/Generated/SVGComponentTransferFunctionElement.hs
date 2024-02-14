@@ -53,7 +53,7 @@ getType ::
 getType self
   = liftIO (js_getType (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"tableValues\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"tableValues\"]; })"
         js_getTableValues ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumberList
 
@@ -75,7 +75,7 @@ getSlope ::
 getSlope self
   = liftIO (js_getSlope (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"intercept\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"intercept\"]; })"
         js_getIntercept ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
@@ -87,7 +87,7 @@ getIntercept self
   = liftIO
       (js_getIntercept (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"amplitude\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"amplitude\"]; })"
         js_getAmplitude ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 

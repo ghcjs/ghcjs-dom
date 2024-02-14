@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"RTCSessionDescription\"]($1)"
+        "(($1) => { return new window[\"RTCSessionDescription\"]($1); })"
         js_newRTCSessionDescription ::
         RTCSessionDescriptionInit -> IO RTCSessionDescription
 

@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MutationObserver\"]($1)" js_newMutationObserver ::
+        "(($1) => { return new window[\"MutationObserver\"]($1); })" js_newMutationObserver ::
         MutationCallback -> IO MutationObserver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver Mozilla MutationObserver documentation> 
@@ -50,14 +50,14 @@ observe self target options
   = liftIO
       (js_observe self (toNode target) (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"disconnect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"disconnect\"](); })"
         js_disconnect :: MutationObserver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.disconnect Mozilla MutationObserver.disconnect documentation> 
 disconnect :: (MonadIO m) => MutationObserver -> m ()
 disconnect self = liftIO (js_disconnect self)
  
-foreign import javascript unsafe "$1[\"takeRecords\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"takeRecords\"](); })"
         js_takeRecords :: MutationObserver -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.takeRecords Mozilla MutationObserver.takeRecords documentation> 

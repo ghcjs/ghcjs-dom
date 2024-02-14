@@ -28,21 +28,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Path2D\"]()"
+foreign import javascript unsafe "(() => { return new window[\"Path2D\"](); })"
         js_newPath2D :: IO Path2D
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
 newPath2D :: (MonadIO m) => m Path2D
 newPath2D = liftIO (js_newPath2D)
  
-foreign import javascript unsafe "new window[\"Path2D\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Path2D\"]($1); })"
         js_newPath2D' :: Path2D -> IO Path2D
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
 newPath2D' :: (MonadIO m) => Path2D -> m Path2D
 newPath2D' path = liftIO (js_newPath2D' path)
  
-foreign import javascript unsafe "new window[\"Path2D\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Path2D\"]($1); })"
         js_newPath2D'' :: JSString -> IO Path2D
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Path2D Mozilla Path2D documentation> 
@@ -56,7 +56,7 @@ foreign import javascript unsafe "(($1, $2) => { return $1[\"addPath\"]($2); })"
 addPath :: (MonadIO m) => Path2D -> Maybe Path2D -> m ()
 addPath self path = liftIO (js_addPath self (maybeToOptional path))
  
-foreign import javascript unsafe "$1[\"addPath\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"addPath\"]($2, $3); })"
         js_addPathWithTransform ::
         Path2D -> Optional Path2D -> SVGMatrix -> IO ()
 

@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableByteStreamController\"]($1,\n$2, $3)"
+        "(($1, $2, $3) => { return new window[\"ReadableByteStreamController\"]($1,\n$2, $3); })"
         js_newReadableByteStreamController ::
         ReadableStream -> JSVal -> Word -> IO ReadableByteStreamController
 
@@ -79,7 +79,7 @@ error self error
       (mapM toJSVal error >>=
          \ error' -> js_error self (maybeToOptional error'))
  
-foreign import javascript unsafe "$1[\"byobRequest\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"byobRequest\"]; })"
         js_getByobRequest ::
         ReadableByteStreamController -> IO ReadableStreamBYOBRequest
 
@@ -89,7 +89,7 @@ getByobRequest ::
                  ReadableByteStreamController -> m ReadableStreamBYOBRequest
 getByobRequest self = liftIO (js_getByobRequest self)
  
-foreign import javascript unsafe "$1[\"desiredSize\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"desiredSize\"]; })"
         js_getDesiredSize :: ReadableByteStreamController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.desiredSize Mozilla ReadableByteStreamController.desiredSize documentation> 

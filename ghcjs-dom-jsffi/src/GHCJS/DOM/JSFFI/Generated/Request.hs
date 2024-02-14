@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Request\"]($1, $2)"
+foreign import javascript unsafe "(($1, $2) => { return new window[\"Request\"]($1, $2); })"
         js_newRequest :: JSVal -> Optional RequestInit -> IO Request
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request Mozilla Request documentation> 
@@ -83,7 +83,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType
 getType :: (MonadIO m) => Request -> m RequestType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"destination\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"destination\"]; })"
         js_getDestination :: Request -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request.destination Mozilla Request.destination documentation> 
@@ -99,7 +99,7 @@ getReferrer ::
             (MonadIO m, FromJSString result) => Request -> m result
 getReferrer self = liftIO (fromJSString <$> (js_getReferrer self))
  
-foreign import javascript unsafe "$1[\"referrerPolicy\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"referrerPolicy\"]; })"
         js_getReferrerPolicy :: Request -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request.referrerPolicy Mozilla Request.referrerPolicy documentation> 
@@ -114,7 +114,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"mode\"]; })" js_getMode
 getMode :: (MonadIO m) => Request -> m RequestMode
 getMode self = liftIO ((js_getMode self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"credentials\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"credentials\"]; })"
         js_getCredentials :: Request -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request.credentials Mozilla Request.credentials documentation> 
@@ -137,7 +137,7 @@ getRedirect :: (MonadIO m) => Request -> m RequestRedirect
 getRedirect self
   = liftIO ((js_getRedirect self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"integrity\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"integrity\"]; })"
         js_getIntegrity :: Request -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Request.integrity Mozilla Request.integrity documentation> 

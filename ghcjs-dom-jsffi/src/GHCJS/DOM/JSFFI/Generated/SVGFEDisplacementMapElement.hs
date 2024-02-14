@@ -59,7 +59,7 @@ getScale ::
          (MonadIO m) => SVGFEDisplacementMapElement -> m SVGAnimatedNumber
 getScale self = liftIO (js_getScale self)
  
-foreign import javascript unsafe "$1[\"xChannelSelector\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"xChannelSelector\"]; })"
         js_getXChannelSelector ::
         SVGFEDisplacementMapElement -> IO SVGAnimatedEnumeration
 
@@ -69,7 +69,7 @@ getXChannelSelector ::
                       SVGFEDisplacementMapElement -> m SVGAnimatedEnumeration
 getXChannelSelector self = liftIO (js_getXChannelSelector self)
  
-foreign import javascript unsafe "$1[\"yChannelSelector\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"yChannelSelector\"]; })"
         js_getYChannelSelector ::
         SVGFEDisplacementMapElement -> IO SVGAnimatedEnumeration
 

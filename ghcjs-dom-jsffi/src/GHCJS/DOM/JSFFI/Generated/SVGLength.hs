@@ -99,7 +99,7 @@ setValueInSpecifiedUnits ::
 setValueInSpecifiedUnits self val
   = liftIO (js_setValueInSpecifiedUnits self val)
  
-foreign import javascript unsafe "$1[\"valueInSpecifiedUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"valueInSpecifiedUnits\"]; })"
         js_getValueInSpecifiedUnits :: SVGLength -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueInSpecifiedUnits Mozilla SVGLength.valueInSpecifiedUnits documentation> 
@@ -107,7 +107,7 @@ getValueInSpecifiedUnits :: (MonadIO m) => SVGLength -> m Float
 getValueInSpecifiedUnits self
   = liftIO (js_getValueInSpecifiedUnits self)
  
-foreign import javascript safe "$1[\"valueAsString\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"valueAsString\"] = $2; })"
         js_setValueAsString :: SVGLength -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 
@@ -116,7 +116,7 @@ setValueAsString ::
 setValueAsString self val
   = liftIO (js_setValueAsString self (toJSString val))
  
-foreign import javascript unsafe "$1[\"valueAsString\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"valueAsString\"]; })"
         js_getValueAsString :: SVGLength -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGLength.valueAsString Mozilla SVGLength.valueAsString documentation> 

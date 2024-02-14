@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"functionWithName\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"functionWithName\"]($2); })"
         js_functionWithName ::
         WebGPULibrary -> JSString -> IO (Nullable WebGPUFunction)
 
@@ -65,7 +65,7 @@ functionWithNameUnchecked self name
       (fromJust . nullableToMaybe <$>
          (js_functionWithName self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"sourceCode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceCode\"]; })"
         js_getSourceCode :: WebGPULibrary -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPULibrary.sourceCode Mozilla WebGPULibrary.sourceCode documentation> 
@@ -90,7 +90,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => WebGPULibrary -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"functionNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"functionNames\"]; })"
         js_getFunctionNames :: WebGPULibrary -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPULibrary.functionNames Mozilla WebGPULibrary.functionNames documentation> 

@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setStdDeviation\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setStdDeviation\"]($2, $3); })"
         js_setStdDeviation ::
         SVGFEDropShadowElement -> Optional Float -> Optional Float -> IO ()
 
@@ -65,7 +65,7 @@ getDy ::
       (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedNumber
 getDy self = liftIO (js_getDy self)
  
-foreign import javascript unsafe "$1[\"stdDeviationX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"stdDeviationX\"]; })"
         js_getStdDeviationX ::
         SVGFEDropShadowElement -> IO SVGAnimatedNumber
 
@@ -74,7 +74,7 @@ getStdDeviationX ::
                  (MonadIO m) => SVGFEDropShadowElement -> m SVGAnimatedNumber
 getStdDeviationX self = liftIO (js_getStdDeviationX self)
  
-foreign import javascript unsafe "$1[\"stdDeviationY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"stdDeviationY\"]; })"
         js_getStdDeviationY ::
         SVGFEDropShadowElement -> IO SVGAnimatedNumber
 

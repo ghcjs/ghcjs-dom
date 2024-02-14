@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"URLSearchParams\"]($1)" js_newURLSearchParams ::
+        "(($1) => { return new window[\"URLSearchParams\"]($1); })" js_newURLSearchParams ::
         URLSearchParamsInit -> IO URLSearchParams
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams Mozilla URLSearchParams documentation> 
@@ -109,7 +109,7 @@ getAll_ ::
 getAll_ self name
   = liftIO (void (js_getAll self (toJSString name)))
  
-foreign import javascript unsafe "($1[\"has\"]($2) ? 1 : 0)" js_has
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"has\"]($2) ? 1 : 0); })" js_has
         :: URLSearchParams -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams.has Mozilla URLSearchParams.has documentation> 

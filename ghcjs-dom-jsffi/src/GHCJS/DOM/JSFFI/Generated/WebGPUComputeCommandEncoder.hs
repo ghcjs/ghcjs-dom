@@ -38,7 +38,7 @@ setComputePipelineState ::
 setComputePipelineState self pipelineState
   = liftIO (js_setComputePipelineState self pipelineState)
  
-foreign import javascript unsafe "$1[\"setBuffer\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setBuffer\"]($2, $3, $4); })"
         js_setBuffer ::
         WebGPUComputeCommandEncoder ->
           WebGPUBuffer -> Word -> Word -> IO ()
@@ -50,7 +50,7 @@ setBuffer ::
 setBuffer self buffer offset index
   = liftIO (js_setBuffer self buffer offset index)
  
-foreign import javascript unsafe "$1[\"dispatch\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"dispatch\"]($2, $3); })"
         js_dispatch ::
         WebGPUComputeCommandEncoder -> WebGPUSize -> WebGPUSize -> IO ()
 
@@ -62,7 +62,7 @@ dispatch self threadgroupsPerGrid threadsPerThreadgroup
   = liftIO
       (js_dispatch self threadgroupsPerGrid threadsPerThreadgroup)
  
-foreign import javascript unsafe "$1[\"endEncoding\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"endEncoding\"](); })"
         js_endEncoding :: WebGPUComputeCommandEncoder -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUComputeCommandEncoder.endEncoding Mozilla WebGPUComputeCommandEncoder.endEncoding documentation> 

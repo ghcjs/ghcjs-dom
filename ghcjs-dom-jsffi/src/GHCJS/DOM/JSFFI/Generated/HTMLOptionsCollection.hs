@@ -134,7 +134,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLe
 getLength :: (MonadIO m) => HTMLOptionsCollection -> m Word
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript unsafe "$1[\"selectedIndex\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"selectedIndex\"] = $2; })"
         js_setSelectedIndex :: HTMLOptionsCollection -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 
@@ -142,7 +142,7 @@ setSelectedIndex ::
                  (MonadIO m) => HTMLOptionsCollection -> Int -> m ()
 setSelectedIndex self val = liftIO (js_setSelectedIndex self val)
  
-foreign import javascript unsafe "$1[\"selectedIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"selectedIndex\"]; })"
         js_getSelectedIndex :: HTMLOptionsCollection -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionsCollection.selectedIndex Mozilla HTMLOptionsCollection.selectedIndex documentation> 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setFilterRes\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setFilterRes\"]($2, $3); })"
         js_setFilterRes ::
         SVGFilterElement -> Optional Word -> Optional Word -> IO ()
 
@@ -41,7 +41,7 @@ setFilterRes self filterResX filterResY
       (js_setFilterRes self (maybeToOptional filterResX)
          (maybeToOptional filterResY))
  
-foreign import javascript unsafe "$1[\"filterUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"filterUnits\"]; })"
         js_getFilterUnits :: SVGFilterElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterUnits Mozilla SVGFilterElement.filterUnits documentation> 
@@ -49,7 +49,7 @@ getFilterUnits ::
                (MonadIO m) => SVGFilterElement -> m SVGAnimatedEnumeration
 getFilterUnits self = liftIO (js_getFilterUnits self)
  
-foreign import javascript unsafe "$1[\"primitiveUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"primitiveUnits\"]; })"
         js_getPrimitiveUnits ::
         SVGFilterElement -> IO SVGAnimatedEnumeration
 
@@ -86,7 +86,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => SVGFilterElement -> m SVGAnimatedLength
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"filterResX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"filterResX\"]; })"
         js_getFilterResX :: SVGFilterElement -> IO SVGAnimatedInteger
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResX Mozilla SVGFilterElement.filterResX documentation> 
@@ -94,7 +94,7 @@ getFilterResX ::
               (MonadIO m) => SVGFilterElement -> m SVGAnimatedInteger
 getFilterResX self = liftIO (js_getFilterResX self)
  
-foreign import javascript unsafe "$1[\"filterResY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"filterResY\"]; })"
         js_getFilterResY :: SVGFilterElement -> IO SVGAnimatedInteger
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFilterElement.filterResY Mozilla SVGFilterElement.filterResY documentation> 

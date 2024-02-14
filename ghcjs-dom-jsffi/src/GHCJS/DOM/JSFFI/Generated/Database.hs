@@ -53,7 +53,7 @@ changeVersion self oldVersion newVersion callback errorCallback
          (maybeToOptional errorCallback)
          (maybeToOptional successCallback))
  
-foreign import javascript unsafe "$1[\"transaction\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"transaction\"]($2, $3, $4); })"
         js_transaction ::
         Database ->
           SQLTransactionCallback ->

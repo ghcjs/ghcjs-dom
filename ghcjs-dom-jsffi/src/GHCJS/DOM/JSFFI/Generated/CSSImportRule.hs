@@ -58,7 +58,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"media\"]; })" js_getMed
 getMedia :: (MonadIO m) => CSSImportRule -> m MediaList
 getMedia self = liftIO (js_getMedia self)
  
-foreign import javascript unsafe "$1[\"styleSheet\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"styleSheet\"]; })"
         js_getStyleSheet :: CSSImportRule -> IO CSSStyleSheet
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSImportRule.styleSheet Mozilla CSSImportRule.styleSheet documentation> 

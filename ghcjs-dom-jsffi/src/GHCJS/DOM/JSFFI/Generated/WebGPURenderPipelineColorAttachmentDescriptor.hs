@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"pixelFormat\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"pixelFormat\"] = $2; })"
         js_setPixelFormat ::
         WebGPURenderPipelineColorAttachmentDescriptor -> Word -> IO ()
 
@@ -37,7 +37,7 @@ setPixelFormat ::
                  WebGPURenderPipelineColorAttachmentDescriptor -> Word -> m ()
 setPixelFormat self val = liftIO (js_setPixelFormat self val)
  
-foreign import javascript unsafe "$1[\"pixelFormat\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pixelFormat\"]; })"
         js_getPixelFormat ::
         WebGPURenderPipelineColorAttachmentDescriptor -> IO Word
 

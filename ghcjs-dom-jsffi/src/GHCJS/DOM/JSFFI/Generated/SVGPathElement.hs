@@ -76,7 +76,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getTotalLength\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getTotalLength\"](); })"
         js_getTotalLength :: SVGPathElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.getTotalLength Mozilla SVGPathElement.getTotalLength documentation> 
@@ -87,7 +87,7 @@ getTotalLength self = liftIO (js_getTotalLength self)
 getTotalLength_ :: (MonadIO m) => SVGPathElement -> m ()
 getTotalLength_ self = liftIO (void (js_getTotalLength self))
  
-foreign import javascript unsafe "$1[\"getPointAtLength\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getPointAtLength\"]($2); })"
         js_getPointAtLength ::
         SVGPathElement -> Optional Float -> IO SVGPoint
 
@@ -104,7 +104,7 @@ getPointAtLength_ self distance
   = liftIO
       (void (js_getPointAtLength self (maybeToOptional distance)))
  
-foreign import javascript unsafe "$1[\"getPathSegAtLength\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getPathSegAtLength\"]($2); })"
         js_getPathSegAtLength ::
         SVGPathElement -> Optional Float -> IO Word
 
@@ -137,7 +137,7 @@ createSVGPathSegClosePath_ self
   = liftIO (void (js_createSVGPathSegClosePath self))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegMovetoAbs\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegMovetoAbs\"]($2,\n$3); })"
         js_createSVGPathSegMovetoAbs ::
         SVGPathElement ->
           Optional Float -> Optional Float -> IO SVGPathSegMovetoAbs
@@ -162,7 +162,7 @@ createSVGPathSegMovetoAbs_ self x y
             (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegMovetoRel\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegMovetoRel\"]($2,\n$3); })"
         js_createSVGPathSegMovetoRel ::
         SVGPathElement ->
           Optional Float -> Optional Float -> IO SVGPathSegMovetoRel
@@ -187,7 +187,7 @@ createSVGPathSegMovetoRel_ self x y
             (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoAbs\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegLinetoAbs\"]($2,\n$3); })"
         js_createSVGPathSegLinetoAbs ::
         SVGPathElement ->
           Optional Float -> Optional Float -> IO SVGPathSegLinetoAbs
@@ -212,7 +212,7 @@ createSVGPathSegLinetoAbs_ self x y
             (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoRel\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegLinetoRel\"]($2,\n$3); })"
         js_createSVGPathSegLinetoRel ::
         SVGPathElement ->
           Optional Float -> Optional Float -> IO SVGPathSegLinetoRel
@@ -237,7 +237,7 @@ createSVGPathSegLinetoRel_ self x y
             (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoCubicAbs\"]($2,\n$3, $4, $5, $6, $7)"
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"createSVGPathSegCurvetoCubicAbs\"]($2,\n$3, $4, $5, $6, $7); })"
         js_createSVGPathSegCurvetoCubicAbs ::
         SVGPathElement ->
           Optional Float ->
@@ -284,7 +284,7 @@ createSVGPathSegCurvetoCubicAbs_ self x y x1 y1 x2 y2
             (maybeToOptional y2)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoCubicRel\"]($2,\n$3, $4, $5, $6, $7)"
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"createSVGPathSegCurvetoCubicRel\"]($2,\n$3, $4, $5, $6, $7); })"
         js_createSVGPathSegCurvetoCubicRel ::
         SVGPathElement ->
           Optional Float ->
@@ -331,7 +331,7 @@ createSVGPathSegCurvetoCubicRel_ self x y x1 y1 x2 y2
             (maybeToOptional y2)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoQuadraticAbs\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"createSVGPathSegCurvetoQuadraticAbs\"]($2,\n$3, $4, $5); })"
         js_createSVGPathSegCurvetoQuadraticAbs ::
         SVGPathElement ->
           Optional Float ->
@@ -369,7 +369,7 @@ createSVGPathSegCurvetoQuadraticAbs_ self x y x1 y1
             (maybeToOptional y1)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoQuadraticRel\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"createSVGPathSegCurvetoQuadraticRel\"]($2,\n$3, $4, $5); })"
         js_createSVGPathSegCurvetoQuadraticRel ::
         SVGPathElement ->
           Optional Float ->
@@ -407,7 +407,7 @@ createSVGPathSegCurvetoQuadraticRel_ self x y x1 y1
             (maybeToOptional y1)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegArcAbs\"]($2,\n$3, $4, $5, $6, $7, $8)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"createSVGPathSegArcAbs\"]($2,\n$3, $4, $5, $6, $7, $8); })"
         js_createSVGPathSegArcAbs ::
         SVGPathElement ->
           Optional Float ->
@@ -453,7 +453,7 @@ createSVGPathSegArcAbs_ self x y r1 r2 angle largeArcFlag sweepFlag
             sweepFlag))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegArcRel\"]($2,\n$3, $4, $5, $6, $7, $8)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"createSVGPathSegArcRel\"]($2,\n$3, $4, $5, $6, $7, $8); })"
         js_createSVGPathSegArcRel ::
         SVGPathElement ->
           Optional Float ->
@@ -499,7 +499,7 @@ createSVGPathSegArcRel_ self x y r1 r2 angle largeArcFlag sweepFlag
             sweepFlag))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoHorizontalAbs\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGPathSegLinetoHorizontalAbs\"]($2); })"
         js_createSVGPathSegLinetoHorizontalAbs ::
         SVGPathElement ->
           Optional Float -> IO SVGPathSegLinetoHorizontalAbs
@@ -522,7 +522,7 @@ createSVGPathSegLinetoHorizontalAbs_ self x
          (js_createSVGPathSegLinetoHorizontalAbs self (maybeToOptional x)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoHorizontalRel\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGPathSegLinetoHorizontalRel\"]($2); })"
         js_createSVGPathSegLinetoHorizontalRel ::
         SVGPathElement ->
           Optional Float -> IO SVGPathSegLinetoHorizontalRel
@@ -545,7 +545,7 @@ createSVGPathSegLinetoHorizontalRel_ self x
          (js_createSVGPathSegLinetoHorizontalRel self (maybeToOptional x)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoVerticalAbs\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGPathSegLinetoVerticalAbs\"]($2); })"
         js_createSVGPathSegLinetoVerticalAbs ::
         SVGPathElement -> Optional Float -> IO SVGPathSegLinetoVerticalAbs
 
@@ -566,7 +566,7 @@ createSVGPathSegLinetoVerticalAbs_ self y
          (js_createSVGPathSegLinetoVerticalAbs self (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegLinetoVerticalRel\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGPathSegLinetoVerticalRel\"]($2); })"
         js_createSVGPathSegLinetoVerticalRel ::
         SVGPathElement -> Optional Float -> IO SVGPathSegLinetoVerticalRel
 
@@ -587,7 +587,7 @@ createSVGPathSegLinetoVerticalRel_ self y
          (js_createSVGPathSegLinetoVerticalRel self (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoCubicSmoothAbs\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"createSVGPathSegCurvetoCubicSmoothAbs\"]($2,\n$3, $4, $5); })"
         js_createSVGPathSegCurvetoCubicSmoothAbs ::
         SVGPathElement ->
           Optional Float ->
@@ -625,7 +625,7 @@ createSVGPathSegCurvetoCubicSmoothAbs_ self x y x2 y2
             (maybeToOptional y2)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoCubicSmoothRel\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"createSVGPathSegCurvetoCubicSmoothRel\"]($2,\n$3, $4, $5); })"
         js_createSVGPathSegCurvetoCubicSmoothRel ::
         SVGPathElement ->
           Optional Float ->
@@ -663,7 +663,7 @@ createSVGPathSegCurvetoCubicSmoothRel_ self x y x2 y2
             (maybeToOptional y2)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoQuadraticSmoothAbs\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegCurvetoQuadraticSmoothAbs\"]($2,\n$3); })"
         js_createSVGPathSegCurvetoQuadraticSmoothAbs ::
         SVGPathElement ->
           Optional Float ->
@@ -693,7 +693,7 @@ createSVGPathSegCurvetoQuadraticSmoothAbs_ self x y
             (maybeToOptional y)))
  
 foreign import javascript unsafe
-        "$1[\"createSVGPathSegCurvetoQuadraticSmoothRel\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"createSVGPathSegCurvetoQuadraticSmoothRel\"]($2,\n$3); })"
         js_createSVGPathSegCurvetoQuadraticSmoothRel ::
         SVGPathElement ->
           Optional Float ->
@@ -722,7 +722,7 @@ createSVGPathSegCurvetoQuadraticSmoothRel_ self x y
             (maybeToOptional x)
             (maybeToOptional y)))
  
-foreign import javascript unsafe "$1[\"pathLength\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pathLength\"]; })"
         js_getPathLength :: SVGPathElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathLength Mozilla SVGPathElement.pathLength documentation> 
@@ -730,14 +730,14 @@ getPathLength ::
               (MonadIO m) => SVGPathElement -> m SVGAnimatedNumber
 getPathLength self = liftIO (js_getPathLength self)
  
-foreign import javascript unsafe "$1[\"pathSegList\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pathSegList\"]; })"
         js_getPathSegList :: SVGPathElement -> IO SVGPathSegList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.pathSegList Mozilla SVGPathElement.pathSegList documentation> 
 getPathSegList :: (MonadIO m) => SVGPathElement -> m SVGPathSegList
 getPathSegList self = liftIO (js_getPathSegList self)
  
-foreign import javascript unsafe "$1[\"normalizedPathSegList\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"normalizedPathSegList\"]; })"
         js_getNormalizedPathSegList :: SVGPathElement -> IO SVGPathSegList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.normalizedPathSegList Mozilla SVGPathElement.normalizedPathSegList documentation> 
@@ -746,7 +746,7 @@ getNormalizedPathSegList ::
 getNormalizedPathSegList self
   = liftIO (js_getNormalizedPathSegList self)
  
-foreign import javascript unsafe "$1[\"animatedPathSegList\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"animatedPathSegList\"]; })"
         js_getAnimatedPathSegList :: SVGPathElement -> IO SVGPathSegList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathElement.animatedPathSegList Mozilla SVGPathElement.animatedPathSegList documentation> 
@@ -756,7 +756,7 @@ getAnimatedPathSegList self
   = liftIO (js_getAnimatedPathSegList self)
  
 foreign import javascript unsafe
-        "$1[\"animatedNormalizedPathSegList\"]"
+        "(($1) => { return $1[\"animatedNormalizedPathSegList\"]; })"
         js_getAnimatedNormalizedPathSegList ::
         SVGPathElement -> IO SVGPathSegList
 

@@ -55,7 +55,7 @@ nextNodeUnchecked :: (MonadIO m) => NodeIterator -> m Node
 nextNodeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_nextNode self))
  
-foreign import javascript unsafe "$1[\"previousNode\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"previousNode\"](); })"
         js_previousNode :: NodeIterator -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.previousNode Mozilla NodeIterator.previousNode documentation> 
@@ -94,7 +94,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"root\"]; })" js_getRoot
 getRoot :: (MonadIO m) => NodeIterator -> m Node
 getRoot self = liftIO (js_getRoot self)
  
-foreign import javascript unsafe "$1[\"referenceNode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"referenceNode\"]; })"
         js_getReferenceNode :: NodeIterator -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.referenceNode Mozilla NodeIterator.referenceNode documentation> 
@@ -102,7 +102,7 @@ getReferenceNode :: (MonadIO m) => NodeIterator -> m Node
 getReferenceNode self = liftIO (js_getReferenceNode self)
  
 foreign import javascript unsafe
-        "($1[\"pointerBeforeReferenceNode\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"pointerBeforeReferenceNode\"] ? 1 : 0); })"
         js_getPointerBeforeReferenceNode :: NodeIterator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.pointerBeforeReferenceNode Mozilla NodeIterator.pointerBeforeReferenceNode documentation> 
@@ -111,7 +111,7 @@ getPointerBeforeReferenceNode ::
 getPointerBeforeReferenceNode self
   = liftIO (js_getPointerBeforeReferenceNode self)
  
-foreign import javascript unsafe "$1[\"whatToShow\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"whatToShow\"]; })"
         js_getWhatToShow :: NodeIterator -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NodeIterator.whatToShow Mozilla NodeIterator.whatToShow documentation> 

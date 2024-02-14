@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DOMRect\"]($1, $2,\n$3, $4)" js_newDOMRect ::
+        "(($1, $2, $3, $4) => { return new window[\"DOMRect\"]($1, $2,\n$3, $4); })" js_newDOMRect ::
         Optional Double ->
           Optional Double -> Optional Double -> Optional Double -> IO DOMRect
 
@@ -45,7 +45,7 @@ newDOMRect x y width height
          (maybeToOptional height))
  
 foreign import javascript unsafe
-        "window[\"DOMRect\"][\"fromRect\"]($1)" js_fromRect ::
+        "(($1) => { return window[\"DOMRect\"][\"fromRect\"]($1); })" js_fromRect ::
         Optional DOMRectInit -> IO DOMRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.fromRect Mozilla DOMRect.fromRect documentation> 
@@ -99,7 +99,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => DOMRect -> m Double
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: DOMRect -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRect.height Mozilla DOMRect.height documentation> 

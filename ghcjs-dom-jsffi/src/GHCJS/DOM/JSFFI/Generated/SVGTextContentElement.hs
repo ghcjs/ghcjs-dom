@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getNumberOfChars\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getNumberOfChars\"](); })"
         js_getNumberOfChars :: SVGTextContentElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getNumberOfChars Mozilla SVGTextContentElement.getNumberOfChars documentation> 
@@ -55,7 +55,7 @@ getNumberOfChars_ self
   = liftIO
       (void (js_getNumberOfChars (toSVGTextContentElement self)))
  
-foreign import javascript unsafe "$1[\"getComputedTextLength\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getComputedTextLength\"](); })"
         js_getComputedTextLength :: SVGTextContentElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.getComputedTextLength Mozilla SVGTextContentElement.getComputedTextLength documentation> 
@@ -71,7 +71,7 @@ getComputedTextLength_ self
   = liftIO
       (void (js_getComputedTextLength (toSVGTextContentElement self)))
  
-foreign import javascript safe "$1[\"getSubStringLength\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getSubStringLength\"]($2, $3); })"
         js_getSubStringLength ::
         SVGTextContentElement -> Optional Word -> Optional Word -> IO Float
 
@@ -96,7 +96,7 @@ getSubStringLength_ self offset length
             (maybeToOptional offset)
             (maybeToOptional length)))
  
-foreign import javascript safe "$1[\"getStartPositionOfChar\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getStartPositionOfChar\"]($2); })"
         js_getStartPositionOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGPoint
 
@@ -119,7 +119,7 @@ getStartPositionOfChar_ self offset
          (js_getStartPositionOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript safe "$1[\"getEndPositionOfChar\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getEndPositionOfChar\"]($2); })"
         js_getEndPositionOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGPoint
 
@@ -142,7 +142,7 @@ getEndPositionOfChar_ self offset
          (js_getEndPositionOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript safe "$1[\"getExtentOfChar\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getExtentOfChar\"]($2); })"
         js_getExtentOfChar ::
         SVGTextContentElement -> Optional Word -> IO SVGRect
 
@@ -165,7 +165,7 @@ getExtentOfChar_ self offset
          (js_getExtentOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript safe "$1[\"getRotationOfChar\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getRotationOfChar\"]($2); })"
         js_getRotationOfChar ::
         SVGTextContentElement -> Optional Word -> IO Float
 
@@ -188,7 +188,7 @@ getRotationOfChar_ self offset
          (js_getRotationOfChar (toSVGTextContentElement self)
             (maybeToOptional offset)))
  
-foreign import javascript unsafe "$1[\"getCharNumAtPosition\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getCharNumAtPosition\"]($2); })"
         js_getCharNumAtPosition ::
         SVGTextContentElement -> SVGPoint -> IO Int
 
@@ -209,7 +209,7 @@ getCharNumAtPosition_ self point
       (void
          (js_getCharNumAtPosition (toSVGTextContentElement self) point))
  
-foreign import javascript safe "$1[\"selectSubString\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"selectSubString\"]($2, $3); })"
         js_selectSubString ::
         SVGTextContentElement -> Optional Word -> Optional Word -> IO ()
 
@@ -226,7 +226,7 @@ pattern LENGTHADJUST_UNKNOWN = 0
 pattern LENGTHADJUST_SPACING = 1
 pattern LENGTHADJUST_SPACINGANDGLYPHS = 2
  
-foreign import javascript unsafe "$1[\"textLength\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"textLength\"]; })"
         js_getTextLength :: SVGTextContentElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTextContentElement.textLength Mozilla SVGTextContentElement.textLength documentation> 
@@ -236,7 +236,7 @@ getTextLength ::
 getTextLength self
   = liftIO (js_getTextLength (toSVGTextContentElement self))
  
-foreign import javascript unsafe "$1[\"lengthAdjust\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lengthAdjust\"]; })"
         js_getLengthAdjust ::
         SVGTextContentElement -> IO SVGAnimatedEnumeration
 

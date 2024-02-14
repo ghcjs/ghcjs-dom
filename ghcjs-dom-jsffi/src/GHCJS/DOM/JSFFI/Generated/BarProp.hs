@@ -24,7 +24,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "($1[\"visible\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"visible\"] ? 1 : 0); })"
         js_getVisible :: BarProp -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BarProp.visible Mozilla BarProp.visible documentation> 

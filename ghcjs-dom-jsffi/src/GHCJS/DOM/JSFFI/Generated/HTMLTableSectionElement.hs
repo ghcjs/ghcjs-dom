@@ -106,7 +106,7 @@ getChOff ::
            HTMLTableSectionElement -> m result
 getChOff self = liftIO (fromJSString <$> (js_getChOff self))
  
-foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vAlign\"] = $2; })"
         js_setVAlign :: HTMLTableSectionElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableSectionElement.vAlign Mozilla HTMLTableSectionElement.vAlign documentation> 

@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"getTranslatedShaderSource\"]($2)"
+        "(($1, $2) => { return $1[\"getTranslatedShaderSource\"]($2); })"
         js_getTranslatedShaderSource ::
         WebGLDebugShaders -> Optional WebGLShader -> IO (Nullable JSString)
 

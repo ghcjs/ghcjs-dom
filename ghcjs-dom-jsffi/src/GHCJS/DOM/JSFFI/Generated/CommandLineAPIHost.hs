@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clearConsoleMessages\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"clearConsoleMessages\"](); })"
         js_clearConsoleMessages :: CommandLineAPIHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.clearConsoleMessages Mozilla CommandLineAPIHost.clearConsoleMessages documentation> 
@@ -45,7 +45,7 @@ copyText ::
          (MonadIO m, ToJSString text) => CommandLineAPIHost -> text -> m ()
 copyText self text = liftIO (js_copyText self (toJSString text))
  
-foreign import javascript unsafe "$1[\"inspect\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"inspect\"]($2, $3); })"
         js_inspect :: CommandLineAPIHost -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspect Mozilla CommandLineAPIHost.inspect documentation> 
@@ -59,7 +59,7 @@ inspect self objectId hints
            toJSVal objectId >>= \ objectId' -> js_inspect self objectId'
              hints')
  
-foreign import javascript unsafe "$1[\"inspectedObject\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"inspectedObject\"](); })"
         js_inspectedObject :: CommandLineAPIHost -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.inspectedObject Mozilla CommandLineAPIHost.inspectedObject documentation> 
@@ -70,7 +70,7 @@ inspectedObject self = liftIO (js_inspectedObject self)
 inspectedObject_ :: (MonadIO m) => CommandLineAPIHost -> m ()
 inspectedObject_ self = liftIO (void (js_inspectedObject self))
  
-foreign import javascript unsafe "$1[\"getEventListeners\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getEventListeners\"]($2); })"
         js_getEventListeners :: CommandLineAPIHost -> Node -> IO Array
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.getEventListeners Mozilla CommandLineAPIHost.getEventListeners documentation> 
@@ -85,7 +85,7 @@ getEventListeners_ ::
 getEventListeners_ self node
   = liftIO (void (js_getEventListeners self (toNode node)))
  
-foreign import javascript unsafe "$1[\"databaseId\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"databaseId\"]($2); })"
         js_databaseId :: CommandLineAPIHost -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.databaseId Mozilla CommandLineAPIHost.databaseId documentation> 
@@ -106,7 +106,7 @@ databaseId_ self database
       (void
          (toJSVal database >>= \ database' -> js_databaseId self database'))
  
-foreign import javascript unsafe "$1[\"storageId\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"storageId\"]($2); })"
         js_storageId :: CommandLineAPIHost -> JSVal -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CommandLineAPIHost.storageId Mozilla CommandLineAPIHost.storageId documentation> 

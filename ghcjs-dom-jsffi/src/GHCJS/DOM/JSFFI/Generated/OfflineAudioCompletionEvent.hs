@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"renderedBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"renderedBuffer\"]; })"
         js_getRenderedBuffer ::
         OfflineAudioCompletionEvent -> IO AudioBuffer
 

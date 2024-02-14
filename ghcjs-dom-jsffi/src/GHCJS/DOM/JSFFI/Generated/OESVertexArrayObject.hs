@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"createVertexArrayOES\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createVertexArrayOES\"](); })"
         js_createVertexArrayOES ::
         OESVertexArrayObject -> IO WebGLVertexArrayObjectOES
 
@@ -45,7 +45,7 @@ createVertexArrayOES_ ::
 createVertexArrayOES_ self
   = liftIO (void (js_createVertexArrayOES self))
  
-foreign import javascript unsafe "$1[\"deleteVertexArrayOES\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteVertexArrayOES\"]($2); })"
         js_deleteVertexArrayOES ::
         OESVertexArrayObject -> Optional WebGLVertexArrayObjectOES -> IO ()
 
@@ -58,7 +58,7 @@ deleteVertexArrayOES self arrayObject
       (js_deleteVertexArrayOES self (maybeToOptional arrayObject))
  
 foreign import javascript unsafe
-        "($1[\"isVertexArrayOES\"]($2) ? 1 : 0)" js_isVertexArrayOES ::
+        "(($1, $2) => { return ($1[\"isVertexArrayOES\"]($2) ? 1 : 0); })" js_isVertexArrayOES ::
         OESVertexArrayObject ->
           Optional WebGLVertexArrayObjectOES -> IO Bool
 
@@ -77,7 +77,7 @@ isVertexArrayOES_ self arrayObject
   = liftIO
       (void (js_isVertexArrayOES self (maybeToOptional arrayObject)))
  
-foreign import javascript unsafe "$1[\"bindVertexArrayOES\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"bindVertexArrayOES\"]($2); })"
         js_bindVertexArrayOES ::
         OESVertexArrayObject -> Optional WebGLVertexArrayObjectOES -> IO ()
 

@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Blob\"]($1, $2)"
+foreign import javascript unsafe "(($1, $2) => { return new window[\"Blob\"]($1, $2); })"
         js_newBlob :: JSVal -> Optional BlobPropertyBag -> IO Blob
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation> 
@@ -38,7 +38,7 @@ newBlob blobParts options
       (toJSVal blobParts >>= \ blobParts' -> js_newBlob blobParts'
          (maybeToOptional (fmap toBlobPropertyBag options)))
  
-foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"slice\"]($2, $3, $4); })"
         js_slice ::
         Blob ->
           Optional Double -> Optional Double -> Optional JSString -> IO Blob

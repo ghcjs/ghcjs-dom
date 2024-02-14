@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setTimeout\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setTimeout\"]($2, $3); })"
         js_setTimeout ::
         WindowOrWorkerGlobalScope -> JSVal -> Optional Int -> IO Int
 
@@ -57,7 +57,7 @@ setTimeout_ self handler timeout
               js_setTimeout (toWindowOrWorkerGlobalScope self) handler'
             (maybeToOptional timeout)))
  
-foreign import javascript unsafe "$1[\"clearTimeout\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearTimeout\"]($2); })"
         js_clearTimeout ::
         WindowOrWorkerGlobalScope -> Optional Int -> IO ()
 
@@ -70,7 +70,7 @@ clearTimeout self handle
       (js_clearTimeout (toWindowOrWorkerGlobalScope self)
          (maybeToOptional handle))
  
-foreign import javascript unsafe "$1[\"setInterval\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setInterval\"]($2, $3); })"
         js_setInterval ::
         WindowOrWorkerGlobalScope -> JSVal -> Optional Int -> IO Int
 
@@ -97,7 +97,7 @@ setInterval_ self handler timeout
               js_setInterval (toWindowOrWorkerGlobalScope self) handler'
             (maybeToOptional timeout)))
  
-foreign import javascript unsafe "$1[\"clearInterval\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearInterval\"]($2); })"
         js_clearInterval ::
         WindowOrWorkerGlobalScope -> Optional Int -> IO ()
 

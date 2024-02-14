@@ -39,7 +39,7 @@ foreign import javascript safe "(($1, $2) => { return $1[\"setMatrix\"]($2); })"
 setMatrix :: (MonadIO m) => SVGTransform -> SVGMatrix -> m ()
 setMatrix self matrix = liftIO (js_setMatrix self matrix)
  
-foreign import javascript safe "$1[\"setTranslate\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setTranslate\"]($2, $3); })"
         js_setTranslate :: SVGTransform -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setTranslate Mozilla SVGTransform.setTranslate documentation> 
@@ -47,14 +47,14 @@ setTranslate ::
              (MonadIO m) => SVGTransform -> Float -> Float -> m ()
 setTranslate self tx ty = liftIO (js_setTranslate self tx ty)
  
-foreign import javascript safe "$1[\"setScale\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setScale\"]($2, $3); })"
         js_setScale :: SVGTransform -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setScale Mozilla SVGTransform.setScale documentation> 
 setScale :: (MonadIO m) => SVGTransform -> Float -> Float -> m ()
 setScale self sx sy = liftIO (js_setScale self sx sy)
  
-foreign import javascript safe "$1[\"setRotate\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"setRotate\"]($2, $3, $4); })"
         js_setRotate :: SVGTransform -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTransform.setRotate Mozilla SVGTransform.setRotate documentation> 

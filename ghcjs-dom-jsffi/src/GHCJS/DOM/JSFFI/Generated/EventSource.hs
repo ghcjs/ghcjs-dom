@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"EventSource\"]($1,\n$2)" js_newEventSource ::
+        "(($1, $2) => { return new window[\"EventSource\"]($1,\n$2); })" js_newEventSource ::
         JSString -> Optional EventSourceInit -> IO EventSource
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation> 
@@ -61,14 +61,14 @@ getUrl ::
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
 foreign import javascript unsafe
-        "($1[\"withCredentials\"] ? 1 : 0)" js_getWithCredentials ::
+        "(($1) => { return ($1[\"withCredentials\"] ? 1 : 0); })" js_getWithCredentials ::
         EventSource -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.withCredentials Mozilla EventSource.withCredentials documentation> 
 getWithCredentials :: (MonadIO m) => EventSource -> m Bool
 getWithCredentials self = liftIO (js_getWithCredentials self)
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: EventSource -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.readyState Mozilla EventSource.readyState documentation> 

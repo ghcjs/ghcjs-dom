@@ -28,14 +28,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"disabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"disabled\"] = $2; })"
         js_setDisabled :: SVGStyleElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.disabled Mozilla SVGStyleElement.disabled documentation> 
 setDisabled :: (MonadIO m) => SVGStyleElement -> Bool -> m ()
 setDisabled self val = liftIO (js_setDisabled self val)
  
-foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"disabled\"] ? 1 : 0); })"
         js_getDisabled :: SVGStyleElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGStyleElement.disabled Mozilla SVGStyleElement.disabled documentation> 

@@ -35,7 +35,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"SecurityPolicyViolationEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"SecurityPolicyViolationEvent\"]($1,\n$2); })"
         js_newSecurityPolicyViolationEvent ::
         JSString ->
           Optional SecurityPolicyViolationEventInit ->
@@ -52,7 +52,7 @@ newSecurityPolicyViolationEvent type' eventInitDict
       (js_newSecurityPolicyViolationEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"documentURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"documentURI\"]; })"
         js_getDocumentURI :: SecurityPolicyViolationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.documentURI Mozilla SecurityPolicyViolationEvent.documentURI documentation> 
@@ -71,7 +71,7 @@ getReferrer ::
               SecurityPolicyViolationEvent -> m result
 getReferrer self = liftIO (fromJSString <$> (js_getReferrer self))
  
-foreign import javascript unsafe "$1[\"blockedURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"blockedURI\"]; })"
         js_getBlockedURI :: SecurityPolicyViolationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.blockedURI Mozilla SecurityPolicyViolationEvent.blockedURI documentation> 
@@ -81,7 +81,7 @@ getBlockedURI ::
 getBlockedURI self
   = liftIO (fromJSString <$> (js_getBlockedURI self))
  
-foreign import javascript unsafe "$1[\"violatedDirective\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"violatedDirective\"]; })"
         js_getViolatedDirective ::
         SecurityPolicyViolationEvent -> IO JSString
 
@@ -92,7 +92,7 @@ getViolatedDirective ::
 getViolatedDirective self
   = liftIO (fromJSString <$> (js_getViolatedDirective self))
  
-foreign import javascript unsafe "$1[\"effectiveDirective\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"effectiveDirective\"]; })"
         js_getEffectiveDirective ::
         SecurityPolicyViolationEvent -> IO JSString
 
@@ -103,7 +103,7 @@ getEffectiveDirective ::
 getEffectiveDirective self
   = liftIO (fromJSString <$> (js_getEffectiveDirective self))
  
-foreign import javascript unsafe "$1[\"originalPolicy\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"originalPolicy\"]; })"
         js_getOriginalPolicy :: SecurityPolicyViolationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.originalPolicy Mozilla SecurityPolicyViolationEvent.originalPolicy documentation> 
@@ -113,7 +113,7 @@ getOriginalPolicy ::
 getOriginalPolicy self
   = liftIO (fromJSString <$> (js_getOriginalPolicy self))
  
-foreign import javascript unsafe "$1[\"sourceFile\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceFile\"]; })"
         js_getSourceFile :: SecurityPolicyViolationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.sourceFile Mozilla SecurityPolicyViolationEvent.sourceFile documentation> 
@@ -123,7 +123,7 @@ getSourceFile ::
 getSourceFile self
   = liftIO (fromJSString <$> (js_getSourceFile self))
  
-foreign import javascript unsafe "$1[\"statusCode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"statusCode\"]; })"
         js_getStatusCode :: SecurityPolicyViolationEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.statusCode Mozilla SecurityPolicyViolationEvent.statusCode documentation> 
@@ -131,7 +131,7 @@ getStatusCode ::
               (MonadIO m) => SecurityPolicyViolationEvent -> m Word
 getStatusCode self = liftIO (js_getStatusCode self)
  
-foreign import javascript unsafe "$1[\"lineNumber\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lineNumber\"]; })"
         js_getLineNumber :: SecurityPolicyViolationEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.lineNumber Mozilla SecurityPolicyViolationEvent.lineNumber documentation> 
@@ -139,7 +139,7 @@ getLineNumber ::
               (MonadIO m) => SecurityPolicyViolationEvent -> m Int
 getLineNumber self = liftIO (js_getLineNumber self)
  
-foreign import javascript unsafe "$1[\"columnNumber\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"columnNumber\"]; })"
         js_getColumnNumber :: SecurityPolicyViolationEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SecurityPolicyViolationEvent.columnNumber Mozilla SecurityPolicyViolationEvent.columnNumber documentation> 

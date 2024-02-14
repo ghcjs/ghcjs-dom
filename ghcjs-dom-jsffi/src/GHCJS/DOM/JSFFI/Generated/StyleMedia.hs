@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"matchMedium\"]($2) ? 1 : 0)" js_matchMedium ::
+        "(($1, $2) => { return ($1[\"matchMedium\"]($2) ? 1 : 0); })" js_matchMedium ::
         StyleMedia -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StyleMedia.matchMedium Mozilla StyleMedia.matchMedium documentation> 

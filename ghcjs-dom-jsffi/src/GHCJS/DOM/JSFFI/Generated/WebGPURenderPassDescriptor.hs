@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebGPURenderPassDescriptor\"]()"
+        "(() => { return new window[\"WebGPURenderPassDescriptor\"](); })"
         js_newWebGPURenderPassDescriptor :: IO WebGPURenderPassDescriptor
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassDescriptor Mozilla WebGPURenderPassDescriptor documentation> 
@@ -38,7 +38,7 @@ newWebGPURenderPassDescriptor ::
 newWebGPURenderPassDescriptor
   = liftIO (js_newWebGPURenderPassDescriptor)
  
-foreign import javascript unsafe "$1[\"colorAttachments\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"colorAttachments\"]; })"
         js_getColorAttachments :: WebGPURenderPassDescriptor -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassDescriptor.colorAttachments Mozilla WebGPURenderPassDescriptor.colorAttachments documentation> 
@@ -49,7 +49,7 @@ getColorAttachments ::
 getColorAttachments self
   = liftIO ((js_getColorAttachments self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"depthAttachment\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"depthAttachment\"]; })"
         js_getDepthAttachment ::
         WebGPURenderPassDescriptor ->
           IO WebGPURenderPassDepthAttachmentDescriptor

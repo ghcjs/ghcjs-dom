@@ -192,7 +192,7 @@ clear self = liftIO (js_clear self)
 clear_ :: (MonadIO m) => IDBObjectStore -> m ()
 clear_ self = liftIO (void (js_clear self))
  
-foreign import javascript safe "$1[\"openCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openCursor\"]($2, $3); })"
         js_openCursorRange ::
         IDBObjectStore ->
           Optional IDBKeyRange ->
@@ -219,7 +219,7 @@ openCursorRange_ self range direction
          (js_openCursorRange self (maybeToOptional range)
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openCursor\"]($2, $3); })"
         js_openCursor ::
         IDBObjectStore ->
           JSVal -> Optional IDBCursorDirection -> IO IDBRequest
@@ -243,7 +243,7 @@ openCursor_ self key direction
          (toJSVal key >>= \ key' -> js_openCursor self key'
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openKeyCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openKeyCursor\"]($2, $3); })"
         js_openKeyCursorRange ::
         IDBObjectStore ->
           Optional IDBKeyRange ->
@@ -270,7 +270,7 @@ openKeyCursorRange_ self range direction
          (js_openKeyCursorRange self (maybeToOptional range)
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openKeyCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openKeyCursor\"]($2, $3); })"
         js_openKeyCursor ::
         IDBObjectStore ->
           JSVal -> Optional IDBCursorDirection -> IO IDBRequest
@@ -294,7 +294,7 @@ openKeyCursor_ self key direction
          (toJSVal key >>= \ key' -> js_openKeyCursor self key'
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"getAll\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAll\"]($2, $3); })"
         js_getAllRange ::
         IDBObjectStore ->
           Optional IDBKeyRange -> Optional Word -> IO IDBRequest
@@ -340,7 +340,7 @@ getAll_ self key count
          (toJSVal key >>= \ key' -> js_getAll self key'
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAllKeys\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAllKeys\"]($2, $3); })"
         js_getAllKeysRange ::
         IDBObjectStore ->
           Optional IDBKeyRange -> Optional Word -> IO IDBRequest
@@ -364,7 +364,7 @@ getAllKeysRange_ self range count
          (js_getAllKeysRange self (maybeToOptional range)
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAllKeys\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAllKeys\"]($2, $3); })"
         js_getAllKeys ::
         IDBObjectStore -> JSVal -> Optional Word -> IO IDBRequest
 
@@ -387,7 +387,7 @@ getAllKeys_ self key count
          (toJSVal key >>= \ key' -> js_getAllKeys self key'
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"createIndex\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"createIndex\"]($2, $3, $4); })"
         js_createIndex ::
         IDBObjectStore ->
           JSString ->
@@ -432,7 +432,7 @@ index_ ::
        (MonadIO m, ToJSString name) => IDBObjectStore -> name -> m ()
 index_ self name = liftIO (void (js_index self (toJSString name)))
  
-foreign import javascript safe "$1[\"deleteIndex\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteIndex\"]($2); })"
         js_deleteIndex :: IDBObjectStore -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.deleteIndex Mozilla IDBObjectStore.deleteIndex documentation> 
@@ -507,21 +507,21 @@ getKeyPathUnchecked ::
 getKeyPathUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getKeyPath self))
  
-foreign import javascript unsafe "$1[\"indexNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"indexNames\"]; })"
         js_getIndexNames :: IDBObjectStore -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.indexNames Mozilla IDBObjectStore.indexNames documentation> 
 getIndexNames :: (MonadIO m) => IDBObjectStore -> m DOMStringList
 getIndexNames self = liftIO (js_getIndexNames self)
  
-foreign import javascript unsafe "$1[\"transaction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transaction\"]; })"
         js_getTransaction :: IDBObjectStore -> IO IDBTransaction
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.transaction Mozilla IDBObjectStore.transaction documentation> 
 getTransaction :: (MonadIO m) => IDBObjectStore -> m IDBTransaction
 getTransaction self = liftIO (js_getTransaction self)
  
-foreign import javascript unsafe "($1[\"autoIncrement\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"autoIncrement\"] ? 1 : 0); })"
         js_getAutoIncrement :: IDBObjectStore -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore.autoIncrement Mozilla IDBObjectStore.autoIncrement documentation> 

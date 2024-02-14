@@ -106,7 +106,7 @@ getSourceUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getSource (toIDBRequest self)))
  
-foreign import javascript unsafe "$1[\"transaction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transaction\"]; })"
         js_getTransaction :: IDBRequest -> IO IDBTransaction
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.transaction Mozilla IDBRequest.transaction documentation> 
@@ -115,7 +115,7 @@ getTransaction ::
 getTransaction self
   = liftIO (js_getTransaction (toIDBRequest self))
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: IDBRequest -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBRequest.readyState Mozilla IDBRequest.readyState documentation> 

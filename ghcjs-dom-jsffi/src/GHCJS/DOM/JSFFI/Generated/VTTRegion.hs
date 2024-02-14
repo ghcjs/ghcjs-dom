@@ -34,7 +34,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"VTTRegion\"]()"
+foreign import javascript unsafe "(() => { return new window[\"VTTRegion\"](); })"
         js_newVTTRegion :: IO VTTRegion
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion Mozilla VTTRegion documentation> 
@@ -90,35 +90,35 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => VTTRegion -> m Int
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript safe "$1[\"regionAnchorX\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"regionAnchorX\"] = $2; })"
         js_setRegionAnchorX :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorX Mozilla VTTRegion.regionAnchorX documentation> 
 setRegionAnchorX :: (MonadIO m) => VTTRegion -> Double -> m ()
 setRegionAnchorX self val = liftIO (js_setRegionAnchorX self val)
  
-foreign import javascript unsafe "$1[\"regionAnchorX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"regionAnchorX\"]; })"
         js_getRegionAnchorX :: VTTRegion -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorX Mozilla VTTRegion.regionAnchorX documentation> 
 getRegionAnchorX :: (MonadIO m) => VTTRegion -> m Double
 getRegionAnchorX self = liftIO (js_getRegionAnchorX self)
  
-foreign import javascript safe "$1[\"regionAnchorY\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"regionAnchorY\"] = $2; })"
         js_setRegionAnchorY :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorY Mozilla VTTRegion.regionAnchorY documentation> 
 setRegionAnchorY :: (MonadIO m) => VTTRegion -> Double -> m ()
 setRegionAnchorY self val = liftIO (js_setRegionAnchorY self val)
  
-foreign import javascript unsafe "$1[\"regionAnchorY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"regionAnchorY\"]; })"
         js_getRegionAnchorY :: VTTRegion -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.regionAnchorY Mozilla VTTRegion.regionAnchorY documentation> 
 getRegionAnchorY :: (MonadIO m) => VTTRegion -> m Double
 getRegionAnchorY self = liftIO (js_getRegionAnchorY self)
  
-foreign import javascript safe "$1[\"viewportAnchorX\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"viewportAnchorX\"] = $2; })"
         js_setViewportAnchorX :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorX Mozilla VTTRegion.viewportAnchorX documentation> 
@@ -126,14 +126,14 @@ setViewportAnchorX :: (MonadIO m) => VTTRegion -> Double -> m ()
 setViewportAnchorX self val
   = liftIO (js_setViewportAnchorX self val)
  
-foreign import javascript unsafe "$1[\"viewportAnchorX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewportAnchorX\"]; })"
         js_getViewportAnchorX :: VTTRegion -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorX Mozilla VTTRegion.viewportAnchorX documentation> 
 getViewportAnchorX :: (MonadIO m) => VTTRegion -> m Double
 getViewportAnchorX self = liftIO (js_getViewportAnchorX self)
  
-foreign import javascript safe "$1[\"viewportAnchorY\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"viewportAnchorY\"] = $2; })"
         js_setViewportAnchorY :: VTTRegion -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorY Mozilla VTTRegion.viewportAnchorY documentation> 
@@ -141,7 +141,7 @@ setViewportAnchorY :: (MonadIO m) => VTTRegion -> Double -> m ()
 setViewportAnchorY self val
   = liftIO (js_setViewportAnchorY self val)
  
-foreign import javascript unsafe "$1[\"viewportAnchorY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewportAnchorY\"]; })"
         js_getViewportAnchorY :: VTTRegion -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTRegion.viewportAnchorY Mozilla VTTRegion.viewportAnchorY documentation> 

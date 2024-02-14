@@ -94,7 +94,7 @@ remove :: (MonadIO m) => MediaKeySession -> m ()
 remove self
   = liftIO ((js_remove self) >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"sessionId\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sessionId\"]; })"
         js_getSessionId :: MediaKeySession -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.sessionId Mozilla WebKitMediaKeySession.sessionId documentation> 
@@ -103,7 +103,7 @@ getSessionId ::
 getSessionId self
   = liftIO (fromJSString <$> (js_getSessionId self))
  
-foreign import javascript unsafe "$1[\"expiration\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"expiration\"]; })"
         js_getExpiration :: MediaKeySession -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.expiration Mozilla WebKitMediaKeySession.expiration documentation> 
@@ -119,7 +119,7 @@ getClosed :: (MonadIO m) => MediaKeySession -> m ()
 getClosed self
   = liftIO ((js_getClosed self) >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"keyStatuses\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keyStatuses\"]; })"
         js_getKeyStatuses :: MediaKeySession -> IO MediaKeyStatusMap
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.keyStatuses Mozilla WebKitMediaKeySession.keyStatuses documentation> 

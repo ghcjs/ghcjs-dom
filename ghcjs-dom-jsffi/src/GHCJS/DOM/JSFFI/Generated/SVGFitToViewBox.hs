@@ -35,7 +35,7 @@ getViewBox ::
            (MonadIO m, IsSVGFitToViewBox self) => self -> m SVGAnimatedRect
 getViewBox self = liftIO (js_getViewBox (toSVGFitToViewBox self))
  
-foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"preserveAspectRatio\"]; })"
         js_getPreserveAspectRatio ::
         SVGFitToViewBox -> IO SVGAnimatedPreserveAspectRatio
 

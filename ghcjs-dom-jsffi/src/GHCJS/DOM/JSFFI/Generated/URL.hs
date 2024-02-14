@@ -38,14 +38,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "new window[\"URL\"]($1)" js_newURL
+foreign import javascript safe "(($1) => { return new window[\"URL\"]($1); })" js_newURL
         :: JSString -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
 newURL :: (MonadIO m, ToJSString url) => url -> m URL
 newURL url = liftIO (js_newURL (toJSString url))
  
-foreign import javascript safe "new window[\"URL\"]($1, $2)"
+foreign import javascript safe "(($1, $2) => { return new window[\"URL\"]($1, $2); })"
         js_newURL' :: JSString -> JSString -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
@@ -55,7 +55,7 @@ newURL' ::
 newURL' url base
   = liftIO (js_newURL' (toJSString url) (toJSString base))
  
-foreign import javascript safe "new window[\"URL\"]($1, $2)"
+foreign import javascript safe "(($1, $2) => { return new window[\"URL\"]($1, $2); })"
         js_newURL'' :: JSString -> URL -> IO URL
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL Mozilla URL documentation> 
@@ -74,7 +74,7 @@ toJSON_ :: (MonadIO m) => URL -> m ()
 toJSON_ self = liftIO (void (js_toJSON self))
  
 foreign import javascript unsafe
-        "window[\"URL\"][\"createObjectURL\"]($1)" js_createObjectURL ::
+        "(($1) => { return window[\"URL\"][\"createObjectURL\"]($1); })" js_createObjectURL ::
         Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
@@ -89,7 +89,7 @@ createObjectURL_ blob
   = liftIO (void (js_createObjectURL (toBlob blob)))
  
 foreign import javascript unsafe
-        "window[\"URL\"][\"revokeObjectURL\"]($1)" js_revokeObjectURL ::
+        "(($1) => { return window[\"URL\"][\"revokeObjectURL\"]($1); })" js_revokeObjectURL ::
         JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.revokeObjectURL Mozilla URL.revokeObjectURL documentation> 
@@ -97,7 +97,7 @@ revokeObjectURL :: (MonadIO m, ToJSString url) => url -> m ()
 revokeObjectURL url = liftIO (js_revokeObjectURL (toJSString url))
  
 foreign import javascript unsafe
-        "window[\"URL\"][\"createObjectURL\"]($1)" js_createObjectURLSource
+        "(($1) => { return window[\"URL\"][\"createObjectURL\"]($1); })" js_createObjectURLSource
         :: MediaSource -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.createObjectURL Mozilla URL.createObjectURL documentation> 
@@ -132,7 +132,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"origin\"]; })" js_getOr
 getOrigin :: (MonadIO m, FromJSString result) => URL -> m result
 getOrigin self = liftIO (fromJSString <$> (js_getOrigin self))
  
-foreign import javascript unsafe "$1[\"protocol\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"protocol\"] = $2; })"
         js_setProtocol :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.protocol Mozilla URL.protocol documentation> 
@@ -147,7 +147,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"protocol\"]; })" js_get
 getProtocol :: (MonadIO m, FromJSString result) => URL -> m result
 getProtocol self = liftIO (fromJSString <$> (js_getProtocol self))
  
-foreign import javascript unsafe "$1[\"username\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"username\"] = $2; })"
         js_setUsername :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.username Mozilla URL.username documentation> 
@@ -162,7 +162,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"username\"]; })" js_get
 getUsername :: (MonadIO m, FromJSString result) => URL -> m result
 getUsername self = liftIO (fromJSString <$> (js_getUsername self))
  
-foreign import javascript unsafe "$1[\"password\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"password\"] = $2; })"
         js_setPassword :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.password Mozilla URL.password documentation> 
@@ -191,7 +191,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"host\"]; })" js_getHost
 getHost :: (MonadIO m, FromJSString result) => URL -> m result
 getHost self = liftIO (fromJSString <$> (js_getHost self))
  
-foreign import javascript unsafe "$1[\"hostname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hostname\"] = $2; })"
         js_setHostname :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.hostname Mozilla URL.hostname documentation> 
@@ -220,7 +220,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"port\"]; })" js_getPort
 getPort :: (MonadIO m, FromJSString result) => URL -> m result
 getPort self = liftIO (fromJSString <$> (js_getPort self))
  
-foreign import javascript unsafe "$1[\"pathname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"pathname\"] = $2; })"
         js_setPathname :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.pathname Mozilla URL.pathname documentation> 
@@ -249,7 +249,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"hash\"]; })" js_getHash
 getHash :: (MonadIO m, FromJSString result) => URL -> m result
 getHash self = liftIO (fromJSString <$> (js_getHash self))
  
-foreign import javascript unsafe "$1[\"search\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"search\"] = $2; })"
         js_setSearch :: URL -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.search Mozilla URL.search documentation> 
@@ -263,7 +263,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"search\"]; })" js_getSe
 getSearch :: (MonadIO m, FromJSString result) => URL -> m result
 getSearch self = liftIO (fromJSString <$> (js_getSearch self))
  
-foreign import javascript unsafe "$1[\"searchParams\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"searchParams\"]; })"
         js_getSearchParams :: URL -> IO URLSearchParams
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/URL.searchParams Mozilla URL.searchParams documentation> 

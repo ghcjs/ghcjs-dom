@@ -38,7 +38,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"iterateNext\"]()"
+foreign import javascript safe "(($1) => { return $1[\"iterateNext\"](); })"
         js_iterateNext :: XPathResult -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.iterateNext Mozilla XPathResult.iterateNext documentation> 
@@ -49,7 +49,7 @@ iterateNext self = liftIO (js_iterateNext self)
 iterateNext_ :: (MonadIO m) => XPathResult -> m ()
 iterateNext_ self = liftIO (void (js_iterateNext self))
  
-foreign import javascript safe "$1[\"snapshotItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"snapshotItem\"]($2); })"
         js_snapshotItem :: XPathResult -> Optional Word -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotItem Mozilla XPathResult.snapshotItem documentation> 
@@ -72,21 +72,21 @@ pattern ORDERED_NODE_SNAPSHOT_TYPE = 7
 pattern ANY_UNORDERED_NODE_TYPE = 8
 pattern FIRST_ORDERED_NODE_TYPE = 9
  
-foreign import javascript unsafe "$1[\"resultType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"resultType\"]; })"
         js_getResultType :: XPathResult -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.resultType Mozilla XPathResult.resultType documentation> 
 getResultType :: (MonadIO m) => XPathResult -> m Word
 getResultType self = liftIO (js_getResultType self)
  
-foreign import javascript safe "$1[\"numberValue\"]"
+foreign import javascript safe "(($1) => { return $1[\"numberValue\"]; })"
         js_getNumberValue :: XPathResult -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.numberValue Mozilla XPathResult.numberValue documentation> 
 getNumberValue :: (MonadIO m) => XPathResult -> m Double
 getNumberValue self = liftIO (js_getNumberValue self)
  
-foreign import javascript safe "$1[\"stringValue\"]"
+foreign import javascript safe "(($1) => { return $1[\"stringValue\"]; })"
         js_getStringValue :: XPathResult -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.stringValue Mozilla XPathResult.stringValue documentation> 
@@ -95,14 +95,14 @@ getStringValue ::
 getStringValue self
   = liftIO (fromJSString <$> (js_getStringValue self))
  
-foreign import javascript safe "($1[\"booleanValue\"] ? 1 : 0)"
+foreign import javascript safe "(($1) => { return ($1[\"booleanValue\"] ? 1 : 0); })"
         js_getBooleanValue :: XPathResult -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.booleanValue Mozilla XPathResult.booleanValue documentation> 
 getBooleanValue :: (MonadIO m) => XPathResult -> m Bool
 getBooleanValue self = liftIO (js_getBooleanValue self)
  
-foreign import javascript safe "$1[\"singleNodeValue\"]"
+foreign import javascript safe "(($1) => { return $1[\"singleNodeValue\"]; })"
         js_getSingleNodeValue :: XPathResult -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.singleNodeValue Mozilla XPathResult.singleNodeValue documentation> 
@@ -110,7 +110,7 @@ getSingleNodeValue :: (MonadIO m) => XPathResult -> m Node
 getSingleNodeValue self = liftIO (js_getSingleNodeValue self)
  
 foreign import javascript unsafe
-        "($1[\"invalidIteratorState\"] ? 1 : 0)" js_getInvalidIteratorState
+        "(($1) => { return ($1[\"invalidIteratorState\"] ? 1 : 0); })" js_getInvalidIteratorState
         :: XPathResult -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.invalidIteratorState Mozilla XPathResult.invalidIteratorState documentation> 
@@ -118,7 +118,7 @@ getInvalidIteratorState :: (MonadIO m) => XPathResult -> m Bool
 getInvalidIteratorState self
   = liftIO (js_getInvalidIteratorState self)
  
-foreign import javascript safe "$1[\"snapshotLength\"]"
+foreign import javascript safe "(($1) => { return $1[\"snapshotLength\"]; })"
         js_getSnapshotLength :: XPathResult -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathResult.snapshotLength Mozilla XPathResult.snapshotLength documentation> 

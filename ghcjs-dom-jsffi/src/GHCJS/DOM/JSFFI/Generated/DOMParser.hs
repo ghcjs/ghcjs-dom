@@ -26,14 +26,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"DOMParser\"]()"
+foreign import javascript unsafe "(() => { return new window[\"DOMParser\"](); })"
         js_newDOMParser :: IO DOMParser
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMParser Mozilla DOMParser documentation> 
 newDOMParser :: (MonadIO m) => m DOMParser
 newDOMParser = liftIO (js_newDOMParser)
  
-foreign import javascript safe "$1[\"parseFromString\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"parseFromString\"]($2, $3); })"
         js_parseFromString ::
         DOMParser -> JSString -> JSString -> IO Document
 

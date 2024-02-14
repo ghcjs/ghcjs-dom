@@ -27,21 +27,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"baseVal\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"baseVal\"] = $2; })"
         js_setBaseVal :: SVGAnimatedBoolean -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.baseVal Mozilla SVGAnimatedBoolean.baseVal documentation> 
 setBaseVal :: (MonadIO m) => SVGAnimatedBoolean -> Bool -> m ()
 setBaseVal self val = liftIO (js_setBaseVal self val)
  
-foreign import javascript unsafe "($1[\"baseVal\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"baseVal\"] ? 1 : 0); })"
         js_getBaseVal :: SVGAnimatedBoolean -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.baseVal Mozilla SVGAnimatedBoolean.baseVal documentation> 
 getBaseVal :: (MonadIO m) => SVGAnimatedBoolean -> m Bool
 getBaseVal self = liftIO (js_getBaseVal self)
  
-foreign import javascript unsafe "($1[\"animVal\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"animVal\"] ? 1 : 0); })"
         js_getAnimVal :: SVGAnimatedBoolean -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimatedBoolean.animVal Mozilla SVGAnimatedBoolean.animVal documentation> 

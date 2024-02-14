@@ -33,7 +33,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"coords\"]; })" js_getCo
 getCoords :: (MonadIO m) => Geoposition -> m Coordinates
 getCoords self = liftIO (js_getCoords self)
  
-foreign import javascript unsafe "$1[\"timestamp\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"timestamp\"]; })"
         js_getTimestamp :: Geoposition -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geoposition.timestamp Mozilla Geoposition.timestamp documentation> 

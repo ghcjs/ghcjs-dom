@@ -41,7 +41,7 @@ queryUsageAndQuota self usageCallback errorCallback
       (js_queryUsageAndQuota self usageCallback
          (maybeToOptional errorCallback))
  
-foreign import javascript unsafe "$1[\"requestQuota\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"requestQuota\"]($2, $3, $4); })"
         js_requestQuota ::
         StorageQuota ->
           Double ->

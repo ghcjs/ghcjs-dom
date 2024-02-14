@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2); })"
         js_newMediaKeyMessageEvent ::
         JSString -> MediaKeyMessageEventInit -> IO MediaKeyMessageEvent
 
@@ -40,7 +40,7 @@ newMediaKeyMessageEvent type' eventInitDict
   = liftIO
       (js_newMediaKeyMessageEvent (toJSString type') eventInitDict)
  
-foreign import javascript unsafe "$1[\"messageType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"messageType\"]; })"
         js_getMessageType :: MediaKeyMessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.messageType Mozilla WebKitMediaKeyMessageEvent.messageType documentation> 

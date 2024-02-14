@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"AnimationEvent\"]($1,\n$2)" js_newAnimationEvent ::
+        "(($1, $2) => { return new window[\"AnimationEvent\"]($1,\n$2); })" js_newAnimationEvent ::
         JSString -> Optional AnimationEventInit -> IO AnimationEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent Mozilla AnimationEvent documentation> 
@@ -40,7 +40,7 @@ newAnimationEvent type' animationEventInitDict
       (js_newAnimationEvent (toJSString type')
          (maybeToOptional animationEventInitDict))
  
-foreign import javascript unsafe "$1[\"animationName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"animationName\"]; })"
         js_getAnimationName :: AnimationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.animationName Mozilla AnimationEvent.animationName documentation> 
@@ -49,7 +49,7 @@ getAnimationName ::
 getAnimationName self
   = liftIO (fromJSString <$> (js_getAnimationName self))
  
-foreign import javascript unsafe "$1[\"elapsedTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elapsedTime\"]; })"
         js_getElapsedTime :: AnimationEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent.elapsedTime Mozilla AnimationEvent.elapsedTime documentation> 

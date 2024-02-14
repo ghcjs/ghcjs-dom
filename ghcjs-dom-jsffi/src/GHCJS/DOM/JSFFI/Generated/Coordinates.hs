@@ -39,7 +39,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"latitude\"]; })" js_get
 getLatitude :: (MonadIO m) => Coordinates -> m Double
 getLatitude self = liftIO (js_getLatitude self)
  
-foreign import javascript unsafe "$1[\"longitude\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"longitude\"]; })"
         js_getLongitude :: Coordinates -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.longitude Mozilla Coordinates.longitude documentation> 
@@ -74,7 +74,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"accuracy\"]; })" js_get
 getAccuracy :: (MonadIO m) => Coordinates -> m Double
 getAccuracy self = liftIO (js_getAccuracy self)
  
-foreign import javascript unsafe "$1[\"altitudeAccuracy\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"altitudeAccuracy\"]; })"
         js_getAltitudeAccuracy :: Coordinates -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitudeAccuracy Mozilla Coordinates.altitudeAccuracy documentation> 

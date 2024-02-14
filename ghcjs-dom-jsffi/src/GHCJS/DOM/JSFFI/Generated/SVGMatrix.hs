@@ -57,7 +57,7 @@ inverse self = liftIO (js_inverse self)
 inverse_ :: (MonadIO m) => SVGMatrix -> m ()
 inverse_ self = liftIO (void (js_inverse self))
  
-foreign import javascript safe "$1[\"translate\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"translate\"]($2, $3); })"
         js_translate :: SVGMatrix -> Float -> Float -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.translate Mozilla SVGMatrix.translate documentation> 
@@ -80,7 +80,7 @@ scale self scaleFactor = liftIO (js_scale self scaleFactor)
 scale_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
 scale_ self scaleFactor = liftIO (void (js_scale self scaleFactor))
  
-foreign import javascript safe "$1[\"scaleNonUniform\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"scaleNonUniform\"]($2, $3); })"
         js_scaleNonUniform :: SVGMatrix -> Float -> Float -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.scaleNonUniform Mozilla SVGMatrix.scaleNonUniform documentation> 
@@ -106,7 +106,7 @@ rotate self angle = liftIO (js_rotate self angle)
 rotate_ :: (MonadIO m) => SVGMatrix -> Float -> m ()
 rotate_ self angle = liftIO (void (js_rotate self angle))
  
-foreign import javascript safe "$1[\"rotateFromVector\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"rotateFromVector\"]($2, $3); })"
         js_rotateFromVector :: SVGMatrix -> Float -> Float -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix.rotateFromVector Mozilla SVGMatrix.rotateFromVector documentation> 

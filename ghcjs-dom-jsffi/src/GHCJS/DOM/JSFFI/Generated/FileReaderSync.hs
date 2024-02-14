@@ -29,14 +29,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"FileReaderSync\"]()"
+foreign import javascript unsafe "(() => { return new window[\"FileReaderSync\"](); })"
         js_newFileReaderSync :: IO FileReaderSync
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync Mozilla FileReaderSync documentation> 
 newFileReaderSync :: (MonadIO m) => m FileReaderSync
 newFileReaderSync = liftIO (js_newFileReaderSync)
  
-foreign import javascript safe "$1[\"readAsArrayBuffer\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsArrayBuffer\"]($2); })"
         js_readAsArrayBuffer :: FileReaderSync -> Blob -> IO ArrayBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsArrayBuffer Mozilla FileReaderSync.readAsArrayBuffer documentation> 
@@ -51,7 +51,7 @@ readAsArrayBuffer_ ::
 readAsArrayBuffer_ self blob
   = liftIO (void (js_readAsArrayBuffer self (toBlob blob)))
  
-foreign import javascript safe "$1[\"readAsBinaryString\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsBinaryString\"]($2); })"
         js_readAsBinaryString :: FileReaderSync -> Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsBinaryString Mozilla FileReaderSync.readAsBinaryString documentation> 
@@ -68,7 +68,7 @@ readAsBinaryString_ ::
 readAsBinaryString_ self blob
   = liftIO (void (js_readAsBinaryString self (toBlob blob)))
  
-foreign import javascript safe "$1[\"readAsText\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"readAsText\"]($2, $3); })"
         js_readAsText ::
         FileReaderSync -> Blob -> Optional JSString -> IO JSString
 
@@ -91,7 +91,7 @@ readAsText_ self blob encoding
       (void
          (js_readAsText self (toBlob blob) (toOptionalJSString encoding)))
  
-foreign import javascript safe "$1[\"readAsDataURL\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"readAsDataURL\"]($2); })"
         js_readAsDataURL :: FileReaderSync -> Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FileReaderSync.readAsDataURL Mozilla FileReaderSync.readAsDataURL documentation> 

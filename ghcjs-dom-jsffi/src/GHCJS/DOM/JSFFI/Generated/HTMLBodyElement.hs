@@ -50,7 +50,7 @@ getALink ::
          (MonadIO m, FromJSString result) => HTMLBodyElement -> m result
 getALink self = liftIO (fromJSString <$> (js_getALink self))
  
-foreign import javascript unsafe "$1[\"background\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"background\"] = $2; })"
         js_setBackground :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
@@ -59,7 +59,7 @@ setBackground ::
 setBackground self val
   = liftIO (js_setBackground self (toJSString val))
  
-foreign import javascript unsafe "$1[\"background\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"background\"]; })"
         js_getBackground :: HTMLBodyElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.background Mozilla HTMLBodyElement.background documentation> 
@@ -68,7 +68,7 @@ getBackground ::
 getBackground self
   = liftIO (fromJSString <$> (js_getBackground self))
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLBodyElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLBodyElement.bgColor Mozilla HTMLBodyElement.bgColor documentation> 

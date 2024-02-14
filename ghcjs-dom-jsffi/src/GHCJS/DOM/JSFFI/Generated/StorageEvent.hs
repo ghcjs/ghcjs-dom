@@ -32,7 +32,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"StorageEvent\"]($1,\n$2)" js_newStorageEvent ::
+        "(($1, $2) => { return new window[\"StorageEvent\"]($1,\n$2); })" js_newStorageEvent ::
         JSString -> Optional StorageEventInit -> IO StorageEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent Mozilla StorageEvent documentation> 
@@ -45,7 +45,7 @@ newStorageEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initStorageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9) => { return $1[\"initStorageEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9); })"
         js_initStorageEvent ::
         StorageEvent ->
           Optional JSString ->
@@ -160,7 +160,7 @@ getUrl ::
        (MonadIO m, FromJSString result) => StorageEvent -> m result
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
-foreign import javascript unsafe "$1[\"storageArea\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"storageArea\"]; })"
         js_getStorageArea :: StorageEvent -> IO (Nullable Storage)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent.storageArea Mozilla StorageEvent.storageArea documentation> 

@@ -77,7 +77,7 @@ watchPosition_ self successCallback errorCallback options
             (maybeToOptional errorCallback)
             (maybeToOptional options)))
  
-foreign import javascript unsafe "$1[\"clearWatch\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearWatch\"]($2); })"
         js_clearWatch :: Geolocation -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.clearWatch Mozilla Geolocation.clearWatch documentation> 

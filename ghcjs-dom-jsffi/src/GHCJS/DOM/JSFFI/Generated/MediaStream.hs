@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]()" js_newMediaStream ::
+        "(() => { return new window[\"webkitMediaStream\"](); })" js_newMediaStream ::
         IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
@@ -42,7 +42,7 @@ newMediaStream :: (MonadIO m) => m MediaStream
 newMediaStream = liftIO (js_newMediaStream)
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]($1)" js_newMediaStream' ::
+        "(($1) => { return new window[\"webkitMediaStream\"]($1); })" js_newMediaStream' ::
         MediaStream -> IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
@@ -50,7 +50,7 @@ newMediaStream' :: (MonadIO m) => MediaStream -> m MediaStream
 newMediaStream' stream = liftIO (js_newMediaStream' stream)
  
 foreign import javascript unsafe
-        "new window[\"webkitMediaStream\"]($1)" js_newMediaStream'' ::
+        "(($1) => { return new window[\"webkitMediaStream\"]($1); })" js_newMediaStream'' ::
         JSVal -> IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream Mozilla webkitMediaStream documentation> 
@@ -60,7 +60,7 @@ newMediaStream'' tracks
   = liftIO
       (toJSVal tracks >>= \ tracks' -> js_newMediaStream'' tracks')
  
-foreign import javascript unsafe "$1[\"getAudioTracks\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getAudioTracks\"](); })"
         js_getAudioTracks :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getAudioTracks Mozilla webkitMediaStream.getAudioTracks documentation> 
@@ -73,7 +73,7 @@ getAudioTracks self
 getAudioTracks_ :: (MonadIO m) => MediaStream -> m ()
 getAudioTracks_ self = liftIO (void (js_getAudioTracks self))
  
-foreign import javascript unsafe "$1[\"getVideoTracks\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getVideoTracks\"](); })"
         js_getVideoTracks :: MediaStream -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getVideoTracks Mozilla webkitMediaStream.getVideoTracks documentation> 
@@ -98,7 +98,7 @@ getTracks self
 getTracks_ :: (MonadIO m) => MediaStream -> m ()
 getTracks_ self = liftIO (void (js_getTracks self))
  
-foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getTrackById\"]($2); })"
         js_getTrackById :: MediaStream -> JSString -> IO MediaStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.getTrackById Mozilla webkitMediaStream.getTrackById documentation> 
@@ -124,7 +124,7 @@ addTrack ::
 addTrack self track
   = liftIO (js_addTrack self (toMediaStreamTrack track))
  
-foreign import javascript unsafe "$1[\"removeTrack\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"removeTrack\"]($2); })"
         js_removeTrack :: MediaStream -> MediaStreamTrack -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.removeTrack Mozilla webkitMediaStream.removeTrack documentation> 
@@ -153,7 +153,7 @@ getId ::
       (MonadIO m, FromJSString result) => MediaStream -> m result
 getId self = liftIO (fromJSString <$> (js_getId self))
  
-foreign import javascript unsafe "($1[\"active\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"active\"] ? 1 : 0); })"
         js_getActive :: MediaStream -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitMediaStream.active Mozilla webkitMediaStream.active documentation> 

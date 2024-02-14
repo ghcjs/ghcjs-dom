@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"DOMPoint\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"DOMPoint\"]($1); })"
         js_newDOMPoint :: DOMPointInit -> IO DOMPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint Mozilla DOMPoint documentation> 
@@ -36,7 +36,7 @@ newDOMPoint :: (MonadIO m) => DOMPointInit -> m DOMPoint
 newDOMPoint point = liftIO (js_newDOMPoint point)
  
 foreign import javascript unsafe
-        "new window[\"DOMPoint\"]($1, $2,\n$3, $4)" js_newDOMPoint' ::
+        "(($1, $2, $3, $4) => { return new window[\"DOMPoint\"]($1, $2,\n$3, $4); })" js_newDOMPoint' ::
         Optional Double ->
           Optional Double ->
             Optional Double -> Optional Double -> IO DOMPoint
@@ -53,7 +53,7 @@ newDOMPoint' x y z w
          (maybeToOptional w))
  
 foreign import javascript unsafe
-        "window[\"DOMPoint\"][\"fromPoint\"]($1)" js_fromPoint ::
+        "(($1) => { return window[\"DOMPoint\"][\"fromPoint\"]($1); })" js_fromPoint ::
         Optional DOMPointInit -> IO DOMPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPoint.fromPoint Mozilla DOMPoint.fromPoint documentation> 

@@ -320,13 +320,13 @@ instance FromJSVal KeyType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"public\"" js_KeyTypePublic ::
+foreign import javascript unsafe "(() => { return \"public\"; })" js_KeyTypePublic ::
         JSVal
  
-foreign import javascript unsafe "\"private\"" js_KeyTypePrivate ::
+foreign import javascript unsafe "(() => { return \"private\"; })" js_KeyTypePrivate ::
         JSVal
  
-foreign import javascript unsafe "\"secret\"" js_KeyTypeSecret ::
+foreign import javascript unsafe "(() => { return \"secret\"; })" js_KeyTypeSecret ::
         JSVal
  
 data CryptoKeyUsage = CryptoKeyUsageEncrypt
@@ -373,28 +373,28 @@ instance FromJSVal CryptoKeyUsage where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"encrypt\""
+foreign import javascript unsafe "(() => { return \"encrypt\"; })"
         js_CryptoKeyUsageEncrypt :: JSVal
  
-foreign import javascript unsafe "\"decrypt\""
+foreign import javascript unsafe "(() => { return \"decrypt\"; })"
         js_CryptoKeyUsageDecrypt :: JSVal
  
-foreign import javascript unsafe "\"sign\"" js_CryptoKeyUsageSign
+foreign import javascript unsafe "(() => { return \"sign\"; })" js_CryptoKeyUsageSign
         :: JSVal
  
-foreign import javascript unsafe "\"verify\""
+foreign import javascript unsafe "(() => { return \"verify\"; })"
         js_CryptoKeyUsageVerify :: JSVal
  
-foreign import javascript unsafe "\"deriveKey\""
+foreign import javascript unsafe "(() => { return \"deriveKey\"; })"
         js_CryptoKeyUsageDeriveKey :: JSVal
  
-foreign import javascript unsafe "\"deriveBits\""
+foreign import javascript unsafe "(() => { return \"deriveBits\"; })"
         js_CryptoKeyUsageDeriveBits :: JSVal
  
-foreign import javascript unsafe "\"wrapKey\""
+foreign import javascript unsafe "(() => { return \"wrapKey\"; })"
         js_CryptoKeyUsageWrapKey :: JSVal
  
-foreign import javascript unsafe "\"unwrapKey\""
+foreign import javascript unsafe "(() => { return \"unwrapKey\"; })"
         js_CryptoKeyUsageUnwrapKey :: JSVal
  
 data KeyFormat = KeyFormatRaw
@@ -422,15 +422,15 @@ instance FromJSVal KeyFormat where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"raw\"" js_KeyFormatRaw :: JSVal
+foreign import javascript unsafe "(() => { return \"raw\"; })" js_KeyFormatRaw :: JSVal
  
-foreign import javascript unsafe "\"spki\"" js_KeyFormatSpki ::
+foreign import javascript unsafe "(() => { return \"spki\"; })" js_KeyFormatSpki ::
         JSVal
  
-foreign import javascript unsafe "\"pkcs8\"" js_KeyFormatPkcs8 ::
+foreign import javascript unsafe "(() => { return \"pkcs8\"; })" js_KeyFormatPkcs8 ::
         JSVal
  
-foreign import javascript unsafe "\"jwk\"" js_KeyFormatJwk :: JSVal
+foreign import javascript unsafe "(() => { return \"jwk\"; })" js_KeyFormatJwk :: JSVal
  
 data FontFaceLoadStatus = FontFaceLoadStatusUnloaded
                         | FontFaceLoadStatusLoading
@@ -463,16 +463,16 @@ instance FromJSVal FontFaceLoadStatus where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"unloaded\""
+foreign import javascript unsafe "(() => { return \"unloaded\"; })"
         js_FontFaceLoadStatusUnloaded :: JSVal
  
-foreign import javascript unsafe "\"loading\""
+foreign import javascript unsafe "(() => { return \"loading\"; })"
         js_FontFaceLoadStatusLoading :: JSVal
  
-foreign import javascript unsafe "\"loaded\""
+foreign import javascript unsafe "(() => { return \"loaded\"; })"
         js_FontFaceLoadStatusLoaded :: JSVal
  
-foreign import javascript unsafe "\"error\""
+foreign import javascript unsafe "(() => { return \"error\"; })"
         js_FontFaceLoadStatusError :: JSVal
  
 data FontFaceSetLoadStatus = FontFaceSetLoadStatusLoading
@@ -500,10 +500,10 @@ instance FromJSVal FontFaceSetLoadStatus where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"loading\""
+foreign import javascript unsafe "(() => { return \"loading\"; })"
         js_FontFaceSetLoadStatusLoading :: JSVal
  
-foreign import javascript unsafe "\"loaded\""
+foreign import javascript unsafe "(() => { return \"loaded\"; })"
         js_FontFaceSetLoadStatusLoaded :: JSVal
  
 data VisibilityState = VisibilityStateHidden
@@ -531,13 +531,13 @@ instance FromJSVal VisibilityState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"hidden\""
+foreign import javascript unsafe "(() => { return \"hidden\"; })"
         js_VisibilityStateHidden :: JSVal
  
-foreign import javascript unsafe "\"visible\""
+foreign import javascript unsafe "(() => { return \"visible\"; })"
         js_VisibilityStateVisible :: JSVal
  
-foreign import javascript unsafe "\"prerender\""
+foreign import javascript unsafe "(() => { return \"prerender\"; })"
         js_VisibilityStatePrerender :: JSVal
  
 data DocumentReadyState = DocumentReadyStateLoading
@@ -569,13 +569,13 @@ instance FromJSVal DocumentReadyState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"loading\""
+foreign import javascript unsafe "(() => { return \"loading\"; })"
         js_DocumentReadyStateLoading :: JSVal
  
-foreign import javascript unsafe "\"interactive\""
+foreign import javascript unsafe "(() => { return \"interactive\"; })"
         js_DocumentReadyStateInteractive :: JSVal
  
-foreign import javascript unsafe "\"complete\""
+foreign import javascript unsafe "(() => { return \"complete\"; })"
         js_DocumentReadyStateComplete :: JSVal
  
 data ShadowRootMode = ShadowRootModeUserAgent
@@ -602,13 +602,13 @@ instance FromJSVal ShadowRootMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"user-agent\""
+foreign import javascript unsafe "(() => { return \"user-agent\"; })"
         js_ShadowRootModeUserAgent :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_ShadowRootModeClosed :: JSVal
  
-foreign import javascript unsafe "\"open\"" js_ShadowRootModeOpen
+foreign import javascript unsafe "(() => { return \"open\"; })" js_ShadowRootModeOpen
         :: JSVal
  
 data BlobLineEndings = BlobLineEndingsTransparent
@@ -633,10 +633,10 @@ instance FromJSVal BlobLineEndings where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"transparent\""
+foreign import javascript unsafe "(() => { return \"transparent\"; })"
         js_BlobLineEndingsTransparent :: JSVal
  
-foreign import javascript unsafe "\"native\""
+foreign import javascript unsafe "(() => { return \"native\"; })"
         js_BlobLineEndingsNative :: JSVal
  
 data ImageSmoothingQuality = ImageSmoothingQualityLow
@@ -667,13 +667,13 @@ instance FromJSVal ImageSmoothingQuality where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"low\""
+foreign import javascript unsafe "(() => { return \"low\"; })"
         js_ImageSmoothingQualityLow :: JSVal
  
-foreign import javascript unsafe "\"medium\""
+foreign import javascript unsafe "(() => { return \"medium\"; })"
         js_ImageSmoothingQualityMedium :: JSVal
  
-foreign import javascript unsafe "\"high\""
+foreign import javascript unsafe "(() => { return \"high\"; })"
         js_ImageSmoothingQualityHigh :: JSVal
  
 data CanvasWindingRule = CanvasWindingRuleNonzero
@@ -697,10 +697,10 @@ instance FromJSVal CanvasWindingRule where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"nonzero\""
+foreign import javascript unsafe "(() => { return \"nonzero\"; })"
         js_CanvasWindingRuleNonzero :: JSVal
  
-foreign import javascript unsafe "\"evenodd\""
+foreign import javascript unsafe "(() => { return \"evenodd\"; })"
         js_CanvasWindingRuleEvenodd :: JSVal
  
 data WebGLPowerPreference = WebGLPowerPreferenceDefault
@@ -734,13 +734,13 @@ instance FromJSVal WebGLPowerPreference where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"default\""
+foreign import javascript unsafe "(() => { return \"default\"; })"
         js_WebGLPowerPreferenceDefault :: JSVal
  
-foreign import javascript unsafe "\"low-power\""
+foreign import javascript unsafe "(() => { return \"low-power\"; })"
         js_WebGLPowerPreferenceLowPower :: JSVal
  
-foreign import javascript unsafe "\"high-performance\""
+foreign import javascript unsafe "(() => { return \"high-performance\"; })"
         js_WebGLPowerPreferenceHighPerformance :: JSVal
  
 data WebGPUCompareFunction = WebGPUCompareFunctionNever
@@ -801,28 +801,28 @@ instance FromJSVal WebGPUCompareFunction where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"never\""
+foreign import javascript unsafe "(() => { return \"never\"; })"
         js_WebGPUCompareFunctionNever :: JSVal
  
-foreign import javascript unsafe "\"less\""
+foreign import javascript unsafe "(() => { return \"less\"; })"
         js_WebGPUCompareFunctionLess :: JSVal
  
-foreign import javascript unsafe "\"equal\""
+foreign import javascript unsafe "(() => { return \"equal\"; })"
         js_WebGPUCompareFunctionEqual :: JSVal
  
-foreign import javascript unsafe "\"lessequal\""
+foreign import javascript unsafe "(() => { return \"lessequal\"; })"
         js_WebGPUCompareFunctionLessequal :: JSVal
  
-foreign import javascript unsafe "\"greater\""
+foreign import javascript unsafe "(() => { return \"greater\"; })"
         js_WebGPUCompareFunctionGreater :: JSVal
  
-foreign import javascript unsafe "\"notequal\""
+foreign import javascript unsafe "(() => { return \"notequal\"; })"
         js_WebGPUCompareFunctionNotequal :: JSVal
  
-foreign import javascript unsafe "\"greaterequal\""
+foreign import javascript unsafe "(() => { return \"greaterequal\"; })"
         js_WebGPUCompareFunctionGreaterequal :: JSVal
  
-foreign import javascript unsafe "\"always\""
+foreign import javascript unsafe "(() => { return \"always\"; })"
         js_WebGPUCompareFunctionAlways :: JSVal
  
 data WebGPUPixelFormat = WebGPUPixelFormatBGRA8Unorm
@@ -844,7 +844,7 @@ instance FromJSVal WebGPUPixelFormat where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"BGRA8Unorm\""
+foreign import javascript unsafe "(() => { return \"BGRA8Unorm\"; })"
         js_WebGPUPixelFormatBGRA8Unorm :: JSVal
  
 data WebGPULoadAction = WebGPULoadActionDontcare
@@ -872,13 +872,13 @@ instance FromJSVal WebGPULoadAction where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"dontcare\""
+foreign import javascript unsafe "(() => { return \"dontcare\"; })"
         js_WebGPULoadActionDontcare :: JSVal
  
-foreign import javascript unsafe "\"load\"" js_WebGPULoadActionLoad
+foreign import javascript unsafe "(() => { return \"load\"; })" js_WebGPULoadActionLoad
         :: JSVal
  
-foreign import javascript unsafe "\"clear\""
+foreign import javascript unsafe "(() => { return \"clear\"; })"
         js_WebGPULoadActionClear :: JSVal
  
 data WebGPUStoreAction = WebGPUStoreActionDontcare
@@ -909,13 +909,13 @@ instance FromJSVal WebGPUStoreAction where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"dontcare\""
+foreign import javascript unsafe "(() => { return \"dontcare\"; })"
         js_WebGPUStoreActionDontcare :: JSVal
  
-foreign import javascript unsafe "\"store\""
+foreign import javascript unsafe "(() => { return \"store\"; })"
         js_WebGPUStoreActionStore :: JSVal
  
-foreign import javascript unsafe "\"multisampleresolve\""
+foreign import javascript unsafe "(() => { return \"multisampleresolve\"; })"
         js_WebGPUStoreActionMultisampleresolve :: JSVal
  
 data WebGPUPrimitiveType = WebGPUPrimitiveTypePoint
@@ -957,19 +957,19 @@ instance FromJSVal WebGPUPrimitiveType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"point\""
+foreign import javascript unsafe "(() => { return \"point\"; })"
         js_WebGPUPrimitiveTypePoint :: JSVal
  
-foreign import javascript unsafe "\"line\""
+foreign import javascript unsafe "(() => { return \"line\"; })"
         js_WebGPUPrimitiveTypeLine :: JSVal
  
-foreign import javascript unsafe "\"linestrip\""
+foreign import javascript unsafe "(() => { return \"linestrip\"; })"
         js_WebGPUPrimitiveTypeLinestrip :: JSVal
  
-foreign import javascript unsafe "\"triangle\""
+foreign import javascript unsafe "(() => { return \"triangle\"; })"
         js_WebGPUPrimitiveTypeTriangle :: JSVal
  
-foreign import javascript unsafe "\"trianglestrip\""
+foreign import javascript unsafe "(() => { return \"trianglestrip\"; })"
         js_WebGPUPrimitiveTypeTrianglestrip :: JSVal
  
 data WebGPUFunctionType = WebGPUFunctionTypeFragment
@@ -994,10 +994,10 @@ instance FromJSVal WebGPUFunctionType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"fragment\""
+foreign import javascript unsafe "(() => { return \"fragment\"; })"
         js_WebGPUFunctionTypeFragment :: JSVal
  
-foreign import javascript unsafe "\"vertex\""
+foreign import javascript unsafe "(() => { return \"vertex\"; })"
         js_WebGPUFunctionTypeVertex :: JSVal
  
 data WebGPUStencilOperation = WebGPUStencilOperationKeep
@@ -1059,28 +1059,28 @@ instance FromJSVal WebGPUStencilOperation where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"keep\""
+foreign import javascript unsafe "(() => { return \"keep\"; })"
         js_WebGPUStencilOperationKeep :: JSVal
  
-foreign import javascript unsafe "\"zero\""
+foreign import javascript unsafe "(() => { return \"zero\"; })"
         js_WebGPUStencilOperationZero :: JSVal
  
-foreign import javascript unsafe "\"replace\""
+foreign import javascript unsafe "(() => { return \"replace\"; })"
         js_WebGPUStencilOperationReplace :: JSVal
  
-foreign import javascript unsafe "\"incrementclamp\""
+foreign import javascript unsafe "(() => { return \"incrementclamp\"; })"
         js_WebGPUStencilOperationIncrementclamp :: JSVal
  
-foreign import javascript unsafe "\"decrementclamp\""
+foreign import javascript unsafe "(() => { return \"decrementclamp\"; })"
         js_WebGPUStencilOperationDecrementclamp :: JSVal
  
-foreign import javascript unsafe "\"invert\""
+foreign import javascript unsafe "(() => { return \"invert\"; })"
         js_WebGPUStencilOperationInvert :: JSVal
  
-foreign import javascript unsafe "\"incrementwrap\""
+foreign import javascript unsafe "(() => { return \"incrementwrap\"; })"
         js_WebGPUStencilOperationIncrementwrap :: JSVal
  
-foreign import javascript unsafe "\"decrementwrap\""
+foreign import javascript unsafe "(() => { return \"decrementwrap\"; })"
         js_WebGPUStencilOperationDecrementwrap :: JSVal
  
 data WebGPUStatus = WebGPUStatusNotenqueued
@@ -1119,22 +1119,22 @@ instance FromJSVal WebGPUStatus where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"notenqueued\""
+foreign import javascript unsafe "(() => { return \"notenqueued\"; })"
         js_WebGPUStatusNotenqueued :: JSVal
  
-foreign import javascript unsafe "\"enqueued\""
+foreign import javascript unsafe "(() => { return \"enqueued\"; })"
         js_WebGPUStatusEnqueued :: JSVal
  
-foreign import javascript unsafe "\"committed\""
+foreign import javascript unsafe "(() => { return \"committed\"; })"
         js_WebGPUStatusCommitted :: JSVal
  
-foreign import javascript unsafe "\"scheduled\""
+foreign import javascript unsafe "(() => { return \"scheduled\"; })"
         js_WebGPUStatusScheduled :: JSVal
  
-foreign import javascript unsafe "\"completed\""
+foreign import javascript unsafe "(() => { return \"completed\"; })"
         js_WebGPUStatusCompleted :: JSVal
  
-foreign import javascript unsafe "\"error\"" js_WebGPUStatusError
+foreign import javascript unsafe "(() => { return \"error\"; })" js_WebGPUStatusError
         :: JSVal
  
 data WebGPUSamplerAddressMode = WebGPUSamplerAddressModeClamptoedge
@@ -1180,19 +1180,19 @@ instance FromJSVal WebGPUSamplerAddressMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"clamptoedge\""
+foreign import javascript unsafe "(() => { return \"clamptoedge\"; })"
         js_WebGPUSamplerAddressModeClamptoedge :: JSVal
  
-foreign import javascript unsafe "\"mirrorclamptoedge\""
+foreign import javascript unsafe "(() => { return \"mirrorclamptoedge\"; })"
         js_WebGPUSamplerAddressModeMirrorclamptoedge :: JSVal
  
-foreign import javascript unsafe "\"repeat\""
+foreign import javascript unsafe "(() => { return \"repeat\"; })"
         js_WebGPUSamplerAddressModeRepeat :: JSVal
  
-foreign import javascript unsafe "\"mirrorrepeat\""
+foreign import javascript unsafe "(() => { return \"mirrorrepeat\"; })"
         js_WebGPUSamplerAddressModeMirrorrepeat :: JSVal
  
-foreign import javascript unsafe "\"clamptozero\""
+foreign import javascript unsafe "(() => { return \"clamptozero\"; })"
         js_WebGPUSamplerAddressModeClamptozero :: JSVal
  
 data WebGPUSamplerMinMagFilter = WebGPUSamplerMinMagFilterNearest
@@ -1220,10 +1220,10 @@ instance FromJSVal WebGPUSamplerMinMagFilter where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"nearest\""
+foreign import javascript unsafe "(() => { return \"nearest\"; })"
         js_WebGPUSamplerMinMagFilterNearest :: JSVal
  
-foreign import javascript unsafe "\"linear\""
+foreign import javascript unsafe "(() => { return \"linear\"; })"
         js_WebGPUSamplerMinMagFilterLinear :: JSVal
  
 data WebGPUSamplerMipFilter = WebGPUSamplerMipFilterNotmipmapped
@@ -1257,13 +1257,13 @@ instance FromJSVal WebGPUSamplerMipFilter where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"notmipmapped\""
+foreign import javascript unsafe "(() => { return \"notmipmapped\"; })"
         js_WebGPUSamplerMipFilterNotmipmapped :: JSVal
  
-foreign import javascript unsafe "\"nearest\""
+foreign import javascript unsafe "(() => { return \"nearest\"; })"
         js_WebGPUSamplerMipFilterNearest :: JSVal
  
-foreign import javascript unsafe "\"linear\""
+foreign import javascript unsafe "(() => { return \"linear\"; })"
         js_WebGPUSamplerMipFilterLinear :: JSVal
  
 data WebGPUCullMode = WebGPUCullModeNone
@@ -1289,13 +1289,13 @@ instance FromJSVal WebGPUCullMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"none\"" js_WebGPUCullModeNone
+foreign import javascript unsafe "(() => { return \"none\"; })" js_WebGPUCullModeNone
         :: JSVal
  
-foreign import javascript unsafe "\"front\"" js_WebGPUCullModeFront
+foreign import javascript unsafe "(() => { return \"front\"; })" js_WebGPUCullModeFront
         :: JSVal
  
-foreign import javascript unsafe "\"back\"" js_WebGPUCullModeBack
+foreign import javascript unsafe "(() => { return \"back\"; })" js_WebGPUCullModeBack
         :: JSVal
  
 data WebGPUIndexType = WebGPUIndexTypeUint16
@@ -1319,10 +1319,10 @@ instance FromJSVal WebGPUIndexType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"uint16\""
+foreign import javascript unsafe "(() => { return \"uint16\"; })"
         js_WebGPUIndexTypeUint16 :: JSVal
  
-foreign import javascript unsafe "\"uint32\""
+foreign import javascript unsafe "(() => { return \"uint32\"; })"
         js_WebGPUIndexTypeUint32 :: JSVal
  
 data WebGPUVisibilityResultMode = WebGPUVisibilityResultModeDisabled
@@ -1356,13 +1356,13 @@ instance FromJSVal WebGPUVisibilityResultMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"disabled\""
+foreign import javascript unsafe "(() => { return \"disabled\"; })"
         js_WebGPUVisibilityResultModeDisabled :: JSVal
  
-foreign import javascript unsafe "\"boolean\""
+foreign import javascript unsafe "(() => { return \"boolean\"; })"
         js_WebGPUVisibilityResultModeBoolean :: JSVal
  
-foreign import javascript unsafe "\"counting\""
+foreign import javascript unsafe "(() => { return \"counting\"; })"
         js_WebGPUVisibilityResultModeCounting :: JSVal
  
 data WebGPUWinding = WebGPUWindingClockwise
@@ -1388,10 +1388,10 @@ instance FromJSVal WebGPUWinding where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"clockwise\""
+foreign import javascript unsafe "(() => { return \"clockwise\"; })"
         js_WebGPUWindingClockwise :: JSVal
  
-foreign import javascript unsafe "\"counterclockwise\""
+foreign import javascript unsafe "(() => { return \"counterclockwise\"; })"
         js_WebGPUWindingCounterclockwise :: JSVal
  
 data WebGPUDepthClipMode = WebGPUDepthClipModeClip
@@ -1415,10 +1415,10 @@ instance FromJSVal WebGPUDepthClipMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"clip\""
+foreign import javascript unsafe "(() => { return \"clip\"; })"
         js_WebGPUDepthClipModeClip :: JSVal
  
-foreign import javascript unsafe "\"clamp\""
+foreign import javascript unsafe "(() => { return \"clamp\"; })"
         js_WebGPUDepthClipModeClamp :: JSVal
  
 data WebGPUTriangleFillMode = WebGPUTriangleFillModeFill
@@ -1445,10 +1445,10 @@ instance FromJSVal WebGPUTriangleFillMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"fill\""
+foreign import javascript unsafe "(() => { return \"fill\"; })"
         js_WebGPUTriangleFillModeFill :: JSVal
  
-foreign import javascript unsafe "\"lines\""
+foreign import javascript unsafe "(() => { return \"lines\"; })"
         js_WebGPUTriangleFillModeLines :: JSVal
  
 data WebGPUCPUCacheMode = WebGPUCPUCacheModeDefaultcache
@@ -1476,10 +1476,10 @@ instance FromJSVal WebGPUCPUCacheMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"defaultcache\""
+foreign import javascript unsafe "(() => { return \"defaultcache\"; })"
         js_WebGPUCPUCacheModeDefaultcache :: JSVal
  
-foreign import javascript unsafe "\"writecombined\""
+foreign import javascript unsafe "(() => { return \"writecombined\"; })"
         js_WebGPUCPUCacheModeWritecombined :: JSVal
  
 data WebGPUStorageMode = WebGPUStorageModeShared
@@ -1507,13 +1507,13 @@ instance FromJSVal WebGPUStorageMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"shared\""
+foreign import javascript unsafe "(() => { return \"shared\"; })"
         js_WebGPUStorageModeShared :: JSVal
  
-foreign import javascript unsafe "\"managed\""
+foreign import javascript unsafe "(() => { return \"managed\"; })"
         js_WebGPUStorageModeManaged :: JSVal
  
-foreign import javascript unsafe "\"private\""
+foreign import javascript unsafe "(() => { return \"private\"; })"
         js_WebGPUStorageModePrivate :: JSVal
  
 data WebGPUResourceOptions = WebGPUResourceOptionsCpucachemodedefaultcache
@@ -1571,27 +1571,27 @@ instance FromJSVal WebGPUResourceOptions where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"cpucachemodedefaultcache\""
+foreign import javascript unsafe "(() => { return \"cpucachemodedefaultcache\"; })"
         js_WebGPUResourceOptionsCpucachemodedefaultcache :: JSVal
  
-foreign import javascript unsafe "\"cpucachemodewritecombined\""
+foreign import javascript unsafe "(() => { return \"cpucachemodewritecombined\"; })"
         js_WebGPUResourceOptionsCpucachemodewritecombined :: JSVal
  
-foreign import javascript unsafe "\"storagemodeshared\""
+foreign import javascript unsafe "(() => { return \"storagemodeshared\"; })"
         js_WebGPUResourceOptionsStoragemodeshared :: JSVal
  
-foreign import javascript unsafe "\"storagemodemanaged\""
+foreign import javascript unsafe "(() => { return \"storagemodemanaged\"; })"
         js_WebGPUResourceOptionsStoragemodemanaged :: JSVal
  
-foreign import javascript unsafe "\"storagemodeprivate\""
+foreign import javascript unsafe "(() => { return \"storagemodeprivate\"; })"
         js_WebGPUResourceOptionsStoragemodeprivate :: JSVal
  
 foreign import javascript unsafe
-        "\"optioncpucachemodedefaultcache\""
+        "(() => { return \"optioncpucachemodedefaultcache\"; })"
         js_WebGPUResourceOptionsOptioncpucachemodedefaultcache :: JSVal
  
 foreign import javascript unsafe
-        "\"optioncpucachemodewritecombined\""
+        "(() => { return \"optioncpucachemodewritecombined\"; })"
         js_WebGPUResourceOptionsOptioncpucachemodewritecombined :: JSVal
  
 data WebGPUTextureUsage = WebGPUTextureUsageUnknown
@@ -1636,19 +1636,19 @@ instance FromJSVal WebGPUTextureUsage where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"unknown\""
+foreign import javascript unsafe "(() => { return \"unknown\"; })"
         js_WebGPUTextureUsageUnknown :: JSVal
  
-foreign import javascript unsafe "\"shaderread\""
+foreign import javascript unsafe "(() => { return \"shaderread\"; })"
         js_WebGPUTextureUsageShaderread :: JSVal
  
-foreign import javascript unsafe "\"shaderwrite\""
+foreign import javascript unsafe "(() => { return \"shaderwrite\"; })"
         js_WebGPUTextureUsageShaderwrite :: JSVal
  
-foreign import javascript unsafe "\"rendertarget\""
+foreign import javascript unsafe "(() => { return \"rendertarget\"; })"
         js_WebGPUTextureUsageRendertarget :: JSVal
  
-foreign import javascript unsafe "\"pixelformatview\""
+foreign import javascript unsafe "(() => { return \"pixelformatview\"; })"
         js_WebGPUTextureUsagePixelformatview :: JSVal
  
 data WebGPUBlendOperation = WebGPUBlendOperationAdd
@@ -1688,19 +1688,19 @@ instance FromJSVal WebGPUBlendOperation where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"add\""
+foreign import javascript unsafe "(() => { return \"add\"; })"
         js_WebGPUBlendOperationAdd :: JSVal
  
-foreign import javascript unsafe "\"subtract\""
+foreign import javascript unsafe "(() => { return \"subtract\"; })"
         js_WebGPUBlendOperationSubtract :: JSVal
  
-foreign import javascript unsafe "\"reversesubtract\""
+foreign import javascript unsafe "(() => { return \"reversesubtract\"; })"
         js_WebGPUBlendOperationReversesubtract :: JSVal
  
-foreign import javascript unsafe "\"min\""
+foreign import javascript unsafe "(() => { return \"min\"; })"
         js_WebGPUBlendOperationMin :: JSVal
  
-foreign import javascript unsafe "\"max\""
+foreign import javascript unsafe "(() => { return \"max\"; })"
         js_WebGPUBlendOperationMax :: JSVal
  
 data WebGPUBlendFactor = WebGPUBlendFactorZero
@@ -1802,49 +1802,49 @@ instance FromJSVal WebGPUBlendFactor where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"zero\""
+foreign import javascript unsafe "(() => { return \"zero\"; })"
         js_WebGPUBlendFactorZero :: JSVal
  
-foreign import javascript unsafe "\"one\"" js_WebGPUBlendFactorOne
+foreign import javascript unsafe "(() => { return \"one\"; })" js_WebGPUBlendFactorOne
         :: JSVal
  
-foreign import javascript unsafe "\"sourcecolor\""
+foreign import javascript unsafe "(() => { return \"sourcecolor\"; })"
         js_WebGPUBlendFactorSourcecolor :: JSVal
  
-foreign import javascript unsafe "\"oneminussourcecolor\""
+foreign import javascript unsafe "(() => { return \"oneminussourcecolor\"; })"
         js_WebGPUBlendFactorOneminussourcecolor :: JSVal
  
-foreign import javascript unsafe "\"sourcealpha\""
+foreign import javascript unsafe "(() => { return \"sourcealpha\"; })"
         js_WebGPUBlendFactorSourcealpha :: JSVal
  
-foreign import javascript unsafe "\"oneminussourcealpha\""
+foreign import javascript unsafe "(() => { return \"oneminussourcealpha\"; })"
         js_WebGPUBlendFactorOneminussourcealpha :: JSVal
  
-foreign import javascript unsafe "\"destinationcolor\""
+foreign import javascript unsafe "(() => { return \"destinationcolor\"; })"
         js_WebGPUBlendFactorDestinationcolor :: JSVal
  
-foreign import javascript unsafe "\"oneminusdestinationcolor\""
+foreign import javascript unsafe "(() => { return \"oneminusdestinationcolor\"; })"
         js_WebGPUBlendFactorOneminusdestinationcolor :: JSVal
  
-foreign import javascript unsafe "\"destinationalpha\""
+foreign import javascript unsafe "(() => { return \"destinationalpha\"; })"
         js_WebGPUBlendFactorDestinationalpha :: JSVal
  
-foreign import javascript unsafe "\"oneminusdestinationalpha\""
+foreign import javascript unsafe "(() => { return \"oneminusdestinationalpha\"; })"
         js_WebGPUBlendFactorOneminusdestinationalpha :: JSVal
  
-foreign import javascript unsafe "\"sourcealphasaturated\""
+foreign import javascript unsafe "(() => { return \"sourcealphasaturated\"; })"
         js_WebGPUBlendFactorSourcealphasaturated :: JSVal
  
-foreign import javascript unsafe "\"blendcolor\""
+foreign import javascript unsafe "(() => { return \"blendcolor\"; })"
         js_WebGPUBlendFactorBlendcolor :: JSVal
  
-foreign import javascript unsafe "\"oneminusblendcolor\""
+foreign import javascript unsafe "(() => { return \"oneminusblendcolor\"; })"
         js_WebGPUBlendFactorOneminusblendcolor :: JSVal
  
-foreign import javascript unsafe "\"blendalpha\""
+foreign import javascript unsafe "(() => { return \"blendalpha\"; })"
         js_WebGPUBlendFactorBlendalpha :: JSVal
  
-foreign import javascript unsafe "\"oneminusblendalpha\""
+foreign import javascript unsafe "(() => { return \"oneminusblendalpha\"; })"
         js_WebGPUBlendFactorOneminusblendalpha :: JSVal
  
 data WebGPUColorWriteMask = WebGPUColorWriteMaskNone
@@ -1886,22 +1886,22 @@ instance FromJSVal WebGPUColorWriteMask where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"none\""
+foreign import javascript unsafe "(() => { return \"none\"; })"
         js_WebGPUColorWriteMaskNone :: JSVal
  
-foreign import javascript unsafe "\"red\""
+foreign import javascript unsafe "(() => { return \"red\"; })"
         js_WebGPUColorWriteMaskRed :: JSVal
  
-foreign import javascript unsafe "\"green\""
+foreign import javascript unsafe "(() => { return \"green\"; })"
         js_WebGPUColorWriteMaskGreen :: JSVal
  
-foreign import javascript unsafe "\"blue\""
+foreign import javascript unsafe "(() => { return \"blue\"; })"
         js_WebGPUColorWriteMaskBlue :: JSVal
  
-foreign import javascript unsafe "\"alpha\""
+foreign import javascript unsafe "(() => { return \"alpha\"; })"
         js_WebGPUColorWriteMaskAlpha :: JSVal
  
-foreign import javascript unsafe "\"all\""
+foreign import javascript unsafe "(() => { return \"all\"; })"
         js_WebGPUColorWriteMaskAll :: JSVal
  
 data WebGPUMultisampleDepthResolveFilter = WebGPUMultisampleDepthResolveFilterSample0
@@ -1935,13 +1935,13 @@ instance FromJSVal WebGPUMultisampleDepthResolveFilter where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"sample0\""
+foreign import javascript unsafe "(() => { return \"sample0\"; })"
         js_WebGPUMultisampleDepthResolveFilterSample0 :: JSVal
  
-foreign import javascript unsafe "\"min\""
+foreign import javascript unsafe "(() => { return \"min\"; })"
         js_WebGPUMultisampleDepthResolveFilterMin :: JSVal
  
-foreign import javascript unsafe "\"max\""
+foreign import javascript unsafe "(() => { return \"max\"; })"
         js_WebGPUMultisampleDepthResolveFilterMax :: JSVal
  
 data WebGPUFeatureSet = WebGPUFeatureSetLevel1
@@ -1965,10 +1965,10 @@ instance FromJSVal WebGPUFeatureSet where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"level1\""
+foreign import javascript unsafe "(() => { return \"level1\"; })"
         js_WebGPUFeatureSetLevel1 :: JSVal
  
-foreign import javascript unsafe "\"level2\""
+foreign import javascript unsafe "(() => { return \"level2\"; })"
         js_WebGPUFeatureSetLevel2 :: JSVal
  
 data VideoPresentationMode = VideoPresentationModeFullscreen
@@ -2002,13 +2002,13 @@ instance FromJSVal VideoPresentationMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"fullscreen\""
+foreign import javascript unsafe "(() => { return \"fullscreen\"; })"
         js_VideoPresentationModeFullscreen :: JSVal
  
-foreign import javascript unsafe "\"picture-in-picture\""
+foreign import javascript unsafe "(() => { return \"picture-in-picture\"; })"
         js_VideoPresentationModePictureInPicture :: JSVal
  
-foreign import javascript unsafe "\"inline\""
+foreign import javascript unsafe "(() => { return \"inline\"; })"
         js_VideoPresentationModeInline :: JSVal
  
 data TextTrackMode = TextTrackModeDisabled
@@ -2036,13 +2036,13 @@ instance FromJSVal TextTrackMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"disabled\""
+foreign import javascript unsafe "(() => { return \"disabled\"; })"
         js_TextTrackModeDisabled :: JSVal
  
-foreign import javascript unsafe "\"hidden\""
+foreign import javascript unsafe "(() => { return \"hidden\"; })"
         js_TextTrackModeHidden :: JSVal
  
-foreign import javascript unsafe "\"showing\""
+foreign import javascript unsafe "(() => { return \"showing\"; })"
         js_TextTrackModeShowing :: JSVal
  
 data TextTrackKind = TextTrackKindSubtitles
@@ -2083,22 +2083,22 @@ instance FromJSVal TextTrackKind where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"subtitles\""
+foreign import javascript unsafe "(() => { return \"subtitles\"; })"
         js_TextTrackKindSubtitles :: JSVal
  
-foreign import javascript unsafe "\"captions\""
+foreign import javascript unsafe "(() => { return \"captions\"; })"
         js_TextTrackKindCaptions :: JSVal
  
-foreign import javascript unsafe "\"descriptions\""
+foreign import javascript unsafe "(() => { return \"descriptions\"; })"
         js_TextTrackKindDescriptions :: JSVal
  
-foreign import javascript unsafe "\"chapters\""
+foreign import javascript unsafe "(() => { return \"chapters\"; })"
         js_TextTrackKindChapters :: JSVal
  
-foreign import javascript unsafe "\"metadata\""
+foreign import javascript unsafe "(() => { return \"metadata\"; })"
         js_TextTrackKindMetadata :: JSVal
  
-foreign import javascript unsafe "\"forced\""
+foreign import javascript unsafe "(() => { return \"forced\"; })"
         js_TextTrackKindForced :: JSVal
  
 data ApplePayErrorCode = ApplePayErrorCodeUnknown
@@ -2136,16 +2136,16 @@ instance FromJSVal ApplePayErrorCode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"unknown\""
+foreign import javascript unsafe "(() => { return \"unknown\"; })"
         js_ApplePayErrorCodeUnknown :: JSVal
  
-foreign import javascript unsafe "\"shippingContactInvalid\""
+foreign import javascript unsafe "(() => { return \"shippingContactInvalid\"; })"
         js_ApplePayErrorCodeShippingContactInvalid :: JSVal
  
-foreign import javascript unsafe "\"billingContactInvalid\""
+foreign import javascript unsafe "(() => { return \"billingContactInvalid\"; })"
         js_ApplePayErrorCodeBillingContactInvalid :: JSVal
  
-foreign import javascript unsafe "\"addressUnservicable\""
+foreign import javascript unsafe "(() => { return \"addressUnservicable\"; })"
         js_ApplePayErrorCodeAddressUnservicable :: JSVal
  
 data ApplePayErrorContactField = ApplePayErrorContactFieldPhoneNumber
@@ -2215,31 +2215,31 @@ instance FromJSVal ApplePayErrorContactField where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"phoneNumber\""
+foreign import javascript unsafe "(() => { return \"phoneNumber\"; })"
         js_ApplePayErrorContactFieldPhoneNumber :: JSVal
  
-foreign import javascript unsafe "\"emailAddress\""
+foreign import javascript unsafe "(() => { return \"emailAddress\"; })"
         js_ApplePayErrorContactFieldEmailAddress :: JSVal
  
-foreign import javascript unsafe "\"name\""
+foreign import javascript unsafe "(() => { return \"name\"; })"
         js_ApplePayErrorContactFieldName :: JSVal
  
-foreign import javascript unsafe "\"postalAddress\""
+foreign import javascript unsafe "(() => { return \"postalAddress\"; })"
         js_ApplePayErrorContactFieldPostalAddress :: JSVal
  
-foreign import javascript unsafe "\"addressLines\""
+foreign import javascript unsafe "(() => { return \"addressLines\"; })"
         js_ApplePayErrorContactFieldAddressLines :: JSVal
  
-foreign import javascript unsafe "\"locality\""
+foreign import javascript unsafe "(() => { return \"locality\"; })"
         js_ApplePayErrorContactFieldLocality :: JSVal
  
-foreign import javascript unsafe "\"postalCode\""
+foreign import javascript unsafe "(() => { return \"postalCode\"; })"
         js_ApplePayErrorContactFieldPostalCode :: JSVal
  
-foreign import javascript unsafe "\"administrativeArea\""
+foreign import javascript unsafe "(() => { return \"administrativeArea\"; })"
         js_ApplePayErrorContactFieldAdministrativeArea :: JSVal
  
-foreign import javascript unsafe "\"country\""
+foreign import javascript unsafe "(() => { return \"country\"; })"
         js_ApplePayErrorContactFieldCountry :: JSVal
  
 data ApplePayLineItemType = ApplePayLineItemTypePending
@@ -2266,10 +2266,10 @@ instance FromJSVal ApplePayLineItemType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"pending\""
+foreign import javascript unsafe "(() => { return \"pending\"; })"
         js_ApplePayLineItemTypePending :: JSVal
  
-foreign import javascript unsafe "\"final\""
+foreign import javascript unsafe "(() => { return \"final\"; })"
         js_ApplePayLineItemTypeFinal :: JSVal
  
 data ApplePayPaymentMethodType = ApplePayPaymentMethodTypeDebit
@@ -2309,16 +2309,16 @@ instance FromJSVal ApplePayPaymentMethodType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"debit\""
+foreign import javascript unsafe "(() => { return \"debit\"; })"
         js_ApplePayPaymentMethodTypeDebit :: JSVal
  
-foreign import javascript unsafe "\"credit\""
+foreign import javascript unsafe "(() => { return \"credit\"; })"
         js_ApplePayPaymentMethodTypeCredit :: JSVal
  
-foreign import javascript unsafe "\"prepaid\""
+foreign import javascript unsafe "(() => { return \"prepaid\"; })"
         js_ApplePayPaymentMethodTypePrepaid :: JSVal
  
-foreign import javascript unsafe "\"store\""
+foreign import javascript unsafe "(() => { return \"store\"; })"
         js_ApplePayPaymentMethodTypeStore :: JSVal
  
 data ApplePayPaymentPassActivationState = ApplePayPaymentPassActivationStateActivated
@@ -2364,19 +2364,19 @@ instance FromJSVal ApplePayPaymentPassActivationState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"activated\""
+foreign import javascript unsafe "(() => { return \"activated\"; })"
         js_ApplePayPaymentPassActivationStateActivated :: JSVal
  
-foreign import javascript unsafe "\"requiresActivation\""
+foreign import javascript unsafe "(() => { return \"requiresActivation\"; })"
         js_ApplePayPaymentPassActivationStateRequiresActivation :: JSVal
  
-foreign import javascript unsafe "\"activating\""
+foreign import javascript unsafe "(() => { return \"activating\"; })"
         js_ApplePayPaymentPassActivationStateActivating :: JSVal
  
-foreign import javascript unsafe "\"suspended\""
+foreign import javascript unsafe "(() => { return \"suspended\"; })"
         js_ApplePayPaymentPassActivationStateSuspended :: JSVal
  
-foreign import javascript unsafe "\"deactivated\""
+foreign import javascript unsafe "(() => { return \"deactivated\"; })"
         js_ApplePayPaymentPassActivationStateDeactivated :: JSVal
  
 data ApplePayMerchantCapability = ApplePayMerchantCapabilitySupports3DS
@@ -2416,16 +2416,16 @@ instance FromJSVal ApplePayMerchantCapability where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"supports3DS\""
+foreign import javascript unsafe "(() => { return \"supports3DS\"; })"
         js_ApplePayMerchantCapabilitySupports3DS :: JSVal
  
-foreign import javascript unsafe "\"supportsEMV\""
+foreign import javascript unsafe "(() => { return \"supportsEMV\"; })"
         js_ApplePayMerchantCapabilitySupportsEMV :: JSVal
  
-foreign import javascript unsafe "\"supportsCredit\""
+foreign import javascript unsafe "(() => { return \"supportsCredit\"; })"
         js_ApplePayMerchantCapabilitySupportsCredit :: JSVal
  
-foreign import javascript unsafe "\"supportsDebit\""
+foreign import javascript unsafe "(() => { return \"supportsDebit\"; })"
         js_ApplePayMerchantCapabilitySupportsDebit :: JSVal
  
 data ApplePayContactField = ApplePayContactFieldEmail
@@ -2461,16 +2461,16 @@ instance FromJSVal ApplePayContactField where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"email\""
+foreign import javascript unsafe "(() => { return \"email\"; })"
         js_ApplePayContactFieldEmail :: JSVal
  
-foreign import javascript unsafe "\"name\""
+foreign import javascript unsafe "(() => { return \"name\"; })"
         js_ApplePayContactFieldName :: JSVal
  
-foreign import javascript unsafe "\"phone\""
+foreign import javascript unsafe "(() => { return \"phone\"; })"
         js_ApplePayContactFieldPhone :: JSVal
  
-foreign import javascript unsafe "\"postalAddress\""
+foreign import javascript unsafe "(() => { return \"postalAddress\"; })"
         js_ApplePayContactFieldPostalAddress :: JSVal
  
 data ApplePayShippingType = ApplePayShippingTypeShipping
@@ -2510,16 +2510,16 @@ instance FromJSVal ApplePayShippingType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"shipping\""
+foreign import javascript unsafe "(() => { return \"shipping\"; })"
         js_ApplePayShippingTypeShipping :: JSVal
  
-foreign import javascript unsafe "\"delivery\""
+foreign import javascript unsafe "(() => { return \"delivery\"; })"
         js_ApplePayShippingTypeDelivery :: JSVal
  
-foreign import javascript unsafe "\"storePickup\""
+foreign import javascript unsafe "(() => { return \"storePickup\"; })"
         js_ApplePayShippingTypeStorePickup :: JSVal
  
-foreign import javascript unsafe "\"servicePickup\""
+foreign import javascript unsafe "(() => { return \"servicePickup\"; })"
         js_ApplePayShippingTypeServicePickup :: JSVal
  
 data MediaKeyMessageType = MediaKeyMessageTypeLicenseRequest
@@ -2559,16 +2559,16 @@ instance FromJSVal MediaKeyMessageType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"license-request\""
+foreign import javascript unsafe "(() => { return \"license-request\"; })"
         js_MediaKeyMessageTypeLicenseRequest :: JSVal
  
-foreign import javascript unsafe "\"license-renewal\""
+foreign import javascript unsafe "(() => { return \"license-renewal\"; })"
         js_MediaKeyMessageTypeLicenseRenewal :: JSVal
  
-foreign import javascript unsafe "\"license-release\""
+foreign import javascript unsafe "(() => { return \"license-release\"; })"
         js_MediaKeyMessageTypeLicenseRelease :: JSVal
  
-foreign import javascript unsafe "\"individualization-request\""
+foreign import javascript unsafe "(() => { return \"individualization-request\"; })"
         js_MediaKeyMessageTypeIndividualizationRequest :: JSVal
  
 data MediaKeySessionType = MediaKeySessionTypeTemporary
@@ -2602,13 +2602,13 @@ instance FromJSVal MediaKeySessionType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"temporary\""
+foreign import javascript unsafe "(() => { return \"temporary\"; })"
         js_MediaKeySessionTypeTemporary :: JSVal
  
-foreign import javascript unsafe "\"persistent-usage-record\""
+foreign import javascript unsafe "(() => { return \"persistent-usage-record\"; })"
         js_MediaKeySessionTypePersistentUsageRecord :: JSVal
  
-foreign import javascript unsafe "\"persistent-license\""
+foreign import javascript unsafe "(() => { return \"persistent-license\"; })"
         js_MediaKeySessionTypePersistentLicense :: JSVal
  
 data MediaKeysRequirement = MediaKeysRequirementRequired
@@ -2642,13 +2642,13 @@ instance FromJSVal MediaKeysRequirement where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"required\""
+foreign import javascript unsafe "(() => { return \"required\"; })"
         js_MediaKeysRequirementRequired :: JSVal
  
-foreign import javascript unsafe "\"optional\""
+foreign import javascript unsafe "(() => { return \"optional\"; })"
         js_MediaKeysRequirementOptional :: JSVal
  
-foreign import javascript unsafe "\"not-allowed\""
+foreign import javascript unsafe "(() => { return \"not-allowed\"; })"
         js_MediaKeysRequirementNotAllowed :: JSVal
  
 data MediaKeyStatus = MediaKeyStatusUsable
@@ -2700,25 +2700,25 @@ instance FromJSVal MediaKeyStatus where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"usable\""
+foreign import javascript unsafe "(() => { return \"usable\"; })"
         js_MediaKeyStatusUsable :: JSVal
  
-foreign import javascript unsafe "\"expired\""
+foreign import javascript unsafe "(() => { return \"expired\"; })"
         js_MediaKeyStatusExpired :: JSVal
  
-foreign import javascript unsafe "\"released\""
+foreign import javascript unsafe "(() => { return \"released\"; })"
         js_MediaKeyStatusReleased :: JSVal
  
-foreign import javascript unsafe "\"output-restricted\""
+foreign import javascript unsafe "(() => { return \"output-restricted\"; })"
         js_MediaKeyStatusOutputRestricted :: JSVal
  
-foreign import javascript unsafe "\"output-downscaled\""
+foreign import javascript unsafe "(() => { return \"output-downscaled\"; })"
         js_MediaKeyStatusOutputDownscaled :: JSVal
  
-foreign import javascript unsafe "\"status-pending\""
+foreign import javascript unsafe "(() => { return \"status-pending\"; })"
         js_MediaKeyStatusStatusPending :: JSVal
  
-foreign import javascript unsafe "\"internal-error\""
+foreign import javascript unsafe "(() => { return \"internal-error\"; })"
         js_MediaKeyStatusInternalError :: JSVal
  
 data RequestType = RequestType
@@ -2758,27 +2758,27 @@ instance FromJSVal RequestType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"\"" js_RequestType :: JSVal
+foreign import javascript unsafe "(() => { return \"\"; })" js_RequestType :: JSVal
  
-foreign import javascript unsafe "\"audio\"" js_RequestTypeAudio ::
+foreign import javascript unsafe "(() => { return \"audio\"; })" js_RequestTypeAudio ::
         JSVal
  
-foreign import javascript unsafe "\"font\"" js_RequestTypeFont ::
+foreign import javascript unsafe "(() => { return \"font\"; })" js_RequestTypeFont ::
         JSVal
  
-foreign import javascript unsafe "\"image\"" js_RequestTypeImage ::
+foreign import javascript unsafe "(() => { return \"image\"; })" js_RequestTypeImage ::
         JSVal
  
-foreign import javascript unsafe "\"script\"" js_RequestTypeScript
+foreign import javascript unsafe "(() => { return \"script\"; })" js_RequestTypeScript
         :: JSVal
  
-foreign import javascript unsafe "\"style\"" js_RequestTypeStyle ::
+foreign import javascript unsafe "(() => { return \"style\"; })" js_RequestTypeStyle ::
         JSVal
  
-foreign import javascript unsafe "\"track\"" js_RequestTypeTrack ::
+foreign import javascript unsafe "(() => { return \"track\"; })" js_RequestTypeTrack ::
         JSVal
  
-foreign import javascript unsafe "\"video\"" js_RequestTypeVideo ::
+foreign import javascript unsafe "(() => { return \"video\"; })" js_RequestTypeVideo ::
         JSVal
  
 data RequestDestination = RequestDestination
@@ -2823,22 +2823,22 @@ instance FromJSVal RequestDestination where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"\"" js_RequestDestination ::
+foreign import javascript unsafe "(() => { return \"\"; })" js_RequestDestination ::
         JSVal
  
-foreign import javascript unsafe "\"document\""
+foreign import javascript unsafe "(() => { return \"document\"; })"
         js_RequestDestinationDocument :: JSVal
  
-foreign import javascript unsafe "\"sharedworker\""
+foreign import javascript unsafe "(() => { return \"sharedworker\"; })"
         js_RequestDestinationSharedworker :: JSVal
  
-foreign import javascript unsafe "\"subresource\""
+foreign import javascript unsafe "(() => { return \"subresource\"; })"
         js_RequestDestinationSubresource :: JSVal
  
-foreign import javascript unsafe "\"unknown\""
+foreign import javascript unsafe "(() => { return \"unknown\"; })"
         js_RequestDestinationUnknown :: JSVal
  
-foreign import javascript unsafe "\"worker\""
+foreign import javascript unsafe "(() => { return \"worker\"; })"
         js_RequestDestinationWorker :: JSVal
  
 data RequestMode = RequestModeNavigate
@@ -2868,16 +2868,16 @@ instance FromJSVal RequestMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"navigate\""
+foreign import javascript unsafe "(() => { return \"navigate\"; })"
         js_RequestModeNavigate :: JSVal
  
-foreign import javascript unsafe "\"same-origin\""
+foreign import javascript unsafe "(() => { return \"same-origin\"; })"
         js_RequestModeSameOrigin :: JSVal
  
-foreign import javascript unsafe "\"no-cors\"" js_RequestModeNoCors
+foreign import javascript unsafe "(() => { return \"no-cors\"; })" js_RequestModeNoCors
         :: JSVal
  
-foreign import javascript unsafe "\"cors\"" js_RequestModeCors ::
+foreign import javascript unsafe "(() => { return \"cors\"; })" js_RequestModeCors ::
         JSVal
  
 data RequestCredentials = RequestCredentialsOmit
@@ -2908,13 +2908,13 @@ instance FromJSVal RequestCredentials where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"omit\""
+foreign import javascript unsafe "(() => { return \"omit\"; })"
         js_RequestCredentialsOmit :: JSVal
  
-foreign import javascript unsafe "\"same-origin\""
+foreign import javascript unsafe "(() => { return \"same-origin\"; })"
         js_RequestCredentialsSameOrigin :: JSVal
  
-foreign import javascript unsafe "\"include\""
+foreign import javascript unsafe "(() => { return \"include\"; })"
         js_RequestCredentialsInclude :: JSVal
  
 data RequestCache = RequestCacheDefault
@@ -2953,22 +2953,22 @@ instance FromJSVal RequestCache where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"default\""
+foreign import javascript unsafe "(() => { return \"default\"; })"
         js_RequestCacheDefault :: JSVal
  
-foreign import javascript unsafe "\"no-store\""
+foreign import javascript unsafe "(() => { return \"no-store\"; })"
         js_RequestCacheNoStore :: JSVal
  
-foreign import javascript unsafe "\"reload\"" js_RequestCacheReload
+foreign import javascript unsafe "(() => { return \"reload\"; })" js_RequestCacheReload
         :: JSVal
  
-foreign import javascript unsafe "\"no-cache\""
+foreign import javascript unsafe "(() => { return \"no-cache\"; })"
         js_RequestCacheNoCache :: JSVal
  
-foreign import javascript unsafe "\"force-cache\""
+foreign import javascript unsafe "(() => { return \"force-cache\"; })"
         js_RequestCacheForceCache :: JSVal
  
-foreign import javascript unsafe "\"only-if-cached\""
+foreign import javascript unsafe "(() => { return \"only-if-cached\"; })"
         js_RequestCacheOnlyIfCached :: JSVal
  
 data RequestRedirect = RequestRedirectFollow
@@ -2996,13 +2996,13 @@ instance FromJSVal RequestRedirect where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"follow\""
+foreign import javascript unsafe "(() => { return \"follow\"; })"
         js_RequestRedirectFollow :: JSVal
  
-foreign import javascript unsafe "\"error\""
+foreign import javascript unsafe "(() => { return \"error\"; })"
         js_RequestRedirectError :: JSVal
  
-foreign import javascript unsafe "\"manual\""
+foreign import javascript unsafe "(() => { return \"manual\"; })"
         js_RequestRedirectManual :: JSVal
  
 data ReferrerPolicy = ReferrerPolicy
@@ -3045,21 +3045,21 @@ instance FromJSVal ReferrerPolicy where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"\"" js_ReferrerPolicy :: JSVal
+foreign import javascript unsafe "(() => { return \"\"; })" js_ReferrerPolicy :: JSVal
  
-foreign import javascript unsafe "\"no-referrer\""
+foreign import javascript unsafe "(() => { return \"no-referrer\"; })"
         js_ReferrerPolicyNoReferrer :: JSVal
  
-foreign import javascript unsafe "\"no-referrer-when-downgrade\""
+foreign import javascript unsafe "(() => { return \"no-referrer-when-downgrade\"; })"
         js_ReferrerPolicyNoReferrerWhenDowngrade :: JSVal
  
-foreign import javascript unsafe "\"origin\""
+foreign import javascript unsafe "(() => { return \"origin\"; })"
         js_ReferrerPolicyOrigin :: JSVal
  
-foreign import javascript unsafe "\"origin-when-cross-origin\""
+foreign import javascript unsafe "(() => { return \"origin-when-cross-origin\"; })"
         js_ReferrerPolicyOriginWhenCrossOrigin :: JSVal
  
-foreign import javascript unsafe "\"unsafe-url\""
+foreign import javascript unsafe "(() => { return \"unsafe-url\"; })"
         js_ReferrerPolicyUnsafeUrl :: JSVal
  
 data ResponseType = ResponseTypeBasic
@@ -3096,22 +3096,22 @@ instance FromJSVal ResponseType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"basic\"" js_ResponseTypeBasic
+foreign import javascript unsafe "(() => { return \"basic\"; })" js_ResponseTypeBasic
         :: JSVal
  
-foreign import javascript unsafe "\"cors\"" js_ResponseTypeCors ::
+foreign import javascript unsafe "(() => { return \"cors\"; })" js_ResponseTypeCors ::
         JSVal
  
-foreign import javascript unsafe "\"default\""
+foreign import javascript unsafe "(() => { return \"default\"; })"
         js_ResponseTypeDefault :: JSVal
  
-foreign import javascript unsafe "\"error\"" js_ResponseTypeError
+foreign import javascript unsafe "(() => { return \"error\"; })" js_ResponseTypeError
         :: JSVal
  
-foreign import javascript unsafe "\"opaque\"" js_ResponseTypeOpaque
+foreign import javascript unsafe "(() => { return \"opaque\"; })" js_ResponseTypeOpaque
         :: JSVal
  
-foreign import javascript unsafe "\"opaqueredirect\""
+foreign import javascript unsafe "(() => { return \"opaqueredirect\"; })"
         js_ResponseTypeOpaqueredirect :: JSVal
  
 data IDBCursorDirection = IDBCursorDirectionNext
@@ -3147,16 +3147,16 @@ instance FromJSVal IDBCursorDirection where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"next\""
+foreign import javascript unsafe "(() => { return \"next\"; })"
         js_IDBCursorDirectionNext :: JSVal
  
-foreign import javascript unsafe "\"nextunique\""
+foreign import javascript unsafe "(() => { return \"nextunique\"; })"
         js_IDBCursorDirectionNextunique :: JSVal
  
-foreign import javascript unsafe "\"prev\""
+foreign import javascript unsafe "(() => { return \"prev\"; })"
         js_IDBCursorDirectionPrev :: JSVal
  
-foreign import javascript unsafe "\"prevunique\""
+foreign import javascript unsafe "(() => { return \"prevunique\"; })"
         js_IDBCursorDirectionPrevunique :: JSVal
  
 data IDBRequestReadyState = IDBRequestReadyStatePending
@@ -3182,10 +3182,10 @@ instance FromJSVal IDBRequestReadyState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"pending\""
+foreign import javascript unsafe "(() => { return \"pending\"; })"
         js_IDBRequestReadyStatePending :: JSVal
  
-foreign import javascript unsafe "\"done\""
+foreign import javascript unsafe "(() => { return \"done\"; })"
         js_IDBRequestReadyStateDone :: JSVal
  
 data IDBTransactionMode = IDBTransactionModeReadonly
@@ -3218,13 +3218,13 @@ instance FromJSVal IDBTransactionMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"readonly\""
+foreign import javascript unsafe "(() => { return \"readonly\"; })"
         js_IDBTransactionModeReadonly :: JSVal
  
-foreign import javascript unsafe "\"readwrite\""
+foreign import javascript unsafe "(() => { return \"readwrite\"; })"
         js_IDBTransactionModeReadwrite :: JSVal
  
-foreign import javascript unsafe "\"versionchange\""
+foreign import javascript unsafe "(() => { return \"versionchange\"; })"
         js_IDBTransactionModeVersionchange :: JSVal
  
 data DeviceType = DeviceTypeNone
@@ -3249,13 +3249,13 @@ instance FromJSVal DeviceType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"none\"" js_DeviceTypeNone ::
+foreign import javascript unsafe "(() => { return \"none\"; })" js_DeviceTypeNone ::
         JSVal
  
-foreign import javascript unsafe "\"airplay\"" js_DeviceTypeAirplay
+foreign import javascript unsafe "(() => { return \"airplay\"; })" js_DeviceTypeAirplay
         :: JSVal
  
-foreign import javascript unsafe "\"tvout\"" js_DeviceTypeTvout ::
+foreign import javascript unsafe "(() => { return \"tvout\"; })" js_DeviceTypeTvout ::
         JSVal
  
 data MediaSessionKind = MediaSessionKindContent
@@ -3290,16 +3290,16 @@ instance FromJSVal MediaSessionKind where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"content\""
+foreign import javascript unsafe "(() => { return \"content\"; })"
         js_MediaSessionKindContent :: JSVal
  
-foreign import javascript unsafe "\"transient\""
+foreign import javascript unsafe "(() => { return \"transient\"; })"
         js_MediaSessionKindTransient :: JSVal
  
-foreign import javascript unsafe "\"transient-solo\""
+foreign import javascript unsafe "(() => { return \"transient-solo\"; })"
         js_MediaSessionKindTransientSolo :: JSVal
  
-foreign import javascript unsafe "\"ambient\""
+foreign import javascript unsafe "(() => { return \"ambient\"; })"
         js_MediaSessionKindAmbient :: JSVal
  
 data EndOfStreamError = EndOfStreamErrorNetwork
@@ -3323,10 +3323,10 @@ instance FromJSVal EndOfStreamError where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"network\""
+foreign import javascript unsafe "(() => { return \"network\"; })"
         js_EndOfStreamErrorNetwork :: JSVal
  
-foreign import javascript unsafe "\"decode\""
+foreign import javascript unsafe "(() => { return \"decode\"; })"
         js_EndOfStreamErrorDecode :: JSVal
  
 data ReadyState = ReadyStateClosed
@@ -3351,13 +3351,13 @@ instance FromJSVal ReadyState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"closed\"" js_ReadyStateClosed
+foreign import javascript unsafe "(() => { return \"closed\"; })" js_ReadyStateClosed
         :: JSVal
  
-foreign import javascript unsafe "\"open\"" js_ReadyStateOpen ::
+foreign import javascript unsafe "(() => { return \"open\"; })" js_ReadyStateOpen ::
         JSVal
  
-foreign import javascript unsafe "\"ended\"" js_ReadyStateEnded ::
+foreign import javascript unsafe "(() => { return \"ended\"; })" js_ReadyStateEnded ::
         JSVal
  
 data AppendMode = AppendModeSegments
@@ -3379,10 +3379,10 @@ instance FromJSVal AppendMode where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"segments\""
+foreign import javascript unsafe "(() => { return \"segments\"; })"
         js_AppendModeSegments :: JSVal
  
-foreign import javascript unsafe "\"sequence\""
+foreign import javascript unsafe "(() => { return \"sequence\"; })"
         js_AppendModeSequence :: JSVal
  
 data MediaDeviceKind = MediaDeviceKindAudioinput
@@ -3413,13 +3413,13 @@ instance FromJSVal MediaDeviceKind where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"audioinput\""
+foreign import javascript unsafe "(() => { return \"audioinput\"; })"
         js_MediaDeviceKindAudioinput :: JSVal
  
-foreign import javascript unsafe "\"audiooutput\""
+foreign import javascript unsafe "(() => { return \"audiooutput\"; })"
         js_MediaDeviceKindAudiooutput :: JSVal
  
-foreign import javascript unsafe "\"videoinput\""
+foreign import javascript unsafe "(() => { return \"videoinput\"; })"
         js_MediaDeviceKindVideoinput :: JSVal
  
 data MediaStreamTrackState = MediaStreamTrackStateLive
@@ -3445,10 +3445,10 @@ instance FromJSVal MediaStreamTrackState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"live\""
+foreign import javascript unsafe "(() => { return \"live\"; })"
         js_MediaStreamTrackStateLive :: JSVal
  
-foreign import javascript unsafe "\"ended\""
+foreign import javascript unsafe "(() => { return \"ended\"; })"
         js_MediaStreamTrackStateEnded :: JSVal
  
 data RTCIceTransportPolicy = RTCIceTransportPolicyRelay
@@ -3473,10 +3473,10 @@ instance FromJSVal RTCIceTransportPolicy where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"relay\""
+foreign import javascript unsafe "(() => { return \"relay\"; })"
         js_RTCIceTransportPolicyRelay :: JSVal
  
-foreign import javascript unsafe "\"all\""
+foreign import javascript unsafe "(() => { return \"all\"; })"
         js_RTCIceTransportPolicyAll :: JSVal
  
 data RTCBundlePolicy = RTCBundlePolicyBalanced
@@ -3504,13 +3504,13 @@ instance FromJSVal RTCBundlePolicy where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"balanced\""
+foreign import javascript unsafe "(() => { return \"balanced\"; })"
         js_RTCBundlePolicyBalanced :: JSVal
  
-foreign import javascript unsafe "\"max-compat\""
+foreign import javascript unsafe "(() => { return \"max-compat\"; })"
         js_RTCBundlePolicyMaxCompat :: JSVal
  
-foreign import javascript unsafe "\"max-bundle\""
+foreign import javascript unsafe "(() => { return \"max-bundle\"; })"
         js_RTCBundlePolicyMaxBundle :: JSVal
  
 data RTCDataChannelState = RTCDataChannelStateConnecting
@@ -3546,16 +3546,16 @@ instance FromJSVal RTCDataChannelState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"connecting\""
+foreign import javascript unsafe "(() => { return \"connecting\"; })"
         js_RTCDataChannelStateConnecting :: JSVal
  
-foreign import javascript unsafe "\"open\""
+foreign import javascript unsafe "(() => { return \"open\"; })"
         js_RTCDataChannelStateOpen :: JSVal
  
-foreign import javascript unsafe "\"closing\""
+foreign import javascript unsafe "(() => { return \"closing\"; })"
         js_RTCDataChannelStateClosing :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_RTCDataChannelStateClosed :: JSVal
  
 data RTCIceConnectionState = RTCIceConnectionStateNew
@@ -3611,25 +3611,25 @@ instance FromJSVal RTCIceConnectionState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"new\""
+foreign import javascript unsafe "(() => { return \"new\"; })"
         js_RTCIceConnectionStateNew :: JSVal
  
-foreign import javascript unsafe "\"checking\""
+foreign import javascript unsafe "(() => { return \"checking\"; })"
         js_RTCIceConnectionStateChecking :: JSVal
  
-foreign import javascript unsafe "\"connected\""
+foreign import javascript unsafe "(() => { return \"connected\"; })"
         js_RTCIceConnectionStateConnected :: JSVal
  
-foreign import javascript unsafe "\"completed\""
+foreign import javascript unsafe "(() => { return \"completed\"; })"
         js_RTCIceConnectionStateCompleted :: JSVal
  
-foreign import javascript unsafe "\"failed\""
+foreign import javascript unsafe "(() => { return \"failed\"; })"
         js_RTCIceConnectionStateFailed :: JSVal
  
-foreign import javascript unsafe "\"disconnected\""
+foreign import javascript unsafe "(() => { return \"disconnected\"; })"
         js_RTCIceConnectionStateDisconnected :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_RTCIceConnectionStateClosed :: JSVal
  
 data RTCIceGatheringState = RTCIceGatheringStateNew
@@ -3661,13 +3661,13 @@ instance FromJSVal RTCIceGatheringState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"new\""
+foreign import javascript unsafe "(() => { return \"new\"; })"
         js_RTCIceGatheringStateNew :: JSVal
  
-foreign import javascript unsafe "\"gathering\""
+foreign import javascript unsafe "(() => { return \"gathering\"; })"
         js_RTCIceGatheringStateGathering :: JSVal
  
-foreign import javascript unsafe "\"complete\""
+foreign import javascript unsafe "(() => { return \"complete\"; })"
         js_RTCIceGatheringStateComplete :: JSVal
  
 data RTCIceTransportState = RTCIceTransportStateNew
@@ -3721,25 +3721,25 @@ instance FromJSVal RTCIceTransportState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"new\""
+foreign import javascript unsafe "(() => { return \"new\"; })"
         js_RTCIceTransportStateNew :: JSVal
  
-foreign import javascript unsafe "\"checking\""
+foreign import javascript unsafe "(() => { return \"checking\"; })"
         js_RTCIceTransportStateChecking :: JSVal
  
-foreign import javascript unsafe "\"connected\""
+foreign import javascript unsafe "(() => { return \"connected\"; })"
         js_RTCIceTransportStateConnected :: JSVal
  
-foreign import javascript unsafe "\"completed\""
+foreign import javascript unsafe "(() => { return \"completed\"; })"
         js_RTCIceTransportStateCompleted :: JSVal
  
-foreign import javascript unsafe "\"failed\""
+foreign import javascript unsafe "(() => { return \"failed\"; })"
         js_RTCIceTransportStateFailed :: JSVal
  
-foreign import javascript unsafe "\"disconnected\""
+foreign import javascript unsafe "(() => { return \"disconnected\"; })"
         js_RTCIceTransportStateDisconnected :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_RTCIceTransportStateClosed :: JSVal
  
 data RTCPeerConnectionState = RTCPeerConnectionStateNew
@@ -3790,22 +3790,22 @@ instance FromJSVal RTCPeerConnectionState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"new\""
+foreign import javascript unsafe "(() => { return \"new\"; })"
         js_RTCPeerConnectionStateNew :: JSVal
  
-foreign import javascript unsafe "\"connecting\""
+foreign import javascript unsafe "(() => { return \"connecting\"; })"
         js_RTCPeerConnectionStateConnecting :: JSVal
  
-foreign import javascript unsafe "\"connected\""
+foreign import javascript unsafe "(() => { return \"connected\"; })"
         js_RTCPeerConnectionStateConnected :: JSVal
  
-foreign import javascript unsafe "\"disconnected\""
+foreign import javascript unsafe "(() => { return \"disconnected\"; })"
         js_RTCPeerConnectionStateDisconnected :: JSVal
  
-foreign import javascript unsafe "\"failed\""
+foreign import javascript unsafe "(() => { return \"failed\"; })"
         js_RTCPeerConnectionStateFailed :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_RTCPeerConnectionStateClosed :: JSVal
  
 data RTCDegradationPreference = RTCDegradationPreferenceMaintainFramerate
@@ -3839,13 +3839,13 @@ instance FromJSVal RTCDegradationPreference where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"maintain-framerate\""
+foreign import javascript unsafe "(() => { return \"maintain-framerate\"; })"
         js_RTCDegradationPreferenceMaintainFramerate :: JSVal
  
-foreign import javascript unsafe "\"maintain-resolution\""
+foreign import javascript unsafe "(() => { return \"maintain-resolution\"; })"
         js_RTCDegradationPreferenceMaintainResolution :: JSVal
  
-foreign import javascript unsafe "\"balanced\""
+foreign import javascript unsafe "(() => { return \"balanced\"; })"
         js_RTCDegradationPreferenceBalanced :: JSVal
  
 data RTCDtxStatus = RTCDtxStatusDisabled
@@ -3869,10 +3869,10 @@ instance FromJSVal RTCDtxStatus where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"disabled\""
+foreign import javascript unsafe "(() => { return \"disabled\"; })"
         js_RTCDtxStatusDisabled :: JSVal
  
-foreign import javascript unsafe "\"enabled\""
+foreign import javascript unsafe "(() => { return \"enabled\"; })"
         js_RTCDtxStatusEnabled :: JSVal
  
 data RTCPriorityType = RTCPriorityTypeVeryLow
@@ -3903,16 +3903,16 @@ instance FromJSVal RTCPriorityType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"very-low\""
+foreign import javascript unsafe "(() => { return \"very-low\"; })"
         js_RTCPriorityTypeVeryLow :: JSVal
  
-foreign import javascript unsafe "\"low\"" js_RTCPriorityTypeLow ::
+foreign import javascript unsafe "(() => { return \"low\"; })" js_RTCPriorityTypeLow ::
         JSVal
  
-foreign import javascript unsafe "\"medium\""
+foreign import javascript unsafe "(() => { return \"medium\"; })"
         js_RTCPriorityTypeMedium :: JSVal
  
-foreign import javascript unsafe "\"high\"" js_RTCPriorityTypeHigh
+foreign import javascript unsafe "(() => { return \"high\"; })" js_RTCPriorityTypeHigh
         :: JSVal
  
 data RTCRtpTransceiverDirection = RTCRtpTransceiverDirectionSendrecv
@@ -3952,16 +3952,16 @@ instance FromJSVal RTCRtpTransceiverDirection where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"sendrecv\""
+foreign import javascript unsafe "(() => { return \"sendrecv\"; })"
         js_RTCRtpTransceiverDirectionSendrecv :: JSVal
  
-foreign import javascript unsafe "\"sendonly\""
+foreign import javascript unsafe "(() => { return \"sendonly\"; })"
         js_RTCRtpTransceiverDirectionSendonly :: JSVal
  
-foreign import javascript unsafe "\"recvonly\""
+foreign import javascript unsafe "(() => { return \"recvonly\"; })"
         js_RTCRtpTransceiverDirectionRecvonly :: JSVal
  
-foreign import javascript unsafe "\"inactive\""
+foreign import javascript unsafe "(() => { return \"inactive\"; })"
         js_RTCRtpTransceiverDirectionInactive :: JSVal
  
 data RTCSdpType = RTCSdpTypeOffer
@@ -3989,16 +3989,16 @@ instance FromJSVal RTCSdpType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"offer\"" js_RTCSdpTypeOffer ::
+foreign import javascript unsafe "(() => { return \"offer\"; })" js_RTCSdpTypeOffer ::
         JSVal
  
-foreign import javascript unsafe "\"pranswer\""
+foreign import javascript unsafe "(() => { return \"pranswer\"; })"
         js_RTCSdpTypePranswer :: JSVal
  
-foreign import javascript unsafe "\"answer\"" js_RTCSdpTypeAnswer
+foreign import javascript unsafe "(() => { return \"answer\"; })" js_RTCSdpTypeAnswer
         :: JSVal
  
-foreign import javascript unsafe "\"rollback\""
+foreign import javascript unsafe "(() => { return \"rollback\"; })"
         js_RTCSdpTypeRollback :: JSVal
  
 data RTCSignalingState = RTCSignalingStateStable
@@ -4042,19 +4042,19 @@ instance FromJSVal RTCSignalingState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"stable\""
+foreign import javascript unsafe "(() => { return \"stable\"; })"
         js_RTCSignalingStateStable :: JSVal
  
-foreign import javascript unsafe "\"have-local-offer\""
+foreign import javascript unsafe "(() => { return \"have-local-offer\"; })"
         js_RTCSignalingStateHaveLocalOffer :: JSVal
  
-foreign import javascript unsafe "\"have-remote-offer\""
+foreign import javascript unsafe "(() => { return \"have-remote-offer\"; })"
         js_RTCSignalingStateHaveRemoteOffer :: JSVal
  
-foreign import javascript unsafe "\"have-local-pranswer\""
+foreign import javascript unsafe "(() => { return \"have-local-pranswer\"; })"
         js_RTCSignalingStateHaveLocalPranswer :: JSVal
  
-foreign import javascript unsafe "\"have-remote-pranswer\""
+foreign import javascript unsafe "(() => { return \"have-remote-pranswer\"; })"
         js_RTCSignalingStateHaveRemotePranswer :: JSVal
  
 data RTCStatsType = RTCStatsTypeCodec
@@ -4117,37 +4117,37 @@ instance FromJSVal RTCStatsType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"codec\"" js_RTCStatsTypeCodec
+foreign import javascript unsafe "(() => { return \"codec\"; })" js_RTCStatsTypeCodec
         :: JSVal
  
-foreign import javascript unsafe "\"inbound-rtp\""
+foreign import javascript unsafe "(() => { return \"inbound-rtp\"; })"
         js_RTCStatsTypeInboundRtp :: JSVal
  
-foreign import javascript unsafe "\"outbound-rtp\""
+foreign import javascript unsafe "(() => { return \"outbound-rtp\"; })"
         js_RTCStatsTypeOutboundRtp :: JSVal
  
-foreign import javascript unsafe "\"peer-connection\""
+foreign import javascript unsafe "(() => { return \"peer-connection\"; })"
         js_RTCStatsTypePeerConnection :: JSVal
  
-foreign import javascript unsafe "\"data-channel\""
+foreign import javascript unsafe "(() => { return \"data-channel\"; })"
         js_RTCStatsTypeDataChannel :: JSVal
  
-foreign import javascript unsafe "\"track\"" js_RTCStatsTypeTrack
+foreign import javascript unsafe "(() => { return \"track\"; })" js_RTCStatsTypeTrack
         :: JSVal
  
-foreign import javascript unsafe "\"transport\""
+foreign import javascript unsafe "(() => { return \"transport\"; })"
         js_RTCStatsTypeTransport :: JSVal
  
-foreign import javascript unsafe "\"candidate-pair\""
+foreign import javascript unsafe "(() => { return \"candidate-pair\"; })"
         js_RTCStatsTypeCandidatePair :: JSVal
  
-foreign import javascript unsafe "\"local-candidate\""
+foreign import javascript unsafe "(() => { return \"local-candidate\"; })"
         js_RTCStatsTypeLocalCandidate :: JSVal
  
-foreign import javascript unsafe "\"remote-candidate\""
+foreign import javascript unsafe "(() => { return \"remote-candidate\"; })"
         js_RTCStatsTypeRemoteCandidate :: JSVal
  
-foreign import javascript unsafe "\"certificate\""
+foreign import javascript unsafe "(() => { return \"certificate\"; })"
         js_RTCStatsTypeCertificate :: JSVal
  
 data NotificationDirection = NotificationDirectionAuto
@@ -4176,13 +4176,13 @@ instance FromJSVal NotificationDirection where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"auto\""
+foreign import javascript unsafe "(() => { return \"auto\"; })"
         js_NotificationDirectionAuto :: JSVal
  
-foreign import javascript unsafe "\"ltr\""
+foreign import javascript unsafe "(() => { return \"ltr\"; })"
         js_NotificationDirectionLtr :: JSVal
  
-foreign import javascript unsafe "\"rtl\""
+foreign import javascript unsafe "(() => { return \"rtl\"; })"
         js_NotificationDirectionRtl :: JSVal
  
 data AudioContextState = AudioContextStateSuspended
@@ -4217,16 +4217,16 @@ instance FromJSVal AudioContextState where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"suspended\""
+foreign import javascript unsafe "(() => { return \"suspended\"; })"
         js_AudioContextStateSuspended :: JSVal
  
-foreign import javascript unsafe "\"running\""
+foreign import javascript unsafe "(() => { return \"running\"; })"
         js_AudioContextStateRunning :: JSVal
  
-foreign import javascript unsafe "\"interrupted\""
+foreign import javascript unsafe "(() => { return \"interrupted\"; })"
         js_AudioContextStateInterrupted :: JSVal
  
-foreign import javascript unsafe "\"closed\""
+foreign import javascript unsafe "(() => { return \"closed\"; })"
         js_AudioContextStateClosed :: JSVal
  
 data BiquadFilterType = BiquadFilterTypeLowpass
@@ -4275,28 +4275,28 @@ instance FromJSVal BiquadFilterType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"lowpass\""
+foreign import javascript unsafe "(() => { return \"lowpass\"; })"
         js_BiquadFilterTypeLowpass :: JSVal
  
-foreign import javascript unsafe "\"highpass\""
+foreign import javascript unsafe "(() => { return \"highpass\"; })"
         js_BiquadFilterTypeHighpass :: JSVal
  
-foreign import javascript unsafe "\"bandpass\""
+foreign import javascript unsafe "(() => { return \"bandpass\"; })"
         js_BiquadFilterTypeBandpass :: JSVal
  
-foreign import javascript unsafe "\"lowshelf\""
+foreign import javascript unsafe "(() => { return \"lowshelf\"; })"
         js_BiquadFilterTypeLowshelf :: JSVal
  
-foreign import javascript unsafe "\"highshelf\""
+foreign import javascript unsafe "(() => { return \"highshelf\"; })"
         js_BiquadFilterTypeHighshelf :: JSVal
  
-foreign import javascript unsafe "\"peaking\""
+foreign import javascript unsafe "(() => { return \"peaking\"; })"
         js_BiquadFilterTypePeaking :: JSVal
  
-foreign import javascript unsafe "\"notch\""
+foreign import javascript unsafe "(() => { return \"notch\"; })"
         js_BiquadFilterTypeNotch :: JSVal
  
-foreign import javascript unsafe "\"allpass\""
+foreign import javascript unsafe "(() => { return \"allpass\"; })"
         js_BiquadFilterTypeAllpass :: JSVal
  
 data OscillatorType = OscillatorTypeSine
@@ -4331,19 +4331,19 @@ instance FromJSVal OscillatorType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"sine\"" js_OscillatorTypeSine
+foreign import javascript unsafe "(() => { return \"sine\"; })" js_OscillatorTypeSine
         :: JSVal
  
-foreign import javascript unsafe "\"square\""
+foreign import javascript unsafe "(() => { return \"square\"; })"
         js_OscillatorTypeSquare :: JSVal
  
-foreign import javascript unsafe "\"sawtooth\""
+foreign import javascript unsafe "(() => { return \"sawtooth\"; })"
         js_OscillatorTypeSawtooth :: JSVal
  
-foreign import javascript unsafe "\"triangle\""
+foreign import javascript unsafe "(() => { return \"triangle\"; })"
         js_OscillatorTypeTriangle :: JSVal
  
-foreign import javascript unsafe "\"custom\""
+foreign import javascript unsafe "(() => { return \"custom\"; })"
         js_OscillatorTypeCustom :: JSVal
  
 data PanningModelType = PanningModelTypeEqualpower
@@ -4368,10 +4368,10 @@ instance FromJSVal PanningModelType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"equalpower\""
+foreign import javascript unsafe "(() => { return \"equalpower\"; })"
         js_PanningModelTypeEqualpower :: JSVal
  
-foreign import javascript unsafe "\"HRTF\"" js_PanningModelTypeHRTF
+foreign import javascript unsafe "(() => { return \"HRTF\"; })" js_PanningModelTypeHRTF
         :: JSVal
  
 data DistanceModelType = DistanceModelTypeLinear
@@ -4401,13 +4401,13 @@ instance FromJSVal DistanceModelType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"linear\""
+foreign import javascript unsafe "(() => { return \"linear\"; })"
         js_DistanceModelTypeLinear :: JSVal
  
-foreign import javascript unsafe "\"inverse\""
+foreign import javascript unsafe "(() => { return \"inverse\"; })"
         js_DistanceModelTypeInverse :: JSVal
  
-foreign import javascript unsafe "\"exponential\""
+foreign import javascript unsafe "(() => { return \"exponential\"; })"
         js_DistanceModelTypeExponential :: JSVal
  
 data OverSampleType = OverSampleTypeNone
@@ -4432,13 +4432,13 @@ instance FromJSVal OverSampleType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"none\"" js_OverSampleTypeNone
+foreign import javascript unsafe "(() => { return \"none\"; })" js_OverSampleTypeNone
         :: JSVal
  
-foreign import javascript unsafe "\"2x\"" js_OverSampleType2x ::
+foreign import javascript unsafe "(() => { return \"2x\"; })" js_OverSampleType2x ::
         JSVal
  
-foreign import javascript unsafe "\"4x\"" js_OverSampleType4x ::
+foreign import javascript unsafe "(() => { return \"4x\"; })" js_OverSampleType4x ::
         JSVal
  
 data ScrollRestoration = ScrollRestorationAuto
@@ -4462,10 +4462,10 @@ instance FromJSVal ScrollRestoration where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"auto\""
+foreign import javascript unsafe "(() => { return \"auto\"; })"
         js_ScrollRestorationAuto :: JSVal
  
-foreign import javascript unsafe "\"manual\""
+foreign import javascript unsafe "(() => { return \"manual\"; })"
         js_ScrollRestorationManual :: JSVal
  
 data XMLHttpRequestResponseType = XMLHttpRequestResponseType
@@ -4516,20 +4516,20 @@ instance FromJSVal XMLHttpRequestResponseType where
         fromJSValUnchecked = return . pFromJSVal
         fromJSVal = return . pFromJSVal
  
-foreign import javascript unsafe "\"\""
+foreign import javascript unsafe "(() => { return \"\"; })"
         js_XMLHttpRequestResponseType :: JSVal
  
-foreign import javascript unsafe "\"arraybuffer\""
+foreign import javascript unsafe "(() => { return \"arraybuffer\"; })"
         js_XMLHttpRequestResponseTypeArraybuffer :: JSVal
  
-foreign import javascript unsafe "\"blob\""
+foreign import javascript unsafe "(() => { return \"blob\"; })"
         js_XMLHttpRequestResponseTypeBlob :: JSVal
  
-foreign import javascript unsafe "\"document\""
+foreign import javascript unsafe "(() => { return \"document\"; })"
         js_XMLHttpRequestResponseTypeDocument :: JSVal
  
-foreign import javascript unsafe "\"json\""
+foreign import javascript unsafe "(() => { return \"json\"; })"
         js_XMLHttpRequestResponseTypeJson :: JSVal
  
-foreign import javascript unsafe "\"text\""
+foreign import javascript unsafe "(() => { return \"text\"; })"
         js_XMLHttpRequestResponseTypeText :: JSVal

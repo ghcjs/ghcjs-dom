@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"namespaceURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"namespaceURI\"]; })"
         js_getNamespaceURI :: Attr -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.namespaceURI Mozilla Attr.namespaceURI documentation> 
@@ -77,7 +77,7 @@ getPrefixUnchecked ::
 getPrefixUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getPrefix self))
  
-foreign import javascript unsafe "$1[\"localName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"localName\"]; })"
         js_getLocalName :: Attr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.localName Mozilla Attr.localName documentation> 
@@ -107,7 +107,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getVal
 getValue :: (MonadIO m, FromJSString result) => Attr -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "$1[\"ownerElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ownerElement\"]; })"
         js_getOwnerElement :: Attr -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
@@ -128,7 +128,7 @@ getOwnerElementUnchecked :: (MonadIO m) => Attr -> m Element
 getOwnerElementUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getOwnerElement self))
  
-foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"specified\"] ? 1 : 0); })"
         js_getSpecified :: Attr -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.specified Mozilla Attr.specified documentation> 

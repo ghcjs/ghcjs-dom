@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitTransitionEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"WebKitTransitionEvent\"]($1,\n$2); })"
         js_newWebKitTransitionEvent ::
         JSString ->
           Optional WebKitTransitionEventInit -> IO WebKitTransitionEvent
@@ -43,7 +43,7 @@ newWebKitTransitionEvent type' eventInitDict
       (js_newWebKitTransitionEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"propertyName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"propertyName\"]; })"
         js_getPropertyName :: WebKitTransitionEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.propertyName Mozilla WebKitTransitionEvent.propertyName documentation> 
@@ -53,14 +53,14 @@ getPropertyName ::
 getPropertyName self
   = liftIO (fromJSString <$> (js_getPropertyName self))
  
-foreign import javascript unsafe "$1[\"elapsedTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elapsedTime\"]; })"
         js_getElapsedTime :: WebKitTransitionEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.elapsedTime Mozilla WebKitTransitionEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => WebKitTransitionEvent -> m Double
 getElapsedTime self = liftIO (js_getElapsedTime self)
  
-foreign import javascript unsafe "$1[\"pseudoElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pseudoElement\"]; })"
         js_getPseudoElement :: WebKitTransitionEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitTransitionEvent.pseudoElement Mozilla WebKitTransitionEvent.pseudoElement documentation> 

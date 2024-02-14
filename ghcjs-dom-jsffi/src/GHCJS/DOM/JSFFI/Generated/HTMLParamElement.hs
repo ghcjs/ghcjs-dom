@@ -76,7 +76,7 @@ getValue ::
          (MonadIO m, FromJSString result) => HTMLParamElement -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "$1[\"valueType\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"valueType\"] = $2; })"
         js_setValueType :: HTMLParamElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 
@@ -85,7 +85,7 @@ setValueType ::
 setValueType self val
   = liftIO (js_setValueType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"valueType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"valueType\"]; })"
         js_getValueType :: HTMLParamElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLParamElement.valueType Mozilla HTMLParamElement.valueType documentation> 

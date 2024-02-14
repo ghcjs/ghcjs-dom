@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"MediaSession\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"MediaSession\"]($1); })"
         js_newMediaSession :: Optional MediaSessionKind -> IO MediaSession
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSession Mozilla MediaSession documentation> 
@@ -37,7 +37,7 @@ newMediaSession ::
 newMediaSession kind
   = liftIO (js_newMediaSession (maybeToOptional kind))
  
-foreign import javascript unsafe "$1[\"setMetadata\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setMetadata\"]($2); })"
         js_setMetadata :: MediaSession -> Optional MediaMetadata -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSession.setMetadata Mozilla MediaSession.setMetadata documentation> 
@@ -46,7 +46,7 @@ setMetadata ::
 setMetadata self metadata
   = liftIO (js_setMetadata self (maybeToOptional metadata))
  
-foreign import javascript unsafe "$1[\"deactivate\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"deactivate\"](); })"
         js_deactivate :: MediaSession -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSession.deactivate Mozilla MediaSession.deactivate documentation> 

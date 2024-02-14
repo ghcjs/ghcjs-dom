@@ -49,7 +49,7 @@ open_ self name version
          (js_open self (toJSString name)
             (maybeToOptional (fmap fromIntegral version))))
  
-foreign import javascript safe "$1[\"deleteDatabase\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteDatabase\"]($2); })"
         js_deleteDatabase :: IDBFactory -> JSString -> IO IDBOpenDBRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory.deleteDatabase Mozilla IDBFactory.deleteDatabase documentation> 

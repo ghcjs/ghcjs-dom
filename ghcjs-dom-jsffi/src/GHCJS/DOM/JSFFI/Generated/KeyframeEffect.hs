@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"KeyframeEffect\"]($1)" js_newKeyframeEffect ::
+        "(($1) => { return new window[\"KeyframeEffect\"]($1); })" js_newKeyframeEffect ::
         Optional Element -> IO KeyframeEffect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect Mozilla KeyframeEffect documentation> 

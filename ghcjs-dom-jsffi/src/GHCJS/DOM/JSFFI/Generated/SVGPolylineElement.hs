@@ -33,7 +33,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"points\"]; })" js_getPo
 getPoints :: (MonadIO m) => SVGPolylineElement -> m SVGPointList
 getPoints self = liftIO (js_getPoints self)
  
-foreign import javascript unsafe "$1[\"animatedPoints\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"animatedPoints\"]; })"
         js_getAnimatedPoints :: SVGPolylineElement -> IO SVGPointList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPolylineElement.animatedPoints Mozilla SVGPolylineElement.animatedPoints documentation> 

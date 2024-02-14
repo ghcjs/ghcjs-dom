@@ -54,14 +54,14 @@ getLang ::
           SpeechSynthesisVoice -> m result
 getLang self = liftIO (fromJSString <$> (js_getLang self))
  
-foreign import javascript unsafe "($1[\"localService\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"localService\"] ? 1 : 0); })"
         js_getLocalService :: SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.localService Mozilla SpeechSynthesisVoice.localService documentation> 
 getLocalService :: (MonadIO m) => SpeechSynthesisVoice -> m Bool
 getLocalService self = liftIO (js_getLocalService self)
  
-foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"default\"] ? 1 : 0); })"
         js_getDefault :: SpeechSynthesisVoice -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice.default Mozilla SpeechSynthesisVoice.default documentation> 

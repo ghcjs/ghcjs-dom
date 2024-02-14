@@ -44,7 +44,7 @@ now self = liftIO (js_now self)
 now_ :: (MonadIO m) => Performance -> m ()
 now_ self = liftIO (void (js_now self))
  
-foreign import javascript unsafe "$1[\"getEntries\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getEntries\"](); })"
         js_getEntries :: Performance -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.getEntries Mozilla Performance.getEntries documentation> 
@@ -56,7 +56,7 @@ getEntries self
 getEntries_ :: (MonadIO m) => Performance -> m ()
 getEntries_ self = liftIO (void (js_getEntries self))
  
-foreign import javascript unsafe "$1[\"getEntriesByType\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getEntriesByType\"]($2); })"
         js_getEntriesByType :: Performance -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.getEntriesByType Mozilla Performance.getEntriesByType documentation> 
@@ -75,7 +75,7 @@ getEntriesByType_ ::
 getEntriesByType_ self entryType
   = liftIO (void (js_getEntriesByType self (toJSString entryType)))
  
-foreign import javascript unsafe "$1[\"getEntriesByName\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getEntriesByName\"]($2, $3); })"
         js_getEntriesByName ::
         Performance -> JSString -> Optional JSString -> IO JSVal
 
@@ -99,7 +99,7 @@ getEntriesByName_ self name entryType
          (js_getEntriesByName self (toJSString name)
             (toOptionalJSString entryType)))
  
-foreign import javascript unsafe "$1[\"clearResourceTimings\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"clearResourceTimings\"](); })"
         js_clearResourceTimings :: Performance -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.clearResourceTimings Mozilla Performance.clearResourceTimings documentation> 
@@ -107,7 +107,7 @@ clearResourceTimings :: (MonadIO m) => Performance -> m ()
 clearResourceTimings self = liftIO (js_clearResourceTimings self)
  
 foreign import javascript unsafe
-        "$1[\"setResourceTimingBufferSize\"]($2)"
+        "(($1, $2) => { return $1[\"setResourceTimingBufferSize\"]($2); })"
         js_setResourceTimingBufferSize :: Performance -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.setResourceTimingBufferSize Mozilla Performance.setResourceTimingBufferSize documentation> 
@@ -124,7 +124,7 @@ mark ::
      (MonadIO m, ToJSString markName) => Performance -> markName -> m ()
 mark self markName = liftIO (js_mark self (toJSString markName))
  
-foreign import javascript unsafe "$1[\"clearMarks\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearMarks\"]($2); })"
         js_clearMarks :: Performance -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.clearMarks Mozilla Performance.clearMarks documentation> 
@@ -134,7 +134,7 @@ clearMarks ::
 clearMarks self markName
   = liftIO (js_clearMarks self (toOptionalJSString markName))
  
-foreign import javascript safe "$1[\"measure\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"measure\"]($2, $3, $4); })"
         js_measure ::
         Performance ->
           JSString -> Optional JSString -> Optional JSString -> IO ()
@@ -151,7 +151,7 @@ measure self measureName startMark endMark
          (toOptionalJSString startMark)
          (toOptionalJSString endMark))
  
-foreign import javascript unsafe "$1[\"clearMeasures\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearMeasures\"]($2); })"
         js_clearMeasures :: Performance -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.clearMeasures Mozilla Performance.clearMeasures documentation> 
@@ -161,7 +161,7 @@ clearMeasures ::
 clearMeasures self measureName
   = liftIO (js_clearMeasures self (toOptionalJSString measureName))
  
-foreign import javascript unsafe "$1[\"navigation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"navigation\"]; })"
         js_getNavigation :: Performance -> IO PerformanceNavigation
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Performance.navigation Mozilla Performance.navigation documentation> 

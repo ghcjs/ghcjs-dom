@@ -59,7 +59,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => VideoTrack -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"language\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"language\"] = $2; })"
         js_setLanguage :: VideoTrack -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.language Mozilla VideoTrack.language documentation> 
@@ -76,21 +76,21 @@ getLanguage ::
             (MonadIO m, FromJSString result) => VideoTrack -> m result
 getLanguage self = liftIO (fromJSString <$> (js_getLanguage self))
  
-foreign import javascript unsafe "$1[\"selected\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"selected\"] = $2; })"
         js_setSelected :: VideoTrack -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.selected Mozilla VideoTrack.selected documentation> 
 setSelected :: (MonadIO m) => VideoTrack -> Bool -> m ()
 setSelected self val = liftIO (js_setSelected self val)
  
-foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"selected\"] ? 1 : 0); })"
         js_getSelected :: VideoTrack -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.selected Mozilla VideoTrack.selected documentation> 
 getSelected :: (MonadIO m) => VideoTrack -> m Bool
 getSelected self = liftIO (js_getSelected self)
  
-foreign import javascript unsafe "$1[\"sourceBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceBuffer\"]; })"
         js_getSourceBuffer :: VideoTrack -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrack.sourceBuffer Mozilla VideoTrack.sourceBuffer documentation> 

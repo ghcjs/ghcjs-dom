@@ -100,7 +100,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"high\"]; })" js_getHigh
 getHigh :: (MonadIO m) => HTMLMeterElement -> m Double
 getHigh self = liftIO (js_getHigh self)
  
-foreign import javascript unsafe "$1[\"optimum\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"optimum\"] = $2; })"
         js_setOptimum :: HTMLMeterElement -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMeterElement.optimum Mozilla HTMLMeterElement.optimum documentation> 

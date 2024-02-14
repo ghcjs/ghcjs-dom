@@ -26,14 +26,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"compact\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"compact\"] = $2; })"
         js_setCompact :: HTMLDListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 
 setCompact :: (MonadIO m) => HTMLDListElement -> Bool -> m ()
 setCompact self val = liftIO (js_setCompact self val)
  
-foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"compact\"] ? 1 : 0); })"
         js_getCompact :: HTMLDListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDListElement.compact Mozilla HTMLDListElement.compact documentation> 

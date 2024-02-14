@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"FontFace\"]($1, $2,\n$3)" js_newFontFace ::
+        "(($1, $2, $3) => { return new window[\"FontFace\"]($1, $2,\n$3); })" js_newFontFace ::
         JSString ->
           StringOrBinaryData -> Optional FontFaceDescriptors -> IO FontFace
 
@@ -106,7 +106,7 @@ getWeight ::
           (MonadIO m, FromJSString result) => FontFace -> m result
 getWeight self = liftIO (fromJSString <$> (js_getWeight self))
  
-foreign import javascript safe "$1[\"stretch\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"stretch\"] = $2; })"
         js_setStretch :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.stretch Mozilla FontFace.stretch documentation> 
@@ -122,7 +122,7 @@ getStretch ::
            (MonadIO m, FromJSString result) => FontFace -> m result
 getStretch self = liftIO (fromJSString <$> (js_getStretch self))
  
-foreign import javascript safe "$1[\"unicodeRange\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"unicodeRange\"] = $2; })"
         js_setUnicodeRange :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.unicodeRange Mozilla FontFace.unicodeRange documentation> 
@@ -131,7 +131,7 @@ setUnicodeRange ::
 setUnicodeRange self val
   = liftIO (js_setUnicodeRange self (toJSString val))
  
-foreign import javascript unsafe "$1[\"unicodeRange\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"unicodeRange\"]; })"
         js_getUnicodeRange :: FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.unicodeRange Mozilla FontFace.unicodeRange documentation> 
@@ -140,7 +140,7 @@ getUnicodeRange ::
 getUnicodeRange self
   = liftIO (fromJSString <$> (js_getUnicodeRange self))
  
-foreign import javascript safe "$1[\"variant\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"variant\"] = $2; })"
         js_setVariant :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.variant Mozilla FontFace.variant documentation> 
@@ -156,7 +156,7 @@ getVariant ::
            (MonadIO m, FromJSString result) => FontFace -> m result
 getVariant self = liftIO (fromJSString <$> (js_getVariant self))
  
-foreign import javascript safe "$1[\"featureSettings\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"featureSettings\"] = $2; })"
         js_setFeatureSettings :: FontFace -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.featureSettings Mozilla FontFace.featureSettings documentation> 
@@ -165,7 +165,7 @@ setFeatureSettings ::
 setFeatureSettings self val
   = liftIO (js_setFeatureSettings self (toJSString val))
  
-foreign import javascript unsafe "$1[\"featureSettings\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"featureSettings\"]; })"
         js_getFeatureSettings :: FontFace -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.featureSettings Mozilla FontFace.featureSettings documentation> 

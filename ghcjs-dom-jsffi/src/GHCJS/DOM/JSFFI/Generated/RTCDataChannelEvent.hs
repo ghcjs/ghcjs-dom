@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"RTCDataChannelEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"RTCDataChannelEvent\"]($1,\n$2); })"
         js_newRTCDataChannelEvent ::
         JSString -> RTCDataChannelEventInit -> IO RTCDataChannelEvent
 

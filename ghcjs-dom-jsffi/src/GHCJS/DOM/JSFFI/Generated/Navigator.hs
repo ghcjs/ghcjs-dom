@@ -71,7 +71,7 @@ requestMediaKeySystemAccess_ self keySystem supportedConfiguration
               js_requestMediaKeySystemAccess self (toJSString keySystem)
                 supportedConfiguration'))
  
-foreign import javascript unsafe "$1[\"getGamepads\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getGamepads\"](); })"
         js_getGamepads :: Navigator -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getGamepads Mozilla Navigator.getGamepads documentation> 
@@ -83,7 +83,7 @@ getGamepads self
 getGamepads_ :: (MonadIO m) => Navigator -> m ()
 getGamepads_ self = liftIO (void (js_getGamepads self))
  
-foreign import javascript unsafe "$1[\"getUserMedia\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"getUserMedia\"]($2, $3, $4); })"
         js_getUserMedia ::
         Navigator ->
           MediaStreamConstraints ->
@@ -102,7 +102,7 @@ getUserMedia self constraints successCallback errorCallback
       (js_getUserMedia self constraints successCallback errorCallback)
  
 foreign import javascript safe
-        "$1[\"registerProtocolHandler\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"registerProtocolHandler\"]($2,\n$3, $4); })"
         js_registerProtocolHandler ::
         Navigator -> JSString -> JSString -> JSString -> IO ()
 
@@ -117,7 +117,7 @@ registerProtocolHandler self scheme url title
          (toJSString title))
  
 foreign import javascript safe
-        "$1[\"isProtocolHandlerRegistered\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"isProtocolHandlerRegistered\"]($2,\n$3); })"
         js_isProtocolHandlerRegistered ::
         Navigator -> JSString -> JSString -> IO JSString
 
@@ -143,7 +143,7 @@ isProtocolHandlerRegistered_ self scheme url
             (toJSString url)))
  
 foreign import javascript safe
-        "$1[\"unregisterProtocolHandler\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"unregisterProtocolHandler\"]($2,\n$3); })"
         js_unregisterProtocolHandler ::
         Navigator -> JSString -> JSString -> IO ()
 
@@ -156,7 +156,7 @@ unregisterProtocolHandler self scheme url
       (js_unregisterProtocolHandler self (toJSString scheme)
          (toJSString url))
  
-foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"vibrate\"]($2) ? 1 : 0); })"
         js_vibratePattern :: Navigator -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
@@ -174,7 +174,7 @@ vibratePattern_ self pattern'
          (toJSVal pattern' >>=
             \ pattern'' -> js_vibratePattern self pattern''))
  
-foreign import javascript unsafe "($1[\"vibrate\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"vibrate\"]($2) ? 1 : 0); })"
         js_vibrate :: Navigator -> Word -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.vibrate Mozilla Navigator.vibrate documentation> 
@@ -185,7 +185,7 @@ vibrate self time = liftIO (js_vibrate self time)
 vibrate_ :: (MonadIO m) => Navigator -> Word -> m ()
 vibrate_ self time = liftIO (void (js_vibrate self time))
  
-foreign import javascript unsafe "($1[\"javaEnabled\"]() ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"javaEnabled\"]() ? 1 : 0); })"
         js_javaEnabled :: Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.javaEnabled Mozilla Navigator.javaEnabled documentation> 
@@ -196,28 +196,28 @@ javaEnabled self = liftIO (js_javaEnabled self)
 javaEnabled_ :: (MonadIO m) => Navigator -> m ()
 javaEnabled_ self = liftIO (void (js_javaEnabled self))
  
-foreign import javascript unsafe "$1[\"getStorageUpdates\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getStorageUpdates\"](); })"
         js_getStorageUpdates :: Navigator -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getStorageUpdates Mozilla Navigator.getStorageUpdates documentation> 
 getStorageUpdates :: (MonadIO m) => Navigator -> m ()
 getStorageUpdates self = liftIO (js_getStorageUpdates self)
  
-foreign import javascript unsafe "$1[\"geolocation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"geolocation\"]; })"
         js_getGeolocation :: Navigator -> IO Geolocation
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.geolocation Mozilla Navigator.geolocation documentation> 
 getGeolocation :: (MonadIO m) => Navigator -> m Geolocation
 getGeolocation self = liftIO (js_getGeolocation self)
  
-foreign import javascript unsafe "$1[\"mediaDevices\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"mediaDevices\"]; })"
         js_getMediaDevices :: Navigator -> IO MediaDevices
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mediaDevices Mozilla Navigator.mediaDevices documentation> 
 getMediaDevices :: (MonadIO m) => Navigator -> m MediaDevices
 getMediaDevices self = liftIO (js_getMediaDevices self)
  
-foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitTemporaryStorage\"]; })"
         js_getWebkitTemporaryStorage :: Navigator -> IO StorageQuota
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitTemporaryStorage Mozilla Navigator.webkitTemporaryStorage documentation> 
@@ -226,7 +226,7 @@ getWebkitTemporaryStorage ::
 getWebkitTemporaryStorage self
   = liftIO (js_getWebkitTemporaryStorage self)
  
-foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitPersistentStorage\"]; })"
         js_getWebkitPersistentStorage :: Navigator -> IO StorageQuota
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webkitPersistentStorage Mozilla Navigator.webkitPersistentStorage documentation> 
@@ -235,7 +235,7 @@ getWebkitPersistentStorage ::
 getWebkitPersistentStorage self
   = liftIO (js_getWebkitPersistentStorage self)
  
-foreign import javascript unsafe "($1[\"webdriver\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"webdriver\"] ? 1 : 0); })"
         js_getWebdriver :: Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.webdriver Mozilla Navigator.webdriver documentation> 
@@ -249,14 +249,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"plugins\"]; })" js_getP
 getPlugins :: (MonadIO m) => Navigator -> m PluginArray
 getPlugins self = liftIO (js_getPlugins self)
  
-foreign import javascript unsafe "$1[\"mimeTypes\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"mimeTypes\"]; })"
         js_getMimeTypes :: Navigator -> IO MimeTypeArray
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.mimeTypes Mozilla Navigator.mimeTypes documentation> 
 getMimeTypes :: (MonadIO m) => Navigator -> m MimeTypeArray
 getMimeTypes self = liftIO (js_getMimeTypes self)
  
-foreign import javascript unsafe "($1[\"cookieEnabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"cookieEnabled\"] ? 1 : 0); })"
         js_getCookieEnabled :: Navigator -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Navigator.cookieEnabled Mozilla Navigator.cookieEnabled documentation> 

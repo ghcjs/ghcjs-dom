@@ -28,35 +28,35 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"startOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startOffset\"]; })"
         js_getStartOffset :: StaticRange -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StaticRange.startOffset Mozilla StaticRange.startOffset documentation> 
 getStartOffset :: (MonadIO m) => StaticRange -> m Word
 getStartOffset self = liftIO (js_getStartOffset self)
  
-foreign import javascript unsafe "$1[\"endOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"endOffset\"]; })"
         js_getEndOffset :: StaticRange -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StaticRange.endOffset Mozilla StaticRange.endOffset documentation> 
 getEndOffset :: (MonadIO m) => StaticRange -> m Word
 getEndOffset self = liftIO (js_getEndOffset self)
  
-foreign import javascript unsafe "$1[\"startContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startContainer\"]; })"
         js_getStartContainer :: StaticRange -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StaticRange.startContainer Mozilla StaticRange.startContainer documentation> 
 getStartContainer :: (MonadIO m) => StaticRange -> m Node
 getStartContainer self = liftIO (js_getStartContainer self)
  
-foreign import javascript unsafe "$1[\"endContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"endContainer\"]; })"
         js_getEndContainer :: StaticRange -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StaticRange.endContainer Mozilla StaticRange.endContainer documentation> 
 getEndContainer :: (MonadIO m) => StaticRange -> m Node
 getEndContainer self = liftIO (js_getEndContainer self)
  
-foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"collapsed\"] ? 1 : 0); })"
         js_getCollapsed :: StaticRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/StaticRange.collapsed Mozilla StaticRange.collapsed documentation> 

@@ -39,7 +39,7 @@ pattern SVG_STITCHTYPE_UNKNOWN = 0
 pattern SVG_STITCHTYPE_STITCH = 1
 pattern SVG_STITCHTYPE_NOSTITCH = 2
  
-foreign import javascript unsafe "$1[\"baseFrequencyX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"baseFrequencyX\"]; })"
         js_getBaseFrequencyX ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
@@ -48,7 +48,7 @@ getBaseFrequencyX ::
                   (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getBaseFrequencyX self = liftIO (js_getBaseFrequencyX self)
  
-foreign import javascript unsafe "$1[\"baseFrequencyY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"baseFrequencyY\"]; })"
         js_getBaseFrequencyY ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
@@ -57,7 +57,7 @@ getBaseFrequencyY ::
                   (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getBaseFrequencyY self = liftIO (js_getBaseFrequencyY self)
  
-foreign import javascript unsafe "$1[\"numOctaves\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"numOctaves\"]; })"
         js_getNumOctaves :: SVGFETurbulenceElement -> IO SVGAnimatedInteger
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
@@ -73,7 +73,7 @@ getSeed ::
         (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getSeed self = liftIO (js_getSeed self)
  
-foreign import javascript unsafe "$1[\"stitchTiles\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"stitchTiles\"]; })"
         js_getStitchTiles ::
         SVGFETurbulenceElement -> IO SVGAnimatedEnumeration
 

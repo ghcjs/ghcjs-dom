@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"appCodeName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"appCodeName\"]; })"
         js_getAppCodeName :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.appCodeName Mozilla NavigatorID.appCodeName documentation> 
@@ -51,7 +51,7 @@ getAppName ::
 getAppName self
   = liftIO (fromJSString <$> (js_getAppName (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"appVersion\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"appVersion\"]; })"
         js_getAppVersion :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.appVersion Mozilla NavigatorID.appVersion documentation> 
@@ -81,7 +81,7 @@ getProduct ::
 getProduct self
   = liftIO (fromJSString <$> (js_getProduct (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"productSub\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"productSub\"]; })"
         js_getProductSub :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.productSub Mozilla NavigatorID.productSub documentation> 
@@ -91,7 +91,7 @@ getProductSub ::
 getProductSub self
   = liftIO (fromJSString <$> (js_getProductSub (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"userAgent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"userAgent\"]; })"
         js_getUserAgent :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.userAgent Mozilla NavigatorID.userAgent documentation> 
@@ -111,7 +111,7 @@ getVendor ::
 getVendor self
   = liftIO (fromJSString <$> (js_getVendor (toNavigatorID self)))
  
-foreign import javascript unsafe "$1[\"vendorSub\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"vendorSub\"]; })"
         js_getVendorSub :: NavigatorID -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorID.vendorSub Mozilla NavigatorID.vendorSub documentation> 

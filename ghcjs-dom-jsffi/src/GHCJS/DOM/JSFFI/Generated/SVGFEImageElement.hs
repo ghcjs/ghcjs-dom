@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"preserveAspectRatio\"]; })"
         js_getPreserveAspectRatio ::
         SVGFEImageElement -> IO SVGAnimatedPreserveAspectRatio
 

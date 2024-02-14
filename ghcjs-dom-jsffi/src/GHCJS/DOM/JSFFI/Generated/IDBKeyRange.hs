@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "window[\"IDBKeyRange\"][\"only\"]($1)" js_only ::
+        "(($1) => { return window[\"IDBKeyRange\"][\"only\"]($1); })" js_only ::
         JSVal -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.only Mozilla IDBKeyRange.only documentation> 
@@ -43,7 +43,7 @@ only_ value
   = liftIO (void (toJSVal value >>= \ value' -> js_only value'))
  
 foreign import javascript safe
-        "window[\"IDBKeyRange\"][\"lowerBound\"]($1,\n$2)" js_lowerBound ::
+        "(($1, $2) => { return window[\"IDBKeyRange\"][\"lowerBound\"]($1,\n$2); })" js_lowerBound ::
         JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerBound Mozilla IDBKeyRange.lowerBound documentation> 
@@ -59,7 +59,7 @@ lowerBound_ lower open
       (void (toJSVal lower >>= \ lower' -> js_lowerBound lower' open))
  
 foreign import javascript safe
-        "window[\"IDBKeyRange\"][\"upperBound\"]($1,\n$2)" js_upperBound ::
+        "(($1, $2) => { return window[\"IDBKeyRange\"][\"upperBound\"]($1,\n$2); })" js_upperBound ::
         JSVal -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperBound Mozilla IDBKeyRange.upperBound documentation> 
@@ -75,7 +75,7 @@ upperBound_ upper open
       (void (toJSVal upper >>= \ upper' -> js_upperBound upper' open))
  
 foreign import javascript safe
-        "window[\"IDBKeyRange\"][\"bound\"]($1,\n$2, $3, $4)" js_bound ::
+        "(($1, $2, $3, $4) => { return window[\"IDBKeyRange\"][\"bound\"]($1,\n$2, $3, $4); })" js_bound ::
         JSVal -> JSVal -> Bool -> Bool -> IO IDBKeyRange
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.bound Mozilla IDBKeyRange.bound documentation> 
@@ -101,7 +101,7 @@ bound_ lower upper lowerOpen upperOpen
             lowerOpen
             upperOpen))
  
-foreign import javascript safe "($1[\"includes\"]($2) ? 1 : 0)"
+foreign import javascript safe "(($1, $2) => { return ($1[\"includes\"]($2) ? 1 : 0); })"
         js_includes :: IDBKeyRange -> JSVal -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.includes Mozilla IDBKeyRange.includes documentation> 
@@ -129,14 +129,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"upper\"]; })" js_getUpp
 getUpper :: (MonadIO m) => IDBKeyRange -> m JSVal
 getUpper self = liftIO (js_getUpper self)
  
-foreign import javascript unsafe "($1[\"lowerOpen\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"lowerOpen\"] ? 1 : 0); })"
         js_getLowerOpen :: IDBKeyRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.lowerOpen Mozilla IDBKeyRange.lowerOpen documentation> 
 getLowerOpen :: (MonadIO m) => IDBKeyRange -> m Bool
 getLowerOpen self = liftIO (js_getLowerOpen self)
  
-foreign import javascript unsafe "($1[\"upperOpen\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"upperOpen\"] ? 1 : 0); })"
         js_getUpperOpen :: IDBKeyRange -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBKeyRange.upperOpen Mozilla IDBKeyRange.upperOpen documentation> 

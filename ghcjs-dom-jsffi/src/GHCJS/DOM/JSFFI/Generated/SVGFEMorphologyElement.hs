@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setRadius\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setRadius\"]($2, $3); })"
         js_setRadius ::
         SVGFEMorphologyElement -> Optional Float -> Optional Float -> IO ()
 

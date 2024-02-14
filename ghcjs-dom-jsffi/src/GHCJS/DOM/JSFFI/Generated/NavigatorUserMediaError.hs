@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"constraintName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"constraintName\"]; })"
         js_getConstraintName :: NavigatorUserMediaError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUserMediaError.constraintName Mozilla NavigatorUserMediaError.constraintName documentation> 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setDirection\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setDirection\"]($2); })"
         js_setDirection :: RTCRtpTransceiver -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.setDirection Mozilla RTCRtpTransceiver.setDirection documentation> 
@@ -84,14 +84,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"receiver\"]; })" js_get
 getReceiver :: (MonadIO m) => RTCRtpTransceiver -> m RTCRtpReceiver
 getReceiver self = liftIO (js_getReceiver self)
  
-foreign import javascript unsafe "($1[\"stopped\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"stopped\"] ? 1 : 0); })"
         js_getStopped :: RTCRtpTransceiver -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.stopped Mozilla RTCRtpTransceiver.stopped documentation> 
 getStopped :: (MonadIO m) => RTCRtpTransceiver -> m Bool
 getStopped self = liftIO (js_getStopped self)
  
-foreign import javascript unsafe "$1[\"direction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"direction\"]; })"
         js_getDirection :: RTCRtpTransceiver -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver.direction Mozilla RTCRtpTransceiver.direction documentation> 

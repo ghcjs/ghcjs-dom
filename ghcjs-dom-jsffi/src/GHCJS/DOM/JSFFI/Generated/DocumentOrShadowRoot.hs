@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"elementFromPoint\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"elementFromPoint\"]($2, $3); })"
         js_elementFromPoint ::
         DocumentOrShadowRoot -> Double -> Double -> IO (Nullable Element)
 
@@ -72,7 +72,7 @@ elementFromPointUnchecked self x y
       (fromJust . nullableToMaybe <$>
          (js_elementFromPoint (toDocumentOrShadowRoot self) x y))
  
-foreign import javascript unsafe "$1[\"activeElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"activeElement\"]; })"
         js_getActiveElement ::
         DocumentOrShadowRoot -> IO (Nullable Element)
 
@@ -103,7 +103,7 @@ getActiveElementUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getActiveElement (toDocumentOrShadowRoot self)))
  
-foreign import javascript unsafe "$1[\"pointerLockElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointerLockElement\"]; })"
         js_getPointerLockElement ::
         DocumentOrShadowRoot -> IO (Nullable Element)
 

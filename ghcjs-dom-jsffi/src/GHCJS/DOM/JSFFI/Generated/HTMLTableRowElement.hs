@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"insertCell\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"insertCell\"]($2); })"
         js_insertCell ::
         HTMLTableRowElement -> Optional Int -> IO HTMLElement
 
@@ -48,7 +48,7 @@ insertCell_ ::
 insertCell_ self index
   = liftIO (void (js_insertCell self (maybeToOptional index)))
  
-foreign import javascript safe "$1[\"deleteCell\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteCell\"]($2); })"
         js_deleteCell :: HTMLTableRowElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.deleteCell Mozilla HTMLTableRowElement.deleteCell documentation> 
@@ -62,7 +62,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"rowIndex\"]; })" js_get
 getRowIndex :: (MonadIO m) => HTMLTableRowElement -> m Int
 getRowIndex self = liftIO (js_getRowIndex self)
  
-foreign import javascript unsafe "$1[\"sectionRowIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sectionRowIndex\"]; })"
         js_getSectionRowIndex :: HTMLTableRowElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.sectionRowIndex Mozilla HTMLTableRowElement.sectionRowIndex documentation> 
@@ -92,7 +92,7 @@ getAlign ::
          (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.bgColor Mozilla HTMLTableRowElement.bgColor documentation> 
@@ -140,7 +140,7 @@ getChOff ::
          (MonadIO m, FromJSString result) => HTMLTableRowElement -> m result
 getChOff self = liftIO (fromJSString <$> (js_getChOff self))
  
-foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vAlign\"] = $2; })"
         js_setVAlign :: HTMLTableRowElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement.vAlign Mozilla HTMLTableRowElement.vAlign documentation> 

@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"WritableStream\"]()"
+foreign import javascript unsafe "(() => { return new window[\"WritableStream\"](); })"
         js_newWritableStream :: IO WritableStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WritableStream Mozilla WritableStream documentation> 

@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"FormData\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"FormData\"]($1); })"
         js_newFormData :: Optional HTMLFormElement -> IO FormData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation> 
@@ -43,7 +43,7 @@ append ::
 append self name value
   = liftIO (js_append self (toJSString name) (toJSString value))
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"append\"]($2, $3, $4); })"
         js_appendBlob ::
         FormData -> JSString -> Blob -> Optional JSString -> IO ()
 

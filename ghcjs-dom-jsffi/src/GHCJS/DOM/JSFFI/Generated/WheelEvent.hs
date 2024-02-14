@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WheelEvent\"]($1, $2)" js_newWheelEvent ::
+        "(($1, $2) => { return new window[\"WheelEvent\"]($1, $2); })" js_newWheelEvent ::
         JSString -> Optional WheelEventInit -> IO WheelEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent Mozilla WheelEvent documentation> 
@@ -47,7 +47,7 @@ newWheelEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initWebKitWheelEvent\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"initWebKitWheelEvent\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
         js_initWebKitWheelEvent ::
         WheelEvent ->
           Optional Int ->
@@ -107,28 +107,28 @@ foreign import javascript unsafe "(($1) => { return $1[\"deltaZ\"]; })" js_getDe
 getDeltaZ :: (MonadIO m) => WheelEvent -> m Double
 getDeltaZ self = liftIO (js_getDeltaZ self)
  
-foreign import javascript unsafe "$1[\"deltaMode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"deltaMode\"]; })"
         js_getDeltaMode :: WheelEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.deltaMode Mozilla WheelEvent.deltaMode documentation> 
 getDeltaMode :: (MonadIO m) => WheelEvent -> m Word
 getDeltaMode self = liftIO (js_getDeltaMode self)
  
-foreign import javascript unsafe "$1[\"wheelDeltaX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"wheelDeltaX\"]; })"
         js_getWheelDeltaX :: WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDeltaX Mozilla WheelEvent.wheelDeltaX documentation> 
 getWheelDeltaX :: (MonadIO m) => WheelEvent -> m Int
 getWheelDeltaX self = liftIO (js_getWheelDeltaX self)
  
-foreign import javascript unsafe "$1[\"wheelDeltaY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"wheelDeltaY\"]; })"
         js_getWheelDeltaY :: WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDeltaY Mozilla WheelEvent.wheelDeltaY documentation> 
 getWheelDeltaY :: (MonadIO m) => WheelEvent -> m Int
 getWheelDeltaY self = liftIO (js_getWheelDeltaY self)
  
-foreign import javascript unsafe "$1[\"wheelDelta\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"wheelDelta\"]; })"
         js_getWheelDelta :: WheelEvent -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.wheelDelta Mozilla WheelEvent.wheelDelta documentation> 
@@ -136,7 +136,7 @@ getWheelDelta :: (MonadIO m) => WheelEvent -> m Int
 getWheelDelta self = liftIO (js_getWheelDelta self)
  
 foreign import javascript unsafe
-        "($1[\"webkitDirectionInvertedFromDevice\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"webkitDirectionInvertedFromDevice\"] ? 1 : 0); })"
         js_getWebkitDirectionInvertedFromDevice :: WheelEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent.webkitDirectionInvertedFromDevice Mozilla WheelEvent.webkitDirectionInvertedFromDevice documentation> 

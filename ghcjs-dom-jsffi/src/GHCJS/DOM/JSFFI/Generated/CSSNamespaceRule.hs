@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"namespaceURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"namespaceURI\"]; })"
         js_getNamespaceURI :: CSSNamespaceRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSNamespaceRule.namespaceURI Mozilla CSSNamespaceRule.namespaceURI documentation> 

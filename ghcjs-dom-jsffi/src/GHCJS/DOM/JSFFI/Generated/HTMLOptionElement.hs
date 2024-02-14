@@ -31,14 +31,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"disabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"disabled\"] = $2; })"
         js_setDisabled :: HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.disabled Mozilla HTMLOptionElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLOptionElement -> Bool -> m ()
 setDisabled self val = liftIO (js_setDisabled self val)
  
-foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"disabled\"] ? 1 : 0); })"
         js_getDisabled :: HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.disabled Mozilla HTMLOptionElement.disabled documentation> 
@@ -68,7 +68,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => HTMLOptionElement -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"defaultSelected\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"defaultSelected\"] = $2; })"
         js_setDefaultSelected :: HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.defaultSelected Mozilla HTMLOptionElement.defaultSelected documentation> 
@@ -78,21 +78,21 @@ setDefaultSelected self val
   = liftIO (js_setDefaultSelected self val)
  
 foreign import javascript unsafe
-        "($1[\"defaultSelected\"] ? 1 : 0)" js_getDefaultSelected ::
+        "(($1) => { return ($1[\"defaultSelected\"] ? 1 : 0); })" js_getDefaultSelected ::
         HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.defaultSelected Mozilla HTMLOptionElement.defaultSelected documentation> 
 getDefaultSelected :: (MonadIO m) => HTMLOptionElement -> m Bool
 getDefaultSelected self = liftIO (js_getDefaultSelected self)
  
-foreign import javascript unsafe "$1[\"selected\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"selected\"] = $2; })"
         js_setSelected :: HTMLOptionElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.selected Mozilla HTMLOptionElement.selected documentation> 
 setSelected :: (MonadIO m) => HTMLOptionElement -> Bool -> m ()
 setSelected self val = liftIO (js_setSelected self val)
  
-foreign import javascript unsafe "($1[\"selected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"selected\"] ? 1 : 0); })"
         js_getSelected :: HTMLOptionElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement.selected Mozilla HTMLOptionElement.selected documentation> 

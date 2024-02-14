@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DOMRectReadOnly\"]($1,\n$2, $3, $4)"
+        "(($1, $2, $3, $4) => { return new window[\"DOMRectReadOnly\"]($1,\n$2, $3, $4); })"
         js_newDOMRectReadOnly ::
         Optional Double ->
           Optional Double ->
@@ -48,7 +48,7 @@ newDOMRectReadOnly x y width height
          (maybeToOptional height))
  
 foreign import javascript unsafe
-        "window[\"DOMRectReadOnly\"][\"fromRect\"]($1)" js_fromRect ::
+        "(($1) => { return window[\"DOMRectReadOnly\"][\"fromRect\"]($1); })" js_fromRect ::
         Optional DOMRectInit -> IO DOMRectReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly.fromRect Mozilla DOMRectReadOnly.fromRect documentation> 

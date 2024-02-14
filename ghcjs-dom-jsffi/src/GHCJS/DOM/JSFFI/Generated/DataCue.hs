@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitDataCue\"]($1,\n$2, $3)" js_newDataCue ::
+        "(($1, $2, $3) => { return new window[\"WebKitDataCue\"]($1,\n$2, $3); })" js_newDataCue ::
         Double -> Double -> ArrayBuffer -> IO DataCue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation> 
@@ -40,7 +40,7 @@ newDataCue startTime endTime data'
   = liftIO (js_newDataCue startTime endTime (toArrayBuffer data'))
  
 foreign import javascript unsafe
-        "new window[\"WebKitDataCue\"]($1,\n$2, $3, $4)" js_newDataCue' ::
+        "(($1, $2, $3, $4) => { return new window[\"WebKitDataCue\"]($1,\n$2, $3, $4); })" js_newDataCue' ::
         Double -> Double -> JSVal -> Optional JSString -> IO DataCue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitDataCue Mozilla WebKitDataCue documentation> 

@@ -89,7 +89,7 @@ sortedTrackListForMenuAudio_ ::
 sortedTrackListForMenuAudio_ self trackList
   = liftIO (void (js_sortedTrackListForMenuAudio self trackList))
  
-foreign import javascript unsafe "$1[\"displayNameForTrack\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"displayNameForTrack\"]($2); })"
         js_displayNameForTrack ::
         MediaControlsHost -> Optional Track -> IO JSString
 
@@ -115,7 +115,7 @@ displayNameForTrack_ self track
             \ track' ->
               js_displayNameForTrack self (maybeToOptional (fmap Track track'))))
  
-foreign import javascript unsafe "$1[\"setSelectedTextTrack\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setSelectedTextTrack\"]($2); })"
         js_setSelectedTextTrack ::
         MediaControlsHost -> Optional TextTrack -> IO ()
 
@@ -126,7 +126,7 @@ setSelectedTextTrack self track
   = liftIO (js_setSelectedTextTrack self (maybeToOptional track))
  
 foreign import javascript unsafe
-        "$1[\"setPreparedToReturnVideoLayerToInline\"]($2)"
+        "(($1, $2) => { return $1[\"setPreparedToReturnVideoLayerToInline\"]($2); })"
         js_setPreparedToReturnVideoLayerToInline ::
         MediaControlsHost -> Bool -> IO ()
 
@@ -146,21 +146,21 @@ updateTextTrackContainer ::
 updateTextTrackContainer self
   = liftIO (js_updateTextTrackContainer self)
  
-foreign import javascript unsafe "$1[\"enteredFullscreen\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"enteredFullscreen\"](); })"
         js_enteredFullscreen :: MediaControlsHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.enteredFullscreen Mozilla MediaControlsHost.enteredFullscreen documentation> 
 enteredFullscreen :: (MonadIO m) => MediaControlsHost -> m ()
 enteredFullscreen self = liftIO (js_enteredFullscreen self)
  
-foreign import javascript unsafe "$1[\"exitedFullscreen\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"exitedFullscreen\"](); })"
         js_exitedFullscreen :: MediaControlsHost -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.exitedFullscreen Mozilla MediaControlsHost.exitedFullscreen documentation> 
 exitedFullscreen :: (MonadIO m) => MediaControlsHost -> m ()
 exitedFullscreen self = liftIO (js_exitedFullscreen self)
  
-foreign import javascript unsafe "$1[\"generateUUID\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"generateUUID\"](); })"
         js_generateUUID :: MediaControlsHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.generateUUID Mozilla MediaControlsHost.generateUUID documentation> 
@@ -174,7 +174,7 @@ generateUUID_ :: (MonadIO m) => MediaControlsHost -> m ()
 generateUUID_ self = liftIO (void (js_generateUUID self))
  
 foreign import javascript unsafe
-        "$1[\"base64StringForIconNameAndType\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"base64StringForIconNameAndType\"]($2,\n$3); })"
         js_base64StringForIconNameAndType ::
         MediaControlsHost -> JSString -> JSString -> IO JSString
 
@@ -199,7 +199,7 @@ base64StringForIconNameAndType_ self iconName iconType
          (js_base64StringForIconNameAndType self (toJSString iconName)
             (toJSString iconType)))
  
-foreign import javascript unsafe "$1[\"captionMenuOffItem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"captionMenuOffItem\"]; })"
         js_getCaptionMenuOffItem :: MediaControlsHost -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuOffItem Mozilla MediaControlsHost.captionMenuOffItem documentation> 
@@ -207,7 +207,7 @@ getCaptionMenuOffItem ::
                       (MonadIO m) => MediaControlsHost -> m TextTrack
 getCaptionMenuOffItem self = liftIO (js_getCaptionMenuOffItem self)
  
-foreign import javascript unsafe "$1[\"captionMenuAutomaticItem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"captionMenuAutomaticItem\"]; })"
         js_getCaptionMenuAutomaticItem :: MediaControlsHost -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionMenuAutomaticItem Mozilla MediaControlsHost.captionMenuAutomaticItem documentation> 
@@ -216,7 +216,7 @@ getCaptionMenuAutomaticItem ::
 getCaptionMenuAutomaticItem self
   = liftIO (js_getCaptionMenuAutomaticItem self)
  
-foreign import javascript unsafe "$1[\"captionDisplayMode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"captionDisplayMode\"]; })"
         js_getCaptionDisplayMode :: MediaControlsHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.captionDisplayMode Mozilla MediaControlsHost.captionDisplayMode documentation> 
@@ -225,7 +225,7 @@ getCaptionDisplayMode ::
 getCaptionDisplayMode self
   = liftIO (fromJSString <$> (js_getCaptionDisplayMode self))
  
-foreign import javascript unsafe "$1[\"textTrackContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"textTrackContainer\"]; })"
         js_getTextTrackContainer :: MediaControlsHost -> IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.textTrackContainer Mozilla MediaControlsHost.textTrackContainer documentation> 
@@ -234,7 +234,7 @@ getTextTrackContainer ::
 getTextTrackContainer self = liftIO (js_getTextTrackContainer self)
  
 foreign import javascript unsafe
-        "($1[\"allowsInlineMediaPlayback\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"allowsInlineMediaPlayback\"] ? 1 : 0); })"
         js_getAllowsInlineMediaPlayback :: MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.allowsInlineMediaPlayback Mozilla MediaControlsHost.allowsInlineMediaPlayback documentation> 
@@ -244,7 +244,7 @@ getAllowsInlineMediaPlayback self
   = liftIO (js_getAllowsInlineMediaPlayback self)
  
 foreign import javascript unsafe
-        "($1[\"supportsFullscreen\"] ? 1 : 0)" js_getSupportsFullscreen ::
+        "(($1) => { return ($1[\"supportsFullscreen\"] ? 1 : 0); })" js_getSupportsFullscreen ::
         MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.supportsFullscreen Mozilla MediaControlsHost.supportsFullscreen documentation> 
@@ -252,7 +252,7 @@ getSupportsFullscreen :: (MonadIO m) => MediaControlsHost -> m Bool
 getSupportsFullscreen self = liftIO (js_getSupportsFullscreen self)
  
 foreign import javascript unsafe
-        "($1[\"isVideoLayerInline\"] ? 1 : 0)" js_getIsVideoLayerInline ::
+        "(($1) => { return ($1[\"isVideoLayerInline\"] ? 1 : 0); })" js_getIsVideoLayerInline ::
         MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.isVideoLayerInline Mozilla MediaControlsHost.isVideoLayerInline documentation> 
@@ -260,7 +260,7 @@ getIsVideoLayerInline :: (MonadIO m) => MediaControlsHost -> m Bool
 getIsVideoLayerInline self = liftIO (js_getIsVideoLayerInline self)
  
 foreign import javascript unsafe
-        "($1[\"userGestureRequired\"] ? 1 : 0)" js_getUserGestureRequired
+        "(($1) => { return ($1[\"userGestureRequired\"] ? 1 : 0); })" js_getUserGestureRequired
         :: MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.userGestureRequired Mozilla MediaControlsHost.userGestureRequired documentation> 
@@ -270,7 +270,7 @@ getUserGestureRequired self
   = liftIO (js_getUserGestureRequired self)
  
 foreign import javascript unsafe
-        "($1[\"isInMediaDocument\"] ? 1 : 0)" js_getIsInMediaDocument ::
+        "(($1) => { return ($1[\"isInMediaDocument\"] ? 1 : 0); })" js_getIsInMediaDocument ::
         MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.isInMediaDocument Mozilla MediaControlsHost.isInMediaDocument documentation> 
@@ -278,7 +278,7 @@ getIsInMediaDocument :: (MonadIO m) => MediaControlsHost -> m Bool
 getIsInMediaDocument self = liftIO (js_getIsInMediaDocument self)
  
 foreign import javascript unsafe
-        "($1[\"shouldForceControlsDisplay\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"shouldForceControlsDisplay\"] ? 1 : 0); })"
         js_getShouldForceControlsDisplay :: MediaControlsHost -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.shouldForceControlsDisplay Mozilla MediaControlsHost.shouldForceControlsDisplay documentation> 
@@ -297,7 +297,7 @@ getExternalDeviceDisplayName ::
 getExternalDeviceDisplayName self
   = liftIO (fromJSString <$> (js_getExternalDeviceDisplayName self))
  
-foreign import javascript unsafe "$1[\"externalDeviceType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"externalDeviceType\"]; })"
         js_getExternalDeviceType :: MediaControlsHost -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.externalDeviceType Mozilla MediaControlsHost.externalDeviceType documentation> 
@@ -307,7 +307,7 @@ getExternalDeviceType self
   = liftIO ((js_getExternalDeviceType self) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
-        "$1[\"controlsDependOnPageScaleFactor\"] = $2;"
+        "(($1, $2) => { $1[\"controlsDependOnPageScaleFactor\"] = $2; })"
         js_setControlsDependOnPageScaleFactor ::
         MediaControlsHost -> Bool -> IO ()
 
@@ -318,7 +318,7 @@ setControlsDependOnPageScaleFactor self val
   = liftIO (js_setControlsDependOnPageScaleFactor self val)
  
 foreign import javascript unsafe
-        "($1[\"controlsDependOnPageScaleFactor\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"controlsDependOnPageScaleFactor\"] ? 1 : 0); })"
         js_getControlsDependOnPageScaleFactor ::
         MediaControlsHost -> IO Bool
 
@@ -328,7 +328,7 @@ getControlsDependOnPageScaleFactor ::
 getControlsDependOnPageScaleFactor self
   = liftIO (js_getControlsDependOnPageScaleFactor self)
  
-foreign import javascript unsafe "$1[\"shadowRootCSSText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"shadowRootCSSText\"]; })"
         js_getShadowRootCSSText :: MediaControlsHost -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaControlsHost.shadowRootCSSText Mozilla MediaControlsHost.shadowRootCSSText documentation> 

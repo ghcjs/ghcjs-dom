@@ -61,7 +61,7 @@ getOrderY ::
           (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedInteger
 getOrderY self = liftIO (js_getOrderY self)
  
-foreign import javascript unsafe "$1[\"kernelMatrix\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"kernelMatrix\"]; })"
         js_getKernelMatrix ::
         SVGFEConvolveMatrixElement -> IO SVGAnimatedNumberList
 
@@ -112,7 +112,7 @@ getEdgeMode ::
               SVGFEConvolveMatrixElement -> m SVGAnimatedEnumeration
 getEdgeMode self = liftIO (js_getEdgeMode self)
  
-foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"kernelUnitLengthX\"]; })"
         js_getKernelUnitLengthX ::
         SVGFEConvolveMatrixElement -> IO SVGAnimatedNumber
 
@@ -121,7 +121,7 @@ getKernelUnitLengthX ::
                      (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
 getKernelUnitLengthX self = liftIO (js_getKernelUnitLengthX self)
  
-foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"kernelUnitLengthY\"]; })"
         js_getKernelUnitLengthY ::
         SVGFEConvolveMatrixElement -> IO SVGAnimatedNumber
 
@@ -130,7 +130,7 @@ getKernelUnitLengthY ::
                      (MonadIO m) => SVGFEConvolveMatrixElement -> m SVGAnimatedNumber
 getKernelUnitLengthY self = liftIO (js_getKernelUnitLengthY self)
  
-foreign import javascript unsafe "$1[\"preserveAlpha\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"preserveAlpha\"]; })"
         js_getPreserveAlpha ::
         SVGFEConvolveMatrixElement -> IO SVGAnimatedBoolean
 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"insertRule\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"insertRule\"]($2); })"
         js_insertRule :: CSSKeyframesRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.insertRule Mozilla CSSKeyframesRule.insertRule documentation> 
@@ -38,7 +38,7 @@ insertRule ::
 insertRule self rule
   = liftIO (js_insertRule self (toJSString rule))
  
-foreign import javascript unsafe "$1[\"appendRule\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"appendRule\"]($2); })"
         js_appendRule :: CSSKeyframesRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.appendRule Mozilla CSSKeyframesRule.appendRule documentation> 
@@ -47,7 +47,7 @@ appendRule ::
 appendRule self rule
   = liftIO (js_appendRule self (toJSString rule))
  
-foreign import javascript unsafe "$1[\"deleteRule\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteRule\"]($2); })"
         js_deleteRule :: CSSKeyframesRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframesRule.deleteRule Mozilla CSSKeyframesRule.deleteRule documentation> 

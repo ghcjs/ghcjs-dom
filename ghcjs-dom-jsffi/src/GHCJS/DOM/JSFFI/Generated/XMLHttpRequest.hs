@@ -42,7 +42,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"XMLHttpRequest\"]()"
+foreign import javascript unsafe "(() => { return new window[\"XMLHttpRequest\"](); })"
         js_newXMLHttpRequest :: IO XMLHttpRequest
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest Mozilla XMLHttpRequest documentation> 
@@ -59,7 +59,7 @@ openSimple ::
 openSimple self method url
   = liftIO (js_openSimple self (toJSString method) (toJSString url))
  
-foreign import javascript safe "$1[\"open\"]($2, $3, $4, $5, $6)"
+foreign import javascript safe "(($1, $2, $3, $4, $5, $6) => { return $1[\"open\"]($2, $3, $4, $5, $6); })"
         js_open ::
         XMLHttpRequest ->
           JSString ->
@@ -77,7 +77,7 @@ open self method url async user password
          (toOptionalJSString user)
          (toOptionalJSString password))
  
-foreign import javascript safe "$1[\"setRequestHeader\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setRequestHeader\"]($2, $3); })"
         js_setRequestHeader ::
         XMLHttpRequest -> JSString -> JSString -> IO ()
 
@@ -109,7 +109,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"abort\"](); })" js_abor
 abort :: (MonadIO m) => XMLHttpRequest -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript unsafe "$1[\"getResponseHeader\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getResponseHeader\"]($2); })"
         js_getResponseHeader ::
         XMLHttpRequest -> JSString -> IO (Nullable JSString)
 
@@ -147,7 +147,7 @@ getResponseHeaderUnchecked self name
       (fromJust . fromMaybeJSString <$>
          (js_getResponseHeader self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"getAllResponseHeaders\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getAllResponseHeaders\"](); })"
         js_getAllResponseHeaders :: XMLHttpRequest -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.getAllResponseHeaders Mozilla XMLHttpRequest.getAllResponseHeaders documentation> 
@@ -161,7 +161,7 @@ getAllResponseHeaders_ :: (MonadIO m) => XMLHttpRequest -> m ()
 getAllResponseHeaders_ self
   = liftIO (void (js_getAllResponseHeaders self))
  
-foreign import javascript safe "$1[\"overrideMimeType\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"overrideMimeType\"]($2); })"
         js_overrideMimeType :: XMLHttpRequest -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.overrideMimeType Mozilla XMLHttpRequest.overrideMimeType documentation> 
@@ -180,14 +180,14 @@ readyStateChange :: EventName XMLHttpRequest Event
 readyStateChange
   = unsafeEventNameAsync (toJSString "readystatechange")
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: XMLHttpRequest -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.readyState Mozilla XMLHttpRequest.readyState documentation> 
 getReadyState :: (MonadIO m) => XMLHttpRequest -> m Word
 getReadyState self = liftIO (js_getReadyState self)
  
-foreign import javascript safe "$1[\"timeout\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"timeout\"] = $2; })"
         js_setTimeout :: XMLHttpRequest -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.timeout Mozilla XMLHttpRequest.timeout documentation> 
@@ -201,7 +201,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"timeout\"]; })" js_getT
 getTimeout :: (MonadIO m) => XMLHttpRequest -> m Word
 getTimeout self = liftIO (js_getTimeout self)
  
-foreign import javascript safe "$1[\"withCredentials\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"withCredentials\"] = $2; })"
         js_setWithCredentials :: XMLHttpRequest -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.withCredentials Mozilla XMLHttpRequest.withCredentials documentation> 
@@ -210,7 +210,7 @@ setWithCredentials self val
   = liftIO (js_setWithCredentials self val)
  
 foreign import javascript unsafe
-        "($1[\"withCredentials\"] ? 1 : 0)" js_getWithCredentials ::
+        "(($1) => { return ($1[\"withCredentials\"] ? 1 : 0); })" js_getWithCredentials ::
         XMLHttpRequest -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.withCredentials Mozilla XMLHttpRequest.withCredentials documentation> 
@@ -225,7 +225,7 @@ getUpload ::
           (MonadIO m) => XMLHttpRequest -> m XMLHttpRequestUpload
 getUpload self = liftIO (js_getUpload self)
  
-foreign import javascript unsafe "$1[\"responseURL\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"responseURL\"]; })"
         js_getResponseURL :: XMLHttpRequest -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseURL Mozilla XMLHttpRequest.responseURL documentation> 
@@ -241,7 +241,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getSt
 getStatus :: (MonadIO m) => XMLHttpRequest -> m Word
 getStatus self = liftIO (js_getStatus self)
  
-foreign import javascript unsafe "$1[\"statusText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"statusText\"]; })"
         js_getStatusText :: XMLHttpRequest -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.statusText Mozilla XMLHttpRequest.statusText documentation> 
@@ -250,7 +250,7 @@ getStatusText ::
 getStatusText self
   = liftIO (fromJSString <$> (js_getStatusText self))
  
-foreign import javascript safe "$1[\"responseType\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"responseType\"] = $2; })"
         js_setResponseType :: XMLHttpRequest -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
@@ -259,7 +259,7 @@ setResponseType ::
 setResponseType self val
   = liftIO (js_setResponseType self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"responseType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"responseType\"]; })"
         js_getResponseType :: XMLHttpRequest -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseType Mozilla XMLHttpRequest.responseType documentation> 
@@ -275,7 +275,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"response\"]; })" js_get
 getResponse :: (MonadIO m) => XMLHttpRequest -> m JSVal
 getResponse self = liftIO (js_getResponse self)
  
-foreign import javascript safe "$1[\"responseText\"]"
+foreign import javascript safe "(($1) => { return $1[\"responseText\"]; })"
         js_getResponseText :: XMLHttpRequest -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseText Mozilla XMLHttpRequest.responseText documentation> 
@@ -301,7 +301,7 @@ getResponseTextUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getResponseText self))
  
-foreign import javascript safe "$1[\"responseXML\"]"
+foreign import javascript safe "(($1) => { return $1[\"responseXML\"]; })"
         js_getResponseXML :: XMLHttpRequest -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest.responseXML Mozilla XMLHttpRequest.responseXML documentation> 

@@ -38,21 +38,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"disabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"disabled\"] = $2; })"
         js_setDisabled :: HTMLLinkElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.disabled Mozilla HTMLLinkElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLLinkElement -> Bool -> m ()
 setDisabled self val = liftIO (js_setDisabled self val)
  
-foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"disabled\"] ? 1 : 0); })"
         js_getDisabled :: HTMLLinkElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.disabled Mozilla HTMLLinkElement.disabled documentation> 
 getDisabled :: (MonadIO m) => HTMLLinkElement -> m Bool
 getDisabled self = liftIO (js_getDisabled self)
  
-foreign import javascript unsafe "$1[\"charset\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"charset\"] = $2; })"
         js_setCharset :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.charset Mozilla HTMLLinkElement.charset documentation> 
@@ -84,7 +84,7 @@ getHref ::
         (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getHref self = liftIO (fromJSString <$> (js_getHref self))
  
-foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hreflang\"] = $2; })"
         js_setHreflang :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.hreflang Mozilla HTMLLinkElement.hreflang documentation> 
@@ -156,7 +156,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"sizes\"]; })" js_getSiz
 getSizes :: (MonadIO m) => HTMLLinkElement -> m DOMTokenList
 getSizes self = liftIO (js_getSizes self)
  
-foreign import javascript unsafe "$1[\"target\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"target\"] = $2; })"
         js_setTarget :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.target Mozilla HTMLLinkElement.target documentation> 
@@ -204,7 +204,7 @@ getAs ::
       (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getAs self = liftIO (fromJSString <$> (js_getAs self))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"crossOrigin\"] = $2; })"
         js_setCrossOrigin :: HTMLLinkElement -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.crossOrigin Mozilla HTMLLinkElement.crossOrigin documentation> 
@@ -213,7 +213,7 @@ setCrossOrigin ::
 setCrossOrigin self val
   = liftIO (js_setCrossOrigin self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"crossOrigin\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"crossOrigin\"]; })"
         js_getCrossOrigin :: HTMLLinkElement -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.crossOrigin Mozilla HTMLLinkElement.crossOrigin documentation> 
@@ -269,7 +269,7 @@ getNonce ::
          (MonadIO m, FromJSString result) => HTMLLinkElement -> m result
 getNonce self = liftIO (fromJSString <$> (js_getNonce self))
  
-foreign import javascript unsafe "$1[\"integrity\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"integrity\"] = $2; })"
         js_setIntegrity :: HTMLLinkElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.integrity Mozilla HTMLLinkElement.integrity documentation> 
@@ -278,7 +278,7 @@ setIntegrity ::
 setIntegrity self val
   = liftIO (js_setIntegrity self (toJSString val))
  
-foreign import javascript unsafe "$1[\"integrity\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"integrity\"]; })"
         js_getIntegrity :: HTMLLinkElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLinkElement.integrity Mozilla HTMLLinkElement.integrity documentation> 

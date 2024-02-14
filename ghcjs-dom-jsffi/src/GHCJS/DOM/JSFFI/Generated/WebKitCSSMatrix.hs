@@ -44,7 +44,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"WebKitCSSMatrix\"]($1)" js_newWebKitCSSMatrix ::
+        "(($1) => { return new window[\"WebKitCSSMatrix\"]($1); })" js_newWebKitCSSMatrix ::
         Optional JSString -> IO WebKitCSSMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix Mozilla WebKitCSSMatrix documentation> 
@@ -54,7 +54,7 @@ newWebKitCSSMatrix ::
 newWebKitCSSMatrix cssValue
   = liftIO (js_newWebKitCSSMatrix (toOptionalJSString cssValue))
  
-foreign import javascript safe "$1[\"setMatrixValue\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setMatrixValue\"]($2); })"
         js_setMatrixValue :: WebKitCSSMatrix -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitCSSMatrix.setMatrixValue Mozilla WebKitCSSMatrix.setMatrixValue documentation> 
@@ -92,7 +92,7 @@ inverse self = liftIO (js_inverse self)
 inverse_ :: (MonadIO m) => WebKitCSSMatrix -> m ()
 inverse_ self = liftIO (void (js_inverse self))
  
-foreign import javascript unsafe "$1[\"translate\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"translate\"]($2, $3, $4); })"
         js_translate ::
         WebKitCSSMatrix ->
           Optional Double ->
@@ -119,7 +119,7 @@ translate_ self x y z
          (js_translate self (maybeToOptional x) (maybeToOptional y)
             (maybeToOptional z)))
  
-foreign import javascript unsafe "$1[\"scale\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"scale\"]($2, $3, $4); })"
         js_scale ::
         WebKitCSSMatrix ->
           Optional Double ->
@@ -146,7 +146,7 @@ scale_ self scaleX scaleY scaleZ
          (js_scale self (maybeToOptional scaleX) (maybeToOptional scaleY)
             (maybeToOptional scaleZ)))
  
-foreign import javascript unsafe "$1[\"rotate\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"rotate\"]($2, $3, $4); })"
         js_rotate ::
         WebKitCSSMatrix ->
           Optional Double ->

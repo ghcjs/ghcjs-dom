@@ -26,14 +26,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"loseContext\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"loseContext\"](); })"
         js_loseContext :: WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.loseContext Mozilla WebGLLoseContext.loseContext documentation> 
 loseContext :: (MonadIO m) => WebGLLoseContext -> m ()
 loseContext self = liftIO (js_loseContext self)
  
-foreign import javascript unsafe "$1[\"restoreContext\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"restoreContext\"](); })"
         js_restoreContext :: WebGLLoseContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLLoseContext.restoreContext Mozilla WebGLLoseContext.restoreContext documentation> 

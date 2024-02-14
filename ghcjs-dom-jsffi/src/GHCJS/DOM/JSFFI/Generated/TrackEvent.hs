@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"TrackEvent\"]($1, $2)" js_newTrackEvent ::
+        "(($1, $2) => { return new window[\"TrackEvent\"]($1, $2); })" js_newTrackEvent ::
         JSString -> Optional TrackEventInit -> IO TrackEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TrackEvent Mozilla TrackEvent documentation> 

@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"CountQueuingStrategy\"]()" js_newCountQueuingStrategy
+        "(() => { return new window[\"CountQueuingStrategy\"](); })" js_newCountQueuingStrategy
         :: IO CountQueuingStrategy
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CountQueuingStrategy Mozilla CountQueuingStrategy documentation> 

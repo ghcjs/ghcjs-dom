@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DocumentTimeline\"]($1)" js_newDocumentTimeline ::
+        "(($1) => { return new window[\"DocumentTimeline\"]($1); })" js_newDocumentTimeline ::
         Double -> IO DocumentTimeline
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentTimeline Mozilla DocumentTimeline documentation> 

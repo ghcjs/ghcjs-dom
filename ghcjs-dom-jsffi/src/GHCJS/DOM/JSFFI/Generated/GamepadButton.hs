@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "($1[\"pressed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"pressed\"] ? 1 : 0); })"
         js_getPressed :: GamepadButton -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/GamepadButton.pressed Mozilla GamepadButton.pressed documentation> 

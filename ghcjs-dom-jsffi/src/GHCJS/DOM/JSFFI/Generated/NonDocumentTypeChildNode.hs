@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"previousElementSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"previousElementSibling\"]; })"
         js_getPreviousElementSibling ::
         NonDocumentTypeChildNode -> IO (Nullable Element)
 
@@ -62,7 +62,7 @@ getPreviousElementSiblingUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getPreviousElementSibling (toNonDocumentTypeChildNode self)))
  
-foreign import javascript unsafe "$1[\"nextElementSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nextElementSibling\"]; })"
         js_getNextElementSibling ::
         NonDocumentTypeChildNode -> IO (Nullable Element)
 

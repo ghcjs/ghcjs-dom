@@ -59,7 +59,7 @@ getLabel ::
          (MonadIO m, FromJSString result) => AudioTrack -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"language\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"language\"] = $2; })"
         js_setLanguage :: AudioTrack -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack.language Mozilla AudioTrack.language documentation> 
@@ -76,21 +76,21 @@ getLanguage ::
             (MonadIO m, FromJSString result) => AudioTrack -> m result
 getLanguage self = liftIO (fromJSString <$> (js_getLanguage self))
  
-foreign import javascript unsafe "$1[\"enabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"enabled\"] = $2; })"
         js_setEnabled :: AudioTrack -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack.enabled Mozilla AudioTrack.enabled documentation> 
 setEnabled :: (MonadIO m) => AudioTrack -> Bool -> m ()
 setEnabled self val = liftIO (js_setEnabled self val)
  
-foreign import javascript unsafe "($1[\"enabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"enabled\"] ? 1 : 0); })"
         js_getEnabled :: AudioTrack -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack.enabled Mozilla AudioTrack.enabled documentation> 
 getEnabled :: (MonadIO m) => AudioTrack -> m Bool
 getEnabled self = liftIO (js_getEnabled self)
  
-foreign import javascript unsafe "$1[\"sourceBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceBuffer\"]; })"
         js_getSourceBuffer :: AudioTrack -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack.sourceBuffer Mozilla AudioTrack.sourceBuffer documentation> 

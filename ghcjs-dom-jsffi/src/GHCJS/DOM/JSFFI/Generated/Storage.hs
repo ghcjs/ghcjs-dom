@@ -99,7 +99,7 @@ setItem ::
 setItem self key data'
   = liftIO (js_setItem self (toJSString key) (toJSString data'))
  
-foreign import javascript safe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeItem\"]($2); })"
         js_removeItem :: Storage -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Storage.removeItem Mozilla Storage.removeItem documentation> 

@@ -61,14 +61,14 @@ getColor ::
          (MonadIO m, FromJSString result) => HTMLHRElement -> m result
 getColor self = liftIO (fromJSString <$> (js_getColor self))
  
-foreign import javascript unsafe "$1[\"noShade\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"noShade\"] = $2; })"
         js_setNoShade :: HTMLHRElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.noShade Mozilla HTMLHRElement.noShade documentation> 
 setNoShade :: (MonadIO m) => HTMLHRElement -> Bool -> m ()
 setNoShade self val = liftIO (js_setNoShade self val)
  
-foreign import javascript unsafe "($1[\"noShade\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"noShade\"] ? 1 : 0); })"
         js_getNoShade :: HTMLHRElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHRElement.noShade Mozilla HTMLHRElement.noShade documentation> 

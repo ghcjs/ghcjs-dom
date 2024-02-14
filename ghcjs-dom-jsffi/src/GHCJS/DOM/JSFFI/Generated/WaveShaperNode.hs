@@ -42,7 +42,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"curve\"]; })" js_getCur
 getCurve :: (MonadIO m) => WaveShaperNode -> m Float32Array
 getCurve self = liftIO (js_getCurve self)
  
-foreign import javascript unsafe "$1[\"oversample\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"oversample\"] = $2; })"
         js_setOversample :: WaveShaperNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 
@@ -51,7 +51,7 @@ setOversample ::
 setOversample self val
   = liftIO (js_setOversample self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"oversample\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"oversample\"]; })"
         js_getOversample :: WaveShaperNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode.oversample Mozilla WaveShaperNode.oversample documentation> 

@@ -33,7 +33,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"PasswordCredential\"]($1)" js_newPasswordCredential
+        "(($1) => { return new window[\"PasswordCredential\"]($1); })" js_newPasswordCredential
         :: PasswordCredentialData -> IO PasswordCredential
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential Mozilla PasswordCredential documentation> 
@@ -43,7 +43,7 @@ newPasswordCredential data'
   = liftIO (js_newPasswordCredential data')
  
 foreign import javascript unsafe
-        "new window[\"PasswordCredential\"]($1)" js_newPasswordCredential'
+        "(($1) => { return new window[\"PasswordCredential\"]($1); })" js_newPasswordCredential'
         :: HTMLFormElement -> IO PasswordCredential
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential Mozilla PasswordCredential documentation> 
@@ -52,7 +52,7 @@ newPasswordCredential' ::
 newPasswordCredential' form
   = liftIO (js_newPasswordCredential' form)
  
-foreign import javascript unsafe "$1[\"idName\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"idName\"] = $2; })"
         js_setIdName :: PasswordCredential -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential.idName Mozilla PasswordCredential.idName documentation> 
@@ -68,7 +68,7 @@ getIdName ::
           (MonadIO m, FromJSString result) => PasswordCredential -> m result
 getIdName self = liftIO (fromJSString <$> (js_getIdName self))
  
-foreign import javascript unsafe "$1[\"passwordName\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"passwordName\"] = $2; })"
         js_setPasswordName :: PasswordCredential -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential.passwordName Mozilla PasswordCredential.passwordName documentation> 
@@ -77,7 +77,7 @@ setPasswordName ::
 setPasswordName self val
   = liftIO (js_setPasswordName self (toJSString val))
  
-foreign import javascript unsafe "$1[\"passwordName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"passwordName\"]; })"
         js_getPasswordName :: PasswordCredential -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PasswordCredential.passwordName Mozilla PasswordCredential.passwordName documentation> 
@@ -86,7 +86,7 @@ getPasswordName ::
 getPasswordName self
   = liftIO (fromJSString <$> (js_getPasswordName self))
  
-foreign import javascript unsafe "$1[\"additionalData\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"additionalData\"] = $2; })"
         js_setAdditionalData ::
         PasswordCredential -> Optional CredentialBodyType -> IO ()
 
@@ -99,7 +99,7 @@ setAdditionalData self val
       (js_setAdditionalData self
          (maybeToOptional (fmap toCredentialBodyType val)))
  
-foreign import javascript unsafe "$1[\"additionalData\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"additionalData\"]; })"
         js_getAdditionalData ::
         PasswordCredential -> IO (Nullable CredentialBodyType)
 

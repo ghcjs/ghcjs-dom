@@ -64,7 +64,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType
 getType :: (MonadIO m) => BiquadFilterNode -> m BiquadFilterType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"frequency\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"frequency\"]; })"
         js_getFrequency :: BiquadFilterNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.frequency Mozilla BiquadFilterNode.frequency documentation> 

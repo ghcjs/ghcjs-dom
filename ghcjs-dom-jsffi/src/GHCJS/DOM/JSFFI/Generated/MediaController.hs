@@ -36,7 +36,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaController\"]()" js_newMediaController ::
+        "(() => { return new window[\"MediaController\"](); })" js_newMediaController ::
         IO MediaController
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController Mozilla MediaController documentation> 
@@ -85,21 +85,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_get
 getDuration :: (MonadIO m) => MediaController -> m Double
 getDuration self = liftIO (js_getDuration self)
  
-foreign import javascript unsafe "$1[\"currentTime\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"currentTime\"] = $2; })"
         js_setCurrentTime :: MediaController -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.currentTime Mozilla MediaController.currentTime documentation> 
 setCurrentTime :: (MonadIO m) => MediaController -> Double -> m ()
 setCurrentTime self val = liftIO (js_setCurrentTime self val)
  
-foreign import javascript unsafe "$1[\"currentTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentTime\"]; })"
         js_getCurrentTime :: MediaController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.currentTime Mozilla MediaController.currentTime documentation> 
 getCurrentTime :: (MonadIO m) => MediaController -> m Double
 getCurrentTime self = liftIO (js_getCurrentTime self)
  
-foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"paused\"] ? 1 : 0); })"
         js_getPaused :: MediaController -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.paused Mozilla MediaController.paused documentation> 
@@ -113,7 +113,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"played\"]; })" js_getPl
 getPlayed :: (MonadIO m) => MediaController -> m TimeRanges
 getPlayed self = liftIO (js_getPlayed self)
  
-foreign import javascript unsafe "$1[\"playbackState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackState\"]; })"
         js_getPlaybackState :: MediaController -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackState Mozilla MediaController.playbackState documentation> 
@@ -132,7 +132,7 @@ setDefaultPlaybackRate ::
 setDefaultPlaybackRate self val
   = liftIO (js_setDefaultPlaybackRate self val)
  
-foreign import javascript unsafe "$1[\"defaultPlaybackRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"defaultPlaybackRate\"]; })"
         js_getDefaultPlaybackRate :: MediaController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.defaultPlaybackRate Mozilla MediaController.defaultPlaybackRate documentation> 
@@ -141,14 +141,14 @@ getDefaultPlaybackRate ::
 getDefaultPlaybackRate self
   = liftIO (js_getDefaultPlaybackRate self)
  
-foreign import javascript unsafe "$1[\"playbackRate\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"playbackRate\"] = $2; })"
         js_setPlaybackRate :: MediaController -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackRate Mozilla MediaController.playbackRate documentation> 
 setPlaybackRate :: (MonadIO m) => MediaController -> Double -> m ()
 setPlaybackRate self val = liftIO (js_setPlaybackRate self val)
  
-foreign import javascript unsafe "$1[\"playbackRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackRate\"]; })"
         js_getPlaybackRate :: MediaController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.playbackRate Mozilla MediaController.playbackRate documentation> 
@@ -176,7 +176,7 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"muted\"] = $2; })" js_setM
 setMuted :: (MonadIO m) => MediaController -> Bool -> m ()
 setMuted self val = liftIO (js_setMuted self val)
  
-foreign import javascript unsafe "($1[\"muted\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"muted\"] ? 1 : 0); })"
         js_getMuted :: MediaController -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaController.muted Mozilla MediaController.muted documentation> 

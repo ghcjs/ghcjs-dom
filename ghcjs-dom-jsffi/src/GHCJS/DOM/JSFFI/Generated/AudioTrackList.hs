@@ -38,7 +38,7 @@ item self index = liftIO (js_item self index)
 item_ :: (MonadIO m) => AudioTrackList -> Word -> m ()
 item_ self index = liftIO (void (js_item self index))
  
-foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getTrackById\"]($2); })"
         js_getTrackById :: AudioTrackList -> JSString -> IO AudioTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioTrackList.getTrackById Mozilla AudioTrackList.getTrackById documentation> 

@@ -61,7 +61,7 @@ pattern PATHSEG_CURVETO_CUBIC_SMOOTH_REL = 17
 pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_ABS = 18
 pattern PATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
  
-foreign import javascript unsafe "$1[\"pathSegType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pathSegType\"]; })"
         js_getPathSegType :: SVGPathSeg -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegType Mozilla SVGPathSeg.pathSegType documentation> 
@@ -69,7 +69,7 @@ getPathSegType :: (MonadIO m, IsSVGPathSeg self) => self -> m Word
 getPathSegType self
   = liftIO (js_getPathSegType (toSVGPathSeg self))
  
-foreign import javascript unsafe "$1[\"pathSegTypeAsLetter\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pathSegTypeAsLetter\"]; })"
         js_getPathSegTypeAsLetter :: SVGPathSeg -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSeg.pathSegTypeAsLetter Mozilla SVGPathSeg.pathSegTypeAsLetter documentation> 

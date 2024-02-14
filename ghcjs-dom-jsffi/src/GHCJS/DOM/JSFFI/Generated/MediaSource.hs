@@ -35,14 +35,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"MediaSource\"]()"
+foreign import javascript unsafe "(() => { return new window[\"MediaSource\"](); })"
         js_newMediaSource :: IO MediaSource
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource Mozilla MediaSource documentation> 
 newMediaSource :: (MonadIO m) => m MediaSource
 newMediaSource = liftIO (js_newMediaSource)
  
-foreign import javascript safe "$1[\"addSourceBuffer\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"addSourceBuffer\"]($2); })"
         js_addSourceBuffer :: MediaSource -> JSString -> IO SourceBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.addSourceBuffer Mozilla MediaSource.addSourceBuffer documentation> 
@@ -58,7 +58,7 @@ addSourceBuffer_ ::
 addSourceBuffer_ self type'
   = liftIO (void (js_addSourceBuffer self (toJSString type')))
  
-foreign import javascript safe "$1[\"removeSourceBuffer\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeSourceBuffer\"]($2); })"
         js_removeSourceBuffer :: MediaSource -> SourceBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.removeSourceBuffer Mozilla MediaSource.removeSourceBuffer documentation> 
@@ -67,7 +67,7 @@ removeSourceBuffer ::
 removeSourceBuffer self buffer
   = liftIO (js_removeSourceBuffer self buffer)
  
-foreign import javascript safe "$1[\"endOfStream\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"endOfStream\"]($2); })"
         js_endOfStream :: MediaSource -> Optional EndOfStreamError -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.endOfStream Mozilla MediaSource.endOfStream documentation> 
@@ -77,7 +77,7 @@ endOfStream self error
   = liftIO (js_endOfStream self (maybeToOptional error))
  
 foreign import javascript unsafe
-        "(window[\"MediaSource\"][\"isTypeSupported\"]($1) ? 1 : 0)"
+        "(($1) => { return (window[\"MediaSource\"][\"isTypeSupported\"]($1) ? 1 : 0); })"
         js_isTypeSupported :: JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.isTypeSupported Mozilla MediaSource.isTypeSupported documentation> 
@@ -100,7 +100,7 @@ setLiveSeekableRange ::
 setLiveSeekableRange self start end
   = liftIO (js_setLiveSeekableRange self start end)
  
-foreign import javascript safe "$1[\"clearLiveSeekableRange\"]()"
+foreign import javascript safe "(($1) => { return $1[\"clearLiveSeekableRange\"](); })"
         js_clearLiveSeekableRange :: MediaSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.clearLiveSeekableRange Mozilla MediaSource.clearLiveSeekableRange documentation> 
@@ -108,7 +108,7 @@ clearLiveSeekableRange :: (MonadIO m) => MediaSource -> m ()
 clearLiveSeekableRange self
   = liftIO (js_clearLiveSeekableRange self)
  
-foreign import javascript unsafe "$1[\"sourceBuffers\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sourceBuffers\"]; })"
         js_getSourceBuffers :: MediaSource -> IO SourceBufferList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.sourceBuffers Mozilla MediaSource.sourceBuffers documentation> 
@@ -116,7 +116,7 @@ getSourceBuffers ::
                  (MonadIO m) => MediaSource -> m SourceBufferList
 getSourceBuffers self = liftIO (js_getSourceBuffers self)
  
-foreign import javascript unsafe "$1[\"activeSourceBuffers\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"activeSourceBuffers\"]; })"
         js_getActiveSourceBuffers :: MediaSource -> IO SourceBufferList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.activeSourceBuffers Mozilla MediaSource.activeSourceBuffers documentation> 
@@ -125,7 +125,7 @@ getActiveSourceBuffers ::
 getActiveSourceBuffers self
   = liftIO (js_getActiveSourceBuffers self)
  
-foreign import javascript safe "$1[\"duration\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"duration\"] = $2; })"
         js_setDuration :: MediaSource -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.duration Mozilla MediaSource.duration documentation> 
@@ -139,7 +139,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_get
 getDuration :: (MonadIO m) => MediaSource -> m Double
 getDuration self = liftIO (js_getDuration self)
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: MediaSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaSource.readyState Mozilla MediaSource.readyState documentation> 

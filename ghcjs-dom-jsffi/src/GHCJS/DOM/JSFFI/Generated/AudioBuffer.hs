@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"getChannelData\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getChannelData\"]($2); })"
         js_getChannelData :: AudioBuffer -> Word -> IO Float32Array
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.getChannelData Mozilla AudioBuffer.getChannelData documentation> 
@@ -57,7 +57,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_get
 getDuration :: (MonadIO m) => AudioBuffer -> m Float
 getDuration self = liftIO (js_getDuration self)
  
-foreign import javascript unsafe "$1[\"sampleRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sampleRate\"]; })"
         js_getSampleRate :: AudioBuffer -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.sampleRate Mozilla AudioBuffer.sampleRate documentation> 
@@ -78,7 +78,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"gain\"]; })" js_getGain
 getGain :: (MonadIO m) => AudioBuffer -> m Float
 getGain self = liftIO (js_getGain self)
  
-foreign import javascript unsafe "$1[\"numberOfChannels\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"numberOfChannels\"]; })"
         js_getNumberOfChannels :: AudioBuffer -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer.numberOfChannels Mozilla AudioBuffer.numberOfChannels documentation> 

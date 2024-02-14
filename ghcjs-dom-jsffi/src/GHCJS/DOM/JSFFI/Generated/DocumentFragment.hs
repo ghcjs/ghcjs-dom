@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DocumentFragment\"]()" js_newDocumentFragment ::
+        "(() => { return new window[\"DocumentFragment\"](); })" js_newDocumentFragment ::
         IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment Mozilla DocumentFragment documentation> 

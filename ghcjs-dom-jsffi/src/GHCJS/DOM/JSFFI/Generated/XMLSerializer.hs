@@ -27,14 +27,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"XMLSerializer\"]()"
+foreign import javascript unsafe "(() => { return new window[\"XMLSerializer\"](); })"
         js_newXMLSerializer :: IO XMLSerializer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer Mozilla XMLSerializer documentation> 
 newXMLSerializer :: (MonadIO m) => m XMLSerializer
 newXMLSerializer = liftIO (js_newXMLSerializer)
  
-foreign import javascript unsafe "$1[\"serializeToString\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"serializeToString\"]($2); })"
         js_serializeToString :: XMLSerializer -> Node -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer.serializeToString Mozilla XMLSerializer.serializeToString documentation> 

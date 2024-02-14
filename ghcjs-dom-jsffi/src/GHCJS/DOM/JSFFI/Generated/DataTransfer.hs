@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setDragImage\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setDragImage\"]($2, $3, $4); })"
         js_setDragImage ::
         DataTransfer -> Optional Element -> Int -> Int -> IO ()
 
@@ -58,7 +58,7 @@ getData_ ::
 getData_ self format
   = liftIO (void (js_getData self (toJSString format)))
  
-foreign import javascript unsafe "$1[\"setData\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setData\"]($2, $3); })"
         js_setData :: DataTransfer -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.setData Mozilla DataTransfer.setData documentation> 
@@ -68,7 +68,7 @@ setData ::
 setData self format data'
   = liftIO (js_setData self (toJSString format) (toJSString data'))
  
-foreign import javascript unsafe "$1[\"clearData\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearData\"]($2); })"
         js_clearData :: DataTransfer -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.clearData Mozilla DataTransfer.clearData documentation> 
@@ -78,7 +78,7 @@ clearData ::
 clearData self format
   = liftIO (js_clearData self (toOptionalJSString format))
  
-foreign import javascript unsafe "$1[\"dropEffect\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"dropEffect\"] = $2; })"
         js_setDropEffect :: DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
@@ -87,7 +87,7 @@ setDropEffect ::
 setDropEffect self val
   = liftIO (js_setDropEffect self (toJSString val))
  
-foreign import javascript unsafe "$1[\"dropEffect\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"dropEffect\"]; })"
         js_getDropEffect :: DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
@@ -96,7 +96,7 @@ getDropEffect ::
 getDropEffect self
   = liftIO (fromJSString <$> (js_getDropEffect self))
  
-foreign import javascript unsafe "$1[\"effectAllowed\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"effectAllowed\"] = $2; })"
         js_setEffectAllowed :: DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 
@@ -105,7 +105,7 @@ setEffectAllowed ::
 setEffectAllowed self val
   = liftIO (js_setEffectAllowed self (toJSString val))
  
-foreign import javascript unsafe "$1[\"effectAllowed\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"effectAllowed\"]; })"
         js_getEffectAllowed :: DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 

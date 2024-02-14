@@ -52,7 +52,7 @@ getError ::
          (MonadIO m) => WebKitMediaKeySession -> m WebKitMediaKeyError
 getError self = liftIO (js_getError self)
  
-foreign import javascript unsafe "$1[\"keySystem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keySystem\"]; })"
         js_getKeySystem :: WebKitMediaKeySession -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.keySystem Mozilla WebKitMediaKeySession.keySystem documentation> 
@@ -62,7 +62,7 @@ getKeySystem ::
 getKeySystem self
   = liftIO (fromJSString <$> (js_getKeySystem self))
  
-foreign import javascript unsafe "$1[\"sessionId\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sessionId\"]; })"
         js_getSessionId :: WebKitMediaKeySession -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.sessionId Mozilla WebKitMediaKeySession.sessionId documentation> 

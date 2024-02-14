@@ -31,7 +31,7 @@ pattern SVG_ZOOMANDPAN_UNKNOWN = 0
 pattern SVG_ZOOMANDPAN_DISABLE = 1
 pattern SVG_ZOOMANDPAN_MAGNIFY = 2
  
-foreign import javascript unsafe "$1[\"zoomAndPan\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"zoomAndPan\"] = $2; })"
         js_setZoomAndPan :: SVGZoomAndPan -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan.zoomAndPan Mozilla SVGZoomAndPan.zoomAndPan documentation> 
@@ -40,7 +40,7 @@ setZoomAndPan ::
 setZoomAndPan self val
   = liftIO (js_setZoomAndPan (toSVGZoomAndPan self) val)
  
-foreign import javascript unsafe "$1[\"zoomAndPan\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"zoomAndPan\"]; })"
         js_getZoomAndPan :: SVGZoomAndPan -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGZoomAndPan.zoomAndPan Mozilla SVGZoomAndPan.zoomAndPan documentation> 

@@ -45,7 +45,7 @@ foreign import javascript safe "(($1, $2) => { return $1[\"stop\"]($2); })" js_s
 stop :: (MonadIO m) => OscillatorNode -> Maybe Double -> m ()
 stop self when = liftIO (js_stop self (maybeToOptional when))
  
-foreign import javascript unsafe "$1[\"setPeriodicWave\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setPeriodicWave\"]($2); })"
         js_setPeriodicWave ::
         OscillatorNode -> Optional PeriodicWave -> IO ()
 
@@ -73,14 +73,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType
 getType :: (MonadIO m) => OscillatorNode -> m OscillatorType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"playbackState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackState\"]; })"
         js_getPlaybackState :: OscillatorNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.playbackState Mozilla OscillatorNode.playbackState documentation> 
 getPlaybackState :: (MonadIO m) => OscillatorNode -> m Word
 getPlaybackState self = liftIO (js_getPlaybackState self)
  
-foreign import javascript unsafe "$1[\"frequency\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"frequency\"]; })"
         js_getFrequency :: OscillatorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode.frequency Mozilla OscillatorNode.frequency documentation> 

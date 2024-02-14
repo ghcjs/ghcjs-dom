@@ -67,7 +67,7 @@ getSrc ::
        (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
 getSrc self = liftIO (fromJSString <$> (js_getSrc self))
  
-foreign import javascript unsafe "$1[\"srclang\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"srclang\"] = $2; })"
         js_setSrclang :: HTMLTrackElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.srclang Mozilla HTMLTrackElement.srclang documentation> 
@@ -99,21 +99,21 @@ getLabel ::
          (MonadIO m, FromJSString result) => HTMLTrackElement -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "$1[\"default\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"default\"] = $2; })"
         js_setDefault :: HTMLTrackElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
 setDefault :: (MonadIO m) => HTMLTrackElement -> Bool -> m ()
 setDefault self val = liftIO (js_setDefault self val)
  
-foreign import javascript unsafe "($1[\"default\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"default\"] ? 1 : 0); })"
         js_getDefault :: HTMLTrackElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.default Mozilla HTMLTrackElement.default documentation> 
 getDefault :: (MonadIO m) => HTMLTrackElement -> m Bool
 getDefault self = liftIO (js_getDefault self)
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: HTMLTrackElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTrackElement.readyState Mozilla HTMLTrackElement.readyState documentation> 

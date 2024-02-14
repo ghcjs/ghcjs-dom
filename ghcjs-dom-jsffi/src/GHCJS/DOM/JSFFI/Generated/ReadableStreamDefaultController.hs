@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStreamDefaultController\"]($1,\n$2, $3, $4)"
+        "(($1, $2, $3, $4) => { return new window[\"ReadableStreamDefaultController\"]($1,\n$2, $3, $4); })"
         js_newReadableStreamDefaultController ::
         ReadableStream ->
           JSVal -> Word -> Word -> IO ReadableStreamDefaultController
@@ -81,7 +81,7 @@ error self error
       (mapM toJSVal error >>=
          \ error' -> js_error self (maybeToOptional error'))
  
-foreign import javascript unsafe "$1[\"desiredSize\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"desiredSize\"]; })"
         js_getDesiredSize :: ReadableStreamDefaultController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultController.desiredSize Mozilla ReadableStreamDefaultController.desiredSize documentation> 

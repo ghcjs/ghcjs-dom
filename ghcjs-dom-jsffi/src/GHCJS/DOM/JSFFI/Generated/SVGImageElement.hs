@@ -55,7 +55,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => SVGImageElement -> m SVGAnimatedLength
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"preserveAspectRatio\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"preserveAspectRatio\"]; })"
         js_getPreserveAspectRatio ::
         SVGImageElement -> IO SVGAnimatedPreserveAspectRatio
 

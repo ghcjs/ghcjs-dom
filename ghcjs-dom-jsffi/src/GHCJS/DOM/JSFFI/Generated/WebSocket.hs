@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "new window[\"WebSocket\"]($1, $2)"
+foreign import javascript safe "(($1, $2) => { return new window[\"WebSocket\"]($1, $2); })"
         js_newWebSocket :: JSString -> JSVal -> IO WebSocket
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
@@ -47,7 +47,7 @@ newWebSocket url protocols
       (toJSVal protocols >>=
          \ protocols' -> js_newWebSocket (toJSString url) protocols')
  
-foreign import javascript safe "new window[\"WebSocket\"]($1, $2)"
+foreign import javascript safe "(($1, $2) => { return new window[\"WebSocket\"]($1, $2); })"
         js_newWebSocket' :: JSString -> JSString -> IO WebSocket
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket Mozilla WebSocket documentation> 
@@ -112,14 +112,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl :
 getUrl :: (MonadIO m, FromJSString result) => WebSocket -> m result
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: WebSocket -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.readyState Mozilla WebSocket.readyState documentation> 
 getReadyState :: (MonadIO m) => WebSocket -> m Word
 getReadyState self = liftIO (js_getReadyState self)
  
-foreign import javascript unsafe "$1[\"bufferedAmount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"bufferedAmount\"]; })"
         js_getBufferedAmount :: WebSocket -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.bufferedAmount Mozilla WebSocket.bufferedAmount documentation> 
@@ -166,7 +166,7 @@ getProtocolUnchecked ::
 getProtocolUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getProtocol self))
  
-foreign import javascript unsafe "$1[\"extensions\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"extensions\"]; })"
         js_getExtensions :: WebSocket -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.extensions Mozilla WebSocket.extensions documentation> 
@@ -190,7 +190,7 @@ getExtensionsUnchecked ::
 getExtensionsUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getExtensions self))
  
-foreign import javascript safe "$1[\"binaryType\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"binaryType\"] = $2; })"
         js_setBinaryType :: WebSocket -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.binaryType Mozilla WebSocket.binaryType documentation> 
@@ -199,7 +199,7 @@ setBinaryType ::
 setBinaryType self val
   = liftIO (js_setBinaryType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"binaryType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"binaryType\"]; })"
         js_getBinaryType :: WebSocket -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebSocket.binaryType Mozilla WebSocket.binaryType documentation> 

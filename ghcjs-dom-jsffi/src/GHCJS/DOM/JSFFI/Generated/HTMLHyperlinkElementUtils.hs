@@ -71,7 +71,7 @@ getOrigin self
       (fromJSString <$>
          (js_getOrigin (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"protocol\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"protocol\"] = $2; })"
         js_setProtocol :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.protocol Mozilla HTMLHyperlinkElementUtils.protocol documentation> 
@@ -96,7 +96,7 @@ getProtocol self
       (fromJSString <$>
          (js_getProtocol (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"username\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"username\"] = $2; })"
         js_setUsername :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.username Mozilla HTMLHyperlinkElementUtils.username documentation> 
@@ -121,7 +121,7 @@ getUsername self
       (fromJSString <$>
          (js_getUsername (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"password\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"password\"] = $2; })"
         js_setPassword :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.password Mozilla HTMLHyperlinkElementUtils.password documentation> 
@@ -169,7 +169,7 @@ getHost self
   = liftIO
       (fromJSString <$> (js_getHost (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"hostname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hostname\"] = $2; })"
         js_setHostname :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.hostname Mozilla HTMLHyperlinkElementUtils.hostname documentation> 
@@ -217,7 +217,7 @@ getPort self
   = liftIO
       (fromJSString <$> (js_getPort (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"pathname\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"pathname\"] = $2; })"
         js_setPathname :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.pathname Mozilla HTMLHyperlinkElementUtils.pathname documentation> 
@@ -242,7 +242,7 @@ getPathname self
       (fromJSString <$>
          (js_getPathname (toHTMLHyperlinkElementUtils self)))
  
-foreign import javascript unsafe "$1[\"search\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"search\"] = $2; })"
         js_setSearch :: HTMLHyperlinkElementUtils -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils.search Mozilla HTMLHyperlinkElementUtils.search documentation> 

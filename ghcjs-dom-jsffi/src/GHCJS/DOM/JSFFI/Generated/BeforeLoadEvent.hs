@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"BeforeLoadEvent\"]($1,\n$2)" js_newBeforeLoadEvent ::
+        "(($1, $2) => { return new window[\"BeforeLoadEvent\"]($1,\n$2); })" js_newBeforeLoadEvent ::
         JSString -> Optional BeforeLoadEventInit -> IO BeforeLoadEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent Mozilla BeforeLoadEvent documentation> 

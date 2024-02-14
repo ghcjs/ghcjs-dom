@@ -89,7 +89,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"hasAttributes\"]() ? 1 : 0)" js_hasAttributes ::
+        "(($1) => { return ($1[\"hasAttributes\"]() ? 1 : 0); })" js_hasAttributes ::
         Element -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttributes Mozilla Element.hasAttributes documentation> 
@@ -101,7 +101,7 @@ hasAttributes_ :: (MonadIO m, IsElement self) => self -> m ()
 hasAttributes_ self
   = liftIO (void (js_hasAttributes (toElement self)))
  
-foreign import javascript unsafe "$1[\"getAttributeNames\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getAttributeNames\"](); })"
         js_getAttributeNames :: Element -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNames Mozilla Element.getAttributeNames documentation> 
@@ -117,7 +117,7 @@ getAttributeNames_ :: (MonadIO m, IsElement self) => self -> m ()
 getAttributeNames_ self
   = liftIO (void (js_getAttributeNames (toElement self)))
  
-foreign import javascript unsafe "$1[\"getAttribute\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getAttribute\"]($2); })"
         js_getAttribute :: Element -> JSString -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttribute Mozilla Element.getAttribute documentation> 
@@ -160,7 +160,7 @@ getAttributeUnchecked self qualifiedName
       (fromJust . fromMaybeJSString <$>
          (js_getAttribute (toElement self) (toJSString qualifiedName)))
  
-foreign import javascript unsafe "$1[\"getAttributeNS\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getAttributeNS\"]($2, $3); })"
         js_getAttributeNS ::
         Element -> Optional JSString -> JSString -> IO (Nullable JSString)
 
@@ -213,7 +213,7 @@ getAttributeNSUnchecked self namespaceURI localName
             (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript safe "$1[\"setAttribute\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setAttribute\"]($2, $3); })"
         js_setAttribute :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttribute Mozilla Element.setAttribute documentation> 
@@ -226,7 +226,7 @@ setAttribute self qualifiedName value
       (js_setAttribute (toElement self) (toJSString qualifiedName)
          (toJSString value))
  
-foreign import javascript safe "$1[\"setAttributeNS\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"setAttributeNS\"]($2, $3, $4); })"
         js_setAttributeNS ::
         Element -> Optional JSString -> JSString -> JSString -> IO ()
 
@@ -242,7 +242,7 @@ setAttributeNS self namespaceURI qualifiedName value
          (toJSString qualifiedName)
          (toJSString value))
  
-foreign import javascript unsafe "$1[\"removeAttribute\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"removeAttribute\"]($2); })"
         js_removeAttribute :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttribute Mozilla Element.removeAttribute documentation> 
@@ -269,7 +269,7 @@ removeAttributeNS self namespaceURI localName
          (toJSString localName))
  
 foreign import javascript unsafe
-        "($1[\"hasAttribute\"]($2) ? 1 : 0)" js_hasAttribute ::
+        "(($1, $2) => { return ($1[\"hasAttribute\"]($2) ? 1 : 0); })" js_hasAttribute ::
         Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttribute Mozilla Element.hasAttribute documentation> 
@@ -290,7 +290,7 @@ hasAttribute_ self qualifiedName
          (js_hasAttribute (toElement self) (toJSString qualifiedName)))
  
 foreign import javascript unsafe
-        "($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0)" js_hasAttributeNS ::
+        "(($1, $2, $3) => { return ($1[\"hasAttributeNS\"]($2,\n$3) ? 1 : 0); })" js_hasAttributeNS ::
         Element -> Optional JSString -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.hasAttributeNS Mozilla Element.hasAttributeNS documentation> 
@@ -316,7 +316,7 @@ hasAttributeNS_ self namespaceURI localName
             (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript unsafe "$1[\"getAttributeNode\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getAttributeNode\"]($2); })"
         js_getAttributeNode :: Element -> JSString -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getAttributeNode Mozilla Element.getAttributeNode documentation> 
@@ -410,7 +410,7 @@ getAttributeNodeNSUnchecked self namespaceURI localName
             (toOptionalJSString namespaceURI)
             (toJSString localName)))
  
-foreign import javascript safe "$1[\"setAttributeNode\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setAttributeNode\"]($2); })"
         js_setAttributeNode :: Element -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNode Mozilla Element.setAttributeNode documentation> 
@@ -442,7 +442,7 @@ setAttributeNodeUnchecked self attr
       (fromJust . nullableToMaybe <$>
          (js_setAttributeNode (toElement self) attr))
  
-foreign import javascript safe "$1[\"setAttributeNodeNS\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setAttributeNodeNS\"]($2); })"
         js_setAttributeNodeNS :: Element -> Attr -> IO (Nullable Attr)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.setAttributeNodeNS Mozilla Element.setAttributeNodeNS documentation> 
@@ -475,7 +475,7 @@ setAttributeNodeNSUnchecked self attr
       (fromJust . nullableToMaybe <$>
          (js_setAttributeNodeNS (toElement self) attr))
  
-foreign import javascript safe "$1[\"removeAttributeNode\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeAttributeNode\"]($2); })"
         js_removeAttributeNode :: Element -> Attr -> IO Attr
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.removeAttributeNode Mozilla Element.removeAttributeNode documentation> 
@@ -490,7 +490,7 @@ removeAttributeNode_ ::
 removeAttributeNode_ self attr
   = liftIO (void (js_removeAttributeNode (toElement self) attr))
  
-foreign import javascript safe "$1[\"attachShadow\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"attachShadow\"]($2); })"
         js_attachShadow :: Element -> ShadowRootInit -> IO ShadowRoot
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attachShadow Mozilla Element.attachShadow documentation> 
@@ -545,7 +545,7 @@ closestUnchecked self selectors
       (fromJust . nullableToMaybe <$>
          (js_closest (toElement self) (toJSString selectors)))
  
-foreign import javascript safe "($1[\"matches\"]($2) ? 1 : 0)"
+foreign import javascript safe "(($1, $2) => { return ($1[\"matches\"]($2) ? 1 : 0); })"
         js_matches :: Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.matches Mozilla Element.matches documentation> 
@@ -564,7 +564,7 @@ matches_ self selectors
       (void (js_matches (toElement self) (toJSString selectors)))
  
 foreign import javascript safe
-        "($1[\"webkitMatchesSelector\"]($2) ? 1 : 0)"
+        "(($1, $2) => { return ($1[\"webkitMatchesSelector\"]($2) ? 1 : 0); })"
         js_webkitMatchesSelector :: Element -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitMatchesSelector Mozilla Element.webkitMatchesSelector documentation> 
@@ -584,7 +584,7 @@ webkitMatchesSelector_ self selectors
       (void
          (js_webkitMatchesSelector (toElement self) (toJSString selectors)))
  
-foreign import javascript unsafe "$1[\"getElementsByTagName\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getElementsByTagName\"]($2); })"
         js_getElementsByTagName :: Element -> JSString -> IO HTMLCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getElementsByTagName Mozilla Element.getElementsByTagName documentation> 
@@ -703,7 +703,7 @@ insertAdjacentElementUnchecked self where' element
          (js_insertAdjacentElement (toElement self) (toJSString where')
             (toElement element)))
  
-foreign import javascript safe "$1[\"insertAdjacentText\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertAdjacentText\"]($2, $3); })"
         js_insertAdjacentText :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.insertAdjacentText Mozilla Element.insertAdjacentText documentation> 
@@ -715,7 +715,7 @@ insertAdjacentText self where' data'
       (js_insertAdjacentText (toElement self) (toJSString where')
          (toJSString data'))
  
-foreign import javascript unsafe "$1[\"getClientRects\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getClientRects\"](); })"
         js_getClientRects :: Element -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects Mozilla Element.getClientRects documentation> 
@@ -730,7 +730,7 @@ getClientRects_ :: (MonadIO m, IsElement self) => self -> m ()
 getClientRects_ self
   = liftIO (void (js_getClientRects (toElement self)))
  
-foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getBoundingClientRect\"](); })"
         js_getBoundingClientRect :: Element -> IO DOMRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.getBoundingClientRect Mozilla Element.getBoundingClientRect documentation> 
@@ -745,7 +745,7 @@ getBoundingClientRect_ ::
 getBoundingClientRect_ self
   = liftIO (void (js_getBoundingClientRect (toElement self)))
  
-foreign import javascript unsafe "$1[\"scrollIntoView\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scrollIntoView\"]($2); })"
         js_scrollIntoView :: Element -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollIntoView Mozilla Element.scrollIntoView documentation> 
@@ -772,7 +772,7 @@ scroll ::
        (MonadIO m, IsElement self) => self -> Double -> Double -> m ()
 scroll self x y = liftIO (js_scroll (toElement self) x y)
  
-foreign import javascript unsafe "$1[\"scrollTo\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scrollTo\"]($2); })"
         js_scrollToOpt :: Element -> Optional ScrollToOptions -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTo Mozilla Element.scrollTo documentation> 
@@ -783,7 +783,7 @@ scrollToOpt self options
   = liftIO
       (js_scrollToOpt (toElement self) (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scrollTo\"]($2, $3); })"
         js_scrollTo :: Element -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTo Mozilla Element.scrollTo documentation> 
@@ -791,7 +791,7 @@ scrollTo ::
          (MonadIO m, IsElement self) => self -> Double -> Double -> m ()
 scrollTo self x y = liftIO (js_scrollTo (toElement self) x y)
  
-foreign import javascript unsafe "$1[\"scrollBy\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scrollBy\"]($2); })"
         js_scrollByOpt :: Element -> Optional ScrollToOptions -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollBy Mozilla Element.scrollBy documentation> 
@@ -801,7 +801,7 @@ scrollByOpt ::
 scrollByOpt self option
   = liftIO (js_scrollByOpt (toElement self) (maybeToOptional option))
  
-foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scrollBy\"]($2, $3); })"
         js_scrollBy :: Element -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollBy Mozilla Element.scrollBy documentation> 
@@ -809,7 +809,7 @@ scrollBy ::
          (MonadIO m, IsElement self) => self -> Double -> Double -> m ()
 scrollBy self x y = liftIO (js_scrollBy (toElement self) x y)
  
-foreign import javascript safe "$1[\"insertAdjacentHTML\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertAdjacentHTML\"]($2, $3); })"
         js_insertAdjacentHTML :: Element -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.insertAdjacentHTML Mozilla Element.insertAdjacentHTML documentation> 
@@ -842,7 +842,7 @@ webkitRequestFullscreen ::
 webkitRequestFullscreen self
   = liftIO (js_webkitRequestFullscreen (toElement self))
  
-foreign import javascript unsafe "$1[\"requestPointerLock\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"requestPointerLock\"](); })"
         js_requestPointerLock :: Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.requestPointerLock Mozilla Element.requestPointerLock documentation> 
@@ -879,7 +879,7 @@ scrollIntoViewIfNeeded self centerIfNeeded
   = liftIO
       (js_scrollIntoViewIfNeeded (toElement self) centerIfNeeded)
  
-foreign import javascript unsafe "$1[\"namespaceURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"namespaceURI\"]; })"
         js_getNamespaceURI :: Element -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.namespaceURI Mozilla Element.namespaceURI documentation> 
@@ -935,7 +935,7 @@ getPrefixUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getPrefix (toElement self)))
  
-foreign import javascript unsafe "$1[\"localName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"localName\"]; })"
         js_getLocalName :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.localName Mozilla Element.localName documentation> 
@@ -973,7 +973,7 @@ getId ::
         self -> m result
 getId self = liftIO (fromJSString <$> (js_getId (toElement self)))
  
-foreign import javascript unsafe "$1[\"className\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"className\"] = $2; })"
         js_setClassName :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.className Mozilla Element.className documentation> 
@@ -982,7 +982,7 @@ setClassName ::
 setClassName self val
   = liftIO (js_setClassName (toElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"className\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"className\"]; })"
         js_getClassName :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.className Mozilla Element.className documentation> 
@@ -992,7 +992,7 @@ getClassName ::
 getClassName self
   = liftIO (fromJSString <$> (js_getClassName (toElement self)))
  
-foreign import javascript unsafe "$1[\"classList\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"classList\"]; })"
         js_getClassList :: Element -> IO DOMTokenList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.classList Mozilla Element.classList documentation> 
@@ -1019,7 +1019,7 @@ getSlot ::
 getSlot self
   = liftIO (fromJSString <$> (js_getSlot (toElement self)))
  
-foreign import javascript unsafe "$1[\"attributes\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"attributes\"]; })"
         js_getAttributes :: Element -> IO NamedNodeMap
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.attributes Mozilla Element.attributes documentation> 
@@ -1027,7 +1027,7 @@ getAttributes ::
               (MonadIO m, IsElement self) => self -> m NamedNodeMap
 getAttributes self = liftIO (js_getAttributes (toElement self))
  
-foreign import javascript unsafe "$1[\"shadowRoot\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"shadowRoot\"]; })"
         js_getShadowRoot :: Element -> IO (Nullable ShadowRoot)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.shadowRoot Mozilla Element.shadowRoot documentation> 
@@ -1052,7 +1052,7 @@ getShadowRootUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getShadowRoot (toElement self)))
  
-foreign import javascript unsafe "$1[\"scrollTop\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"scrollTop\"] = $2; })"
         js_setScrollTop :: Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTop Mozilla Element.scrollTop documentation> 
@@ -1060,14 +1060,14 @@ setScrollTop :: (MonadIO m, IsElement self) => self -> Int -> m ()
 setScrollTop self val
   = liftIO (js_setScrollTop (toElement self) val)
  
-foreign import javascript unsafe "$1[\"scrollTop\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollTop\"]; })"
         js_getScrollTop :: Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollTop Mozilla Element.scrollTop documentation> 
 getScrollTop :: (MonadIO m, IsElement self) => self -> m Int
 getScrollTop self = liftIO (js_getScrollTop (toElement self))
  
-foreign import javascript unsafe "$1[\"scrollLeft\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"scrollLeft\"] = $2; })"
         js_setScrollLeft :: Element -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollLeft Mozilla Element.scrollLeft documentation> 
@@ -1075,56 +1075,56 @@ setScrollLeft :: (MonadIO m, IsElement self) => self -> Int -> m ()
 setScrollLeft self val
   = liftIO (js_setScrollLeft (toElement self) val)
  
-foreign import javascript unsafe "$1[\"scrollLeft\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollLeft\"]; })"
         js_getScrollLeft :: Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollLeft Mozilla Element.scrollLeft documentation> 
 getScrollLeft :: (MonadIO m, IsElement self) => self -> m Int
 getScrollLeft self = liftIO (js_getScrollLeft (toElement self))
  
-foreign import javascript unsafe "$1[\"scrollWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollWidth\"]; })"
         js_getScrollWidth :: Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollWidth Mozilla Element.scrollWidth documentation> 
 getScrollWidth :: (MonadIO m, IsElement self) => self -> m Int
 getScrollWidth self = liftIO (js_getScrollWidth (toElement self))
  
-foreign import javascript unsafe "$1[\"scrollHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollHeight\"]; })"
         js_getScrollHeight :: Element -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.scrollHeight Mozilla Element.scrollHeight documentation> 
 getScrollHeight :: (MonadIO m, IsElement self) => self -> m Int
 getScrollHeight self = liftIO (js_getScrollHeight (toElement self))
  
-foreign import javascript unsafe "$1[\"clientTop\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clientTop\"]; })"
         js_getClientTop :: Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientTop Mozilla Element.clientTop documentation> 
 getClientTop :: (MonadIO m, IsElement self) => self -> m Double
 getClientTop self = liftIO (js_getClientTop (toElement self))
  
-foreign import javascript unsafe "$1[\"clientLeft\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clientLeft\"]; })"
         js_getClientLeft :: Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientLeft Mozilla Element.clientLeft documentation> 
 getClientLeft :: (MonadIO m, IsElement self) => self -> m Double
 getClientLeft self = liftIO (js_getClientLeft (toElement self))
  
-foreign import javascript unsafe "$1[\"clientWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clientWidth\"]; })"
         js_getClientWidth :: Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientWidth Mozilla Element.clientWidth documentation> 
 getClientWidth :: (MonadIO m, IsElement self) => self -> m Double
 getClientWidth self = liftIO (js_getClientWidth (toElement self))
  
-foreign import javascript unsafe "$1[\"clientHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clientHeight\"]; })"
         js_getClientHeight :: Element -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.clientHeight Mozilla Element.clientHeight documentation> 
 getClientHeight :: (MonadIO m, IsElement self) => self -> m Double
 getClientHeight self = liftIO (js_getClientHeight (toElement self))
  
-foreign import javascript safe "$1[\"innerHTML\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"innerHTML\"] = $2; })"
         js_setInnerHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
@@ -1133,7 +1133,7 @@ setInnerHTML ::
 setInnerHTML self val
   = liftIO (js_setInnerHTML (toElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"innerHTML\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"innerHTML\"]; })"
         js_getInnerHTML :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.innerHTML Mozilla Element.innerHTML documentation> 
@@ -1143,7 +1143,7 @@ getInnerHTML ::
 getInnerHTML self
   = liftIO (fromJSString <$> (js_getInnerHTML (toElement self)))
  
-foreign import javascript safe "$1[\"outerHTML\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"outerHTML\"] = $2; })"
         js_setOuterHTML :: Element -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
@@ -1152,7 +1152,7 @@ setOuterHTML ::
 setOuterHTML self val
   = liftIO (js_setOuterHTML (toElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"outerHTML\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"outerHTML\"]; })"
         js_getOuterHTML :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.outerHTML Mozilla Element.outerHTML documentation> 
@@ -1162,7 +1162,7 @@ getOuterHTML ::
 getOuterHTML self
   = liftIO (fromJSString <$> (js_getOuterHTML (toElement self)))
  
-foreign import javascript unsafe "$1[\"webkitRegionOverset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitRegionOverset\"]; })"
         js_getWebkitRegionOverset :: Element -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Element.webkitRegionOverset Mozilla Element.webkitRegionOverset documentation> 

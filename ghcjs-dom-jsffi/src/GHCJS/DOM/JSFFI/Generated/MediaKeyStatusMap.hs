@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "($1[\"has\"]($2) ? 1 : 0)" js_has
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"has\"]($2) ? 1 : 0); })" js_has
         :: MediaKeyStatusMap -> BufferSource -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeyStatusMap.has Mozilla MediaKeyStatusMap.has documentation> 

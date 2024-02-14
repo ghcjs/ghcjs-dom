@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DOMPointReadOnly\"]($1)" js_newDOMPointReadOnly ::
+        "(($1) => { return new window[\"DOMPointReadOnly\"]($1); })" js_newDOMPointReadOnly ::
         DOMPointInit -> IO DOMPointReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly Mozilla DOMPointReadOnly documentation> 
@@ -39,7 +39,7 @@ newDOMPointReadOnly ::
 newDOMPointReadOnly point = liftIO (js_newDOMPointReadOnly point)
  
 foreign import javascript unsafe
-        "new window[\"DOMPointReadOnly\"]($1,\n$2, $3, $4)"
+        "(($1, $2, $3, $4) => { return new window[\"DOMPointReadOnly\"]($1,\n$2, $3, $4); })"
         js_newDOMPointReadOnly' ::
         Optional Double ->
           Optional Double ->
@@ -57,7 +57,7 @@ newDOMPointReadOnly' x y z w
          (maybeToOptional w))
  
 foreign import javascript unsafe
-        "window[\"DOMPointReadOnly\"][\"fromPoint\"]($1)" js_fromPoint ::
+        "(($1) => { return window[\"DOMPointReadOnly\"][\"fromPoint\"]($1); })" js_fromPoint ::
         Optional DOMPointInit -> IO DOMPointReadOnly
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMPointReadOnly.fromPoint Mozilla DOMPointReadOnly.fromPoint documentation> 

@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"CloseEvent\"]($1, $2)" js_newCloseEvent ::
+        "(($1, $2) => { return new window[\"CloseEvent\"]($1, $2); })" js_newCloseEvent ::
         JSString -> Optional CloseEventInit -> IO CloseEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent Mozilla CloseEvent documentation> 
@@ -40,7 +40,7 @@ newCloseEvent type' eventInitDict
       (js_newCloseEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "($1[\"wasClean\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"wasClean\"] ? 1 : 0); })"
         js_getWasClean :: CloseEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent.wasClean Mozilla CloseEvent.wasClean documentation> 

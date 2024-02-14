@@ -32,7 +32,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"createRenderCommandEncoderWithDescriptor\"]($2)"
+        "(($1, $2) => { return $1[\"createRenderCommandEncoderWithDescriptor\"]($2); })"
         js_createRenderCommandEncoderWithDescriptor ::
         WebGPUCommandBuffer ->
           WebGPURenderPassDescriptor -> IO WebGPURenderCommandEncoder
@@ -58,7 +58,7 @@ createRenderCommandEncoderWithDescriptor_ self descriptor
          (js_createRenderCommandEncoderWithDescriptor self descriptor))
  
 foreign import javascript unsafe
-        "$1[\"createComputeCommandEncoder\"]()"
+        "(($1) => { return $1[\"createComputeCommandEncoder\"](); })"
         js_createComputeCommandEncoder ::
         WebGPUCommandBuffer -> IO WebGPUComputeCommandEncoder
 
@@ -81,7 +81,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"commit\"](); })" js_com
 commit :: (MonadIO m) => WebGPUCommandBuffer -> m ()
 commit self = liftIO (js_commit self)
  
-foreign import javascript unsafe "$1[\"presentDrawable\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"presentDrawable\"]($2); })"
         js_presentDrawable ::
         WebGPUCommandBuffer -> WebGPUDrawable -> IO ()
 

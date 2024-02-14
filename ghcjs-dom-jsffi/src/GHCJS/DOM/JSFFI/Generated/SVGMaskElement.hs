@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"maskUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maskUnits\"]; })"
         js_getMaskUnits :: SVGMaskElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.maskUnits Mozilla SVGMaskElement.maskUnits documentation> 
@@ -36,7 +36,7 @@ getMaskUnits ::
              (MonadIO m) => SVGMaskElement -> m SVGAnimatedEnumeration
 getMaskUnits self = liftIO (js_getMaskUnits self)
  
-foreign import javascript unsafe "$1[\"maskContentUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maskContentUnits\"]; })"
         js_getMaskContentUnits ::
         SVGMaskElement -> IO SVGAnimatedEnumeration
 

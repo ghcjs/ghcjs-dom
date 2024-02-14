@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"hasExtension\"]($2) ? 1 : 0)" js_hasExtension ::
+        "(($1, $2) => { return ($1[\"hasExtension\"]($2) ? 1 : 0); })" js_hasExtension ::
         SVGTests -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.hasExtension Mozilla SVGTests.hasExtension documentation> 
@@ -50,7 +50,7 @@ hasExtension_ self extension
       (void
          (js_hasExtension (toSVGTests self) (toOptionalJSString extension)))
  
-foreign import javascript unsafe "$1[\"requiredFeatures\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"requiredFeatures\"]; })"
         js_getRequiredFeatures :: SVGTests -> IO SVGStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredFeatures Mozilla SVGTests.requiredFeatures documentation> 
@@ -59,7 +59,7 @@ getRequiredFeatures ::
 getRequiredFeatures self
   = liftIO (js_getRequiredFeatures (toSVGTests self))
  
-foreign import javascript unsafe "$1[\"requiredExtensions\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"requiredExtensions\"]; })"
         js_getRequiredExtensions :: SVGTests -> IO SVGStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.requiredExtensions Mozilla SVGTests.requiredExtensions documentation> 
@@ -68,7 +68,7 @@ getRequiredExtensions ::
 getRequiredExtensions self
   = liftIO (js_getRequiredExtensions (toSVGTests self))
  
-foreign import javascript unsafe "$1[\"systemLanguage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"systemLanguage\"]; })"
         js_getSystemLanguage :: SVGTests -> IO SVGStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGTests.systemLanguage Mozilla SVGTests.systemLanguage documentation> 

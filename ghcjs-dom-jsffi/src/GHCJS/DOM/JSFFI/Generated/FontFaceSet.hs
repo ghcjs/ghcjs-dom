@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"FontFaceSet\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"FontFaceSet\"]($1); })"
         js_newFontFaceSet :: JSVal -> IO FontFaceSet
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet Mozilla FontFaceSet documentation> 
@@ -39,7 +39,7 @@ newFontFaceSet initialFaces
       (toJSVal initialFaces >>=
          \ initialFaces' -> js_newFontFaceSet initialFaces')
  
-foreign import javascript unsafe "($1[\"has\"]($2) ? 1 : 0)" js_has
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"has\"]($2) ? 1 : 0); })" js_has
         :: FontFaceSet -> FontFace -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.has Mozilla FontFaceSet.has documentation> 
@@ -61,7 +61,7 @@ add self font = liftIO (js_add self font)
 add_ :: (MonadIO m) => FontFaceSet -> FontFace -> m ()
 add_ self font = liftIO (void (js_add self font))
  
-foreign import javascript unsafe "($1[\"delete\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"delete\"]($2) ? 1 : 0); })"
         js_delete :: FontFaceSet -> FontFace -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.delete Mozilla FontFaceSet.delete documentation> 
@@ -102,7 +102,7 @@ load_ self font text
   = liftIO
       (void (js_load self (toJSString font) (toOptionalJSString text)))
  
-foreign import javascript safe "($1[\"check\"]($2, $3) ? 1 : 0)"
+foreign import javascript safe "(($1, $2, $3) => { return ($1[\"check\"]($2, $3) ? 1 : 0); })"
         js_check :: FontFaceSet -> JSString -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.check Mozilla FontFaceSet.check documentation> 

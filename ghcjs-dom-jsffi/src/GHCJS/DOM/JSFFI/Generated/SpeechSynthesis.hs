@@ -70,21 +70,21 @@ getVoices self
 getVoices_ :: (MonadIO m) => SpeechSynthesis -> m ()
 getVoices_ self = liftIO (void (js_getVoices self))
  
-foreign import javascript unsafe "($1[\"pending\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"pending\"] ? 1 : 0); })"
         js_getPending :: SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.pending Mozilla SpeechSynthesis.pending documentation> 
 getPending :: (MonadIO m) => SpeechSynthesis -> m Bool
 getPending self = liftIO (js_getPending self)
  
-foreign import javascript unsafe "($1[\"speaking\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"speaking\"] ? 1 : 0); })"
         js_getSpeaking :: SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.speaking Mozilla SpeechSynthesis.speaking documentation> 
 getSpeaking :: (MonadIO m) => SpeechSynthesis -> m Bool
 getSpeaking self = liftIO (js_getSpeaking self)
  
-foreign import javascript unsafe "($1[\"paused\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"paused\"] ? 1 : 0); })"
         js_getPaused :: SpeechSynthesis -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis.paused Mozilla SpeechSynthesis.paused documentation> 

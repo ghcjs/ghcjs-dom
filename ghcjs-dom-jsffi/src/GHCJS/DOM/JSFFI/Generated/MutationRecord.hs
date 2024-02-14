@@ -50,21 +50,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTa
 getTarget :: (MonadIO m) => MutationRecord -> m Node
 getTarget self = liftIO (js_getTarget self)
  
-foreign import javascript unsafe "$1[\"addedNodes\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"addedNodes\"]; })"
         js_getAddedNodes :: MutationRecord -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.addedNodes Mozilla MutationRecord.addedNodes documentation> 
 getAddedNodes :: (MonadIO m) => MutationRecord -> m NodeList
 getAddedNodes self = liftIO (js_getAddedNodes self)
  
-foreign import javascript unsafe "$1[\"removedNodes\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"removedNodes\"]; })"
         js_getRemovedNodes :: MutationRecord -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.removedNodes Mozilla MutationRecord.removedNodes documentation> 
 getRemovedNodes :: (MonadIO m) => MutationRecord -> m NodeList
 getRemovedNodes self = liftIO (js_getRemovedNodes self)
  
-foreign import javascript unsafe "$1[\"previousSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"previousSibling\"]; })"
         js_getPreviousSibling :: MutationRecord -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.previousSibling Mozilla MutationRecord.previousSibling documentation> 
@@ -88,7 +88,7 @@ getPreviousSiblingUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getPreviousSibling self))
  
-foreign import javascript unsafe "$1[\"nextSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nextSibling\"]; })"
         js_getNextSibling :: MutationRecord -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.nextSibling Mozilla MutationRecord.nextSibling documentation> 
@@ -109,7 +109,7 @@ getNextSiblingUnchecked :: (MonadIO m) => MutationRecord -> m Node
 getNextSiblingUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getNextSibling self))
  
-foreign import javascript unsafe "$1[\"attributeName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"attributeName\"]; })"
         js_getAttributeName :: MutationRecord -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord.attributeName Mozilla MutationRecord.attributeName documentation> 
@@ -135,7 +135,7 @@ getAttributeNameUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getAttributeName self))
  
-foreign import javascript unsafe "$1[\"attributeNamespace\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"attributeNamespace\"]; })"
         js_getAttributeNamespace ::
         MutationRecord -> IO (Nullable JSString)
 

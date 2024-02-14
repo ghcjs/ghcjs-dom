@@ -30,21 +30,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"transform\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transform\"]; })"
         js_getTransform :: SVGViewSpec -> IO SVGTransformList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transform Mozilla SVGViewSpec.transform documentation> 
 getTransform :: (MonadIO m) => SVGViewSpec -> m SVGTransformList
 getTransform self = liftIO (js_getTransform self)
  
-foreign import javascript unsafe "$1[\"viewTarget\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewTarget\"]; })"
         js_getViewTarget :: SVGViewSpec -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTarget Mozilla SVGViewSpec.viewTarget documentation> 
 getViewTarget :: (MonadIO m) => SVGViewSpec -> m SVGElement
 getViewTarget self = liftIO (js_getViewTarget self)
  
-foreign import javascript unsafe "$1[\"viewBoxString\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewBoxString\"]; })"
         js_getViewBoxString :: SVGViewSpec -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewBoxString Mozilla SVGViewSpec.viewBoxString documentation> 
@@ -63,7 +63,7 @@ getPreserveAspectRatioString ::
 getPreserveAspectRatioString self
   = liftIO (fromJSString <$> (js_getPreserveAspectRatioString self))
  
-foreign import javascript unsafe "$1[\"transformString\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transformString\"]; })"
         js_getTransformString :: SVGViewSpec -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.transformString Mozilla SVGViewSpec.transformString documentation> 
@@ -72,7 +72,7 @@ getTransformString ::
 getTransformString self
   = liftIO (fromJSString <$> (js_getTransformString self))
  
-foreign import javascript unsafe "$1[\"viewTargetString\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"viewTargetString\"]; })"
         js_getViewTargetString :: SVGViewSpec -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.viewTargetString Mozilla SVGViewSpec.viewTargetString documentation> 
@@ -81,14 +81,14 @@ getViewTargetString ::
 getViewTargetString self
   = liftIO (fromJSString <$> (js_getViewTargetString self))
  
-foreign import javascript safe "$1[\"zoomAndPan\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"zoomAndPan\"] = $2; })"
         js_setZoomAndPan :: SVGViewSpec -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.zoomAndPan Mozilla SVGViewSpec.zoomAndPan documentation> 
 setZoomAndPan :: (MonadIO m) => SVGViewSpec -> Word -> m ()
 setZoomAndPan self val = liftIO (js_setZoomAndPan self val)
  
-foreign import javascript unsafe "$1[\"zoomAndPan\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"zoomAndPan\"]; })"
         js_getZoomAndPan :: SVGViewSpec -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGViewSpec.zoomAndPan Mozilla SVGViewSpec.zoomAndPan documentation> 

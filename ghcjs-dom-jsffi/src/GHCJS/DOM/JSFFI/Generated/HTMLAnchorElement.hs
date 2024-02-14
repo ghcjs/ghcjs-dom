@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"charset\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"charset\"] = $2; })"
         js_setCharset :: HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.charset Mozilla HTMLAnchorElement.charset documentation> 
@@ -51,7 +51,7 @@ getCharset ::
            (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getCharset self = liftIO (fromJSString <$> (js_getCharset self))
  
-foreign import javascript unsafe "$1[\"coords\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"coords\"] = $2; })"
         js_setCoords :: HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.coords Mozilla HTMLAnchorElement.coords documentation> 
@@ -67,7 +67,7 @@ getCoords ::
           (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getCoords self = liftIO (fromJSString <$> (js_getCoords self))
  
-foreign import javascript unsafe "$1[\"download\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"download\"] = $2; })"
         js_setDownload :: HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.download Mozilla HTMLAnchorElement.download documentation> 
@@ -84,7 +84,7 @@ getDownload ::
             (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getDownload self = liftIO (fromJSString <$> (js_getDownload self))
  
-foreign import javascript unsafe "$1[\"hreflang\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hreflang\"] = $2; })"
         js_setHreflang :: HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.hreflang Mozilla HTMLAnchorElement.hreflang documentation> 
@@ -181,7 +181,7 @@ getShape ::
          (MonadIO m, FromJSString result) => HTMLAnchorElement -> m result
 getShape self = liftIO (fromJSString <$> (js_getShape self))
  
-foreign import javascript unsafe "$1[\"target\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"target\"] = $2; })"
         js_setTarget :: HTMLAnchorElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement.target Mozilla HTMLAnchorElement.target documentation> 

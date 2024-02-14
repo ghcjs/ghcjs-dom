@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"handleEvent\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"handleEvent\"]($2); })"
         js_handleEvent :: EventListener -> Event -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventListener.handleEvent Mozilla EventListener.handleEvent documentation> 

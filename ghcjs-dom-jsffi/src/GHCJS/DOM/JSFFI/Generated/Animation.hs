@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"Animation\"]($1, $2)" js_newAnimation ::
+        "(($1, $2) => { return new window[\"Animation\"]($1, $2); })" js_newAnimation ::
         Optional AnimationEffect ->
           Optional AnimationTimeline -> IO Animation
 

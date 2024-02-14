@@ -75,7 +75,7 @@ getUnchecked self name
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_get self (toJSString name)))
  
-foreign import javascript safe "($1[\"has\"]($2) ? 1 : 0)" js_has
+foreign import javascript safe "(($1, $2) => { return ($1[\"has\"]($2) ? 1 : 0); })" js_has
         :: Headers -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Headers.has Mozilla Headers.has documentation> 

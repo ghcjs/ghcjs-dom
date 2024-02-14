@@ -79,7 +79,7 @@ text self
 text_ :: (MonadIO m, IsBody self) => self -> m ()
 text_ self = liftIO (void (js_text (toBody self)))
  
-foreign import javascript unsafe "($1[\"bodyUsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"bodyUsed\"] ? 1 : 0); })"
         js_getBodyUsed :: Body -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.bodyUsed Mozilla Body.bodyUsed documentation> 

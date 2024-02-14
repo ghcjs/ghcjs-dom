@@ -48,7 +48,7 @@ getAlt ::
        (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
 getAlt self = liftIO (fromJSString <$> (js_getAlt self))
  
-foreign import javascript unsafe "$1[\"coords\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"coords\"] = $2; })"
         js_setCoords :: HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.coords Mozilla HTMLAreaElement.coords documentation> 
@@ -64,14 +64,14 @@ getCoords ::
           (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
 getCoords self = liftIO (fromJSString <$> (js_getCoords self))
  
-foreign import javascript unsafe "$1[\"noHref\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"noHref\"] = $2; })"
         js_setNoHref :: HTMLAreaElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.noHref Mozilla HTMLAreaElement.noHref documentation> 
 setNoHref :: (MonadIO m) => HTMLAreaElement -> Bool -> m ()
 setNoHref self val = liftIO (js_setNoHref self val)
  
-foreign import javascript unsafe "($1[\"noHref\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"noHref\"] ? 1 : 0); })"
         js_getNoHref :: HTMLAreaElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.noHref Mozilla HTMLAreaElement.noHref documentation> 
@@ -126,7 +126,7 @@ getShape ::
          (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
 getShape self = liftIO (fromJSString <$> (js_getShape self))
  
-foreign import javascript unsafe "$1[\"target\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"target\"] = $2; })"
         js_setTarget :: HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.target Mozilla HTMLAreaElement.target documentation> 
@@ -142,7 +142,7 @@ getTarget ::
           (MonadIO m, FromJSString result) => HTMLAreaElement -> m result
 getTarget self = liftIO (fromJSString <$> (js_getTarget self))
  
-foreign import javascript unsafe "$1[\"download\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"download\"] = $2; })"
         js_setDownload :: HTMLAreaElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLAreaElement.download Mozilla HTMLAreaElement.download documentation> 

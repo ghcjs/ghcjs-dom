@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getStartTime\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getStartTime\"](); })"
         js_getStartTime :: SVGAnimationElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.getStartTime Mozilla SVGAnimationElement.getStartTime documentation> 
@@ -47,7 +47,7 @@ getStartTime_ ::
 getStartTime_ self
   = liftIO (void (js_getStartTime (toSVGAnimationElement self)))
  
-foreign import javascript unsafe "$1[\"getCurrentTime\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getCurrentTime\"](); })"
         js_getCurrentTime :: SVGAnimationElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.getCurrentTime Mozilla SVGAnimationElement.getCurrentTime documentation> 
@@ -62,7 +62,7 @@ getCurrentTime_ ::
 getCurrentTime_ self
   = liftIO (void (js_getCurrentTime (toSVGAnimationElement self)))
  
-foreign import javascript unsafe "$1[\"getSimpleDuration\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getSimpleDuration\"](); })"
         js_getSimpleDuration :: SVGAnimationElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.getSimpleDuration Mozilla SVGAnimationElement.getSimpleDuration documentation> 
@@ -77,7 +77,7 @@ getSimpleDuration_ ::
 getSimpleDuration_ self
   = liftIO (void (js_getSimpleDuration (toSVGAnimationElement self)))
  
-foreign import javascript unsafe "$1[\"beginElement\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"beginElement\"](); })"
         js_beginElement :: SVGAnimationElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.beginElement Mozilla SVGAnimationElement.beginElement documentation> 
@@ -86,7 +86,7 @@ beginElement ::
 beginElement self
   = liftIO (js_beginElement (toSVGAnimationElement self))
  
-foreign import javascript unsafe "$1[\"beginElementAt\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"beginElementAt\"]($2); })"
         js_beginElementAt :: SVGAnimationElement -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.beginElementAt Mozilla SVGAnimationElement.beginElementAt documentation> 
@@ -98,7 +98,7 @@ beginElementAt self offset
       (js_beginElementAt (toSVGAnimationElement self)
          (maybeToOptional offset))
  
-foreign import javascript unsafe "$1[\"endElement\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"endElement\"](); })"
         js_endElement :: SVGAnimationElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.endElement Mozilla SVGAnimationElement.endElement documentation> 
@@ -107,7 +107,7 @@ endElement ::
 endElement self
   = liftIO (js_endElement (toSVGAnimationElement self))
  
-foreign import javascript unsafe "$1[\"endElementAt\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"endElementAt\"]($2); })"
         js_endElementAt :: SVGAnimationElement -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.endElementAt Mozilla SVGAnimationElement.endElementAt documentation> 
@@ -119,7 +119,7 @@ endElementAt self offset
       (js_endElementAt (toSVGAnimationElement self)
          (maybeToOptional offset))
  
-foreign import javascript unsafe "$1[\"targetElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"targetElement\"]; })"
         js_getTargetElement :: SVGAnimationElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGAnimationElement.targetElement Mozilla SVGAnimationElement.targetElement documentation> 

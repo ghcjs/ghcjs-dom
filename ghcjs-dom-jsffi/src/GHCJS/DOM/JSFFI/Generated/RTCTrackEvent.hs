@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"RTCTrackEvent\"]($1,\n$2)" js_newRTCTrackEvent ::
+        "(($1, $2) => { return new window[\"RTCTrackEvent\"]($1,\n$2); })" js_newRTCTrackEvent ::
         JSString -> RTCTrackEventInit -> IO RTCTrackEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCTrackEvent Mozilla RTCTrackEvent documentation> 
@@ -61,7 +61,7 @@ getStreams :: (MonadIO m) => RTCTrackEvent -> m [MediaStream]
 getStreams self
   = liftIO ((js_getStreams self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"transceiver\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transceiver\"]; })"
         js_getTransceiver :: RTCTrackEvent -> IO RTCRtpTransceiver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCTrackEvent.transceiver Mozilla RTCTrackEvent.transceiver documentation> 

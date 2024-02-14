@@ -39,7 +39,7 @@ item self index = liftIO (js_item self index)
 item_ :: (MonadIO m) => VideoTrackList -> Word -> m ()
 item_ self index = liftIO (void (js_item self index))
  
-foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getTrackById\"]($2); })"
         js_getTrackById :: VideoTrackList -> JSString -> IO VideoTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.getTrackById Mozilla VideoTrackList.getTrackById documentation> 
@@ -61,7 +61,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLe
 getLength :: (MonadIO m) => VideoTrackList -> m Word
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript unsafe "$1[\"selectedIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"selectedIndex\"]; })"
         js_getSelectedIndex :: VideoTrackList -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoTrackList.selectedIndex Mozilla VideoTrackList.selectedIndex documentation> 

@@ -50,7 +50,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"stop\"](); })" js_stop 
 stop :: (MonadIO m) => HTMLMarqueeElement -> m ()
 stop self = liftIO (js_stop self)
  
-foreign import javascript unsafe "$1[\"behavior\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"behavior\"] = $2; })"
         js_setBehavior :: HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.behavior Mozilla HTMLMarqueeElement.behavior documentation> 
@@ -67,7 +67,7 @@ getBehavior ::
             (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
 getBehavior self = liftIO (fromJSString <$> (js_getBehavior self))
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.bgColor Mozilla HTMLMarqueeElement.bgColor documentation> 
@@ -83,7 +83,7 @@ getBgColor ::
            (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
 getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
-foreign import javascript unsafe "$1[\"direction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"direction\"] = $2; })"
         js_setDirection :: HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.direction Mozilla HTMLMarqueeElement.direction documentation> 
@@ -92,7 +92,7 @@ setDirection ::
 setDirection self val
   = liftIO (js_setDirection self (toJSString val))
  
-foreign import javascript unsafe "$1[\"direction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"direction\"]; })"
         js_getDirection :: HTMLMarqueeElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.direction Mozilla HTMLMarqueeElement.direction documentation> 
@@ -101,7 +101,7 @@ getDirection ::
 getDirection self
   = liftIO (fromJSString <$> (js_getDirection self))
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLMarqueeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.height Mozilla HTMLMarqueeElement.height documentation> 
@@ -117,7 +117,7 @@ getHeight ::
           (MonadIO m, FromJSString result) => HTMLMarqueeElement -> m result
 getHeight self = liftIO (fromJSString <$> (js_getHeight self))
  
-foreign import javascript unsafe "$1[\"hspace\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hspace\"] = $2; })"
         js_setHspace :: HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.hspace Mozilla HTMLMarqueeElement.hspace documentation> 
@@ -145,7 +145,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"loop\"]; })" js_getLoop
 getLoop :: (MonadIO m) => HTMLMarqueeElement -> m Int
 getLoop self = liftIO (js_getLoop self)
  
-foreign import javascript unsafe "$1[\"scrollAmount\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"scrollAmount\"] = $2; })"
         js_setScrollAmount :: HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollAmount Mozilla HTMLMarqueeElement.scrollAmount documentation> 
@@ -153,42 +153,42 @@ setScrollAmount ::
                 (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
 setScrollAmount self val = liftIO (js_setScrollAmount self val)
  
-foreign import javascript unsafe "$1[\"scrollAmount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollAmount\"]; })"
         js_getScrollAmount :: HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollAmount Mozilla HTMLMarqueeElement.scrollAmount documentation> 
 getScrollAmount :: (MonadIO m) => HTMLMarqueeElement -> m Word
 getScrollAmount self = liftIO (js_getScrollAmount self)
  
-foreign import javascript unsafe "$1[\"scrollDelay\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"scrollDelay\"] = $2; })"
         js_setScrollDelay :: HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollDelay Mozilla HTMLMarqueeElement.scrollDelay documentation> 
 setScrollDelay :: (MonadIO m) => HTMLMarqueeElement -> Word -> m ()
 setScrollDelay self val = liftIO (js_setScrollDelay self val)
  
-foreign import javascript unsafe "$1[\"scrollDelay\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollDelay\"]; })"
         js_getScrollDelay :: HTMLMarqueeElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.scrollDelay Mozilla HTMLMarqueeElement.scrollDelay documentation> 
 getScrollDelay :: (MonadIO m) => HTMLMarqueeElement -> m Word
 getScrollDelay self = liftIO (js_getScrollDelay self)
  
-foreign import javascript unsafe "$1[\"trueSpeed\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"trueSpeed\"] = $2; })"
         js_setTrueSpeed :: HTMLMarqueeElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.trueSpeed Mozilla HTMLMarqueeElement.trueSpeed documentation> 
 setTrueSpeed :: (MonadIO m) => HTMLMarqueeElement -> Bool -> m ()
 setTrueSpeed self val = liftIO (js_setTrueSpeed self val)
  
-foreign import javascript unsafe "($1[\"trueSpeed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"trueSpeed\"] ? 1 : 0); })"
         js_getTrueSpeed :: HTMLMarqueeElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.trueSpeed Mozilla HTMLMarqueeElement.trueSpeed documentation> 
 getTrueSpeed :: (MonadIO m) => HTMLMarqueeElement -> m Bool
 getTrueSpeed self = liftIO (js_getTrueSpeed self)
  
-foreign import javascript unsafe "$1[\"vspace\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vspace\"] = $2; })"
         js_setVspace :: HTMLMarqueeElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMarqueeElement.vspace Mozilla HTMLMarqueeElement.vspace documentation> 

@@ -35,7 +35,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
+        "(($1) => { return ($1[\"checkValidity\"]() ? 1 : 0); })" js_checkValidity ::
         HTMLOutputElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.checkValidity Mozilla HTMLOutputElement.checkValidity documentation> 
@@ -47,7 +47,7 @@ checkValidity_ :: (MonadIO m) => HTMLOutputElement -> m ()
 checkValidity_ self = liftIO (void (js_checkValidity self))
  
 foreign import javascript unsafe
-        "($1[\"reportValidity\"]() ? 1 : 0)" js_reportValidity ::
+        "(($1) => { return ($1[\"reportValidity\"]() ? 1 : 0); })" js_reportValidity ::
         HTMLOutputElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.reportValidity Mozilla HTMLOutputElement.reportValidity documentation> 
@@ -58,7 +58,7 @@ reportValidity self = liftIO (js_reportValidity self)
 reportValidity_ :: (MonadIO m) => HTMLOutputElement -> m ()
 reportValidity_ self = liftIO (void (js_reportValidity self))
  
-foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setCustomValidity\"]($2); })"
         js_setCustomValidity :: HTMLOutputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.setCustomValidity Mozilla HTMLOutputElement.setCustomValidity documentation> 
@@ -105,7 +105,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"defaultValue\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"defaultValue\"] = $2; })"
         js_setDefaultValue :: HTMLOutputElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
@@ -114,7 +114,7 @@ setDefaultValue ::
 setDefaultValue self val
   = liftIO (js_setDefaultValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"defaultValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"defaultValue\"]; })"
         js_getDefaultValue :: HTMLOutputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.defaultValue Mozilla HTMLOutputElement.defaultValue documentation> 
@@ -139,7 +139,7 @@ getValue ::
          (MonadIO m, FromJSString result) => HTMLOutputElement -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"willValidate\"] ? 1 : 0); })"
         js_getWillValidate :: HTMLOutputElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.willValidate Mozilla HTMLOutputElement.willValidate documentation> 
@@ -153,7 +153,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"validity\"]; })" js_get
 getValidity :: (MonadIO m) => HTMLOutputElement -> m ValidityState
 getValidity self = liftIO (js_getValidity self)
  
-foreign import javascript unsafe "$1[\"validationMessage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"validationMessage\"]; })"
         js_getValidationMessage :: HTMLOutputElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOutputElement.validationMessage Mozilla HTMLOutputElement.validationMessage documentation> 

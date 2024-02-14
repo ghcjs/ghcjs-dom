@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"PerformanceObserver\"]($1)" js_newPerformanceObserver
+        "(($1) => { return new window[\"PerformanceObserver\"]($1); })" js_newPerformanceObserver
         :: PerformanceObserverCallback -> IO PerformanceObserver
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver Mozilla PerformanceObserver documentation> 
@@ -46,7 +46,7 @@ observe ::
           PerformanceObserver -> PerformanceObserverInit -> m ()
 observe self options = liftIO (js_observe self options)
  
-foreign import javascript unsafe "$1[\"disconnect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"disconnect\"](); })"
         js_disconnect :: PerformanceObserver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserver.disconnect Mozilla PerformanceObserver.disconnect documentation> 

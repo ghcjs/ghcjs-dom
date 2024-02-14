@@ -42,7 +42,7 @@ getSuffixes ::
             (MonadIO m, FromJSString result) => MimeType -> m result
 getSuffixes self = liftIO (fromJSString <$> (js_getSuffixes self))
  
-foreign import javascript unsafe "$1[\"description\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"description\"]; })"
         js_getDescription :: MimeType -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.description Mozilla MimeType.description documentation> 
@@ -51,7 +51,7 @@ getDescription ::
 getDescription self
   = liftIO (fromJSString <$> (js_getDescription self))
  
-foreign import javascript unsafe "$1[\"enabledPlugin\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"enabledPlugin\"]; })"
         js_getEnabledPlugin :: MimeType -> IO Plugin
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MimeType.enabledPlugin Mozilla MimeType.enabledPlugin documentation> 

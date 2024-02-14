@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStreamBYOBRequest\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"ReadableStreamBYOBRequest\"]($1,\n$2); })"
         js_newReadableStreamBYOBRequest ::
         ReadableByteStreamController ->
           RawTypedArray -> IO ReadableStreamBYOBRequest
@@ -54,7 +54,7 @@ respond self bytesWritten
       (mapM toJSVal bytesWritten >>=
          \ bytesWritten' -> js_respond self (maybeToOptional bytesWritten'))
  
-foreign import javascript unsafe "$1[\"respondWithNewView\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"respondWithNewView\"]($2); })"
         js_respondWithNewView ::
         ReadableStreamBYOBRequest -> Optional JSVal -> IO ()
 

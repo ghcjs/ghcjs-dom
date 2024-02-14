@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"clearDepth\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"clearDepth\"] = $2; })"
         js_setClearDepth ::
         WebGPURenderPassDepthAttachmentDescriptor -> Double -> IO ()
 
@@ -37,7 +37,7 @@ setClearDepth ::
                 WebGPURenderPassDepthAttachmentDescriptor -> Double -> m ()
 setClearDepth self val = liftIO (js_setClearDepth self val)
  
-foreign import javascript unsafe "$1[\"clearDepth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clearDepth\"]; })"
         js_getClearDepth ::
         WebGPURenderPassDepthAttachmentDescriptor -> IO Double
 

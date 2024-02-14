@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaDeviceInfo\"]($1,\n$2, $3, $4)"
+        "(($1, $2, $3, $4) => { return new window[\"MediaDeviceInfo\"]($1,\n$2, $3, $4); })"
         js_newMediaDeviceInfo ::
         JSString -> JSString -> JSString -> JSVal -> IO MediaDeviceInfo
 

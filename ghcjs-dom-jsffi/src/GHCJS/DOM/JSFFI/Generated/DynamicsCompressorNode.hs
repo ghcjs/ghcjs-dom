@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"threshold\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"threshold\"]; })"
         js_getThreshold :: DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.threshold Mozilla DynamicsCompressorNode.threshold documentation> 
@@ -50,7 +50,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"ratio\"]; })" js_getRat
 getRatio :: (MonadIO m) => DynamicsCompressorNode -> m AudioParam
 getRatio self = liftIO (js_getRatio self)
  
-foreign import javascript unsafe "$1[\"reduction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"reduction\"]; })"
         js_getReduction :: DynamicsCompressorNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode.reduction Mozilla DynamicsCompressorNode.reduction documentation> 

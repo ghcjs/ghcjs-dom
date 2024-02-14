@@ -91,7 +91,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"span\"]; })" js_getSpan
 getSpan :: (MonadIO m) => HTMLTableColElement -> m Word
 getSpan self = liftIO (js_getSpan self)
  
-foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vAlign\"] = $2; })"
         js_setVAlign :: HTMLTableColElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableColElement.vAlign Mozilla HTMLTableColElement.vAlign documentation> 

@@ -64,7 +64,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_clos
 close :: (MonadIO m, IsWorkerGlobalScope self) => self -> m ()
 close self = liftIO (js_close (toWorkerGlobalScope self))
  
-foreign import javascript safe "$1[\"importScripts\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"importScripts\"]($2); })"
         js_importScripts :: WorkerGlobalScope -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.importScripts Mozilla WorkerGlobalScope.importScripts documentation> 
@@ -76,7 +76,7 @@ importScripts self urls
       (toJSVal urls >>=
          \ urls' -> js_importScripts (toWorkerGlobalScope self) urls')
  
-foreign import javascript unsafe "$1[\"indexedDB\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"indexedDB\"]; })"
         js_getIndexedDB :: WorkerGlobalScope -> IO IDBFactory
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.indexedDB Mozilla WorkerGlobalScope.indexedDB documentation> 
@@ -121,7 +121,7 @@ online ::
          EventName self Event
 online = unsafeEventName (toJSString "online")
  
-foreign import javascript unsafe "$1[\"navigator\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"navigator\"]; })"
         js_getNavigator :: WorkerGlobalScope -> IO WorkerNavigator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope.navigator Mozilla WorkerGlobalScope.navigator documentation> 

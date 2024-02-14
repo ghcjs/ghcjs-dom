@@ -57,7 +57,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_item self index))
  
-foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"contains\"]($2) ? 1 : 0); })"
         js_contains :: DOMStringList -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DOMStringList.contains Mozilla DOMStringList.contains documentation> 

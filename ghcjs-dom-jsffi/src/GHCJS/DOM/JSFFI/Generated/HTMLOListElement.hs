@@ -28,14 +28,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"compact\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"compact\"] = $2; })"
         js_setCompact :: HTMLOListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
 setCompact :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
 setCompact self val = liftIO (js_setCompact self val)
  
-foreign import javascript unsafe "($1[\"compact\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"compact\"] ? 1 : 0); })"
         js_getCompact :: HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.compact Mozilla HTMLOListElement.compact documentation> 
@@ -56,14 +56,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"start\"]; })" js_getSta
 getStart :: (MonadIO m) => HTMLOListElement -> m Int
 getStart self = liftIO (js_getStart self)
  
-foreign import javascript unsafe "$1[\"reversed\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"reversed\"] = $2; })"
         js_setReversed :: HTMLOListElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 
 setReversed :: (MonadIO m) => HTMLOListElement -> Bool -> m ()
 setReversed self val = liftIO (js_setReversed self val)
  
-foreign import javascript unsafe "($1[\"reversed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"reversed\"] ? 1 : 0); })"
         js_getReversed :: HTMLOListElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement.reversed Mozilla HTMLOListElement.reversed documentation> 

@@ -32,14 +32,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"XSLTProcessor\"]()"
+foreign import javascript unsafe "(() => { return new window[\"XSLTProcessor\"](); })"
         js_newXSLTProcessor :: IO XSLTProcessor
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor Mozilla XSLTProcessor documentation> 
 newXSLTProcessor :: (MonadIO m) => m XSLTProcessor
 newXSLTProcessor = liftIO (js_newXSLTProcessor)
  
-foreign import javascript unsafe "$1[\"importStylesheet\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"importStylesheet\"]($2); })"
         js_importStylesheet :: XSLTProcessor -> Optional Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.importStylesheet Mozilla XSLTProcessor.importStylesheet documentation> 
@@ -75,7 +75,7 @@ transformToFragment_ self source docVal
          (js_transformToFragment self (maybeToOptional (fmap toNode source))
             (maybeToOptional (fmap toDocument docVal))))
  
-foreign import javascript unsafe "$1[\"transformToDocument\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"transformToDocument\"]($2); })"
         js_transformToDocument ::
         XSLTProcessor -> Optional Node -> IO Document
 
@@ -97,7 +97,7 @@ transformToDocument_ self source
          (js_transformToDocument self
             (maybeToOptional (fmap toNode source))))
  
-foreign import javascript unsafe "$1[\"setParameter\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setParameter\"]($2, $3, $4); })"
         js_setParameter ::
         XSLTProcessor ->
           Optional JSString ->
@@ -115,7 +115,7 @@ setParameter self namespaceURI localName value
          (toOptionalJSString localName)
          (toOptionalJSString value))
  
-foreign import javascript unsafe "$1[\"getParameter\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getParameter\"]($2, $3); })"
         js_getParameter ::
         XSLTProcessor ->
           Optional JSString -> Optional JSString -> IO (Nullable JSString)
@@ -165,7 +165,7 @@ getParameterUnchecked self namespaceURI localName
          (js_getParameter self (toOptionalJSString namespaceURI)
             (toOptionalJSString localName)))
  
-foreign import javascript unsafe "$1[\"removeParameter\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"removeParameter\"]($2, $3); })"
         js_removeParameter ::
         XSLTProcessor -> Optional JSString -> Optional JSString -> IO ()
 
@@ -178,7 +178,7 @@ removeParameter self namespaceURI localName
       (js_removeParameter self (toOptionalJSString namespaceURI)
          (toOptionalJSString localName))
  
-foreign import javascript unsafe "$1[\"clearParameters\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"clearParameters\"](); })"
         js_clearParameters :: XSLTProcessor -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor.clearParameters Mozilla XSLTProcessor.clearParameters documentation> 

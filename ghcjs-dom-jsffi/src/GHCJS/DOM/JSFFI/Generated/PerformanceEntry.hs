@@ -38,7 +38,7 @@ getName ::
 getName self
   = liftIO (fromJSString <$> (js_getName (toPerformanceEntry self)))
  
-foreign import javascript unsafe "$1[\"entryType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"entryType\"]; })"
         js_getEntryType :: PerformanceEntry -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.entryType Mozilla PerformanceEntry.entryType documentation> 
@@ -49,7 +49,7 @@ getEntryType self
   = liftIO
       (fromJSString <$> (js_getEntryType (toPerformanceEntry self)))
  
-foreign import javascript unsafe "$1[\"startTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startTime\"]; })"
         js_getStartTime :: PerformanceEntry -> IO DOMHighResTimeStamp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEntry.startTime Mozilla PerformanceEntry.startTime documentation> 

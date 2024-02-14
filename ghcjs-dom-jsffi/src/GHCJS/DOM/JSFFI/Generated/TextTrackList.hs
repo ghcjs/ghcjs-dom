@@ -38,7 +38,7 @@ item self index = liftIO (js_item self index)
 item_ :: (MonadIO m) => TextTrackList -> Word -> m ()
 item_ self index = liftIO (void (js_item self index))
  
-foreign import javascript unsafe "$1[\"getTrackById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getTrackById\"]($2); })"
         js_getTrackById :: TextTrackList -> JSString -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackList.getTrackById Mozilla TextTrackList.getTrackById documentation> 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"patternUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"patternUnits\"]; })"
         js_getPatternUnits ::
         SVGPatternElement -> IO SVGAnimatedEnumeration
 
@@ -38,7 +38,7 @@ getPatternUnits ::
                 (MonadIO m) => SVGPatternElement -> m SVGAnimatedEnumeration
 getPatternUnits self = liftIO (js_getPatternUnits self)
  
-foreign import javascript unsafe "$1[\"patternContentUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"patternContentUnits\"]; })"
         js_getPatternContentUnits ::
         SVGPatternElement -> IO SVGAnimatedEnumeration
 
@@ -48,7 +48,7 @@ getPatternContentUnits ::
 getPatternContentUnits self
   = liftIO (js_getPatternContentUnits self)
  
-foreign import javascript unsafe "$1[\"patternTransform\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"patternTransform\"]; })"
         js_getPatternTransform ::
         SVGPatternElement -> IO SVGAnimatedTransformList
 

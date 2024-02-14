@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"IntersectionObserver\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"IntersectionObserver\"]($1,\n$2); })"
         js_newIntersectionObserver ::
         IntersectionObserverCallback ->
           Optional IntersectionObserverInit -> IO IntersectionObserver
@@ -54,7 +54,7 @@ observe ::
           IntersectionObserver -> target -> m ()
 observe self target = liftIO (js_observe self (toElement target))
  
-foreign import javascript unsafe "$1[\"unobserve\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"unobserve\"]($2); })"
         js_unobserve :: IntersectionObserver -> Element -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver.unobserve Mozilla IntersectionObserver.unobserve documentation> 
@@ -64,14 +64,14 @@ unobserve ::
 unobserve self target
   = liftIO (js_unobserve self (toElement target))
  
-foreign import javascript unsafe "$1[\"disconnect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"disconnect\"](); })"
         js_disconnect :: IntersectionObserver -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver.disconnect Mozilla IntersectionObserver.disconnect documentation> 
 disconnect :: (MonadIO m) => IntersectionObserver -> m ()
 disconnect self = liftIO (js_disconnect self)
  
-foreign import javascript unsafe "$1[\"takeRecords\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"takeRecords\"](); })"
         js_takeRecords :: IntersectionObserver -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver.takeRecords Mozilla IntersectionObserver.takeRecords documentation> 
@@ -106,7 +106,7 @@ getRootUnchecked ::
 getRootUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRoot self))
  
-foreign import javascript unsafe "$1[\"rootMargin\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"rootMargin\"]; })"
         js_getRootMargin :: IntersectionObserver -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver.rootMargin Mozilla IntersectionObserver.rootMargin documentation> 
@@ -116,7 +116,7 @@ getRootMargin ::
 getRootMargin self
   = liftIO (fromJSString <$> (js_getRootMargin self))
  
-foreign import javascript unsafe "$1[\"thresholds\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"thresholds\"]; })"
         js_getThresholds :: IntersectionObserver -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver.thresholds Mozilla IntersectionObserver.thresholds documentation> 

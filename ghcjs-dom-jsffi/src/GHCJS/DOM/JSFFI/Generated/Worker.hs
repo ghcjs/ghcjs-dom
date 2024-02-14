@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Worker\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Worker\"]($1); })"
         js_newWorker :: JSString -> IO Worker
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker Mozilla Worker documentation> 
@@ -41,7 +41,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"terminate\"](); })" js_
 terminate :: (MonadIO m) => Worker -> m ()
 terminate self = liftIO (js_terminate self)
  
-foreign import javascript safe "$1[\"postMessage\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"postMessage\"]($2, $3); })"
         js_postMessage :: Worker -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.postMessage Mozilla Worker.postMessage documentation> 

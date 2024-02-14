@@ -38,7 +38,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"KeyboardEvent\"]($1,\n$2)" js_newKeyboardEvent ::
+        "(($1, $2) => { return new window[\"KeyboardEvent\"]($1,\n$2); })" js_newKeyboardEvent ::
         JSString -> Optional KeyboardEventInit -> IO KeyboardEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent Mozilla KeyboardEvent documentation> 
@@ -51,7 +51,7 @@ newKeyboardEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "($1[\"getModifierState\"]($2) ? 1 : 0)" js_getModifierState ::
+        "(($1, $2) => { return ($1[\"getModifierState\"]($2) ? 1 : 0); })" js_getModifierState ::
         KeyboardEvent -> JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.getModifierState Mozilla KeyboardEvent.getModifierState documentation> 
@@ -67,7 +67,7 @@ getModifierState_ self keyArg
   = liftIO (void (js_getModifierState self (toJSString keyArg)))
  
 foreign import javascript unsafe
-        "$1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
         js_initKeyboardEvent ::
         KeyboardEvent ->
           Optional JSString ->
@@ -128,49 +128,49 @@ foreign import javascript unsafe "(($1) => { return $1[\"location\"]; })" js_get
 getLocation :: (MonadIO m) => KeyboardEvent -> m Word
 getLocation self = liftIO (js_getLocation self)
  
-foreign import javascript unsafe "($1[\"ctrlKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"ctrlKey\"] ? 1 : 0); })"
         js_getCtrlKey :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.ctrlKey Mozilla KeyboardEvent.ctrlKey documentation> 
 getCtrlKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getCtrlKey self = liftIO (js_getCtrlKey self)
  
-foreign import javascript unsafe "($1[\"shiftKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"shiftKey\"] ? 1 : 0); })"
         js_getShiftKey :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.shiftKey Mozilla KeyboardEvent.shiftKey documentation> 
 getShiftKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getShiftKey self = liftIO (js_getShiftKey self)
  
-foreign import javascript unsafe "($1[\"altKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"altKey\"] ? 1 : 0); })"
         js_getAltKey :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.altKey Mozilla KeyboardEvent.altKey documentation> 
 getAltKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getAltKey self = liftIO (js_getAltKey self)
  
-foreign import javascript unsafe "($1[\"metaKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"metaKey\"] ? 1 : 0); })"
         js_getMetaKey :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.metaKey Mozilla KeyboardEvent.metaKey documentation> 
 getMetaKey :: (MonadIO m) => KeyboardEvent -> m Bool
 getMetaKey self = liftIO (js_getMetaKey self)
  
-foreign import javascript unsafe "($1[\"repeat\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"repeat\"] ? 1 : 0); })"
         js_getRepeat :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.repeat Mozilla KeyboardEvent.repeat documentation> 
 getRepeat :: (MonadIO m) => KeyboardEvent -> m Bool
 getRepeat self = liftIO (js_getRepeat self)
  
-foreign import javascript unsafe "($1[\"isComposing\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"isComposing\"] ? 1 : 0); })"
         js_getIsComposing :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.isComposing Mozilla KeyboardEvent.isComposing documentation> 
 getIsComposing :: (MonadIO m) => KeyboardEvent -> m Bool
 getIsComposing self = liftIO (js_getIsComposing self)
  
-foreign import javascript unsafe "$1[\"keyIdentifier\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keyIdentifier\"]; })"
         js_getKeyIdentifier :: KeyboardEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyIdentifier Mozilla KeyboardEvent.keyIdentifier documentation> 
@@ -179,14 +179,14 @@ getKeyIdentifier ::
 getKeyIdentifier self
   = liftIO (fromJSString <$> (js_getKeyIdentifier self))
  
-foreign import javascript unsafe "$1[\"keyLocation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keyLocation\"]; })"
         js_getKeyLocation :: KeyboardEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.keyLocation Mozilla KeyboardEvent.keyLocation documentation> 
 getKeyLocation :: (MonadIO m) => KeyboardEvent -> m Word
 getKeyLocation self = liftIO (js_getKeyLocation self)
  
-foreign import javascript unsafe "($1[\"altGraphKey\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"altGraphKey\"] ? 1 : 0); })"
         js_getAltGraphKey :: KeyboardEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.altGraphKey Mozilla KeyboardEvent.altGraphKey documentation> 

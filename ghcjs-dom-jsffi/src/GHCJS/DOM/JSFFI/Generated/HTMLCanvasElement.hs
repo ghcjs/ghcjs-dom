@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getContext\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getContext\"]($2, $3); })"
         js_getContext ::
         HTMLCanvasElement ->
           JSString -> JSVal -> IO (Nullable RenderingContext)
@@ -100,7 +100,7 @@ toDataURL_ ::
 toDataURL_ self type'
   = liftIO (void (js_toDataURL self (toOptionalJSString type')))
  
-foreign import javascript safe "$1[\"toBlob\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"toBlob\"]($2, $3, $4); })"
         js_toBlob' ::
         HTMLCanvasElement ->
           BlobCallback -> Optional JSString -> Optional JSVal -> IO ()
@@ -117,7 +117,7 @@ toBlob' self callback type' quality
            js_toBlob' self callback (toOptionalJSString type')
              (maybeToOptional quality'))
  
-foreign import javascript safe "$1[\"captureStream\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"captureStream\"]($2); })"
         js_captureStream ::
         HTMLCanvasElement -> Optional Double -> IO MediaStream
 
@@ -148,7 +148,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => HTMLCanvasElement -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLCanvasElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 

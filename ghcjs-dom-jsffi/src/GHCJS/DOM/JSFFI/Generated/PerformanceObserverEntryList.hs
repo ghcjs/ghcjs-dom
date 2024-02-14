@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getEntries\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getEntries\"](); })"
         js_getEntries :: PerformanceObserverEntryList -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceObserverEntryList.getEntries Mozilla PerformanceObserverEntryList.getEntries documentation> 
@@ -43,7 +43,7 @@ getEntries self
 getEntries_ :: (MonadIO m) => PerformanceObserverEntryList -> m ()
 getEntries_ self = liftIO (void (js_getEntries self))
  
-foreign import javascript unsafe "$1[\"getEntriesByType\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getEntriesByType\"]($2); })"
         js_getEntriesByType ::
         PerformanceObserverEntryList -> JSString -> IO JSVal
 
@@ -63,7 +63,7 @@ getEntriesByType_ ::
 getEntriesByType_ self type'
   = liftIO (void (js_getEntriesByType self (toJSString type')))
  
-foreign import javascript unsafe "$1[\"getEntriesByName\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getEntriesByName\"]($2, $3); })"
         js_getEntriesByName ::
         PerformanceObserverEntryList ->
           JSString -> Optional JSString -> IO JSVal

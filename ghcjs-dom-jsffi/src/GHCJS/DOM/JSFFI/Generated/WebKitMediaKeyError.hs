@@ -42,7 +42,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode
 getCode :: (MonadIO m) => WebKitMediaKeyError -> m Word
 getCode self = liftIO (js_getCode self)
  
-foreign import javascript unsafe "$1[\"systemCode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"systemCode\"]; })"
         js_getSystemCode :: WebKitMediaKeyError -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyError.systemCode Mozilla WebKitMediaKeyError.systemCode documentation> 

@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getElementById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getElementById\"]($2); })"
         js_getElementById ::
         NonElementParentNode -> JSString -> IO (Nullable Element)
 

@@ -43,21 +43,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => Screen -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"colorDepth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"colorDepth\"]; })"
         js_getColorDepth :: Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.colorDepth Mozilla Screen.colorDepth documentation> 
 getColorDepth :: (MonadIO m) => Screen -> m Word
 getColorDepth self = liftIO (js_getColorDepth self)
  
-foreign import javascript unsafe "$1[\"pixelDepth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pixelDepth\"]; })"
         js_getPixelDepth :: Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.pixelDepth Mozilla Screen.pixelDepth documentation> 
 getPixelDepth :: (MonadIO m) => Screen -> m Word
 getPixelDepth self = liftIO (js_getPixelDepth self)
  
-foreign import javascript unsafe "$1[\"availLeft\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"availLeft\"]; })"
         js_getAvailLeft :: Screen -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availLeft Mozilla Screen.availLeft documentation> 
@@ -71,14 +71,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"availTop\"]; })" js_get
 getAvailTop :: (MonadIO m) => Screen -> m Int
 getAvailTop self = liftIO (js_getAvailTop self)
  
-foreign import javascript unsafe "$1[\"availHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"availHeight\"]; })"
         js_getAvailHeight :: Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availHeight Mozilla Screen.availHeight documentation> 
 getAvailHeight :: (MonadIO m) => Screen -> m Word
 getAvailHeight self = liftIO (js_getAvailHeight self)
  
-foreign import javascript unsafe "$1[\"availWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"availWidth\"]; })"
         js_getAvailWidth :: Screen -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Screen.availWidth Mozilla Screen.availWidth documentation> 

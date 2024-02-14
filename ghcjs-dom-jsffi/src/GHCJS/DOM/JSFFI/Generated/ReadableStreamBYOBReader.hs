@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStreamBYOBReader\"]($1)"
+        "(($1) => { return new window[\"ReadableStreamBYOBReader\"]($1); })"
         js_newReadableStreamBYOBReader ::
         ReadableStream -> IO ReadableStreamBYOBReader
 
@@ -89,7 +89,7 @@ cancel_ self reason
          (mapM toJSVal reason >>=
             \ reason' -> js_cancel self (maybeToOptional reason')))
  
-foreign import javascript unsafe "$1[\"releaseLock\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"releaseLock\"](); })"
         js_releaseLock :: ReadableStreamBYOBReader -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.releaseLock Mozilla ReadableStreamBYOBReader.releaseLock documentation> 

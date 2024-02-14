@@ -36,7 +36,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"cellIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"cellIndex\"]; })"
         js_getCellIndex :: HTMLTableCellElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.cellIndex Mozilla HTMLTableCellElement.cellIndex documentation> 
@@ -77,7 +77,7 @@ getAxis ::
           HTMLTableCellElement -> m result
 getAxis self = liftIO (fromJSString <$> (js_getAxis self))
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.bgColor Mozilla HTMLTableCellElement.bgColor documentation> 
@@ -128,7 +128,7 @@ getChOff ::
            HTMLTableCellElement -> m result
 getChOff self = liftIO (fromJSString <$> (js_getChOff self))
  
-foreign import javascript unsafe "$1[\"colSpan\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"colSpan\"] = $2; })"
         js_setColSpan :: HTMLTableCellElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.colSpan Mozilla HTMLTableCellElement.colSpan documentation> 
@@ -142,7 +142,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"colSpan\"]; })" js_getC
 getColSpan :: (MonadIO m) => HTMLTableCellElement -> m Word
 getColSpan self = liftIO (js_getColSpan self)
  
-foreign import javascript unsafe "$1[\"rowSpan\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"rowSpan\"] = $2; })"
         js_setRowSpan :: HTMLTableCellElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.rowSpan Mozilla HTMLTableCellElement.rowSpan documentation> 
@@ -156,7 +156,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"rowSpan\"]; })" js_getR
 getRowSpan :: (MonadIO m) => HTMLTableCellElement -> m Word
 getRowSpan self = liftIO (js_getRowSpan self)
  
-foreign import javascript unsafe "$1[\"headers\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"headers\"] = $2; })"
         js_setHeaders :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.headers Mozilla HTMLTableCellElement.headers documentation> 
@@ -173,7 +173,7 @@ getHeaders ::
              HTMLTableCellElement -> m result
 getHeaders self = liftIO (fromJSString <$> (js_getHeaders self))
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.height Mozilla HTMLTableCellElement.height documentation> 
@@ -190,21 +190,21 @@ getHeight ::
             HTMLTableCellElement -> m result
 getHeight self = liftIO (fromJSString <$> (js_getHeight self))
  
-foreign import javascript unsafe "$1[\"noWrap\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"noWrap\"] = $2; })"
         js_setNoWrap :: HTMLTableCellElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.noWrap Mozilla HTMLTableCellElement.noWrap documentation> 
 setNoWrap :: (MonadIO m) => HTMLTableCellElement -> Bool -> m ()
 setNoWrap self val = liftIO (js_setNoWrap self val)
  
-foreign import javascript unsafe "($1[\"noWrap\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"noWrap\"] ? 1 : 0); })"
         js_getNoWrap :: HTMLTableCellElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.noWrap Mozilla HTMLTableCellElement.noWrap documentation> 
 getNoWrap :: (MonadIO m) => HTMLTableCellElement -> m Bool
 getNoWrap self = liftIO (js_getNoWrap self)
  
-foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vAlign\"] = $2; })"
         js_setVAlign :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.vAlign Mozilla HTMLTableCellElement.vAlign documentation> 

@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"webkitTemporaryStorage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitTemporaryStorage\"]; })"
         js_getWebkitTemporaryStorage :: WorkerNavigator -> IO StorageQuota
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitTemporaryStorage Mozilla WorkerNavigator.webkitTemporaryStorage documentation> 
@@ -36,7 +36,7 @@ getWebkitTemporaryStorage ::
 getWebkitTemporaryStorage self
   = liftIO (js_getWebkitTemporaryStorage self)
  
-foreign import javascript unsafe "$1[\"webkitPersistentStorage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitPersistentStorage\"]; })"
         js_getWebkitPersistentStorage :: WorkerNavigator -> IO StorageQuota
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator.webkitPersistentStorage Mozilla WorkerNavigator.webkitPersistentStorage documentation> 

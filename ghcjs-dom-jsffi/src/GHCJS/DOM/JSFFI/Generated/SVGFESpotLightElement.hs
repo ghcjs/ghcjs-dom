@@ -50,7 +50,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"z\"]; })" js_getZ ::
 getZ :: (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getZ self = liftIO (js_getZ self)
  
-foreign import javascript unsafe "$1[\"pointsAtX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtX\"]; })"
         js_getPointsAtX :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
@@ -58,7 +58,7 @@ getPointsAtX ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtX self = liftIO (js_getPointsAtX self)
  
-foreign import javascript unsafe "$1[\"pointsAtY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtY\"]; })"
         js_getPointsAtY :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
@@ -66,7 +66,7 @@ getPointsAtY ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtY self = liftIO (js_getPointsAtY self)
  
-foreign import javascript unsafe "$1[\"pointsAtZ\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtZ\"]; })"
         js_getPointsAtZ :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
@@ -74,7 +74,7 @@ getPointsAtZ ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtZ self = liftIO (js_getPointsAtZ self)
  
-foreign import javascript unsafe "$1[\"specularExponent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"specularExponent\"]; })"
         js_getSpecularExponent ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 
@@ -83,7 +83,7 @@ getSpecularExponent ::
                     (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getSpecularExponent self = liftIO (js_getSpecularExponent self)
  
-foreign import javascript unsafe "$1[\"limitingConeAngle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"limitingConeAngle\"]; })"
         js_getLimitingConeAngle ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 

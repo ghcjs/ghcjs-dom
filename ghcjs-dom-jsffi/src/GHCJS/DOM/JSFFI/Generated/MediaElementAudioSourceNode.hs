@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"mediaElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"mediaElement\"]; })"
         js_getMediaElement ::
         MediaElementAudioSourceNode -> IO HTMLMediaElement
 

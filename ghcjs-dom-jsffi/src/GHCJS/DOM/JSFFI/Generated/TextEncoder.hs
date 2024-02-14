@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"TextEncoder\"]()"
+foreign import javascript unsafe "(() => { return new window[\"TextEncoder\"](); })"
         js_newTextEncoder :: IO TextEncoder
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder Mozilla TextEncoder documentation> 

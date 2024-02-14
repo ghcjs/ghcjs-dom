@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"insertRule\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertRule\"]($2, $3); })"
         js_insertRule :: CSSSupportsRule -> JSString -> Word -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule.insertRule Mozilla CSSSupportsRule.insertRule documentation> 
@@ -44,7 +44,7 @@ insertRule_ ::
 insertRule_ self rule index
   = liftIO (void (js_insertRule self (toJSString rule) index))
  
-foreign import javascript safe "$1[\"deleteRule\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteRule\"]($2); })"
         js_deleteRule :: CSSSupportsRule -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule.deleteRule Mozilla CSSSupportsRule.deleteRule documentation> 
@@ -58,7 +58,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"cssRules\"]; })" js_get
 getCssRules :: (MonadIO m) => CSSSupportsRule -> m CSSRuleList
 getCssRules self = liftIO (js_getCssRules self)
  
-foreign import javascript unsafe "$1[\"conditionText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"conditionText\"]; })"
         js_getConditionText :: CSSSupportsRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSSupportsRule.conditionText Mozilla CSSSupportsRule.conditionText documentation> 

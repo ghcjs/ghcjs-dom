@@ -38,7 +38,7 @@ getLanguage self
   = liftIO
       (fromJSString <$> (js_getLanguage (toNavigatorLanguage self)))
  
-foreign import javascript unsafe "$1[\"languages\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"languages\"]; })"
         js_getLanguages :: NavigatorLanguage -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage.languages Mozilla NavigatorLanguage.languages documentation> 

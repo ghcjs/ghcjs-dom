@@ -80,28 +80,28 @@ foreign import javascript unsafe "(($1) => { return $1[\"target\"]; })" js_getTa
 getTarget :: (MonadIO m) => Touch -> m EventTarget
 getTarget self = liftIO (js_getTarget self)
  
-foreign import javascript unsafe "$1[\"identifier\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"identifier\"]; })"
         js_getIdentifier :: Touch -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.identifier Mozilla Touch.identifier documentation> 
 getIdentifier :: (MonadIO m) => Touch -> m Word
 getIdentifier self = liftIO (js_getIdentifier self)
  
-foreign import javascript unsafe "$1[\"webkitRadiusX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitRadiusX\"]; })"
         js_getWebkitRadiusX :: Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRadiusX Mozilla Touch.webkitRadiusX documentation> 
 getWebkitRadiusX :: (MonadIO m) => Touch -> m Int
 getWebkitRadiusX self = liftIO (js_getWebkitRadiusX self)
  
-foreign import javascript unsafe "$1[\"webkitRadiusY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitRadiusY\"]; })"
         js_getWebkitRadiusY :: Touch -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRadiusY Mozilla Touch.webkitRadiusY documentation> 
 getWebkitRadiusY :: (MonadIO m) => Touch -> m Int
 getWebkitRadiusY self = liftIO (js_getWebkitRadiusY self)
  
-foreign import javascript unsafe "$1[\"webkitRotationAngle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitRotationAngle\"]; })"
         js_getWebkitRotationAngle :: Touch -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitRotationAngle Mozilla Touch.webkitRotationAngle documentation> 
@@ -109,7 +109,7 @@ getWebkitRotationAngle :: (MonadIO m) => Touch -> m Float
 getWebkitRotationAngle self
   = liftIO (js_getWebkitRotationAngle self)
  
-foreign import javascript unsafe "$1[\"webkitForce\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitForce\"]; })"
         js_getWebkitForce :: Touch -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Touch.webkitForce Mozilla Touch.webkitForce documentation> 

@@ -38,7 +38,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"openCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openCursor\"]($2, $3); })"
         js_openCursorRange ::
         IDBIndex ->
           Optional IDBKeyRange ->
@@ -64,7 +64,7 @@ openCursorRange_ self range direction
          (js_openCursorRange self (maybeToOptional range)
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openCursor\"]($2, $3); })"
         js_openCursor ::
         IDBIndex -> JSVal -> Optional IDBCursorDirection -> IO IDBRequest
 
@@ -87,7 +87,7 @@ openCursor_ self key direction
          (toJSVal key >>= \ key' -> js_openCursor self key'
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openKeyCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openKeyCursor\"]($2, $3); })"
         js_openKeyCursorRange ::
         IDBIndex ->
           Optional IDBKeyRange ->
@@ -113,7 +113,7 @@ openKeyCursorRange_ self range direction
          (js_openKeyCursorRange self (maybeToOptional range)
             (maybeToOptional direction)))
  
-foreign import javascript safe "$1[\"openKeyCursor\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"openKeyCursor\"]($2, $3); })"
         js_openKeyCursor ::
         IDBIndex -> JSVal -> Optional IDBCursorDirection -> IO IDBRequest
 
@@ -190,7 +190,7 @@ getKey_ :: (MonadIO m, ToJSVal key) => IDBIndex -> key -> m ()
 getKey_ self key
   = liftIO (void (toJSVal key >>= \ key' -> js_getKey self key'))
  
-foreign import javascript safe "$1[\"getAll\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAll\"]($2, $3); })"
         js_getAllRange ::
         IDBIndex -> Optional IDBKeyRange -> Optional Word -> IO IDBRequest
 
@@ -233,7 +233,7 @@ getAll_ self key count
          (toJSVal key >>= \ key' -> js_getAll self key'
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAllKeys\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAllKeys\"]($2, $3); })"
         js_getAllKeysRange ::
         IDBIndex -> Optional IDBKeyRange -> Optional Word -> IO IDBRequest
 
@@ -255,7 +255,7 @@ getAllKeysRange_ self range count
          (js_getAllKeysRange self (maybeToOptional range)
             (maybeToOptional count)))
  
-foreign import javascript safe "$1[\"getAllKeys\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"getAllKeys\"]($2, $3); })"
         js_getAllKeys ::
         IDBIndex -> JSVal -> Optional Word -> IO IDBRequest
 
@@ -319,7 +319,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName
 getName :: (MonadIO m, FromJSString result) => IDBIndex -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"objectStore\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"objectStore\"]; })"
         js_getObjectStore :: IDBIndex -> IO IDBObjectStore
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.objectStore Mozilla IDBIndex.objectStore documentation> 
@@ -346,14 +346,14 @@ getKeyPathUnchecked :: (MonadIO m) => IDBIndex -> m IDBKeyPath
 getKeyPathUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getKeyPath self))
  
-foreign import javascript unsafe "($1[\"multiEntry\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"multiEntry\"] ? 1 : 0); })"
         js_getMultiEntry :: IDBIndex -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.multiEntry Mozilla IDBIndex.multiEntry documentation> 
 getMultiEntry :: (MonadIO m) => IDBIndex -> m Bool
 getMultiEntry self = liftIO (js_getMultiEntry self)
  
-foreign import javascript unsafe "($1[\"unique\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"unique\"] ? 1 : 0); })"
         js_getUnique :: IDBIndex -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex.unique Mozilla IDBIndex.unique documentation> 

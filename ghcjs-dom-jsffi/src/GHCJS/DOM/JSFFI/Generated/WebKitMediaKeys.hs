@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"WebKitMediaKeys\"]($1)" js_newWebKitMediaKeys ::
+        "(($1) => { return new window[\"WebKitMediaKeys\"]($1); })" js_newWebKitMediaKeys ::
         JSString -> IO WebKitMediaKeys
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys Mozilla WebKitMediaKeys documentation> 
@@ -38,7 +38,7 @@ newWebKitMediaKeys ::
 newWebKitMediaKeys keySystem
   = liftIO (js_newWebKitMediaKeys (toJSString keySystem))
  
-foreign import javascript safe "$1[\"createSession\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createSession\"]($2, $3); })"
         js_createSession ::
         WebKitMediaKeys ->
           JSString -> Uint8Array -> IO WebKitMediaKeySession
@@ -61,7 +61,7 @@ createSession_ self type' initData
          (js_createSession self (toJSString type') (toUint8Array initData)))
  
 foreign import javascript unsafe
-        "(window[\"WebKitMediaKeys\"][\"isTypeSupported\"]($1,\n$2) ? 1 : 0)"
+        "(($1, $2) => { return (window[\"WebKitMediaKeys\"][\"isTypeSupported\"]($1,\n$2) ? 1 : 0); })"
         js_isTypeSupported :: JSString -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.isTypeSupported Mozilla WebKitMediaKeys.isTypeSupported documentation> 
@@ -83,7 +83,7 @@ isTypeSupported_ keySystem type'
          (js_isTypeSupported (toJSString keySystem)
             (toOptionalJSString type')))
  
-foreign import javascript unsafe "$1[\"keySystem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keySystem\"]; })"
         js_getKeySystem :: WebKitMediaKeys -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeys.keySystem Mozilla WebKitMediaKeys.keySystem documentation> 

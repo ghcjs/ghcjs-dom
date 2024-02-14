@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getConfiguration\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getConfiguration\"](); })"
         js_getConfiguration ::
         MediaKeySystemAccess -> IO MediaKeySystemConfiguration
 
@@ -56,7 +56,7 @@ createMediaKeys self
 createMediaKeys_ :: (MonadIO m) => MediaKeySystemAccess -> m ()
 createMediaKeys_ self = liftIO (void (js_createMediaKeys self))
  
-foreign import javascript unsafe "$1[\"keySystem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keySystem\"]; })"
         js_getKeySystem :: MediaKeySystemAccess -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess.keySystem Mozilla MediaKeySystemAccess.keySystem documentation> 

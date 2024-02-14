@@ -27,14 +27,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"charIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"charIndex\"]; })"
         js_getCharIndex :: SpeechSynthesisEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.charIndex Mozilla SpeechSynthesisEvent.charIndex documentation> 
 getCharIndex :: (MonadIO m) => SpeechSynthesisEvent -> m Word
 getCharIndex self = liftIO (js_getCharIndex self)
  
-foreign import javascript unsafe "$1[\"elapsedTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elapsedTime\"]; })"
         js_getElapsedTime :: SpeechSynthesisEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.elapsedTime Mozilla SpeechSynthesisEvent.elapsedTime documentation> 

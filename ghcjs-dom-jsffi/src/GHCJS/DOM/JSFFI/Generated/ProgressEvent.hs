@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ProgressEvent\"]($1,\n$2)" js_newProgressEvent ::
+        "(($1, $2) => { return new window[\"ProgressEvent\"]($1,\n$2); })" js_newProgressEvent ::
         JSString -> Optional ProgressEventInit -> IO ProgressEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent Mozilla ProgressEvent documentation> 
@@ -42,7 +42,7 @@ newProgressEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "($1[\"lengthComputable\"] ? 1 : 0)" js_getLengthComputable ::
+        "(($1) => { return ($1[\"lengthComputable\"] ? 1 : 0); })" js_getLengthComputable ::
         ProgressEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.lengthComputable Mozilla ProgressEvent.lengthComputable documentation> 

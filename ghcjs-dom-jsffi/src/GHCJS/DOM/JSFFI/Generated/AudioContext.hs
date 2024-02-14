@@ -55,7 +55,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new (window[\"AudioContext\"]\n||\nwindow[\"webkitAudioContext\"])()"
+        "(() => { return new (window[\"AudioContext\"]\n||\nwindow[\"webkitAudioContext\"])(); })"
         js_newAudioContext :: IO AudioContext
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext Mozilla AudioContext documentation> 
@@ -92,7 +92,7 @@ close self
   = liftIO
       ((js_close (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
-foreign import javascript safe "$1[\"createBuffer\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"createBuffer\"]($2, $3, $4); })"
         js_createBuffer ::
         AudioContext -> Word -> Word -> Float -> IO AudioBuffer
 
@@ -117,7 +117,7 @@ createBuffer_ self numberOfChannels numberOfFrames sampleRate
             numberOfFrames
             sampleRate))
  
-foreign import javascript safe "$1[\"createBuffer\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createBuffer\"]($2, $3); })"
         js_createBufferFromArrayBuffer ::
         AudioContext -> ArrayBuffer -> Bool -> IO AudioBuffer
 
@@ -161,7 +161,7 @@ decodeAudioData self audioData successCallback errorCallback
          (maybeToOptional successCallback)
          (maybeToOptional errorCallback))
  
-foreign import javascript unsafe "$1[\"createBufferSource\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createBufferSource\"](); })"
         js_createBufferSource :: AudioContext -> IO AudioBufferSourceNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBufferSource Mozilla AudioContext.createBufferSource documentation> 
@@ -223,7 +223,7 @@ createMediaStreamSource_ self mediaStream
          (js_createMediaStreamSource (toAudioContext self) mediaStream))
  
 foreign import javascript unsafe
-        "$1[\"createMediaStreamDestination\"]()"
+        "(($1) => { return $1[\"createMediaStreamDestination\"](); })"
         js_createMediaStreamDestination ::
         AudioContext -> IO MediaStreamAudioDestinationNode
 
@@ -241,7 +241,7 @@ createMediaStreamDestination_ self
   = liftIO
       (void (js_createMediaStreamDestination (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createGain\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createGain\"](); })"
         js_createGain :: AudioContext -> IO GainNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createGain Mozilla AudioContext.createGain documentation> 
@@ -254,7 +254,7 @@ createGain_ :: (MonadIO m, IsAudioContext self) => self -> m ()
 createGain_ self
   = liftIO (void (js_createGain (toAudioContext self)))
  
-foreign import javascript safe "$1[\"createDelay\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"createDelay\"]($2); })"
         js_createDelay :: AudioContext -> Optional Double -> IO DelayNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createDelay Mozilla AudioContext.createDelay documentation> 
@@ -275,7 +275,7 @@ createDelay_ self maxDelayTime
          (js_createDelay (toAudioContext self)
             (maybeToOptional maxDelayTime)))
  
-foreign import javascript unsafe "$1[\"createBiquadFilter\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createBiquadFilter\"](); })"
         js_createBiquadFilter :: AudioContext -> IO BiquadFilterNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createBiquadFilter Mozilla AudioContext.createBiquadFilter documentation> 
@@ -290,7 +290,7 @@ createBiquadFilter_ ::
 createBiquadFilter_ self
   = liftIO (void (js_createBiquadFilter (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createWaveShaper\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createWaveShaper\"](); })"
         js_createWaveShaper :: AudioContext -> IO WaveShaperNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createWaveShaper Mozilla AudioContext.createWaveShaper documentation> 
@@ -305,7 +305,7 @@ createWaveShaper_ ::
 createWaveShaper_ self
   = liftIO (void (js_createWaveShaper (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createPanner\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createPanner\"](); })"
         js_createPanner :: AudioContext -> IO PannerNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createPanner Mozilla AudioContext.createPanner documentation> 
@@ -318,7 +318,7 @@ createPanner_ :: (MonadIO m, IsAudioContext self) => self -> m ()
 createPanner_ self
   = liftIO (void (js_createPanner (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createConvolver\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createConvolver\"](); })"
         js_createConvolver :: AudioContext -> IO ConvolverNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createConvolver Mozilla AudioContext.createConvolver documentation> 
@@ -350,7 +350,7 @@ createDynamicsCompressor_ ::
 createDynamicsCompressor_ self
   = liftIO (void (js_createDynamicsCompressor (toAudioContext self)))
  
-foreign import javascript unsafe "$1[\"createAnalyser\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createAnalyser\"](); })"
         js_createAnalyser :: AudioContext -> IO AnalyserNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createAnalyser Mozilla AudioContext.createAnalyser documentation> 
@@ -365,7 +365,7 @@ createAnalyser_ self
   = liftIO (void (js_createAnalyser (toAudioContext self)))
  
 foreign import javascript safe
-        "$1[\"createScriptProcessor\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"createScriptProcessor\"]($2,\n$3, $4); })"
         js_createScriptProcessor ::
         AudioContext ->
           Word -> Optional Word -> Optional Word -> IO ScriptProcessorNode
@@ -393,7 +393,7 @@ createScriptProcessor_ self bufferSize numberOfInputChannels
             (maybeToOptional numberOfInputChannels)
             (maybeToOptional numberOfOutputChannels)))
  
-foreign import javascript unsafe "$1[\"createOscillator\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createOscillator\"](); })"
         js_createOscillator :: AudioContext -> IO OscillatorNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createOscillator Mozilla AudioContext.createOscillator documentation> 
@@ -408,7 +408,7 @@ createOscillator_ ::
 createOscillator_ self
   = liftIO (void (js_createOscillator (toAudioContext self)))
  
-foreign import javascript safe "$1[\"createPeriodicWave\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createPeriodicWave\"]($2, $3); })"
         js_createPeriodicWave ::
         AudioContext -> Float32Array -> Float32Array -> IO PeriodicWave
 
@@ -433,7 +433,7 @@ createPeriodicWave_ self real imag
          (js_createPeriodicWave (toAudioContext self) (toFloat32Array real)
             (toFloat32Array imag)))
  
-foreign import javascript safe "$1[\"createChannelSplitter\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"createChannelSplitter\"]($2); })"
         js_createChannelSplitter ::
         AudioContext -> Optional Word -> IO ChannelSplitterNode
 
@@ -455,7 +455,7 @@ createChannelSplitter_ self numberOfOutputs
          (js_createChannelSplitter (toAudioContext self)
             (maybeToOptional numberOfOutputs)))
  
-foreign import javascript safe "$1[\"createChannelMerger\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"createChannelMerger\"]($2); })"
         js_createChannelMerger ::
         AudioContext -> Optional Word -> IO ChannelMergerNode
 
@@ -477,7 +477,7 @@ createChannelMerger_ self numberOfInputs
          (js_createChannelMerger (toAudioContext self)
             (maybeToOptional numberOfInputs)))
  
-foreign import javascript unsafe "$1[\"startRendering\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"startRendering\"](); })"
         js_startRendering :: AudioContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.startRendering Mozilla AudioContext.startRendering documentation> 
@@ -485,7 +485,7 @@ startRendering :: (MonadIO m, IsAudioContext self) => self -> m ()
 startRendering self
   = liftIO (js_startRendering (toAudioContext self))
  
-foreign import javascript unsafe "$1[\"destination\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"destination\"]; })"
         js_getDestination :: AudioContext -> IO AudioDestinationNode
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.destination Mozilla AudioContext.destination documentation> 
@@ -494,7 +494,7 @@ getDestination ::
 getDestination self
   = liftIO (js_getDestination (toAudioContext self))
  
-foreign import javascript unsafe "$1[\"currentTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentTime\"]; })"
         js_getCurrentTime :: AudioContext -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.currentTime Mozilla AudioContext.currentTime documentation> 
@@ -503,7 +503,7 @@ getCurrentTime ::
 getCurrentTime self
   = liftIO (js_getCurrentTime (toAudioContext self))
  
-foreign import javascript unsafe "$1[\"sampleRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sampleRate\"]; })"
         js_getSampleRate :: AudioContext -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.sampleRate Mozilla AudioContext.sampleRate documentation> 
@@ -536,7 +536,7 @@ statechange ::
               EventName self onstatechange
 statechange = unsafeEventName (toJSString "statechange")
  
-foreign import javascript unsafe "$1[\"activeSourceCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"activeSourceCount\"]; })"
         js_getActiveSourceCount :: AudioContext -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.activeSourceCount Mozilla AudioContext.activeSourceCount documentation> 

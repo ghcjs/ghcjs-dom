@@ -27,14 +27,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"playbackTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackTime\"]; })"
         js_getPlaybackTime :: AudioProcessingEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.playbackTime Mozilla AudioProcessingEvent.playbackTime documentation> 
 getPlaybackTime :: (MonadIO m) => AudioProcessingEvent -> m Double
 getPlaybackTime self = liftIO (js_getPlaybackTime self)
  
-foreign import javascript unsafe "$1[\"inputBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"inputBuffer\"]; })"
         js_getInputBuffer :: AudioProcessingEvent -> IO AudioBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.inputBuffer Mozilla AudioProcessingEvent.inputBuffer documentation> 
@@ -42,7 +42,7 @@ getInputBuffer ::
                (MonadIO m) => AudioProcessingEvent -> m AudioBuffer
 getInputBuffer self = liftIO (js_getInputBuffer self)
  
-foreign import javascript unsafe "$1[\"outputBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"outputBuffer\"]; })"
         js_getOutputBuffer :: AudioProcessingEvent -> IO AudioBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent.outputBuffer Mozilla AudioProcessingEvent.outputBuffer documentation> 

@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"CSSFontFaceLoadEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"CSSFontFaceLoadEvent\"]($1,\n$2); })"
         js_newCSSFontFaceLoadEvent ::
         JSString ->
           Optional CSSFontFaceLoadEventInit -> IO CSSFontFaceLoadEvent

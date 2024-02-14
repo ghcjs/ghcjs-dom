@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"objectStore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"objectStore\"]($2); })"
         js_objectStore :: IDBTransaction -> JSString -> IO IDBObjectStore
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
@@ -51,7 +51,7 @@ foreign import javascript safe "(($1) => { return $1[\"abort\"](); })" js_abort 
 abort :: (MonadIO m) => IDBTransaction -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript unsafe "$1[\"objectStoreNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"objectStoreNames\"]; })"
         js_getObjectStoreNames :: IDBTransaction -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStoreNames Mozilla IDBTransaction.objectStoreNames documentation> 

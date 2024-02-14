@@ -33,7 +33,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"SpeechSynthesisUtterance\"]($1)"
+        "(($1) => { return new window[\"SpeechSynthesisUtterance\"]($1); })"
         js_newSpeechSynthesisUtterance ::
         Optional JSString -> IO SpeechSynthesisUtterance
 
@@ -114,7 +114,7 @@ getVoiceUnchecked ::
 getVoiceUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getVoice self))
  
-foreign import javascript unsafe "$1[\"volume\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"volume\"] = $2; })"
         js_setVolume :: SpeechSynthesisUtterance -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance.volume Mozilla SpeechSynthesisUtterance.volume documentation> 

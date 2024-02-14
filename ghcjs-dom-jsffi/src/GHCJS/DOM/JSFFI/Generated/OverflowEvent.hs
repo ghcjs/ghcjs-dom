@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"OverflowEvent\"]($1,\n$2)" js_newOverflowEvent ::
+        "(($1, $2) => { return new window[\"OverflowEvent\"]($1,\n$2); })" js_newOverflowEvent ::
         JSString -> Optional OverflowEventInit -> IO OverflowEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent Mozilla OverflowEvent documentation> 
@@ -53,7 +53,7 @@ getOrient :: (MonadIO m) => OverflowEvent -> m Word
 getOrient self = liftIO (js_getOrient self)
  
 foreign import javascript unsafe
-        "($1[\"horizontalOverflow\"] ? 1 : 0)" js_getHorizontalOverflow ::
+        "(($1) => { return ($1[\"horizontalOverflow\"] ? 1 : 0); })" js_getHorizontalOverflow ::
         OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.horizontalOverflow Mozilla OverflowEvent.horizontalOverflow documentation> 
@@ -61,7 +61,7 @@ getHorizontalOverflow :: (MonadIO m) => OverflowEvent -> m Bool
 getHorizontalOverflow self = liftIO (js_getHorizontalOverflow self)
  
 foreign import javascript unsafe
-        "($1[\"verticalOverflow\"] ? 1 : 0)" js_getVerticalOverflow ::
+        "(($1) => { return ($1[\"verticalOverflow\"] ? 1 : 0); })" js_getVerticalOverflow ::
         OverflowEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverflowEvent.verticalOverflow Mozilla OverflowEvent.verticalOverflow documentation> 

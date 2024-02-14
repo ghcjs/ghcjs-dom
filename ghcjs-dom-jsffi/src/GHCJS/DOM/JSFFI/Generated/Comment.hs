@@ -24,7 +24,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Comment\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Comment\"]($1); })"
         js_newComment :: Optional JSString -> IO Comment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Comment Mozilla Comment documentation> 

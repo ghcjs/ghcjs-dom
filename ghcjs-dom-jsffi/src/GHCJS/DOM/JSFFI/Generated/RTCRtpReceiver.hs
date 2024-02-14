@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getParameters\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getParameters\"](); })"
         js_getParameters :: RTCRtpReceiver -> IO RTCRtpParameters
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpReceiver.getParameters Mozilla RTCRtpReceiver.getParameters documentation> 

@@ -61,7 +61,7 @@ cancel ::
 cancel self reason
   = liftIO (toJSVal reason >>= \ reason' -> js_cancel self reason')
  
-foreign import javascript unsafe "$1[\"controller\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"controller\"]; })"
         js_getController :: ReadableStreamSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamSource.controller Mozilla ReadableStreamSource.controller documentation> 

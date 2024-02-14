@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebGPUTextureDescriptor\"]($1,\n$2, $3, $4)"
+        "(($1, $2, $3, $4) => { return new window[\"WebGPUTextureDescriptor\"]($1,\n$2, $3, $4); })"
         js_newWebGPUTextureDescriptor ::
         Word -> Word -> Word -> Bool -> IO WebGPUTextureDescriptor
 
@@ -46,7 +46,7 @@ newWebGPUTextureDescriptor pixelFormat width height mipmapped
   = liftIO
       (js_newWebGPUTextureDescriptor pixelFormat width height mipmapped)
  
-foreign import javascript unsafe "$1[\"textureType\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"textureType\"] = $2; })"
         js_setTextureType :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.textureType Mozilla WebGPUTextureDescriptor.textureType documentation> 
@@ -54,7 +54,7 @@ setTextureType ::
                (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setTextureType self val = liftIO (js_setTextureType self val)
  
-foreign import javascript unsafe "$1[\"textureType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"textureType\"]; })"
         js_getTextureType :: WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.textureType Mozilla WebGPUTextureDescriptor.textureType documentation> 
@@ -75,7 +75,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => WebGPUTextureDescriptor -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.height Mozilla WebGPUTextureDescriptor.height documentation> 
@@ -89,7 +89,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => WebGPUTextureDescriptor -> m Word
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"sampleCount\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"sampleCount\"] = $2; })"
         js_setSampleCount :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.sampleCount Mozilla WebGPUTextureDescriptor.sampleCount documentation> 
@@ -97,14 +97,14 @@ setSampleCount ::
                (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setSampleCount self val = liftIO (js_setSampleCount self val)
  
-foreign import javascript unsafe "$1[\"sampleCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"sampleCount\"]; })"
         js_getSampleCount :: WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.sampleCount Mozilla WebGPUTextureDescriptor.sampleCount documentation> 
 getSampleCount :: (MonadIO m) => WebGPUTextureDescriptor -> m Word
 getSampleCount self = liftIO (js_getSampleCount self)
  
-foreign import javascript unsafe "$1[\"storageMode\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"storageMode\"] = $2; })"
         js_setStorageMode :: WebGPUTextureDescriptor -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.storageMode Mozilla WebGPUTextureDescriptor.storageMode documentation> 
@@ -112,7 +112,7 @@ setStorageMode ::
                (MonadIO m) => WebGPUTextureDescriptor -> Word -> m ()
 setStorageMode self val = liftIO (js_setStorageMode self val)
  
-foreign import javascript unsafe "$1[\"storageMode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"storageMode\"]; })"
         js_getStorageMode :: WebGPUTextureDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUTextureDescriptor.storageMode Mozilla WebGPUTextureDescriptor.storageMode documentation> 

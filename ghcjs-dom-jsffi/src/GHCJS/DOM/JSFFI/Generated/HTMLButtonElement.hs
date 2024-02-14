@@ -41,7 +41,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "($1[\"checkValidity\"]() ? 1 : 0)" js_checkValidity ::
+        "(($1) => { return ($1[\"checkValidity\"]() ? 1 : 0); })" js_checkValidity ::
         HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.checkValidity Mozilla HTMLButtonElement.checkValidity documentation> 
@@ -53,7 +53,7 @@ checkValidity_ :: (MonadIO m) => HTMLButtonElement -> m ()
 checkValidity_ self = liftIO (void (js_checkValidity self))
  
 foreign import javascript unsafe
-        "($1[\"reportValidity\"]() ? 1 : 0)" js_reportValidity ::
+        "(($1) => { return ($1[\"reportValidity\"]() ? 1 : 0); })" js_reportValidity ::
         HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.reportValidity Mozilla HTMLButtonElement.reportValidity documentation> 
@@ -64,7 +64,7 @@ reportValidity self = liftIO (js_reportValidity self)
 reportValidity_ :: (MonadIO m) => HTMLButtonElement -> m ()
 reportValidity_ self = liftIO (void (js_reportValidity self))
  
-foreign import javascript unsafe "$1[\"setCustomValidity\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setCustomValidity\"]($2); })"
         js_setCustomValidity :: HTMLButtonElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.setCustomValidity Mozilla HTMLButtonElement.setCustomValidity documentation> 
@@ -73,28 +73,28 @@ setCustomValidity ::
 setCustomValidity self error
   = liftIO (js_setCustomValidity self (toJSString error))
  
-foreign import javascript unsafe "$1[\"autofocus\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"autofocus\"] = $2; })"
         js_setAutofocus :: HTMLButtonElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.autofocus Mozilla HTMLButtonElement.autofocus documentation> 
 setAutofocus :: (MonadIO m) => HTMLButtonElement -> Bool -> m ()
 setAutofocus self val = liftIO (js_setAutofocus self val)
  
-foreign import javascript unsafe "($1[\"autofocus\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"autofocus\"] ? 1 : 0); })"
         js_getAutofocus :: HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.autofocus Mozilla HTMLButtonElement.autofocus documentation> 
 getAutofocus :: (MonadIO m) => HTMLButtonElement -> m Bool
 getAutofocus self = liftIO (js_getAutofocus self)
  
-foreign import javascript unsafe "$1[\"disabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"disabled\"] = $2; })"
         js_setDisabled :: HTMLButtonElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.disabled Mozilla HTMLButtonElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLButtonElement -> Bool -> m ()
 setDisabled self val = liftIO (js_setDisabled self val)
  
-foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"disabled\"] ? 1 : 0); })"
         js_getDisabled :: HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.disabled Mozilla HTMLButtonElement.disabled documentation> 
@@ -108,7 +108,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm
 getForm :: (MonadIO m) => HTMLButtonElement -> m HTMLFormElement
 getForm self = liftIO (js_getForm self)
  
-foreign import javascript unsafe "$1[\"formAction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"formAction\"] = $2; })"
         js_setFormAction :: HTMLButtonElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formAction Mozilla HTMLButtonElement.formAction documentation> 
@@ -117,7 +117,7 @@ setFormAction ::
 setFormAction self val
   = liftIO (js_setFormAction self (toJSString val))
  
-foreign import javascript unsafe "$1[\"formAction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"formAction\"]; })"
         js_getFormAction :: HTMLButtonElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formAction Mozilla HTMLButtonElement.formAction documentation> 
@@ -126,7 +126,7 @@ getFormAction ::
 getFormAction self
   = liftIO (fromJSString <$> (js_getFormAction self))
  
-foreign import javascript unsafe "$1[\"formEnctype\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"formEnctype\"] = $2; })"
         js_setFormEnctype :: HTMLButtonElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formEnctype Mozilla HTMLButtonElement.formEnctype documentation> 
@@ -135,7 +135,7 @@ setFormEnctype ::
 setFormEnctype self val
   = liftIO (js_setFormEnctype self (toJSString val))
  
-foreign import javascript unsafe "$1[\"formEnctype\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"formEnctype\"]; })"
         js_getFormEnctype :: HTMLButtonElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formEnctype Mozilla HTMLButtonElement.formEnctype documentation> 
@@ -144,7 +144,7 @@ getFormEnctype ::
 getFormEnctype self
   = liftIO (fromJSString <$> (js_getFormEnctype self))
  
-foreign import javascript unsafe "$1[\"formMethod\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"formMethod\"] = $2; })"
         js_setFormMethod :: HTMLButtonElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formMethod Mozilla HTMLButtonElement.formMethod documentation> 
@@ -153,7 +153,7 @@ setFormMethod ::
 setFormMethod self val
   = liftIO (js_setFormMethod self (toJSString val))
  
-foreign import javascript unsafe "$1[\"formMethod\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"formMethod\"]; })"
         js_getFormMethod :: HTMLButtonElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formMethod Mozilla HTMLButtonElement.formMethod documentation> 
@@ -178,7 +178,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLButtonElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"formNoValidate\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"formNoValidate\"] = $2; })"
         js_setFormNoValidate :: HTMLButtonElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formNoValidate Mozilla HTMLButtonElement.formNoValidate documentation> 
@@ -186,14 +186,14 @@ setFormNoValidate ::
                   (MonadIO m) => HTMLButtonElement -> Bool -> m ()
 setFormNoValidate self val = liftIO (js_setFormNoValidate self val)
  
-foreign import javascript unsafe "($1[\"formNoValidate\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"formNoValidate\"] ? 1 : 0); })"
         js_getFormNoValidate :: HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formNoValidate Mozilla HTMLButtonElement.formNoValidate documentation> 
 getFormNoValidate :: (MonadIO m) => HTMLButtonElement -> m Bool
 getFormNoValidate self = liftIO (js_getFormNoValidate self)
  
-foreign import javascript unsafe "$1[\"formTarget\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"formTarget\"] = $2; })"
         js_setFormTarget :: HTMLButtonElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formTarget Mozilla HTMLButtonElement.formTarget documentation> 
@@ -202,7 +202,7 @@ setFormTarget ::
 setFormTarget self val
   = liftIO (js_setFormTarget self (toJSString val))
  
-foreign import javascript unsafe "$1[\"formTarget\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"formTarget\"]; })"
         js_getFormTarget :: HTMLButtonElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.formTarget Mozilla HTMLButtonElement.formTarget documentation> 
@@ -243,7 +243,7 @@ getValue ::
          (MonadIO m, FromJSString result) => HTMLButtonElement -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "($1[\"willValidate\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"willValidate\"] ? 1 : 0); })"
         js_getWillValidate :: HTMLButtonElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.willValidate Mozilla HTMLButtonElement.willValidate documentation> 
@@ -257,7 +257,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"validity\"]; })" js_get
 getValidity :: (MonadIO m) => HTMLButtonElement -> m ValidityState
 getValidity self = liftIO (js_getValidity self)
  
-foreign import javascript unsafe "$1[\"validationMessage\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"validationMessage\"]; })"
         js_getValidationMessage :: HTMLButtonElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLButtonElement.validationMessage Mozilla HTMLButtonElement.validationMessage documentation> 

@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"VTTCue\"]($1, $2, $3)" js_newVTTCue ::
+        "(($1, $2, $3) => { return new window[\"VTTCue\"]($1, $2, $3); })" js_newVTTCue ::
         Double -> Double -> JSString -> IO VTTCue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue Mozilla VTTCue documentation> 
@@ -44,7 +44,7 @@ newVTTCue ::
 newVTTCue startTime endTime text
   = liftIO (js_newVTTCue startTime endTime (toJSString text))
  
-foreign import javascript unsafe "$1[\"getCueAsHTML\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getCueAsHTML\"](); })"
         js_getCueAsHTML :: VTTCue -> IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.getCueAsHTML Mozilla VTTCue.getCueAsHTML documentation> 
@@ -55,7 +55,7 @@ getCueAsHTML self = liftIO (js_getCueAsHTML self)
 getCueAsHTML_ :: (MonadIO m) => VTTCue -> m ()
 getCueAsHTML_ self = liftIO (void (js_getCueAsHTML self))
  
-foreign import javascript safe "$1[\"vertical\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"vertical\"] = $2; })"
         js_setVertical :: VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.vertical Mozilla VTTCue.vertical documentation> 
@@ -71,14 +71,14 @@ getVertical ::
             (MonadIO m, FromJSString result) => VTTCue -> m result
 getVertical self = liftIO (fromJSString <$> (js_getVertical self))
  
-foreign import javascript unsafe "$1[\"snapToLines\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"snapToLines\"] = $2; })"
         js_setSnapToLines :: VTTCue -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
 setSnapToLines :: (MonadIO m) => VTTCue -> Bool -> m ()
 setSnapToLines self val = liftIO (js_setSnapToLines self val)
  
-foreign import javascript unsafe "($1[\"snapToLines\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"snapToLines\"] ? 1 : 0); })"
         js_getSnapToLines :: VTTCue -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.snapToLines Mozilla VTTCue.snapToLines documentation> 
@@ -99,7 +99,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"line\"]; })" js_getLine
 getLine :: (MonadIO m) => VTTCue -> m Double
 getLine self = liftIO (js_getLine self)
  
-foreign import javascript safe "$1[\"position\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"position\"] = $2; })"
         js_setPosition :: VTTCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.position Mozilla VTTCue.position documentation> 
@@ -155,7 +155,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"text\"]; })" js_getText
 getText :: (MonadIO m, FromJSString result) => VTTCue -> m result
 getText self = liftIO (fromJSString <$> (js_getText self))
  
-foreign import javascript unsafe "$1[\"regionId\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"regionId\"] = $2; })"
         js_setRegionId :: VTTCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VTTCue.regionId Mozilla VTTCue.regionId documentation> 

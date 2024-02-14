@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"assignedSlot\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"assignedSlot\"]; })"
         js_getAssignedSlot :: Slotable -> IO (Nullable HTMLSlotElement)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Slotable.assignedSlot Mozilla Slotable.assignedSlot documentation> 

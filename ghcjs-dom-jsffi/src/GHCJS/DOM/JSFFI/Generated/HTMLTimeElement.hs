@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"dateTime\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"dateTime\"] = $2; })"
         js_setDateTime :: HTMLTimeElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTimeElement.dateTime Mozilla HTMLTimeElement.dateTime documentation> 

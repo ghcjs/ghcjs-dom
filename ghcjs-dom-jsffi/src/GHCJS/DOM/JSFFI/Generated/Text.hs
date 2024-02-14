@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Text\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Text\"]($1); })"
         js_newText :: Optional JSString -> IO Text
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation> 
@@ -45,7 +45,7 @@ splitText_ :: (MonadIO m, IsText self) => self -> Word -> m ()
 splitText_ self offset
   = liftIO (void (js_splitText (toText self) offset))
  
-foreign import javascript unsafe "$1[\"wholeText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"wholeText\"]; })"
         js_getWholeText :: Text -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.wholeText Mozilla Text.wholeText documentation> 

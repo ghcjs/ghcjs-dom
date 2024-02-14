@@ -46,28 +46,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"webkitEnterFullscreen\"]()"
+foreign import javascript safe "(($1) => { return $1[\"webkitEnterFullscreen\"](); })"
         js_webkitEnterFullscreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullscreen Mozilla HTMLVideoElement.webkitEnterFullscreen documentation> 
 webkitEnterFullscreen :: (MonadIO m) => HTMLVideoElement -> m ()
 webkitEnterFullscreen self = liftIO (js_webkitEnterFullscreen self)
  
-foreign import javascript unsafe "$1[\"webkitExitFullscreen\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitExitFullscreen\"](); })"
         js_webkitExitFullscreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitExitFullscreen Mozilla HTMLVideoElement.webkitExitFullscreen documentation> 
 webkitExitFullscreen :: (MonadIO m) => HTMLVideoElement -> m ()
 webkitExitFullscreen self = liftIO (js_webkitExitFullscreen self)
  
-foreign import javascript safe "$1[\"webkitEnterFullScreen\"]()"
+foreign import javascript safe "(($1) => { return $1[\"webkitEnterFullScreen\"](); })"
         js_webkitEnterFullScreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitEnterFullScreen Mozilla HTMLVideoElement.webkitEnterFullScreen documentation> 
 webkitEnterFullScreen :: (MonadIO m) => HTMLVideoElement -> m ()
 webkitEnterFullScreen self = liftIO (js_webkitEnterFullScreen self)
  
-foreign import javascript unsafe "$1[\"webkitExitFullScreen\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitExitFullScreen\"](); })"
         js_webkitExitFullScreen :: HTMLVideoElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitExitFullScreen Mozilla HTMLVideoElement.webkitExitFullScreen documentation> 
@@ -75,7 +75,7 @@ webkitExitFullScreen :: (MonadIO m) => HTMLVideoElement -> m ()
 webkitExitFullScreen self = liftIO (js_webkitExitFullScreen self)
  
 foreign import javascript unsafe
-        "($1[\"webkitSupportsPresentationMode\"]($2) ? 1 : 0)"
+        "(($1, $2) => { return ($1[\"webkitSupportsPresentationMode\"]($2) ? 1 : 0); })"
         js_webkitSupportsPresentationMode ::
         HTMLVideoElement -> JSVal -> IO Bool
 
@@ -93,7 +93,7 @@ webkitSupportsPresentationMode_ self mode
       (void (js_webkitSupportsPresentationMode self (pToJSVal mode)))
  
 foreign import javascript unsafe
-        "$1[\"webkitSetPresentationMode\"]($2)"
+        "(($1, $2) => { return $1[\"webkitSetPresentationMode\"]($2); })"
         js_webkitSetPresentationMode :: HTMLVideoElement -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSetPresentationMode Mozilla HTMLVideoElement.webkitSetPresentationMode documentation> 
@@ -116,7 +116,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWid
 getWidth :: (MonadIO m) => HTMLVideoElement -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLVideoElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.height Mozilla HTMLVideoElement.height documentation> 
@@ -130,21 +130,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHe
 getHeight :: (MonadIO m) => HTMLVideoElement -> m Word
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"videoWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"videoWidth\"]; })"
         js_getVideoWidth :: HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.videoWidth Mozilla HTMLVideoElement.videoWidth documentation> 
 getVideoWidth :: (MonadIO m) => HTMLVideoElement -> m Word
 getVideoWidth self = liftIO (js_getVideoWidth self)
  
-foreign import javascript unsafe "$1[\"videoHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"videoHeight\"]; })"
         js_getVideoHeight :: HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.videoHeight Mozilla HTMLVideoElement.videoHeight documentation> 
 getVideoHeight :: (MonadIO m) => HTMLVideoElement -> m Word
 getVideoHeight self = liftIO (js_getVideoHeight self)
  
-foreign import javascript unsafe "$1[\"poster\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"poster\"] = $2; })"
         js_setPoster :: HTMLVideoElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.poster Mozilla HTMLVideoElement.poster documentation> 
@@ -160,14 +160,14 @@ getPoster ::
           (MonadIO m, FromJSString result) => HTMLVideoElement -> m result
 getPoster self = liftIO (fromJSString <$> (js_getPoster self))
  
-foreign import javascript unsafe "$1[\"playsInline\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"playsInline\"] = $2; })"
         js_setPlaysInline :: HTMLVideoElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.playsInline Mozilla HTMLVideoElement.playsInline documentation> 
 setPlaysInline :: (MonadIO m) => HTMLVideoElement -> Bool -> m ()
 setPlaysInline self val = liftIO (js_setPlaysInline self val)
  
-foreign import javascript unsafe "($1[\"playsInline\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"playsInline\"] ? 1 : 0); })"
         js_getPlaysInline :: HTMLVideoElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.playsInline Mozilla HTMLVideoElement.playsInline documentation> 
@@ -175,7 +175,7 @@ getPlaysInline :: (MonadIO m) => HTMLVideoElement -> m Bool
 getPlaysInline self = liftIO (js_getPlaysInline self)
  
 foreign import javascript unsafe
-        "($1[\"webkitSupportsFullscreen\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"webkitSupportsFullscreen\"] ? 1 : 0); })"
         js_getWebkitSupportsFullscreen :: HTMLVideoElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitSupportsFullscreen Mozilla HTMLVideoElement.webkitSupportsFullscreen documentation> 
@@ -185,7 +185,7 @@ getWebkitSupportsFullscreen self
   = liftIO (js_getWebkitSupportsFullscreen self)
  
 foreign import javascript unsafe
-        "($1[\"webkitDisplayingFullscreen\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"webkitDisplayingFullscreen\"] ? 1 : 0); })"
         js_getWebkitDisplayingFullscreen :: HTMLVideoElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDisplayingFullscreen Mozilla HTMLVideoElement.webkitDisplayingFullscreen documentation> 
@@ -195,7 +195,7 @@ getWebkitDisplayingFullscreen self
   = liftIO (js_getWebkitDisplayingFullscreen self)
  
 foreign import javascript unsafe
-        "$1[\"webkitWirelessVideoPlaybackDisabled\"] = $2;"
+        "(($1, $2) => { $1[\"webkitWirelessVideoPlaybackDisabled\"] = $2; })"
         js_setWebkitWirelessVideoPlaybackDisabled ::
         HTMLVideoElement -> Bool -> IO ()
 
@@ -206,7 +206,7 @@ setWebkitWirelessVideoPlaybackDisabled self val
   = liftIO (js_setWebkitWirelessVideoPlaybackDisabled self val)
  
 foreign import javascript unsafe
-        "($1[\"webkitWirelessVideoPlaybackDisabled\"] ? 1 : 0)"
+        "(($1) => { return ($1[\"webkitWirelessVideoPlaybackDisabled\"] ? 1 : 0); })"
         js_getWebkitWirelessVideoPlaybackDisabled ::
         HTMLVideoElement -> IO Bool
 
@@ -216,7 +216,7 @@ getWebkitWirelessVideoPlaybackDisabled ::
 getWebkitWirelessVideoPlaybackDisabled self
   = liftIO (js_getWebkitWirelessVideoPlaybackDisabled self)
  
-foreign import javascript unsafe "$1[\"webkitDecodedFrameCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitDecodedFrameCount\"]; })"
         js_getWebkitDecodedFrameCount :: HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDecodedFrameCount Mozilla HTMLVideoElement.webkitDecodedFrameCount documentation> 
@@ -225,7 +225,7 @@ getWebkitDecodedFrameCount ::
 getWebkitDecodedFrameCount self
   = liftIO (js_getWebkitDecodedFrameCount self)
  
-foreign import javascript unsafe "$1[\"webkitDroppedFrameCount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitDroppedFrameCount\"]; })"
         js_getWebkitDroppedFrameCount :: HTMLVideoElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitDroppedFrameCount Mozilla HTMLVideoElement.webkitDroppedFrameCount documentation> 
@@ -234,7 +234,7 @@ getWebkitDroppedFrameCount ::
 getWebkitDroppedFrameCount self
   = liftIO (js_getWebkitDroppedFrameCount self)
  
-foreign import javascript unsafe "$1[\"webkitPresentationMode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitPresentationMode\"]; })"
         js_getWebkitPresentationMode :: HTMLVideoElement -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement.webkitPresentationMode Mozilla HTMLVideoElement.webkitPresentationMode documentation> 

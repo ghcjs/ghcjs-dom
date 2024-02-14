@@ -34,7 +34,7 @@ getAzimuth ::
            (MonadIO m) => SVGFEDistantLightElement -> m SVGAnimatedNumber
 getAzimuth self = liftIO (js_getAzimuth self)
  
-foreign import javascript unsafe "$1[\"elevation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elevation\"]; })"
         js_getElevation :: SVGFEDistantLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDistantLightElement.elevation Mozilla SVGFEDistantLightElement.elevation documentation> 

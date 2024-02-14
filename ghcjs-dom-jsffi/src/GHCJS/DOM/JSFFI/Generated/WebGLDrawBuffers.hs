@@ -44,7 +44,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"drawBuffersWEBGL\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"drawBuffersWEBGL\"]($2); })"
         js_drawBuffersWEBGL :: WebGLDrawBuffers -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGLDrawBuffers.drawBuffersWEBGL Mozilla WebGLDrawBuffers.drawBuffersWEBGL documentation> 

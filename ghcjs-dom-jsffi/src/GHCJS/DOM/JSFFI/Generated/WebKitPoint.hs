@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitPoint\"]($1,\n$2)" js_newWebKitPoint ::
+        "(($1, $2) => { return new window[\"WebKitPoint\"]($1,\n$2); })" js_newWebKitPoint ::
         Optional Float -> Optional Float -> IO WebKitPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitPoint Mozilla WebKitPoint documentation> 

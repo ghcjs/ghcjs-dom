@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"HashChangeEvent\"]($1,\n$2)" js_newHashChangeEvent ::
+        "(($1, $2) => { return new window[\"HashChangeEvent\"]($1,\n$2); })" js_newHashChangeEvent ::
         JSString -> Optional HashChangeEventInit -> IO HashChangeEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent Mozilla HashChangeEvent documentation> 
@@ -41,7 +41,7 @@ newHashChangeEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initHashChangeEvent\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"initHashChangeEvent\"]($2,\n$3, $4, $5, $6); })"
         js_initHashChangeEvent ::
         HashChangeEvent ->
           Optional JSString ->

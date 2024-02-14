@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaStreamEvent\"]($1,\n$2)" js_newMediaStreamEvent
+        "(($1, $2) => { return new window[\"MediaStreamEvent\"]($1,\n$2); })" js_newMediaStreamEvent
         :: JSString -> Optional MediaStreamEventInit -> IO MediaStreamEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamEvent Mozilla MediaStreamEvent documentation> 

@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setPosition\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setPosition\"]($2, $3, $4); })"
         js_setPosition :: AudioListener -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.setPosition Mozilla AudioListener.setPosition documentation> 
@@ -51,7 +51,7 @@ setOrientation ::
 setOrientation self x y z xUp yUp zUp
   = liftIO (js_setOrientation self x y z xUp yUp zUp)
  
-foreign import javascript unsafe "$1[\"setVelocity\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setVelocity\"]($2, $3, $4); })"
         js_setVelocity :: AudioListener -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.setVelocity Mozilla AudioListener.setVelocity documentation> 
@@ -59,28 +59,28 @@ setVelocity ::
             (MonadIO m) => AudioListener -> Float -> Float -> Float -> m ()
 setVelocity self x y z = liftIO (js_setVelocity self x y z)
  
-foreign import javascript unsafe "$1[\"dopplerFactor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"dopplerFactor\"] = $2; })"
         js_setDopplerFactor :: AudioListener -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.dopplerFactor Mozilla AudioListener.dopplerFactor documentation> 
 setDopplerFactor :: (MonadIO m) => AudioListener -> Float -> m ()
 setDopplerFactor self val = liftIO (js_setDopplerFactor self val)
  
-foreign import javascript unsafe "$1[\"dopplerFactor\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"dopplerFactor\"]; })"
         js_getDopplerFactor :: AudioListener -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.dopplerFactor Mozilla AudioListener.dopplerFactor documentation> 
 getDopplerFactor :: (MonadIO m) => AudioListener -> m Float
 getDopplerFactor self = liftIO (js_getDopplerFactor self)
  
-foreign import javascript unsafe "$1[\"speedOfSound\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"speedOfSound\"] = $2; })"
         js_setSpeedOfSound :: AudioListener -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.speedOfSound Mozilla AudioListener.speedOfSound documentation> 
 setSpeedOfSound :: (MonadIO m) => AudioListener -> Float -> m ()
 setSpeedOfSound self val = liftIO (js_setSpeedOfSound self val)
  
-foreign import javascript unsafe "$1[\"speedOfSound\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"speedOfSound\"]; })"
         js_getSpeedOfSound :: AudioListener -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioListener.speedOfSound Mozilla AudioListener.speedOfSound documentation> 

@@ -29,14 +29,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"creationTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"creationTime\"]; })"
         js_getCreationTime :: VideoPlaybackQuality -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.creationTime Mozilla VideoPlaybackQuality.creationTime documentation> 
 getCreationTime :: (MonadIO m) => VideoPlaybackQuality -> m Double
 getCreationTime self = liftIO (js_getCreationTime self)
  
-foreign import javascript unsafe "$1[\"totalVideoFrames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"totalVideoFrames\"]; })"
         js_getTotalVideoFrames :: VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.totalVideoFrames Mozilla VideoPlaybackQuality.totalVideoFrames documentation> 
@@ -44,7 +44,7 @@ getTotalVideoFrames ::
                     (MonadIO m) => VideoPlaybackQuality -> m Word
 getTotalVideoFrames self = liftIO (js_getTotalVideoFrames self)
  
-foreign import javascript unsafe "$1[\"droppedVideoFrames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"droppedVideoFrames\"]; })"
         js_getDroppedVideoFrames :: VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.droppedVideoFrames Mozilla VideoPlaybackQuality.droppedVideoFrames documentation> 
@@ -52,7 +52,7 @@ getDroppedVideoFrames ::
                       (MonadIO m) => VideoPlaybackQuality -> m Word
 getDroppedVideoFrames self = liftIO (js_getDroppedVideoFrames self)
  
-foreign import javascript unsafe "$1[\"corruptedVideoFrames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"corruptedVideoFrames\"]; })"
         js_getCorruptedVideoFrames :: VideoPlaybackQuality -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.corruptedVideoFrames Mozilla VideoPlaybackQuality.corruptedVideoFrames documentation> 
@@ -61,7 +61,7 @@ getCorruptedVideoFrames ::
 getCorruptedVideoFrames self
   = liftIO (js_getCorruptedVideoFrames self)
  
-foreign import javascript unsafe "$1[\"totalFrameDelay\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"totalFrameDelay\"]; })"
         js_getTotalFrameDelay :: VideoPlaybackQuality -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/VideoPlaybackQuality.totalFrameDelay Mozilla VideoPlaybackQuality.totalFrameDelay documentation> 

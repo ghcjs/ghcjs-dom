@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ErrorEvent\"]($1, $2)" js_newErrorEvent ::
+        "(($1, $2) => { return new window[\"ErrorEvent\"]($1, $2); })" js_newErrorEvent ::
         JSString -> Optional ErrorEventInit -> IO ErrorEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent Mozilla ErrorEvent documentation> 

@@ -34,7 +34,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"form\"]; })" js_getForm
 getForm :: (MonadIO m) => HTMLLabelElement -> m HTMLFormElement
 getForm self = liftIO (js_getForm self)
  
-foreign import javascript unsafe "$1[\"htmlFor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"htmlFor\"] = $2; })"
         js_setHtmlFor :: HTMLLabelElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement.htmlFor Mozilla HTMLLabelElement.htmlFor documentation> 

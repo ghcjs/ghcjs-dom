@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"postMessage\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"postMessage\"]($2); })"
         js_postMessage ::
         UserMessageHandler -> SerializedScriptValue -> IO ()
 

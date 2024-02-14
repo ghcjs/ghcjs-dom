@@ -46,7 +46,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"HTMLElement\"]()"
+foreign import javascript unsafe "(() => { return new window[\"HTMLElement\"](); })"
         js_newHTMLElement :: IO HTMLElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement Mozilla HTMLElement documentation> 
@@ -114,7 +114,7 @@ getLang ::
 getLang self
   = liftIO (fromJSString <$> (js_getLang (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"translate\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"translate\"] = $2; })"
         js_setTranslate :: HTMLElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.translate Mozilla HTMLElement.translate documentation> 
@@ -123,7 +123,7 @@ setTranslate ::
 setTranslate self val
   = liftIO (js_setTranslate (toHTMLElement self) val)
  
-foreign import javascript unsafe "($1[\"translate\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"translate\"] ? 1 : 0); })"
         js_getTranslate :: HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.translate Mozilla HTMLElement.translate documentation> 
@@ -158,7 +158,7 @@ getDataset ::
            (MonadIO m, IsHTMLElement self) => self -> m DOMStringMap
 getDataset self = liftIO (js_getDataset (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"hidden\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"hidden\"] = $2; })"
         js_setHidden :: HTMLElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.hidden Mozilla HTMLElement.hidden documentation> 
@@ -166,14 +166,14 @@ setHidden ::
           (MonadIO m, IsHTMLElement self) => self -> Bool -> m ()
 setHidden self val = liftIO (js_setHidden (toHTMLElement self) val)
  
-foreign import javascript unsafe "($1[\"hidden\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"hidden\"] ? 1 : 0); })"
         js_getHidden :: HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.hidden Mozilla HTMLElement.hidden documentation> 
 getHidden :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getHidden self = liftIO (js_getHidden (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"tabIndex\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"tabIndex\"] = $2; })"
         js_setTabIndex :: HTMLElement -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.tabIndex Mozilla HTMLElement.tabIndex documentation> 
@@ -189,7 +189,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"tabIndex\"]; })" js_get
 getTabIndex :: (MonadIO m, IsHTMLElement self) => self -> m Int
 getTabIndex self = liftIO (js_getTabIndex (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"accessKey\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"accessKey\"] = $2; })"
         js_setAccessKey :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.accessKey Mozilla HTMLElement.accessKey documentation> 
@@ -199,7 +199,7 @@ setAccessKey ::
 setAccessKey self val
   = liftIO (js_setAccessKey (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"accessKey\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"accessKey\"]; })"
         js_getAccessKey :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.accessKey Mozilla HTMLElement.accessKey documentation> 
@@ -209,7 +209,7 @@ getAccessKey ::
 getAccessKey self
   = liftIO (fromJSString <$> (js_getAccessKey (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"draggable\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"draggable\"] = $2; })"
         js_setDraggable :: HTMLElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
@@ -218,14 +218,14 @@ setDraggable ::
 setDraggable self val
   = liftIO (js_setDraggable (toHTMLElement self) val)
  
-foreign import javascript unsafe "($1[\"draggable\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"draggable\"] ? 1 : 0); })"
         js_getDraggable :: HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.draggable Mozilla HTMLElement.draggable documentation> 
 getDraggable :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getDraggable self = liftIO (js_getDraggable (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"spellcheck\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"spellcheck\"] = $2; })"
         js_setSpellcheck :: HTMLElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
@@ -234,14 +234,14 @@ setSpellcheck ::
 setSpellcheck self val
   = liftIO (js_setSpellcheck (toHTMLElement self) val)
  
-foreign import javascript unsafe "($1[\"spellcheck\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"spellcheck\"] ? 1 : 0); })"
         js_getSpellcheck :: HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.spellcheck Mozilla HTMLElement.spellcheck documentation> 
 getSpellcheck :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getSpellcheck self = liftIO (js_getSpellcheck (toHTMLElement self))
  
-foreign import javascript safe "$1[\"innerText\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"innerText\"] = $2; })"
         js_setInnerText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
@@ -251,7 +251,7 @@ setInnerText ::
 setInnerText self val
   = liftIO (js_setInnerText (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"innerText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"innerText\"]; })"
         js_getInnerText :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.innerText Mozilla HTMLElement.innerText documentation> 
@@ -261,7 +261,7 @@ getInnerText ::
 getInnerText self
   = liftIO (fromJSString <$> (js_getInnerText (toHTMLElement self)))
  
-foreign import javascript safe "$1[\"contentEditable\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"contentEditable\"] = $2; })"
         js_setContentEditable :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
@@ -272,7 +272,7 @@ setContentEditable self val
   = liftIO
       (js_setContentEditable (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"contentEditable\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"contentEditable\"]; })"
         js_getContentEditable :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.contentEditable Mozilla HTMLElement.contentEditable documentation> 
@@ -284,7 +284,7 @@ getContentEditable self
       (fromJSString <$> (js_getContentEditable (toHTMLElement self)))
  
 foreign import javascript unsafe
-        "($1[\"isContentEditable\"] ? 1 : 0)" js_getIsContentEditable ::
+        "(($1) => { return ($1[\"isContentEditable\"] ? 1 : 0); })" js_getIsContentEditable ::
         HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.isContentEditable Mozilla HTMLElement.isContentEditable documentation> 
@@ -293,7 +293,7 @@ getIsContentEditable ::
 getIsContentEditable self
   = liftIO (js_getIsContentEditable (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"offsetParent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"offsetParent\"]; })"
         js_getOffsetParent :: HTMLElement -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetParent Mozilla HTMLElement.offsetParent documentation> 
@@ -319,14 +319,14 @@ getOffsetParentUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getOffsetParent (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"offsetTop\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"offsetTop\"]; })"
         js_getOffsetTop :: HTMLElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetTop Mozilla HTMLElement.offsetTop documentation> 
 getOffsetTop :: (MonadIO m, IsHTMLElement self) => self -> m Double
 getOffsetTop self = liftIO (js_getOffsetTop (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"offsetLeft\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"offsetLeft\"]; })"
         js_getOffsetLeft :: HTMLElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetLeft Mozilla HTMLElement.offsetLeft documentation> 
@@ -334,7 +334,7 @@ getOffsetLeft ::
               (MonadIO m, IsHTMLElement self) => self -> m Double
 getOffsetLeft self = liftIO (js_getOffsetLeft (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"offsetWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"offsetWidth\"]; })"
         js_getOffsetWidth :: HTMLElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetWidth Mozilla HTMLElement.offsetWidth documentation> 
@@ -343,7 +343,7 @@ getOffsetWidth ::
 getOffsetWidth self
   = liftIO (js_getOffsetWidth (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"offsetHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"offsetHeight\"]; })"
         js_getOffsetHeight :: HTMLElement -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.offsetHeight Mozilla HTMLElement.offsetHeight documentation> 
@@ -352,7 +352,7 @@ getOffsetHeight ::
 getOffsetHeight self
   = liftIO (js_getOffsetHeight (toHTMLElement self))
  
-foreign import javascript safe "$1[\"outerText\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"outerText\"] = $2; })"
         js_setOuterText :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
@@ -362,7 +362,7 @@ setOuterText ::
 setOuterText self val
   = liftIO (js_setOuterText (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"outerText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"outerText\"]; })"
         js_getOuterText :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.outerText Mozilla HTMLElement.outerText documentation> 
@@ -372,7 +372,7 @@ getOuterText ::
 getOuterText self
   = liftIO (fromJSString <$> (js_getOuterText (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"autocorrect\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"autocorrect\"] = $2; })"
         js_setAutocorrect :: HTMLElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocorrect Mozilla HTMLElement.autocorrect documentation> 
@@ -381,7 +381,7 @@ setAutocorrect ::
 setAutocorrect self val
   = liftIO (js_setAutocorrect (toHTMLElement self) val)
  
-foreign import javascript unsafe "($1[\"autocorrect\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"autocorrect\"] ? 1 : 0); })"
         js_getAutocorrect :: HTMLElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocorrect Mozilla HTMLElement.autocorrect documentation> 
@@ -389,7 +389,7 @@ getAutocorrect :: (MonadIO m, IsHTMLElement self) => self -> m Bool
 getAutocorrect self
   = liftIO (js_getAutocorrect (toHTMLElement self))
  
-foreign import javascript unsafe "$1[\"autocapitalize\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"autocapitalize\"] = $2; })"
         js_setAutocapitalize :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
@@ -400,7 +400,7 @@ setAutocapitalize self val
   = liftIO
       (js_setAutocapitalize (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"autocapitalize\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"autocapitalize\"]; })"
         js_getAutocapitalize :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.autocapitalize Mozilla HTMLElement.autocapitalize documentation> 
@@ -411,7 +411,7 @@ getAutocapitalize self
   = liftIO
       (fromJSString <$> (js_getAutocapitalize (toHTMLElement self)))
  
-foreign import javascript unsafe "$1[\"webkitdropzone\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"webkitdropzone\"] = $2; })"
         js_setWebkitdropzone :: HTMLElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 
@@ -422,7 +422,7 @@ setWebkitdropzone self val
   = liftIO
       (js_setWebkitdropzone (toHTMLElement self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"webkitdropzone\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitdropzone\"]; })"
         js_getWebkitdropzone :: HTMLElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement.webkitdropzone Mozilla HTMLElement.webkitdropzone documentation> 

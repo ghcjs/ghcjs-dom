@@ -34,7 +34,7 @@ getPosition ::
             (MonadIO m) => XMLHttpRequestProgressEvent -> m Word64
 getPosition self = liftIO (round <$> (js_getPosition self))
  
-foreign import javascript unsafe "$1[\"totalSize\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"totalSize\"]; })"
         js_getTotalSize :: XMLHttpRequestProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestProgressEvent.totalSize Mozilla XMLHttpRequestProgressEvent.totalSize documentation> 

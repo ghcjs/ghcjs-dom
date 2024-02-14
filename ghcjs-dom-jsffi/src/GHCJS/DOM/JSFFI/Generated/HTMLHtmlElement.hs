@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"version\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"version\"] = $2; })"
         js_setVersion :: HTMLHtmlElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.version Mozilla HTMLHtmlElement.version documentation> 
@@ -43,7 +43,7 @@ getVersion ::
            (MonadIO m, FromJSString result) => HTMLHtmlElement -> m result
 getVersion self = liftIO (fromJSString <$> (js_getVersion self))
  
-foreign import javascript unsafe "$1[\"manifest\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"manifest\"] = $2; })"
         js_setManifest :: HTMLHtmlElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLHtmlElement.manifest Mozilla HTMLHtmlElement.manifest documentation> 

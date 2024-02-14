@@ -37,7 +37,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setPosition\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setPosition\"]($2, $3, $4); })"
         js_setPosition :: PannerNode -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.setPosition Mozilla webkitAudioPannerNode.setPosition documentation> 
@@ -54,7 +54,7 @@ setOrientation ::
                (MonadIO m) => PannerNode -> Float -> Float -> Float -> m ()
 setOrientation self x y z = liftIO (js_setOrientation self x y z)
  
-foreign import javascript unsafe "$1[\"setVelocity\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setVelocity\"]($2, $3, $4); })"
         js_setVelocity :: PannerNode -> Float -> Float -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.setVelocity Mozilla webkitAudioPannerNode.setVelocity documentation> 
@@ -62,7 +62,7 @@ setVelocity ::
             (MonadIO m) => PannerNode -> Float -> Float -> Float -> m ()
 setVelocity self x y z = liftIO (js_setVelocity self x y z)
  
-foreign import javascript unsafe "$1[\"panningModel\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"panningModel\"] = $2; })"
         js_setPanningModel :: PannerNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.panningModel Mozilla webkitAudioPannerNode.panningModel documentation> 
@@ -71,7 +71,7 @@ setPanningModel ::
 setPanningModel self val
   = liftIO (js_setPanningModel self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"panningModel\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"panningModel\"]; })"
         js_getPanningModel :: PannerNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.panningModel Mozilla webkitAudioPannerNode.panningModel documentation> 
@@ -79,7 +79,7 @@ getPanningModel :: (MonadIO m) => PannerNode -> m PanningModelType
 getPanningModel self
   = liftIO ((js_getPanningModel self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"distanceModel\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"distanceModel\"] = $2; })"
         js_setDistanceModel :: PannerNode -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.distanceModel Mozilla webkitAudioPannerNode.distanceModel documentation> 
@@ -88,7 +88,7 @@ setDistanceModel ::
 setDistanceModel self val
   = liftIO (js_setDistanceModel self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"distanceModel\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"distanceModel\"]; })"
         js_getDistanceModel :: PannerNode -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.distanceModel Mozilla webkitAudioPannerNode.distanceModel documentation> 
@@ -97,84 +97,84 @@ getDistanceModel ::
 getDistanceModel self
   = liftIO ((js_getDistanceModel self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"refDistance\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"refDistance\"] = $2; })"
         js_setRefDistance :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.refDistance Mozilla webkitAudioPannerNode.refDistance documentation> 
 setRefDistance :: (MonadIO m) => PannerNode -> Double -> m ()
 setRefDistance self val = liftIO (js_setRefDistance self val)
  
-foreign import javascript unsafe "$1[\"refDistance\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"refDistance\"]; })"
         js_getRefDistance :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.refDistance Mozilla webkitAudioPannerNode.refDistance documentation> 
 getRefDistance :: (MonadIO m) => PannerNode -> m Double
 getRefDistance self = liftIO (js_getRefDistance self)
  
-foreign import javascript unsafe "$1[\"maxDistance\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"maxDistance\"] = $2; })"
         js_setMaxDistance :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.maxDistance Mozilla webkitAudioPannerNode.maxDistance documentation> 
 setMaxDistance :: (MonadIO m) => PannerNode -> Double -> m ()
 setMaxDistance self val = liftIO (js_setMaxDistance self val)
  
-foreign import javascript unsafe "$1[\"maxDistance\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maxDistance\"]; })"
         js_getMaxDistance :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.maxDistance Mozilla webkitAudioPannerNode.maxDistance documentation> 
 getMaxDistance :: (MonadIO m) => PannerNode -> m Double
 getMaxDistance self = liftIO (js_getMaxDistance self)
  
-foreign import javascript unsafe "$1[\"rolloffFactor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"rolloffFactor\"] = $2; })"
         js_setRolloffFactor :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.rolloffFactor Mozilla webkitAudioPannerNode.rolloffFactor documentation> 
 setRolloffFactor :: (MonadIO m) => PannerNode -> Double -> m ()
 setRolloffFactor self val = liftIO (js_setRolloffFactor self val)
  
-foreign import javascript unsafe "$1[\"rolloffFactor\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"rolloffFactor\"]; })"
         js_getRolloffFactor :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.rolloffFactor Mozilla webkitAudioPannerNode.rolloffFactor documentation> 
 getRolloffFactor :: (MonadIO m) => PannerNode -> m Double
 getRolloffFactor self = liftIO (js_getRolloffFactor self)
  
-foreign import javascript unsafe "$1[\"coneInnerAngle\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"coneInnerAngle\"] = $2; })"
         js_setConeInnerAngle :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneInnerAngle Mozilla webkitAudioPannerNode.coneInnerAngle documentation> 
 setConeInnerAngle :: (MonadIO m) => PannerNode -> Double -> m ()
 setConeInnerAngle self val = liftIO (js_setConeInnerAngle self val)
  
-foreign import javascript unsafe "$1[\"coneInnerAngle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"coneInnerAngle\"]; })"
         js_getConeInnerAngle :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneInnerAngle Mozilla webkitAudioPannerNode.coneInnerAngle documentation> 
 getConeInnerAngle :: (MonadIO m) => PannerNode -> m Double
 getConeInnerAngle self = liftIO (js_getConeInnerAngle self)
  
-foreign import javascript unsafe "$1[\"coneOuterAngle\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"coneOuterAngle\"] = $2; })"
         js_setConeOuterAngle :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterAngle Mozilla webkitAudioPannerNode.coneOuterAngle documentation> 
 setConeOuterAngle :: (MonadIO m) => PannerNode -> Double -> m ()
 setConeOuterAngle self val = liftIO (js_setConeOuterAngle self val)
  
-foreign import javascript unsafe "$1[\"coneOuterAngle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"coneOuterAngle\"]; })"
         js_getConeOuterAngle :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterAngle Mozilla webkitAudioPannerNode.coneOuterAngle documentation> 
 getConeOuterAngle :: (MonadIO m) => PannerNode -> m Double
 getConeOuterAngle self = liftIO (js_getConeOuterAngle self)
  
-foreign import javascript unsafe "$1[\"coneOuterGain\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"coneOuterGain\"] = $2; })"
         js_setConeOuterGain :: PannerNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterGain Mozilla webkitAudioPannerNode.coneOuterGain documentation> 
 setConeOuterGain :: (MonadIO m) => PannerNode -> Double -> m ()
 setConeOuterGain self val = liftIO (js_setConeOuterGain self val)
  
-foreign import javascript unsafe "$1[\"coneOuterGain\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"coneOuterGain\"]; })"
         js_getConeOuterGain :: PannerNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitAudioPannerNode.coneOuterGain Mozilla webkitAudioPannerNode.coneOuterGain documentation> 

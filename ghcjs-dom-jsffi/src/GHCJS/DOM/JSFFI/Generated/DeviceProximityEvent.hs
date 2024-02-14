@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"DeviceProximityEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"DeviceProximityEvent\"]($1,\n$2); })"
         js_newDeviceProximityEvent ::
         JSString ->
           Optional DeviceProximityEventInit -> IO DeviceProximityEvent

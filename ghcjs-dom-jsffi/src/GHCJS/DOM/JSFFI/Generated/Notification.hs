@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"Notification\"]($1,\n$2)" js_newNotification ::
+        "(($1, $2) => { return new window[\"Notification\"]($1,\n$2); })" js_newNotification ::
         JSString -> Optional NotificationOptions -> IO Notification
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification Mozilla Notification documentation> 
@@ -56,7 +56,7 @@ close :: (MonadIO m) => Notification -> m ()
 close self = liftIO (js_close self)
  
 foreign import javascript unsafe
-        "window[\"Notification\"][\"requestPermission\"]($1)"
+        "(($1) => { return window[\"Notification\"][\"requestPermission\"]($1); })"
         js_requestPermission ::
         Optional (NotificationPermissionCallback callback) -> IO ()
 
@@ -67,7 +67,7 @@ requestPermission ::
 requestPermission callback
   = liftIO (js_requestPermission (maybeToOptional callback))
  
-foreign import javascript unsafe "$1[\"permission\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"permission\"]; })"
         js_getPermission :: Notification -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Notification.permission Mozilla Notification.permission documentation> 

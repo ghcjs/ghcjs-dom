@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"createObjectStore\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createObjectStore\"]($2, $3); })"
         js_createObjectStore ::
         IDBDatabase ->
           JSString -> Optional IDBObjectStoreParameters -> IO IDBObjectStore
@@ -55,7 +55,7 @@ createObjectStore_ self name parameters
          (js_createObjectStore self (toJSString name)
             (maybeToOptional parameters)))
  
-foreign import javascript safe "$1[\"deleteObjectStore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteObjectStore\"]($2); })"
         js_deleteObjectStore :: IDBDatabase -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.deleteObjectStore Mozilla IDBDatabase.deleteObjectStore documentation> 
@@ -64,7 +64,7 @@ deleteObjectStore ::
 deleteObjectStore self name
   = liftIO (js_deleteObjectStore self (toJSString name))
  
-foreign import javascript safe "$1[\"transaction\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"transaction\"]($2, $3); })"
         js_transaction ::
         IDBDatabase ->
           StringOrStrings -> Optional IDBTransactionMode -> IO IDBTransaction
@@ -113,7 +113,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"version\"]; })" js_getV
 getVersion :: (MonadIO m) => IDBDatabase -> m Word64
 getVersion self = liftIO (round <$> (js_getVersion self))
  
-foreign import javascript unsafe "$1[\"objectStoreNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"objectStoreNames\"]; })"
         js_getObjectStoreNames :: IDBDatabase -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 

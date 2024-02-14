@@ -37,7 +37,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebGPURenderPipelineDescriptor\"]()"
+        "(() => { return new window[\"WebGPURenderPipelineDescriptor\"](); })"
         js_newWebGPURenderPipelineDescriptor ::
         IO WebGPURenderPipelineDescriptor
 
@@ -54,7 +54,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"reset\"](); })" js_rese
 reset :: (MonadIO m) => WebGPURenderPipelineDescriptor -> m ()
 reset self = liftIO (js_reset self)
  
-foreign import javascript unsafe "$1[\"vertexFunction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vertexFunction\"] = $2; })"
         js_setVertexFunction ::
         WebGPURenderPipelineDescriptor -> Optional WebGPUFunction -> IO ()
 
@@ -65,7 +65,7 @@ setVertexFunction ::
 setVertexFunction self val
   = liftIO (js_setVertexFunction self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"vertexFunction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"vertexFunction\"]; })"
         js_getVertexFunction ::
         WebGPURenderPipelineDescriptor -> IO (Nullable WebGPUFunction)
 
@@ -92,7 +92,7 @@ getVertexFunctionUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getVertexFunction self))
  
-foreign import javascript unsafe "$1[\"fragmentFunction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"fragmentFunction\"] = $2; })"
         js_setFragmentFunction ::
         WebGPURenderPipelineDescriptor -> Optional WebGPUFunction -> IO ()
 
@@ -103,7 +103,7 @@ setFragmentFunction ::
 setFragmentFunction self val
   = liftIO (js_setFragmentFunction self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"fragmentFunction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"fragmentFunction\"]; })"
         js_getFragmentFunction ::
         WebGPURenderPipelineDescriptor -> IO (Nullable WebGPUFunction)
 
@@ -130,7 +130,7 @@ getFragmentFunctionUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getFragmentFunction self))
  
-foreign import javascript unsafe "$1[\"colorAttachments\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"colorAttachments\"]; })"
         js_getColorAttachments ::
         WebGPURenderPipelineDescriptor -> IO JSVal
 
@@ -143,7 +143,7 @@ getColorAttachments self
   = liftIO ((js_getColorAttachments self) >>= fromJSValUnchecked)
  
 foreign import javascript unsafe
-        "$1[\"depthAttachmentPixelFormat\"] = $2;"
+        "(($1, $2) => { $1[\"depthAttachmentPixelFormat\"] = $2; })"
         js_setDepthAttachmentPixelFormat ::
         WebGPURenderPipelineDescriptor -> Word -> IO ()
 
@@ -154,7 +154,7 @@ setDepthAttachmentPixelFormat self val
   = liftIO (js_setDepthAttachmentPixelFormat self val)
  
 foreign import javascript unsafe
-        "$1[\"depthAttachmentPixelFormat\"]"
+        "(($1) => { return $1[\"depthAttachmentPixelFormat\"]; })"
         js_getDepthAttachmentPixelFormat ::
         WebGPURenderPipelineDescriptor -> IO Word
 

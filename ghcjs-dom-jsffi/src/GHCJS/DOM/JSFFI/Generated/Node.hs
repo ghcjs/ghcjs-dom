@@ -66,7 +66,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getRootNode\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getRootNode\"]($2); })"
         js_getRootNode :: Node -> Optional GetRootNodeOptions -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.getRootNode Mozilla Node.getRootNode documentation> 
@@ -85,7 +85,7 @@ getRootNode_ self options
       (void (js_getRootNode (toNode self) (maybeToOptional options)))
  
 foreign import javascript unsafe
-        "($1[\"hasChildNodes\"]() ? 1 : 0)" js_hasChildNodes ::
+        "(($1) => { return ($1[\"hasChildNodes\"]() ? 1 : 0); })" js_hasChildNodes ::
         Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.hasChildNodes Mozilla Node.hasChildNodes documentation> 
@@ -117,7 +117,7 @@ cloneNode_ self deep
   = liftIO (void (js_cloneNode (toNode self) deep))
  
 foreign import javascript unsafe
-        "($1[\"isEqualNode\"]($2) ? 1 : 0)" js_isEqualNode ::
+        "(($1, $2) => { return ($1[\"isEqualNode\"]($2) ? 1 : 0); })" js_isEqualNode ::
         Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isEqualNode Mozilla Node.isEqualNode documentation> 
@@ -139,7 +139,7 @@ isEqualNode_ self other
          (js_isEqualNode (toNode self)
             (maybeToOptional (fmap toNode other))))
  
-foreign import javascript unsafe "($1[\"isSameNode\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"isSameNode\"]($2) ? 1 : 0); })"
         js_isSameNode :: Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isSameNode Mozilla Node.isSameNode documentation> 
@@ -177,7 +177,7 @@ compareDocumentPosition_ self other
   = liftIO
       (void (js_compareDocumentPosition (toNode self) (toNode other)))
  
-foreign import javascript unsafe "($1[\"contains\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"contains\"]($2) ? 1 : 0); })"
         js_contains :: Node -> Optional Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.contains Mozilla Node.contains documentation> 
@@ -197,7 +197,7 @@ contains_ self other
       (void
          (js_contains (toNode self) (maybeToOptional (fmap toNode other))))
  
-foreign import javascript unsafe "$1[\"lookupPrefix\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"lookupPrefix\"]($2); })"
         js_lookupPrefix ::
         Node -> Optional JSString -> IO (Nullable JSString)
 
@@ -241,7 +241,7 @@ lookupPrefixUnchecked self namespaceURI
       (fromJust . fromMaybeJSString <$>
          (js_lookupPrefix (toNode self) (toOptionalJSString namespaceURI)))
  
-foreign import javascript unsafe "$1[\"lookupNamespaceURI\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"lookupNamespaceURI\"]($2); })"
         js_lookupNamespaceURI ::
         Node -> Optional JSString -> IO (Nullable JSString)
 
@@ -284,7 +284,7 @@ lookupNamespaceURIUnchecked self prefix
          (js_lookupNamespaceURI (toNode self) (toOptionalJSString prefix)))
  
 foreign import javascript unsafe
-        "($1[\"isDefaultNamespace\"]($2) ? 1 : 0)" js_isDefaultNamespace ::
+        "(($1, $2) => { return ($1[\"isDefaultNamespace\"]($2) ? 1 : 0); })" js_isDefaultNamespace ::
         Node -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isDefaultNamespace Mozilla Node.isDefaultNamespace documentation> 
@@ -306,7 +306,7 @@ isDefaultNamespace_ self namespaceURI
          (js_isDefaultNamespace (toNode self)
             (toOptionalJSString namespaceURI)))
  
-foreign import javascript safe "$1[\"insertBefore\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertBefore\"]($2, $3); })"
         js_insertBefore :: Node -> Node -> Optional Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore Mozilla Node.insertBefore documentation> 
@@ -328,7 +328,7 @@ insertBefore_ self node child
          (js_insertBefore (toNode self) (toNode node)
             (maybeToOptional (fmap toNode child))))
  
-foreign import javascript safe "$1[\"appendChild\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"appendChild\"]($2); })"
         js_appendChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild Mozilla Node.appendChild documentation> 
@@ -343,7 +343,7 @@ appendChild_ ::
 appendChild_ self node
   = liftIO (void (js_appendChild (toNode self) (toNode node)))
  
-foreign import javascript safe "$1[\"replaceChild\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"replaceChild\"]($2, $3); })"
         js_replaceChild :: Node -> Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.replaceChild Mozilla Node.replaceChild documentation> 
@@ -362,7 +362,7 @@ replaceChild_ self node child
   = liftIO
       (void (js_replaceChild (toNode self) (toNode node) (toNode child)))
  
-foreign import javascript safe "$1[\"removeChild\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeChild\"]($2); })"
         js_removeChild :: Node -> Node -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild Mozilla Node.removeChild documentation> 
@@ -420,14 +420,14 @@ getBaseURI ::
 getBaseURI self
   = liftIO (fromJSString <$> (js_getBaseURI (toNode self)))
  
-foreign import javascript unsafe "($1[\"isConnected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"isConnected\"] ? 1 : 0); })"
         js_getIsConnected :: Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.isConnected Mozilla Node.isConnected documentation> 
 getIsConnected :: (MonadIO m, IsNode self) => self -> m Bool
 getIsConnected self = liftIO (js_getIsConnected (toNode self))
  
-foreign import javascript unsafe "$1[\"ownerDocument\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ownerDocument\"]; })"
         js_getOwnerDocument :: Node -> IO (Nullable Document)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.ownerDocument Mozilla Node.ownerDocument documentation> 
@@ -452,7 +452,7 @@ getOwnerDocumentUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getOwnerDocument (toNode self)))
  
-foreign import javascript unsafe "$1[\"parentNode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"parentNode\"]; })"
         js_getParentNode :: Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.parentNode Mozilla Node.parentNode documentation> 
@@ -475,7 +475,7 @@ getParentNodeUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getParentNode (toNode self)))
  
-foreign import javascript unsafe "$1[\"parentElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"parentElement\"]; })"
         js_getParentElement :: Node -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.parentElement Mozilla Node.parentElement documentation> 
@@ -500,14 +500,14 @@ getParentElementUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getParentElement (toNode self)))
  
-foreign import javascript unsafe "$1[\"childNodes\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"childNodes\"]; })"
         js_getChildNodes :: Node -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.childNodes Mozilla Node.childNodes documentation> 
 getChildNodes :: (MonadIO m, IsNode self) => self -> m NodeList
 getChildNodes self = liftIO (js_getChildNodes (toNode self))
  
-foreign import javascript unsafe "$1[\"firstChild\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"firstChild\"]; })"
         js_getFirstChild :: Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.firstChild Mozilla Node.firstChild documentation> 
@@ -530,7 +530,7 @@ getFirstChildUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getFirstChild (toNode self)))
  
-foreign import javascript unsafe "$1[\"lastChild\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"lastChild\"]; })"
         js_getLastChild :: Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.lastChild Mozilla Node.lastChild documentation> 
@@ -552,7 +552,7 @@ getLastChildUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getLastChild (toNode self)))
  
-foreign import javascript unsafe "$1[\"previousSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"previousSibling\"]; })"
         js_getPreviousSibling :: Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.previousSibling Mozilla Node.previousSibling documentation> 
@@ -578,7 +578,7 @@ getPreviousSiblingUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getPreviousSibling (toNode self)))
  
-foreign import javascript unsafe "$1[\"nextSibling\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nextSibling\"]; })"
         js_getNextSibling :: Node -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nextSibling Mozilla Node.nextSibling documentation> 
@@ -602,7 +602,7 @@ getNextSiblingUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getNextSibling (toNode self)))
  
-foreign import javascript safe "$1[\"nodeValue\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"nodeValue\"] = $2; })"
         js_setNodeValue :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
@@ -612,7 +612,7 @@ setNodeValue ::
 setNodeValue self val
   = liftIO (js_setNodeValue (toNode self) (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"nodeValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nodeValue\"]; })"
         js_getNodeValue :: Node -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeValue Mozilla Node.nodeValue documentation> 
@@ -638,7 +638,7 @@ getNodeValueUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getNodeValue (toNode self)))
  
-foreign import javascript safe "$1[\"textContent\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"textContent\"] = $2; })"
         js_setTextContent :: Node -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 
@@ -648,7 +648,7 @@ setTextContent ::
 setTextContent self val
   = liftIO (js_setTextContent (toNode self) (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"textContent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"textContent\"]; })"
         js_getTextContent :: Node -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Node.textContent Mozilla Node.textContent documentation> 

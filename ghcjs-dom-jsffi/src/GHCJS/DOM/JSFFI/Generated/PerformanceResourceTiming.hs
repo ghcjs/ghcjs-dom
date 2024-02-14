@@ -35,7 +35,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"initiatorType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"initiatorType\"]; })"
         js_getInitiatorType :: PerformanceResourceTiming -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.initiatorType Mozilla PerformanceResourceTiming.initiatorType documentation> 
@@ -45,7 +45,7 @@ getInitiatorType ::
 getInitiatorType self
   = liftIO (fromJSString <$> (js_getInitiatorType self))
  
-foreign import javascript unsafe "$1[\"nextHopProtocol\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nextHopProtocol\"]; })"
         js_getNextHopProtocol :: PerformanceResourceTiming -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming.nextHopProtocol Mozilla PerformanceResourceTiming.nextHopProtocol documentation> 
@@ -55,7 +55,7 @@ getNextHopProtocol ::
 getNextHopProtocol self
   = liftIO (fromJSString <$> (js_getNextHopProtocol self))
  
-foreign import javascript unsafe "$1[\"workerStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"workerStart\"]; })"
         js_getWorkerStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -64,7 +64,7 @@ getWorkerStart ::
                (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getWorkerStart self = liftIO (js_getWorkerStart self)
  
-foreign import javascript unsafe "$1[\"redirectStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"redirectStart\"]; })"
         js_getRedirectStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -73,7 +73,7 @@ getRedirectStart ::
                  (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getRedirectStart self = liftIO (js_getRedirectStart self)
  
-foreign import javascript unsafe "$1[\"redirectEnd\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"redirectEnd\"]; })"
         js_getRedirectEnd ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -82,7 +82,7 @@ getRedirectEnd ::
                (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getRedirectEnd self = liftIO (js_getRedirectEnd self)
  
-foreign import javascript unsafe "$1[\"fetchStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"fetchStart\"]; })"
         js_getFetchStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -91,7 +91,7 @@ getFetchStart ::
               (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getFetchStart self = liftIO (js_getFetchStart self)
  
-foreign import javascript unsafe "$1[\"domainLookupStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"domainLookupStart\"]; })"
         js_getDomainLookupStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -100,7 +100,7 @@ getDomainLookupStart ::
                      (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getDomainLookupStart self = liftIO (js_getDomainLookupStart self)
  
-foreign import javascript unsafe "$1[\"domainLookupEnd\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"domainLookupEnd\"]; })"
         js_getDomainLookupEnd ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -109,7 +109,7 @@ getDomainLookupEnd ::
                    (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getDomainLookupEnd self = liftIO (js_getDomainLookupEnd self)
  
-foreign import javascript unsafe "$1[\"connectStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"connectStart\"]; })"
         js_getConnectStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -118,7 +118,7 @@ getConnectStart ::
                 (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getConnectStart self = liftIO (js_getConnectStart self)
  
-foreign import javascript unsafe "$1[\"connectEnd\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"connectEnd\"]; })"
         js_getConnectEnd ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -127,7 +127,7 @@ getConnectEnd ::
               (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getConnectEnd self = liftIO (js_getConnectEnd self)
  
-foreign import javascript unsafe "$1[\"secureConnectionStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"secureConnectionStart\"]; })"
         js_getSecureConnectionStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -137,7 +137,7 @@ getSecureConnectionStart ::
 getSecureConnectionStart self
   = liftIO (js_getSecureConnectionStart self)
  
-foreign import javascript unsafe "$1[\"requestStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"requestStart\"]; })"
         js_getRequestStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -146,7 +146,7 @@ getRequestStart ::
                 (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getRequestStart self = liftIO (js_getRequestStart self)
  
-foreign import javascript unsafe "$1[\"responseStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"responseStart\"]; })"
         js_getResponseStart ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 
@@ -155,7 +155,7 @@ getResponseStart ::
                  (MonadIO m) => PerformanceResourceTiming -> m DOMHighResTimeStamp
 getResponseStart self = liftIO (js_getResponseStart self)
  
-foreign import javascript unsafe "$1[\"responseEnd\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"responseEnd\"]; })"
         js_getResponseEnd ::
         PerformanceResourceTiming -> IO DOMHighResTimeStamp
 

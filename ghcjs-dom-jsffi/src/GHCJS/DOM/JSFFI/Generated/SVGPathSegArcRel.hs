@@ -100,28 +100,28 @@ foreign import javascript unsafe "(($1) => { return $1[\"angle\"]; })" js_getAng
 getAngle :: (MonadIO m) => SVGPathSegArcRel -> m Float
 getAngle self = liftIO (js_getAngle self)
  
-foreign import javascript unsafe "$1[\"largeArcFlag\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"largeArcFlag\"] = $2; })"
         js_setLargeArcFlag :: SVGPathSegArcRel -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 setLargeArcFlag :: (MonadIO m) => SVGPathSegArcRel -> Bool -> m ()
 setLargeArcFlag self val = liftIO (js_setLargeArcFlag self val)
  
-foreign import javascript unsafe "($1[\"largeArcFlag\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"largeArcFlag\"] ? 1 : 0); })"
         js_getLargeArcFlag :: SVGPathSegArcRel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.largeArcFlag Mozilla SVGPathSegArcRel.largeArcFlag documentation> 
 getLargeArcFlag :: (MonadIO m) => SVGPathSegArcRel -> m Bool
 getLargeArcFlag self = liftIO (js_getLargeArcFlag self)
  
-foreign import javascript unsafe "$1[\"sweepFlag\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"sweepFlag\"] = $2; })"
         js_setSweepFlag :: SVGPathSegArcRel -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 
 setSweepFlag :: (MonadIO m) => SVGPathSegArcRel -> Bool -> m ()
 setSweepFlag self val = liftIO (js_setSweepFlag self val)
  
-foreign import javascript unsafe "($1[\"sweepFlag\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"sweepFlag\"] ? 1 : 0); })"
         js_getSweepFlag :: SVGPathSegArcRel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPathSegArcRel.sweepFlag Mozilla SVGPathSegArcRel.sweepFlag documentation> 

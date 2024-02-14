@@ -40,7 +40,7 @@ setRenderPipelineState ::
 setRenderPipelineState self pipelineState
   = liftIO (js_setRenderPipelineState self pipelineState)
  
-foreign import javascript unsafe "$1[\"setDepthStencilState\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setDepthStencilState\"]($2); })"
         js_setDepthStencilState ::
         WebGPURenderCommandEncoder -> WebGPUDepthStencilState -> IO ()
 
@@ -84,7 +84,7 @@ drawPrimitives ::
 drawPrimitives self type' start count
   = liftIO (js_drawPrimitives self type' start count)
  
-foreign import javascript unsafe "$1[\"endEncoding\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"endEncoding\"](); })"
         js_endEncoding :: WebGPURenderCommandEncoder -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderCommandEncoder.endEncoding Mozilla WebGPURenderCommandEncoder.endEncoding documentation> 

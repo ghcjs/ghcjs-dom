@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"texture\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"texture\"] = $2; })"
         js_setTexture ::
         WebGPURenderPassAttachmentDescriptor ->
           Optional WebGPUTexture -> IO ()
@@ -78,7 +78,7 @@ getTextureUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getTexture (toWebGPURenderPassAttachmentDescriptor self)))
  
-foreign import javascript unsafe "$1[\"loadAction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"loadAction\"] = $2; })"
         js_setLoadAction ::
         WebGPURenderPassAttachmentDescriptor -> Word -> IO ()
 
@@ -91,7 +91,7 @@ setLoadAction self val
       (js_setLoadAction (toWebGPURenderPassAttachmentDescriptor self)
          val)
  
-foreign import javascript unsafe "$1[\"loadAction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"loadAction\"]; })"
         js_getLoadAction :: WebGPURenderPassAttachmentDescriptor -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPURenderPassAttachmentDescriptor.loadAction Mozilla WebGPURenderPassAttachmentDescriptor.loadAction documentation> 
@@ -102,7 +102,7 @@ getLoadAction self
   = liftIO
       (js_getLoadAction (toWebGPURenderPassAttachmentDescriptor self))
  
-foreign import javascript unsafe "$1[\"storeAction\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"storeAction\"] = $2; })"
         js_setStoreAction ::
         WebGPURenderPassAttachmentDescriptor -> Word -> IO ()
 
@@ -115,7 +115,7 @@ setStoreAction self val
       (js_setStoreAction (toWebGPURenderPassAttachmentDescriptor self)
          val)
  
-foreign import javascript unsafe "$1[\"storeAction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"storeAction\"]; })"
         js_getStoreAction ::
         WebGPURenderPassAttachmentDescriptor -> IO Word
 

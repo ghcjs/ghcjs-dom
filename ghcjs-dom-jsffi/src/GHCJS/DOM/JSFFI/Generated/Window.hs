@@ -98,7 +98,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"decodeURI\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"decodeURI\"]($2); })"
         js_decodeURI :: Window -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURI Mozilla Window.decodeURI documentation> 
@@ -113,7 +113,7 @@ decodeURI_ :: (MonadIO m, ToJSString uri) => Window -> uri -> m ()
 decodeURI_ self uri
   = liftIO (void (js_decodeURI self (toJSString uri)))
  
-foreign import javascript unsafe "$1[\"decodeURIComponent\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"decodeURIComponent\"]($2); })"
         js_decodeURIComponent :: Window -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.decodeURIComponent Mozilla Window.decodeURIComponent documentation> 
@@ -130,7 +130,7 @@ decodeURIComponent_ ::
 decodeURIComponent_ self uri
   = liftIO (void (js_decodeURIComponent self (toJSString uri)))
  
-foreign import javascript unsafe "$1[\"encodeURI\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"encodeURI\"]($2); })"
         js_encodeURI :: Window -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURI Mozilla Window.encodeURI documentation> 
@@ -145,7 +145,7 @@ encodeURI_ :: (MonadIO m, ToJSString uri) => Window -> uri -> m ()
 encodeURI_ self uri
   = liftIO (void (js_encodeURI self (toJSString uri)))
  
-foreign import javascript unsafe "$1[\"encodeURIComponent\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"encodeURIComponent\"]($2); })"
         js_encodeURIComponent :: Window -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.encodeURIComponent Mozilla Window.encodeURIComponent documentation> 
@@ -343,7 +343,7 @@ openUnchecked self url target features
          (js_open self (toOptionalJSString url) (toOptionalJSString target)
             (toOptionalJSString features)))
  
-foreign import javascript unsafe "$1[\"alert\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"alert\"](); })"
         js_alertNoMessage :: Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.alert Mozilla Window.alert documentation> 
@@ -358,7 +358,7 @@ alert ::
       (MonadIO m, ToJSString message) => Window -> message -> m ()
 alert self message = liftIO (js_alert self (toJSString message))
  
-foreign import javascript unsafe "($1[\"confirm\"]($2) ? 1 : 0)"
+foreign import javascript unsafe "(($1, $2) => { return ($1[\"confirm\"]($2) ? 1 : 0); })"
         js_confirm :: Window -> Optional JSString -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.confirm Mozilla Window.confirm documentation> 
@@ -446,7 +446,7 @@ requestAnimationFrame_ ::
 requestAnimationFrame_ self callback
   = liftIO (void (js_requestAnimationFrame self callback))
  
-foreign import javascript unsafe "$1[\"cancelAnimationFrame\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"cancelAnimationFrame\"]($2); })"
         js_cancelAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.cancelAnimationFrame Mozilla Window.cancelAnimationFrame documentation> 
@@ -454,7 +454,7 @@ cancelAnimationFrame :: (MonadIO m) => Window -> Int -> m ()
 cancelAnimationFrame self handle
   = liftIO (js_cancelAnimationFrame self handle)
  
-foreign import javascript safe "$1[\"postMessage\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"postMessage\"]($2, $3, $4); })"
         js_postMessage :: Window -> JSVal -> JSString -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage Mozilla Window.postMessage documentation> 
@@ -470,21 +470,21 @@ postMessage self message targetOrigin transfer
              (toJSString targetOrigin)
              transfer')
  
-foreign import javascript unsafe "$1[\"captureEvents\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"captureEvents\"](); })"
         js_captureEvents :: Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.captureEvents Mozilla Window.captureEvents documentation> 
 captureEvents :: (MonadIO m) => Window -> m ()
 captureEvents self = liftIO (js_captureEvents self)
  
-foreign import javascript unsafe "$1[\"releaseEvents\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"releaseEvents\"](); })"
         js_releaseEvents :: Window -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.releaseEvents Mozilla Window.releaseEvents documentation> 
 releaseEvents :: (MonadIO m) => Window -> m ()
 releaseEvents self = liftIO (js_releaseEvents self)
  
-foreign import javascript unsafe "$1[\"getComputedStyle\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getComputedStyle\"]($2, $3); })"
         js_getComputedStyle ::
         Window -> Element -> Optional JSString -> IO CSSStyleDeclaration
 
@@ -507,7 +507,7 @@ getComputedStyle_ self element pseudoElement
          (js_getComputedStyle self (toElement element)
             (toOptionalJSString pseudoElement)))
  
-foreign import javascript unsafe "$1[\"matchMedia\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"matchMedia\"]($2); })"
         js_matchMedia :: Window -> JSString -> IO MediaQueryList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.matchMedia Mozilla Window.matchMedia documentation> 
@@ -541,7 +541,7 @@ moveBy ::
 moveBy self x y
   = liftIO (js_moveBy self (maybeToOptional x) (maybeToOptional y))
  
-foreign import javascript unsafe "$1[\"resizeTo\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"resizeTo\"]($2, $3); })"
         js_resizeTo :: Window -> Optional Float -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeTo Mozilla Window.resizeTo documentation> 
@@ -551,7 +551,7 @@ resizeTo self width height
   = liftIO
       (js_resizeTo self (maybeToOptional width) (maybeToOptional height))
  
-foreign import javascript unsafe "$1[\"resizeBy\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"resizeBy\"]($2, $3); })"
         js_resizeBy :: Window -> Optional Float -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.resizeBy Mozilla Window.resizeBy documentation> 
@@ -575,7 +575,7 @@ foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scroll\"]($2, $
 scroll :: (MonadIO m) => Window -> Double -> Double -> m ()
 scroll self x y = liftIO (js_scroll self x y)
  
-foreign import javascript unsafe "$1[\"scrollTo\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scrollTo\"]($2); })"
         js_scrollToOpt :: Window -> Optional ScrollToOptions -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollTo Mozilla Window.scrollTo documentation> 
@@ -584,14 +584,14 @@ scrollToOpt ::
 scrollToOpt self options
   = liftIO (js_scrollToOpt self (maybeToOptional options))
  
-foreign import javascript unsafe "$1[\"scrollTo\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scrollTo\"]($2, $3); })"
         js_scrollTo :: Window -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollTo Mozilla Window.scrollTo documentation> 
 scrollTo :: (MonadIO m) => Window -> Double -> Double -> m ()
 scrollTo self x y = liftIO (js_scrollTo self x y)
  
-foreign import javascript unsafe "$1[\"scrollBy\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"scrollBy\"]($2); })"
         js_scrollByOpt :: Window -> Optional ScrollToOptions -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollBy Mozilla Window.scrollBy documentation> 
@@ -600,14 +600,14 @@ scrollByOpt ::
 scrollByOpt self option
   = liftIO (js_scrollByOpt self (maybeToOptional option))
  
-foreign import javascript unsafe "$1[\"scrollBy\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"scrollBy\"]($2, $3); })"
         js_scrollBy :: Window -> Double -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollBy Mozilla Window.scrollBy documentation> 
 scrollBy :: (MonadIO m) => Window -> Double -> Double -> m ()
 scrollBy self x y = liftIO (js_scrollBy self x y)
  
-foreign import javascript unsafe "$1[\"getSelection\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getSelection\"](); })"
         js_getSelection :: Window -> IO (Nullable Selection)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.getSelection Mozilla Window.getSelection documentation> 
@@ -633,7 +633,7 @@ getSelectionUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getSelection self))
  
 foreign import javascript unsafe
-        "($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0)" js_find ::
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return ($1[\"find\"]($2, $3, $4, $5, $6,\n$7, $8) ? 1 : 0); })" js_find ::
         Window ->
           Optional JSString ->
             Bool -> Bool -> Bool -> Bool -> Bool -> Bool -> IO Bool
@@ -670,7 +670,7 @@ find_ self string caseSensitive backwards wrap wholeWord
             showDialog))
  
 foreign import javascript unsafe
-        "$1[\"webkitRequestAnimationFrame\"]($2)"
+        "(($1, $2) => { return $1[\"webkitRequestAnimationFrame\"]($2); })"
         js_webkitRequestAnimationFrame ::
         Window -> RequestAnimationFrameCallback -> IO Int
 
@@ -687,7 +687,7 @@ webkitRequestAnimationFrame_ self callback
   = liftIO (void (js_webkitRequestAnimationFrame self callback))
  
 foreign import javascript unsafe
-        "$1[\"webkitCancelAnimationFrame\"]($2)"
+        "(($1, $2) => { return $1[\"webkitCancelAnimationFrame\"]($2); })"
         js_webkitCancelAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelAnimationFrame Mozilla Window.webkitCancelAnimationFrame documentation> 
@@ -696,7 +696,7 @@ webkitCancelAnimationFrame self id
   = liftIO (js_webkitCancelAnimationFrame self id)
  
 foreign import javascript unsafe
-        "$1[\"webkitCancelRequestAnimationFrame\"]($2)"
+        "(($1, $2) => { return $1[\"webkitCancelRequestAnimationFrame\"]($2); })"
         js_webkitCancelRequestAnimationFrame :: Window -> Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitCancelRequestAnimationFrame Mozilla Window.webkitCancelRequestAnimationFrame documentation> 
@@ -763,7 +763,7 @@ showModalDialog_ self url dialogArgs featureArgs
             (toOptionalJSString featureArgs)))
  
 foreign import javascript unsafe
-        "$1[\"webkitConvertPointFromPageToNode\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"webkitConvertPointFromPageToNode\"]($2,\n$3); })"
         js_webkitConvertPointFromPageToNode ::
         Window -> Optional Node -> Optional WebKitPoint -> IO WebKitPoint
 
@@ -789,7 +789,7 @@ webkitConvertPointFromPageToNode_ self node p
             (maybeToOptional p)))
  
 foreign import javascript unsafe
-        "$1[\"webkitConvertPointFromNodeToPage\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"webkitConvertPointFromNodeToPage\"]($2,\n$3); })"
         js_webkitConvertPointFromNodeToPage ::
         Window -> Optional Node -> Optional WebKitPoint -> IO WebKitPoint
 
@@ -815,7 +815,7 @@ webkitConvertPointFromNodeToPage_ self node p
             (maybeToOptional p)))
  
 foreign import javascript safe
-        "$1[\"collectMatchingElementsInFlatTree\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"collectMatchingElementsInFlatTree\"]($2,\n$3); })"
         js_collectMatchingElementsInFlatTree ::
         Window -> Node -> JSString -> IO NodeList
 
@@ -839,7 +839,7 @@ collectMatchingElementsInFlatTree_ self scope selectors
             (toJSString selectors)))
  
 foreign import javascript safe
-        "$1[\"matchingElementInFlatTree\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"matchingElementInFlatTree\"]($2,\n$3); })"
         js_matchingElementInFlatTree ::
         Window -> Node -> JSString -> IO (Nullable Element)
 
@@ -884,28 +884,28 @@ matchingElementInFlatTreeUnchecked self scope selectors
          (js_matchingElementInFlatTree self (toNode scope)
             (toJSString selectors)))
  
-foreign import javascript unsafe "$1[\"indexedDB\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"indexedDB\"]; })"
         js_getIndexedDB :: Window -> IO IDBFactory
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.indexedDB Mozilla Window.indexedDB documentation> 
 getIndexedDB :: (MonadIO m) => Window -> m IDBFactory
 getIndexedDB self = liftIO (js_getIndexedDB self)
  
-foreign import javascript unsafe "$1[\"webkitIndexedDB\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitIndexedDB\"]; })"
         js_getWebkitIndexedDB :: Window -> IO IDBFactory
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitIndexedDB Mozilla Window.webkitIndexedDB documentation> 
 getWebkitIndexedDB :: (MonadIO m) => Window -> m IDBFactory
 getWebkitIndexedDB self = liftIO (js_getWebkitIndexedDB self)
  
-foreign import javascript unsafe "$1[\"webkitStorageInfo\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"webkitStorageInfo\"]; })"
         js_getWebkitStorageInfo :: Window -> IO StorageInfo
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.webkitStorageInfo Mozilla Window.webkitStorageInfo documentation> 
 getWebkitStorageInfo :: (MonadIO m) => Window -> m StorageInfo
 getWebkitStorageInfo self = liftIO (js_getWebkitStorageInfo self)
  
-foreign import javascript unsafe "$1[\"speechSynthesis\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"speechSynthesis\"]; })"
         js_getSpeechSynthesis :: Window -> IO SpeechSynthesis
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.speechSynthesis Mozilla Window.speechSynthesis documentation> 
@@ -961,7 +961,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"history\"]; })" js_getH
 getHistory :: (MonadIO m) => Window -> m History
 getHistory self = liftIO (js_getHistory self)
  
-foreign import javascript unsafe "$1[\"customElements\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"customElements\"]; })"
         js_getCustomElements :: Window -> IO CustomElementRegistry
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.customElements Mozilla Window.customElements documentation> 
@@ -969,7 +969,7 @@ getCustomElements ::
                   (MonadIO m) => Window -> m CustomElementRegistry
 getCustomElements self = liftIO (js_getCustomElements self)
  
-foreign import javascript unsafe "$1[\"locationbar\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"locationbar\"]; })"
         js_getLocationbar :: Window -> IO BarProp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.locationbar Mozilla Window.locationbar documentation> 
@@ -983,21 +983,21 @@ foreign import javascript unsafe "(($1) => { return $1[\"menubar\"]; })" js_getM
 getMenubar :: (MonadIO m) => Window -> m BarProp
 getMenubar self = liftIO (js_getMenubar self)
  
-foreign import javascript unsafe "$1[\"personalbar\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"personalbar\"]; })"
         js_getPersonalbar :: Window -> IO BarProp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.personalbar Mozilla Window.personalbar documentation> 
 getPersonalbar :: (MonadIO m) => Window -> m BarProp
 getPersonalbar self = liftIO (js_getPersonalbar self)
  
-foreign import javascript unsafe "$1[\"scrollbars\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"scrollbars\"]; })"
         js_getScrollbars :: Window -> IO BarProp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollbars Mozilla Window.scrollbars documentation> 
 getScrollbars :: (MonadIO m) => Window -> m BarProp
 getScrollbars self = liftIO (js_getScrollbars self)
  
-foreign import javascript unsafe "$1[\"statusbar\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"statusbar\"]; })"
         js_getStatusbar :: Window -> IO BarProp
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.statusbar Mozilla Window.statusbar documentation> 
@@ -1011,7 +1011,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"toolbar\"]; })" js_getT
 getToolbar :: (MonadIO m) => Window -> m BarProp
 getToolbar self = liftIO (js_getToolbar self)
  
-foreign import javascript unsafe "$1[\"status\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"status\"] = $2; })"
         js_setStatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.status Mozilla Window.status documentation> 
@@ -1025,7 +1025,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getSt
 getStatus :: (MonadIO m, FromJSString result) => Window -> m result
 getStatus self = liftIO (fromJSString <$> (js_getStatus self))
  
-foreign import javascript unsafe "($1[\"closed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"closed\"] ? 1 : 0); })"
         js_getClosed :: Window -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.closed Mozilla Window.closed documentation> 
@@ -1103,7 +1103,7 @@ getParentUnchecked :: (MonadIO m) => Window -> m Window
 getParentUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getParent self))
  
-foreign import javascript unsafe "$1[\"frameElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"frameElement\"]; })"
         js_getFrameElement :: Window -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.frameElement Mozilla Window.frameElement documentation> 
@@ -1124,28 +1124,28 @@ getFrameElementUnchecked :: (MonadIO m) => Window -> m Element
 getFrameElementUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getFrameElement self))
  
-foreign import javascript unsafe "$1[\"navigator\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"navigator\"]; })"
         js_getNavigator :: Window -> IO Navigator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.navigator Mozilla Window.navigator documentation> 
 getNavigator :: (MonadIO m) => Window -> m Navigator
 getNavigator self = liftIO (js_getNavigator self)
  
-foreign import javascript unsafe "$1[\"applicationCache\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"applicationCache\"]; })"
         js_getApplicationCache :: Window -> IO ApplicationCache
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.applicationCache Mozilla Window.applicationCache documentation> 
 getApplicationCache :: (MonadIO m) => Window -> m ApplicationCache
 getApplicationCache self = liftIO (js_getApplicationCache self)
  
-foreign import javascript safe "$1[\"sessionStorage\"]"
+foreign import javascript safe "(($1) => { return $1[\"sessionStorage\"]; })"
         js_getSessionStorage :: Window -> IO Storage
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.sessionStorage Mozilla Window.sessionStorage documentation> 
 getSessionStorage :: (MonadIO m) => Window -> m Storage
 getSessionStorage self = liftIO (js_getSessionStorage self)
  
-foreign import javascript safe "$1[\"localStorage\"]"
+foreign import javascript safe "(($1) => { return $1[\"localStorage\"]; })"
         js_getLocalStorage :: Window -> IO Storage
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.localStorage Mozilla Window.localStorage documentation> 
@@ -1159,14 +1159,14 @@ foreign import javascript unsafe "(($1) => { return $1[\"screen\"]; })" js_getSc
 getScreen :: (MonadIO m) => Window -> m Screen
 getScreen self = liftIO (js_getScreen self)
  
-foreign import javascript unsafe "$1[\"innerHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"innerHeight\"]; })"
         js_getInnerHeight :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerHeight Mozilla Window.innerHeight documentation> 
 getInnerHeight :: (MonadIO m) => Window -> m Int
 getInnerHeight self = liftIO (js_getInnerHeight self)
  
-foreign import javascript unsafe "$1[\"innerWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"innerWidth\"]; })"
         js_getInnerWidth :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.innerWidth Mozilla Window.innerWidth documentation> 
@@ -1180,7 +1180,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"scrollX\"]; })" js_getS
 getScrollX :: (MonadIO m) => Window -> m Double
 getScrollX self = liftIO (js_getScrollX self)
  
-foreign import javascript unsafe "$1[\"pageXOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pageXOffset\"]; })"
         js_getPageXOffset :: Window -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageXOffset Mozilla Window.pageXOffset documentation> 
@@ -1194,7 +1194,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"scrollY\"]; })" js_getS
 getScrollY :: (MonadIO m) => Window -> m Double
 getScrollY self = liftIO (js_getScrollY self)
  
-foreign import javascript unsafe "$1[\"pageYOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pageYOffset\"]; })"
         js_getPageYOffset :: Window -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.pageYOffset Mozilla Window.pageYOffset documentation> 
@@ -1215,28 +1215,28 @@ foreign import javascript unsafe "(($1) => { return $1[\"screenY\"]; })" js_getS
 getScreenY :: (MonadIO m) => Window -> m Int
 getScreenY self = liftIO (js_getScreenY self)
  
-foreign import javascript unsafe "$1[\"outerWidth\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"outerWidth\"]; })"
         js_getOuterWidth :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerWidth Mozilla Window.outerWidth documentation> 
 getOuterWidth :: (MonadIO m) => Window -> m Int
 getOuterWidth self = liftIO (js_getOuterWidth self)
  
-foreign import javascript unsafe "$1[\"outerHeight\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"outerHeight\"]; })"
         js_getOuterHeight :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.outerHeight Mozilla Window.outerHeight documentation> 
 getOuterHeight :: (MonadIO m) => Window -> m Int
 getOuterHeight self = liftIO (js_getOuterHeight self)
  
-foreign import javascript unsafe "$1[\"devicePixelRatio\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"devicePixelRatio\"]; })"
         js_getDevicePixelRatio :: Window -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.devicePixelRatio Mozilla Window.devicePixelRatio documentation> 
 getDevicePixelRatio :: (MonadIO m) => Window -> m Double
 getDevicePixelRatio self = liftIO (js_getDevicePixelRatio self)
  
-foreign import javascript unsafe "$1[\"orientation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"orientation\"]; })"
         js_getOrientation :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.orientation Mozilla Window.orientation documentation> 
@@ -1250,7 +1250,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"event\"]; })" js_getEve
 getEvent :: (MonadIO m) => Window -> m Event
 getEvent self = liftIO (js_getEvent self)
  
-foreign import javascript unsafe "$1[\"defaultStatus\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"defaultStatus\"] = $2; })"
         js_setDefaultStatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
@@ -1259,7 +1259,7 @@ setDefaultStatus ::
 setDefaultStatus self val
   = liftIO (js_setDefaultStatus self (toJSString val))
  
-foreign import javascript unsafe "$1[\"defaultStatus\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"defaultStatus\"]; })"
         js_getDefaultStatus :: Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultStatus Mozilla Window.defaultStatus documentation> 
@@ -1268,7 +1268,7 @@ getDefaultStatus ::
 getDefaultStatus self
   = liftIO (fromJSString <$> (js_getDefaultStatus self))
  
-foreign import javascript unsafe "$1[\"defaultstatus\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"defaultstatus\"] = $2; })"
         js_setDefaultstatus :: Window -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
@@ -1277,7 +1277,7 @@ setDefaultstatus ::
 setDefaultstatus self val
   = liftIO (js_setDefaultstatus self (toJSString val))
  
-foreign import javascript unsafe "$1[\"defaultstatus\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"defaultstatus\"]; })"
         js_getDefaultstatus :: Window -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.defaultstatus Mozilla Window.defaultstatus documentation> 
@@ -1287,35 +1287,35 @@ getDefaultstatus self
   = liftIO (fromJSString <$> (js_getDefaultstatus self))
  
 foreign import javascript unsafe
-        "($1[\"offscreenBuffering\"] ? 1 : 0)" js_getOffscreenBuffering ::
+        "(($1) => { return ($1[\"offscreenBuffering\"] ? 1 : 0); })" js_getOffscreenBuffering ::
         Window -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.offscreenBuffering Mozilla Window.offscreenBuffering documentation> 
 getOffscreenBuffering :: (MonadIO m) => Window -> m Bool
 getOffscreenBuffering self = liftIO (js_getOffscreenBuffering self)
  
-foreign import javascript unsafe "$1[\"screenLeft\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"screenLeft\"]; })"
         js_getScreenLeft :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenLeft Mozilla Window.screenLeft documentation> 
 getScreenLeft :: (MonadIO m) => Window -> m Int
 getScreenLeft self = liftIO (js_getScreenLeft self)
  
-foreign import javascript unsafe "$1[\"screenTop\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"screenTop\"]; })"
         js_getScreenTop :: Window -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.screenTop Mozilla Window.screenTop documentation> 
 getScreenTop :: (MonadIO m) => Window -> m Int
 getScreenTop self = liftIO (js_getScreenTop self)
  
-foreign import javascript unsafe "$1[\"clientInformation\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clientInformation\"]; })"
         js_getClientInformation :: Window -> IO Navigator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.clientInformation Mozilla Window.clientInformation documentation> 
 getClientInformation :: (MonadIO m) => Window -> m Navigator
 getClientInformation self = liftIO (js_getClientInformation self)
  
-foreign import javascript unsafe "$1[\"styleMedia\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"styleMedia\"]; })"
         js_getStyleMedia :: Window -> IO StyleMedia
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Window.styleMedia Mozilla Window.styleMedia documentation> 

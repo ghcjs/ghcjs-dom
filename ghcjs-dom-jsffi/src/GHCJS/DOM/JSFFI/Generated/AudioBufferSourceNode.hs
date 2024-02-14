@@ -61,7 +61,7 @@ pattern SCHEDULED_STATE = 1
 pattern PLAYING_STATE = 2
 pattern FINISHED_STATE = 3
  
-foreign import javascript unsafe "$1[\"buffer\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"buffer\"] = $2; })"
         js_setBuffer ::
         AudioBufferSourceNode -> Optional AudioBuffer -> IO ()
 
@@ -93,7 +93,7 @@ getBufferUnchecked ::
 getBufferUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBuffer self))
  
-foreign import javascript unsafe "$1[\"playbackState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackState\"]; })"
         js_getPlaybackState :: AudioBufferSourceNode -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackState Mozilla AudioBufferSourceNode.playbackState documentation> 
@@ -107,7 +107,7 @@ foreign import javascript unsafe "(($1) => { return $1[\"gain\"]; })" js_getGain
 getGain :: (MonadIO m) => AudioBufferSourceNode -> m AudioParam
 getGain self = liftIO (js_getGain self)
  
-foreign import javascript unsafe "$1[\"playbackRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"playbackRate\"]; })"
         js_getPlaybackRate :: AudioBufferSourceNode -> IO AudioParam
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.playbackRate Mozilla AudioBufferSourceNode.playbackRate documentation> 
@@ -122,14 +122,14 @@ foreign import javascript unsafe "(($1, $2) => { $1[\"loop\"] = $2; })" js_setLo
 setLoop :: (MonadIO m) => AudioBufferSourceNode -> Bool -> m ()
 setLoop self val = liftIO (js_setLoop self val)
  
-foreign import javascript unsafe "($1[\"loop\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"loop\"] ? 1 : 0); })"
         js_getLoop :: AudioBufferSourceNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loop Mozilla AudioBufferSourceNode.loop documentation> 
 getLoop :: (MonadIO m) => AudioBufferSourceNode -> m Bool
 getLoop self = liftIO (js_getLoop self)
  
-foreign import javascript unsafe "$1[\"loopStart\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"loopStart\"] = $2; })"
         js_setLoopStart :: AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopStart Mozilla AudioBufferSourceNode.loopStart documentation> 
@@ -137,14 +137,14 @@ setLoopStart ::
              (MonadIO m) => AudioBufferSourceNode -> Double -> m ()
 setLoopStart self val = liftIO (js_setLoopStart self val)
  
-foreign import javascript unsafe "$1[\"loopStart\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"loopStart\"]; })"
         js_getLoopStart :: AudioBufferSourceNode -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopStart Mozilla AudioBufferSourceNode.loopStart documentation> 
 getLoopStart :: (MonadIO m) => AudioBufferSourceNode -> m Double
 getLoopStart self = liftIO (js_getLoopStart self)
  
-foreign import javascript unsafe "$1[\"loopEnd\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"loopEnd\"] = $2; })"
         js_setLoopEnd :: AudioBufferSourceNode -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode.loopEnd Mozilla AudioBufferSourceNode.loopEnd documentation> 

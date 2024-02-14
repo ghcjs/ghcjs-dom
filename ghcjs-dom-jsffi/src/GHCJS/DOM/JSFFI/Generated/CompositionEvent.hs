@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"CompositionEvent\"]($1,\n$2)" js_newCompositionEvent
+        "(($1, $2) => { return new window[\"CompositionEvent\"]($1,\n$2); })" js_newCompositionEvent
         :: JSString -> Optional CompositionEventInit -> IO CompositionEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent Mozilla CompositionEvent documentation> 
@@ -41,7 +41,7 @@ newCompositionEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initCompositionEvent\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"initCompositionEvent\"]($2,\n$3, $4, $5, $6); })"
         js_initCompositionEvent ::
         CompositionEvent ->
           Optional JSString ->

@@ -61,7 +61,7 @@ getType ::
         (MonadIO m, FromJSString result) => HTMLSourceElement -> m result
 getType self = liftIO (fromJSString <$> (js_getType self))
  
-foreign import javascript unsafe "$1[\"srcset\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"srcset\"] = $2; })"
         js_setSrcset :: HTMLSourceElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLSourceElement.srcset Mozilla HTMLSourceElement.srcset documentation> 

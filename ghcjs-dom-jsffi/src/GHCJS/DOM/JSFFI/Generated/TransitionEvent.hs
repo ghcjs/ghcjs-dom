@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"TransitionEvent\"]($1,\n$2)" js_newTransitionEvent ::
+        "(($1, $2) => { return new window[\"TransitionEvent\"]($1,\n$2); })" js_newTransitionEvent ::
         JSString -> Optional TransitionEventInit -> IO TransitionEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent Mozilla TransitionEvent documentation> 
@@ -41,7 +41,7 @@ newTransitionEvent type' transitionEventInitDict
       (js_newTransitionEvent (toJSString type')
          (maybeToOptional transitionEventInitDict))
  
-foreign import javascript unsafe "$1[\"propertyName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"propertyName\"]; })"
         js_getPropertyName :: TransitionEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.propertyName Mozilla TransitionEvent.propertyName documentation> 
@@ -50,14 +50,14 @@ getPropertyName ::
 getPropertyName self
   = liftIO (fromJSString <$> (js_getPropertyName self))
  
-foreign import javascript unsafe "$1[\"elapsedTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elapsedTime\"]; })"
         js_getElapsedTime :: TransitionEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.elapsedTime Mozilla TransitionEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => TransitionEvent -> m Double
 getElapsedTime self = liftIO (js_getElapsedTime self)
  
-foreign import javascript unsafe "$1[\"pseudoElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pseudoElement\"]; })"
         js_getPseudoElement :: TransitionEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent.pseudoElement Mozilla TransitionEvent.pseudoElement documentation> 

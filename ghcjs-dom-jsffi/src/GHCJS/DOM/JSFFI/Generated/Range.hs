@@ -51,14 +51,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Range\"]()"
+foreign import javascript unsafe "(() => { return new window[\"Range\"](); })"
         js_newRange :: IO Range
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range Mozilla Range documentation> 
 newRange :: (MonadIO m) => m Range
 newRange = liftIO (js_newRange)
  
-foreign import javascript safe "$1[\"setStart\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"setStart\"]($2, $3); })"
         js_setStart :: Range -> Node -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStart Mozilla Range.setStart documentation> 
@@ -75,7 +75,7 @@ setEnd :: (MonadIO m, IsNode node) => Range -> node -> Word -> m ()
 setEnd self node offset
   = liftIO (js_setEnd self (toNode node) offset)
  
-foreign import javascript safe "$1[\"setStartBefore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setStartBefore\"]($2); })"
         js_setStartBefore :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStartBefore Mozilla Range.setStartBefore documentation> 
@@ -83,7 +83,7 @@ setStartBefore :: (MonadIO m, IsNode node) => Range -> node -> m ()
 setStartBefore self node
   = liftIO (js_setStartBefore self (toNode node))
  
-foreign import javascript safe "$1[\"setStartAfter\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setStartAfter\"]($2); })"
         js_setStartAfter :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setStartAfter Mozilla Range.setStartAfter documentation> 
@@ -91,7 +91,7 @@ setStartAfter :: (MonadIO m, IsNode node) => Range -> node -> m ()
 setStartAfter self node
   = liftIO (js_setStartAfter self (toNode node))
  
-foreign import javascript safe "$1[\"setEndBefore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setEndBefore\"]($2); })"
         js_setEndBefore :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEndBefore Mozilla Range.setEndBefore documentation> 
@@ -99,7 +99,7 @@ setEndBefore :: (MonadIO m, IsNode node) => Range -> node -> m ()
 setEndBefore self node
   = liftIO (js_setEndBefore self (toNode node))
  
-foreign import javascript safe "$1[\"setEndAfter\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setEndAfter\"]($2); })"
         js_setEndAfter :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.setEndAfter Mozilla Range.setEndAfter documentation> 
@@ -113,14 +113,14 @@ foreign import javascript unsafe "(($1, $2) => { return $1[\"collapse\"]($2); })
 collapse :: (MonadIO m) => Range -> Bool -> m ()
 collapse self toStart = liftIO (js_collapse self toStart)
  
-foreign import javascript safe "$1[\"selectNode\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"selectNode\"]($2); })"
         js_selectNode :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNode Mozilla Range.selectNode documentation> 
 selectNode :: (MonadIO m, IsNode node) => Range -> node -> m ()
 selectNode self node = liftIO (js_selectNode self (toNode node))
  
-foreign import javascript safe "$1[\"selectNodeContents\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"selectNodeContents\"]($2); })"
         js_selectNodeContents :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.selectNodeContents Mozilla Range.selectNodeContents documentation> 
@@ -145,14 +145,14 @@ compareBoundaryPoints_ ::
 compareBoundaryPoints_ self how sourceRange
   = liftIO (void (js_compareBoundaryPoints self how sourceRange))
  
-foreign import javascript safe "$1[\"deleteContents\"]()"
+foreign import javascript safe "(($1) => { return $1[\"deleteContents\"](); })"
         js_deleteContents :: Range -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.deleteContents Mozilla Range.deleteContents documentation> 
 deleteContents :: (MonadIO m) => Range -> m ()
 deleteContents self = liftIO (js_deleteContents self)
  
-foreign import javascript safe "$1[\"extractContents\"]()"
+foreign import javascript safe "(($1) => { return $1[\"extractContents\"](); })"
         js_extractContents :: Range -> IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.extractContents Mozilla Range.extractContents documentation> 
@@ -163,7 +163,7 @@ extractContents self = liftIO (js_extractContents self)
 extractContents_ :: (MonadIO m) => Range -> m ()
 extractContents_ self = liftIO (void (js_extractContents self))
  
-foreign import javascript safe "$1[\"cloneContents\"]()"
+foreign import javascript safe "(($1) => { return $1[\"cloneContents\"](); })"
         js_cloneContents :: Range -> IO DocumentFragment
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneContents Mozilla Range.cloneContents documentation> 
@@ -174,14 +174,14 @@ cloneContents self = liftIO (js_cloneContents self)
 cloneContents_ :: (MonadIO m) => Range -> m ()
 cloneContents_ self = liftIO (void (js_cloneContents self))
  
-foreign import javascript safe "$1[\"insertNode\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"insertNode\"]($2); })"
         js_insertNode :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.insertNode Mozilla Range.insertNode documentation> 
 insertNode :: (MonadIO m, IsNode node) => Range -> node -> m ()
 insertNode self node = liftIO (js_insertNode self (toNode node))
  
-foreign import javascript safe "$1[\"surroundContents\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"surroundContents\"]($2); })"
         js_surroundContents :: Range -> Node -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.surroundContents Mozilla Range.surroundContents documentation> 
@@ -190,7 +190,7 @@ surroundContents ::
 surroundContents self newParent
   = liftIO (js_surroundContents self (toNode newParent))
  
-foreign import javascript unsafe "$1[\"cloneRange\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"cloneRange\"](); })"
         js_cloneRange :: Range -> IO Range
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.cloneRange Mozilla Range.cloneRange documentation> 
@@ -209,7 +209,7 @@ detach :: (MonadIO m) => Range -> m ()
 detach self = liftIO (js_detach self)
  
 foreign import javascript safe
-        "($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0)" js_isPointInRange ::
+        "(($1, $2, $3) => { return ($1[\"isPointInRange\"]($2,\n$3) ? 1 : 0); })" js_isPointInRange ::
         Range -> Node -> Word -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.isPointInRange Mozilla Range.isPointInRange documentation> 
@@ -224,7 +224,7 @@ isPointInRange_ ::
 isPointInRange_ self node offset
   = liftIO (void (js_isPointInRange self (toNode node) offset))
  
-foreign import javascript safe "$1[\"comparePoint\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"comparePoint\"]($2, $3); })"
         js_comparePoint :: Range -> Node -> Word -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.comparePoint Mozilla Range.comparePoint documentation> 
@@ -240,7 +240,7 @@ comparePoint_ self node offset
   = liftIO (void (js_comparePoint self (toNode node) offset))
  
 foreign import javascript safe
-        "($1[\"intersectsNode\"]($2) ? 1 : 0)" js_intersectsNode ::
+        "(($1, $2) => { return ($1[\"intersectsNode\"]($2) ? 1 : 0); })" js_intersectsNode ::
         Range -> Node -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.intersectsNode Mozilla Range.intersectsNode documentation> 
@@ -266,7 +266,7 @@ toString self = liftIO (fromJSString <$> (js_toString self))
 toString_ :: (MonadIO m) => Range -> m ()
 toString_ self = liftIO (void (js_toString self))
  
-foreign import javascript unsafe "$1[\"getClientRects\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getClientRects\"](); })"
         js_getClientRects :: Range -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getClientRects Mozilla Range.getClientRects documentation> 
@@ -278,7 +278,7 @@ getClientRects self
 getClientRects_ :: (MonadIO m) => Range -> m ()
 getClientRects_ self = liftIO (void (js_getClientRects self))
  
-foreign import javascript unsafe "$1[\"getBoundingClientRect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getBoundingClientRect\"](); })"
         js_getBoundingClientRect :: Range -> IO DOMRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.getBoundingClientRect Mozilla Range.getBoundingClientRect documentation> 
@@ -317,7 +317,7 @@ expand ::
 expand self unit
   = liftIO (js_expand self (toOptionalJSString unit))
  
-foreign import javascript safe "$1[\"compareNode\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"compareNode\"]($2); })"
         js_compareNode :: Range -> Node -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.compareNode Mozilla Range.compareNode documentation> 
@@ -337,42 +337,42 @@ pattern NODE_AFTER = 1
 pattern NODE_BEFORE_AND_AFTER = 2
 pattern NODE_INSIDE = 3
  
-foreign import javascript unsafe "$1[\"startContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startContainer\"]; })"
         js_getStartContainer :: Range -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startContainer Mozilla Range.startContainer documentation> 
 getStartContainer :: (MonadIO m) => Range -> m Node
 getStartContainer self = liftIO (js_getStartContainer self)
  
-foreign import javascript unsafe "$1[\"startOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startOffset\"]; })"
         js_getStartOffset :: Range -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.startOffset Mozilla Range.startOffset documentation> 
 getStartOffset :: (MonadIO m) => Range -> m Int
 getStartOffset self = liftIO (js_getStartOffset self)
  
-foreign import javascript unsafe "$1[\"endContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"endContainer\"]; })"
         js_getEndContainer :: Range -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endContainer Mozilla Range.endContainer documentation> 
 getEndContainer :: (MonadIO m) => Range -> m Node
 getEndContainer self = liftIO (js_getEndContainer self)
  
-foreign import javascript unsafe "$1[\"endOffset\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"endOffset\"]; })"
         js_getEndOffset :: Range -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.endOffset Mozilla Range.endOffset documentation> 
 getEndOffset :: (MonadIO m) => Range -> m Int
 getEndOffset self = liftIO (js_getEndOffset self)
  
-foreign import javascript unsafe "($1[\"collapsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"collapsed\"] ? 1 : 0); })"
         js_getCollapsed :: Range -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.collapsed Mozilla Range.collapsed documentation> 
 getCollapsed :: (MonadIO m) => Range -> m Bool
 getCollapsed self = liftIO (js_getCollapsed self)
  
-foreign import javascript unsafe "$1[\"commonAncestorContainer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"commonAncestorContainer\"]; })"
         js_getCommonAncestorContainer :: Range -> IO Node
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Range.commonAncestorContainer Mozilla Range.commonAncestorContainer documentation> 

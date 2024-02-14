@@ -41,7 +41,7 @@ foreign import javascript safe "(($1) => { return $1[\"insertId\"]; })" js_getIn
 getInsertId :: (MonadIO m) => SQLResultSet -> m Int64
 getInsertId self = liftIO (round <$> (js_getInsertId self))
  
-foreign import javascript unsafe "$1[\"rowsAffected\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"rowsAffected\"]; })"
         js_getRowsAffected :: SQLResultSet -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SQLResultSet.rowsAffected Mozilla SQLResultSet.rowsAffected documentation> 
