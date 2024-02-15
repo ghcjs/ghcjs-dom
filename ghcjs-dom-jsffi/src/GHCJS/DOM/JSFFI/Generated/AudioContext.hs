@@ -63,7 +63,7 @@ newAudioContext :: (MonadIO m) => m AudioContext
 newAudioContext = liftIO (js_newAudioContext)
  
 foreign import javascript interruptible
-        "$1[\"suspend\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"suspend\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_suspend :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.suspend Mozilla AudioContext.suspend documentation> 
@@ -73,7 +73,7 @@ suspend self
       ((js_suspend (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"resume\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"resume\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_resume :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.resume Mozilla AudioContext.resume documentation> 
@@ -83,7 +83,7 @@ resume self
       ((js_resume (toAudioContext self)) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_close :: AudioContext -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.close Mozilla AudioContext.close documentation> 

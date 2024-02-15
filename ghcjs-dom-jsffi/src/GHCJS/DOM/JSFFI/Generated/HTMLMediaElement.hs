@@ -119,7 +119,7 @@ getStartDate_ self
   = liftIO (void (js_getStartDate (toHTMLMediaElement self)))
  
 foreign import javascript interruptible
-        "$1[\"play\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"play\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_play :: HTMLMediaElement -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement.play Mozilla HTMLMediaElement.play documentation> 
@@ -158,7 +158,7 @@ webkitSetMediaKeys self mediaKeys
          (maybeToOptional mediaKeys))
  
 foreign import javascript interruptible
-        "$1[\"setMediaKeys\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setMediaKeys\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setMediaKeys ::
         HTMLMediaElement -> Optional MediaKeys -> IO JSVal
 

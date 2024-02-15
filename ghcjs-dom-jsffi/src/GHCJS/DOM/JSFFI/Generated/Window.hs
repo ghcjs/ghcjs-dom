@@ -163,7 +163,7 @@ encodeURIComponent_ self uri
   = liftIO (void (js_encodeURIComponent self (toJSString uri)))
  
 foreign import javascript interruptible
-        "$1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_fetch ::
         Window -> JSVal -> Optional RequestInit -> IO (JSVal, Response)
 

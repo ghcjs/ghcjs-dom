@@ -50,7 +50,7 @@ newFontFace family' source descriptors
          (maybeToOptional descriptors))
  
 foreign import javascript interruptible
-        "$1[\"load\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"load\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_load :: FontFace -> IO (JSVal, FontFace)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.load Mozilla FontFace.load documentation> 
@@ -183,7 +183,7 @@ getStatus self
   = liftIO ((js_getStatus self) >>= fromJSValUnchecked)
  
 foreign import javascript interruptible
-        "$1[\"loaded\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"loaded\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getLoaded :: FontFace -> IO (JSVal, FontFace)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFace.loaded Mozilla FontFace.loaded documentation> 

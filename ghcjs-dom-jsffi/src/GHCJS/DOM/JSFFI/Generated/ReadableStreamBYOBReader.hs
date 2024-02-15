@@ -40,7 +40,7 @@ newReadableStreamBYOBReader stream
   = liftIO (js_newReadableStreamBYOBReader stream)
  
 foreign import javascript interruptible
-        "$1[\"read\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"read\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_read ::
         ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -65,7 +65,7 @@ read_ self view
             \ view' -> js_read self (maybeToOptional view')))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_cancel ::
         ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -97,7 +97,7 @@ releaseLock :: (MonadIO m) => ReadableStreamBYOBReader -> m ()
 releaseLock self = liftIO (js_releaseLock self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getClosed :: ReadableStreamBYOBReader -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.closed Mozilla ReadableStreamBYOBReader.closed documentation> 

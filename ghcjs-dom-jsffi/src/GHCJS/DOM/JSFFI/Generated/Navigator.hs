@@ -41,7 +41,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"requestMediaKeySystemAccess\"]($2,\n$3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"requestMediaKeySystemAccess\"]($2,\n$3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_requestMediaKeySystemAccess ::
         Navigator -> JSString -> JSVal -> IO (JSVal, MediaKeySystemAccess)
 

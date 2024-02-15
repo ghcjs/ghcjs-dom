@@ -101,7 +101,7 @@ getSettings_ self
   = liftIO (void (js_getSettings (toMediaStreamTrack self)))
  
 foreign import javascript interruptible
-        "$1[\"applyConstraints\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"applyConstraints\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_applyConstraints ::
         MediaStreamTrack -> Optional MediaTrackConstraints -> IO JSVal
 

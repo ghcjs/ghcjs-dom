@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"start\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"start\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_start ::
         ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 
@@ -40,7 +40,7 @@ start self controller
   = liftIO ((js_start self controller) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"pull\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"pull\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_pull ::
         ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 

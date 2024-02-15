@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"generateRequest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"generateRequest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_generateRequest ::
         MediaKeySession -> JSString -> BufferSource -> IO JSVal
 
@@ -46,7 +46,7 @@ generateRequest self initDataType initData
          >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"load\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"load\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_load :: MediaKeySession -> JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.load Mozilla WebKitMediaKeySession.load documentation> 
@@ -65,7 +65,7 @@ load_ self sessionId
   = liftIO (void (js_load self (toJSString sessionId)))
  
 foreign import javascript interruptible
-        "$1[\"update\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"update\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_update :: MediaKeySession -> BufferSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.update Mozilla WebKitMediaKeySession.update documentation> 
@@ -78,7 +78,7 @@ update self response
          maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"close\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_close :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.close Mozilla WebKitMediaKeySession.close documentation> 
@@ -86,7 +86,7 @@ close :: (MonadIO m) => MediaKeySession -> m ()
 close self = liftIO ((js_close self) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"remove\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"remove\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_remove :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.remove Mozilla WebKitMediaKeySession.remove documentation> 
@@ -111,7 +111,7 @@ getExpiration :: (MonadIO m) => MediaKeySession -> m Double
 getExpiration self = liftIO (js_getExpiration self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getClosed :: MediaKeySession -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeySession.closed Mozilla WebKitMediaKeySession.closed documentation> 

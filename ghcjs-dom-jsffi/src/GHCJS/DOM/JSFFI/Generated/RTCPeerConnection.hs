@@ -60,7 +60,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"createOffer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"createOffer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_createOffer ::
         RTCPeerConnection ->
           Optional RTCOfferOptions -> IO (JSVal, RTCSessionDescriptionInit)
@@ -83,7 +83,7 @@ createOffer_ self offerOptions
       (void (js_createOffer self (maybeToOptional offerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"createAnswer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"createAnswer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_createAnswer ::
         RTCPeerConnection ->
           Optional RTCAnswerOptions -> IO (JSVal, RTCSessionDescriptionInit)
@@ -106,7 +106,7 @@ createAnswer_ self answerOptions
       (void (js_createAnswer self (maybeToOptional answerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"setLocalDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setLocalDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setLocalDescription ::
         RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
@@ -120,7 +120,7 @@ setLocalDescription self description
          maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"setRemoteDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setRemoteDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setRemoteDescription ::
         RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
@@ -134,7 +134,7 @@ setRemoteDescription self description
          maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"addIceCandidate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"addIceCandidate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_addIceCandidate ::
         RTCPeerConnection -> RTCIceCandidateOrInit -> IO JSVal
 
@@ -304,7 +304,7 @@ createDataChannel_ self label options
             (maybeToOptional options)))
  
 foreign import javascript interruptible
-        "$1[\"getStats\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"getStats\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getStats ::
         RTCPeerConnection ->
           Optional MediaStreamTrack -> IO (JSVal, RTCStatsReport)

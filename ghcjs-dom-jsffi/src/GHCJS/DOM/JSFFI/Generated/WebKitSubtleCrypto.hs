@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"encrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"encrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_encrypt ::
         WebKitSubtleCrypto ->
           JSString -> CryptoKey -> JSVal -> IO (JSVal, ArrayBuffer)
@@ -58,7 +58,7 @@ encrypt_ self algorithm key data'
             \ data'' -> js_encrypt self (toJSString algorithm) key data''))
  
 foreign import javascript interruptible
-        "$1[\"decrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"decrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_decrypt ::
         WebKitSubtleCrypto ->
           JSString -> CryptoKey -> JSVal -> IO (JSVal, ArrayBuffer)
@@ -85,7 +85,7 @@ decrypt_ self algorithm key data'
             \ data'' -> js_decrypt self (toJSString algorithm) key data''))
  
 foreign import javascript interruptible
-        "$1[\"sign\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"sign\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_sign ::
         WebKitSubtleCrypto ->
           JSString -> CryptoKey -> JSVal -> IO (JSVal, ArrayBuffer)
@@ -112,7 +112,7 @@ sign_ self algorithm key data'
             \ data'' -> js_sign self (toJSString algorithm) key data''))
  
 foreign import javascript interruptible
-        "$1[\"verify\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $c) => { return $1[\"verify\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_verify ::
         WebKitSubtleCrypto ->
           JSString ->
@@ -149,7 +149,7 @@ verify_ self algorithm key signature data'
                 data''))
  
 foreign import javascript interruptible
-        "$1[\"digest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"digest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_digest ::
         WebKitSubtleCrypto -> JSString -> JSVal -> IO (JSVal, ArrayBuffer)
 
@@ -174,7 +174,7 @@ digest_ self algorithm data'
             \ data'' -> js_digest self (toJSString algorithm) data''))
  
 foreign import javascript interruptible
-        "$1[\"generateKey\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"generateKey\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_generateKey ::
         WebKitSubtleCrypto ->
           JSString -> Bool -> JSVal -> IO (JSVal, CryptoKeyOrKeyPair)
@@ -203,7 +203,7 @@ generateKey_ self algorithm extractable keyUsages
               js_generateKey self (toJSString algorithm) extractable keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"importKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $6, $c) => { return $1[\"importKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_importKey ::
         WebKitSubtleCrypto ->
           JSString ->
@@ -248,7 +248,7 @@ importKey_ self format keyData algorithm extractable keyUsages
                 keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"exportKey\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"exportKey\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_exportKey ::
         WebKitSubtleCrypto ->
           JSString -> CryptoKey -> IO (JSVal, ArrayBuffer)
@@ -270,7 +270,7 @@ exportKey_ self format key
   = liftIO (void (js_exportKey self (toJSString format) key))
  
 foreign import javascript interruptible
-        "$1[\"wrapKey\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $c) => { return $1[\"wrapKey\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_wrapKey ::
         WebKitSubtleCrypto ->
           JSString ->
@@ -299,7 +299,7 @@ wrapKey_ self format key wrappingKey wrapAlgorithm
             (toJSString wrapAlgorithm)))
  
 foreign import javascript interruptible
-        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $c) => { return $1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_unwrapKey ::
         WebKitSubtleCrypto ->
           JSString ->

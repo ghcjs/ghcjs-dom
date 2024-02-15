@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"fetch\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_fetch ::
         WorkerGlobalScope ->
           JSVal -> Optional RequestInit -> IO (JSVal, Response)

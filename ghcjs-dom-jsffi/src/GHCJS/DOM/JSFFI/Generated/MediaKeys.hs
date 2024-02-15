@@ -46,7 +46,7 @@ createSession_ self sessionType
       (void (js_createSession self (maybeToOptional sessionType)))
  
 foreign import javascript interruptible
-        "$1[\"setServerCertificate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setServerCertificate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setServerCertificate ::
         MediaKeys -> BufferSource -> IO (JSVal, Bool)
 

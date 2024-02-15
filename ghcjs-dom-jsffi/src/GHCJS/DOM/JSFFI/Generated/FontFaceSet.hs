@@ -80,7 +80,7 @@ clear :: (MonadIO m) => FontFaceSet -> m ()
 clear self = liftIO (js_clear self)
  
 foreign import javascript interruptible
-        "$1[\"load\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"load\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_load ::
         FontFaceSet -> JSString -> Optional JSString -> IO (JSVal, JSVal)
 
@@ -141,7 +141,7 @@ loadingerror :: EventName FontFaceSet onloadingerror
 loadingerror = unsafeEventName (toJSString "loadingerror")
  
 foreign import javascript interruptible
-        "$1[\"ready\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"ready\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getReady :: FontFaceSet -> IO (JSVal, FontFaceSet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet.ready Mozilla FontFaceSet.ready documentation> 

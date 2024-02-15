@@ -88,7 +88,7 @@ canMakePayments_ :: (MonadIO m) => m ()
 canMakePayments_ = liftIO (void (js_canMakePayments))
  
 foreign import javascript interruptible
-        "window[\"ApplePaySession\"][\"canMakePaymentsWithActiveCard\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return window[\"ApplePaySession\"][\"canMakePaymentsWithActiveCard\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_canMakePaymentsWithActiveCard :: JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.canMakePaymentsWithActiveCard Mozilla ApplePaySession.canMakePaymentsWithActiveCard documentation> 
@@ -110,7 +110,7 @@ canMakePaymentsWithActiveCard_ merchantIdentifier
          (js_canMakePaymentsWithActiveCard (toJSString merchantIdentifier)))
  
 foreign import javascript interruptible
-        "window[\"ApplePaySession\"][\"openPaymentSetup\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return window[\"ApplePaySession\"][\"openPaymentSetup\"]($1).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_openPaymentSetup :: JSString -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePaySession.openPaymentSetup Mozilla ApplePaySession.openPaymentSetup documentation> 

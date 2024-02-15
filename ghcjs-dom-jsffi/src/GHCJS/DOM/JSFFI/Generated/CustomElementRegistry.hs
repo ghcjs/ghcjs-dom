@@ -53,7 +53,7 @@ get_ ::
 get_ self name = liftIO (void (js_get self (toJSString name)))
  
 foreign import javascript interruptible
-        "$1[\"whenDefined\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"whenDefined\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_whenDefined :: CustomElementRegistry -> JSString -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry.whenDefined Mozilla CustomElementRegistry.whenDefined documentation> 

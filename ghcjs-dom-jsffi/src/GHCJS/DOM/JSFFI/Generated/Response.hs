@@ -62,7 +62,7 @@ redirect_ url status
       (void (js_redirect (toJSString url) (maybeToOptional status)))
  
 foreign import javascript interruptible
-        "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_arrayBuffer :: Response -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.arrayBuffer Mozilla Response.arrayBuffer documentation> 
@@ -75,7 +75,7 @@ arrayBuffer_ :: (MonadIO m) => Response -> m ()
 arrayBuffer_ self = liftIO (void (js_arrayBuffer self))
  
 foreign import javascript interruptible
-        "$1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_blob :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.blob Mozilla Response.blob documentation> 
@@ -87,7 +87,7 @@ blob_ :: (MonadIO m) => Response -> m ()
 blob_ self = liftIO (void (js_blob self))
  
 foreign import javascript interruptible
-        "$1[\"formData\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"formData\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_formData :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.formData Mozilla Response.formData documentation> 
@@ -99,7 +99,7 @@ formData_ :: (MonadIO m) => Response -> m ()
 formData_ self = liftIO (void (js_formData self))
  
 foreign import javascript interruptible
-        "$1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_json :: Response -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.json Mozilla Response.json documentation> 
@@ -111,7 +111,7 @@ json_ :: (MonadIO m) => Response -> m ()
 json_ self = liftIO (void (js_json self))
  
 foreign import javascript interruptible
-        "$1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_text :: Response -> IO (JSVal, JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.text Mozilla Response.text documentation> 

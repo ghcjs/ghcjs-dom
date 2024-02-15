@@ -39,7 +39,7 @@ getParameters_ :: (MonadIO m) => RTCRtpSender -> m ()
 getParameters_ self = liftIO (void (js_getParameters self))
  
 foreign import javascript interruptible
-        "$1[\"replaceTrack\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"replaceTrack\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_replaceTrack ::
         RTCRtpSender -> Optional MediaStreamTrack -> IO JSVal
 

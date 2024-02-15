@@ -41,7 +41,7 @@ newPromiseRejectionEvent type' eventInitDict
       (js_newPromiseRejectionEvent (toJSString type') eventInitDict)
  
 foreign import javascript interruptible
-        "$1[\"promise\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"promise\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getPromise :: PromiseRejectionEvent -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PromiseRejectionEvent.promise Mozilla PromiseRejectionEvent.promise documentation> 

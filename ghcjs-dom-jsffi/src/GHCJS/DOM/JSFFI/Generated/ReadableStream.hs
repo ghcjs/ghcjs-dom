@@ -47,7 +47,7 @@ newReadableStream underlyingSource options
              (maybeToOptional options'))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_cancel :: ReadableStream -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
@@ -93,7 +93,7 @@ getReader_ self options
             \ options' -> js_getReader self (maybeToOptional options')))
  
 foreign import javascript interruptible
-        "$1[\"pipeTo\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"pipeTo\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_pipeTo ::
         ReadableStream -> JSVal -> Optional JSVal -> IO (JSVal, JSVal)
 

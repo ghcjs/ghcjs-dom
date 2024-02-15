@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"enumerateDevices\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"enumerateDevices\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_enumerateDevices :: MediaDevices -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
@@ -60,7 +60,7 @@ getSupportedConstraints_ self
   = liftIO (void (js_getSupportedConstraints self))
  
 foreign import javascript interruptible
-        "$1[\"getUserMedia\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"getUserMedia\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getUserMedia ::
         MediaDevices ->
           Optional MediaStreamConstraints -> IO (JSVal, MediaStream)

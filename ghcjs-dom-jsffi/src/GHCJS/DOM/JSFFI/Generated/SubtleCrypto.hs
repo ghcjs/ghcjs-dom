@@ -33,7 +33,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"encrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"encrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_encrypt ::
         SubtleCrypto ->
           JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
@@ -59,7 +59,7 @@ encrypt_ self algorithm key data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"decrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"decrypt\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_decrypt ::
         SubtleCrypto ->
           JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
@@ -85,7 +85,7 @@ decrypt_ self algorithm key data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"sign\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"sign\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_sign ::
         SubtleCrypto ->
           JSString -> CryptoKey -> BufferSource -> IO (JSVal, JSVal)
@@ -109,7 +109,7 @@ sign_ self algorithm key data'
          (js_sign self (toJSString algorithm) key (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"verify\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $c) => { return $1[\"verify\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_verify ::
         SubtleCrypto ->
           JSString ->
@@ -142,7 +142,7 @@ verify_ self algorithm key signature data'
             (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"digest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"digest\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_digest ::
         SubtleCrypto -> JSString -> BufferSource -> IO (JSVal, JSVal)
 
@@ -165,7 +165,7 @@ digest_ self algorithm data'
          (js_digest self (toJSString algorithm) (toBufferSource data')))
  
 foreign import javascript interruptible
-        "$1[\"deriveKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $6, $c) => { return $1[\"deriveKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_deriveKey ::
         SubtleCrypto ->
           JSString ->
@@ -206,7 +206,7 @@ deriveKey_ self algorithm baseKey derivedKeyType extractable
                 keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"deriveBits\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"deriveBits\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_deriveBits ::
         SubtleCrypto ->
           JSString -> CryptoKey -> Word -> IO (JSVal, ArrayBuffer)
@@ -229,7 +229,7 @@ deriveBits_ self algorithm baseKey length
       (void (js_deriveBits self (toJSString algorithm) baseKey length))
  
 foreign import javascript interruptible
-        "$1[\"generateKey\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $c) => { return $1[\"generateKey\"]($2, $3, $4).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_generateKey ::
         SubtleCrypto -> JSString -> Bool -> JSVal -> IO (JSVal, JSVal)
 
@@ -256,7 +256,7 @@ generateKey_ self algorithm extractable keyUsages
               js_generateKey self (toJSString algorithm) extractable keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"importKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $6, $c) => { return $1[\"importKey\"]($2, $3, $4, $5,\n$6).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_importKey ::
         SubtleCrypto ->
           JSString ->
@@ -300,7 +300,7 @@ importKey_ self format keyData algorithm extractable keyUsages
                 keyUsages'))
  
 foreign import javascript interruptible
-        "$1[\"exportKey\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"exportKey\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_exportKey ::
         SubtleCrypto -> JSString -> CryptoKey -> IO (JSVal, JSVal)
 
@@ -321,7 +321,7 @@ exportKey_ self format key
   = liftIO (void (js_exportKey self (toJSString format) key))
  
 foreign import javascript interruptible
-        "$1[\"wrapKey\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $c) => { return $1[\"wrapKey\"]($2, $3, $4, $5).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_wrapKey ::
         SubtleCrypto ->
           JSString -> CryptoKey -> CryptoKey -> JSString -> IO (JSVal, JSVal)
@@ -349,7 +349,7 @@ wrapKey_ self format key wrappingKey wrapAlgorithm
             (toJSString wrapAlgorithm)))
  
 foreign import javascript interruptible
-        "$1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $c) => { return $1[\"unwrapKey\"]($2, $3, $4, $5,\n$6, $7, $8).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_unwrapKey ::
         SubtleCrypto ->
           JSString ->
