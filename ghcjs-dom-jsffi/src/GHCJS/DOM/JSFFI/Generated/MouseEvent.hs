@@ -54,7 +54,7 @@ newMouseEvent type' eventInitDict
          (maybeToOptional (fmap toMouseEventInit eventInitDict)))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1, $1, $1, $1, $1) => { return $1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) => { return $1[\"initMouseEvent\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12, $13, $14, $15, $16); })"
         js_initMouseEvent ::
         MouseEvent ->
           Optional JSString ->

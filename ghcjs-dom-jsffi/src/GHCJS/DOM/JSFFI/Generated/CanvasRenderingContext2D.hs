@@ -628,7 +628,7 @@ drawImageScaled self image x y width height
          height)
  
 foreign import javascript safe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1) => { return $1[\"drawImage\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"drawImage\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10); })"
         js_drawImagePart ::
         CanvasRenderingContext2D ->
           CanvasImageSource ->
@@ -651,7 +651,7 @@ drawImagePart self image sx sy sw sh dx dy dw dh
          dh)
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1) => { return $1[\"drawImageFromRect\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) => { return $1[\"drawImageFromRect\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11); })"
         js_drawImageFromRect ::
         CanvasRenderingContext2D ->
           HTMLImageElement ->

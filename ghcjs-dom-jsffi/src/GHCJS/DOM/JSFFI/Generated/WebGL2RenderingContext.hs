@@ -361,7 +361,7 @@ getBufferSubData self target srcByteOffset dstData dstOffset length
          (maybeToOptional length))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1) => { return $1[\"blitFramebuffer\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) => { return $1[\"blitFramebuffer\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11); })"
         js_blitFramebuffer ::
         WebGL2RenderingContext ->
           GLint ->
@@ -518,7 +518,7 @@ texStorage3D self target levels internalformat width height depth
          depth)
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1) => { return $1[\"texImage3D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10, $11); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) => { return $1[\"texImage3D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10, $11); })"
         js_texImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -549,7 +549,7 @@ texImage3D self target level internalformat width height depth
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12); })"
         js_texSubImage3DView ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -607,7 +607,7 @@ texSubImage3D self target level xoffset yoffset zoffset format
          (toTexImageSource source))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1) => { return $1[\"copyTexSubImage3D\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"copyTexSubImage3D\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10); })"
         js_copyTexSubImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -631,7 +631,7 @@ copyTexSubImage3D self target level xoffset yoffset zoffset x y
          height)
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1) => { return $1[\"compressedTexImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"compressedTexImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10); })"
         js_compressedTexImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -661,7 +661,7 @@ compressedTexImage3D self target level internalformat width height
          (maybeToOptional (fmap toArrayBufferView data')))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"compressedTexSubImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"compressedTexSubImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
         js_compressedTexSubImage3D ::
         WebGL2RenderingContext ->
           GLenum ->

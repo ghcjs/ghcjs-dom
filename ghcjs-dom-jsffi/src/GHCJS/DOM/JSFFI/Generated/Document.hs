@@ -926,7 +926,7 @@ webkitGetNamedFlows_ self
   = liftIO (void (js_webkitGetNamedFlows (toDocument self)))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"createTouch\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"createTouch\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12); })"
         js_createTouch ::
         Document ->
           Optional Window ->

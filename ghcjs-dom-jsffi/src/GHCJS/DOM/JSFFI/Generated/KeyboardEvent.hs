@@ -67,7 +67,7 @@ getModifierState_ self keyArg
   = liftIO (void (js_getModifierState self (toJSString keyArg)))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1, $1, $1) => { return $1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"initKeyboardEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
         js_initKeyboardEvent ::
         KeyboardEvent ->
           Optional JSString ->

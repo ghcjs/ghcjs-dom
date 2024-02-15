@@ -2160,7 +2160,7 @@ texParameteri self target pname param
          param)
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1) => { return $1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"texImage2D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10); })"
         js_texImage2DView ::
         WebGLRenderingContextBase ->
           GLenum ->
@@ -2215,7 +2215,7 @@ texImage2D self target level internalformat format type' source
          (maybeToOptional (fmap toTexImageSource source)))
  
 foreign import javascript unsafe
-        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $1) => { return $1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10); })"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"texSubImage2D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10); })"
         js_texSubImage2DView ::
         WebGLRenderingContextBase ->
           GLenum ->
