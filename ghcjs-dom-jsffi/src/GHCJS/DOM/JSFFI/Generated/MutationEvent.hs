@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9) => { return $1[\"initMutationEvent\"]($2, $3,\n$4, $5, $6, $7, $8, $9); })"
         js_initMutationEvent ::
         MutationEvent ->
           Optional JSString ->
@@ -66,7 +66,7 @@ pattern MODIFICATION = 1
 pattern ADDITION = 2
 pattern REMOVAL = 3
  
-foreign import javascript unsafe "$1[\"relatedNode\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"relatedNode\"]; })"
         js_getRelatedNode :: MutationEvent -> IO (Nullable Node)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.relatedNode Mozilla MutationEvent.relatedNode documentation> 
@@ -87,7 +87,7 @@ getRelatedNodeUnchecked :: (MonadIO m) => MutationEvent -> m Node
 getRelatedNodeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRelatedNode self))
  
-foreign import javascript unsafe "$1[\"prevValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"prevValue\"]; })"
         js_getPrevValue :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.prevValue Mozilla MutationEvent.prevValue documentation> 
@@ -96,7 +96,7 @@ getPrevValue ::
 getPrevValue self
   = liftIO (fromJSString <$> (js_getPrevValue self))
  
-foreign import javascript unsafe "$1[\"newValue\"]" js_getNewValue
+foreign import javascript unsafe "(($1) => { return $1[\"newValue\"]; })" js_getNewValue
         :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.newValue Mozilla MutationEvent.newValue documentation> 
@@ -104,7 +104,7 @@ getNewValue ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
 getNewValue self = liftIO (fromJSString <$> (js_getNewValue self))
  
-foreign import javascript unsafe "$1[\"attrName\"]" js_getAttrName
+foreign import javascript unsafe "(($1) => { return $1[\"attrName\"]; })" js_getAttrName
         :: MutationEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrName Mozilla MutationEvent.attrName documentation> 
@@ -112,7 +112,7 @@ getAttrName ::
             (MonadIO m, FromJSString result) => MutationEvent -> m result
 getAttrName self = liftIO (fromJSString <$> (js_getAttrName self))
  
-foreign import javascript unsafe "$1[\"attrChange\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"attrChange\"]; })"
         js_getAttrChange :: MutationEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent.attrChange Mozilla MutationEvent.attrChange documentation> 

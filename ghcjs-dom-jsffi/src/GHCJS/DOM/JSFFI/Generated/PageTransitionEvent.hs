@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"PageTransitionEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"PageTransitionEvent\"]($1,\n$2); })"
         js_newPageTransitionEvent ::
         JSString ->
           Optional PageTransitionEventInit -> IO PageTransitionEvent
@@ -42,7 +42,7 @@ newPageTransitionEvent type' eventInitDict
       (js_newPageTransitionEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "($1[\"persisted\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"persisted\"] ? 1 : 0); })"
         js_getPersisted :: PageTransitionEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent.persisted Mozilla PageTransitionEvent.persisted documentation> 

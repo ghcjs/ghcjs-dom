@@ -25,7 +25,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,7 +39,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"send\"]($2)" js_send ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_send ::
         RTCDataChannel -> ArrayBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -47,7 +47,7 @@ send ::
      (MonadIO m, IsArrayBuffer data') => RTCDataChannel -> data' -> m ()
 send self data' = liftIO (js_send self (toArrayBuffer data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendView ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendView ::
         RTCDataChannel -> ArrayBufferView -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -57,7 +57,7 @@ sendView ::
 sendView self data'
   = liftIO (js_sendView self (toArrayBufferView data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendBlob ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendBlob ::
         RTCDataChannel -> Blob -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -65,7 +65,7 @@ sendBlob ::
          (MonadIO m, IsBlob data') => RTCDataChannel -> data' -> m ()
 sendBlob self data' = liftIO (js_sendBlob self (toBlob data'))
  
-foreign import javascript safe "$1[\"send\"]($2)" js_sendString ::
+foreign import javascript safe "(($1, $2) => { return $1[\"send\"]($2); })" js_sendString ::
         RTCDataChannel -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.send Mozilla RTCDataChannel.send documentation> 
@@ -74,14 +74,14 @@ sendString ::
 sendString self data'
   = liftIO (js_sendString self (toJSString data'))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         RTCDataChannel -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.close Mozilla RTCDataChannel.close documentation> 
 close :: (MonadIO m) => RTCDataChannel -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         RTCDataChannel -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.label Mozilla RTCDataChannel.label documentation> 
@@ -89,14 +89,14 @@ getLabel ::
          (MonadIO m, FromJSString result) => RTCDataChannel -> m result
 getLabel self = liftIO (fromJSString <$> (js_getLabel self))
  
-foreign import javascript unsafe "($1[\"ordered\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"ordered\"] ? 1 : 0); })"
         js_getOrdered :: RTCDataChannel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.ordered Mozilla RTCDataChannel.ordered documentation> 
 getOrdered :: (MonadIO m) => RTCDataChannel -> m Bool
 getOrdered self = liftIO (js_getOrdered self)
  
-foreign import javascript unsafe "$1[\"maxPacketLifeTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maxPacketLifeTime\"]; })"
         js_getMaxPacketLifeTime :: RTCDataChannel -> IO (Nullable Word)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.maxPacketLifeTime Mozilla RTCDataChannel.maxPacketLifeTime documentation> 
@@ -120,7 +120,7 @@ getMaxPacketLifeTimeUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getMaxPacketLifeTime self))
  
-foreign import javascript unsafe "$1[\"maxRetransmits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maxRetransmits\"]; })"
         js_getMaxRetransmits :: RTCDataChannel -> IO (Nullable Word)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.maxRetransmits Mozilla RTCDataChannel.maxRetransmits documentation> 
@@ -144,7 +144,7 @@ getMaxRetransmitsUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getMaxRetransmits self))
  
-foreign import javascript unsafe "$1[\"protocol\"]" js_getProtocol
+foreign import javascript unsafe "(($1) => { return $1[\"protocol\"]; })" js_getProtocol
         :: RTCDataChannel -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.protocol Mozilla RTCDataChannel.protocol documentation> 
@@ -152,14 +152,14 @@ getProtocol ::
             (MonadIO m, FromJSString result) => RTCDataChannel -> m result
 getProtocol self = liftIO (fromJSString <$> (js_getProtocol self))
  
-foreign import javascript unsafe "($1[\"negotiated\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"negotiated\"] ? 1 : 0); })"
         js_getNegotiated :: RTCDataChannel -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.negotiated Mozilla RTCDataChannel.negotiated documentation> 
 getNegotiated :: (MonadIO m) => RTCDataChannel -> m Bool
 getNegotiated self = liftIO (js_getNegotiated self)
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         RTCDataChannel -> IO (Nullable Word)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.id Mozilla RTCDataChannel.id documentation> 
@@ -179,7 +179,7 @@ getIdUnchecked :: (MonadIO m) => RTCDataChannel -> m Word
 getIdUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getId self))
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: RTCDataChannel -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.readyState Mozilla RTCDataChannel.readyState documentation> 
@@ -188,7 +188,7 @@ getReadyState ::
 getReadyState self
   = liftIO ((js_getReadyState self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"bufferedAmount\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"bufferedAmount\"]; })"
         js_getBufferedAmount :: RTCDataChannel -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.bufferedAmount Mozilla RTCDataChannel.bufferedAmount documentation> 
@@ -196,7 +196,7 @@ getBufferedAmount :: (MonadIO m) => RTCDataChannel -> m Word
 getBufferedAmount self = liftIO (js_getBufferedAmount self)
  
 foreign import javascript unsafe
-        "$1[\"bufferedAmountLowThreshold\"] = $2;"
+        "(($1, $2) => { $1[\"bufferedAmountLowThreshold\"] = $2; })"
         js_setBufferedAmountLowThreshold :: RTCDataChannel -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.bufferedAmountLowThreshold Mozilla RTCDataChannel.bufferedAmountLowThreshold documentation> 
@@ -206,7 +206,7 @@ setBufferedAmountLowThreshold self val
   = liftIO (js_setBufferedAmountLowThreshold self val)
  
 foreign import javascript unsafe
-        "$1[\"bufferedAmountLowThreshold\"]"
+        "(($1) => { return $1[\"bufferedAmountLowThreshold\"]; })"
         js_getBufferedAmountLowThreshold :: RTCDataChannel -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.bufferedAmountLowThreshold Mozilla RTCDataChannel.bufferedAmountLowThreshold documentation> 
@@ -215,7 +215,7 @@ getBufferedAmountLowThreshold ::
 getBufferedAmountLowThreshold self
   = liftIO (js_getBufferedAmountLowThreshold self)
  
-foreign import javascript safe "$1[\"binaryType\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"binaryType\"] = $2; })"
         js_setBinaryType :: RTCDataChannel -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.binaryType Mozilla RTCDataChannel.binaryType documentation> 
@@ -224,7 +224,7 @@ setBinaryType ::
 setBinaryType self val
   = liftIO (js_setBinaryType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"binaryType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"binaryType\"]; })"
         js_getBinaryType :: RTCDataChannel -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel.binaryType Mozilla RTCDataChannel.binaryType documentation> 

@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[$2]" js_item ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_item ::
         DOMNamedFlowCollection -> Word -> IO (Nullable WebKitNamedFlow)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection.item Mozilla WebKitNamedFlowCollection.item documentation> 
@@ -56,7 +56,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . nullableToMaybe <$> (js_item self index))
  
-foreign import javascript unsafe "$1[$2]" js_namedItem ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_namedItem ::
         DOMNamedFlowCollection -> JSString -> IO (Nullable WebKitNamedFlow)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection.namedItem Mozilla WebKitNamedFlowCollection.namedItem documentation> 
@@ -92,7 +92,7 @@ namedItemUnchecked self name
       (fromJust . nullableToMaybe <$>
          (js_namedItem self (toJSString name)))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         DOMNamedFlowCollection -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitNamedFlowCollection.length Mozilla WebKitNamedFlowCollection.length documentation> 

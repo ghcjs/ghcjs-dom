@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ApplePayError\"]($1,\n$2, $3)" js_newApplePayError ::
+        "(($1, $2, $3) => { return new window[\"ApplePayError\"]($1,\n$2, $3); })" js_newApplePayError ::
         JSVal ->
           Optional ApplePayErrorContactField ->
             Optional JSString -> IO ApplePayError
@@ -46,7 +46,7 @@ newApplePayError errorCode contactField message
          (maybeToOptional contactField)
          (toOptionalJSString message))
  
-foreign import javascript unsafe "$1[\"code\"] = $2;" js_setCode ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"code\"] = $2; })" js_setCode ::
         ApplePayError -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayError.code Mozilla ApplePayError.code documentation> 
@@ -54,14 +54,14 @@ setCode ::
         (MonadIO m) => ApplePayError -> ApplePayErrorCode -> m ()
 setCode self val = liftIO (js_setCode self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"code\"]" js_getCode ::
+foreign import javascript unsafe "(($1) => { return $1[\"code\"]; })" js_getCode ::
         ApplePayError -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayError.code Mozilla ApplePayError.code documentation> 
 getCode :: (MonadIO m) => ApplePayError -> m ApplePayErrorCode
 getCode self = liftIO ((js_getCode self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"contactField\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"contactField\"] = $2; })"
         js_setContactField ::
         ApplePayError -> Optional ApplePayErrorContactField -> IO ()
 
@@ -72,7 +72,7 @@ setContactField ::
 setContactField self val
   = liftIO (js_setContactField self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"contactField\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"contactField\"]; })"
         js_getContactField ::
         ApplePayError -> IO (Nullable ApplePayErrorContactField)
 
@@ -97,7 +97,7 @@ getContactFieldUnchecked ::
 getContactFieldUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getContactField self))
  
-foreign import javascript unsafe "$1[\"message\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"message\"] = $2; })"
         js_setMessage :: ApplePayError -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayError.message Mozilla ApplePayError.message documentation> 
@@ -105,7 +105,7 @@ setMessage ::
            (MonadIO m, ToJSString val) => ApplePayError -> val -> m ()
 setMessage self val = liftIO (js_setMessage self (toJSString val))
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         ApplePayError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplePayError.message Mozilla ApplePayError.message documentation> 

@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"returnValue\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"returnValue\"] = $2; })"
         js_setReturnValue :: BeforeUnloadEvent -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent.returnValue Mozilla BeforeUnloadEvent.returnValue documentation> 
@@ -35,7 +35,7 @@ setReturnValue ::
 setReturnValue self val
   = liftIO (js_setReturnValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"returnValue\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"returnValue\"]; })"
         js_getReturnValue :: BeforeUnloadEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent.returnValue Mozilla BeforeUnloadEvent.returnValue documentation> 

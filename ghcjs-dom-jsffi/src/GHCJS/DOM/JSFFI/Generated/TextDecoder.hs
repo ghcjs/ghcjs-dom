@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"TextDecoder\"]($1,\n$2)" js_newTextDecoder ::
+        "(($1, $2) => { return new window[\"TextDecoder\"]($1,\n$2); })" js_newTextDecoder ::
         Optional JSString -> Optional TextDecoderOptions -> IO TextDecoder
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder Mozilla TextDecoder documentation> 
@@ -40,7 +40,7 @@ newTextDecoder label options
       (js_newTextDecoder (toOptionalJSString label)
          (maybeToOptional options))
  
-foreign import javascript safe "$1[\"decode\"]($2, $3)" js_decode
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"decode\"]($2, $3); })" js_decode
         ::
         TextDecoder ->
           Optional BufferSource -> Optional TextDecodeOptions -> IO JSString
@@ -65,7 +65,7 @@ decode_ self input options
          (js_decode self (maybeToOptional (fmap toBufferSource input))
             (maybeToOptional options)))
  
-foreign import javascript unsafe "$1[\"encoding\"]" js_getEncoding
+foreign import javascript unsafe "(($1) => { return $1[\"encoding\"]; })" js_getEncoding
         :: TextDecoder -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder.encoding Mozilla TextDecoder.encoding documentation> 
@@ -73,14 +73,14 @@ getEncoding ::
             (MonadIO m, FromJSString result) => TextDecoder -> m result
 getEncoding self = liftIO (fromJSString <$> (js_getEncoding self))
  
-foreign import javascript unsafe "($1[\"fatal\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"fatal\"] ? 1 : 0); })"
         js_getFatal :: TextDecoder -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder.fatal Mozilla TextDecoder.fatal documentation> 
 getFatal :: (MonadIO m) => TextDecoder -> m Bool
 getFatal self = liftIO (js_getFatal self)
  
-foreign import javascript unsafe "($1[\"ignoreBOM\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"ignoreBOM\"] ? 1 : 0); })"
         js_getIgnoreBOM :: TextDecoder -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder.ignoreBOM Mozilla TextDecoder.ignoreBOM documentation> 

@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,14 +26,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"FormData\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"FormData\"]($1); })"
         js_newFormData :: Optional HTMLFormElement -> IO FormData
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData Mozilla FormData documentation> 
 newFormData :: (MonadIO m) => Maybe HTMLFormElement -> m FormData
 newFormData form = liftIO (js_newFormData (maybeToOptional form))
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3)" js_append
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"append\"]($2, $3); })" js_append
         :: FormData -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/FormData.append Mozilla FormData.append documentation> 
@@ -43,7 +43,7 @@ append ::
 append self name value
   = liftIO (js_append self (toJSString name) (toJSString value))
  
-foreign import javascript unsafe "$1[\"append\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"append\"]($2, $3, $4); })"
         js_appendBlob ::
         FormData -> JSString -> Blob -> Optional JSString -> IO ()
 

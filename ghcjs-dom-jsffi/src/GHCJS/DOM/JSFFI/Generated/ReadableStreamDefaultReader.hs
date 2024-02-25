@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStreamDefaultReader\"]($1)"
+        "(($1) => { return new window[\"ReadableStreamDefaultReader\"]($1); })"
         js_newReadableStreamDefaultReader ::
         ReadableStream -> IO ReadableStreamDefaultReader
 
@@ -40,7 +40,7 @@ newReadableStreamDefaultReader stream
   = liftIO (js_newReadableStreamDefaultReader stream)
  
 foreign import javascript interruptible
-        "$1[\"read\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"read\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_read :: ReadableStreamDefaultReader -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.read Mozilla ReadableStreamDefaultReader.read documentation> 
@@ -52,7 +52,7 @@ read_ :: (MonadIO m) => ReadableStreamDefaultReader -> m ()
 read_ self = liftIO (void (js_read self))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_cancel ::
         ReadableStreamDefaultReader -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -76,7 +76,7 @@ cancel_ self reason
          (mapM toJSVal reason >>=
             \ reason' -> js_cancel self (maybeToOptional reason')))
  
-foreign import javascript unsafe "$1[\"releaseLock\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"releaseLock\"](); })"
         js_releaseLock :: ReadableStreamDefaultReader -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.releaseLock Mozilla ReadableStreamDefaultReader.releaseLock documentation> 
@@ -84,7 +84,7 @@ releaseLock :: (MonadIO m) => ReadableStreamDefaultReader -> m ()
 releaseLock self = liftIO (js_releaseLock self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getClosed :: ReadableStreamDefaultReader -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader.closed Mozilla ReadableStreamDefaultReader.closed documentation> 

@@ -26,7 +26,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -54,21 +54,21 @@ pattern SVG_MEETORSLICE_UNKNOWN = 0
 pattern SVG_MEETORSLICE_MEET = 1
 pattern SVG_MEETORSLICE_SLICE = 2
  
-foreign import javascript safe "$1[\"align\"] = $2;" js_setAlign ::
+foreign import javascript safe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign ::
         SVGPreserveAspectRatio -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.align Mozilla SVGPreserveAspectRatio.align documentation> 
 setAlign :: (MonadIO m) => SVGPreserveAspectRatio -> Word -> m ()
 setAlign self val = liftIO (js_setAlign self val)
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         SVGPreserveAspectRatio -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.align Mozilla SVGPreserveAspectRatio.align documentation> 
 getAlign :: (MonadIO m) => SVGPreserveAspectRatio -> m Word
 getAlign self = liftIO (js_getAlign self)
  
-foreign import javascript safe "$1[\"meetOrSlice\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"meetOrSlice\"] = $2; })"
         js_setMeetOrSlice :: SVGPreserveAspectRatio -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.meetOrSlice Mozilla SVGPreserveAspectRatio.meetOrSlice documentation> 
@@ -76,7 +76,7 @@ setMeetOrSlice ::
                (MonadIO m) => SVGPreserveAspectRatio -> Word -> m ()
 setMeetOrSlice self val = liftIO (js_setMeetOrSlice self val)
  
-foreign import javascript unsafe "$1[\"meetOrSlice\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"meetOrSlice\"]; })"
         js_getMeetOrSlice :: SVGPreserveAspectRatio -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGPreserveAspectRatio.meetOrSlice Mozilla SVGPreserveAspectRatio.meetOrSlice documentation> 

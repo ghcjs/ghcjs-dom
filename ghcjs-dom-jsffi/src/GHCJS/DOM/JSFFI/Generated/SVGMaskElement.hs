@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"maskUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maskUnits\"]; })"
         js_getMaskUnits :: SVGMaskElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.maskUnits Mozilla SVGMaskElement.maskUnits documentation> 
@@ -36,7 +36,7 @@ getMaskUnits ::
              (MonadIO m) => SVGMaskElement -> m SVGAnimatedEnumeration
 getMaskUnits self = liftIO (js_getMaskUnits self)
  
-foreign import javascript unsafe "$1[\"maskContentUnits\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"maskContentUnits\"]; })"
         js_getMaskContentUnits ::
         SVGMaskElement -> IO SVGAnimatedEnumeration
 
@@ -45,28 +45,28 @@ getMaskContentUnits ::
                     (MonadIO m) => SVGMaskElement -> m SVGAnimatedEnumeration
 getMaskContentUnits self = liftIO (js_getMaskContentUnits self)
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGMaskElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.x Mozilla SVGMaskElement.x documentation> 
 getX :: (MonadIO m) => SVGMaskElement -> m SVGAnimatedLength
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGMaskElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.y Mozilla SVGMaskElement.y documentation> 
 getY :: (MonadIO m) => SVGMaskElement -> m SVGAnimatedLength
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGMaskElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.width Mozilla SVGMaskElement.width documentation> 
 getWidth :: (MonadIO m) => SVGMaskElement -> m SVGAnimatedLength
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGMaskElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGMaskElement.height Mozilla SVGMaskElement.height documentation> 

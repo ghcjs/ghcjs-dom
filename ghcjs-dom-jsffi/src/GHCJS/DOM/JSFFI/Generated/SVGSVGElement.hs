@@ -44,7 +44,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -58,7 +58,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"suspendRedraw\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"suspendRedraw\"]($2); })"
         js_suspendRedraw :: SVGSVGElement -> Optional Word -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.suspendRedraw Mozilla SVGSVGElement.suspendRedraw documentation> 
@@ -76,7 +76,7 @@ suspendRedraw_ self maxWaitMilliseconds
       (void
          (js_suspendRedraw self (maybeToOptional maxWaitMilliseconds)))
  
-foreign import javascript unsafe "$1[\"unsuspendRedraw\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"unsuspendRedraw\"]($2); })"
         js_unsuspendRedraw :: SVGSVGElement -> Optional Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unsuspendRedraw Mozilla SVGSVGElement.unsuspendRedraw documentation> 
@@ -86,28 +86,28 @@ unsuspendRedraw self suspendHandleId
   = liftIO
       (js_unsuspendRedraw self (maybeToOptional suspendHandleId))
  
-foreign import javascript unsafe "$1[\"unsuspendRedrawAll\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"unsuspendRedrawAll\"](); })"
         js_unsuspendRedrawAll :: SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unsuspendRedrawAll Mozilla SVGSVGElement.unsuspendRedrawAll documentation> 
 unsuspendRedrawAll :: (MonadIO m) => SVGSVGElement -> m ()
 unsuspendRedrawAll self = liftIO (js_unsuspendRedrawAll self)
  
-foreign import javascript unsafe "$1[\"forceRedraw\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"forceRedraw\"](); })"
         js_forceRedraw :: SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.forceRedraw Mozilla SVGSVGElement.forceRedraw documentation> 
 forceRedraw :: (MonadIO m) => SVGSVGElement -> m ()
 forceRedraw self = liftIO (js_forceRedraw self)
  
-foreign import javascript unsafe "$1[\"pauseAnimations\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"pauseAnimations\"](); })"
         js_pauseAnimations :: SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pauseAnimations Mozilla SVGSVGElement.pauseAnimations documentation> 
 pauseAnimations :: (MonadIO m) => SVGSVGElement -> m ()
 pauseAnimations self = liftIO (js_pauseAnimations self)
  
-foreign import javascript unsafe "$1[\"unpauseAnimations\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"unpauseAnimations\"](); })"
         js_unpauseAnimations :: SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.unpauseAnimations Mozilla SVGSVGElement.unpauseAnimations documentation> 
@@ -115,7 +115,7 @@ unpauseAnimations :: (MonadIO m) => SVGSVGElement -> m ()
 unpauseAnimations self = liftIO (js_unpauseAnimations self)
  
 foreign import javascript unsafe
-        "($1[\"animationsPaused\"]() ? 1 : 0)" js_animationsPaused ::
+        "(($1) => { return ($1[\"animationsPaused\"]() ? 1 : 0); })" js_animationsPaused ::
         SVGSVGElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.animationsPaused Mozilla SVGSVGElement.animationsPaused documentation> 
@@ -126,7 +126,7 @@ animationsPaused self = liftIO (js_animationsPaused self)
 animationsPaused_ :: (MonadIO m) => SVGSVGElement -> m ()
 animationsPaused_ self = liftIO (void (js_animationsPaused self))
  
-foreign import javascript unsafe "$1[\"getCurrentTime\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getCurrentTime\"](); })"
         js_getCurrentTime :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.getCurrentTime Mozilla SVGSVGElement.getCurrentTime documentation> 
@@ -137,7 +137,7 @@ getCurrentTime self = liftIO (js_getCurrentTime self)
 getCurrentTime_ :: (MonadIO m) => SVGSVGElement -> m ()
 getCurrentTime_ self = liftIO (void (js_getCurrentTime self))
  
-foreign import javascript unsafe "$1[\"setCurrentTime\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"setCurrentTime\"]($2); })"
         js_setCurrentTime :: SVGSVGElement -> Optional Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.setCurrentTime Mozilla SVGSVGElement.setCurrentTime documentation> 
@@ -147,7 +147,7 @@ setCurrentTime self seconds
   = liftIO (js_setCurrentTime self (maybeToOptional seconds))
  
 foreign import javascript unsafe
-        "$1[\"getIntersectionList\"]($2,\n$3)" js_getIntersectionList ::
+        "(($1, $2, $3) => { return $1[\"getIntersectionList\"]($2,\n$3); })" js_getIntersectionList ::
         SVGSVGElement -> SVGRect -> Optional SVGElement -> IO NodeList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.getIntersectionList Mozilla SVGSVGElement.getIntersectionList documentation> 
@@ -169,7 +169,7 @@ getIntersectionList_ self rect referenceElement
          (js_getIntersectionList self rect
             (maybeToOptional (fmap toSVGElement referenceElement))))
  
-foreign import javascript unsafe "$1[\"getEnclosureList\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getEnclosureList\"]($2, $3); })"
         js_getEnclosureList ::
         SVGSVGElement -> SVGRect -> Optional SVGElement -> IO NodeList
 
@@ -193,7 +193,7 @@ getEnclosureList_ self rect referenceElement
             (maybeToOptional (fmap toSVGElement referenceElement))))
  
 foreign import javascript unsafe
-        "($1[\"checkIntersection\"]($2,\n$3) ? 1 : 0)" js_checkIntersection
+        "(($1, $2, $3) => { return ($1[\"checkIntersection\"]($2,\n$3) ? 1 : 0); })" js_checkIntersection
         :: SVGSVGElement -> Optional SVGElement -> SVGRect -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.checkIntersection Mozilla SVGSVGElement.checkIntersection documentation> 
@@ -218,7 +218,7 @@ checkIntersection_ self element rect
             rect))
  
 foreign import javascript unsafe
-        "($1[\"checkEnclosure\"]($2,\n$3) ? 1 : 0)" js_checkEnclosure ::
+        "(($1, $2, $3) => { return ($1[\"checkEnclosure\"]($2,\n$3) ? 1 : 0); })" js_checkEnclosure ::
         SVGSVGElement -> Optional SVGElement -> SVGRect -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.checkEnclosure Mozilla SVGSVGElement.checkEnclosure documentation> 
@@ -242,14 +242,14 @@ checkEnclosure_ self element rect
             (maybeToOptional (fmap toSVGElement element))
             rect))
  
-foreign import javascript unsafe "$1[\"deselectAll\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"deselectAll\"](); })"
         js_deselectAll :: SVGSVGElement -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.deselectAll Mozilla SVGSVGElement.deselectAll documentation> 
 deselectAll :: (MonadIO m) => SVGSVGElement -> m ()
 deselectAll self = liftIO (js_deselectAll self)
  
-foreign import javascript unsafe "$1[\"createSVGNumber\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGNumber\"](); })"
         js_createSVGNumber :: SVGSVGElement -> IO SVGNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGNumber Mozilla SVGSVGElement.createSVGNumber documentation> 
@@ -260,7 +260,7 @@ createSVGNumber self = liftIO (js_createSVGNumber self)
 createSVGNumber_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGNumber_ self = liftIO (void (js_createSVGNumber self))
  
-foreign import javascript unsafe "$1[\"createSVGLength\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGLength\"](); })"
         js_createSVGLength :: SVGSVGElement -> IO SVGLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGLength Mozilla SVGSVGElement.createSVGLength documentation> 
@@ -271,7 +271,7 @@ createSVGLength self = liftIO (js_createSVGLength self)
 createSVGLength_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGLength_ self = liftIO (void (js_createSVGLength self))
  
-foreign import javascript unsafe "$1[\"createSVGAngle\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGAngle\"](); })"
         js_createSVGAngle :: SVGSVGElement -> IO SVGAngle
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGAngle Mozilla SVGSVGElement.createSVGAngle documentation> 
@@ -282,7 +282,7 @@ createSVGAngle self = liftIO (js_createSVGAngle self)
 createSVGAngle_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGAngle_ self = liftIO (void (js_createSVGAngle self))
  
-foreign import javascript unsafe "$1[\"createSVGPoint\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGPoint\"](); })"
         js_createSVGPoint :: SVGSVGElement -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGPoint Mozilla SVGSVGElement.createSVGPoint documentation> 
@@ -293,7 +293,7 @@ createSVGPoint self = liftIO (js_createSVGPoint self)
 createSVGPoint_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGPoint_ self = liftIO (void (js_createSVGPoint self))
  
-foreign import javascript unsafe "$1[\"createSVGMatrix\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGMatrix\"](); })"
         js_createSVGMatrix :: SVGSVGElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGMatrix Mozilla SVGSVGElement.createSVGMatrix documentation> 
@@ -304,7 +304,7 @@ createSVGMatrix self = liftIO (js_createSVGMatrix self)
 createSVGMatrix_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGMatrix_ self = liftIO (void (js_createSVGMatrix self))
  
-foreign import javascript unsafe "$1[\"createSVGRect\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGRect\"](); })"
         js_createSVGRect :: SVGSVGElement -> IO SVGRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGRect Mozilla SVGSVGElement.createSVGRect documentation> 
@@ -315,7 +315,7 @@ createSVGRect self = liftIO (js_createSVGRect self)
 createSVGRect_ :: (MonadIO m) => SVGSVGElement -> m ()
 createSVGRect_ self = liftIO (void (js_createSVGRect self))
  
-foreign import javascript unsafe "$1[\"createSVGTransform\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSVGTransform\"](); })"
         js_createSVGTransform :: SVGSVGElement -> IO SVGTransform
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.createSVGTransform Mozilla SVGSVGElement.createSVGTransform documentation> 
@@ -329,7 +329,7 @@ createSVGTransform_ self
   = liftIO (void (js_createSVGTransform self))
  
 foreign import javascript unsafe
-        "$1[\"createSVGTransformFromMatrix\"]($2)"
+        "(($1, $2) => { return $1[\"createSVGTransformFromMatrix\"]($2); })"
         js_createSVGTransformFromMatrix ::
         SVGSVGElement -> SVGMatrix -> IO SVGTransform
 
@@ -345,7 +345,7 @@ createSVGTransformFromMatrix_ ::
 createSVGTransformFromMatrix_ self matrix
   = liftIO (void (js_createSVGTransformFromMatrix self matrix))
  
-foreign import javascript unsafe "$1[\"getElementById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getElementById\"]($2); })"
         js_getElementById :: SVGSVGElement -> JSString -> IO Element
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.getElementById Mozilla SVGSVGElement.getElementById documentation> 
@@ -362,35 +362,35 @@ getElementById_ ::
 getElementById_ self elementId
   = liftIO (void (js_getElementById self (toJSString elementId)))
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.x Mozilla SVGSVGElement.x documentation> 
 getX :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.y Mozilla SVGSVGElement.y documentation> 
 getY :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.width Mozilla SVGSVGElement.width documentation> 
 getWidth :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         SVGSVGElement -> IO SVGAnimatedLength
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.height Mozilla SVGSVGElement.height documentation> 
 getHeight :: (MonadIO m) => SVGSVGElement -> m SVGAnimatedLength
 getHeight self = liftIO (js_getHeight self)
  
-foreign import javascript unsafe "$1[\"contentScriptType\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"contentScriptType\"] = $2; })"
         js_setContentScriptType :: SVGSVGElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentScriptType Mozilla SVGSVGElement.contentScriptType documentation> 
@@ -399,7 +399,7 @@ setContentScriptType ::
 setContentScriptType self val
   = liftIO (js_setContentScriptType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"contentScriptType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"contentScriptType\"]; })"
         js_getContentScriptType :: SVGSVGElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentScriptType Mozilla SVGSVGElement.contentScriptType documentation> 
@@ -408,7 +408,7 @@ getContentScriptType ::
 getContentScriptType self
   = liftIO (fromJSString <$> (js_getContentScriptType self))
  
-foreign import javascript unsafe "$1[\"contentStyleType\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"contentStyleType\"] = $2; })"
         js_setContentStyleType :: SVGSVGElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentStyleType Mozilla SVGSVGElement.contentStyleType documentation> 
@@ -417,7 +417,7 @@ setContentStyleType ::
 setContentStyleType self val
   = liftIO (js_setContentStyleType self (toJSString val))
  
-foreign import javascript unsafe "$1[\"contentStyleType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"contentStyleType\"]; })"
         js_getContentStyleType :: SVGSVGElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.contentStyleType Mozilla SVGSVGElement.contentStyleType documentation> 
@@ -426,14 +426,14 @@ getContentStyleType ::
 getContentStyleType self
   = liftIO (fromJSString <$> (js_getContentStyleType self))
  
-foreign import javascript unsafe "$1[\"viewport\"]" js_getViewport
+foreign import javascript unsafe "(($1) => { return $1[\"viewport\"]; })" js_getViewport
         :: SVGSVGElement -> IO SVGRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.viewport Mozilla SVGSVGElement.viewport documentation> 
 getViewport :: (MonadIO m) => SVGSVGElement -> m SVGRect
 getViewport self = liftIO (js_getViewport self)
  
-foreign import javascript unsafe "$1[\"pixelUnitToMillimeterX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pixelUnitToMillimeterX\"]; })"
         js_getPixelUnitToMillimeterX :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pixelUnitToMillimeterX Mozilla SVGSVGElement.pixelUnitToMillimeterX documentation> 
@@ -442,7 +442,7 @@ getPixelUnitToMillimeterX ::
 getPixelUnitToMillimeterX self
   = liftIO (js_getPixelUnitToMillimeterX self)
  
-foreign import javascript unsafe "$1[\"pixelUnitToMillimeterY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pixelUnitToMillimeterY\"]; })"
         js_getPixelUnitToMillimeterY :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.pixelUnitToMillimeterY Mozilla SVGSVGElement.pixelUnitToMillimeterY documentation> 
@@ -451,7 +451,7 @@ getPixelUnitToMillimeterY ::
 getPixelUnitToMillimeterY self
   = liftIO (js_getPixelUnitToMillimeterY self)
  
-foreign import javascript unsafe "$1[\"screenPixelToMillimeterX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"screenPixelToMillimeterX\"]; })"
         js_getScreenPixelToMillimeterX :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.screenPixelToMillimeterX Mozilla SVGSVGElement.screenPixelToMillimeterX documentation> 
@@ -460,7 +460,7 @@ getScreenPixelToMillimeterX ::
 getScreenPixelToMillimeterX self
   = liftIO (js_getScreenPixelToMillimeterX self)
  
-foreign import javascript unsafe "$1[\"screenPixelToMillimeterY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"screenPixelToMillimeterY\"]; })"
         js_getScreenPixelToMillimeterY :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.screenPixelToMillimeterY Mozilla SVGSVGElement.screenPixelToMillimeterY documentation> 
@@ -469,35 +469,35 @@ getScreenPixelToMillimeterY ::
 getScreenPixelToMillimeterY self
   = liftIO (js_getScreenPixelToMillimeterY self)
  
-foreign import javascript unsafe "($1[\"useCurrentView\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"useCurrentView\"] ? 1 : 0); })"
         js_getUseCurrentView :: SVGSVGElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.useCurrentView Mozilla SVGSVGElement.useCurrentView documentation> 
 getUseCurrentView :: (MonadIO m) => SVGSVGElement -> m Bool
 getUseCurrentView self = liftIO (js_getUseCurrentView self)
  
-foreign import javascript unsafe "$1[\"currentView\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentView\"]; })"
         js_getCurrentView :: SVGSVGElement -> IO SVGViewSpec
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentView Mozilla SVGSVGElement.currentView documentation> 
 getCurrentView :: (MonadIO m) => SVGSVGElement -> m SVGViewSpec
 getCurrentView self = liftIO (js_getCurrentView self)
  
-foreign import javascript unsafe "$1[\"currentScale\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"currentScale\"] = $2; })"
         js_setCurrentScale :: SVGSVGElement -> Float -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentScale Mozilla SVGSVGElement.currentScale documentation> 
 setCurrentScale :: (MonadIO m) => SVGSVGElement -> Float -> m ()
 setCurrentScale self val = liftIO (js_setCurrentScale self val)
  
-foreign import javascript unsafe "$1[\"currentScale\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentScale\"]; })"
         js_getCurrentScale :: SVGSVGElement -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentScale Mozilla SVGSVGElement.currentScale documentation> 
 getCurrentScale :: (MonadIO m) => SVGSVGElement -> m Float
 getCurrentScale self = liftIO (js_getCurrentScale self)
  
-foreign import javascript unsafe "$1[\"currentTranslate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentTranslate\"]; })"
         js_getCurrentTranslate :: SVGSVGElement -> IO SVGPoint
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement.currentTranslate Mozilla SVGSVGElement.currentTranslate documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,21 +30,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"update\"]()" js_update ::
+foreign import javascript safe "(($1) => { return $1[\"update\"](); })" js_update ::
         ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.update Mozilla ApplicationCache.update documentation> 
 update :: (MonadIO m) => ApplicationCache -> m ()
 update self = liftIO (js_update self)
  
-foreign import javascript safe "$1[\"swapCache\"]()" js_swapCache
+foreign import javascript safe "(($1) => { return $1[\"swapCache\"](); })" js_swapCache
         :: ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.swapCache Mozilla ApplicationCache.swapCache documentation> 
 swapCache :: (MonadIO m) => ApplicationCache -> m ()
 swapCache self = liftIO (js_swapCache self)
  
-foreign import javascript unsafe "$1[\"abort\"]()" js_abort ::
+foreign import javascript unsafe "(($1) => { return $1[\"abort\"](); })" js_abort ::
         ApplicationCache -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.abort Mozilla ApplicationCache.abort documentation> 
@@ -57,7 +57,7 @@ pattern DOWNLOADING = 3
 pattern UPDATEREADY = 4
 pattern OBSOLETE = 5
  
-foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
+foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getStatus ::
         ApplicationCache -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ApplicationCache.status Mozilla ApplicationCache.status documentation> 

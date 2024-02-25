@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,21 +32,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"latitude\"]" js_getLatitude
+foreign import javascript unsafe "(($1) => { return $1[\"latitude\"]; })" js_getLatitude
         :: Coordinates -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.latitude Mozilla Coordinates.latitude documentation> 
 getLatitude :: (MonadIO m) => Coordinates -> m Double
 getLatitude self = liftIO (js_getLatitude self)
  
-foreign import javascript unsafe "$1[\"longitude\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"longitude\"]; })"
         js_getLongitude :: Coordinates -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.longitude Mozilla Coordinates.longitude documentation> 
 getLongitude :: (MonadIO m) => Coordinates -> m Double
 getLongitude self = liftIO (js_getLongitude self)
  
-foreign import javascript unsafe "$1[\"altitude\"]" js_getAltitude
+foreign import javascript unsafe "(($1) => { return $1[\"altitude\"]; })" js_getAltitude
         :: Coordinates -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitude Mozilla Coordinates.altitude documentation> 
@@ -67,14 +67,14 @@ getAltitudeUnchecked :: (MonadIO m) => Coordinates -> m Double
 getAltitudeUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getAltitude self))
  
-foreign import javascript unsafe "$1[\"accuracy\"]" js_getAccuracy
+foreign import javascript unsafe "(($1) => { return $1[\"accuracy\"]; })" js_getAccuracy
         :: Coordinates -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.accuracy Mozilla Coordinates.accuracy documentation> 
 getAccuracy :: (MonadIO m) => Coordinates -> m Double
 getAccuracy self = liftIO (js_getAccuracy self)
  
-foreign import javascript unsafe "$1[\"altitudeAccuracy\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"altitudeAccuracy\"]; })"
         js_getAltitudeAccuracy :: Coordinates -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.altitudeAccuracy Mozilla Coordinates.altitudeAccuracy documentation> 
@@ -98,7 +98,7 @@ getAltitudeAccuracyUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getAltitudeAccuracy self))
  
-foreign import javascript unsafe "$1[\"heading\"]" js_getHeading ::
+foreign import javascript unsafe "(($1) => { return $1[\"heading\"]; })" js_getHeading ::
         Coordinates -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.heading Mozilla Coordinates.heading documentation> 
@@ -118,7 +118,7 @@ getHeadingUnchecked :: (MonadIO m) => Coordinates -> m Double
 getHeadingUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getHeading self))
  
-foreign import javascript unsafe "$1[\"speed\"]" js_getSpeed ::
+foreign import javascript unsafe "(($1) => { return $1[\"speed\"]; })" js_getSpeed ::
         Coordinates -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Coordinates.speed Mozilla Coordinates.speed documentation> 

@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaRemoteControls\"]()" js_newMediaRemoteControls
+        "(() => { return new window[\"MediaRemoteControls\"](); })" js_newMediaRemoteControls
         :: IO MediaRemoteControls
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls Mozilla MediaRemoteControls documentation> 
@@ -39,7 +39,7 @@ newMediaRemoteControls :: (MonadIO m) => m MediaRemoteControls
 newMediaRemoteControls = liftIO (js_newMediaRemoteControls)
  
 foreign import javascript unsafe
-        "$1[\"previousTrackEnabled\"] = $2;" js_setPreviousTrackEnabled ::
+        "(($1, $2) => { $1[\"previousTrackEnabled\"] = $2; })" js_setPreviousTrackEnabled ::
         MediaRemoteControls -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls.previousTrackEnabled Mozilla MediaRemoteControls.previousTrackEnabled documentation> 
@@ -49,7 +49,7 @@ setPreviousTrackEnabled self val
   = liftIO (js_setPreviousTrackEnabled self val)
  
 foreign import javascript unsafe
-        "($1[\"previousTrackEnabled\"] ? 1 : 0)" js_getPreviousTrackEnabled
+        "(($1) => { return ($1[\"previousTrackEnabled\"] ? 1 : 0); })" js_getPreviousTrackEnabled
         :: MediaRemoteControls -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls.previousTrackEnabled Mozilla MediaRemoteControls.previousTrackEnabled documentation> 
@@ -58,7 +58,7 @@ getPreviousTrackEnabled ::
 getPreviousTrackEnabled self
   = liftIO (js_getPreviousTrackEnabled self)
  
-foreign import javascript unsafe "$1[\"nextTrackEnabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"nextTrackEnabled\"] = $2; })"
         js_setNextTrackEnabled :: MediaRemoteControls -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls.nextTrackEnabled Mozilla MediaRemoteControls.nextTrackEnabled documentation> 
@@ -68,7 +68,7 @@ setNextTrackEnabled self val
   = liftIO (js_setNextTrackEnabled self val)
  
 foreign import javascript unsafe
-        "($1[\"nextTrackEnabled\"] ? 1 : 0)" js_getNextTrackEnabled ::
+        "(($1) => { return ($1[\"nextTrackEnabled\"] ? 1 : 0); })" js_getNextTrackEnabled ::
         MediaRemoteControls -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaRemoteControls.nextTrackEnabled Mozilla MediaRemoteControls.nextTrackEnabled documentation> 

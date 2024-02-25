@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"BeforeLoadEvent\"]($1,\n$2)" js_newBeforeLoadEvent ::
+        "(($1, $2) => { return new window[\"BeforeLoadEvent\"]($1,\n$2); })" js_newBeforeLoadEvent ::
         JSString -> Optional BeforeLoadEventInit -> IO BeforeLoadEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent Mozilla BeforeLoadEvent documentation> 
@@ -39,7 +39,7 @@ newBeforeLoadEvent type' eventInitDict
       (js_newBeforeLoadEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         BeforeLoadEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/BeforeLoadEvent.url Mozilla BeforeLoadEvent.url documentation> 

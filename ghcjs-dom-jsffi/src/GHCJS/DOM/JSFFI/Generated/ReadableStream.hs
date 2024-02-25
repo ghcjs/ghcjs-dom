@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStream\"]($1,\n$2)" js_newReadableStream ::
+        "(($1, $2) => { return new window[\"ReadableStream\"]($1,\n$2); })" js_newReadableStream ::
         Optional JSVal -> Optional JSVal -> IO ReadableStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream Mozilla ReadableStream documentation> 
@@ -47,7 +47,7 @@ newReadableStream underlyingSource options
              (maybeToOptional options'))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_cancel :: ReadableStream -> Optional JSVal -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.cancel Mozilla ReadableStream.cancel documentation> 
@@ -70,7 +70,7 @@ cancel_ self reason
          (mapM toJSVal reason >>=
             \ reason' -> js_cancel self (maybeToOptional reason')))
  
-foreign import javascript unsafe "$1[\"getReader\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getReader\"]($2); })"
         js_getReader :: ReadableStream -> Optional JSVal -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.getReader Mozilla ReadableStream.getReader documentation> 
@@ -93,7 +93,7 @@ getReader_ self options
             \ options' -> js_getReader self (maybeToOptional options')))
  
 foreign import javascript interruptible
-        "$1[\"pipeTo\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $3, $c) => { return $1[\"pipeTo\"]($2, $3).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_pipeTo ::
         ReadableStream -> JSVal -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -121,7 +121,7 @@ pipeTo_ self streams options
               toJSVal streams >>= \ streams' -> js_pipeTo self streams'
                 (maybeToOptional options')))
  
-foreign import javascript unsafe "$1[\"pipeThrough\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"pipeThrough\"]($2, $3); })"
         js_pipeThrough :: ReadableStream -> JSVal -> JSVal -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.pipeThrough Mozilla ReadableStream.pipeThrough documentation> 
@@ -145,7 +145,7 @@ pipeThrough_ self dest options
             \ options' ->
               toJSVal dest >>= \ dest' -> js_pipeThrough self dest' options'))
  
-foreign import javascript unsafe "$1[\"tee\"]()" js_tee ::
+foreign import javascript unsafe "(($1) => { return $1[\"tee\"](); })" js_tee ::
         ReadableStream -> IO GObject
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.tee Mozilla ReadableStream.tee documentation> 
@@ -156,7 +156,7 @@ tee self = liftIO (js_tee self)
 tee_ :: (MonadIO m) => ReadableStream -> m ()
 tee_ self = liftIO (void (js_tee self))
  
-foreign import javascript unsafe "($1[\"locked\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"locked\"] ? 1 : 0); })"
         js_getLocked :: ReadableStream -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream.locked Mozilla ReadableStream.locked documentation> 

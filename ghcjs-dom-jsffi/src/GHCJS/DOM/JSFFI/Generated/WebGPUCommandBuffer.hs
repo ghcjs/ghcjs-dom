@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,7 +32,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"createRenderCommandEncoderWithDescriptor\"]($2)"
+        "(($1, $2) => { return $1[\"createRenderCommandEncoderWithDescriptor\"]($2); })"
         js_createRenderCommandEncoderWithDescriptor ::
         WebGPUCommandBuffer ->
           WebGPURenderPassDescriptor -> IO WebGPURenderCommandEncoder
@@ -58,7 +58,7 @@ createRenderCommandEncoderWithDescriptor_ self descriptor
          (js_createRenderCommandEncoderWithDescriptor self descriptor))
  
 foreign import javascript unsafe
-        "$1[\"createComputeCommandEncoder\"]()"
+        "(($1) => { return $1[\"createComputeCommandEncoder\"](); })"
         js_createComputeCommandEncoder ::
         WebGPUCommandBuffer -> IO WebGPUComputeCommandEncoder
 
@@ -74,14 +74,14 @@ createComputeCommandEncoder_ ::
 createComputeCommandEncoder_ self
   = liftIO (void (js_createComputeCommandEncoder self))
  
-foreign import javascript unsafe "$1[\"commit\"]()" js_commit ::
+foreign import javascript unsafe "(($1) => { return $1[\"commit\"](); })" js_commit ::
         WebGPUCommandBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandBuffer.commit Mozilla WebGPUCommandBuffer.commit documentation> 
 commit :: (MonadIO m) => WebGPUCommandBuffer -> m ()
 commit self = liftIO (js_commit self)
  
-foreign import javascript unsafe "$1[\"presentDrawable\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"presentDrawable\"]($2); })"
         js_presentDrawable ::
         WebGPUCommandBuffer -> WebGPUDrawable -> IO ()
 
@@ -92,7 +92,7 @@ presentDrawable self drawable
   = liftIO (js_presentDrawable self drawable)
  
 foreign import javascript interruptible
-        "$1[\"completed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"completed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getCompleted :: WebGPUCommandBuffer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUCommandBuffer.completed Mozilla WebGPUCommandBuffer.completed documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"substringData\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"substringData\"]($2, $3); })"
         js_substringData :: CharacterData -> Word -> Word -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.substringData Mozilla CharacterData.substringData documentation> 
@@ -48,7 +48,7 @@ substringData_ self offset count
   = liftIO
       (void (js_substringData (toCharacterData self) offset count))
  
-foreign import javascript unsafe "$1[\"appendData\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"appendData\"]($2); })"
         js_appendData :: CharacterData -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.appendData Mozilla CharacterData.appendData documentation> 
@@ -58,7 +58,7 @@ appendData ::
 appendData self data'
   = liftIO (js_appendData (toCharacterData self) (toJSString data'))
  
-foreign import javascript safe "$1[\"insertData\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertData\"]($2, $3); })"
         js_insertData :: CharacterData -> Word -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.insertData Mozilla CharacterData.insertData documentation> 
@@ -69,7 +69,7 @@ insertData self offset data'
   = liftIO
       (js_insertData (toCharacterData self) offset (toJSString data'))
  
-foreign import javascript safe "$1[\"deleteData\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"deleteData\"]($2, $3); })"
         js_deleteData :: CharacterData -> Word -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.deleteData Mozilla CharacterData.deleteData documentation> 
@@ -78,7 +78,7 @@ deleteData ::
 deleteData self offset count
   = liftIO (js_deleteData (toCharacterData self) offset count)
  
-foreign import javascript safe "$1[\"replaceData\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"replaceData\"]($2, $3, $4); })"
         js_replaceData ::
         CharacterData -> Word -> Word -> JSString -> IO ()
 
@@ -91,7 +91,7 @@ replaceData self offset count data'
       (js_replaceData (toCharacterData self) offset count
          (toJSString data'))
  
-foreign import javascript unsafe "$1[\"data\"] = $2;" js_setData ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"data\"] = $2; })" js_setData ::
         CharacterData -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
@@ -101,7 +101,7 @@ setData ::
 setData self val
   = liftIO (js_setData (toCharacterData self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         CharacterData -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.data Mozilla CharacterData.data documentation> 
@@ -111,7 +111,7 @@ getData ::
 getData self
   = liftIO (fromJSString <$> (js_getData (toCharacterData self)))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         CharacterData -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CharacterData.length Mozilla CharacterData.length documentation> 

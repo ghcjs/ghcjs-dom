@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,14 +26,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Text\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Text\"]($1); })"
         js_newText :: Optional JSString -> IO Text
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text Mozilla Text documentation> 
 newText :: (MonadIO m, ToJSString data') => Maybe data' -> m Text
 newText data' = liftIO (js_newText (toOptionalJSString data'))
  
-foreign import javascript safe "$1[\"splitText\"]($2)" js_splitText
+foreign import javascript safe "(($1, $2) => { return $1[\"splitText\"]($2); })" js_splitText
         :: Text -> Word -> IO Text
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.splitText Mozilla Text.splitText documentation> 
@@ -45,7 +45,7 @@ splitText_ :: (MonadIO m, IsText self) => self -> Word -> m ()
 splitText_ self offset
   = liftIO (void (js_splitText (toText self) offset))
  
-foreign import javascript unsafe "$1[\"wholeText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"wholeText\"]; })"
         js_getWholeText :: Text -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Text.wholeText Mozilla Text.wholeText documentation> 

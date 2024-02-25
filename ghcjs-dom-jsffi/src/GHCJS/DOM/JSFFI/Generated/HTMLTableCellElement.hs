@@ -22,7 +22,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -36,14 +36,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"cellIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"cellIndex\"]; })"
         js_getCellIndex :: HTMLTableCellElement -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.cellIndex Mozilla HTMLTableCellElement.cellIndex documentation> 
 getCellIndex :: (MonadIO m) => HTMLTableCellElement -> m Int
 getCellIndex self = liftIO (js_getCellIndex self)
  
-foreign import javascript unsafe "$1[\"align\"] = $2;" js_setAlign
+foreign import javascript unsafe "(($1, $2) => { $1[\"align\"] = $2; })" js_setAlign
         :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.align Mozilla HTMLTableCellElement.align documentation> 
@@ -51,7 +51,7 @@ setAlign ::
          (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setAlign self val = liftIO (js_setAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"align\"]" js_getAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"align\"]; })" js_getAlign ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.align Mozilla HTMLTableCellElement.align documentation> 
@@ -60,7 +60,7 @@ getAlign ::
            HTMLTableCellElement -> m result
 getAlign self = liftIO (fromJSString <$> (js_getAlign self))
  
-foreign import javascript unsafe "$1[\"axis\"] = $2;" js_setAxis ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"axis\"] = $2; })" js_setAxis ::
         HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.axis Mozilla HTMLTableCellElement.axis documentation> 
@@ -68,7 +68,7 @@ setAxis ::
         (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setAxis self val = liftIO (js_setAxis self (toJSString val))
  
-foreign import javascript unsafe "$1[\"axis\"]" js_getAxis ::
+foreign import javascript unsafe "(($1) => { return $1[\"axis\"]; })" js_getAxis ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.axis Mozilla HTMLTableCellElement.axis documentation> 
@@ -77,7 +77,7 @@ getAxis ::
           HTMLTableCellElement -> m result
 getAxis self = liftIO (fromJSString <$> (js_getAxis self))
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.bgColor Mozilla HTMLTableCellElement.bgColor documentation> 
@@ -85,7 +85,7 @@ setBgColor ::
            (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
+foreign import javascript unsafe "(($1) => { return $1[\"bgColor\"]; })" js_getBgColor ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.bgColor Mozilla HTMLTableCellElement.bgColor documentation> 
@@ -94,7 +94,7 @@ getBgColor ::
              HTMLTableCellElement -> m result
 getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
-foreign import javascript unsafe "$1[\"ch\"] = $2;" js_setCh ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"ch\"] = $2; })" js_setCh ::
         HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.ch Mozilla HTMLTableCellElement.ch documentation> 
@@ -102,7 +102,7 @@ setCh ::
       (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setCh self val = liftIO (js_setCh self (toJSString val))
  
-foreign import javascript unsafe "$1[\"ch\"]" js_getCh ::
+foreign import javascript unsafe "(($1) => { return $1[\"ch\"]; })" js_getCh ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.ch Mozilla HTMLTableCellElement.ch documentation> 
@@ -111,7 +111,7 @@ getCh ::
         HTMLTableCellElement -> m result
 getCh self = liftIO (fromJSString <$> (js_getCh self))
  
-foreign import javascript unsafe "$1[\"chOff\"] = $2;" js_setChOff
+foreign import javascript unsafe "(($1, $2) => { $1[\"chOff\"] = $2; })" js_setChOff
         :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.chOff Mozilla HTMLTableCellElement.chOff documentation> 
@@ -119,7 +119,7 @@ setChOff ::
          (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setChOff self val = liftIO (js_setChOff self (toJSString val))
  
-foreign import javascript unsafe "$1[\"chOff\"]" js_getChOff ::
+foreign import javascript unsafe "(($1) => { return $1[\"chOff\"]; })" js_getChOff ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.chOff Mozilla HTMLTableCellElement.chOff documentation> 
@@ -128,35 +128,35 @@ getChOff ::
            HTMLTableCellElement -> m result
 getChOff self = liftIO (fromJSString <$> (js_getChOff self))
  
-foreign import javascript unsafe "$1[\"colSpan\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"colSpan\"] = $2; })"
         js_setColSpan :: HTMLTableCellElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.colSpan Mozilla HTMLTableCellElement.colSpan documentation> 
 setColSpan :: (MonadIO m) => HTMLTableCellElement -> Word -> m ()
 setColSpan self val = liftIO (js_setColSpan self val)
  
-foreign import javascript unsafe "$1[\"colSpan\"]" js_getColSpan ::
+foreign import javascript unsafe "(($1) => { return $1[\"colSpan\"]; })" js_getColSpan ::
         HTMLTableCellElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.colSpan Mozilla HTMLTableCellElement.colSpan documentation> 
 getColSpan :: (MonadIO m) => HTMLTableCellElement -> m Word
 getColSpan self = liftIO (js_getColSpan self)
  
-foreign import javascript unsafe "$1[\"rowSpan\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"rowSpan\"] = $2; })"
         js_setRowSpan :: HTMLTableCellElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.rowSpan Mozilla HTMLTableCellElement.rowSpan documentation> 
 setRowSpan :: (MonadIO m) => HTMLTableCellElement -> Word -> m ()
 setRowSpan self val = liftIO (js_setRowSpan self val)
  
-foreign import javascript unsafe "$1[\"rowSpan\"]" js_getRowSpan ::
+foreign import javascript unsafe "(($1) => { return $1[\"rowSpan\"]; })" js_getRowSpan ::
         HTMLTableCellElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.rowSpan Mozilla HTMLTableCellElement.rowSpan documentation> 
 getRowSpan :: (MonadIO m) => HTMLTableCellElement -> m Word
 getRowSpan self = liftIO (js_getRowSpan self)
  
-foreign import javascript unsafe "$1[\"headers\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"headers\"] = $2; })"
         js_setHeaders :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.headers Mozilla HTMLTableCellElement.headers documentation> 
@@ -164,7 +164,7 @@ setHeaders ::
            (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setHeaders self val = liftIO (js_setHeaders self (toJSString val))
  
-foreign import javascript unsafe "$1[\"headers\"]" js_getHeaders ::
+foreign import javascript unsafe "(($1) => { return $1[\"headers\"]; })" js_getHeaders ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.headers Mozilla HTMLTableCellElement.headers documentation> 
@@ -173,7 +173,7 @@ getHeaders ::
              HTMLTableCellElement -> m result
 getHeaders self = liftIO (fromJSString <$> (js_getHeaders self))
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.height Mozilla HTMLTableCellElement.height documentation> 
@@ -181,7 +181,7 @@ setHeight ::
           (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setHeight self val = liftIO (js_setHeight self (toJSString val))
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.height Mozilla HTMLTableCellElement.height documentation> 
@@ -190,21 +190,21 @@ getHeight ::
             HTMLTableCellElement -> m result
 getHeight self = liftIO (fromJSString <$> (js_getHeight self))
  
-foreign import javascript unsafe "$1[\"noWrap\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"noWrap\"] = $2; })"
         js_setNoWrap :: HTMLTableCellElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.noWrap Mozilla HTMLTableCellElement.noWrap documentation> 
 setNoWrap :: (MonadIO m) => HTMLTableCellElement -> Bool -> m ()
 setNoWrap self val = liftIO (js_setNoWrap self val)
  
-foreign import javascript unsafe "($1[\"noWrap\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"noWrap\"] ? 1 : 0); })"
         js_getNoWrap :: HTMLTableCellElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.noWrap Mozilla HTMLTableCellElement.noWrap documentation> 
 getNoWrap :: (MonadIO m) => HTMLTableCellElement -> m Bool
 getNoWrap self = liftIO (js_getNoWrap self)
  
-foreign import javascript unsafe "$1[\"vAlign\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vAlign\"] = $2; })"
         js_setVAlign :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.vAlign Mozilla HTMLTableCellElement.vAlign documentation> 
@@ -212,7 +212,7 @@ setVAlign ::
           (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setVAlign self val = liftIO (js_setVAlign self (toJSString val))
  
-foreign import javascript unsafe "$1[\"vAlign\"]" js_getVAlign ::
+foreign import javascript unsafe "(($1) => { return $1[\"vAlign\"]; })" js_getVAlign ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.vAlign Mozilla HTMLTableCellElement.vAlign documentation> 
@@ -221,7 +221,7 @@ getVAlign ::
             HTMLTableCellElement -> m result
 getVAlign self = liftIO (fromJSString <$> (js_getVAlign self))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.width Mozilla HTMLTableCellElement.width documentation> 
@@ -229,7 +229,7 @@ setWidth ::
          (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setWidth self val = liftIO (js_setWidth self (toJSString val))
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.width Mozilla HTMLTableCellElement.width documentation> 
@@ -238,7 +238,7 @@ getWidth ::
            HTMLTableCellElement -> m result
 getWidth self = liftIO (fromJSString <$> (js_getWidth self))
  
-foreign import javascript unsafe "$1[\"abbr\"] = $2;" js_setAbbr ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"abbr\"] = $2; })" js_setAbbr ::
         HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.abbr Mozilla HTMLTableCellElement.abbr documentation> 
@@ -246,7 +246,7 @@ setAbbr ::
         (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setAbbr self val = liftIO (js_setAbbr self (toJSString val))
  
-foreign import javascript unsafe "$1[\"abbr\"]" js_getAbbr ::
+foreign import javascript unsafe "(($1) => { return $1[\"abbr\"]; })" js_getAbbr ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.abbr Mozilla HTMLTableCellElement.abbr documentation> 
@@ -255,7 +255,7 @@ getAbbr ::
           HTMLTableCellElement -> m result
 getAbbr self = liftIO (fromJSString <$> (js_getAbbr self))
  
-foreign import javascript unsafe "$1[\"scope\"] = $2;" js_setScope
+foreign import javascript unsafe "(($1, $2) => { $1[\"scope\"] = $2; })" js_setScope
         :: HTMLTableCellElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.scope Mozilla HTMLTableCellElement.scope documentation> 
@@ -263,7 +263,7 @@ setScope ::
          (MonadIO m, ToJSString val) => HTMLTableCellElement -> val -> m ()
 setScope self val = liftIO (js_setScope self (toJSString val))
  
-foreign import javascript unsafe "$1[\"scope\"]" js_getScope ::
+foreign import javascript unsafe "(($1) => { return $1[\"scope\"]; })" js_getScope ::
         HTMLTableCellElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableCellElement.scope Mozilla HTMLTableCellElement.scope documentation> 

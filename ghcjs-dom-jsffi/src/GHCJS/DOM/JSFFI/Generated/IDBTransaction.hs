@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"objectStore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"objectStore\"]($2); })"
         js_objectStore :: IDBTransaction -> JSString -> IO IDBObjectStore
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStore Mozilla IDBTransaction.objectStore documentation> 
@@ -44,14 +44,14 @@ objectStore_ ::
 objectStore_ self name
   = liftIO (void (js_objectStore self (toJSString name)))
  
-foreign import javascript safe "$1[\"abort\"]()" js_abort ::
+foreign import javascript safe "(($1) => { return $1[\"abort\"](); })" js_abort ::
         IDBTransaction -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.abort Mozilla IDBTransaction.abort documentation> 
 abort :: (MonadIO m) => IDBTransaction -> m ()
 abort self = liftIO (js_abort self)
  
-foreign import javascript unsafe "$1[\"objectStoreNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"objectStoreNames\"]; })"
         js_getObjectStoreNames :: IDBTransaction -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.objectStoreNames Mozilla IDBTransaction.objectStoreNames documentation> 
@@ -59,21 +59,21 @@ getObjectStoreNames ::
                     (MonadIO m) => IDBTransaction -> m DOMStringList
 getObjectStoreNames self = liftIO (js_getObjectStoreNames self)
  
-foreign import javascript unsafe "$1[\"mode\"]" js_getMode ::
+foreign import javascript unsafe "(($1) => { return $1[\"mode\"]; })" js_getMode ::
         IDBTransaction -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.mode Mozilla IDBTransaction.mode documentation> 
 getMode :: (MonadIO m) => IDBTransaction -> m IDBTransactionMode
 getMode self = liftIO ((js_getMode self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"db\"]" js_getDb ::
+foreign import javascript unsafe "(($1) => { return $1[\"db\"]; })" js_getDb ::
         IDBTransaction -> IO IDBDatabase
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.db Mozilla IDBTransaction.db documentation> 
 getDb :: (MonadIO m) => IDBTransaction -> m IDBDatabase
 getDb self = liftIO (js_getDb self)
  
-foreign import javascript unsafe "$1[\"error\"]" js_getError ::
+foreign import javascript unsafe "(($1) => { return $1[\"error\"]; })" js_getError ::
         IDBTransaction -> IO DOMError
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction.error Mozilla IDBTransaction.error documentation> 

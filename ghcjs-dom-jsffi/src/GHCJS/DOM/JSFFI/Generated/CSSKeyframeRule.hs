@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"keyText\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"keyText\"] = $2; })"
         js_setKeyText :: CSSKeyframeRule -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.keyText Mozilla CSSKeyframeRule.keyText documentation> 
@@ -34,7 +34,7 @@ setKeyText ::
            (MonadIO m, ToJSString val) => CSSKeyframeRule -> val -> m ()
 setKeyText self val = liftIO (js_setKeyText self (toJSString val))
  
-foreign import javascript unsafe "$1[\"keyText\"]" js_getKeyText ::
+foreign import javascript unsafe "(($1) => { return $1[\"keyText\"]; })" js_getKeyText ::
         CSSKeyframeRule -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.keyText Mozilla CSSKeyframeRule.keyText documentation> 
@@ -42,7 +42,7 @@ getKeyText ::
            (MonadIO m, FromJSString result) => CSSKeyframeRule -> m result
 getKeyText self = liftIO (fromJSString <$> (js_getKeyText self))
  
-foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
+foreign import javascript unsafe "(($1) => { return $1[\"style\"]; })" js_getStyle ::
         CSSKeyframeRule -> IO CSSStyleDeclaration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSKeyframeRule.style Mozilla CSSKeyframeRule.style documentation> 

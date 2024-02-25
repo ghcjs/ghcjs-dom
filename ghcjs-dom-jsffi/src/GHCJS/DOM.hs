@@ -28,11 +28,11 @@ import JavaScript.Web.AnimationFrame (waitForAnimationFrame, AnimationFrameHandl
 
 import GHCJS.DOM.Types
 
-foreign import javascript unsafe "$r = globalThis"
+foreign import javascript unsafe "(() => { return globalThis; })"
   ghcjs_globalThis :: IO (Nullable GlobalThis)
-foreign import javascript unsafe "$r = window"
+foreign import javascript unsafe "(() => { return window; })"
   ghcjs_currentWindow :: IO (Nullable Window)
-foreign import javascript unsafe "$r = document"
+foreign import javascript unsafe "(() => { return document; })"
   ghcjs_currentDocument :: IO (Nullable Document)
 
 globalThis :: MonadDOM m => m (Maybe GlobalThis)

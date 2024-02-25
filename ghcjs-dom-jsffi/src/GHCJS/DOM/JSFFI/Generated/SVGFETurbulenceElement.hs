@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -39,7 +39,7 @@ pattern SVG_STITCHTYPE_UNKNOWN = 0
 pattern SVG_STITCHTYPE_STITCH = 1
 pattern SVG_STITCHTYPE_NOSTITCH = 2
  
-foreign import javascript unsafe "$1[\"baseFrequencyX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"baseFrequencyX\"]; })"
         js_getBaseFrequencyX ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
@@ -48,7 +48,7 @@ getBaseFrequencyX ::
                   (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getBaseFrequencyX self = liftIO (js_getBaseFrequencyX self)
  
-foreign import javascript unsafe "$1[\"baseFrequencyY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"baseFrequencyY\"]; })"
         js_getBaseFrequencyY ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
@@ -57,7 +57,7 @@ getBaseFrequencyY ::
                   (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getBaseFrequencyY self = liftIO (js_getBaseFrequencyY self)
  
-foreign import javascript unsafe "$1[\"numOctaves\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"numOctaves\"]; })"
         js_getNumOctaves :: SVGFETurbulenceElement -> IO SVGAnimatedInteger
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.numOctaves Mozilla SVGFETurbulenceElement.numOctaves documentation> 
@@ -65,7 +65,7 @@ getNumOctaves ::
               (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedInteger
 getNumOctaves self = liftIO (js_getNumOctaves self)
  
-foreign import javascript unsafe "$1[\"seed\"]" js_getSeed ::
+foreign import javascript unsafe "(($1) => { return $1[\"seed\"]; })" js_getSeed ::
         SVGFETurbulenceElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.seed Mozilla SVGFETurbulenceElement.seed documentation> 
@@ -73,7 +73,7 @@ getSeed ::
         (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedNumber
 getSeed self = liftIO (js_getSeed self)
  
-foreign import javascript unsafe "$1[\"stitchTiles\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"stitchTiles\"]; })"
         js_getStitchTiles ::
         SVGFETurbulenceElement -> IO SVGAnimatedEnumeration
 
@@ -82,7 +82,7 @@ getStitchTiles ::
                (MonadIO m) => SVGFETurbulenceElement -> m SVGAnimatedEnumeration
 getStitchTiles self = liftIO (js_getStitchTiles self)
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         SVGFETurbulenceElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFETurbulenceElement.type Mozilla SVGFETurbulenceElement.type documentation> 

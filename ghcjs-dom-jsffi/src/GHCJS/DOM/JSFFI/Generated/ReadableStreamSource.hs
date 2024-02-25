@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"start\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"start\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_start ::
         ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 
@@ -40,7 +40,7 @@ start self controller
   = liftIO ((js_start self controller) >>= maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"pull\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"pull\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_pull ::
         ReadableStreamSource -> ReadableStreamDefaultController -> IO JSVal
 
@@ -51,7 +51,7 @@ pull ::
 pull self controller
   = liftIO ((js_pull self controller) >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"cancel\"]($2)" js_cancel ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"cancel\"]($2); })" js_cancel ::
         ReadableStreamSource -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamSource.cancel Mozilla ReadableStreamSource.cancel documentation> 
@@ -61,7 +61,7 @@ cancel ::
 cancel self reason
   = liftIO (toJSVal reason >>= \ reason' -> js_cancel self reason')
  
-foreign import javascript unsafe "$1[\"controller\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"controller\"]; })"
         js_getController :: ReadableStreamSource -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamSource.controller Mozilla ReadableStreamSource.controller documentation> 

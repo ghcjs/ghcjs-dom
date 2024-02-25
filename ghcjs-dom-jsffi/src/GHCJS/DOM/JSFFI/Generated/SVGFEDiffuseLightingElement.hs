@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"in1\"]" js_getIn1 ::
+foreign import javascript unsafe "(($1) => { return $1[\"in1\"]; })" js_getIn1 ::
         SVGFEDiffuseLightingElement -> IO SVGAnimatedString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFEDiffuseLightingElement.in1 Mozilla SVGFEDiffuseLightingElement.in1 documentation> 
@@ -37,7 +37,7 @@ getIn1 ::
        (MonadIO m) => SVGFEDiffuseLightingElement -> m SVGAnimatedString
 getIn1 self = liftIO (js_getIn1 self)
  
-foreign import javascript unsafe "$1[\"surfaceScale\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"surfaceScale\"]; })"
         js_getSurfaceScale ::
         SVGFEDiffuseLightingElement -> IO SVGAnimatedNumber
 
@@ -46,7 +46,7 @@ getSurfaceScale ::
                 (MonadIO m) => SVGFEDiffuseLightingElement -> m SVGAnimatedNumber
 getSurfaceScale self = liftIO (js_getSurfaceScale self)
  
-foreign import javascript unsafe "$1[\"diffuseConstant\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"diffuseConstant\"]; })"
         js_getDiffuseConstant ::
         SVGFEDiffuseLightingElement -> IO SVGAnimatedNumber
 
@@ -55,7 +55,7 @@ getDiffuseConstant ::
                    (MonadIO m) => SVGFEDiffuseLightingElement -> m SVGAnimatedNumber
 getDiffuseConstant self = liftIO (js_getDiffuseConstant self)
  
-foreign import javascript unsafe "$1[\"kernelUnitLengthX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"kernelUnitLengthX\"]; })"
         js_getKernelUnitLengthX ::
         SVGFEDiffuseLightingElement -> IO SVGAnimatedNumber
 
@@ -64,7 +64,7 @@ getKernelUnitLengthX ::
                      (MonadIO m) => SVGFEDiffuseLightingElement -> m SVGAnimatedNumber
 getKernelUnitLengthX self = liftIO (js_getKernelUnitLengthX self)
  
-foreign import javascript unsafe "$1[\"kernelUnitLengthY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"kernelUnitLengthY\"]; })"
         js_getKernelUnitLengthY ::
         SVGFEDiffuseLightingElement -> IO SVGAnimatedNumber
 

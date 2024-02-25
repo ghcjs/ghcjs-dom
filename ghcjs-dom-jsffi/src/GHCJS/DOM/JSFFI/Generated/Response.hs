@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -34,7 +34,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "window[\"Response\"][\"error\"]()" js_error :: IO Response
+        "(() => { return window[\"Response\"][\"error\"](); })" js_error :: IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.error Mozilla Response.error documentation> 
 error :: (MonadIO m) => m Response
@@ -45,7 +45,7 @@ error_ :: (MonadIO m) => m ()
 error_ = liftIO (void (js_error))
  
 foreign import javascript safe
-        "window[\"Response\"][\"redirect\"]($1,\n$2)" js_redirect ::
+        "(($1, $2) => { return window[\"Response\"][\"redirect\"]($1,\n$2); })" js_redirect ::
         JSString -> Optional Word -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirect Mozilla Response.redirect documentation> 
@@ -62,7 +62,7 @@ redirect_ url status
       (void (js_redirect (toJSString url) (maybeToOptional status)))
  
 foreign import javascript interruptible
-        "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_arrayBuffer :: Response -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.arrayBuffer Mozilla Response.arrayBuffer documentation> 
@@ -75,7 +75,7 @@ arrayBuffer_ :: (MonadIO m) => Response -> m ()
 arrayBuffer_ self = liftIO (void (js_arrayBuffer self))
  
 foreign import javascript interruptible
-        "$1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_blob :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.blob Mozilla Response.blob documentation> 
@@ -87,7 +87,7 @@ blob_ :: (MonadIO m) => Response -> m ()
 blob_ self = liftIO (void (js_blob self))
  
 foreign import javascript interruptible
-        "$1[\"formData\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"formData\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_formData :: Response -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.formData Mozilla Response.formData documentation> 
@@ -99,7 +99,7 @@ formData_ :: (MonadIO m) => Response -> m ()
 formData_ self = liftIO (void (js_formData self))
  
 foreign import javascript interruptible
-        "$1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_json :: Response -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.json Mozilla Response.json documentation> 
@@ -111,7 +111,7 @@ json_ :: (MonadIO m) => Response -> m ()
 json_ self = liftIO (void (js_json self))
  
 foreign import javascript interruptible
-        "$1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_text :: Response -> IO (JSVal, JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.text Mozilla Response.text documentation> 
@@ -123,7 +123,7 @@ text self
 text_ :: (MonadIO m) => Response -> m ()
 text_ self = liftIO (void (js_text self))
  
-foreign import javascript unsafe "$1[\"clone\"]()" js_clone ::
+foreign import javascript unsafe "(($1) => { return $1[\"clone\"](); })" js_clone ::
         Response -> IO Response
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.clone Mozilla Response.clone documentation> 
@@ -134,42 +134,42 @@ clone self = liftIO (js_clone self)
 clone_ :: (MonadIO m) => Response -> m ()
 clone_ self = liftIO (void (js_clone self))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Response -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.type Mozilla Response.type documentation> 
 getType :: (MonadIO m) => Response -> m ResponseType
 getType self = liftIO ((js_getType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         Response -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.url Mozilla Response.url documentation> 
 getUrl :: (MonadIO m, FromJSString result) => Response -> m result
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
-foreign import javascript unsafe "($1[\"redirected\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"redirected\"] ? 1 : 0); })"
         js_getRedirected :: Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.redirected Mozilla Response.redirected documentation> 
 getRedirected :: (MonadIO m) => Response -> m Bool
 getRedirected self = liftIO (js_getRedirected self)
  
-foreign import javascript unsafe "$1[\"status\"]" js_getStatus ::
+foreign import javascript unsafe "(($1) => { return $1[\"status\"]; })" js_getStatus ::
         Response -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.status Mozilla Response.status documentation> 
 getStatus :: (MonadIO m) => Response -> m Word
 getStatus self = liftIO (js_getStatus self)
  
-foreign import javascript unsafe "($1[\"ok\"] ? 1 : 0)" js_getOk ::
+foreign import javascript unsafe "(($1) => { return ($1[\"ok\"] ? 1 : 0); })" js_getOk ::
         Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.ok Mozilla Response.ok documentation> 
 getOk :: (MonadIO m) => Response -> m Bool
 getOk self = liftIO (js_getOk self)
  
-foreign import javascript unsafe "$1[\"statusText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"statusText\"]; })"
         js_getStatusText :: Response -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.statusText Mozilla Response.statusText documentation> 
@@ -178,14 +178,14 @@ getStatusText ::
 getStatusText self
   = liftIO (fromJSString <$> (js_getStatusText self))
  
-foreign import javascript unsafe "$1[\"headers\"]" js_getHeaders ::
+foreign import javascript unsafe "(($1) => { return $1[\"headers\"]; })" js_getHeaders ::
         Response -> IO Headers
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.headers Mozilla Response.headers documentation> 
 getHeaders :: (MonadIO m) => Response -> m Headers
 getHeaders self = liftIO (js_getHeaders self)
  
-foreign import javascript unsafe "$1[\"body\"]" js_getBody ::
+foreign import javascript unsafe "(($1) => { return $1[\"body\"]; })" js_getBody ::
         Response -> IO (Nullable ReadableStream)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.body Mozilla Response.body documentation> 
@@ -205,7 +205,7 @@ getBodyUnchecked :: (MonadIO m) => Response -> m ReadableStream
 getBodyUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBody self))
  
-foreign import javascript unsafe "($1[\"bodyUsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"bodyUsed\"] ? 1 : 0); })"
         js_getBodyUsed :: Response -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Response.bodyUsed Mozilla Response.bodyUsed documentation> 

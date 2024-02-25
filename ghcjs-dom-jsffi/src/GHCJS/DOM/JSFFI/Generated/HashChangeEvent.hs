@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"HashChangeEvent\"]($1,\n$2)" js_newHashChangeEvent ::
+        "(($1, $2) => { return new window[\"HashChangeEvent\"]($1,\n$2); })" js_newHashChangeEvent ::
         JSString -> Optional HashChangeEventInit -> IO HashChangeEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent Mozilla HashChangeEvent documentation> 
@@ -41,7 +41,7 @@ newHashChangeEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "$1[\"initHashChangeEvent\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"initHashChangeEvent\"]($2,\n$3, $4, $5, $6); })"
         js_initHashChangeEvent ::
         HashChangeEvent ->
           Optional JSString ->
@@ -60,7 +60,7 @@ initHashChangeEvent self type' canBubble cancelable oldURL newURL
          (toOptionalJSString oldURL)
          (toOptionalJSString newURL))
  
-foreign import javascript unsafe "$1[\"oldURL\"]" js_getOldURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"oldURL\"]; })" js_getOldURL ::
         HashChangeEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.oldURL Mozilla HashChangeEvent.oldURL documentation> 
@@ -68,7 +68,7 @@ getOldURL ::
           (MonadIO m, FromJSString result) => HashChangeEvent -> m result
 getOldURL self = liftIO (fromJSString <$> (js_getOldURL self))
  
-foreign import javascript unsafe "$1[\"newURL\"]" js_getNewURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"newURL\"]; })" js_getNewURL ::
         HashChangeEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent.newURL Mozilla HashChangeEvent.newURL documentation> 

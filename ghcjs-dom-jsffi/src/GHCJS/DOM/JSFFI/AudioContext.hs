@@ -12,7 +12,7 @@ import Control.Monad.IO.Class (MonadIO(..))
 import GHCJS.Types (JSVal)
 import GHCJS.Foreign (jsNull)
 import GHCJS.Marshal (fromJSVal, fromJSValUnchecked)
-import GHCJS.Foreign.Callback (releaseCallback)
+import GHC.JS.Foreign.Callback (releaseCallback)
 import GHCJS.DOM.Types
 
 import GHCJS.DOM.JSFFI.Generated.AudioContext as Generated hiding (js_decodeAudioData, decodeAudioData)

@@ -20,7 +20,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -35,7 +35,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"initDeviceMotionEvent\"]($2,\n$3, $4, $5, $6, $7, $8)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8) => { return $1[\"initDeviceMotionEvent\"]($2,\n$3, $4, $5, $6, $7, $8); })"
         js_initDeviceMotionEvent ::
         DeviceMotionEvent ->
           Optional JSString ->
@@ -64,7 +64,7 @@ initDeviceMotionEvent self type' bubbles cancelable acceleration
          (maybeToOptional rotationRate)
          (maybeToOptional interval))
  
-foreign import javascript unsafe "$1[\"acceleration\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"acceleration\"]; })"
         js_getAcceleration ::
         DeviceMotionEvent -> IO (Nullable Acceleration)
 
@@ -89,7 +89,7 @@ getAccelerationUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getAcceleration self))
  
 foreign import javascript unsafe
-        "$1[\"accelerationIncludingGravity\"]"
+        "(($1) => { return $1[\"accelerationIncludingGravity\"]; })"
         js_getAccelerationIncludingGravity ::
         DeviceMotionEvent -> IO (Nullable Acceleration)
 
@@ -117,7 +117,7 @@ getAccelerationIncludingGravityUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getAccelerationIncludingGravity self))
  
-foreign import javascript unsafe "$1[\"rotationRate\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"rotationRate\"]; })"
         js_getRotationRate ::
         DeviceMotionEvent -> IO (Nullable RotationRate)
 
@@ -141,7 +141,7 @@ getRotationRateUnchecked ::
 getRotationRateUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getRotationRate self))
  
-foreign import javascript unsafe "$1[\"interval\"]" js_getInterval
+foreign import javascript unsafe "(($1) => { return $1[\"interval\"]; })" js_getInterval
         :: DeviceMotionEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent.interval Mozilla DeviceMotionEvent.interval documentation> 

@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[$2]" js_item ::
+foreign import javascript unsafe "(($1, $2) => { return $1[$2]; })" js_item ::
         MediaList -> Word -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.item Mozilla MediaList.item documentation> 
@@ -57,7 +57,7 @@ itemUnchecked ::
 itemUnchecked self index
   = liftIO (fromJust . fromMaybeJSString <$> (js_item self index))
  
-foreign import javascript safe "$1[\"deleteMedium\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteMedium\"]($2); })"
         js_deleteMedium :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.deleteMedium Mozilla MediaList.deleteMedium documentation> 
@@ -66,7 +66,7 @@ deleteMedium ::
 deleteMedium self oldMedium
   = liftIO (js_deleteMedium self (toJSString oldMedium))
  
-foreign import javascript safe "$1[\"appendMedium\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"appendMedium\"]($2); })"
         js_appendMedium :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.appendMedium Mozilla MediaList.appendMedium documentation> 
@@ -75,7 +75,7 @@ appendMedium ::
 appendMedium self newMedium
   = liftIO (js_appendMedium self (toJSString newMedium))
  
-foreign import javascript safe "$1[\"mediaText\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"mediaText\"] = $2; })"
         js_setMediaText :: MediaList -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
@@ -84,7 +84,7 @@ setMediaText ::
 setMediaText self val
   = liftIO (js_setMediaText self (toJSString val))
  
-foreign import javascript unsafe "$1[\"mediaText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"mediaText\"]; })"
         js_getMediaText :: MediaList -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.mediaText Mozilla MediaList.mediaText documentation> 
@@ -93,7 +93,7 @@ getMediaText ::
 getMediaText self
   = liftIO (fromJSString <$> (js_getMediaText self))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         MediaList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaList.length Mozilla MediaList.length documentation> 

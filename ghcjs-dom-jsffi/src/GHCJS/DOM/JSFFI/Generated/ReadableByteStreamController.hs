@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableByteStreamController\"]($1,\n$2, $3)"
+        "(($1, $2, $3) => { return new window[\"ReadableByteStreamController\"]($1,\n$2, $3); })"
         js_newReadableByteStreamController ::
         ReadableStream -> JSVal -> Word -> IO ReadableByteStreamController
 
@@ -48,7 +48,7 @@ newReadableByteStreamController stream underlyingByteSource
            js_newReadableByteStreamController stream underlyingByteSource'
          highWaterMark)
  
-foreign import javascript unsafe "$1[\"enqueue\"]($2)" js_enqueue
+foreign import javascript unsafe "(($1, $2) => { return $1[\"enqueue\"]($2); })" js_enqueue
         :: ReadableByteStreamController -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.enqueue Mozilla ReadableByteStreamController.enqueue documentation> 
@@ -60,14 +60,14 @@ enqueue self chunk
       (mapM toJSVal chunk >>=
          \ chunk' -> js_enqueue self (maybeToOptional chunk'))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         ReadableByteStreamController -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.close Mozilla ReadableByteStreamController.close documentation> 
 close :: (MonadIO m) => ReadableByteStreamController -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"error\"]($2)" js_error ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"error\"]($2); })" js_error ::
         ReadableByteStreamController -> Optional JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.error Mozilla ReadableByteStreamController.error documentation> 
@@ -79,7 +79,7 @@ error self error
       (mapM toJSVal error >>=
          \ error' -> js_error self (maybeToOptional error'))
  
-foreign import javascript unsafe "$1[\"byobRequest\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"byobRequest\"]; })"
         js_getByobRequest ::
         ReadableByteStreamController -> IO ReadableStreamBYOBRequest
 
@@ -89,7 +89,7 @@ getByobRequest ::
                  ReadableByteStreamController -> m ReadableStreamBYOBRequest
 getByobRequest self = liftIO (js_getByobRequest self)
  
-foreign import javascript unsafe "$1[\"desiredSize\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"desiredSize\"]; })"
         js_getDesiredSize :: ReadableByteStreamController -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController.desiredSize Mozilla ReadableByteStreamController.desiredSize documentation> 

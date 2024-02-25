@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,7 +33,7 @@ pattern CSS_PRIMITIVE_VALUE = 1
 pattern CSS_VALUE_LIST = 2
 pattern CSS_CUSTOM = 3
  
-foreign import javascript safe "$1[\"cssText\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"cssText\"] = $2; })"
         js_setCssText :: CSSValue -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssText Mozilla CSSValue.cssText documentation> 
@@ -43,7 +43,7 @@ setCssText ::
 setCssText self val
   = liftIO (js_setCssText (toCSSValue self) (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
+foreign import javascript unsafe "(($1) => { return $1[\"cssText\"]; })" js_getCssText ::
         CSSValue -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssText Mozilla CSSValue.cssText documentation> 
@@ -71,7 +71,7 @@ getCssTextUnchecked self
       (fromJust . fromMaybeJSString <$>
          (js_getCssText (toCSSValue self)))
  
-foreign import javascript unsafe "$1[\"cssValueType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"cssValueType\"]; })"
         js_getCssValueType :: CSSValue -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSValue.cssValueType Mozilla CSSValue.cssValueType documentation> 

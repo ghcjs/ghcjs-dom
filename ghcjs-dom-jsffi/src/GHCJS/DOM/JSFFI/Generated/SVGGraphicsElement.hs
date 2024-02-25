@@ -18,7 +18,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,7 +32,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getBBox\"]()" js_getBBox ::
+foreign import javascript unsafe "(($1) => { return $1[\"getBBox\"](); })" js_getBBox ::
         SVGGraphicsElement -> IO SVGRect
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getBBox Mozilla SVGGraphicsElement.getBBox documentation> 
@@ -45,7 +45,7 @@ getBBox_ :: (MonadIO m, IsSVGGraphicsElement self) => self -> m ()
 getBBox_ self
   = liftIO (void (js_getBBox (toSVGGraphicsElement self)))
  
-foreign import javascript unsafe "$1[\"getCTM\"]()" js_getCTM ::
+foreign import javascript unsafe "(($1) => { return $1[\"getCTM\"](); })" js_getCTM ::
         SVGGraphicsElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getCTM Mozilla SVGGraphicsElement.getCTM documentation> 
@@ -58,7 +58,7 @@ getCTM_ :: (MonadIO m, IsSVGGraphicsElement self) => self -> m ()
 getCTM_ self
   = liftIO (void (js_getCTM (toSVGGraphicsElement self)))
  
-foreign import javascript unsafe "$1[\"getScreenCTM\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getScreenCTM\"](); })"
         js_getScreenCTM :: SVGGraphicsElement -> IO SVGMatrix
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.getScreenCTM Mozilla SVGGraphicsElement.getScreenCTM documentation> 
@@ -73,7 +73,7 @@ getScreenCTM_ ::
 getScreenCTM_ self
   = liftIO (void (js_getScreenCTM (toSVGGraphicsElement self)))
  
-foreign import javascript safe "$1[\"getTransformToElement\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getTransformToElement\"]($2); })"
         js_getTransformToElement ::
         SVGGraphicsElement -> Optional SVGElement -> IO SVGMatrix
 
@@ -96,7 +96,7 @@ getTransformToElement_ self element
          (js_getTransformToElement (toSVGGraphicsElement self)
             (maybeToOptional (fmap toSVGElement element))))
  
-foreign import javascript unsafe "$1[\"transform\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"transform\"]; })"
         js_getTransform ::
         SVGGraphicsElement -> IO SVGAnimatedTransformList
 
@@ -107,7 +107,7 @@ getTransform ::
 getTransform self
   = liftIO (js_getTransform (toSVGGraphicsElement self))
  
-foreign import javascript unsafe "$1[\"nearestViewportElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"nearestViewportElement\"]; })"
         js_getNearestViewportElement :: SVGGraphicsElement -> IO SVGElement
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGGraphicsElement.nearestViewportElement Mozilla SVGGraphicsElement.nearestViewportElement documentation> 
@@ -116,7 +116,7 @@ getNearestViewportElement ::
 getNearestViewportElement self
   = liftIO (js_getNearestViewportElement (toSVGGraphicsElement self))
  
-foreign import javascript unsafe "$1[\"farthestViewportElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"farthestViewportElement\"]; })"
         js_getFarthestViewportElement ::
         SVGGraphicsElement -> IO SVGElement
 

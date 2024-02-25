@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getContext\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getContext\"]($2, $3); })"
         js_getContext ::
         HTMLCanvasElement ->
           JSString -> JSVal -> IO (Nullable RenderingContext)
@@ -82,7 +82,7 @@ getContextUnchecked self contextId arguments
             \ arguments' ->
               js_getContext self (toJSString contextId) arguments'))
  
-foreign import javascript safe "$1[\"toDataURL\"]($2)" js_toDataURL
+foreign import javascript safe "(($1, $2) => { return $1[\"toDataURL\"]($2); })" js_toDataURL
         :: HTMLCanvasElement -> Optional JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.toDataURL Mozilla HTMLCanvasElement.toDataURL documentation> 
@@ -100,7 +100,7 @@ toDataURL_ ::
 toDataURL_ self type'
   = liftIO (void (js_toDataURL self (toOptionalJSString type')))
  
-foreign import javascript safe "$1[\"toBlob\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"toBlob\"]($2, $3, $4); })"
         js_toBlob' ::
         HTMLCanvasElement ->
           BlobCallback -> Optional JSString -> Optional JSVal -> IO ()
@@ -117,7 +117,7 @@ toBlob' self callback type' quality
            js_toBlob' self callback (toOptionalJSString type')
              (maybeToOptional quality'))
  
-foreign import javascript safe "$1[\"captureStream\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"captureStream\"]($2); })"
         js_captureStream ::
         HTMLCanvasElement -> Optional Double -> IO MediaStream
 
@@ -134,28 +134,28 @@ captureStream_ self frameRequestRate
   = liftIO
       (void (js_captureStream self (maybeToOptional frameRequestRate)))
  
-foreign import javascript unsafe "$1[\"width\"] = $2;" js_setWidth
+foreign import javascript unsafe "(($1, $2) => { $1[\"width\"] = $2; })" js_setWidth
         :: HTMLCanvasElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
 setWidth :: (MonadIO m) => HTMLCanvasElement -> Word -> m ()
 setWidth self val = liftIO (js_setWidth self val)
  
-foreign import javascript unsafe "$1[\"width\"]" js_getWidth ::
+foreign import javascript unsafe "(($1) => { return $1[\"width\"]; })" js_getWidth ::
         HTMLCanvasElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.width Mozilla HTMLCanvasElement.width documentation> 
 getWidth :: (MonadIO m) => HTMLCanvasElement -> m Word
 getWidth self = liftIO (js_getWidth self)
  
-foreign import javascript unsafe "$1[\"height\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"height\"] = $2; })"
         js_setHeight :: HTMLCanvasElement -> Word -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 
 setHeight :: (MonadIO m) => HTMLCanvasElement -> Word -> m ()
 setHeight self val = liftIO (js_setHeight self val)
  
-foreign import javascript unsafe "$1[\"height\"]" js_getHeight ::
+foreign import javascript unsafe "(($1) => { return $1[\"height\"]; })" js_getHeight ::
         HTMLCanvasElement -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement.height Mozilla HTMLCanvasElement.height documentation> 

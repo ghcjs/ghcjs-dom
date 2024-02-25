@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"insertDTMF\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"insertDTMF\"]($2, $3, $4); })"
         js_insertDTMF ::
         RTCDTMFSender -> JSString -> Optional Int -> Optional Int -> IO ()
 
@@ -45,7 +45,7 @@ insertDTMF self tones duration interToneGap
 toneChange :: EventName RTCDTMFSender Event
 toneChange = unsafeEventName (toJSString "tonechange")
  
-foreign import javascript unsafe "$1[\"toneBuffer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"toneBuffer\"]; })"
         js_getToneBuffer :: RTCDTMFSender -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.toneBuffer Mozilla RTCDTMFSender.toneBuffer documentation> 
@@ -54,28 +54,28 @@ getToneBuffer ::
 getToneBuffer self
   = liftIO (fromJSString <$> (js_getToneBuffer self))
  
-foreign import javascript unsafe "($1[\"canInsertDTMF\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"canInsertDTMF\"] ? 1 : 0); })"
         js_getCanInsertDTMF :: RTCDTMFSender -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.canInsertDTMF Mozilla RTCDTMFSender.canInsertDTMF documentation> 
 getCanInsertDTMF :: (MonadIO m) => RTCDTMFSender -> m Bool
 getCanInsertDTMF self = liftIO (js_getCanInsertDTMF self)
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         RTCDTMFSender -> IO MediaStreamTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.track Mozilla RTCDTMFSender.track documentation> 
 getTrack :: (MonadIO m) => RTCDTMFSender -> m MediaStreamTrack
 getTrack self = liftIO (js_getTrack self)
  
-foreign import javascript unsafe "$1[\"duration\"]" js_getDuration
+foreign import javascript unsafe "(($1) => { return $1[\"duration\"]; })" js_getDuration
         :: RTCDTMFSender -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.duration Mozilla RTCDTMFSender.duration documentation> 
 getDuration :: (MonadIO m) => RTCDTMFSender -> m Int
 getDuration self = liftIO (js_getDuration self)
  
-foreign import javascript unsafe "$1[\"interToneGap\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"interToneGap\"]; })"
         js_getInterToneGap :: RTCDTMFSender -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCDTMFSender.interToneGap Mozilla RTCDTMFSender.interToneGap documentation> 

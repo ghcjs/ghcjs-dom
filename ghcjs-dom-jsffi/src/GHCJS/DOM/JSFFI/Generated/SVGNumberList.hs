@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"clear\"]()" js_clear ::
+foreign import javascript safe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         SVGNumberList -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.clear Mozilla SVGNumberList.clear documentation> 
 clear :: (MonadIO m) => SVGNumberList -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript safe "$1[\"initialize\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"initialize\"]($2); })"
         js_initialize :: SVGNumberList -> SVGNumber -> IO SVGNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.initialize Mozilla SVGNumberList.initialize documentation> 
@@ -49,7 +49,7 @@ initialize self item = liftIO (js_initialize self item)
 initialize_ :: (MonadIO m) => SVGNumberList -> SVGNumber -> m ()
 initialize_ self item = liftIO (void (js_initialize self item))
  
-foreign import javascript safe "$1[\"getItem\"]($2)" js_getItem ::
+foreign import javascript safe "(($1, $2) => { return $1[\"getItem\"]($2); })" js_getItem ::
         SVGNumberList -> Word -> IO SVGNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.getItem Mozilla SVGNumberList.getItem documentation> 
@@ -60,7 +60,7 @@ getItem self index = liftIO (js_getItem self index)
 getItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
 getItem_ self index = liftIO (void (js_getItem self index))
  
-foreign import javascript safe "$1[\"insertItemBefore\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"insertItemBefore\"]($2, $3); })"
         js_insertItemBefore ::
         SVGNumberList -> SVGNumber -> Word -> IO SVGNumber
 
@@ -76,7 +76,7 @@ insertItemBefore_ ::
 insertItemBefore_ self item index
   = liftIO (void (js_insertItemBefore self item index))
  
-foreign import javascript safe "$1[\"replaceItem\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"replaceItem\"]($2, $3); })"
         js_replaceItem ::
         SVGNumberList -> SVGNumber -> Word -> IO SVGNumber
 
@@ -92,7 +92,7 @@ replaceItem_ ::
 replaceItem_ self item index
   = liftIO (void (js_replaceItem self item index))
  
-foreign import javascript safe "$1[\"removeItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeItem\"]($2); })"
         js_removeItem :: SVGNumberList -> Word -> IO SVGNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.removeItem Mozilla SVGNumberList.removeItem documentation> 
@@ -103,7 +103,7 @@ removeItem self index = liftIO (js_removeItem self index)
 removeItem_ :: (MonadIO m) => SVGNumberList -> Word -> m ()
 removeItem_ self index = liftIO (void (js_removeItem self index))
  
-foreign import javascript safe "$1[\"appendItem\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"appendItem\"]($2); })"
         js_appendItem :: SVGNumberList -> SVGNumber -> IO SVGNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.appendItem Mozilla SVGNumberList.appendItem documentation> 
@@ -115,7 +115,7 @@ appendItem self item = liftIO (js_appendItem self item)
 appendItem_ :: (MonadIO m) => SVGNumberList -> SVGNumber -> m ()
 appendItem_ self item = liftIO (void (js_appendItem self item))
  
-foreign import javascript unsafe "$1[\"numberOfItems\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"numberOfItems\"]; })"
         js_getNumberOfItems :: SVGNumberList -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGNumberList.numberOfItems Mozilla SVGNumberList.numberOfItems documentation> 

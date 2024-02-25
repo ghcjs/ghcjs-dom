@@ -45,7 +45,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -60,7 +60,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"createOffer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"createOffer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_createOffer ::
         RTCPeerConnection ->
           Optional RTCOfferOptions -> IO (JSVal, RTCSessionDescriptionInit)
@@ -83,7 +83,7 @@ createOffer_ self offerOptions
       (void (js_createOffer self (maybeToOptional offerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"createAnswer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"createAnswer\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_createAnswer ::
         RTCPeerConnection ->
           Optional RTCAnswerOptions -> IO (JSVal, RTCSessionDescriptionInit)
@@ -106,7 +106,7 @@ createAnswer_ self answerOptions
       (void (js_createAnswer self (maybeToOptional answerOptions)))
  
 foreign import javascript interruptible
-        "$1[\"setLocalDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setLocalDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setLocalDescription ::
         RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
@@ -120,7 +120,7 @@ setLocalDescription self description
          maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"setRemoteDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"setRemoteDescription\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_setRemoteDescription ::
         RTCPeerConnection -> RTCSessionDescriptionInit -> IO JSVal
 
@@ -134,7 +134,7 @@ setRemoteDescription self description
          maybeThrowPromiseRejected)
  
 foreign import javascript interruptible
-        "$1[\"addIceCandidate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"addIceCandidate\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_addIceCandidate ::
         RTCPeerConnection -> RTCIceCandidateOrInit -> IO JSVal
 
@@ -149,7 +149,7 @@ addIceCandidate self candidate
             js_addIceCandidate self (RTCIceCandidateOrInit candidate'))
          >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"getConfiguration\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getConfiguration\"](); })"
         js_getConfiguration :: RTCPeerConnection -> IO RTCConfiguration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getConfiguration Mozilla webkitRTCPeerConnection.getConfiguration documentation> 
@@ -161,7 +161,7 @@ getConfiguration self = liftIO (js_getConfiguration self)
 getConfiguration_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getConfiguration_ self = liftIO (void (js_getConfiguration self))
  
-foreign import javascript safe "$1[\"setConfiguration\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"setConfiguration\"]($2); })"
         js_setConfiguration ::
         RTCPeerConnection -> RTCConfiguration -> IO ()
 
@@ -171,14 +171,14 @@ setConfiguration ::
 setConfiguration self configuration
   = liftIO (js_setConfiguration self configuration)
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         RTCPeerConnection -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.close Mozilla webkitRTCPeerConnection.close documentation> 
 close :: (MonadIO m) => RTCPeerConnection -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"getSenders\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getSenders\"](); })"
         js_getSenders :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getSenders Mozilla webkitRTCPeerConnection.getSenders documentation> 
@@ -190,7 +190,7 @@ getSenders self
 getSenders_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getSenders_ self = liftIO (void (js_getSenders self))
  
-foreign import javascript unsafe "$1[\"getReceivers\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getReceivers\"](); })"
         js_getReceivers :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getReceivers Mozilla webkitRTCPeerConnection.getReceivers documentation> 
@@ -203,7 +203,7 @@ getReceivers self
 getReceivers_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getReceivers_ self = liftIO (void (js_getReceivers self))
  
-foreign import javascript unsafe "$1[\"getTransceivers\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getTransceivers\"](); })"
         js_getTransceivers :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getTransceivers Mozilla webkitRTCPeerConnection.getTransceivers documentation> 
@@ -216,7 +216,7 @@ getTransceivers self
 getTransceivers_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getTransceivers_ self = liftIO (void (js_getTransceivers self))
  
-foreign import javascript safe "$1[\"addTrack\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"addTrack\"]($2, $3); })"
         js_addTrack ::
         RTCPeerConnection -> MediaStreamTrack -> JSVal -> IO RTCRtpSender
 
@@ -240,7 +240,7 @@ addTrack_ self track streams
             \ streams' ->
               js_addTrack self (toMediaStreamTrack track) streams'))
  
-foreign import javascript safe "$1[\"removeTrack\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"removeTrack\"]($2); })"
         js_removeTrack :: RTCPeerConnection -> RTCRtpSender -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.removeTrack Mozilla webkitRTCPeerConnection.removeTrack documentation> 
@@ -248,7 +248,7 @@ removeTrack ::
             (MonadIO m) => RTCPeerConnection -> RTCRtpSender -> m ()
 removeTrack self sender = liftIO (js_removeTrack self sender)
  
-foreign import javascript safe "$1[\"addTransceiver\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"addTransceiver\"]($2, $3); })"
         js_addTransceiverTrack ::
         RTCPeerConnection ->
           MediaStreamTrackOrKind ->
@@ -278,7 +278,7 @@ addTransceiverTrack_ self track init
               js_addTransceiverTrack self (MediaStreamTrackOrKind track')
             (maybeToOptional init)))
  
-foreign import javascript safe "$1[\"createDataChannel\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createDataChannel\"]($2, $3); })"
         js_createDataChannel ::
         RTCPeerConnection ->
           JSString -> Optional RTCDataChannelInit -> IO RTCDataChannel
@@ -304,7 +304,7 @@ createDataChannel_ self label options
             (maybeToOptional options)))
  
 foreign import javascript interruptible
-        "$1[\"getStats\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"getStats\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getStats ::
         RTCPeerConnection ->
           Optional MediaStreamTrack -> IO (JSVal, RTCStatsReport)
@@ -329,7 +329,7 @@ getStats_ self selector
          (js_getStats self
             (maybeToOptional (fmap toMediaStreamTrack selector))))
  
-foreign import javascript unsafe "$1[\"getLocalStreams\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getLocalStreams\"](); })"
         js_getLocalStreams :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getLocalStreams Mozilla webkitRTCPeerConnection.getLocalStreams documentation> 
@@ -342,7 +342,7 @@ getLocalStreams self
 getLocalStreams_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getLocalStreams_ self = liftIO (void (js_getLocalStreams self))
  
-foreign import javascript unsafe "$1[\"getRemoteStreams\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getRemoteStreams\"](); })"
         js_getRemoteStreams :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getRemoteStreams Mozilla webkitRTCPeerConnection.getRemoteStreams documentation> 
@@ -355,7 +355,7 @@ getRemoteStreams self
 getRemoteStreams_ :: (MonadIO m) => RTCPeerConnection -> m ()
 getRemoteStreams_ self = liftIO (void (js_getRemoteStreams self))
  
-foreign import javascript unsafe "$1[\"getStreamById\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getStreamById\"]($2); })"
         js_getStreamById :: RTCPeerConnection -> JSString -> IO MediaStream
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.getStreamById Mozilla webkitRTCPeerConnection.getStreamById documentation> 
@@ -372,7 +372,7 @@ getStreamById_ ::
 getStreamById_ self streamId
   = liftIO (void (js_getStreamById self (toJSString streamId)))
  
-foreign import javascript unsafe "$1[\"addStream\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addStream\"]($2); })"
         js_addStream :: RTCPeerConnection -> MediaStream -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.addStream Mozilla webkitRTCPeerConnection.addStream documentation> 
@@ -380,7 +380,7 @@ addStream ::
           (MonadIO m) => RTCPeerConnection -> MediaStream -> m ()
 addStream self stream = liftIO (js_addStream self stream)
  
-foreign import javascript unsafe "$1[\"removeStream\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"removeStream\"]($2); })"
         js_removeStream :: RTCPeerConnection -> MediaStream -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.removeStream Mozilla webkitRTCPeerConnection.removeStream documentation> 
@@ -388,7 +388,7 @@ removeStream ::
              (MonadIO m) => RTCPeerConnection -> MediaStream -> m ()
 removeStream self stream = liftIO (js_removeStream self stream)
  
-foreign import javascript unsafe "$1[\"localDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"localDescription\"]; })"
         js_getLocalDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -414,7 +414,7 @@ getLocalDescriptionUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getLocalDescription self))
  
-foreign import javascript unsafe "$1[\"currentLocalDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentLocalDescription\"]; })"
         js_getCurrentLocalDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -441,7 +441,7 @@ getCurrentLocalDescriptionUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getCurrentLocalDescription self))
  
-foreign import javascript unsafe "$1[\"pendingLocalDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pendingLocalDescription\"]; })"
         js_getPendingLocalDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -468,7 +468,7 @@ getPendingLocalDescriptionUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getPendingLocalDescription self))
  
-foreign import javascript unsafe "$1[\"remoteDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"remoteDescription\"]; })"
         js_getRemoteDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -494,7 +494,7 @@ getRemoteDescriptionUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_getRemoteDescription self))
  
-foreign import javascript unsafe "$1[\"currentRemoteDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"currentRemoteDescription\"]; })"
         js_getCurrentRemoteDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -522,7 +522,7 @@ getCurrentRemoteDescriptionUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getCurrentRemoteDescription self))
  
-foreign import javascript unsafe "$1[\"pendingRemoteDescription\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pendingRemoteDescription\"]; })"
         js_getPendingRemoteDescription ::
         RTCPeerConnection -> IO (Nullable RTCSessionDescription)
 
@@ -550,7 +550,7 @@ getPendingRemoteDescriptionUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getPendingRemoteDescription self))
  
-foreign import javascript unsafe "$1[\"signalingState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"signalingState\"]; })"
         js_getSignalingState :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.signalingState Mozilla webkitRTCPeerConnection.signalingState documentation> 
@@ -559,7 +559,7 @@ getSignalingState ::
 getSignalingState self
   = liftIO ((js_getSignalingState self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"iceGatheringState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"iceGatheringState\"]; })"
         js_getIceGatheringState :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.iceGatheringState Mozilla webkitRTCPeerConnection.iceGatheringState documentation> 
@@ -568,7 +568,7 @@ getIceGatheringState ::
 getIceGatheringState self
   = liftIO ((js_getIceGatheringState self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"iceConnectionState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"iceConnectionState\"]; })"
         js_getIceConnectionState :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.iceConnectionState Mozilla webkitRTCPeerConnection.iceConnectionState documentation> 
@@ -577,7 +577,7 @@ getIceConnectionState ::
 getIceConnectionState self
   = liftIO ((js_getIceConnectionState self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"connectionState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"connectionState\"]; })"
         js_getConnectionState :: RTCPeerConnection -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/webkitRTCPeerConnection.connectionState Mozilla webkitRTCPeerConnection.connectionState documentation> 

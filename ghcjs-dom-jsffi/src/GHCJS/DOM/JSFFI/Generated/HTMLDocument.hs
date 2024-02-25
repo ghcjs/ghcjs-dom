@@ -19,7 +19,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -33,21 +33,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"open\"]()" js_open ::
+foreign import javascript unsafe "(($1) => { return $1[\"open\"](); })" js_open ::
         HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.open Mozilla HTMLDocument.open documentation> 
 open :: (MonadIO m) => HTMLDocument -> m ()
 open self = liftIO (js_open self)
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.close Mozilla HTMLDocument.close documentation> 
 close :: (MonadIO m) => HTMLDocument -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"write\"]($2)" js_write ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"write\"]($2); })" js_write ::
         HTMLDocument -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.write Mozilla HTMLDocument.write documentation> 
@@ -55,7 +55,7 @@ write ::
       (MonadIO m, ToJSString text) => HTMLDocument -> Maybe text -> m ()
 write self text = liftIO (js_write self (toOptionalJSString text))
  
-foreign import javascript unsafe "$1[\"writeln\"]($2)" js_writeln
+foreign import javascript unsafe "(($1, $2) => { return $1[\"writeln\"]($2); })" js_writeln
         :: HTMLDocument -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.writeln Mozilla HTMLDocument.writeln documentation> 
@@ -64,35 +64,35 @@ writeln ::
 writeln self text
   = liftIO (js_writeln self (toOptionalJSString text))
  
-foreign import javascript unsafe "$1[\"clear\"]()" js_clear ::
+foreign import javascript unsafe "(($1) => { return $1[\"clear\"](); })" js_clear ::
         HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.clear Mozilla HTMLDocument.clear documentation> 
 clear :: (MonadIO m) => HTMLDocument -> m ()
 clear self = liftIO (js_clear self)
  
-foreign import javascript unsafe "$1[\"captureEvents\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"captureEvents\"](); })"
         js_captureEvents :: HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.captureEvents Mozilla HTMLDocument.captureEvents documentation> 
 captureEvents :: (MonadIO m) => HTMLDocument -> m ()
 captureEvents self = liftIO (js_captureEvents self)
  
-foreign import javascript unsafe "$1[\"releaseEvents\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"releaseEvents\"](); })"
         js_releaseEvents :: HTMLDocument -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.releaseEvents Mozilla HTMLDocument.releaseEvents documentation> 
 releaseEvents :: (MonadIO m) => HTMLDocument -> m ()
 releaseEvents self = liftIO (js_releaseEvents self)
  
-foreign import javascript unsafe "$1[\"all\"]" js_getAll ::
+foreign import javascript unsafe "(($1) => { return $1[\"all\"]; })" js_getAll ::
         HTMLDocument -> IO HTMLAllCollection
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.all Mozilla HTMLDocument.all documentation> 
 getAll :: (MonadIO m) => HTMLDocument -> m HTMLAllCollection
 getAll self = liftIO (js_getAll self)
  
-foreign import javascript unsafe "$1[\"bgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"bgColor\"] = $2; })"
         js_setBgColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
@@ -100,7 +100,7 @@ setBgColor ::
            (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
 setBgColor self val = liftIO (js_setBgColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"bgColor\"]" js_getBgColor ::
+foreign import javascript unsafe "(($1) => { return $1[\"bgColor\"]; })" js_getBgColor ::
         HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.bgColor Mozilla HTMLDocument.bgColor documentation> 
@@ -108,7 +108,7 @@ getBgColor ::
            (MonadIO m, FromJSString result) => HTMLDocument -> m result
 getBgColor self = liftIO (fromJSString <$> (js_getBgColor self))
  
-foreign import javascript unsafe "$1[\"fgColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"fgColor\"] = $2; })"
         js_setFgColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
@@ -116,7 +116,7 @@ setFgColor ::
            (MonadIO m, ToJSString val) => HTMLDocument -> val -> m ()
 setFgColor self val = liftIO (js_setFgColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"fgColor\"]" js_getFgColor ::
+foreign import javascript unsafe "(($1) => { return $1[\"fgColor\"]; })" js_getFgColor ::
         HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.fgColor Mozilla HTMLDocument.fgColor documentation> 
@@ -124,7 +124,7 @@ getFgColor ::
            (MonadIO m, FromJSString result) => HTMLDocument -> m result
 getFgColor self = liftIO (fromJSString <$> (js_getFgColor self))
  
-foreign import javascript unsafe "$1[\"alinkColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"alinkColor\"] = $2; })"
         js_setAlinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
@@ -133,7 +133,7 @@ setAlinkColor ::
 setAlinkColor self val
   = liftIO (js_setAlinkColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"alinkColor\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"alinkColor\"]; })"
         js_getAlinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.alinkColor Mozilla HTMLDocument.alinkColor documentation> 
@@ -142,7 +142,7 @@ getAlinkColor ::
 getAlinkColor self
   = liftIO (fromJSString <$> (js_getAlinkColor self))
  
-foreign import javascript unsafe "$1[\"linkColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"linkColor\"] = $2; })"
         js_setLinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
@@ -151,7 +151,7 @@ setLinkColor ::
 setLinkColor self val
   = liftIO (js_setLinkColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"linkColor\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"linkColor\"]; })"
         js_getLinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.linkColor Mozilla HTMLDocument.linkColor documentation> 
@@ -160,7 +160,7 @@ getLinkColor ::
 getLinkColor self
   = liftIO (fromJSString <$> (js_getLinkColor self))
  
-foreign import javascript unsafe "$1[\"vlinkColor\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"vlinkColor\"] = $2; })"
         js_setVlinkColor :: HTMLDocument -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 
@@ -169,7 +169,7 @@ setVlinkColor ::
 setVlinkColor self val
   = liftIO (js_setVlinkColor self (toJSString val))
  
-foreign import javascript unsafe "$1[\"vlinkColor\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"vlinkColor\"]; })"
         js_getVlinkColor :: HTMLDocument -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument.vlinkColor Mozilla HTMLDocument.vlinkColor documentation> 

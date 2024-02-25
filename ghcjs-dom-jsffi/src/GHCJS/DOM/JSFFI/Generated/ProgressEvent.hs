@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ProgressEvent\"]($1,\n$2)" js_newProgressEvent ::
+        "(($1, $2) => { return new window[\"ProgressEvent\"]($1,\n$2); })" js_newProgressEvent ::
         JSString -> Optional ProgressEventInit -> IO ProgressEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent Mozilla ProgressEvent documentation> 
@@ -42,7 +42,7 @@ newProgressEvent type' eventInitDict
          (maybeToOptional eventInitDict))
  
 foreign import javascript unsafe
-        "($1[\"lengthComputable\"] ? 1 : 0)" js_getLengthComputable ::
+        "(($1) => { return ($1[\"lengthComputable\"] ? 1 : 0); })" js_getLengthComputable ::
         ProgressEvent -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.lengthComputable Mozilla ProgressEvent.lengthComputable documentation> 
@@ -51,7 +51,7 @@ getLengthComputable ::
 getLengthComputable self
   = liftIO (js_getLengthComputable (toProgressEvent self))
  
-foreign import javascript unsafe "$1[\"loaded\"]" js_getLoaded ::
+foreign import javascript unsafe "(($1) => { return $1[\"loaded\"]; })" js_getLoaded ::
         ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.loaded Mozilla ProgressEvent.loaded documentation> 
@@ -59,7 +59,7 @@ getLoaded :: (MonadIO m, IsProgressEvent self) => self -> m Word64
 getLoaded self
   = liftIO (round <$> (js_getLoaded (toProgressEvent self)))
  
-foreign import javascript unsafe "$1[\"total\"]" js_getTotal ::
+foreign import javascript unsafe "(($1) => { return $1[\"total\"]; })" js_getTotal ::
         ProgressEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent.total Mozilla ProgressEvent.total documentation> 

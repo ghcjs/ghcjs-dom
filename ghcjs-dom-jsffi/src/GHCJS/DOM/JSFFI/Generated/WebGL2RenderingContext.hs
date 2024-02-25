@@ -228,7 +228,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -242,7 +242,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"bufferData\"]($2, $3, $4); })"
         js_bufferDataPtr ::
         WebGL2RenderingContext -> GLenum -> Double -> GLenum -> IO ()
 
@@ -253,7 +253,7 @@ bufferDataPtr ::
 bufferDataPtr self target size usage
   = liftIO (js_bufferDataPtr self target (fromIntegral size) usage)
  
-foreign import javascript unsafe "$1[\"bufferData\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"bufferData\"]($2, $3, $4); })"
         js_bufferData ::
         WebGL2RenderingContext ->
           GLenum -> Optional BufferDataSource -> GLenum -> IO ()
@@ -269,7 +269,7 @@ bufferData self target srcData usage
          usage)
  
 foreign import javascript unsafe
-        "$1[\"bufferSubData\"]($2, $3, $4)" js_bufferSubData ::
+        "(($1, $2, $3, $4) => { return $1[\"bufferSubData\"]($2, $3, $4); })" js_bufferSubData ::
         WebGL2RenderingContext ->
           GLenum -> Double -> Optional BufferDataSource -> IO ()
 
@@ -284,7 +284,7 @@ bufferSubData self target dstByteOffset srcData
          (maybeToOptional (fmap toBufferDataSource srcData)))
  
 foreign import javascript unsafe
-        "$1[\"bufferData\"]($2, $3, $4, $5,\n$6)" js_bufferDataView ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"bufferData\"]($2, $3, $4, $5,\n$6); })" js_bufferDataView ::
         WebGL2RenderingContext ->
           GLenum ->
             ArrayBufferView -> GLenum -> GLuint -> Optional GLuint -> IO ()
@@ -301,7 +301,7 @@ bufferDataView self target data' usage srcOffset length
          (maybeToOptional length))
  
 foreign import javascript unsafe
-        "$1[\"bufferSubData\"]($2, $3, $4,\n$5, $6)" js_bufferSubDataView
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"bufferSubData\"]($2, $3, $4,\n$5, $6); })" js_bufferSubDataView
         ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -321,7 +321,7 @@ bufferSubDataView self target dstByteOffset srcData srcOffset
          (maybeToOptional length))
  
 foreign import javascript unsafe
-        "$1[\"copyBufferSubData\"]($2, $3,\n$4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"copyBufferSubData\"]($2, $3,\n$4, $5, $6); })"
         js_copyBufferSubData ::
         WebGL2RenderingContext ->
           GLenum -> GLenum -> Double -> Double -> Double -> IO ()
@@ -340,7 +340,7 @@ copyBufferSubData self readTarget writeTarget readOffset
          (fromIntegral size))
  
 foreign import javascript unsafe
-        "$1[\"getBufferSubData\"]($2, $3,\n$4, $5, $6)" js_getBufferSubData
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"getBufferSubData\"]($2, $3,\n$4, $5, $6); })" js_getBufferSubData
         ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -361,7 +361,7 @@ getBufferSubData self target srcByteOffset dstData dstOffset length
          (maybeToOptional length))
  
 foreign import javascript unsafe
-        "$1[\"blitFramebuffer\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) => { return $1[\"blitFramebuffer\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10,\n$11); })"
         js_blitFramebuffer ::
         WebGL2RenderingContext ->
           GLint ->
@@ -388,7 +388,7 @@ blitFramebuffer self srcX0 srcY0 srcX1 srcY1 dstX0 dstY0 dstX1
          filter)
  
 foreign import javascript unsafe
-        "$1[\"framebufferTextureLayer\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"framebufferTextureLayer\"]($2,\n$3, $4, $5, $6); })"
         js_framebufferTextureLayer ::
         WebGL2RenderingContext ->
           GLenum -> GLenum -> GLuint -> GLint -> GLint -> IO ()
@@ -404,7 +404,7 @@ framebufferTextureLayer self target attachment texture level layer
          layer)
  
 foreign import javascript unsafe
-        "$1[\"getInternalformatParameter\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"getInternalformatParameter\"]($2,\n$3, $4); })"
         js_getInternalformatParameter ::
         WebGL2RenderingContext -> GLenum -> GLenum -> GLenum -> IO JSVal
 
@@ -426,7 +426,7 @@ getInternalformatParameter_ self target internalformat pname
          (js_getInternalformatParameter self target internalformat pname))
  
 foreign import javascript unsafe
-        "$1[\"invalidateFramebuffer\"]($2,\n$3)" js_invalidateFramebuffer
+        "(($1, $2, $3) => { return $1[\"invalidateFramebuffer\"]($2,\n$3); })" js_invalidateFramebuffer
         :: WebGL2RenderingContext -> GLenum -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.invalidateFramebuffer Mozilla WebGL2RenderingContext.invalidateFramebuffer documentation> 
@@ -439,7 +439,7 @@ invalidateFramebuffer self target attachments
            js_invalidateFramebuffer self target attachments')
  
 foreign import javascript unsafe
-        "$1[\"invalidateSubFramebuffer\"]($2,\n$3, $4, $5, $6, $7)"
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"invalidateSubFramebuffer\"]($2,\n$3, $4, $5, $6, $7); })"
         js_invalidateSubFramebuffer ::
         WebGL2RenderingContext ->
           GLenum -> JSVal -> GLint -> GLint -> GLsizei -> GLsizei -> IO ()
@@ -459,7 +459,7 @@ invalidateSubFramebuffer self target attachments x y width height
          width
          height)
  
-foreign import javascript unsafe "$1[\"readBuffer\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"readBuffer\"]($2); })"
         js_readBuffer :: WebGL2RenderingContext -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.readBuffer Mozilla WebGL2RenderingContext.readBuffer documentation> 
@@ -468,7 +468,7 @@ readBuffer ::
 readBuffer self src = liftIO (js_readBuffer self src)
  
 foreign import javascript unsafe
-        "$1[\"renderbufferStorageMultisample\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"renderbufferStorageMultisample\"]($2,\n$3, $4, $5, $6); })"
         js_renderbufferStorageMultisample ::
         WebGL2RenderingContext ->
           GLenum -> GLsizei -> GLenum -> GLsizei -> GLsizei -> IO ()
@@ -487,7 +487,7 @@ renderbufferStorageMultisample self target samples internalformat
          height)
  
 foreign import javascript unsafe
-        "$1[\"texStorage2D\"]($2, $3, $4,\n$5, $6)" js_texStorage2D ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"texStorage2D\"]($2, $3, $4,\n$5, $6); })" js_texStorage2D ::
         WebGL2RenderingContext ->
           GLenum -> GLsizei -> GLenum -> GLsizei -> GLsizei -> IO ()
 
@@ -501,7 +501,7 @@ texStorage2D self target levels internalformat width height
       (js_texStorage2D self target levels internalformat width height)
  
 foreign import javascript unsafe
-        "$1[\"texStorage3D\"]($2, $3, $4,\n$5, $6, $7)" js_texStorage3D ::
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"texStorage3D\"]($2, $3, $4,\n$5, $6, $7); })" js_texStorage3D ::
         WebGL2RenderingContext ->
           GLenum ->
             GLsizei -> GLenum -> GLsizei -> GLsizei -> GLsizei -> IO ()
@@ -518,7 +518,7 @@ texStorage3D self target levels internalformat width height depth
          depth)
  
 foreign import javascript unsafe
-        "$1[\"texImage3D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10, $11)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) => { return $1[\"texImage3D\"]($2, $3, $4, $5,\n$6, $7, $8, $9, $10, $11); })"
         js_texImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -549,7 +549,7 @@ texImage3D self target level internalformat width height depth
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
 foreign import javascript unsafe
-        "$1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9, $10, $11,\n$12); })"
         js_texSubImage3DView ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -584,7 +584,7 @@ texSubImage3DView self target level xoffset yoffset zoffset width
          (maybeToOptional (fmap toArrayBufferView pixels)))
  
 foreign import javascript unsafe
-        "$1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9) => { return $1[\"texSubImage3D\"]($2, $3, $4,\n$5, $6, $7, $8, $9); })"
         js_texSubImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -607,7 +607,7 @@ texSubImage3D self target level xoffset yoffset zoffset format
          (toTexImageSource source))
  
 foreign import javascript unsafe
-        "$1[\"copyTexSubImage3D\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"copyTexSubImage3D\"]($2, $3,\n$4, $5, $6, $7, $8, $9, $10); })"
         js_copyTexSubImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -631,7 +631,7 @@ copyTexSubImage3D self target level xoffset yoffset zoffset x y
          height)
  
 foreign import javascript unsafe
-        "$1[\"compressedTexImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) => { return $1[\"compressedTexImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10); })"
         js_compressedTexImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -661,7 +661,7 @@ compressedTexImage3D self target level internalformat width height
          (maybeToOptional (fmap toArrayBufferView data')))
  
 foreign import javascript unsafe
-        "$1[\"compressedTexSubImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12)"
+        "(($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) => { return $1[\"compressedTexSubImage3D\"]($2,\n$3, $4, $5, $6, $7, $8, $9, $10,\n$11, $12); })"
         js_compressedTexSubImage3D ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -698,7 +698,7 @@ compressedTexSubImage3D self target level xoffset yoffset zoffset
          (maybeToOptional (fmap toArrayBufferView data')))
  
 foreign import javascript unsafe
-        "$1[\"getFragDataLocation\"]($2,\n$3)" js_getFragDataLocation ::
+        "(($1, $2, $3) => { return $1[\"getFragDataLocation\"]($2,\n$3); })" js_getFragDataLocation ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> JSString -> IO GLint
 
@@ -721,7 +721,7 @@ getFragDataLocation_ self program name
          (js_getFragDataLocation self (maybeToOptional program)
             (toJSString name)))
  
-foreign import javascript unsafe "$1[\"uniform1ui\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"uniform1ui\"]($2, $3); })"
         js_uniform1ui ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> GLuint -> IO ()
@@ -734,7 +734,7 @@ uniform1ui ::
 uniform1ui self location v0
   = liftIO (js_uniform1ui self (maybeToOptional location) v0)
  
-foreign import javascript unsafe "$1[\"uniform2ui\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"uniform2ui\"]($2, $3, $4); })"
         js_uniform2ui ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> GLuint -> GLuint -> IO ()
@@ -748,7 +748,7 @@ uniform2ui self location v0 v1
   = liftIO (js_uniform2ui self (maybeToOptional location) v0 v1)
  
 foreign import javascript unsafe
-        "$1[\"uniform3ui\"]($2, $3, $4, $5)" js_uniform3ui ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"uniform3ui\"]($2, $3, $4, $5); })" js_uniform3ui ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLuint -> GLuint -> GLuint -> IO ()
@@ -762,7 +762,7 @@ uniform3ui self location v0 v1 v2
   = liftIO (js_uniform3ui self (maybeToOptional location) v0 v1 v2)
  
 foreign import javascript unsafe
-        "$1[\"uniform4ui\"]($2, $3, $4, $5,\n$6)" js_uniform4ui ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"uniform4ui\"]($2, $3, $4, $5,\n$6); })" js_uniform4ui ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLuint -> GLuint -> GLuint -> GLuint -> IO ()
@@ -777,7 +777,7 @@ uniform4ui self location v0 v1 v2 v3
   = liftIO
       (js_uniform4ui self (maybeToOptional location) v0 v1 v2 v3)
  
-foreign import javascript unsafe "$1[\"uniform1uiv\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"uniform1uiv\"]($2, $3); })"
         js_uniform1uiv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> Optional Uint32Array -> IO ()
@@ -792,7 +792,7 @@ uniform1uiv self location value
       (js_uniform1uiv self (maybeToOptional location)
          (maybeToOptional (fmap toUint32Array value)))
  
-foreign import javascript unsafe "$1[\"uniform2uiv\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"uniform2uiv\"]($2, $3); })"
         js_uniform2uiv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> Optional Uint32Array -> IO ()
@@ -807,7 +807,7 @@ uniform2uiv self location value
       (js_uniform2uiv self (maybeToOptional location)
          (maybeToOptional (fmap toUint32Array value)))
  
-foreign import javascript unsafe "$1[\"uniform3uiv\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"uniform3uiv\"]($2, $3); })"
         js_uniform3uiv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> Optional Uint32Array -> IO ()
@@ -822,7 +822,7 @@ uniform3uiv self location value
       (js_uniform3uiv self (maybeToOptional location)
          (maybeToOptional (fmap toUint32Array value)))
  
-foreign import javascript unsafe "$1[\"uniform4uiv\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"uniform4uiv\"]($2, $3); })"
         js_uniform4uiv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation -> Optional Uint32Array -> IO ()
@@ -838,7 +838,7 @@ uniform4uiv self location value
          (maybeToOptional (fmap toUint32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix2x3fv\"]($2, $3,\n$4)" js_uniformMatrix2x3fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix2x3fv\"]($2, $3,\n$4); })" js_uniformMatrix2x3fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -854,7 +854,7 @@ uniformMatrix2x3fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix3x2fv\"]($2, $3,\n$4)" js_uniformMatrix3x2fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix3x2fv\"]($2, $3,\n$4); })" js_uniformMatrix3x2fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -870,7 +870,7 @@ uniformMatrix3x2fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix2x4fv\"]($2, $3,\n$4)" js_uniformMatrix2x4fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix2x4fv\"]($2, $3,\n$4); })" js_uniformMatrix2x4fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -886,7 +886,7 @@ uniformMatrix2x4fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix4x2fv\"]($2, $3,\n$4)" js_uniformMatrix4x2fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix4x2fv\"]($2, $3,\n$4); })" js_uniformMatrix4x2fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -902,7 +902,7 @@ uniformMatrix4x2fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix3x4fv\"]($2, $3,\n$4)" js_uniformMatrix3x4fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix3x4fv\"]($2, $3,\n$4); })" js_uniformMatrix3x4fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -918,7 +918,7 @@ uniformMatrix3x4fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"uniformMatrix4x3fv\"]($2, $3,\n$4)" js_uniformMatrix4x3fv ::
+        "(($1, $2, $3, $4) => { return $1[\"uniformMatrix4x3fv\"]($2, $3,\n$4); })" js_uniformMatrix4x3fv ::
         WebGL2RenderingContext ->
           Optional WebGLUniformLocation ->
             GLboolean -> Optional Float32Array -> IO ()
@@ -934,7 +934,7 @@ uniformMatrix4x3fv self location transpose value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribI4i\"]($2, $3,\n$4, $5, $6)" js_vertexAttribI4i
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"vertexAttribI4i\"]($2, $3,\n$4, $5, $6); })" js_vertexAttribI4i
         ::
         WebGL2RenderingContext ->
           GLuint -> GLint -> GLint -> GLint -> GLint -> IO ()
@@ -947,7 +947,7 @@ vertexAttribI4i ::
 vertexAttribI4i self index x y z w
   = liftIO (js_vertexAttribI4i self index x y z w)
  
-foreign import javascript unsafe "$1[\"vertexAttribI4iv\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"vertexAttribI4iv\"]($2, $3); })"
         js_vertexAttribI4iv ::
         WebGL2RenderingContext -> GLuint -> Optional Int32Array -> IO ()
 
@@ -961,7 +961,7 @@ vertexAttribI4iv self index v
          (maybeToOptional (fmap toInt32Array v)))
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribI4ui\"]($2, $3,\n$4, $5, $6)" js_vertexAttribI4ui
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"vertexAttribI4ui\"]($2, $3,\n$4, $5, $6); })" js_vertexAttribI4ui
         ::
         WebGL2RenderingContext ->
           GLuint -> GLuint -> GLuint -> GLuint -> GLuint -> IO ()
@@ -975,7 +975,7 @@ vertexAttribI4ui self index x y z w
   = liftIO (js_vertexAttribI4ui self index x y z w)
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribI4uiv\"]($2, $3)" js_vertexAttribI4uiv ::
+        "(($1, $2, $3) => { return $1[\"vertexAttribI4uiv\"]($2, $3); })" js_vertexAttribI4uiv ::
         WebGL2RenderingContext -> GLuint -> Optional Uint32Array -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.vertexAttribI4uiv Mozilla WebGL2RenderingContext.vertexAttribI4uiv documentation> 
@@ -988,7 +988,7 @@ vertexAttribI4uiv self index v
          (maybeToOptional (fmap toUint32Array v)))
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribIPointer\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"vertexAttribIPointer\"]($2,\n$3, $4, $5, $6); })"
         js_vertexAttribIPointer ::
         WebGL2RenderingContext ->
           GLuint -> GLint -> GLenum -> GLsizei -> Double -> IO ()
@@ -1004,7 +1004,7 @@ vertexAttribIPointer self index size type' stride offset
          (fromIntegral offset))
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribDivisor\"]($2,\n$3)" js_vertexAttribDivisor ::
+        "(($1, $2, $3) => { return $1[\"vertexAttribDivisor\"]($2,\n$3); })" js_vertexAttribDivisor ::
         WebGL2RenderingContext -> GLuint -> GLuint -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.vertexAttribDivisor Mozilla WebGL2RenderingContext.vertexAttribDivisor documentation> 
@@ -1014,7 +1014,7 @@ vertexAttribDivisor self index divisor
   = liftIO (js_vertexAttribDivisor self index divisor)
  
 foreign import javascript unsafe
-        "$1[\"drawArraysInstanced\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"drawArraysInstanced\"]($2,\n$3, $4, $5); })"
         js_drawArraysInstanced ::
         WebGL2RenderingContext ->
           GLenum -> GLint -> GLsizei -> GLsizei -> IO ()
@@ -1029,7 +1029,7 @@ drawArraysInstanced self mode first count instanceCount
       (js_drawArraysInstanced self mode first count instanceCount)
  
 foreign import javascript unsafe
-        "$1[\"drawElementsInstanced\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"drawElementsInstanced\"]($2,\n$3, $4, $5, $6); })"
         js_drawElementsInstanced ::
         WebGL2RenderingContext ->
           GLenum -> GLsizei -> GLenum -> Double -> GLsizei -> IO ()
@@ -1046,7 +1046,7 @@ drawElementsInstanced self mode count type' offset instanceCount
          instanceCount)
  
 foreign import javascript unsafe
-        "$1[\"drawRangeElements\"]($2, $3,\n$4, $5, $6, $7)"
+        "(($1, $2, $3, $4, $5, $6, $7) => { return $1[\"drawRangeElements\"]($2, $3,\n$4, $5, $6, $7); })"
         js_drawRangeElements ::
         WebGL2RenderingContext ->
           GLenum -> GLuint -> GLuint -> GLsizei -> GLenum -> Double -> IO ()
@@ -1061,7 +1061,7 @@ drawRangeElements self mode start end count type' offset
       (js_drawRangeElements self mode start end count type'
          (fromIntegral offset))
  
-foreign import javascript unsafe "$1[\"drawBuffers\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"drawBuffers\"]($2); })"
         js_drawBuffers :: WebGL2RenderingContext -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.drawBuffers Mozilla WebGL2RenderingContext.drawBuffers documentation> 
@@ -1072,7 +1072,7 @@ drawBuffers self buffers
       (toJSVal buffers >>= \ buffers' -> js_drawBuffers self buffers')
  
 foreign import javascript unsafe
-        "$1[\"clearBufferiv\"]($2, $3, $4)" js_clearBufferiv ::
+        "(($1, $2, $3, $4) => { return $1[\"clearBufferiv\"]($2, $3, $4); })" js_clearBufferiv ::
         WebGL2RenderingContext ->
           GLenum -> GLint -> Optional Int32Array -> IO ()
 
@@ -1086,7 +1086,7 @@ clearBufferiv self buffer drawbuffer value
          (maybeToOptional (fmap toInt32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"clearBufferuiv\"]($2, $3, $4)" js_clearBufferuiv ::
+        "(($1, $2, $3, $4) => { return $1[\"clearBufferuiv\"]($2, $3, $4); })" js_clearBufferuiv ::
         WebGL2RenderingContext ->
           GLenum -> GLint -> Optional Uint32Array -> IO ()
 
@@ -1100,7 +1100,7 @@ clearBufferuiv self buffer drawbuffer value
          (maybeToOptional (fmap toUint32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"clearBufferfv\"]($2, $3, $4)" js_clearBufferfv ::
+        "(($1, $2, $3, $4) => { return $1[\"clearBufferfv\"]($2, $3, $4); })" js_clearBufferfv ::
         WebGL2RenderingContext ->
           GLenum -> GLint -> Optional Float32Array -> IO ()
 
@@ -1114,7 +1114,7 @@ clearBufferfv self buffer drawbuffer value
          (maybeToOptional (fmap toFloat32Array value)))
  
 foreign import javascript unsafe
-        "$1[\"clearBufferfi\"]($2, $3, $4,\n$5)" js_clearBufferfi ::
+        "(($1, $2, $3, $4, $5) => { return $1[\"clearBufferfi\"]($2, $3, $4,\n$5); })" js_clearBufferfi ::
         WebGL2RenderingContext ->
           GLenum -> GLint -> GLfloat -> GLint -> IO ()
 
@@ -1126,7 +1126,7 @@ clearBufferfi ::
 clearBufferfi self buffer drawbuffer depth stencil
   = liftIO (js_clearBufferfi self buffer drawbuffer depth stencil)
  
-foreign import javascript unsafe "$1[\"createQuery\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createQuery\"](); })"
         js_createQuery :: WebGL2RenderingContext -> IO WebGLQuery
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createQuery Mozilla WebGL2RenderingContext.createQuery documentation> 
@@ -1138,7 +1138,7 @@ createQuery self = liftIO (js_createQuery self)
 createQuery_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createQuery_ self = liftIO (void (js_createQuery self))
  
-foreign import javascript unsafe "$1[\"deleteQuery\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteQuery\"]($2); })"
         js_deleteQuery ::
         WebGL2RenderingContext -> Optional WebGLQuery -> IO ()
 
@@ -1148,7 +1148,7 @@ deleteQuery ::
 deleteQuery self query
   = liftIO (js_deleteQuery self (maybeToOptional query))
  
-foreign import javascript unsafe "$1[\"isQuery\"]($2)" js_isQuery
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isQuery\"]($2); })" js_isQuery
         :: WebGL2RenderingContext -> Optional WebGLQuery -> IO GLboolean
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.isQuery Mozilla WebGL2RenderingContext.isQuery documentation> 
@@ -1164,7 +1164,7 @@ isQuery_ ::
 isQuery_ self query
   = liftIO (void (js_isQuery self (maybeToOptional query)))
  
-foreign import javascript unsafe "$1[\"beginQuery\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"beginQuery\"]($2, $3); })"
         js_beginQuery ::
         WebGL2RenderingContext -> GLenum -> Optional WebGLQuery -> IO ()
 
@@ -1175,14 +1175,14 @@ beginQuery ::
 beginQuery self target query
   = liftIO (js_beginQuery self target (maybeToOptional query))
  
-foreign import javascript unsafe "$1[\"endQuery\"]($2)" js_endQuery
+foreign import javascript unsafe "(($1, $2) => { return $1[\"endQuery\"]($2); })" js_endQuery
         :: WebGL2RenderingContext -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.endQuery Mozilla WebGL2RenderingContext.endQuery documentation> 
 endQuery :: (MonadIO m) => WebGL2RenderingContext -> GLenum -> m ()
 endQuery self target = liftIO (js_endQuery self target)
  
-foreign import javascript unsafe "$1[\"getQuery\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getQuery\"]($2, $3); })"
         js_getQuery ::
         WebGL2RenderingContext -> GLenum -> GLenum -> IO WebGLQuery
 
@@ -1199,7 +1199,7 @@ getQuery_ self target pname
   = liftIO (void (js_getQuery self target pname))
  
 foreign import javascript unsafe
-        "$1[\"getQueryParameter\"]($2, $3)" js_getQueryParameter ::
+        "(($1, $2, $3) => { return $1[\"getQueryParameter\"]($2, $3); })" js_getQueryParameter ::
         WebGL2RenderingContext -> Optional WebGLQuery -> GLenum -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getQueryParameter Mozilla WebGL2RenderingContext.getQueryParameter documentation> 
@@ -1217,7 +1217,7 @@ getQueryParameter_ self query pname
   = liftIO
       (void (js_getQueryParameter self (maybeToOptional query) pname))
  
-foreign import javascript unsafe "$1[\"createSampler\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createSampler\"](); })"
         js_createSampler :: WebGL2RenderingContext -> IO WebGLSampler
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createSampler Mozilla WebGL2RenderingContext.createSampler documentation> 
@@ -1229,7 +1229,7 @@ createSampler self = liftIO (js_createSampler self)
 createSampler_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createSampler_ self = liftIO (void (js_createSampler self))
  
-foreign import javascript unsafe "$1[\"deleteSampler\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteSampler\"]($2); })"
         js_deleteSampler ::
         WebGL2RenderingContext -> Optional WebGLSampler -> IO ()
 
@@ -1239,7 +1239,7 @@ deleteSampler ::
 deleteSampler self sampler
   = liftIO (js_deleteSampler self (maybeToOptional sampler))
  
-foreign import javascript unsafe "$1[\"isSampler\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isSampler\"]($2); })"
         js_isSampler ::
         WebGL2RenderingContext -> Optional WebGLSampler -> IO GLboolean
 
@@ -1256,7 +1256,7 @@ isSampler_ ::
 isSampler_ self sampler
   = liftIO (void (js_isSampler self (maybeToOptional sampler)))
  
-foreign import javascript unsafe "$1[\"bindSampler\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"bindSampler\"]($2, $3); })"
         js_bindSampler ::
         WebGL2RenderingContext -> GLuint -> Optional WebGLSampler -> IO ()
 
@@ -1268,7 +1268,7 @@ bindSampler self unit sampler
   = liftIO (js_bindSampler self unit (maybeToOptional sampler))
  
 foreign import javascript unsafe
-        "$1[\"samplerParameteri\"]($2, $3,\n$4)" js_samplerParameteri ::
+        "(($1, $2, $3, $4) => { return $1[\"samplerParameteri\"]($2, $3,\n$4); })" js_samplerParameteri ::
         WebGL2RenderingContext ->
           Optional WebGLSampler -> GLenum -> GLint -> IO ()
 
@@ -1282,7 +1282,7 @@ samplerParameteri self sampler pname param
       (js_samplerParameteri self (maybeToOptional sampler) pname param)
  
 foreign import javascript unsafe
-        "$1[\"samplerParameterf\"]($2, $3,\n$4)" js_samplerParameterf ::
+        "(($1, $2, $3, $4) => { return $1[\"samplerParameterf\"]($2, $3,\n$4); })" js_samplerParameterf ::
         WebGL2RenderingContext ->
           Optional WebGLSampler -> GLenum -> GLfloat -> IO ()
 
@@ -1296,7 +1296,7 @@ samplerParameterf self sampler pname param
       (js_samplerParameterf self (maybeToOptional sampler) pname param)
  
 foreign import javascript unsafe
-        "$1[\"getSamplerParameter\"]($2,\n$3)" js_getSamplerParameter ::
+        "(($1, $2, $3) => { return $1[\"getSamplerParameter\"]($2,\n$3); })" js_getSamplerParameter ::
         WebGL2RenderingContext ->
           Optional WebGLSampler -> GLenum -> IO JSVal
 
@@ -1317,7 +1317,7 @@ getSamplerParameter_ self sampler pname
       (void
          (js_getSamplerParameter self (maybeToOptional sampler) pname))
  
-foreign import javascript unsafe "$1[\"fenceSync\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"fenceSync\"]($2, $3); })"
         js_fenceSync ::
         WebGL2RenderingContext -> GLenum -> GLbitfield -> IO WebGLSync
 
@@ -1335,7 +1335,7 @@ fenceSync_ ::
 fenceSync_ self condition flags
   = liftIO (void (js_fenceSync self condition flags))
  
-foreign import javascript unsafe "$1[\"isSync\"]($2)" js_isSync ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isSync\"]($2); })" js_isSync ::
         WebGL2RenderingContext -> Optional WebGLSync -> IO GLboolean
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.isSync Mozilla WebGL2RenderingContext.isSync documentation> 
@@ -1350,7 +1350,7 @@ isSync_ ::
 isSync_ self sync
   = liftIO (void (js_isSync self (maybeToOptional sync)))
  
-foreign import javascript unsafe "$1[\"deleteSync\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteSync\"]($2); })"
         js_deleteSync ::
         WebGL2RenderingContext -> Optional WebGLSync -> IO ()
 
@@ -1361,7 +1361,7 @@ deleteSync self sync
   = liftIO (js_deleteSync self (maybeToOptional sync))
  
 foreign import javascript unsafe
-        "$1[\"clientWaitSync\"]($2, $3, $4)" js_clientWaitSync ::
+        "(($1, $2, $3, $4) => { return $1[\"clientWaitSync\"]($2, $3, $4); })" js_clientWaitSync ::
         WebGL2RenderingContext ->
           Optional WebGLSync -> GLbitfield -> Double -> IO GLenum
 
@@ -1386,7 +1386,7 @@ clientWaitSync_ self sync flags timeout
          (js_clientWaitSync self (maybeToOptional sync) flags
             (fromIntegral timeout)))
  
-foreign import javascript unsafe "$1[\"waitSync\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"waitSync\"]($2, $3, $4); })"
         js_waitSync ::
         WebGL2RenderingContext ->
           Optional WebGLSync -> GLbitfield -> Double -> IO ()
@@ -1401,7 +1401,7 @@ waitSync self sync flags timeout
       (js_waitSync self (maybeToOptional sync) flags
          (fromIntegral timeout))
  
-foreign import javascript unsafe "$1[\"getSyncParameter\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"getSyncParameter\"]($2, $3); })"
         js_getSyncParameter ::
         WebGL2RenderingContext -> Optional WebGLSync -> GLenum -> IO JSVal
 
@@ -1421,7 +1421,7 @@ getSyncParameter_ self sync pname
       (void (js_getSyncParameter self (maybeToOptional sync) pname))
  
 foreign import javascript unsafe
-        "$1[\"createTransformFeedback\"]()" js_createTransformFeedback ::
+        "(($1) => { return $1[\"createTransformFeedback\"](); })" js_createTransformFeedback ::
         WebGL2RenderingContext -> IO WebGLTransformFeedback
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.createTransformFeedback Mozilla WebGL2RenderingContext.createTransformFeedback documentation> 
@@ -1437,7 +1437,7 @@ createTransformFeedback_ self
   = liftIO (void (js_createTransformFeedback self))
  
 foreign import javascript unsafe
-        "$1[\"deleteTransformFeedback\"]($2)" js_deleteTransformFeedback ::
+        "(($1, $2) => { return $1[\"deleteTransformFeedback\"]($2); })" js_deleteTransformFeedback ::
         WebGL2RenderingContext -> Optional WebGLTransformFeedback -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.deleteTransformFeedback Mozilla WebGL2RenderingContext.deleteTransformFeedback documentation> 
@@ -1447,7 +1447,7 @@ deleteTransformFeedback ::
 deleteTransformFeedback self id
   = liftIO (js_deleteTransformFeedback self (maybeToOptional id))
  
-foreign import javascript unsafe "$1[\"isTransformFeedback\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isTransformFeedback\"]($2); })"
         js_isTransformFeedback ::
         WebGL2RenderingContext ->
           Optional WebGLTransformFeedback -> IO GLboolean
@@ -1468,7 +1468,7 @@ isTransformFeedback_ self id
   = liftIO (void (js_isTransformFeedback self (maybeToOptional id)))
  
 foreign import javascript unsafe
-        "$1[\"bindTransformFeedback\"]($2,\n$3)" js_bindTransformFeedback
+        "(($1, $2, $3) => { return $1[\"bindTransformFeedback\"]($2,\n$3); })" js_bindTransformFeedback
         ::
         WebGL2RenderingContext ->
           GLenum -> Optional WebGLTransformFeedback -> IO ()
@@ -1483,7 +1483,7 @@ bindTransformFeedback self target id
       (js_bindTransformFeedback self target (maybeToOptional id))
  
 foreign import javascript unsafe
-        "$1[\"beginTransformFeedback\"]($2)" js_beginTransformFeedback ::
+        "(($1, $2) => { return $1[\"beginTransformFeedback\"]($2); })" js_beginTransformFeedback ::
         WebGL2RenderingContext -> GLenum -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.beginTransformFeedback Mozilla WebGL2RenderingContext.beginTransformFeedback documentation> 
@@ -1492,7 +1492,7 @@ beginTransformFeedback ::
 beginTransformFeedback self primitiveMode
   = liftIO (js_beginTransformFeedback self primitiveMode)
  
-foreign import javascript unsafe "$1[\"endTransformFeedback\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"endTransformFeedback\"](); })"
         js_endTransformFeedback :: WebGL2RenderingContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.endTransformFeedback Mozilla WebGL2RenderingContext.endTransformFeedback documentation> 
@@ -1501,7 +1501,7 @@ endTransformFeedback ::
 endTransformFeedback self = liftIO (js_endTransformFeedback self)
  
 foreign import javascript unsafe
-        "$1[\"transformFeedbackVaryings\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"transformFeedbackVaryings\"]($2,\n$3, $4); })"
         js_transformFeedbackVaryings ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> JSVal -> GLenum -> IO ()
@@ -1520,7 +1520,7 @@ transformFeedbackVaryings self program varyings bufferMode
          bufferMode)
  
 foreign import javascript unsafe
-        "$1[\"getTransformFeedbackVarying\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"getTransformFeedbackVarying\"]($2,\n$3); })"
         js_getTransformFeedbackVarying ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> GLuint -> IO WebGLActiveInfo
@@ -1545,7 +1545,7 @@ getTransformFeedbackVarying_ self program index
          (js_getTransformFeedbackVarying self (maybeToOptional program)
             index))
  
-foreign import javascript unsafe "$1[\"pauseTransformFeedback\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"pauseTransformFeedback\"](); })"
         js_pauseTransformFeedback :: WebGL2RenderingContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.pauseTransformFeedback Mozilla WebGL2RenderingContext.pauseTransformFeedback documentation> 
@@ -1555,7 +1555,7 @@ pauseTransformFeedback self
   = liftIO (js_pauseTransformFeedback self)
  
 foreign import javascript unsafe
-        "$1[\"resumeTransformFeedback\"]()" js_resumeTransformFeedback ::
+        "(($1) => { return $1[\"resumeTransformFeedback\"](); })" js_resumeTransformFeedback ::
         WebGL2RenderingContext -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.resumeTransformFeedback Mozilla WebGL2RenderingContext.resumeTransformFeedback documentation> 
@@ -1565,7 +1565,7 @@ resumeTransformFeedback self
   = liftIO (js_resumeTransformFeedback self)
  
 foreign import javascript unsafe
-        "$1[\"bindBufferBase\"]($2, $3, $4)" js_bindBufferBase ::
+        "(($1, $2, $3, $4) => { return $1[\"bindBufferBase\"]($2, $3, $4); })" js_bindBufferBase ::
         WebGL2RenderingContext ->
           GLenum -> GLuint -> Optional WebGLBuffer -> IO ()
 
@@ -1579,7 +1579,7 @@ bindBufferBase self target index buffer
       (js_bindBufferBase self target index (maybeToOptional buffer))
  
 foreign import javascript unsafe
-        "$1[\"bindBufferRange\"]($2, $3,\n$4, $5, $6)" js_bindBufferRange
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"bindBufferRange\"]($2, $3,\n$4, $5, $6); })" js_bindBufferRange
         ::
         WebGL2RenderingContext ->
           GLenum ->
@@ -1598,7 +1598,7 @@ bindBufferRange self target index buffer offset size
          (fromIntegral size))
  
 foreign import javascript unsafe
-        "$1[\"getIndexedParameter\"]($2,\n$3)" js_getIndexedParameter ::
+        "(($1, $2, $3) => { return $1[\"getIndexedParameter\"]($2,\n$3); })" js_getIndexedParameter ::
         WebGL2RenderingContext -> GLenum -> GLuint -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext.getIndexedParameter Mozilla WebGL2RenderingContext.getIndexedParameter documentation> 
@@ -1615,7 +1615,7 @@ getIndexedParameter_ self target index
   = liftIO (void (js_getIndexedParameter self target index))
  
 foreign import javascript unsafe
-        "$1[\"getUniformIndices\"]($2, $3)" js_getUniformIndices ::
+        "(($1, $2, $3) => { return $1[\"getUniformIndices\"]($2, $3); })" js_getUniformIndices ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> JSVal -> IO Uint32Array
 
@@ -1643,7 +1643,7 @@ getUniformIndices_ self program uniformNames
               js_getUniformIndices self (maybeToOptional program) uniformNames'))
  
 foreign import javascript unsafe
-        "$1[\"getActiveUniforms\"]($2, $3,\n$4)" js_getActiveUniforms ::
+        "(($1, $2, $3, $4) => { return $1[\"getActiveUniforms\"]($2, $3,\n$4); })" js_getActiveUniforms ::
         WebGL2RenderingContext ->
           Optional WebGLProgram ->
             Optional Uint32Array -> GLenum -> IO Int32Array
@@ -1673,7 +1673,7 @@ getActiveUniforms_ self program uniformIndices pname
             pname))
  
 foreign import javascript unsafe
-        "$1[\"getUniformBlockIndex\"]($2,\n$3)" js_getUniformBlockIndex ::
+        "(($1, $2, $3) => { return $1[\"getUniformBlockIndex\"]($2,\n$3); })" js_getUniformBlockIndex ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> JSString -> IO GLuint
 
@@ -1699,7 +1699,7 @@ getUniformBlockIndex_ self program uniformBlockName
             (toJSString uniformBlockName)))
  
 foreign import javascript unsafe
-        "$1[\"getActiveUniformBlockParameter\"]($2,\n$3, $4)"
+        "(($1, $2, $3, $4) => { return $1[\"getActiveUniformBlockParameter\"]($2,\n$3, $4); })"
         js_getActiveUniformBlockParameter ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> GLuint -> GLenum -> IO JSVal
@@ -1729,7 +1729,7 @@ getActiveUniformBlockParameter_ self program uniformBlockIndex
             pname))
  
 foreign import javascript unsafe
-        "$1[\"getActiveUniformBlockName\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"getActiveUniformBlockName\"]($2,\n$3); })"
         js_getActiveUniformBlockName ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> GLuint -> IO JSVal
@@ -1754,7 +1754,7 @@ getActiveUniformBlockName_ self program uniformBlockIndex
             uniformBlockIndex))
  
 foreign import javascript unsafe
-        "$1[\"uniformBlockBinding\"]($2,\n$3, $4)" js_uniformBlockBinding
+        "(($1, $2, $3, $4) => { return $1[\"uniformBlockBinding\"]($2,\n$3, $4); })" js_uniformBlockBinding
         ::
         WebGL2RenderingContext ->
           Optional WebGLProgram -> GLuint -> GLuint -> IO ()
@@ -1771,7 +1771,7 @@ uniformBlockBinding self program uniformBlockIndex
          uniformBlockIndex
          uniformBlockBinding)
  
-foreign import javascript unsafe "$1[\"createVertexArray\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createVertexArray\"](); })"
         js_createVertexArray ::
         WebGL2RenderingContext -> IO WebGLVertexArrayObject
 
@@ -1784,7 +1784,7 @@ createVertexArray self = liftIO (js_createVertexArray self)
 createVertexArray_ :: (MonadIO m) => WebGL2RenderingContext -> m ()
 createVertexArray_ self = liftIO (void (js_createVertexArray self))
  
-foreign import javascript unsafe "$1[\"deleteVertexArray\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"deleteVertexArray\"]($2); })"
         js_deleteVertexArray ::
         WebGL2RenderingContext -> Optional WebGLVertexArrayObject -> IO ()
 
@@ -1795,7 +1795,7 @@ deleteVertexArray ::
 deleteVertexArray self vertexArray
   = liftIO (js_deleteVertexArray self (maybeToOptional vertexArray))
  
-foreign import javascript unsafe "$1[\"isVertexArray\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"isVertexArray\"]($2); })"
         js_isVertexArray ::
         WebGL2RenderingContext ->
           Optional WebGLVertexArrayObject -> IO GLboolean
@@ -1816,7 +1816,7 @@ isVertexArray_ self vertexArray
   = liftIO
       (void (js_isVertexArray self (maybeToOptional vertexArray)))
  
-foreign import javascript unsafe "$1[\"bindVertexArray\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"bindVertexArray\"]($2); })"
         js_bindVertexArray ::
         WebGL2RenderingContext -> Optional WebGLVertexArrayObject -> IO ()
 

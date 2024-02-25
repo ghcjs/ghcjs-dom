@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         SiteBoundCredential -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SiteBoundCredential.name Mozilla SiteBoundCredential.name documentation> 
@@ -38,7 +38,7 @@ getName self
   = liftIO
       (fromJSString <$> (js_getName (toSiteBoundCredential self)))
  
-foreign import javascript unsafe "$1[\"iconURL\"]" js_getIconURL ::
+foreign import javascript unsafe "(($1) => { return $1[\"iconURL\"]; })" js_getIconURL ::
         SiteBoundCredential -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SiteBoundCredential.iconURL Mozilla SiteBoundCredential.iconURL documentation> 

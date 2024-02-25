@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"identifier\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"identifier\"]; })"
         js_getIdentifier :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.identifier Mozilla Counter.identifier documentation> 
@@ -35,7 +35,7 @@ getIdentifier ::
 getIdentifier self
   = liftIO (fromJSString <$> (js_getIdentifier self))
  
-foreign import javascript unsafe "$1[\"listStyle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"listStyle\"]; })"
         js_getListStyle :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.listStyle Mozilla Counter.listStyle documentation> 
@@ -44,7 +44,7 @@ getListStyle ::
 getListStyle self
   = liftIO (fromJSString <$> (js_getListStyle self))
  
-foreign import javascript unsafe "$1[\"separator\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"separator\"]; })"
         js_getSeparator :: Counter -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Counter.separator Mozilla Counter.separator documentation> 

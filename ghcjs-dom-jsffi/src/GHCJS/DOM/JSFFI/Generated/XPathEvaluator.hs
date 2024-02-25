@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,14 +28,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"XPathEvaluator\"]()"
+foreign import javascript unsafe "(() => { return new window[\"XPathEvaluator\"](); })"
         js_newXPathEvaluator :: IO XPathEvaluator
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XPathEvaluator Mozilla XPathEvaluator documentation> 
 newXPathEvaluator :: (MonadIO m) => m XPathEvaluator
 newXPathEvaluator = liftIO (js_newXPathEvaluator)
  
-foreign import javascript safe "$1[\"createExpression\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createExpression\"]($2, $3); })"
         js_createExpression ::
         XPathEvaluator ->
           Optional JSString -> Optional XPathNSResolver -> IO XPathExpression
@@ -60,7 +60,7 @@ createExpression_ self expression resolver
          (js_createExpression self (toOptionalJSString expression)
             (maybeToOptional resolver)))
  
-foreign import javascript unsafe "$1[\"createNSResolver\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"createNSResolver\"]($2); })"
         js_createNSResolver ::
         XPathEvaluator -> Optional Node -> IO XPathNSResolver
 
@@ -84,7 +84,7 @@ createNSResolver_ self nodeResolver
             (maybeToOptional (fmap toNode nodeResolver))))
  
 foreign import javascript safe
-        "$1[\"evaluate\"]($2, $3, $4, $5,\n$6)" js_evaluate ::
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"evaluate\"]($2, $3, $4, $5,\n$6); })" js_evaluate ::
         XPathEvaluator ->
           Optional JSString ->
             Optional Node ->

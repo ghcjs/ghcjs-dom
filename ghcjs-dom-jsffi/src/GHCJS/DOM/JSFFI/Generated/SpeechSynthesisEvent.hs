@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,21 +27,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"charIndex\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"charIndex\"]; })"
         js_getCharIndex :: SpeechSynthesisEvent -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.charIndex Mozilla SpeechSynthesisEvent.charIndex documentation> 
 getCharIndex :: (MonadIO m) => SpeechSynthesisEvent -> m Word
 getCharIndex self = liftIO (js_getCharIndex self)
  
-foreign import javascript unsafe "$1[\"elapsedTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"elapsedTime\"]; })"
         js_getElapsedTime :: SpeechSynthesisEvent -> IO Float
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.elapsedTime Mozilla SpeechSynthesisEvent.elapsedTime documentation> 
 getElapsedTime :: (MonadIO m) => SpeechSynthesisEvent -> m Float
 getElapsedTime self = liftIO (js_getElapsedTime self)
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         SpeechSynthesisEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisEvent.name Mozilla SpeechSynthesisEvent.name documentation> 

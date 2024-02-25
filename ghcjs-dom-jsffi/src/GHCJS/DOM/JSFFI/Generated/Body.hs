@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"arrayBuffer\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_arrayBuffer :: Body -> IO (JSVal, ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.arrayBuffer Mozilla Body.arrayBuffer documentation> 
@@ -41,7 +41,7 @@ arrayBuffer_ :: (MonadIO m, IsBody self) => self -> m ()
 arrayBuffer_ self = liftIO (void (js_arrayBuffer (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"blob\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_blob :: Body -> IO (JSVal, Blob)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.blob Mozilla Body.blob documentation> 
@@ -53,7 +53,7 @@ blob_ :: (MonadIO m, IsBody self) => self -> m ()
 blob_ self = liftIO (void (js_blob (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"json\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_json :: Body -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.json Mozilla Body.json documentation> 
@@ -65,7 +65,7 @@ json_ :: (MonadIO m, IsBody self) => self -> m ()
 json_ self = liftIO (void (js_json (toBody self)))
  
 foreign import javascript interruptible
-        "$1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"text\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_text :: Body -> IO (JSVal, JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.text Mozilla Body.text documentation> 
@@ -79,7 +79,7 @@ text self
 text_ :: (MonadIO m, IsBody self) => self -> m ()
 text_ self = liftIO (void (js_text (toBody self)))
  
-foreign import javascript unsafe "($1[\"bodyUsed\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"bodyUsed\"] ? 1 : 0); })"
         js_getBodyUsed :: Body -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Body.bodyUsed Mozilla Body.bodyUsed documentation> 

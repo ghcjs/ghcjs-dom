@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"InputEvent\"]($1, $2)" js_newInputEvent ::
+        "(($1, $2) => { return new window[\"InputEvent\"]($1, $2); })" js_newInputEvent ::
         JSString -> Optional InputEventInit -> IO InputEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent Mozilla InputEvent documentation> 
@@ -42,7 +42,7 @@ newInputEvent type' eventInitDict
       (js_newInputEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"getTargetRanges\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getTargetRanges\"](); })"
         js_getTargetRanges :: InputEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent.getTargetRanges Mozilla InputEvent.getTargetRanges documentation> 
@@ -54,7 +54,7 @@ getTargetRanges self
 getTargetRanges_ :: (MonadIO m) => InputEvent -> m ()
 getTargetRanges_ self = liftIO (void (js_getTargetRanges self))
  
-foreign import javascript unsafe "$1[\"inputType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"inputType\"]; })"
         js_getInputType :: InputEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent.inputType Mozilla InputEvent.inputType documentation> 
@@ -63,7 +63,7 @@ getInputType ::
 getInputType self
   = liftIO (fromJSString <$> (js_getInputType self))
  
-foreign import javascript unsafe "$1[\"data\"]" js_getData ::
+foreign import javascript unsafe "(($1) => { return $1[\"data\"]; })" js_getData ::
         InputEvent -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent.data Mozilla InputEvent.data documentation> 
@@ -86,7 +86,7 @@ getDataUnchecked ::
 getDataUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getData self))
  
-foreign import javascript unsafe "$1[\"dataTransfer\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"dataTransfer\"]; })"
         js_getDataTransfer :: InputEvent -> IO (Nullable DataTransfer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/InputEvent.dataTransfer Mozilla InputEvent.dataTransfer documentation> 

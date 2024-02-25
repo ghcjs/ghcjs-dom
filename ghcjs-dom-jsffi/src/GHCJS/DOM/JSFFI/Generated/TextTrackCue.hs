@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,14 +30,14 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         TextTrackCue -> IO TextTrack
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.track Mozilla TextTrackCue.track documentation> 
 getTrack :: (MonadIO m, IsTextTrackCue self) => self -> m TextTrack
 getTrack self = liftIO (js_getTrack (toTextTrackCue self))
  
-foreign import javascript unsafe "$1[\"id\"] = $2;" js_setId ::
+foreign import javascript unsafe "(($1, $2) => { $1[\"id\"] = $2; })" js_setId ::
         TextTrackCue -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
@@ -47,7 +47,7 @@ setId ::
 setId self val
   = liftIO (js_setId (toTextTrackCue self) (toJSString val))
  
-foreign import javascript unsafe "$1[\"id\"]" js_getId ::
+foreign import javascript unsafe "(($1) => { return $1[\"id\"]; })" js_getId ::
         TextTrackCue -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.id Mozilla TextTrackCue.id documentation> 
@@ -57,7 +57,7 @@ getId ::
 getId self
   = liftIO (fromJSString <$> (js_getId (toTextTrackCue self)))
  
-foreign import javascript unsafe "$1[\"startTime\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"startTime\"] = $2; })"
         js_setStartTime :: TextTrackCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.startTime Mozilla TextTrackCue.startTime documentation> 
@@ -66,7 +66,7 @@ setStartTime ::
 setStartTime self val
   = liftIO (js_setStartTime (toTextTrackCue self) val)
  
-foreign import javascript unsafe "$1[\"startTime\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"startTime\"]; })"
         js_getStartTime :: TextTrackCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.startTime Mozilla TextTrackCue.startTime documentation> 
@@ -74,7 +74,7 @@ getStartTime ::
              (MonadIO m, IsTextTrackCue self) => self -> m Double
 getStartTime self = liftIO (js_getStartTime (toTextTrackCue self))
  
-foreign import javascript unsafe "$1[\"endTime\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"endTime\"] = $2; })"
         js_setEndTime :: TextTrackCue -> Double -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.endTime Mozilla TextTrackCue.endTime documentation> 
@@ -83,14 +83,14 @@ setEndTime ::
 setEndTime self val
   = liftIO (js_setEndTime (toTextTrackCue self) val)
  
-foreign import javascript unsafe "$1[\"endTime\"]" js_getEndTime ::
+foreign import javascript unsafe "(($1) => { return $1[\"endTime\"]; })" js_getEndTime ::
         TextTrackCue -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.endTime Mozilla TextTrackCue.endTime documentation> 
 getEndTime :: (MonadIO m, IsTextTrackCue self) => self -> m Double
 getEndTime self = liftIO (js_getEndTime (toTextTrackCue self))
  
-foreign import javascript unsafe "$1[\"pauseOnExit\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"pauseOnExit\"] = $2; })"
         js_setPauseOnExit :: TextTrackCue -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.pauseOnExit Mozilla TextTrackCue.pauseOnExit documentation> 
@@ -99,7 +99,7 @@ setPauseOnExit ::
 setPauseOnExit self val
   = liftIO (js_setPauseOnExit (toTextTrackCue self) val)
  
-foreign import javascript unsafe "($1[\"pauseOnExit\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"pauseOnExit\"] ? 1 : 0); })"
         js_getPauseOnExit :: TextTrackCue -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/TextTrackCue.pauseOnExit Mozilla TextTrackCue.pauseOnExit documentation> 

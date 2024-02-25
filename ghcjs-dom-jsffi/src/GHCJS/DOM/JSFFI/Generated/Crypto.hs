@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"getRandomValues\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"getRandomValues\"]($2); })"
         js_getRandomValues ::
         Crypto -> ArrayBufferView -> IO ArrayBufferView
 
@@ -44,14 +44,14 @@ getRandomValues_ ::
 getRandomValues_ self array
   = liftIO (void (js_getRandomValues self (toArrayBufferView array)))
  
-foreign import javascript unsafe "$1[\"subtle\"]" js_getSubtle ::
+foreign import javascript unsafe "(($1) => { return $1[\"subtle\"]; })" js_getSubtle ::
         Crypto -> IO SubtleCrypto
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.subtle Mozilla Crypto.subtle documentation> 
 getSubtle :: (MonadIO m) => Crypto -> m SubtleCrypto
 getSubtle self = liftIO (js_getSubtle self)
  
-foreign import javascript safe "$1[\"webkitSubtle\"]"
+foreign import javascript safe "(($1) => { return $1[\"webkitSubtle\"]; })"
         js_getWebkitSubtle :: Crypto -> IO WebKitSubtleCrypto
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Crypto.webkitSubtle Mozilla Crypto.webkitSubtle documentation> 

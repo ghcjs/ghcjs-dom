@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ClipboardEvent\"]($1,\n$2)" js_newClipboardEvent ::
+        "(($1, $2) => { return new window[\"ClipboardEvent\"]($1,\n$2); })" js_newClipboardEvent ::
         JSString -> Optional ClipboardEventInit -> IO ClipboardEvent
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent Mozilla ClipboardEvent documentation> 
@@ -40,7 +40,7 @@ newClipboardEvent type' eventInitDict
       (js_newClipboardEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"clipboardData\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"clipboardData\"]; })"
         js_getClipboardData :: ClipboardEvent -> IO (Nullable DataTransfer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent.clipboardData Mozilla ClipboardEvent.clipboardData documentation> 

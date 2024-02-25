@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"MediaEncryptedEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"MediaEncryptedEvent\"]($1,\n$2); })"
         js_newMediaEncryptedEvent ::
         JSString ->
           Optional MediaEncryptedEventInit -> IO MediaEncryptedEvent
@@ -43,7 +43,7 @@ newMediaEncryptedEvent type' eventInitDict
       (js_newMediaEncryptedEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"initDataType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"initDataType\"]; })"
         js_getInitDataType :: MediaEncryptedEvent -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaEncryptedEvent.initDataType Mozilla MediaEncryptedEvent.initDataType documentation> 
@@ -52,7 +52,7 @@ getInitDataType ::
 getInitDataType self
   = liftIO (fromJSString <$> (js_getInitDataType self))
  
-foreign import javascript unsafe "$1[\"initData\"]" js_getInitData
+foreign import javascript unsafe "(($1) => { return $1[\"initData\"]; })" js_getInitData
         :: MediaEncryptedEvent -> IO (Nullable ArrayBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaEncryptedEvent.initData Mozilla MediaEncryptedEvent.initData documentation> 

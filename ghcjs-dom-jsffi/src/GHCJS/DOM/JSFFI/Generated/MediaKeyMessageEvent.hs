@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"WebKitMediaKeyMessageEvent\"]($1,\n$2); })"
         js_newMediaKeyMessageEvent ::
         JSString -> MediaKeyMessageEventInit -> IO MediaKeyMessageEvent
 
@@ -40,7 +40,7 @@ newMediaKeyMessageEvent type' eventInitDict
   = liftIO
       (js_newMediaKeyMessageEvent (toJSString type') eventInitDict)
  
-foreign import javascript unsafe "$1[\"messageType\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"messageType\"]; })"
         js_getMessageType :: MediaKeyMessageEvent -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.messageType Mozilla WebKitMediaKeyMessageEvent.messageType documentation> 
@@ -49,7 +49,7 @@ getMessageType ::
 getMessageType self
   = liftIO ((js_getMessageType self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         MediaKeyMessageEvent -> IO ArrayBuffer
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebKitMediaKeyMessageEvent.message Mozilla WebKitMediaKeyMessageEvent.message documentation> 

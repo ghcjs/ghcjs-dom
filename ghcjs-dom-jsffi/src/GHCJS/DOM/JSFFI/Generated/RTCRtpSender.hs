@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getParameters\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getParameters\"](); })"
         js_getParameters :: RTCRtpSender -> IO RTCRtpParameters
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpSender.getParameters Mozilla RTCRtpSender.getParameters documentation> 
@@ -39,7 +39,7 @@ getParameters_ :: (MonadIO m) => RTCRtpSender -> m ()
 getParameters_ self = liftIO (void (js_getParameters self))
  
 foreign import javascript interruptible
-        "$1[\"replaceTrack\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"replaceTrack\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_replaceTrack ::
         RTCRtpSender -> Optional MediaStreamTrack -> IO JSVal
 
@@ -53,7 +53,7 @@ replaceTrack self withTrack
           (maybeToOptional (fmap toMediaStreamTrack withTrack)))
          >>= maybeThrowPromiseRejected)
  
-foreign import javascript unsafe "$1[\"track\"]" js_getTrack ::
+foreign import javascript unsafe "(($1) => { return $1[\"track\"]; })" js_getTrack ::
         RTCRtpSender -> IO (Nullable MediaStreamTrack)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpSender.track Mozilla RTCRtpSender.track documentation> 

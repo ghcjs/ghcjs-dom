@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,28 +29,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"back\"]()" js_back ::
+foreign import javascript unsafe "(($1) => { return $1[\"back\"](); })" js_back ::
         History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.back Mozilla History.back documentation> 
 back :: (MonadIO m) => History -> m ()
 back self = liftIO (js_back self)
  
-foreign import javascript unsafe "$1[\"forward\"]()" js_forward ::
+foreign import javascript unsafe "(($1) => { return $1[\"forward\"](); })" js_forward ::
         History -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.forward Mozilla History.forward documentation> 
 forward :: (MonadIO m) => History -> m ()
 forward self = liftIO (js_forward self)
  
-foreign import javascript unsafe "$1[\"go\"]($2)" js_go ::
+foreign import javascript unsafe "(($1, $2) => { return $1[\"go\"]($2); })" js_go ::
         History -> Optional Int -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.go Mozilla History.go documentation> 
 go :: (MonadIO m) => History -> Maybe Int -> m ()
 go self distance = liftIO (js_go self (maybeToOptional distance))
  
-foreign import javascript safe "$1[\"pushState\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"pushState\"]($2, $3, $4); })"
         js_pushState ::
         History -> JSVal -> JSString -> Optional JSString -> IO ()
 
@@ -64,7 +64,7 @@ pushState self data' title url
          (toJSString title)
          (toOptionalJSString url))
  
-foreign import javascript safe "$1[\"replaceState\"]($2, $3, $4)"
+foreign import javascript safe "(($1, $2, $3, $4) => { return $1[\"replaceState\"]($2, $3, $4); })"
         js_replaceState ::
         History -> JSVal -> JSString -> Optional JSString -> IO ()
 
@@ -78,14 +78,14 @@ replaceState self data' title url
          (toJSString title)
          (toOptionalJSString url))
  
-foreign import javascript unsafe "$1[\"length\"]" js_getLength ::
+foreign import javascript unsafe "(($1) => { return $1[\"length\"]; })" js_getLength ::
         History -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.length Mozilla History.length documentation> 
 getLength :: (MonadIO m) => History -> m Word
 getLength self = liftIO (js_getLength self)
  
-foreign import javascript safe "$1[\"scrollRestoration\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"scrollRestoration\"] = $2; })"
         js_setScrollRestoration :: History -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 
@@ -94,7 +94,7 @@ setScrollRestoration ::
 setScrollRestoration self val
   = liftIO (js_setScrollRestoration self (pToJSVal val))
  
-foreign import javascript safe "$1[\"scrollRestoration\"]"
+foreign import javascript safe "(($1) => { return $1[\"scrollRestoration\"]; })"
         js_getScrollRestoration :: History -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.scrollRestoration Mozilla History.scrollRestoration documentation> 
@@ -103,7 +103,7 @@ getScrollRestoration ::
 getScrollRestoration self
   = liftIO ((js_getScrollRestoration self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"state\"]" js_getState ::
+foreign import javascript unsafe "(($1) => { return $1[\"state\"]; })" js_getState ::
         History -> IO SerializedScriptValue
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/History.state Mozilla History.state documentation> 

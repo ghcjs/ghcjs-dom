@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript interruptible
-        "$1[\"enumerateDevices\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"enumerateDevices\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_enumerateDevices :: MediaDevices -> IO (JSVal, JSVal)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.enumerateDevices Mozilla MediaDevices.enumerateDevices documentation> 
@@ -45,7 +45,7 @@ enumerateDevices_ :: (MonadIO m) => MediaDevices -> m ()
 enumerateDevices_ self = liftIO (void (js_enumerateDevices self))
  
 foreign import javascript unsafe
-        "$1[\"getSupportedConstraints\"]()" js_getSupportedConstraints ::
+        "(($1) => { return $1[\"getSupportedConstraints\"](); })" js_getSupportedConstraints ::
         MediaDevices -> IO MediaTrackSupportedConstraints
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices.getSupportedConstraints Mozilla MediaDevices.getSupportedConstraints documentation> 
@@ -60,7 +60,7 @@ getSupportedConstraints_ self
   = liftIO (void (js_getSupportedConstraints self))
  
 foreign import javascript interruptible
-        "$1[\"getUserMedia\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"getUserMedia\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getUserMedia ::
         MediaDevices ->
           Optional MediaStreamConstraints -> IO (JSVal, MediaStream)

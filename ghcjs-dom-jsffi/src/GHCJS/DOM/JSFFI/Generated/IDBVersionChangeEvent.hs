@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"IDBVersionChangeEvent\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"IDBVersionChangeEvent\"]($1,\n$2); })"
         js_newIDBVersionChangeEvent ::
         JSString ->
           Optional IDBVersionChangeEventInit -> IO IDBVersionChangeEvent
@@ -43,14 +43,14 @@ newIDBVersionChangeEvent type' eventInitDict
       (js_newIDBVersionChangeEvent (toJSString type')
          (maybeToOptional eventInitDict))
  
-foreign import javascript unsafe "$1[\"oldVersion\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"oldVersion\"]; })"
         js_getOldVersion :: IDBVersionChangeEvent -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent.oldVersion Mozilla IDBVersionChangeEvent.oldVersion documentation> 
 getOldVersion :: (MonadIO m) => IDBVersionChangeEvent -> m Word64
 getOldVersion self = liftIO (round <$> (js_getOldVersion self))
  
-foreign import javascript unsafe "$1[\"newVersion\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"newVersion\"]; })"
         js_getNewVersion :: IDBVersionChangeEvent -> IO (Nullable Double)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent.newVersion Mozilla IDBVersionChangeEvent.newVersion documentation> 

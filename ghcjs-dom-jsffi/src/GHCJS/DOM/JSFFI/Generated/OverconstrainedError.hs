@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"OverconstrainedError\"]($1,\n$2)"
+        "(($1, $2) => { return new window[\"OverconstrainedError\"]($1,\n$2); })"
         js_newOverconstrainedError ::
         Optional JSString -> Optional JSString -> IO OverconstrainedError
 
@@ -41,7 +41,7 @@ newOverconstrainedError constraint message
       (js_newOverconstrainedError (toOptionalJSString constraint)
          (toOptionalJSString message))
  
-foreign import javascript unsafe "$1[\"message\"]" js_getMessage ::
+foreign import javascript unsafe "(($1) => { return $1[\"message\"]; })" js_getMessage ::
         OverconstrainedError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverconstrainedError.message Mozilla OverconstrainedError.message documentation> 
@@ -50,7 +50,7 @@ getMessage ::
              OverconstrainedError -> m result
 getMessage self = liftIO (fromJSString <$> (js_getMessage self))
  
-foreign import javascript unsafe "$1[\"constraint\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"constraint\"]; })"
         js_getConstraint :: OverconstrainedError -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/OverconstrainedError.constraint Mozilla OverconstrainedError.constraint documentation> 

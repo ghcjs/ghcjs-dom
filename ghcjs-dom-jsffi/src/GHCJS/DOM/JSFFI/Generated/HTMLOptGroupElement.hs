@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,21 +27,21 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"disabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"disabled\"] = $2; })"
         js_setDisabled :: HTMLOptGroupElement -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.disabled Mozilla HTMLOptGroupElement.disabled documentation> 
 setDisabled :: (MonadIO m) => HTMLOptGroupElement -> Bool -> m ()
 setDisabled self val = liftIO (js_setDisabled self val)
  
-foreign import javascript unsafe "($1[\"disabled\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"disabled\"] ? 1 : 0); })"
         js_getDisabled :: HTMLOptGroupElement -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.disabled Mozilla HTMLOptGroupElement.disabled documentation> 
 getDisabled :: (MonadIO m) => HTMLOptGroupElement -> m Bool
 getDisabled self = liftIO (js_getDisabled self)
  
-foreign import javascript unsafe "$1[\"label\"] = $2;" js_setLabel
+foreign import javascript unsafe "(($1, $2) => { $1[\"label\"] = $2; })" js_setLabel
         :: HTMLOptGroupElement -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.label Mozilla HTMLOptGroupElement.label documentation> 
@@ -49,7 +49,7 @@ setLabel ::
          (MonadIO m, ToJSString val) => HTMLOptGroupElement -> val -> m ()
 setLabel self val = liftIO (js_setLabel self (toJSString val))
  
-foreign import javascript unsafe "$1[\"label\"]" js_getLabel ::
+foreign import javascript unsafe "(($1) => { return $1[\"label\"]; })" js_getLabel ::
         HTMLOptGroupElement -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptGroupElement.label Mozilla HTMLOptGroupElement.label documentation> 

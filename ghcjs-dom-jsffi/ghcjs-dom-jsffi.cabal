@@ -24,7 +24,7 @@ library
     build-depends: base <5,
                    transformers >=0.2 && <0.7,
                    text >= 0.11.0.6 && < 2.2,
-                   ghcjs-base >=0.2.0.0 && <0.3,
+                   ghcjs-base >=0.8.0.0 && <0.9,
                    ghc-prim
 
     default-language: Haskell2010
@@ -47,6 +47,7 @@ library
           GHCJS.DOM.Types
           GHCJS.DOM.EventM
           GHCJS.DOM.EventTargetClosures
+          GHCJS.DOM.Internal
 
           GHCJS.DOM.JSFFI.AudioContext
           GHCJS.DOM.JSFFI.Database

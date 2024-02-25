@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,7 +29,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"ReadableStreamBYOBReader\"]($1)"
+        "(($1) => { return new window[\"ReadableStreamBYOBReader\"]($1); })"
         js_newReadableStreamBYOBReader ::
         ReadableStream -> IO ReadableStreamBYOBReader
 
@@ -40,7 +40,7 @@ newReadableStreamBYOBReader stream
   = liftIO (js_newReadableStreamBYOBReader stream)
  
 foreign import javascript interruptible
-        "$1[\"read\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"read\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_read ::
         ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -65,7 +65,7 @@ read_ self view
             \ view' -> js_read self (maybeToOptional view')))
  
 foreign import javascript interruptible
-        "$1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $2, $c) => { return $1[\"cancel\"]($2).then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_cancel ::
         ReadableStreamBYOBReader -> Optional JSVal -> IO (JSVal, JSVal)
 
@@ -89,7 +89,7 @@ cancel_ self reason
          (mapM toJSVal reason >>=
             \ reason' -> js_cancel self (maybeToOptional reason')))
  
-foreign import javascript unsafe "$1[\"releaseLock\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"releaseLock\"](); })"
         js_releaseLock :: ReadableStreamBYOBReader -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.releaseLock Mozilla ReadableStreamBYOBReader.releaseLock documentation> 
@@ -97,7 +97,7 @@ releaseLock :: (MonadIO m) => ReadableStreamBYOBReader -> m ()
 releaseLock self = liftIO (js_releaseLock self)
  
 foreign import javascript interruptible
-        "$1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"closed\"].then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_getClosed :: ReadableStreamBYOBReader -> IO (JSVal, Bool)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader.closed Mozilla ReadableStreamBYOBReader.closed documentation> 

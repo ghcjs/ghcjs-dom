@@ -23,7 +23,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -43,7 +43,7 @@ pattern SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE = 3
 pattern SVG_FECOMPONENTTRANSFER_TYPE_LINEAR = 4
 pattern SVG_FECOMPONENTTRANSFER_TYPE_GAMMA = 5
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedEnumeration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.type Mozilla SVGComponentTransferFunctionElement.type documentation> 
@@ -53,7 +53,7 @@ getType ::
 getType self
   = liftIO (js_getType (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"tableValues\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"tableValues\"]; })"
         js_getTableValues ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumberList
 
@@ -65,7 +65,7 @@ getTableValues self
   = liftIO
       (js_getTableValues (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"slope\"]" js_getSlope ::
+foreign import javascript unsafe "(($1) => { return $1[\"slope\"]; })" js_getSlope ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.slope Mozilla SVGComponentTransferFunctionElement.slope documentation> 
@@ -75,7 +75,7 @@ getSlope ::
 getSlope self
   = liftIO (js_getSlope (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"intercept\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"intercept\"]; })"
         js_getIntercept ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
@@ -87,7 +87,7 @@ getIntercept self
   = liftIO
       (js_getIntercept (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"amplitude\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"amplitude\"]; })"
         js_getAmplitude ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
@@ -99,7 +99,7 @@ getAmplitude self
   = liftIO
       (js_getAmplitude (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"exponent\"]" js_getExponent
+foreign import javascript unsafe "(($1) => { return $1[\"exponent\"]; })" js_getExponent
         :: SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.exponent Mozilla SVGComponentTransferFunctionElement.exponent documentation> 
@@ -110,7 +110,7 @@ getExponent self
   = liftIO
       (js_getExponent (toSVGComponentTransferFunctionElement self))
  
-foreign import javascript unsafe "$1[\"offset\"]" js_getOffset ::
+foreign import javascript unsafe "(($1) => { return $1[\"offset\"]; })" js_getOffset ::
         SVGComponentTransferFunctionElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGComponentTransferFunctionElement.offset Mozilla SVGComponentTransferFunctionElement.offset documentation> 

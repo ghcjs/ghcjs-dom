@@ -14,7 +14,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -28,7 +28,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"getConfiguration\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"getConfiguration\"](); })"
         js_getConfiguration ::
         MediaKeySystemAccess -> IO MediaKeySystemConfiguration
 
@@ -43,7 +43,7 @@ getConfiguration_ :: (MonadIO m) => MediaKeySystemAccess -> m ()
 getConfiguration_ self = liftIO (void (js_getConfiguration self))
  
 foreign import javascript interruptible
-        "$1[\"createMediaKeys\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);});"
+        "(($1, $c) => { return $1[\"createMediaKeys\"]().then(function(s) { $c(null, s);}, function(e) { $c(e, null);}); })"
         js_createMediaKeys :: MediaKeySystemAccess -> IO (JSVal, MediaKeys)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess.createMediaKeys Mozilla MediaKeySystemAccess.createMediaKeys documentation> 
@@ -56,7 +56,7 @@ createMediaKeys self
 createMediaKeys_ :: (MonadIO m) => MediaKeySystemAccess -> m ()
 createMediaKeys_ self = liftIO (void (js_createMediaKeys self))
  
-foreign import javascript unsafe "$1[\"keySystem\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"keySystem\"]; })"
         js_getKeySystem :: MediaKeySystemAccess -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess.keySystem Mozilla MediaKeySystemAccess.keySystem documentation> 

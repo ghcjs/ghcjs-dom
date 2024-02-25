@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"setDragImage\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"setDragImage\"]($2, $3, $4); })"
         js_setDragImage ::
         DataTransfer -> Optional Element -> Int -> Int -> IO ()
 
@@ -42,7 +42,7 @@ setDragImage self image x y
   = liftIO
       (js_setDragImage self (maybeToOptional (fmap toElement image)) x y)
  
-foreign import javascript unsafe "$1[\"getData\"]($2)" js_getData
+foreign import javascript unsafe "(($1, $2) => { return $1[\"getData\"]($2); })" js_getData
         :: DataTransfer -> JSString -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.getData Mozilla DataTransfer.getData documentation> 
@@ -58,7 +58,7 @@ getData_ ::
 getData_ self format
   = liftIO (void (js_getData self (toJSString format)))
  
-foreign import javascript unsafe "$1[\"setData\"]($2, $3)"
+foreign import javascript unsafe "(($1, $2, $3) => { return $1[\"setData\"]($2, $3); })"
         js_setData :: DataTransfer -> JSString -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.setData Mozilla DataTransfer.setData documentation> 
@@ -68,7 +68,7 @@ setData ::
 setData self format data'
   = liftIO (js_setData self (toJSString format) (toJSString data'))
  
-foreign import javascript unsafe "$1[\"clearData\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"clearData\"]($2); })"
         js_clearData :: DataTransfer -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.clearData Mozilla DataTransfer.clearData documentation> 
@@ -78,7 +78,7 @@ clearData ::
 clearData self format
   = liftIO (js_clearData self (toOptionalJSString format))
  
-foreign import javascript unsafe "$1[\"dropEffect\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"dropEffect\"] = $2; })"
         js_setDropEffect :: DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
@@ -87,7 +87,7 @@ setDropEffect ::
 setDropEffect self val
   = liftIO (js_setDropEffect self (toJSString val))
  
-foreign import javascript unsafe "$1[\"dropEffect\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"dropEffect\"]; })"
         js_getDropEffect :: DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.dropEffect Mozilla DataTransfer.dropEffect documentation> 
@@ -96,7 +96,7 @@ getDropEffect ::
 getDropEffect self
   = liftIO (fromJSString <$> (js_getDropEffect self))
  
-foreign import javascript unsafe "$1[\"effectAllowed\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"effectAllowed\"] = $2; })"
         js_setEffectAllowed :: DataTransfer -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 
@@ -105,7 +105,7 @@ setEffectAllowed ::
 setEffectAllowed self val
   = liftIO (js_setEffectAllowed self (toJSString val))
  
-foreign import javascript unsafe "$1[\"effectAllowed\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"effectAllowed\"]; })"
         js_getEffectAllowed :: DataTransfer -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.effectAllowed Mozilla DataTransfer.effectAllowed documentation> 
@@ -114,14 +114,14 @@ getEffectAllowed ::
 getEffectAllowed self
   = liftIO (fromJSString <$> (js_getEffectAllowed self))
  
-foreign import javascript unsafe "$1[\"items\"]" js_getItems ::
+foreign import javascript unsafe "(($1) => { return $1[\"items\"]; })" js_getItems ::
         DataTransfer -> IO DataTransferItemList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.items Mozilla DataTransfer.items documentation> 
 getItems :: (MonadIO m) => DataTransfer -> m DataTransferItemList
 getItems self = liftIO (js_getItems self)
  
-foreign import javascript unsafe "$1[\"types\"]" js_getTypes ::
+foreign import javascript unsafe "(($1) => { return $1[\"types\"]; })" js_getTypes ::
         DataTransfer -> IO JSVal
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.types Mozilla DataTransfer.types documentation> 
@@ -129,7 +129,7 @@ getTypes ::
          (MonadIO m, FromJSString result) => DataTransfer -> m [result]
 getTypes self = liftIO ((js_getTypes self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"files\"]" js_getFiles ::
+foreign import javascript unsafe "(($1) => { return $1[\"files\"]; })" js_getFiles ::
         DataTransfer -> IO FileList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer.files Mozilla DataTransfer.files documentation> 

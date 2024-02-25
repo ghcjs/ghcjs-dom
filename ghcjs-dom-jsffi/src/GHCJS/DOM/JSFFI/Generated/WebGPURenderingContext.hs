@@ -47,7 +47,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -61,7 +61,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"createLibrary\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"createLibrary\"]($2); })"
         js_createLibrary ::
         WebGPURenderingContext -> JSString -> IO WebGPULibrary
 
@@ -80,7 +80,7 @@ createLibrary_ self sourceCode
   = liftIO (void (js_createLibrary self (toJSString sourceCode)))
  
 foreign import javascript unsafe
-        "$1[\"createRenderPipelineState\"]($2)"
+        "(($1, $2) => { return $1[\"createRenderPipelineState\"]($2); })"
         js_createRenderPipelineState ::
         WebGPURenderingContext ->
           WebGPURenderPipelineDescriptor ->
@@ -126,7 +126,7 @@ createRenderPipelineStateUnchecked self descriptor
          (js_createRenderPipelineState self descriptor))
  
 foreign import javascript unsafe
-        "$1[\"createDepthStencilState\"]($2)" js_createDepthStencilState ::
+        "(($1, $2) => { return $1[\"createDepthStencilState\"]($2); })" js_createDepthStencilState ::
         WebGPURenderingContext ->
           WebGPUDepthStencilDescriptor ->
             IO (Nullable WebGPUDepthStencilState)
@@ -168,7 +168,7 @@ createDepthStencilStateUnchecked self descriptor
          (js_createDepthStencilState self descriptor))
  
 foreign import javascript unsafe
-        "$1[\"createComputePipelineState\"]($2)"
+        "(($1, $2) => { return $1[\"createComputePipelineState\"]($2); })"
         js_createComputePipelineState ::
         WebGPURenderingContext ->
           WebGPUFunction -> IO (Nullable WebGPUComputePipelineState)
@@ -209,7 +209,7 @@ createComputePipelineStateUnchecked self function
       (fromJust . nullableToMaybe <$>
          (js_createComputePipelineState self function))
  
-foreign import javascript unsafe "$1[\"createCommandQueue\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"createCommandQueue\"](); })"
         js_createCommandQueue ::
         WebGPURenderingContext -> IO (Nullable WebGPUCommandQueue)
 
@@ -242,7 +242,7 @@ createCommandQueueUnchecked self
   = liftIO
       (fromJust . nullableToMaybe <$> (js_createCommandQueue self))
  
-foreign import javascript unsafe "$1[\"nextDrawable\"]()"
+foreign import javascript unsafe "(($1) => { return $1[\"nextDrawable\"](); })"
         js_nextDrawable ::
         WebGPURenderingContext -> IO (Nullable WebGPUDrawable)
 
@@ -271,7 +271,7 @@ nextDrawableUnchecked ::
 nextDrawableUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_nextDrawable self))
  
-foreign import javascript unsafe "$1[\"createBuffer\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"createBuffer\"]($2); })"
         js_createBuffer ::
         WebGPURenderingContext ->
           ArrayBufferView -> IO (Nullable WebGPUBuffer)
@@ -311,7 +311,7 @@ createBufferUnchecked self data'
       (fromJust . nullableToMaybe <$>
          (js_createBuffer self (toArrayBufferView data')))
  
-foreign import javascript unsafe "$1[\"createTexture\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"createTexture\"]($2); })"
         js_createTexture ::
         WebGPURenderingContext ->
           WebGPUTextureDescriptor -> IO (Nullable WebGPUTexture)

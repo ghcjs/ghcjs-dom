@@ -23,7 +23,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -52,14 +52,14 @@ pattern WEBKIT_REGION_RULE = 16
 pattern WEBKIT_KEYFRAMES_RULE = 7
 pattern WEBKIT_KEYFRAME_RULE = 8
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         CSSRule -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.type Mozilla CSSRule.type documentation> 
 getType :: (MonadIO m, IsCSSRule self) => self -> m Word
 getType self = liftIO (js_getType (toCSSRule self))
  
-foreign import javascript safe "$1[\"cssText\"] = $2;"
+foreign import javascript safe "(($1, $2) => { $1[\"cssText\"] = $2; })"
         js_setCssText :: CSSRule -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
@@ -69,7 +69,7 @@ setCssText ::
 setCssText self val
   = liftIO (js_setCssText (toCSSRule self) (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"cssText\"]" js_getCssText ::
+foreign import javascript unsafe "(($1) => { return $1[\"cssText\"]; })" js_getCssText ::
         CSSRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.cssText Mozilla CSSRule.cssText documentation> 
@@ -96,7 +96,7 @@ getCssTextUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getCssText (toCSSRule self)))
  
-foreign import javascript unsafe "$1[\"parentStyleSheet\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"parentStyleSheet\"]; })"
         js_getParentStyleSheet :: CSSRule -> IO (Nullable CSSStyleSheet)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentStyleSheet Mozilla CSSRule.parentStyleSheet documentation> 
@@ -123,7 +123,7 @@ getParentStyleSheetUnchecked self
       (fromJust . nullableToMaybe <$>
          (js_getParentStyleSheet (toCSSRule self)))
  
-foreign import javascript unsafe "$1[\"parentRule\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"parentRule\"]; })"
         js_getParentRule :: CSSRule -> IO (Nullable CSSRule)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSRule.parentRule Mozilla CSSRule.parentRule documentation> 

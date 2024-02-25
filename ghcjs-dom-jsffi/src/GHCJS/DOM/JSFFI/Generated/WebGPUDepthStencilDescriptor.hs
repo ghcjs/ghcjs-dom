@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -32,7 +32,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "new window[\"WebGPUDepthStencilDescriptor\"]()"
+        "(() => { return new window[\"WebGPUDepthStencilDescriptor\"](); })"
         js_newWebGPUDepthStencilDescriptor ::
         IO WebGPUDepthStencilDescriptor
 
@@ -43,7 +43,7 @@ newWebGPUDepthStencilDescriptor
   = liftIO (js_newWebGPUDepthStencilDescriptor)
  
 foreign import javascript unsafe
-        "$1[\"depthCompareFunction\"] = $2;" js_setDepthCompareFunction ::
+        "(($1, $2) => { $1[\"depthCompareFunction\"] = $2; })" js_setDepthCompareFunction ::
         WebGPUDepthStencilDescriptor -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUDepthStencilDescriptor.depthCompareFunction Mozilla WebGPUDepthStencilDescriptor.depthCompareFunction documentation> 
@@ -53,7 +53,7 @@ setDepthCompareFunction ::
 setDepthCompareFunction self val
   = liftIO (js_setDepthCompareFunction self (pToJSVal val))
  
-foreign import javascript unsafe "$1[\"depthCompareFunction\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"depthCompareFunction\"]; })"
         js_getDepthCompareFunction ::
         WebGPUDepthStencilDescriptor -> IO JSVal
 
@@ -64,7 +64,7 @@ getDepthCompareFunction ::
 getDepthCompareFunction self
   = liftIO ((js_getDepthCompareFunction self) >>= fromJSValUnchecked)
  
-foreign import javascript unsafe "$1[\"depthWriteEnabled\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"depthWriteEnabled\"] = $2; })"
         js_setDepthWriteEnabled ::
         WebGPUDepthStencilDescriptor -> Bool -> IO ()
 
@@ -75,7 +75,7 @@ setDepthWriteEnabled self val
   = liftIO (js_setDepthWriteEnabled self val)
  
 foreign import javascript unsafe
-        "($1[\"depthWriteEnabled\"] ? 1 : 0)" js_getDepthWriteEnabled ::
+        "(($1) => { return ($1[\"depthWriteEnabled\"] ? 1 : 0); })" js_getDepthWriteEnabled ::
         WebGPUDepthStencilDescriptor -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/WebGPUDepthStencilDescriptor.depthWriteEnabled Mozilla WebGPUDepthStencilDescriptor.depthWriteEnabled documentation> 

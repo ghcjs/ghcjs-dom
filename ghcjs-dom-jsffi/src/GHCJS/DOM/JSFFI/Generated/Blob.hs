@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Blob\"]($1, $2)"
+foreign import javascript unsafe "(($1, $2) => { return new window[\"Blob\"]($1, $2); })"
         js_newBlob :: JSVal -> Optional BlobPropertyBag -> IO Blob
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob Mozilla Blob documentation> 
@@ -38,7 +38,7 @@ newBlob blobParts options
       (toJSVal blobParts >>= \ blobParts' -> js_newBlob blobParts'
          (maybeToOptional (fmap toBlobPropertyBag options)))
  
-foreign import javascript unsafe "$1[\"slice\"]($2, $3, $4)"
+foreign import javascript unsafe "(($1, $2, $3, $4) => { return $1[\"slice\"]($2, $3, $4); })"
         js_slice ::
         Blob ->
           Optional Double -> Optional Double -> Optional JSString -> IO Blob
@@ -64,14 +64,14 @@ slice_ self start end contentType
             (maybeToOptional (fmap fromIntegral end))
             (toOptionalJSString contentType)))
  
-foreign import javascript unsafe "$1[\"size\"]" js_getSize ::
+foreign import javascript unsafe "(($1) => { return $1[\"size\"]; })" js_getSize ::
         Blob -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.size Mozilla Blob.size documentation> 
 getSize :: (MonadIO m, IsBlob self) => self -> m Word64
 getSize self = liftIO (round <$> (js_getSize (toBlob self)))
  
-foreign import javascript unsafe "$1[\"type\"]" js_getType ::
+foreign import javascript unsafe "(($1) => { return $1[\"type\"]; })" js_getType ::
         Blob -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Blob.type Mozilla Blob.type documentation> 

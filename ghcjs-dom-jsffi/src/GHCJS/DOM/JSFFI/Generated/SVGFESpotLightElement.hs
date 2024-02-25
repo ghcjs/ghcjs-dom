@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -29,28 +29,28 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"x\"]" js_getX ::
+foreign import javascript unsafe "(($1) => { return $1[\"x\"]; })" js_getX ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.x Mozilla SVGFESpotLightElement.x documentation> 
 getX :: (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getX self = liftIO (js_getX self)
  
-foreign import javascript unsafe "$1[\"y\"]" js_getY ::
+foreign import javascript unsafe "(($1) => { return $1[\"y\"]; })" js_getY ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.y Mozilla SVGFESpotLightElement.y documentation> 
 getY :: (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getY self = liftIO (js_getY self)
  
-foreign import javascript unsafe "$1[\"z\"]" js_getZ ::
+foreign import javascript unsafe "(($1) => { return $1[\"z\"]; })" js_getZ ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.z Mozilla SVGFESpotLightElement.z documentation> 
 getZ :: (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getZ self = liftIO (js_getZ self)
  
-foreign import javascript unsafe "$1[\"pointsAtX\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtX\"]; })"
         js_getPointsAtX :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtX Mozilla SVGFESpotLightElement.pointsAtX documentation> 
@@ -58,7 +58,7 @@ getPointsAtX ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtX self = liftIO (js_getPointsAtX self)
  
-foreign import javascript unsafe "$1[\"pointsAtY\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtY\"]; })"
         js_getPointsAtY :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtY Mozilla SVGFESpotLightElement.pointsAtY documentation> 
@@ -66,7 +66,7 @@ getPointsAtY ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtY self = liftIO (js_getPointsAtY self)
  
-foreign import javascript unsafe "$1[\"pointsAtZ\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"pointsAtZ\"]; })"
         js_getPointsAtZ :: SVGFESpotLightElement -> IO SVGAnimatedNumber
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/SVGFESpotLightElement.pointsAtZ Mozilla SVGFESpotLightElement.pointsAtZ documentation> 
@@ -74,7 +74,7 @@ getPointsAtZ ::
              (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getPointsAtZ self = liftIO (js_getPointsAtZ self)
  
-foreign import javascript unsafe "$1[\"specularExponent\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"specularExponent\"]; })"
         js_getSpecularExponent ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 
@@ -83,7 +83,7 @@ getSpecularExponent ::
                     (MonadIO m) => SVGFESpotLightElement -> m SVGAnimatedNumber
 getSpecularExponent self = liftIO (js_getSpecularExponent self)
  
-foreign import javascript unsafe "$1[\"limitingConeAngle\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"limitingConeAngle\"]; })"
         js_getLimitingConeAngle ::
         SVGFESpotLightElement -> IO SVGAnimatedNumber
 

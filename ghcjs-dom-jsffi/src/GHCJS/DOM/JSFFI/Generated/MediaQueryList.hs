@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"addListener\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"addListener\"]($2); })"
         js_addListener ::
         MediaQueryList -> Optional MediaQueryListListener -> IO ()
 
@@ -38,7 +38,7 @@ addListener ::
 addListener self listener
   = liftIO (js_addListener self (maybeToOptional listener))
  
-foreign import javascript unsafe "$1[\"removeListener\"]($2)"
+foreign import javascript unsafe "(($1, $2) => { return $1[\"removeListener\"]($2); })"
         js_removeListener ::
         MediaQueryList -> Optional MediaQueryListListener -> IO ()
 
@@ -49,7 +49,7 @@ removeListener ::
 removeListener self listener
   = liftIO (js_removeListener self (maybeToOptional listener))
  
-foreign import javascript unsafe "$1[\"media\"]" js_getMedia ::
+foreign import javascript unsafe "(($1) => { return $1[\"media\"]; })" js_getMedia ::
         MediaQueryList -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList.media Mozilla MediaQueryList.media documentation> 
@@ -57,7 +57,7 @@ getMedia ::
          (MonadIO m, FromJSString result) => MediaQueryList -> m result
 getMedia self = liftIO (fromJSString <$> (js_getMedia self))
  
-foreign import javascript unsafe "($1[\"matches\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"matches\"] ? 1 : 0); })"
         js_getMatches :: MediaQueryList -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList.matches Mozilla MediaQueryList.matches documentation> 

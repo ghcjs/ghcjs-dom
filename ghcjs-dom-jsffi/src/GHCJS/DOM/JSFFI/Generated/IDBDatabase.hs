@@ -16,7 +16,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"createObjectStore\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"createObjectStore\"]($2, $3); })"
         js_createObjectStore ::
         IDBDatabase ->
           JSString -> Optional IDBObjectStoreParameters -> IO IDBObjectStore
@@ -55,7 +55,7 @@ createObjectStore_ self name parameters
          (js_createObjectStore self (toJSString name)
             (maybeToOptional parameters)))
  
-foreign import javascript safe "$1[\"deleteObjectStore\"]($2)"
+foreign import javascript safe "(($1, $2) => { return $1[\"deleteObjectStore\"]($2); })"
         js_deleteObjectStore :: IDBDatabase -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.deleteObjectStore Mozilla IDBDatabase.deleteObjectStore documentation> 
@@ -64,7 +64,7 @@ deleteObjectStore ::
 deleteObjectStore self name
   = liftIO (js_deleteObjectStore self (toJSString name))
  
-foreign import javascript safe "$1[\"transaction\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"transaction\"]($2, $3); })"
         js_transaction ::
         IDBDatabase ->
           StringOrStrings -> Optional IDBTransactionMode -> IO IDBTransaction
@@ -91,14 +91,14 @@ transaction_ self storeNames mode
             \ storeNames' -> js_transaction self (StringOrStrings storeNames')
             (maybeToOptional mode)))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         IDBDatabase -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.close Mozilla IDBDatabase.close documentation> 
 close :: (MonadIO m) => IDBDatabase -> m ()
 close self = liftIO (js_close self)
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         IDBDatabase -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.name Mozilla IDBDatabase.name documentation> 
@@ -106,14 +106,14 @@ getName ::
         (MonadIO m, FromJSString result) => IDBDatabase -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"version\"]" js_getVersion ::
+foreign import javascript unsafe "(($1) => { return $1[\"version\"]; })" js_getVersion ::
         IDBDatabase -> IO Double
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.version Mozilla IDBDatabase.version documentation> 
 getVersion :: (MonadIO m) => IDBDatabase -> m Word64
 getVersion self = liftIO (round <$> (js_getVersion self))
  
-foreign import javascript unsafe "$1[\"objectStoreNames\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"objectStoreNames\"]; })"
         js_getObjectStoreNames :: IDBDatabase -> IO DOMStringList
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase.objectStoreNames Mozilla IDBDatabase.objectStoreNames documentation> 

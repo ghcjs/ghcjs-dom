@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"selectorText\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"selectorText\"] = $2; })"
         js_setSelectorText :: CSSStyleRule -> Optional JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
@@ -36,7 +36,7 @@ setSelectorText ::
 setSelectorText self val
   = liftIO (js_setSelectorText self (toOptionalJSString val))
  
-foreign import javascript unsafe "$1[\"selectorText\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"selectorText\"]; })"
         js_getSelectorText :: CSSStyleRule -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.selectorText Mozilla CSSStyleRule.selectorText documentation> 
@@ -62,7 +62,7 @@ getSelectorTextUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getSelectorText self))
  
-foreign import javascript unsafe "$1[\"style\"]" js_getStyle ::
+foreign import javascript unsafe "(($1) => { return $1[\"style\"]; })" js_getStyle ::
         CSSStyleRule -> IO CSSStyleDeclaration
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule.style Mozilla CSSStyleRule.style documentation> 

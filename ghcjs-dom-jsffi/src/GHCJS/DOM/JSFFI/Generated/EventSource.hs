@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript safe
-        "new window[\"EventSource\"]($1,\n$2)" js_newEventSource ::
+        "(($1, $2) => { return new window[\"EventSource\"]($1,\n$2); })" js_newEventSource ::
         JSString -> Optional EventSourceInit -> IO EventSource
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource Mozilla EventSource documentation> 
@@ -42,7 +42,7 @@ newEventSource url eventSourceInitDict
       (js_newEventSource (toJSString url)
          (maybeToOptional eventSourceInitDict))
  
-foreign import javascript unsafe "$1[\"close\"]()" js_close ::
+foreign import javascript unsafe "(($1) => { return $1[\"close\"](); })" js_close ::
         EventSource -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.close Mozilla EventSource.close documentation> 
@@ -52,7 +52,7 @@ pattern CONNECTING = 0
 pattern OPEN = 1
 pattern CLOSED = 2
  
-foreign import javascript unsafe "$1[\"url\"]" js_getUrl ::
+foreign import javascript unsafe "(($1) => { return $1[\"url\"]; })" js_getUrl ::
         EventSource -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.url Mozilla EventSource.url documentation> 
@@ -61,14 +61,14 @@ getUrl ::
 getUrl self = liftIO (fromJSString <$> (js_getUrl self))
  
 foreign import javascript unsafe
-        "($1[\"withCredentials\"] ? 1 : 0)" js_getWithCredentials ::
+        "(($1) => { return ($1[\"withCredentials\"] ? 1 : 0); })" js_getWithCredentials ::
         EventSource -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.withCredentials Mozilla EventSource.withCredentials documentation> 
 getWithCredentials :: (MonadIO m) => EventSource -> m Bool
 getWithCredentials self = liftIO (js_getWithCredentials self)
  
-foreign import javascript unsafe "$1[\"readyState\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"readyState\"]; })"
         js_getReadyState :: EventSource -> IO Word
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/EventSource.readyState Mozilla EventSource.readyState documentation> 

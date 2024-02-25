@@ -12,7 +12,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -26,7 +26,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "new window[\"Worker\"]($1)"
+foreign import javascript unsafe "(($1) => { return new window[\"Worker\"]($1); })"
         js_newWorker :: JSString -> IO Worker
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker Mozilla Worker documentation> 
@@ -34,14 +34,14 @@ newWorker ::
           (MonadIO m, ToJSString scriptUrl) => scriptUrl -> m Worker
 newWorker scriptUrl = liftIO (js_newWorker (toJSString scriptUrl))
  
-foreign import javascript unsafe "$1[\"terminate\"]()" js_terminate
+foreign import javascript unsafe "(($1) => { return $1[\"terminate\"](); })" js_terminate
         :: Worker -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.terminate Mozilla Worker.terminate documentation> 
 terminate :: (MonadIO m) => Worker -> m ()
 terminate self = liftIO (js_terminate self)
  
-foreign import javascript safe "$1[\"postMessage\"]($2, $3)"
+foreign import javascript safe "(($1, $2, $3) => { return $1[\"postMessage\"]($2, $3); })"
         js_postMessage :: Worker -> JSVal -> JSVal -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Worker.postMessage Mozilla Worker.postMessage documentation> 

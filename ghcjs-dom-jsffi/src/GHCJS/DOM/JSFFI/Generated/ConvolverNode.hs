@@ -13,7 +13,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -27,7 +27,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript safe "$1[\"buffer\"] = $2;" js_setBuffer
+foreign import javascript safe "(($1, $2) => { $1[\"buffer\"] = $2; })" js_setBuffer
         :: ConvolverNode -> Optional AudioBuffer -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
@@ -36,7 +36,7 @@ setBuffer ::
 setBuffer self val
   = liftIO (js_setBuffer self (maybeToOptional val))
  
-foreign import javascript unsafe "$1[\"buffer\"]" js_getBuffer ::
+foreign import javascript unsafe "(($1) => { return $1[\"buffer\"]; })" js_getBuffer ::
         ConvolverNode -> IO (Nullable AudioBuffer)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.buffer Mozilla ConvolverNode.buffer documentation> 
@@ -56,14 +56,14 @@ getBufferUnchecked :: (MonadIO m) => ConvolverNode -> m AudioBuffer
 getBufferUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getBuffer self))
  
-foreign import javascript unsafe "$1[\"normalize\"] = $2;"
+foreign import javascript unsafe "(($1, $2) => { $1[\"normalize\"] = $2; })"
         js_setNormalize :: ConvolverNode -> Bool -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 
 setNormalize :: (MonadIO m) => ConvolverNode -> Bool -> m ()
 setNormalize self val = liftIO (js_setNormalize self val)
  
-foreign import javascript unsafe "($1[\"normalize\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"normalize\"] ? 1 : 0); })"
         js_getNormalize :: ConvolverNode -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode.normalize Mozilla ConvolverNode.normalize documentation> 

@@ -15,7 +15,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -30,7 +30,7 @@ import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNam
 import GHCJS.DOM.JSFFI.Generated.Enums
  
 foreign import javascript unsafe
-        "$1[\"drawArraysInstancedANGLE\"]($2,\n$3, $4, $5)"
+        "(($1, $2, $3, $4, $5) => { return $1[\"drawArraysInstancedANGLE\"]($2,\n$3, $4, $5); })"
         js_drawArraysInstancedANGLE ::
         ANGLEInstancedArrays -> Word -> Int -> Int -> Int -> IO ()
 
@@ -43,7 +43,7 @@ drawArraysInstancedANGLE self mode first count primcount
       (js_drawArraysInstancedANGLE self mode first count primcount)
  
 foreign import javascript unsafe
-        "$1[\"drawElementsInstancedANGLE\"]($2,\n$3, $4, $5, $6)"
+        "(($1, $2, $3, $4, $5, $6) => { return $1[\"drawElementsInstancedANGLE\"]($2,\n$3, $4, $5, $6); })"
         js_drawElementsInstancedANGLE ::
         ANGLEInstancedArrays ->
           Word -> Int -> Word -> Double -> Int -> IO ()
@@ -59,7 +59,7 @@ drawElementsInstancedANGLE self mode count type' offset primcount
          primcount)
  
 foreign import javascript unsafe
-        "$1[\"vertexAttribDivisorANGLE\"]($2,\n$3)"
+        "(($1, $2, $3) => { return $1[\"vertexAttribDivisorANGLE\"]($2,\n$3); })"
         js_vertexAttribDivisorANGLE ::
         ANGLEInstancedArrays -> Word -> Word -> IO ()
 

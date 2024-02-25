@@ -17,7 +17,7 @@ import qualified Prelude (error)
 import Data.Typeable (Typeable)
 import GHCJS.Types (JSVal(..), JSString)
 import GHCJS.Foreign (jsNull, jsUndefined)
-import GHCJS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
+import GHC.JS.Foreign.Callback (syncCallback, asyncCallback, syncCallback1, asyncCallback1, syncCallback2, asyncCallback2, OnBlocked(..))
 import GHCJS.Marshal (ToJSVal(..), FromJSVal(..))
 import GHCJS.Marshal.Pure (PToJSVal(..), PFromJSVal(..))
 import Control.Monad (void)
@@ -31,7 +31,7 @@ import Control.Applicative ((<$>))
 import GHCJS.DOM.EventTargetClosures (EventName, unsafeEventName, unsafeEventNameAsync)
 import GHCJS.DOM.JSFFI.Generated.Enums
  
-foreign import javascript unsafe "$1[\"namespaceURI\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"namespaceURI\"]; })"
         js_getNamespaceURI :: Attr -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.namespaceURI Mozilla Attr.namespaceURI documentation> 
@@ -55,7 +55,7 @@ getNamespaceURIUnchecked self
   = liftIO
       (fromJust . fromMaybeJSString <$> (js_getNamespaceURI self))
  
-foreign import javascript unsafe "$1[\"prefix\"]" js_getPrefix ::
+foreign import javascript unsafe "(($1) => { return $1[\"prefix\"]; })" js_getPrefix ::
         Attr -> IO (Nullable JSString)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.prefix Mozilla Attr.prefix documentation> 
@@ -77,7 +77,7 @@ getPrefixUnchecked ::
 getPrefixUnchecked self
   = liftIO (fromJust . fromMaybeJSString <$> (js_getPrefix self))
  
-foreign import javascript unsafe "$1[\"localName\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"localName\"]; })"
         js_getLocalName :: Attr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.localName Mozilla Attr.localName documentation> 
@@ -86,28 +86,28 @@ getLocalName ::
 getLocalName self
   = liftIO (fromJSString <$> (js_getLocalName self))
  
-foreign import javascript unsafe "$1[\"name\"]" js_getName ::
+foreign import javascript unsafe "(($1) => { return $1[\"name\"]; })" js_getName ::
         Attr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.name Mozilla Attr.name documentation> 
 getName :: (MonadIO m, FromJSString result) => Attr -> m result
 getName self = liftIO (fromJSString <$> (js_getName self))
  
-foreign import javascript unsafe "$1[\"value\"] = $2;" js_setValue
+foreign import javascript unsafe "(($1, $2) => { $1[\"value\"] = $2; })" js_setValue
         :: Attr -> JSString -> IO ()
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
 setValue :: (MonadIO m, ToJSString val) => Attr -> val -> m ()
 setValue self val = liftIO (js_setValue self (toJSString val))
  
-foreign import javascript unsafe "$1[\"value\"]" js_getValue ::
+foreign import javascript unsafe "(($1) => { return $1[\"value\"]; })" js_getValue ::
         Attr -> IO JSString
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.value Mozilla Attr.value documentation> 
 getValue :: (MonadIO m, FromJSString result) => Attr -> m result
 getValue self = liftIO (fromJSString <$> (js_getValue self))
  
-foreign import javascript unsafe "$1[\"ownerElement\"]"
+foreign import javascript unsafe "(($1) => { return $1[\"ownerElement\"]; })"
         js_getOwnerElement :: Attr -> IO (Nullable Element)
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.ownerElement Mozilla Attr.ownerElement documentation> 
@@ -128,7 +128,7 @@ getOwnerElementUnchecked :: (MonadIO m) => Attr -> m Element
 getOwnerElementUnchecked self
   = liftIO (fromJust . nullableToMaybe <$> (js_getOwnerElement self))
  
-foreign import javascript unsafe "($1[\"specified\"] ? 1 : 0)"
+foreign import javascript unsafe "(($1) => { return ($1[\"specified\"] ? 1 : 0); })"
         js_getSpecified :: Attr -> IO Bool
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/Attr.specified Mozilla Attr.specified documentation> 
