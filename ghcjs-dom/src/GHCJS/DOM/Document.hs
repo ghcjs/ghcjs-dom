@@ -84,6 +84,7 @@ createElementNS_ doc namespaceURI qualifiedName = void $ createElementNS doc nam
 #ifdef MIN_VERSION_ghcjs_dom_javascript
 import "ghcjs-dom-javascript" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-javascript" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
+#else
 #ifdef MIN_VERSION_ghcjs_dom_jsffi
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document (createElement, createElement_, createElementNS, createElementNS_)
 import "ghcjs-dom-jsffi" GHCJS.DOM.Document as Export hiding (createElement, createElement_, createElementNS, createElementNS_)
