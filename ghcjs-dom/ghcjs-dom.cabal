@@ -50,13 +50,13 @@ library
     if flag(debug)
         cpp-options: -DGHCJS_DOM_DEBUG
 
-    if flag(jsffi) && (impl(ghcjs -any) || (impl(ghc -any) && arch(javascript)))
-      if !impl(ghcjs -any) && arch(javascript)
-        build-depends:
-            ghcjs-dom-javascript ==0.9.5.0
-      else
+    if flag(jsffi) && (impl(ghcjs <9) || (impl(ghc >=9.6.4) && arch(javascript)))
+      if impl(ghcjs <9)
         build-depends:
             ghcjs-dom-jsffi ==0.9.5.0
+      else
+        build-depends:
+            ghcjs-dom-javascript ==0.9.5.0
     else
         build-depends:
             ghcjs-dom-jsaddle ==0.9.5.0
