@@ -22,19 +22,21 @@ Source-Repository head
 
 library
     build-depends: base <5,
-                   transformers >=0.2 && <0.6,
-                   text >= 0.11.0.6 && < 1.3,
+                   transformers >=0.2 && <0.7,
+                   text >= 0.11.0.6 && < 2.2,
                    ghcjs-base >=0.2.0.0 && <0.3,
-                   ghcjs-prim,
                    ghc-prim
 
     default-language: Haskell2010
-    other-extensions: JavaScriptFFI
+
+    if impl(ghcjs)
+        other-extensions: JavaScriptFFI
+        build-depends: ghcjs-prim
 
     hs-source-dirs: src
     cpp-options: -DUSE_JAVASCRIPTFFI
     exposed: True
-    if impl(ghcjs)
+    if impl(ghcjs) || arch(javascript)
         buildable: True
     else
         buildable: False

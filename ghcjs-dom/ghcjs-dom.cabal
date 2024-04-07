@@ -34,9 +34,9 @@ flag debug
 
 library
     build-depends: base <5,
-                   containers >=0.5.7.1 && <0.7,
-                   transformers >=0.2 && <0.6,
-                   text >= 0.11.0.6 && < 1.3
+                   containers >=0.5.7.1 && <0.8,
+                   transformers >=0.2 && <0.7,
+                   text >= 0.11.0.6 && < 2.2
 
     default-language: Haskell2010
 
@@ -50,7 +50,11 @@ library
     if flag(debug)
         cpp-options: -DGHCJS_DOM_DEBUG
 
-    if (impl(ghcjs -any) && flag(jsffi))
+    if flag(jsffi) && (impl(ghcjs -any) || (impl(ghc -any) && arch(javascript)))
+      if !impl(ghcjs -any) && arch(javascript)
+        build-depends:
+            ghcjs-dom-javascript ==0.9.5.0
+      else
         build-depends:
             ghcjs-dom-jsffi ==0.9.5.0
     else

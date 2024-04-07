@@ -5,7 +5,8 @@ by modern web browsers.
 
 Applications should use the `ghcjs-dom` package and the `GHCJS.DOM.*` modules
 it contains to get the best mix of portability and performance (rather than
-using the `jsaddle-dom`, `ghcjs-dom-jsaddle` and `ghcjs-dom-jsffi` directly).
+using the `jsaddle-dom`, `ghcjs-dom-jsaddle`, `ghcjs-dom-jsffi` and
+`ghcjs-dom-javascript` directly).
 
 The best documentation though is for the
 [jsaddle-dom](https://hackage.haskell.org/package/jsaddle-dom)
