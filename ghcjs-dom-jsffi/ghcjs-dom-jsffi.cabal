@@ -1,6 +1,6 @@
+cabal-version: 3.6
 name: ghcjs-dom-jsffi
 version: 0.9.9.0
-cabal-version: >=1.24
 build-type: Simple
 license: MIT
 license-file: LICENSE

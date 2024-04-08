@@ -1,6 +1,6 @@
+cabal-version: 3.6
 name: ghcjs-dom-jsaddle
 version: 0.9.9.0
-cabal-version: >=1.22
 build-type: Simple
 license: MIT
 license-file: LICENSE
