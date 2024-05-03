@@ -32,7 +32,7 @@ throwXHRError 0 = return ()
 throwXHRError 1 = throwIO XHRAborted
 throwXHRError 2 = throwIO XHRError
 
-foreign import javascript interruptible "h$dom$sendXHR($1, $2, $c);" js_send :: XMLHttpRequest -> JSVal -> IO Int
+foreign import javascript interruptible "((x, y, c) => { h$dom$sendXHR(x, y, c); } )" js_send :: XMLHttpRequest -> JSVal -> IO Int
 
 -- | <https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#send() Mozilla XMLHttpRequest.send documentation>
 send :: (MonadIO m) => XMLHttpRequest -> m ()
