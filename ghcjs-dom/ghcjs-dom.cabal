@@ -1,6 +1,6 @@
 cabal-version: 3.6
 name: ghcjs-dom
-version: 0.9.9.0
+version: 0.9.9.1
 build-type: Simple
 license: MIT
 license-file: LICENSE
@@ -56,7 +56,7 @@ library
             ghcjs-dom-jsffi ==0.9.9.0
       else
         build-depends:
-            ghcjs-dom-javascript ==0.9.9.0
+            ghcjs-dom-javascript ==0.9.9.1
     else
         build-depends:
             ghcjs-dom-jsaddle ==0.9.9.0
