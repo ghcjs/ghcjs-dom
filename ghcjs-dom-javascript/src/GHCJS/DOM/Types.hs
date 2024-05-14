@@ -1055,7 +1055,11 @@ strictEqual a b = do
     bval <- toJSVal b
     return $ js_eq aval bval
 
+#ifdef __GHCJS__
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
+#else
+foreign import javascript unsafe "(($1, $2) => h$isInstanceOf($1, $2))"
+#endif
     typeInstanceIsA' :: JSVal -> JSVal -> Bool
 
 typeInstanceIsA o (GType t) = typeInstanceIsA' o t
