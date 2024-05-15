@@ -1058,7 +1058,7 @@ strictEqual a b = do
 #ifdef __GHCJS__
 foreign import javascript unsafe "h$isInstanceOf $1 $2"
 #else
-foreign import javascript unsafe "(($1, $2) => h$isInstanceOf($1, $2))"
+foreign import javascript unsafe "h$isInstanceOf"
 #endif
     typeInstanceIsA' :: JSVal -> JSVal -> Bool
 
