@@ -1044,10 +1044,18 @@ propagateGError = id
 
 newtype GType = GType JSVal
 
+#ifdef __GHCJS__
 foreign import javascript unsafe "$r = $1.name;" gTypeToString :: GType -> JSString
+#else
+foreign import javascript unsafe "(($1) => $1.name)" gTypeToString :: GType -> JSString
+#endif
 
 foreign import javascript unsafe
+#ifdef __GHCJS__
   "$1===$2" js_eq :: JSVal -> JSVal -> Bool
+#else
+  "(($1, $2) => $1===$2)" js_eq :: JSVal -> JSVal -> Bool
+#endif
 
 strictEqual :: (ToJSVal a, ToJSVal b) => a -> b -> JSM Bool
 strictEqual a b = do
