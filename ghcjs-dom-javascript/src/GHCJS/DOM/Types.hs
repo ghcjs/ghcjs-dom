@@ -1044,18 +1044,10 @@ propagateGError = id
 
 newtype GType = GType JSVal
 
-#ifdef __GHCJS__
-foreign import javascript unsafe "$r = $1.name;" gTypeToString :: GType -> JSString
-#else
 foreign import javascript unsafe "(($1) => $1.name)" gTypeToString :: GType -> JSString
-#endif
 
 foreign import javascript unsafe
-#ifdef __GHCJS__
-  "$1===$2" js_eq :: JSVal -> JSVal -> Bool
-#else
   "(($1, $2) => $1===$2)" js_eq :: JSVal -> JSVal -> Bool
-#endif
 
 strictEqual :: (ToJSVal a, ToJSVal b) => a -> b -> JSM Bool
 strictEqual a b = do
@@ -1063,11 +1055,7 @@ strictEqual a b = do
     bval <- toJSVal b
     return $ js_eq aval bval
 
-#ifdef __GHCJS__
-foreign import javascript unsafe "h$isInstanceOf $1 $2"
-#else
 foreign import javascript unsafe "h$isInstanceOf"
-#endif
     typeInstanceIsA' :: JSVal -> JSVal -> Bool
 
 typeInstanceIsA o (GType t) = typeInstanceIsA' o t
@@ -1167,7 +1155,7 @@ castToGObject = return
 
 foreign import javascript unsafe "Object" gTypeGObject :: GType
 
-foreign import javascript unsafe "$1[\"toString\"]()" js_objectToString :: GObject -> IO JSString
+foreign import javascript unsafe "(($1) => $1[\"toString\"]())" js_objectToString :: GObject -> IO JSString
 
 objectToString :: (MonadIO m, IsGObject self, FromJSString result) => self -> m result
 objectToString self = liftIO (fromJSString <$> js_objectToString (toGObject self))
