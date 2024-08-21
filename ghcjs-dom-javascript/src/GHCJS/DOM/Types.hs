@@ -1577,7 +1577,7 @@ instance IsArrayBuffer ArrayBuffer
 instance IsGObject ArrayBuffer where
   typeGType _ = gTypeArrayBuffer
 
-foreign import javascript unsafe "window[\"ArrayBuffer\"]" gTypeArrayBuffer :: GType
+foreign import javascript unsafe "(() => window[\"ArrayBuffer\"])" gTypeArrayBuffer :: GType
 
 newtype Float32Array = Float32Array { unFloat32Array :: JSVal }
 noFloat32Array :: Maybe Float32Array
@@ -1611,7 +1611,7 @@ instance IsFloat32Array Float32Array
 instance IsGObject Float32Array where
   typeGType _ = gTypeFloat32Array
 
-foreign import javascript unsafe "window[\"Float32Array\"]" gTypeFloat32Array :: GType
+foreign import javascript unsafe "(() => window[\"Float32Array\"])" gTypeFloat32Array :: GType
 
 newtype Float64Array = Float64Array { unFloat64Array :: JSVal }
 noFloat64Array :: Maybe Float64Array
@@ -1645,7 +1645,7 @@ instance IsFloat64Array Float64Array
 instance IsGObject Float64Array where
   typeGType _ = gTypeFloat64Array
 
-foreign import javascript unsafe "window[\"Float64Array\"]" gTypeFloat64Array :: GType
+foreign import javascript unsafe "(() => window[\"Float64Array\"])" gTypeFloat64Array :: GType
 
 newtype Uint8Array = Uint8Array { unUint8Array :: JSVal }
 noUint8Array :: Maybe Uint8Array
@@ -1679,7 +1679,7 @@ instance IsUint8Array Uint8Array
 instance IsGObject Uint8Array where
   typeGType _ = gTypeUint8Array
 
-foreign import javascript unsafe "window[\"Uint8Array\"]" gTypeUint8Array :: GType
+foreign import javascript unsafe "(() => window[\"Uint8Array\"])" gTypeUint8Array :: GType
 
 newtype Uint8ClampedArray = Uint8ClampedArray { unUint8ClampedArray :: JSVal }
 noUint8ClampedArray :: Maybe Uint8ClampedArray
@@ -1713,7 +1713,7 @@ instance IsUint8ClampedArray Uint8ClampedArray
 instance IsGObject Uint8ClampedArray where
   typeGType _ = gTypeUint8ClampedArray
 
-foreign import javascript unsafe "window[\"Uint8ClampedArray\"]" gTypeUint8ClampedArray :: GType
+foreign import javascript unsafe "(() => window[\"Uint8ClampedArray\"])" gTypeUint8ClampedArray :: GType
 
 newtype Uint16Array = Uint16Array { unUint16Array :: JSVal }
 noUint16Array :: Maybe Uint16Array
@@ -1747,7 +1747,7 @@ instance IsUint16Array Uint16Array
 instance IsGObject Uint16Array where
   typeGType _ = gTypeUint16Array
 
-foreign import javascript unsafe "window[\"Uint16Array\"]" gTypeUint16Array :: GType
+foreign import javascript unsafe "(() => window[\"Uint16Array\"])" gTypeUint16Array :: GType
 
 newtype Uint32Array = Uint32Array { unUint32Array :: JSVal }
 noUint32Array :: Maybe Uint32Array
@@ -1781,7 +1781,7 @@ instance IsUint32Array Uint32Array
 instance IsGObject Uint32Array where
   typeGType _ = gTypeUint32Array
 
-foreign import javascript unsafe "window[\"Uint32Array\"]" gTypeUint32Array :: GType
+foreign import javascript unsafe "(() => window[\"Uint32Array\"])" gTypeUint32Array :: GType
 
 newtype Int8Array = Int8Array { unInt8Array :: JSVal }
 noInt8Array :: Maybe Int8Array
@@ -1815,7 +1815,7 @@ instance IsInt8Array Int8Array
 instance IsGObject Int8Array where
   typeGType _ = gTypeInt8Array
 
-foreign import javascript unsafe "window[\"Int8Array\"]" gTypeInt8Array :: GType
+foreign import javascript unsafe "(() => window[\"Int8Array\"])" gTypeInt8Array :: GType
 
 newtype Int16Array = Int16Array { unInt16Array :: JSVal }
 noInt16Array :: Maybe Int16Array
@@ -1849,7 +1849,7 @@ instance IsInt16Array Int16Array
 instance IsGObject Int16Array where
   typeGType _ = gTypeInt16Array
 
-foreign import javascript unsafe "window[\"Int16Array\"]" gTypeInt16Array :: GType
+foreign import javascript unsafe "(() => window[\"Int16Array\"])" gTypeInt16Array :: GType
 
 newtype Int32Array = Int32Array { unInt32Array :: JSVal }
 noInt32Array :: Maybe Int32Array
@@ -1883,7 +1883,7 @@ instance IsInt32Array Int32Array
 instance IsGObject Int32Array where
   typeGType _ = gTypeInt32Array
 
-foreign import javascript unsafe "window[\"Int32Array\"]" gTypeInt32Array :: GType
+foreign import javascript unsafe "(() => window[\"Int32Array\"])" gTypeInt32Array :: GType
 
 newtype ObjectArray = ObjectArray { unObjectArray :: JSVal }
 noObjectArray :: Maybe ObjectArray
@@ -1981,7 +1981,7 @@ instance IsArray Array
 instance IsGObject Array where
   typeGType _ = gTypeArray
 
-foreign import javascript unsafe "window[\"Array\"]" gTypeArray :: GType
+foreign import javascript unsafe "(() => window[\"Array\"])" gTypeArray :: GType
 
 newtype Date = Date { unDate :: JSVal }
 noDate :: Maybe Date
@@ -2015,7 +2015,7 @@ instance IsDate Date
 instance IsGObject Date where
   typeGType _ = gTypeDate
 
-foreign import javascript unsafe "window[\"Date\"]" gTypeDate :: GType
+foreign import javascript unsafe "(() => window[\"Date\"])" gTypeDate :: GType
 
 newtype Algorithm = Algorithm { unAlgorithm :: JSVal }
 noAlgorithm :: Maybe Algorithm
@@ -3744,7 +3744,7 @@ noANGLEInstancedArrays :: Maybe ANGLEInstancedArrays
 noANGLEInstancedArrays = Nothing
 {-# INLINE noANGLEInstancedArrays #-}
 
-foreign import javascript unsafe "window[\"ANGLEInstancedArrays\"]" gTypeANGLEInstancedArrays :: GType
+foreign import javascript unsafe "(() => window[\"ANGLEInstancedArrays\"])" gTypeANGLEInstancedArrays :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AbstractWorker".
 --
@@ -3782,7 +3782,7 @@ noAbstractWorker :: Maybe AbstractWorker
 noAbstractWorker = Nothing
 {-# INLINE noAbstractWorker #-}
 
-foreign import javascript unsafe "window[\"AbstractWorker\"]" gTypeAbstractWorker :: GType
+foreign import javascript unsafe "(() => window[\"AbstractWorker\"])" gTypeAbstractWorker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Acceleration".
 --
@@ -3815,7 +3815,7 @@ noAcceleration :: Maybe Acceleration
 noAcceleration = Nothing
 {-# INLINE noAcceleration #-}
 
-foreign import javascript unsafe "window[\"Acceleration\"]" gTypeAcceleration :: GType
+foreign import javascript unsafe "(() => window[\"Acceleration\"])" gTypeAcceleration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AddEventListenerOptions".
 -- Base interface functions are in:
@@ -3852,7 +3852,7 @@ noAddEventListenerOptions :: Maybe AddEventListenerOptions
 noAddEventListenerOptions = Nothing
 {-# INLINE noAddEventListenerOptions #-}
 
-foreign import javascript unsafe "window[\"AddEventListenerOptions\"]" gTypeAddEventListenerOptions :: GType
+foreign import javascript unsafe "(() => window[\"AddEventListenerOptions\"])" gTypeAddEventListenerOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AesCbcCfbParams".
 -- Base interface functions are in:
@@ -3889,7 +3889,7 @@ noAesCbcCfbParams :: Maybe AesCbcCfbParams
 noAesCbcCfbParams = Nothing
 {-# INLINE noAesCbcCfbParams #-}
 
-foreign import javascript unsafe "window[\"AesCbcCfbParams\"]" gTypeAesCbcCfbParams :: GType
+foreign import javascript unsafe "(() => window[\"AesCbcCfbParams\"])" gTypeAesCbcCfbParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AesCtrParams".
 -- Base interface functions are in:
@@ -3926,7 +3926,7 @@ noAesCtrParams :: Maybe AesCtrParams
 noAesCtrParams = Nothing
 {-# INLINE noAesCtrParams #-}
 
-foreign import javascript unsafe "window[\"AesCtrParams\"]" gTypeAesCtrParams :: GType
+foreign import javascript unsafe "(() => window[\"AesCtrParams\"])" gTypeAesCtrParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AesGcmParams".
 -- Base interface functions are in:
@@ -3963,7 +3963,7 @@ noAesGcmParams :: Maybe AesGcmParams
 noAesGcmParams = Nothing
 {-# INLINE noAesGcmParams #-}
 
-foreign import javascript unsafe "window[\"AesGcmParams\"]" gTypeAesGcmParams :: GType
+foreign import javascript unsafe "(() => window[\"AesGcmParams\"])" gTypeAesGcmParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AesKeyParams".
 -- Base interface functions are in:
@@ -4000,7 +4000,7 @@ noAesKeyParams :: Maybe AesKeyParams
 noAesKeyParams = Nothing
 {-# INLINE noAesKeyParams #-}
 
-foreign import javascript unsafe "window[\"AesKeyParams\"]" gTypeAesKeyParams :: GType
+foreign import javascript unsafe "(() => window[\"AesKeyParams\"])" gTypeAesKeyParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnalyserNode".
 -- Base interface functions are in:
@@ -4039,7 +4039,7 @@ noAnalyserNode :: Maybe AnalyserNode
 noAnalyserNode = Nothing
 {-# INLINE noAnalyserNode #-}
 
-foreign import javascript unsafe "window[\"AnalyserNode\"]" gTypeAnalyserNode :: GType
+foreign import javascript unsafe "(() => window[\"AnalyserNode\"])" gTypeAnalyserNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Animatable".
 --
@@ -4077,7 +4077,7 @@ noAnimatable :: Maybe Animatable
 noAnimatable = Nothing
 {-# INLINE noAnimatable #-}
 
-foreign import javascript unsafe "window[\"Animatable\"]" gTypeAnimatable :: GType
+foreign import javascript unsafe "(() => window[\"Animatable\"])" gTypeAnimatable :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Animation".
 --
@@ -4110,7 +4110,7 @@ noAnimation :: Maybe Animation
 noAnimation = Nothing
 {-# INLINE noAnimation #-}
 
-foreign import javascript unsafe "window[\"Animation\"]" gTypeAnimation :: GType
+foreign import javascript unsafe "(() => window[\"Animation\"])" gTypeAnimation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationEffect".
 --
@@ -4148,7 +4148,7 @@ noAnimationEffect :: Maybe AnimationEffect
 noAnimationEffect = Nothing
 {-# INLINE noAnimationEffect #-}
 
-foreign import javascript unsafe "window[\"AnimationEffect\"]" gTypeAnimationEffect :: GType
+foreign import javascript unsafe "(() => window[\"AnimationEffect\"])" gTypeAnimationEffect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationEvent".
 -- Base interface functions are in:
@@ -4185,7 +4185,7 @@ noAnimationEvent :: Maybe AnimationEvent
 noAnimationEvent = Nothing
 {-# INLINE noAnimationEvent #-}
 
-foreign import javascript unsafe "window[\"AnimationEvent\"]" gTypeAnimationEvent :: GType
+foreign import javascript unsafe "(() => window[\"AnimationEvent\"])" gTypeAnimationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationEventInit".
 -- Base interface functions are in:
@@ -4222,7 +4222,7 @@ noAnimationEventInit :: Maybe AnimationEventInit
 noAnimationEventInit = Nothing
 {-# INLINE noAnimationEventInit #-}
 
-foreign import javascript unsafe "window[\"AnimationEventInit\"]" gTypeAnimationEventInit :: GType
+foreign import javascript unsafe "(() => window[\"AnimationEventInit\"])" gTypeAnimationEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AnimationTimeline".
 --
@@ -4260,7 +4260,7 @@ noAnimationTimeline :: Maybe AnimationTimeline
 noAnimationTimeline = Nothing
 {-# INLINE noAnimationTimeline #-}
 
-foreign import javascript unsafe "window[\"AnimationTimeline\"]" gTypeAnimationTimeline :: GType
+foreign import javascript unsafe "(() => window[\"AnimationTimeline\"])" gTypeAnimationTimeline :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayError".
 --
@@ -4293,7 +4293,7 @@ noApplePayError :: Maybe ApplePayError
 noApplePayError = Nothing
 {-# INLINE noApplePayError #-}
 
-foreign import javascript unsafe "window[\"ApplePayError\"]" gTypeApplePayError :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayError\"])" gTypeApplePayError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayLineItem".
 --
@@ -4326,7 +4326,7 @@ noApplePayLineItem :: Maybe ApplePayLineItem
 noApplePayLineItem = Nothing
 {-# INLINE noApplePayLineItem #-}
 
-foreign import javascript unsafe "window[\"ApplePayLineItem\"]" gTypeApplePayLineItem :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayLineItem\"])" gTypeApplePayLineItem :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPayment".
 --
@@ -4359,7 +4359,7 @@ noApplePayPayment :: Maybe ApplePayPayment
 noApplePayPayment = Nothing
 {-# INLINE noApplePayPayment #-}
 
-foreign import javascript unsafe "window[\"ApplePayPayment\"]" gTypeApplePayPayment :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPayment\"])" gTypeApplePayPayment :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentAuthorizationResult".
 --
@@ -4392,7 +4392,7 @@ noApplePayPaymentAuthorizationResult :: Maybe ApplePayPaymentAuthorizationResult
 noApplePayPaymentAuthorizationResult = Nothing
 {-# INLINE noApplePayPaymentAuthorizationResult #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentAuthorizationResult\"]" gTypeApplePayPaymentAuthorizationResult :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentAuthorizationResult\"])" gTypeApplePayPaymentAuthorizationResult :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentAuthorizedEvent".
 -- Base interface functions are in:
@@ -4429,7 +4429,7 @@ noApplePayPaymentAuthorizedEvent :: Maybe ApplePayPaymentAuthorizedEvent
 noApplePayPaymentAuthorizedEvent = Nothing
 {-# INLINE noApplePayPaymentAuthorizedEvent #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentAuthorizedEvent\"]" gTypeApplePayPaymentAuthorizedEvent :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentAuthorizedEvent\"])" gTypeApplePayPaymentAuthorizedEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentContact".
 --
@@ -4462,7 +4462,7 @@ noApplePayPaymentContact :: Maybe ApplePayPaymentContact
 noApplePayPaymentContact = Nothing
 {-# INLINE noApplePayPaymentContact #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentContact\"]" gTypeApplePayPaymentContact :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentContact\"])" gTypeApplePayPaymentContact :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentMethod".
 --
@@ -4495,7 +4495,7 @@ noApplePayPaymentMethod :: Maybe ApplePayPaymentMethod
 noApplePayPaymentMethod = Nothing
 {-# INLINE noApplePayPaymentMethod #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentMethod\"]" gTypeApplePayPaymentMethod :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentMethod\"])" gTypeApplePayPaymentMethod :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentMethodSelectedEvent".
 -- Base interface functions are in:
@@ -4532,7 +4532,7 @@ noApplePayPaymentMethodSelectedEvent :: Maybe ApplePayPaymentMethodSelectedEvent
 noApplePayPaymentMethodSelectedEvent = Nothing
 {-# INLINE noApplePayPaymentMethodSelectedEvent #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentMethodSelectedEvent\"]" gTypeApplePayPaymentMethodSelectedEvent :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentMethodSelectedEvent\"])" gTypeApplePayPaymentMethodSelectedEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentMethodUpdate".
 --
@@ -4565,7 +4565,7 @@ noApplePayPaymentMethodUpdate :: Maybe ApplePayPaymentMethodUpdate
 noApplePayPaymentMethodUpdate = Nothing
 {-# INLINE noApplePayPaymentMethodUpdate #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentMethodUpdate\"]" gTypeApplePayPaymentMethodUpdate :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentMethodUpdate\"])" gTypeApplePayPaymentMethodUpdate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentPass".
 --
@@ -4598,7 +4598,7 @@ noApplePayPaymentPass :: Maybe ApplePayPaymentPass
 noApplePayPaymentPass = Nothing
 {-# INLINE noApplePayPaymentPass #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentPass\"]" gTypeApplePayPaymentPass :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentPass\"])" gTypeApplePayPaymentPass :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentRequest".
 --
@@ -4631,7 +4631,7 @@ noApplePayPaymentRequest :: Maybe ApplePayPaymentRequest
 noApplePayPaymentRequest = Nothing
 {-# INLINE noApplePayPaymentRequest #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentRequest\"]" gTypeApplePayPaymentRequest :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentRequest\"])" gTypeApplePayPaymentRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayPaymentToken".
 --
@@ -4664,7 +4664,7 @@ noApplePayPaymentToken :: Maybe ApplePayPaymentToken
 noApplePayPaymentToken = Nothing
 {-# INLINE noApplePayPaymentToken #-}
 
-foreign import javascript unsafe "window[\"ApplePayPaymentToken\"]" gTypeApplePayPaymentToken :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayPaymentToken\"])" gTypeApplePayPaymentToken :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePaySession".
 -- Base interface functions are in:
@@ -4701,7 +4701,7 @@ noApplePaySession :: Maybe ApplePaySession
 noApplePaySession = Nothing
 {-# INLINE noApplePaySession #-}
 
-foreign import javascript unsafe "window[\"ApplePaySession\"]" gTypeApplePaySession :: GType
+foreign import javascript unsafe "(() => window[\"ApplePaySession\"])" gTypeApplePaySession :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingContactSelectedEvent".
 -- Base interface functions are in:
@@ -4738,7 +4738,7 @@ noApplePayShippingContactSelectedEvent :: Maybe ApplePayShippingContactSelectedE
 noApplePayShippingContactSelectedEvent = Nothing
 {-# INLINE noApplePayShippingContactSelectedEvent #-}
 
-foreign import javascript unsafe "window[\"ApplePayShippingContactSelectedEvent\"]" gTypeApplePayShippingContactSelectedEvent :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayShippingContactSelectedEvent\"])" gTypeApplePayShippingContactSelectedEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingContactUpdate".
 --
@@ -4771,7 +4771,7 @@ noApplePayShippingContactUpdate :: Maybe ApplePayShippingContactUpdate
 noApplePayShippingContactUpdate = Nothing
 {-# INLINE noApplePayShippingContactUpdate #-}
 
-foreign import javascript unsafe "window[\"ApplePayShippingContactUpdate\"]" gTypeApplePayShippingContactUpdate :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayShippingContactUpdate\"])" gTypeApplePayShippingContactUpdate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingMethod".
 --
@@ -4804,7 +4804,7 @@ noApplePayShippingMethod :: Maybe ApplePayShippingMethod
 noApplePayShippingMethod = Nothing
 {-# INLINE noApplePayShippingMethod #-}
 
-foreign import javascript unsafe "window[\"ApplePayShippingMethod\"]" gTypeApplePayShippingMethod :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayShippingMethod\"])" gTypeApplePayShippingMethod :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingMethodSelectedEvent".
 -- Base interface functions are in:
@@ -4841,7 +4841,7 @@ noApplePayShippingMethodSelectedEvent :: Maybe ApplePayShippingMethodSelectedEve
 noApplePayShippingMethodSelectedEvent = Nothing
 {-# INLINE noApplePayShippingMethodSelectedEvent #-}
 
-foreign import javascript unsafe "window[\"ApplePayShippingMethodSelectedEvent\"]" gTypeApplePayShippingMethodSelectedEvent :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayShippingMethodSelectedEvent\"])" gTypeApplePayShippingMethodSelectedEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayShippingMethodUpdate".
 --
@@ -4874,7 +4874,7 @@ noApplePayShippingMethodUpdate :: Maybe ApplePayShippingMethodUpdate
 noApplePayShippingMethodUpdate = Nothing
 {-# INLINE noApplePayShippingMethodUpdate #-}
 
-foreign import javascript unsafe "window[\"ApplePayShippingMethodUpdate\"]" gTypeApplePayShippingMethodUpdate :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayShippingMethodUpdate\"])" gTypeApplePayShippingMethodUpdate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplePayValidateMerchantEvent".
 -- Base interface functions are in:
@@ -4911,7 +4911,7 @@ noApplePayValidateMerchantEvent :: Maybe ApplePayValidateMerchantEvent
 noApplePayValidateMerchantEvent = Nothing
 {-# INLINE noApplePayValidateMerchantEvent #-}
 
-foreign import javascript unsafe "window[\"ApplePayValidateMerchantEvent\"]" gTypeApplePayValidateMerchantEvent :: GType
+foreign import javascript unsafe "(() => window[\"ApplePayValidateMerchantEvent\"])" gTypeApplePayValidateMerchantEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ApplicationCache".
 -- Base interface functions are in:
@@ -4948,7 +4948,7 @@ noApplicationCache :: Maybe ApplicationCache
 noApplicationCache = Nothing
 {-# INLINE noApplicationCache #-}
 
-foreign import javascript unsafe "window[\"ApplicationCache\"]" gTypeApplicationCache :: GType
+foreign import javascript unsafe "(() => window[\"ApplicationCache\"])" gTypeApplicationCache :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AssignedNodesOptions".
 --
@@ -4981,7 +4981,7 @@ noAssignedNodesOptions :: Maybe AssignedNodesOptions
 noAssignedNodesOptions = Nothing
 {-# INLINE noAssignedNodesOptions #-}
 
-foreign import javascript unsafe "window[\"AssignedNodesOptions\"]" gTypeAssignedNodesOptions :: GType
+foreign import javascript unsafe "(() => window[\"AssignedNodesOptions\"])" gTypeAssignedNodesOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Attr".
 -- Base interface functions are in:
@@ -5020,7 +5020,7 @@ noAttr :: Maybe Attr
 noAttr = Nothing
 {-# INLINE noAttr #-}
 
-foreign import javascript unsafe "window[\"Attr\"]" gTypeAttr :: GType
+foreign import javascript unsafe "(() => window[\"Attr\"])" gTypeAttr :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBuffer".
 --
@@ -5053,7 +5053,7 @@ noAudioBuffer :: Maybe AudioBuffer
 noAudioBuffer = Nothing
 {-# INLINE noAudioBuffer #-}
 
-foreign import javascript unsafe "window[\"AudioBuffer\"]" gTypeAudioBuffer :: GType
+foreign import javascript unsafe "(() => window[\"AudioBuffer\"])" gTypeAudioBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioBufferSourceNode".
 -- Base interface functions are in:
@@ -5092,7 +5092,7 @@ noAudioBufferSourceNode :: Maybe AudioBufferSourceNode
 noAudioBufferSourceNode = Nothing
 {-# INLINE noAudioBufferSourceNode #-}
 
-foreign import javascript unsafe "window[\"AudioBufferSourceNode\"]" gTypeAudioBufferSourceNode :: GType
+foreign import javascript unsafe "(() => window[\"AudioBufferSourceNode\"])" gTypeAudioBufferSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioContext".
 -- Base interface functions are in:
@@ -5134,7 +5134,7 @@ noAudioContext :: Maybe AudioContext
 noAudioContext = Nothing
 {-# INLINE noAudioContext #-}
 
-foreign import javascript unsafe "window[\"AudioContext\"]" gTypeAudioContext :: GType
+foreign import javascript unsafe "(() => window[\"AudioContext\"])" gTypeAudioContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioDestinationNode".
 -- Base interface functions are in:
@@ -5173,7 +5173,7 @@ noAudioDestinationNode :: Maybe AudioDestinationNode
 noAudioDestinationNode = Nothing
 {-# INLINE noAudioDestinationNode #-}
 
-foreign import javascript unsafe "window[\"AudioDestinationNode\"]" gTypeAudioDestinationNode :: GType
+foreign import javascript unsafe "(() => window[\"AudioDestinationNode\"])" gTypeAudioDestinationNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioListener".
 --
@@ -5206,7 +5206,7 @@ noAudioListener :: Maybe AudioListener
 noAudioListener = Nothing
 {-# INLINE noAudioListener #-}
 
-foreign import javascript unsafe "window[\"AudioListener\"]" gTypeAudioListener :: GType
+foreign import javascript unsafe "(() => window[\"AudioListener\"])" gTypeAudioListener :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioNode".
 -- Base interface functions are in:
@@ -5248,7 +5248,7 @@ noAudioNode :: Maybe AudioNode
 noAudioNode = Nothing
 {-# INLINE noAudioNode #-}
 
-foreign import javascript unsafe "window[\"AudioNode\"]" gTypeAudioNode :: GType
+foreign import javascript unsafe "(() => window[\"AudioNode\"])" gTypeAudioNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioParam".
 --
@@ -5281,7 +5281,7 @@ noAudioParam :: Maybe AudioParam
 noAudioParam = Nothing
 {-# INLINE noAudioParam #-}
 
-foreign import javascript unsafe "window[\"AudioParam\"]" gTypeAudioParam :: GType
+foreign import javascript unsafe "(() => window[\"AudioParam\"])" gTypeAudioParam :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioProcessingEvent".
 -- Base interface functions are in:
@@ -5318,7 +5318,7 @@ noAudioProcessingEvent :: Maybe AudioProcessingEvent
 noAudioProcessingEvent = Nothing
 {-# INLINE noAudioProcessingEvent #-}
 
-foreign import javascript unsafe "window[\"AudioProcessingEvent\"]" gTypeAudioProcessingEvent :: GType
+foreign import javascript unsafe "(() => window[\"AudioProcessingEvent\"])" gTypeAudioProcessingEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrack".
 --
@@ -5351,7 +5351,7 @@ noAudioTrack :: Maybe AudioTrack
 noAudioTrack = Nothing
 {-# INLINE noAudioTrack #-}
 
-foreign import javascript unsafe "window[\"AudioTrack\"]" gTypeAudioTrack :: GType
+foreign import javascript unsafe "(() => window[\"AudioTrack\"])" gTypeAudioTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AudioTrackList".
 -- Base interface functions are in:
@@ -5388,7 +5388,7 @@ noAudioTrackList :: Maybe AudioTrackList
 noAudioTrackList = Nothing
 {-# INLINE noAudioTrackList #-}
 
-foreign import javascript unsafe "window[\"AudioTrackList\"]" gTypeAudioTrackList :: GType
+foreign import javascript unsafe "(() => window[\"AudioTrackList\"])" gTypeAudioTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AutocompleteErrorEvent".
 -- Base interface functions are in:
@@ -5425,7 +5425,7 @@ noAutocompleteErrorEvent :: Maybe AutocompleteErrorEvent
 noAutocompleteErrorEvent = Nothing
 {-# INLINE noAutocompleteErrorEvent #-}
 
-foreign import javascript unsafe "window[\"AutocompleteErrorEvent\"]" gTypeAutocompleteErrorEvent :: GType
+foreign import javascript unsafe "(() => window[\"AutocompleteErrorEvent\"])" gTypeAutocompleteErrorEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.AutocompleteErrorEventInit".
 -- Base interface functions are in:
@@ -5462,7 +5462,7 @@ noAutocompleteErrorEventInit :: Maybe AutocompleteErrorEventInit
 noAutocompleteErrorEventInit = Nothing
 {-# INLINE noAutocompleteErrorEventInit #-}
 
-foreign import javascript unsafe "window[\"AutocompleteErrorEventInit\"]" gTypeAutocompleteErrorEventInit :: GType
+foreign import javascript unsafe "(() => window[\"AutocompleteErrorEventInit\"])" gTypeAutocompleteErrorEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BarProp".
 --
@@ -5495,7 +5495,7 @@ noBarProp :: Maybe BarProp
 noBarProp = Nothing
 {-# INLINE noBarProp #-}
 
-foreign import javascript unsafe "window[\"BarProp\"]" gTypeBarProp :: GType
+foreign import javascript unsafe "(() => window[\"BarProp\"])" gTypeBarProp :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BasicCredential".
 --
@@ -5533,7 +5533,7 @@ noBasicCredential :: Maybe BasicCredential
 noBasicCredential = Nothing
 {-# INLINE noBasicCredential #-}
 
-foreign import javascript unsafe "window[\"BasicCredential\"]" gTypeBasicCredential :: GType
+foreign import javascript unsafe "(() => window[\"BasicCredential\"])" gTypeBasicCredential :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEvent".
 -- Base interface functions are in:
@@ -5570,7 +5570,7 @@ noBeforeLoadEvent :: Maybe BeforeLoadEvent
 noBeforeLoadEvent = Nothing
 {-# INLINE noBeforeLoadEvent #-}
 
-foreign import javascript unsafe "window[\"BeforeLoadEvent\"]" gTypeBeforeLoadEvent :: GType
+foreign import javascript unsafe "(() => window[\"BeforeLoadEvent\"])" gTypeBeforeLoadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeLoadEventInit".
 -- Base interface functions are in:
@@ -5607,7 +5607,7 @@ noBeforeLoadEventInit :: Maybe BeforeLoadEventInit
 noBeforeLoadEventInit = Nothing
 {-# INLINE noBeforeLoadEventInit #-}
 
-foreign import javascript unsafe "window[\"BeforeLoadEventInit\"]" gTypeBeforeLoadEventInit :: GType
+foreign import javascript unsafe "(() => window[\"BeforeLoadEventInit\"])" gTypeBeforeLoadEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BeforeUnloadEvent".
 -- Base interface functions are in:
@@ -5644,7 +5644,7 @@ noBeforeUnloadEvent :: Maybe BeforeUnloadEvent
 noBeforeUnloadEvent = Nothing
 {-# INLINE noBeforeUnloadEvent #-}
 
-foreign import javascript unsafe "window[\"BeforeUnloadEvent\"]" gTypeBeforeUnloadEvent :: GType
+foreign import javascript unsafe "(() => window[\"BeforeUnloadEvent\"])" gTypeBeforeUnloadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BiquadFilterNode".
 -- Base interface functions are in:
@@ -5683,7 +5683,7 @@ noBiquadFilterNode :: Maybe BiquadFilterNode
 noBiquadFilterNode = Nothing
 {-# INLINE noBiquadFilterNode #-}
 
-foreign import javascript unsafe "window[\"BiquadFilterNode\"]" gTypeBiquadFilterNode :: GType
+foreign import javascript unsafe "(() => window[\"BiquadFilterNode\"])" gTypeBiquadFilterNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Blob".
 --
@@ -5721,7 +5721,7 @@ noBlob :: Maybe Blob
 noBlob = Nothing
 {-# INLINE noBlob #-}
 
-foreign import javascript unsafe "window[\"Blob\"]" gTypeBlob :: GType
+foreign import javascript unsafe "(() => window[\"Blob\"])" gTypeBlob :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.BlobPropertyBag".
 --
@@ -5759,7 +5759,7 @@ noBlobPropertyBag :: Maybe BlobPropertyBag
 noBlobPropertyBag = Nothing
 {-# INLINE noBlobPropertyBag #-}
 
-foreign import javascript unsafe "window[\"BlobPropertyBag\"]" gTypeBlobPropertyBag :: GType
+foreign import javascript unsafe "(() => window[\"BlobPropertyBag\"])" gTypeBlobPropertyBag :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Body".
 --
@@ -5797,7 +5797,7 @@ noBody :: Maybe Body
 noBody = Nothing
 {-# INLINE noBody #-}
 
-foreign import javascript unsafe "window[\"Body\"]" gTypeBody :: GType
+foreign import javascript unsafe "(() => window[\"Body\"])" gTypeBody :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ByteLengthQueuingStrategy".
 --
@@ -5830,7 +5830,7 @@ noByteLengthQueuingStrategy :: Maybe ByteLengthQueuingStrategy
 noByteLengthQueuingStrategy = Nothing
 {-# INLINE noByteLengthQueuingStrategy #-}
 
-foreign import javascript unsafe "window[\"ByteLengthQueuingStrategy\"]" gTypeByteLengthQueuingStrategy :: GType
+foreign import javascript unsafe "(() => window[\"ByteLengthQueuingStrategy\"])" gTypeByteLengthQueuingStrategy :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CDATASection".
 -- Base interface functions are in:
@@ -5879,7 +5879,7 @@ noCDATASection :: Maybe CDATASection
 noCDATASection = Nothing
 {-# INLINE noCDATASection #-}
 
-foreign import javascript unsafe "window[\"CDATASection\"]" gTypeCDATASection :: GType
+foreign import javascript unsafe "(() => window[\"CDATASection\"])" gTypeCDATASection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSS".
 --
@@ -5912,7 +5912,7 @@ noCSS :: Maybe CSS
 noCSS = Nothing
 {-# INLINE noCSS #-}
 
-foreign import javascript unsafe "window[\"CSS\"]" gTypeCSS :: GType
+foreign import javascript unsafe "(() => window[\"CSS\"])" gTypeCSS :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceLoadEvent".
 -- Base interface functions are in:
@@ -5949,7 +5949,7 @@ noCSSFontFaceLoadEvent :: Maybe CSSFontFaceLoadEvent
 noCSSFontFaceLoadEvent = Nothing
 {-# INLINE noCSSFontFaceLoadEvent #-}
 
-foreign import javascript unsafe "window[\"CSSFontFaceLoadEvent\"]" gTypeCSSFontFaceLoadEvent :: GType
+foreign import javascript unsafe "(() => window[\"CSSFontFaceLoadEvent\"])" gTypeCSSFontFaceLoadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceLoadEventInit".
 -- Base interface functions are in:
@@ -5986,7 +5986,7 @@ noCSSFontFaceLoadEventInit :: Maybe CSSFontFaceLoadEventInit
 noCSSFontFaceLoadEventInit = Nothing
 {-# INLINE noCSSFontFaceLoadEventInit #-}
 
-foreign import javascript unsafe "window[\"CSSFontFaceLoadEventInit\"]" gTypeCSSFontFaceLoadEventInit :: GType
+foreign import javascript unsafe "(() => window[\"CSSFontFaceLoadEventInit\"])" gTypeCSSFontFaceLoadEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSFontFaceRule".
 -- Base interface functions are in:
@@ -6023,7 +6023,7 @@ noCSSFontFaceRule :: Maybe CSSFontFaceRule
 noCSSFontFaceRule = Nothing
 {-# INLINE noCSSFontFaceRule #-}
 
-foreign import javascript unsafe "window[\"CSSFontFaceRule\"]" gTypeCSSFontFaceRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSFontFaceRule\"])" gTypeCSSFontFaceRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSImportRule".
 -- Base interface functions are in:
@@ -6060,7 +6060,7 @@ noCSSImportRule :: Maybe CSSImportRule
 noCSSImportRule = Nothing
 {-# INLINE noCSSImportRule #-}
 
-foreign import javascript unsafe "window[\"CSSImportRule\"]" gTypeCSSImportRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSImportRule\"])" gTypeCSSImportRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframeRule".
 -- Base interface functions are in:
@@ -6097,7 +6097,7 @@ noCSSKeyframeRule :: Maybe CSSKeyframeRule
 noCSSKeyframeRule = Nothing
 {-# INLINE noCSSKeyframeRule #-}
 
-foreign import javascript unsafe "window[\"CSSKeyframeRule\"]" gTypeCSSKeyframeRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSKeyframeRule\"])" gTypeCSSKeyframeRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSKeyframesRule".
 -- Base interface functions are in:
@@ -6134,7 +6134,7 @@ noCSSKeyframesRule :: Maybe CSSKeyframesRule
 noCSSKeyframesRule = Nothing
 {-# INLINE noCSSKeyframesRule #-}
 
-foreign import javascript unsafe "window[\"CSSKeyframesRule\"]" gTypeCSSKeyframesRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSKeyframesRule\"])" gTypeCSSKeyframesRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSMediaRule".
 -- Base interface functions are in:
@@ -6171,7 +6171,7 @@ noCSSMediaRule :: Maybe CSSMediaRule
 noCSSMediaRule = Nothing
 {-# INLINE noCSSMediaRule #-}
 
-foreign import javascript unsafe "window[\"CSSMediaRule\"]" gTypeCSSMediaRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSMediaRule\"])" gTypeCSSMediaRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSNamespaceRule".
 -- Base interface functions are in:
@@ -6208,7 +6208,7 @@ noCSSNamespaceRule :: Maybe CSSNamespaceRule
 noCSSNamespaceRule = Nothing
 {-# INLINE noCSSNamespaceRule #-}
 
-foreign import javascript unsafe "window[\"CSSNamespaceRule\"]" gTypeCSSNamespaceRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSNamespaceRule\"])" gTypeCSSNamespaceRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPageRule".
 -- Base interface functions are in:
@@ -6245,7 +6245,7 @@ noCSSPageRule :: Maybe CSSPageRule
 noCSSPageRule = Nothing
 {-# INLINE noCSSPageRule #-}
 
-foreign import javascript unsafe "window[\"CSSPageRule\"]" gTypeCSSPageRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSPageRule\"])" gTypeCSSPageRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSPrimitiveValue".
 -- Base interface functions are in:
@@ -6282,7 +6282,7 @@ noCSSPrimitiveValue :: Maybe CSSPrimitiveValue
 noCSSPrimitiveValue = Nothing
 {-# INLINE noCSSPrimitiveValue #-}
 
-foreign import javascript unsafe "window[\"CSSPrimitiveValue\"]" gTypeCSSPrimitiveValue :: GType
+foreign import javascript unsafe "(() => window[\"CSSPrimitiveValue\"])" gTypeCSSPrimitiveValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRule".
 --
@@ -6320,7 +6320,7 @@ noCSSRule :: Maybe CSSRule
 noCSSRule = Nothing
 {-# INLINE noCSSRule #-}
 
-foreign import javascript unsafe "window[\"CSSRule\"]" gTypeCSSRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSRule\"])" gTypeCSSRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSRuleList".
 --
@@ -6353,7 +6353,7 @@ noCSSRuleList :: Maybe CSSRuleList
 noCSSRuleList = Nothing
 {-# INLINE noCSSRuleList #-}
 
-foreign import javascript unsafe "window[\"CSSRuleList\"]" gTypeCSSRuleList :: GType
+foreign import javascript unsafe "(() => window[\"CSSRuleList\"])" gTypeCSSRuleList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleDeclaration".
 --
@@ -6386,7 +6386,7 @@ noCSSStyleDeclaration :: Maybe CSSStyleDeclaration
 noCSSStyleDeclaration = Nothing
 {-# INLINE noCSSStyleDeclaration #-}
 
-foreign import javascript unsafe "window[\"CSSStyleDeclaration\"]" gTypeCSSStyleDeclaration :: GType
+foreign import javascript unsafe "(() => window[\"CSSStyleDeclaration\"])" gTypeCSSStyleDeclaration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleRule".
 -- Base interface functions are in:
@@ -6423,7 +6423,7 @@ noCSSStyleRule :: Maybe CSSStyleRule
 noCSSStyleRule = Nothing
 {-# INLINE noCSSStyleRule #-}
 
-foreign import javascript unsafe "window[\"CSSStyleRule\"]" gTypeCSSStyleRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSStyleRule\"])" gTypeCSSStyleRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSStyleSheet".
 -- Base interface functions are in:
@@ -6460,7 +6460,7 @@ noCSSStyleSheet :: Maybe CSSStyleSheet
 noCSSStyleSheet = Nothing
 {-# INLINE noCSSStyleSheet #-}
 
-foreign import javascript unsafe "window[\"CSSStyleSheet\"]" gTypeCSSStyleSheet :: GType
+foreign import javascript unsafe "(() => window[\"CSSStyleSheet\"])" gTypeCSSStyleSheet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSSupportsRule".
 -- Base interface functions are in:
@@ -6497,7 +6497,7 @@ noCSSSupportsRule :: Maybe CSSSupportsRule
 noCSSSupportsRule = Nothing
 {-# INLINE noCSSSupportsRule #-}
 
-foreign import javascript unsafe "window[\"CSSSupportsRule\"]" gTypeCSSSupportsRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSSupportsRule\"])" gTypeCSSSupportsRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSUnknownRule".
 -- Base interface functions are in:
@@ -6534,7 +6534,7 @@ noCSSUnknownRule :: Maybe CSSUnknownRule
 noCSSUnknownRule = Nothing
 {-# INLINE noCSSUnknownRule #-}
 
-foreign import javascript unsafe "window[\"CSSUnknownRule\"]" gTypeCSSUnknownRule :: GType
+foreign import javascript unsafe "(() => window[\"CSSUnknownRule\"])" gTypeCSSUnknownRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValue".
 --
@@ -6572,7 +6572,7 @@ noCSSValue :: Maybe CSSValue
 noCSSValue = Nothing
 {-# INLINE noCSSValue #-}
 
-foreign import javascript unsafe "window[\"CSSValue\"]" gTypeCSSValue :: GType
+foreign import javascript unsafe "(() => window[\"CSSValue\"])" gTypeCSSValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CSSValueList".
 -- Base interface functions are in:
@@ -6609,7 +6609,7 @@ noCSSValueList :: Maybe CSSValueList
 noCSSValueList = Nothing
 {-# INLINE noCSSValueList #-}
 
-foreign import javascript unsafe "window[\"CSSValueList\"]" gTypeCSSValueList :: GType
+foreign import javascript unsafe "(() => window[\"CSSValueList\"])" gTypeCSSValueList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasCaptureMediaStreamTrack".
 -- Base interface functions are in:
@@ -6648,7 +6648,7 @@ noCanvasCaptureMediaStreamTrack :: Maybe CanvasCaptureMediaStreamTrack
 noCanvasCaptureMediaStreamTrack = Nothing
 {-# INLINE noCanvasCaptureMediaStreamTrack #-}
 
-foreign import javascript unsafe "window[\"CanvasCaptureMediaStreamTrack\"]" gTypeCanvasCaptureMediaStreamTrack :: GType
+foreign import javascript unsafe "(() => window[\"CanvasCaptureMediaStreamTrack\"])" gTypeCanvasCaptureMediaStreamTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasGradient".
 --
@@ -6681,7 +6681,7 @@ noCanvasGradient :: Maybe CanvasGradient
 noCanvasGradient = Nothing
 {-# INLINE noCanvasGradient #-}
 
-foreign import javascript unsafe "window[\"CanvasGradient\"]" gTypeCanvasGradient :: GType
+foreign import javascript unsafe "(() => window[\"CanvasGradient\"])" gTypeCanvasGradient :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPath".
 --
@@ -6719,7 +6719,7 @@ noCanvasPath :: Maybe CanvasPath
 noCanvasPath = Nothing
 {-# INLINE noCanvasPath #-}
 
-foreign import javascript unsafe "window[\"CanvasPath\"]" gTypeCanvasPath :: GType
+foreign import javascript unsafe "(() => window[\"CanvasPath\"])" gTypeCanvasPath :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasPattern".
 --
@@ -6752,7 +6752,7 @@ noCanvasPattern :: Maybe CanvasPattern
 noCanvasPattern = Nothing
 {-# INLINE noCanvasPattern #-}
 
-foreign import javascript unsafe "window[\"CanvasPattern\"]" gTypeCanvasPattern :: GType
+foreign import javascript unsafe "(() => window[\"CanvasPattern\"])" gTypeCanvasPattern :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasProxy".
 --
@@ -6785,7 +6785,7 @@ noCanvasProxy :: Maybe CanvasProxy
 noCanvasProxy = Nothing
 {-# INLINE noCanvasProxy #-}
 
-foreign import javascript unsafe "window[\"CanvasProxy\"]" gTypeCanvasProxy :: GType
+foreign import javascript unsafe "(() => window[\"CanvasProxy\"])" gTypeCanvasProxy :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CanvasRenderingContext2D".
 -- Base interface functions are in:
@@ -6822,7 +6822,7 @@ noCanvasRenderingContext2D :: Maybe CanvasRenderingContext2D
 noCanvasRenderingContext2D = Nothing
 {-# INLINE noCanvasRenderingContext2D #-}
 
-foreign import javascript unsafe "window[\"CanvasRenderingContext2D\"]" gTypeCanvasRenderingContext2D :: GType
+foreign import javascript unsafe "(() => window[\"CanvasRenderingContext2D\"])" gTypeCanvasRenderingContext2D :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelMergerNode".
 -- Base interface functions are in:
@@ -6861,7 +6861,7 @@ noChannelMergerNode :: Maybe ChannelMergerNode
 noChannelMergerNode = Nothing
 {-# INLINE noChannelMergerNode #-}
 
-foreign import javascript unsafe "window[\"ChannelMergerNode\"]" gTypeChannelMergerNode :: GType
+foreign import javascript unsafe "(() => window[\"ChannelMergerNode\"])" gTypeChannelMergerNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChannelSplitterNode".
 -- Base interface functions are in:
@@ -6900,7 +6900,7 @@ noChannelSplitterNode :: Maybe ChannelSplitterNode
 noChannelSplitterNode = Nothing
 {-# INLINE noChannelSplitterNode #-}
 
-foreign import javascript unsafe "window[\"ChannelSplitterNode\"]" gTypeChannelSplitterNode :: GType
+foreign import javascript unsafe "(() => window[\"ChannelSplitterNode\"])" gTypeChannelSplitterNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CharacterData".
 -- Base interface functions are in:
@@ -6948,7 +6948,7 @@ noCharacterData :: Maybe CharacterData
 noCharacterData = Nothing
 {-# INLINE noCharacterData #-}
 
-foreign import javascript unsafe "window[\"CharacterData\"]" gTypeCharacterData :: GType
+foreign import javascript unsafe "(() => window[\"CharacterData\"])" gTypeCharacterData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ChildNode".
 --
@@ -6986,7 +6986,7 @@ noChildNode :: Maybe ChildNode
 noChildNode = Nothing
 {-# INLINE noChildNode #-}
 
-foreign import javascript unsafe "window[\"ChildNode\"]" gTypeChildNode :: GType
+foreign import javascript unsafe "(() => window[\"ChildNode\"])" gTypeChildNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ClipboardEvent".
 -- Base interface functions are in:
@@ -7023,7 +7023,7 @@ noClipboardEvent :: Maybe ClipboardEvent
 noClipboardEvent = Nothing
 {-# INLINE noClipboardEvent #-}
 
-foreign import javascript unsafe "window[\"ClipboardEvent\"]" gTypeClipboardEvent :: GType
+foreign import javascript unsafe "(() => window[\"ClipboardEvent\"])" gTypeClipboardEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ClipboardEventInit".
 -- Base interface functions are in:
@@ -7060,7 +7060,7 @@ noClipboardEventInit :: Maybe ClipboardEventInit
 noClipboardEventInit = Nothing
 {-# INLINE noClipboardEventInit #-}
 
-foreign import javascript unsafe "window[\"ClipboardEventInit\"]" gTypeClipboardEventInit :: GType
+foreign import javascript unsafe "(() => window[\"ClipboardEventInit\"])" gTypeClipboardEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CloseEvent".
 -- Base interface functions are in:
@@ -7097,7 +7097,7 @@ noCloseEvent :: Maybe CloseEvent
 noCloseEvent = Nothing
 {-# INLINE noCloseEvent #-}
 
-foreign import javascript unsafe "window[\"CloseEvent\"]" gTypeCloseEvent :: GType
+foreign import javascript unsafe "(() => window[\"CloseEvent\"])" gTypeCloseEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CloseEventInit".
 -- Base interface functions are in:
@@ -7134,7 +7134,7 @@ noCloseEventInit :: Maybe CloseEventInit
 noCloseEventInit = Nothing
 {-# INLINE noCloseEventInit #-}
 
-foreign import javascript unsafe "window[\"CloseEventInit\"]" gTypeCloseEventInit :: GType
+foreign import javascript unsafe "(() => window[\"CloseEventInit\"])" gTypeCloseEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CommandLineAPIHost".
 --
@@ -7167,7 +7167,7 @@ noCommandLineAPIHost :: Maybe CommandLineAPIHost
 noCommandLineAPIHost = Nothing
 {-# INLINE noCommandLineAPIHost #-}
 
-foreign import javascript unsafe "window[\"CommandLineAPIHost\"]" gTypeCommandLineAPIHost :: GType
+foreign import javascript unsafe "(() => window[\"CommandLineAPIHost\"])" gTypeCommandLineAPIHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Comment".
 -- Base interface functions are in:
@@ -7212,7 +7212,7 @@ noComment :: Maybe Comment
 noComment = Nothing
 {-# INLINE noComment #-}
 
-foreign import javascript unsafe "window[\"Comment\"]" gTypeComment :: GType
+foreign import javascript unsafe "(() => window[\"Comment\"])" gTypeComment :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CompositionEvent".
 -- Base interface functions are in:
@@ -7251,7 +7251,7 @@ noCompositionEvent :: Maybe CompositionEvent
 noCompositionEvent = Nothing
 {-# INLINE noCompositionEvent #-}
 
-foreign import javascript unsafe "window[\"CompositionEvent\"]" gTypeCompositionEvent :: GType
+foreign import javascript unsafe "(() => window[\"CompositionEvent\"])" gTypeCompositionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CompositionEventInit".
 -- Base interface functions are in:
@@ -7290,7 +7290,7 @@ noCompositionEventInit :: Maybe CompositionEventInit
 noCompositionEventInit = Nothing
 {-# INLINE noCompositionEventInit #-}
 
-foreign import javascript unsafe "window[\"CompositionEventInit\"]" gTypeCompositionEventInit :: GType
+foreign import javascript unsafe "(() => window[\"CompositionEventInit\"])" gTypeCompositionEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConstrainBooleanParameters".
 --
@@ -7323,7 +7323,7 @@ noConstrainBooleanParameters :: Maybe ConstrainBooleanParameters
 noConstrainBooleanParameters = Nothing
 {-# INLINE noConstrainBooleanParameters #-}
 
-foreign import javascript unsafe "window[\"ConstrainBooleanParameters\"]" gTypeConstrainBooleanParameters :: GType
+foreign import javascript unsafe "(() => window[\"ConstrainBooleanParameters\"])" gTypeConstrainBooleanParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConstrainDOMStringParameters".
 --
@@ -7356,7 +7356,7 @@ noConstrainDOMStringParameters :: Maybe ConstrainDOMStringParameters
 noConstrainDOMStringParameters = Nothing
 {-# INLINE noConstrainDOMStringParameters #-}
 
-foreign import javascript unsafe "window[\"ConstrainDOMStringParameters\"]" gTypeConstrainDOMStringParameters :: GType
+foreign import javascript unsafe "(() => window[\"ConstrainDOMStringParameters\"])" gTypeConstrainDOMStringParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConstrainDoubleRange".
 -- Base interface functions are in:
@@ -7393,7 +7393,7 @@ noConstrainDoubleRange :: Maybe ConstrainDoubleRange
 noConstrainDoubleRange = Nothing
 {-# INLINE noConstrainDoubleRange #-}
 
-foreign import javascript unsafe "window[\"ConstrainDoubleRange\"]" gTypeConstrainDoubleRange :: GType
+foreign import javascript unsafe "(() => window[\"ConstrainDoubleRange\"])" gTypeConstrainDoubleRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConstrainLongRange".
 -- Base interface functions are in:
@@ -7430,7 +7430,7 @@ noConstrainLongRange :: Maybe ConstrainLongRange
 noConstrainLongRange = Nothing
 {-# INLINE noConstrainLongRange #-}
 
-foreign import javascript unsafe "window[\"ConstrainLongRange\"]" gTypeConstrainLongRange :: GType
+foreign import javascript unsafe "(() => window[\"ConstrainLongRange\"])" gTypeConstrainLongRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ConvolverNode".
 -- Base interface functions are in:
@@ -7469,7 +7469,7 @@ noConvolverNode :: Maybe ConvolverNode
 noConvolverNode = Nothing
 {-# INLINE noConvolverNode #-}
 
-foreign import javascript unsafe "window[\"ConvolverNode\"]" gTypeConvolverNode :: GType
+foreign import javascript unsafe "(() => window[\"ConvolverNode\"])" gTypeConvolverNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Coordinates".
 --
@@ -7502,7 +7502,7 @@ noCoordinates :: Maybe Coordinates
 noCoordinates = Nothing
 {-# INLINE noCoordinates #-}
 
-foreign import javascript unsafe "window[\"Coordinates\"]" gTypeCoordinates :: GType
+foreign import javascript unsafe "(() => window[\"Coordinates\"])" gTypeCoordinates :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CountQueuingStrategy".
 --
@@ -7535,7 +7535,7 @@ noCountQueuingStrategy :: Maybe CountQueuingStrategy
 noCountQueuingStrategy = Nothing
 {-# INLINE noCountQueuingStrategy #-}
 
-foreign import javascript unsafe "window[\"CountQueuingStrategy\"]" gTypeCountQueuingStrategy :: GType
+foreign import javascript unsafe "(() => window[\"CountQueuingStrategy\"])" gTypeCountQueuingStrategy :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Counter".
 --
@@ -7568,7 +7568,7 @@ noCounter :: Maybe Counter
 noCounter = Nothing
 {-# INLINE noCounter #-}
 
-foreign import javascript unsafe "window[\"Counter\"]" gTypeCounter :: GType
+foreign import javascript unsafe "(() => window[\"Counter\"])" gTypeCounter :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CredentialData".
 --
@@ -7606,7 +7606,7 @@ noCredentialData :: Maybe CredentialData
 noCredentialData = Nothing
 {-# INLINE noCredentialData #-}
 
-foreign import javascript unsafe "window[\"CredentialData\"]" gTypeCredentialData :: GType
+foreign import javascript unsafe "(() => window[\"CredentialData\"])" gTypeCredentialData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Crypto".
 --
@@ -7639,7 +7639,7 @@ noCrypto :: Maybe Crypto
 noCrypto = Nothing
 {-# INLINE noCrypto #-}
 
-foreign import javascript unsafe "window[\"Crypto\"]" gTypeCrypto :: GType
+foreign import javascript unsafe "(() => window[\"Crypto\"])" gTypeCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoAlgorithmParameters".
 --
@@ -7677,7 +7677,7 @@ noCryptoAlgorithmParameters :: Maybe CryptoAlgorithmParameters
 noCryptoAlgorithmParameters = Nothing
 {-# INLINE noCryptoAlgorithmParameters #-}
 
-foreign import javascript unsafe "window[\"CryptoAlgorithmParameters\"]" gTypeCryptoAlgorithmParameters :: GType
+foreign import javascript unsafe "(() => window[\"CryptoAlgorithmParameters\"])" gTypeCryptoAlgorithmParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKey".
 --
@@ -7710,7 +7710,7 @@ noCryptoKey :: Maybe CryptoKey
 noCryptoKey = Nothing
 {-# INLINE noCryptoKey #-}
 
-foreign import javascript unsafe "window[\"CryptoKey\"]" gTypeCryptoKey :: GType
+foreign import javascript unsafe "(() => window[\"CryptoKey\"])" gTypeCryptoKey :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CryptoKeyPair".
 --
@@ -7743,7 +7743,7 @@ noCryptoKeyPair :: Maybe CryptoKeyPair
 noCryptoKeyPair = Nothing
 {-# INLINE noCryptoKeyPair #-}
 
-foreign import javascript unsafe "window[\"CryptoKeyPair\"]" gTypeCryptoKeyPair :: GType
+foreign import javascript unsafe "(() => window[\"CryptoKeyPair\"])" gTypeCryptoKeyPair :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CustomElementRegistry".
 --
@@ -7776,7 +7776,7 @@ noCustomElementRegistry :: Maybe CustomElementRegistry
 noCustomElementRegistry = Nothing
 {-# INLINE noCustomElementRegistry #-}
 
-foreign import javascript unsafe "window[\"CustomElementRegistry\"]" gTypeCustomElementRegistry :: GType
+foreign import javascript unsafe "(() => window[\"CustomElementRegistry\"])" gTypeCustomElementRegistry :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CustomEvent".
 -- Base interface functions are in:
@@ -7813,7 +7813,7 @@ noCustomEvent :: Maybe CustomEvent
 noCustomEvent = Nothing
 {-# INLINE noCustomEvent #-}
 
-foreign import javascript unsafe "window[\"CustomEvent\"]" gTypeCustomEvent :: GType
+foreign import javascript unsafe "(() => window[\"CustomEvent\"])" gTypeCustomEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.CustomEventInit".
 -- Base interface functions are in:
@@ -7850,7 +7850,7 @@ noCustomEventInit :: Maybe CustomEventInit
 noCustomEventInit = Nothing
 {-# INLINE noCustomEventInit #-}
 
-foreign import javascript unsafe "window[\"CustomEventInit\"]" gTypeCustomEventInit :: GType
+foreign import javascript unsafe "(() => window[\"CustomEventInit\"])" gTypeCustomEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMError".
 --
@@ -7888,7 +7888,7 @@ noDOMError :: Maybe DOMError
 noDOMError = Nothing
 {-# INLINE noDOMError #-}
 
-foreign import javascript unsafe "window[\"DOMError\"]" gTypeDOMError :: GType
+foreign import javascript unsafe "(() => window[\"DOMError\"])" gTypeDOMError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMException".
 --
@@ -7921,7 +7921,7 @@ noDOMException :: Maybe DOMException
 noDOMException = Nothing
 {-# INLINE noDOMException #-}
 
-foreign import javascript unsafe "window[\"DOMException\"]" gTypeDOMException :: GType
+foreign import javascript unsafe "(() => window[\"DOMException\"])" gTypeDOMException :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMImplementation".
 --
@@ -7954,7 +7954,7 @@ noDOMImplementation :: Maybe DOMImplementation
 noDOMImplementation = Nothing
 {-# INLINE noDOMImplementation #-}
 
-foreign import javascript unsafe "window[\"DOMImplementation\"]" gTypeDOMImplementation :: GType
+foreign import javascript unsafe "(() => window[\"DOMImplementation\"])" gTypeDOMImplementation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMNamedFlowCollection".
 --
@@ -7987,7 +7987,7 @@ noDOMNamedFlowCollection :: Maybe DOMNamedFlowCollection
 noDOMNamedFlowCollection = Nothing
 {-# INLINE noDOMNamedFlowCollection #-}
 
-foreign import javascript unsafe "window[\"WebKitNamedFlowCollection\"]" gTypeDOMNamedFlowCollection :: GType
+foreign import javascript unsafe "(() => window[\"WebKitNamedFlowCollection\"])" gTypeDOMNamedFlowCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMParser".
 --
@@ -8020,7 +8020,7 @@ noDOMParser :: Maybe DOMParser
 noDOMParser = Nothing
 {-# INLINE noDOMParser #-}
 
-foreign import javascript unsafe "window[\"DOMParser\"]" gTypeDOMParser :: GType
+foreign import javascript unsafe "(() => window[\"DOMParser\"])" gTypeDOMParser :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMPoint".
 -- Base interface functions are in:
@@ -8057,7 +8057,7 @@ noDOMPoint :: Maybe DOMPoint
 noDOMPoint = Nothing
 {-# INLINE noDOMPoint #-}
 
-foreign import javascript unsafe "window[\"DOMPoint\"]" gTypeDOMPoint :: GType
+foreign import javascript unsafe "(() => window[\"DOMPoint\"])" gTypeDOMPoint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMPointInit".
 --
@@ -8090,7 +8090,7 @@ noDOMPointInit :: Maybe DOMPointInit
 noDOMPointInit = Nothing
 {-# INLINE noDOMPointInit #-}
 
-foreign import javascript unsafe "window[\"DOMPointInit\"]" gTypeDOMPointInit :: GType
+foreign import javascript unsafe "(() => window[\"DOMPointInit\"])" gTypeDOMPointInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMPointReadOnly".
 --
@@ -8128,7 +8128,7 @@ noDOMPointReadOnly :: Maybe DOMPointReadOnly
 noDOMPointReadOnly = Nothing
 {-# INLINE noDOMPointReadOnly #-}
 
-foreign import javascript unsafe "window[\"DOMPointReadOnly\"]" gTypeDOMPointReadOnly :: GType
+foreign import javascript unsafe "(() => window[\"DOMPointReadOnly\"])" gTypeDOMPointReadOnly :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMRect".
 -- Base interface functions are in:
@@ -8165,7 +8165,7 @@ noDOMRect :: Maybe DOMRect
 noDOMRect = Nothing
 {-# INLINE noDOMRect #-}
 
-foreign import javascript unsafe "window[\"DOMRect\"]" gTypeDOMRect :: GType
+foreign import javascript unsafe "(() => window[\"DOMRect\"])" gTypeDOMRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMRectInit".
 --
@@ -8198,7 +8198,7 @@ noDOMRectInit :: Maybe DOMRectInit
 noDOMRectInit = Nothing
 {-# INLINE noDOMRectInit #-}
 
-foreign import javascript unsafe "window[\"DOMRectInit\"]" gTypeDOMRectInit :: GType
+foreign import javascript unsafe "(() => window[\"DOMRectInit\"])" gTypeDOMRectInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMRectReadOnly".
 --
@@ -8236,7 +8236,7 @@ noDOMRectReadOnly :: Maybe DOMRectReadOnly
 noDOMRectReadOnly = Nothing
 {-# INLINE noDOMRectReadOnly #-}
 
-foreign import javascript unsafe "window[\"DOMRectReadOnly\"]" gTypeDOMRectReadOnly :: GType
+foreign import javascript unsafe "(() => window[\"DOMRectReadOnly\"])" gTypeDOMRectReadOnly :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringList".
 --
@@ -8269,7 +8269,7 @@ noDOMStringList :: Maybe DOMStringList
 noDOMStringList = Nothing
 {-# INLINE noDOMStringList #-}
 
-foreign import javascript unsafe "window[\"DOMStringList\"]" gTypeDOMStringList :: GType
+foreign import javascript unsafe "(() => window[\"DOMStringList\"])" gTypeDOMStringList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMStringMap".
 --
@@ -8302,7 +8302,7 @@ noDOMStringMap :: Maybe DOMStringMap
 noDOMStringMap = Nothing
 {-# INLINE noDOMStringMap #-}
 
-foreign import javascript unsafe "window[\"DOMStringMap\"]" gTypeDOMStringMap :: GType
+foreign import javascript unsafe "(() => window[\"DOMStringMap\"])" gTypeDOMStringMap :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DOMTokenList".
 --
@@ -8335,7 +8335,7 @@ noDOMTokenList :: Maybe DOMTokenList
 noDOMTokenList = Nothing
 {-# INLINE noDOMTokenList #-}
 
-foreign import javascript unsafe "window[\"DOMTokenList\"]" gTypeDOMTokenList :: GType
+foreign import javascript unsafe "(() => window[\"DOMTokenList\"])" gTypeDOMTokenList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataCue".
 -- Base interface functions are in:
@@ -8374,7 +8374,7 @@ noDataCue :: Maybe DataCue
 noDataCue = Nothing
 {-# INLINE noDataCue #-}
 
-foreign import javascript unsafe "window[\"WebKitDataCue\"]" gTypeDataCue :: GType
+foreign import javascript unsafe "(() => window[\"WebKitDataCue\"])" gTypeDataCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransfer".
 --
@@ -8407,7 +8407,7 @@ noDataTransfer :: Maybe DataTransfer
 noDataTransfer = Nothing
 {-# INLINE noDataTransfer #-}
 
-foreign import javascript unsafe "window[\"DataTransfer\"]" gTypeDataTransfer :: GType
+foreign import javascript unsafe "(() => window[\"DataTransfer\"])" gTypeDataTransfer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItem".
 --
@@ -8440,7 +8440,7 @@ noDataTransferItem :: Maybe DataTransferItem
 noDataTransferItem = Nothing
 {-# INLINE noDataTransferItem #-}
 
-foreign import javascript unsafe "window[\"DataTransferItem\"]" gTypeDataTransferItem :: GType
+foreign import javascript unsafe "(() => window[\"DataTransferItem\"])" gTypeDataTransferItem :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DataTransferItemList".
 --
@@ -8473,7 +8473,7 @@ noDataTransferItemList :: Maybe DataTransferItemList
 noDataTransferItemList = Nothing
 {-# INLINE noDataTransferItemList #-}
 
-foreign import javascript unsafe "window[\"DataTransferItemList\"]" gTypeDataTransferItemList :: GType
+foreign import javascript unsafe "(() => window[\"DataTransferItemList\"])" gTypeDataTransferItemList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Database".
 --
@@ -8506,7 +8506,7 @@ noDatabase :: Maybe Database
 noDatabase = Nothing
 {-# INLINE noDatabase #-}
 
-foreign import javascript unsafe "window[\"Database\"]" gTypeDatabase :: GType
+foreign import javascript unsafe "(() => window[\"Database\"])" gTypeDatabase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DedicatedWorkerGlobalScope".
 -- Base interface functions are in:
@@ -8551,7 +8551,7 @@ noDedicatedWorkerGlobalScope :: Maybe DedicatedWorkerGlobalScope
 noDedicatedWorkerGlobalScope = Nothing
 {-# INLINE noDedicatedWorkerGlobalScope #-}
 
-foreign import javascript unsafe "window[\"DedicatedWorkerGlobalScope\"]" gTypeDedicatedWorkerGlobalScope :: GType
+foreign import javascript unsafe "(() => window[\"DedicatedWorkerGlobalScope\"])" gTypeDedicatedWorkerGlobalScope :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DelayNode".
 -- Base interface functions are in:
@@ -8590,7 +8590,7 @@ noDelayNode :: Maybe DelayNode
 noDelayNode = Nothing
 {-# INLINE noDelayNode #-}
 
-foreign import javascript unsafe "window[\"DelayNode\"]" gTypeDelayNode :: GType
+foreign import javascript unsafe "(() => window[\"DelayNode\"])" gTypeDelayNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceMotionEvent".
 -- Base interface functions are in:
@@ -8627,7 +8627,7 @@ noDeviceMotionEvent :: Maybe DeviceMotionEvent
 noDeviceMotionEvent = Nothing
 {-# INLINE noDeviceMotionEvent #-}
 
-foreign import javascript unsafe "window[\"DeviceMotionEvent\"]" gTypeDeviceMotionEvent :: GType
+foreign import javascript unsafe "(() => window[\"DeviceMotionEvent\"])" gTypeDeviceMotionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceOrientationEvent".
 -- Base interface functions are in:
@@ -8664,7 +8664,7 @@ noDeviceOrientationEvent :: Maybe DeviceOrientationEvent
 noDeviceOrientationEvent = Nothing
 {-# INLINE noDeviceOrientationEvent #-}
 
-foreign import javascript unsafe "window[\"DeviceOrientationEvent\"]" gTypeDeviceOrientationEvent :: GType
+foreign import javascript unsafe "(() => window[\"DeviceOrientationEvent\"])" gTypeDeviceOrientationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceProximityEvent".
 -- Base interface functions are in:
@@ -8701,7 +8701,7 @@ noDeviceProximityEvent :: Maybe DeviceProximityEvent
 noDeviceProximityEvent = Nothing
 {-# INLINE noDeviceProximityEvent #-}
 
-foreign import javascript unsafe "window[\"DeviceProximityEvent\"]" gTypeDeviceProximityEvent :: GType
+foreign import javascript unsafe "(() => window[\"DeviceProximityEvent\"])" gTypeDeviceProximityEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DeviceProximityEventInit".
 -- Base interface functions are in:
@@ -8738,7 +8738,7 @@ noDeviceProximityEventInit :: Maybe DeviceProximityEventInit
 noDeviceProximityEventInit = Nothing
 {-# INLINE noDeviceProximityEventInit #-}
 
-foreign import javascript unsafe "window[\"DeviceProximityEventInit\"]" gTypeDeviceProximityEventInit :: GType
+foreign import javascript unsafe "(() => window[\"DeviceProximityEventInit\"])" gTypeDeviceProximityEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Document".
 -- Base interface functions are in:
@@ -8792,7 +8792,7 @@ noDocument :: Maybe Document
 noDocument = Nothing
 {-# INLINE noDocument #-}
 
-foreign import javascript unsafe "window[\"Document\"]" gTypeDocument :: GType
+foreign import javascript unsafe "(() => window[\"Document\"])" gTypeDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentAndElementEventHandlers".
 --
@@ -8830,7 +8830,7 @@ noDocumentAndElementEventHandlers :: Maybe DocumentAndElementEventHandlers
 noDocumentAndElementEventHandlers = Nothing
 {-# INLINE noDocumentAndElementEventHandlers #-}
 
-foreign import javascript unsafe "window[\"DocumentAndElementEventHandlers\"]" gTypeDocumentAndElementEventHandlers :: GType
+foreign import javascript unsafe "(() => window[\"DocumentAndElementEventHandlers\"])" gTypeDocumentAndElementEventHandlers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentFragment".
 -- Base interface functions are in:
@@ -8878,7 +8878,7 @@ noDocumentFragment :: Maybe DocumentFragment
 noDocumentFragment = Nothing
 {-# INLINE noDocumentFragment #-}
 
-foreign import javascript unsafe "window[\"DocumentFragment\"]" gTypeDocumentFragment :: GType
+foreign import javascript unsafe "(() => window[\"DocumentFragment\"])" gTypeDocumentFragment :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentOrShadowRoot".
 --
@@ -8916,7 +8916,7 @@ noDocumentOrShadowRoot :: Maybe DocumentOrShadowRoot
 noDocumentOrShadowRoot = Nothing
 {-# INLINE noDocumentOrShadowRoot #-}
 
-foreign import javascript unsafe "window[\"DocumentOrShadowRoot\"]" gTypeDocumentOrShadowRoot :: GType
+foreign import javascript unsafe "(() => window[\"DocumentOrShadowRoot\"])" gTypeDocumentOrShadowRoot :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentTimeline".
 -- Base interface functions are in:
@@ -8953,7 +8953,7 @@ noDocumentTimeline :: Maybe DocumentTimeline
 noDocumentTimeline = Nothing
 {-# INLINE noDocumentTimeline #-}
 
-foreign import javascript unsafe "window[\"DocumentTimeline\"]" gTypeDocumentTimeline :: GType
+foreign import javascript unsafe "(() => window[\"DocumentTimeline\"])" gTypeDocumentTimeline :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DocumentType".
 -- Base interface functions are in:
@@ -8994,7 +8994,7 @@ noDocumentType :: Maybe DocumentType
 noDocumentType = Nothing
 {-# INLINE noDocumentType #-}
 
-foreign import javascript unsafe "window[\"DocumentType\"]" gTypeDocumentType :: GType
+foreign import javascript unsafe "(() => window[\"DocumentType\"])" gTypeDocumentType :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DoubleRange".
 --
@@ -9032,7 +9032,7 @@ noDoubleRange :: Maybe DoubleRange
 noDoubleRange = Nothing
 {-# INLINE noDoubleRange #-}
 
-foreign import javascript unsafe "window[\"DoubleRange\"]" gTypeDoubleRange :: GType
+foreign import javascript unsafe "(() => window[\"DoubleRange\"])" gTypeDoubleRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.DynamicsCompressorNode".
 -- Base interface functions are in:
@@ -9071,7 +9071,7 @@ noDynamicsCompressorNode :: Maybe DynamicsCompressorNode
 noDynamicsCompressorNode = Nothing
 {-# INLINE noDynamicsCompressorNode #-}
 
-foreign import javascript unsafe "window[\"DynamicsCompressorNode\"]" gTypeDynamicsCompressorNode :: GType
+foreign import javascript unsafe "(() => window[\"DynamicsCompressorNode\"])" gTypeDynamicsCompressorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTBlendMinMax".
 --
@@ -9104,7 +9104,7 @@ noEXTBlendMinMax :: Maybe EXTBlendMinMax
 noEXTBlendMinMax = Nothing
 {-# INLINE noEXTBlendMinMax #-}
 
-foreign import javascript unsafe "window[\"EXTBlendMinMax\"]" gTypeEXTBlendMinMax :: GType
+foreign import javascript unsafe "(() => window[\"EXTBlendMinMax\"])" gTypeEXTBlendMinMax :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTFragDepth".
 --
@@ -9137,7 +9137,7 @@ noEXTFragDepth :: Maybe EXTFragDepth
 noEXTFragDepth = Nothing
 {-# INLINE noEXTFragDepth #-}
 
-foreign import javascript unsafe "window[\"EXTFragDepth\"]" gTypeEXTFragDepth :: GType
+foreign import javascript unsafe "(() => window[\"EXTFragDepth\"])" gTypeEXTFragDepth :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTShaderTextureLOD".
 --
@@ -9170,7 +9170,7 @@ noEXTShaderTextureLOD :: Maybe EXTShaderTextureLOD
 noEXTShaderTextureLOD = Nothing
 {-# INLINE noEXTShaderTextureLOD #-}
 
-foreign import javascript unsafe "window[\"EXTShaderTextureLOD\"]" gTypeEXTShaderTextureLOD :: GType
+foreign import javascript unsafe "(() => window[\"EXTShaderTextureLOD\"])" gTypeEXTShaderTextureLOD :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTTextureFilterAnisotropic".
 --
@@ -9203,7 +9203,7 @@ noEXTTextureFilterAnisotropic :: Maybe EXTTextureFilterAnisotropic
 noEXTTextureFilterAnisotropic = Nothing
 {-# INLINE noEXTTextureFilterAnisotropic #-}
 
-foreign import javascript unsafe "window[\"EXTTextureFilterAnisotropic\"]" gTypeEXTTextureFilterAnisotropic :: GType
+foreign import javascript unsafe "(() => window[\"EXTTextureFilterAnisotropic\"])" gTypeEXTTextureFilterAnisotropic :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EXTsRGB".
 --
@@ -9236,7 +9236,7 @@ noEXTsRGB :: Maybe EXTsRGB
 noEXTsRGB = Nothing
 {-# INLINE noEXTsRGB #-}
 
-foreign import javascript unsafe "window[\"EXTsRGB\"]" gTypeEXTsRGB :: GType
+foreign import javascript unsafe "(() => window[\"EXTsRGB\"])" gTypeEXTsRGB :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EcKeyParams".
 -- Base interface functions are in:
@@ -9273,7 +9273,7 @@ noEcKeyParams :: Maybe EcKeyParams
 noEcKeyParams = Nothing
 {-# INLINE noEcKeyParams #-}
 
-foreign import javascript unsafe "window[\"EcKeyParams\"]" gTypeEcKeyParams :: GType
+foreign import javascript unsafe "(() => window[\"EcKeyParams\"])" gTypeEcKeyParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EcdhKeyDeriveParams".
 -- Base interface functions are in:
@@ -9310,7 +9310,7 @@ noEcdhKeyDeriveParams :: Maybe EcdhKeyDeriveParams
 noEcdhKeyDeriveParams = Nothing
 {-# INLINE noEcdhKeyDeriveParams #-}
 
-foreign import javascript unsafe "window[\"EcdhKeyDeriveParams\"]" gTypeEcdhKeyDeriveParams :: GType
+foreign import javascript unsafe "(() => window[\"EcdhKeyDeriveParams\"])" gTypeEcdhKeyDeriveParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EcdsaParams".
 -- Base interface functions are in:
@@ -9347,7 +9347,7 @@ noEcdsaParams :: Maybe EcdsaParams
 noEcdsaParams = Nothing
 {-# INLINE noEcdsaParams #-}
 
-foreign import javascript unsafe "window[\"EcdsaParams\"]" gTypeEcdsaParams :: GType
+foreign import javascript unsafe "(() => window[\"EcdsaParams\"])" gTypeEcdsaParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Element".
 -- Base interface functions are in:
@@ -9403,7 +9403,7 @@ noElement :: Maybe Element
 noElement = Nothing
 {-# INLINE noElement #-}
 
-foreign import javascript unsafe "window[\"Element\"]" gTypeElement :: GType
+foreign import javascript unsafe "(() => window[\"Element\"])" gTypeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ElementCSSInlineStyle".
 --
@@ -9441,7 +9441,7 @@ noElementCSSInlineStyle :: Maybe ElementCSSInlineStyle
 noElementCSSInlineStyle = Nothing
 {-# INLINE noElementCSSInlineStyle #-}
 
-foreign import javascript unsafe "window[\"ElementCSSInlineStyle\"]" gTypeElementCSSInlineStyle :: GType
+foreign import javascript unsafe "(() => window[\"ElementCSSInlineStyle\"])" gTypeElementCSSInlineStyle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ErrorEvent".
 -- Base interface functions are in:
@@ -9478,7 +9478,7 @@ noErrorEvent :: Maybe ErrorEvent
 noErrorEvent = Nothing
 {-# INLINE noErrorEvent #-}
 
-foreign import javascript unsafe "window[\"ErrorEvent\"]" gTypeErrorEvent :: GType
+foreign import javascript unsafe "(() => window[\"ErrorEvent\"])" gTypeErrorEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ErrorEventInit".
 -- Base interface functions are in:
@@ -9515,7 +9515,7 @@ noErrorEventInit :: Maybe ErrorEventInit
 noErrorEventInit = Nothing
 {-# INLINE noErrorEventInit #-}
 
-foreign import javascript unsafe "window[\"ErrorEventInit\"]" gTypeErrorEventInit :: GType
+foreign import javascript unsafe "(() => window[\"ErrorEventInit\"])" gTypeErrorEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Event".
 --
@@ -9553,7 +9553,7 @@ noEvent :: Maybe Event
 noEvent = Nothing
 {-# INLINE noEvent #-}
 
-foreign import javascript unsafe "window[\"Event\"]" gTypeEvent :: GType
+foreign import javascript unsafe "(() => window[\"Event\"])" gTypeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventInit".
 --
@@ -9591,7 +9591,7 @@ noEventInit :: Maybe EventInit
 noEventInit = Nothing
 {-# INLINE noEventInit #-}
 
-foreign import javascript unsafe "window[\"EventInit\"]" gTypeEventInit :: GType
+foreign import javascript unsafe "(() => window[\"EventInit\"])" gTypeEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventListener".
 --
@@ -9624,7 +9624,7 @@ noEventListener :: Maybe EventListener
 noEventListener = Nothing
 {-# INLINE noEventListener #-}
 
-foreign import javascript unsafe "window[\"EventListener\"]" gTypeEventListener :: GType
+foreign import javascript unsafe "(() => window[\"EventListener\"])" gTypeEventListener :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventListenerOptions".
 --
@@ -9662,7 +9662,7 @@ noEventListenerOptions :: Maybe EventListenerOptions
 noEventListenerOptions = Nothing
 {-# INLINE noEventListenerOptions #-}
 
-foreign import javascript unsafe "window[\"EventListenerOptions\"]" gTypeEventListenerOptions :: GType
+foreign import javascript unsafe "(() => window[\"EventListenerOptions\"])" gTypeEventListenerOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventModifierInit".
 -- Base interface functions are in:
@@ -9706,7 +9706,7 @@ noEventModifierInit :: Maybe EventModifierInit
 noEventModifierInit = Nothing
 {-# INLINE noEventModifierInit #-}
 
-foreign import javascript unsafe "window[\"EventModifierInit\"]" gTypeEventModifierInit :: GType
+foreign import javascript unsafe "(() => window[\"EventModifierInit\"])" gTypeEventModifierInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventSource".
 -- Base interface functions are in:
@@ -9743,7 +9743,7 @@ noEventSource :: Maybe EventSource
 noEventSource = Nothing
 {-# INLINE noEventSource #-}
 
-foreign import javascript unsafe "window[\"EventSource\"]" gTypeEventSource :: GType
+foreign import javascript unsafe "(() => window[\"EventSource\"])" gTypeEventSource :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventSourceInit".
 --
@@ -9776,7 +9776,7 @@ noEventSourceInit :: Maybe EventSourceInit
 noEventSourceInit = Nothing
 {-# INLINE noEventSourceInit #-}
 
-foreign import javascript unsafe "window[\"EventSourceInit\"]" gTypeEventSourceInit :: GType
+foreign import javascript unsafe "(() => window[\"EventSourceInit\"])" gTypeEventSourceInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.EventTarget".
 --
@@ -9814,7 +9814,7 @@ noEventTarget :: Maybe EventTarget
 noEventTarget = Nothing
 {-# INLINE noEventTarget #-}
 
-foreign import javascript unsafe "window[\"EventTarget\"]" gTypeEventTarget :: GType
+foreign import javascript unsafe "(() => window[\"EventTarget\"])" gTypeEventTarget :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.File".
 -- Base interface functions are in:
@@ -9851,7 +9851,7 @@ noFile :: Maybe File
 noFile = Nothing
 {-# INLINE noFile #-}
 
-foreign import javascript unsafe "window[\"File\"]" gTypeFile :: GType
+foreign import javascript unsafe "(() => window[\"File\"])" gTypeFile :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileError".
 --
@@ -9884,7 +9884,7 @@ noFileError :: Maybe FileError
 noFileError = Nothing
 {-# INLINE noFileError #-}
 
-foreign import javascript unsafe "window[\"FileError\"]" gTypeFileError :: GType
+foreign import javascript unsafe "(() => window[\"FileError\"])" gTypeFileError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileException".
 --
@@ -9917,7 +9917,7 @@ noFileException :: Maybe FileException
 noFileException = Nothing
 {-# INLINE noFileException #-}
 
-foreign import javascript unsafe "window[\"FileException\"]" gTypeFileException :: GType
+foreign import javascript unsafe "(() => window[\"FileException\"])" gTypeFileException :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileList".
 --
@@ -9950,7 +9950,7 @@ noFileList :: Maybe FileList
 noFileList = Nothing
 {-# INLINE noFileList #-}
 
-foreign import javascript unsafe "window[\"FileList\"]" gTypeFileList :: GType
+foreign import javascript unsafe "(() => window[\"FileList\"])" gTypeFileList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FilePropertyBag".
 -- Base interface functions are in:
@@ -9987,7 +9987,7 @@ noFilePropertyBag :: Maybe FilePropertyBag
 noFilePropertyBag = Nothing
 {-# INLINE noFilePropertyBag #-}
 
-foreign import javascript unsafe "window[\"FilePropertyBag\"]" gTypeFilePropertyBag :: GType
+foreign import javascript unsafe "(() => window[\"FilePropertyBag\"])" gTypeFilePropertyBag :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileReader".
 -- Base interface functions are in:
@@ -10024,7 +10024,7 @@ noFileReader :: Maybe FileReader
 noFileReader = Nothing
 {-# INLINE noFileReader #-}
 
-foreign import javascript unsafe "window[\"FileReader\"]" gTypeFileReader :: GType
+foreign import javascript unsafe "(() => window[\"FileReader\"])" gTypeFileReader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FileReaderSync".
 --
@@ -10057,7 +10057,7 @@ noFileReaderSync :: Maybe FileReaderSync
 noFileReaderSync = Nothing
 {-# INLINE noFileReaderSync #-}
 
-foreign import javascript unsafe "window[\"FileReaderSync\"]" gTypeFileReaderSync :: GType
+foreign import javascript unsafe "(() => window[\"FileReaderSync\"])" gTypeFileReaderSync :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FocusEvent".
 -- Base interface functions are in:
@@ -10096,7 +10096,7 @@ noFocusEvent :: Maybe FocusEvent
 noFocusEvent = Nothing
 {-# INLINE noFocusEvent #-}
 
-foreign import javascript unsafe "window[\"FocusEvent\"]" gTypeFocusEvent :: GType
+foreign import javascript unsafe "(() => window[\"FocusEvent\"])" gTypeFocusEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FocusEventInit".
 -- Base interface functions are in:
@@ -10135,7 +10135,7 @@ noFocusEventInit :: Maybe FocusEventInit
 noFocusEventInit = Nothing
 {-# INLINE noFocusEventInit #-}
 
-foreign import javascript unsafe "window[\"FocusEventInit\"]" gTypeFocusEventInit :: GType
+foreign import javascript unsafe "(() => window[\"FocusEventInit\"])" gTypeFocusEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FontFace".
 --
@@ -10168,7 +10168,7 @@ noFontFace :: Maybe FontFace
 noFontFace = Nothing
 {-# INLINE noFontFace #-}
 
-foreign import javascript unsafe "window[\"FontFace\"]" gTypeFontFace :: GType
+foreign import javascript unsafe "(() => window[\"FontFace\"])" gTypeFontFace :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FontFaceDescriptors".
 --
@@ -10201,7 +10201,7 @@ noFontFaceDescriptors :: Maybe FontFaceDescriptors
 noFontFaceDescriptors = Nothing
 {-# INLINE noFontFaceDescriptors #-}
 
-foreign import javascript unsafe "window[\"FontFaceDescriptors\"]" gTypeFontFaceDescriptors :: GType
+foreign import javascript unsafe "(() => window[\"FontFaceDescriptors\"])" gTypeFontFaceDescriptors :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FontFaceSet".
 -- Base interface functions are in:
@@ -10238,7 +10238,7 @@ noFontFaceSet :: Maybe FontFaceSet
 noFontFaceSet = Nothing
 {-# INLINE noFontFaceSet #-}
 
-foreign import javascript unsafe "window[\"FontFaceSet\"]" gTypeFontFaceSet :: GType
+foreign import javascript unsafe "(() => window[\"FontFaceSet\"])" gTypeFontFaceSet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.FormData".
 --
@@ -10271,7 +10271,7 @@ noFormData :: Maybe FormData
 noFormData = Nothing
 {-# INLINE noFormData #-}
 
-foreign import javascript unsafe "window[\"FormData\"]" gTypeFormData :: GType
+foreign import javascript unsafe "(() => window[\"FormData\"])" gTypeFormData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GainNode".
 -- Base interface functions are in:
@@ -10310,7 +10310,7 @@ noGainNode :: Maybe GainNode
 noGainNode = Nothing
 {-# INLINE noGainNode #-}
 
-foreign import javascript unsafe "window[\"GainNode\"]" gTypeGainNode :: GType
+foreign import javascript unsafe "(() => window[\"GainNode\"])" gTypeGainNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Gamepad".
 --
@@ -10343,7 +10343,7 @@ noGamepad :: Maybe Gamepad
 noGamepad = Nothing
 {-# INLINE noGamepad #-}
 
-foreign import javascript unsafe "window[\"Gamepad\"]" gTypeGamepad :: GType
+foreign import javascript unsafe "(() => window[\"Gamepad\"])" gTypeGamepad :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadButton".
 --
@@ -10376,7 +10376,7 @@ noGamepadButton :: Maybe GamepadButton
 noGamepadButton = Nothing
 {-# INLINE noGamepadButton #-}
 
-foreign import javascript unsafe "window[\"GamepadButton\"]" gTypeGamepadButton :: GType
+foreign import javascript unsafe "(() => window[\"GamepadButton\"])" gTypeGamepadButton :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadEvent".
 -- Base interface functions are in:
@@ -10413,7 +10413,7 @@ noGamepadEvent :: Maybe GamepadEvent
 noGamepadEvent = Nothing
 {-# INLINE noGamepadEvent #-}
 
-foreign import javascript unsafe "window[\"GamepadEvent\"]" gTypeGamepadEvent :: GType
+foreign import javascript unsafe "(() => window[\"GamepadEvent\"])" gTypeGamepadEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GamepadEventInit".
 -- Base interface functions are in:
@@ -10450,7 +10450,7 @@ noGamepadEventInit :: Maybe GamepadEventInit
 noGamepadEventInit = Nothing
 {-# INLINE noGamepadEventInit #-}
 
-foreign import javascript unsafe "window[\"GamepadEventInit\"]" gTypeGamepadEventInit :: GType
+foreign import javascript unsafe "(() => window[\"GamepadEventInit\"])" gTypeGamepadEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Geolocation".
 --
@@ -10483,7 +10483,7 @@ noGeolocation :: Maybe Geolocation
 noGeolocation = Nothing
 {-# INLINE noGeolocation #-}
 
-foreign import javascript unsafe "window[\"Geolocation\"]" gTypeGeolocation :: GType
+foreign import javascript unsafe "(() => window[\"Geolocation\"])" gTypeGeolocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Geoposition".
 --
@@ -10516,7 +10516,7 @@ noGeoposition :: Maybe Geoposition
 noGeoposition = Nothing
 {-# INLINE noGeoposition #-}
 
-foreign import javascript unsafe "window[\"Geoposition\"]" gTypeGeoposition :: GType
+foreign import javascript unsafe "(() => window[\"Geoposition\"])" gTypeGeoposition :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GetRootNodeOptions".
 --
@@ -10549,7 +10549,7 @@ noGetRootNodeOptions :: Maybe GetRootNodeOptions
 noGetRootNodeOptions = Nothing
 {-# INLINE noGetRootNodeOptions #-}
 
-foreign import javascript unsafe "window[\"GetRootNodeOptions\"]" gTypeGetRootNodeOptions :: GType
+foreign import javascript unsafe "(() => window[\"GetRootNodeOptions\"])" gTypeGetRootNodeOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GlobalCrypto".
 --
@@ -10587,7 +10587,7 @@ noGlobalCrypto :: Maybe GlobalCrypto
 noGlobalCrypto = Nothing
 {-# INLINE noGlobalCrypto #-}
 
-foreign import javascript unsafe "window[\"GlobalCrypto\"]" gTypeGlobalCrypto :: GType
+foreign import javascript unsafe "(() => window[\"GlobalCrypto\"])" gTypeGlobalCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GlobalEventHandlers".
 --
@@ -10625,7 +10625,7 @@ noGlobalEventHandlers :: Maybe GlobalEventHandlers
 noGlobalEventHandlers = Nothing
 {-# INLINE noGlobalEventHandlers #-}
 
-foreign import javascript unsafe "window[\"GlobalEventHandlers\"]" gTypeGlobalEventHandlers :: GType
+foreign import javascript unsafe "(() => window[\"GlobalEventHandlers\"])" gTypeGlobalEventHandlers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.GlobalPerformance".
 --
@@ -10663,7 +10663,7 @@ noGlobalPerformance :: Maybe GlobalPerformance
 noGlobalPerformance = Nothing
 {-# INLINE noGlobalPerformance #-}
 
-foreign import javascript unsafe "window[\"GlobalPerformance\"]" gTypeGlobalPerformance :: GType
+foreign import javascript unsafe "(() => window[\"GlobalPerformance\"])" gTypeGlobalPerformance :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAllCollection".
 --
@@ -10696,7 +10696,7 @@ noHTMLAllCollection :: Maybe HTMLAllCollection
 noHTMLAllCollection = Nothing
 {-# INLINE noHTMLAllCollection #-}
 
-foreign import javascript unsafe "window[\"HTMLAllCollection\"]" gTypeHTMLAllCollection :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAllCollection\"])" gTypeHTMLAllCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAnchorElement".
 -- Base interface functions are in:
@@ -10757,7 +10757,7 @@ noHTMLAnchorElement :: Maybe HTMLAnchorElement
 noHTMLAnchorElement = Nothing
 {-# INLINE noHTMLAnchorElement #-}
 
-foreign import javascript unsafe "window[\"HTMLAnchorElement\"]" gTypeHTMLAnchorElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAnchorElement\"])" gTypeHTMLAnchorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAppletElement".
 -- Base interface functions are in:
@@ -10816,7 +10816,7 @@ noHTMLAppletElement :: Maybe HTMLAppletElement
 noHTMLAppletElement = Nothing
 {-# INLINE noHTMLAppletElement #-}
 
-foreign import javascript unsafe "window[\"HTMLAppletElement\"]" gTypeHTMLAppletElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAppletElement\"])" gTypeHTMLAppletElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAreaElement".
 -- Base interface functions are in:
@@ -10877,7 +10877,7 @@ noHTMLAreaElement :: Maybe HTMLAreaElement
 noHTMLAreaElement = Nothing
 {-# INLINE noHTMLAreaElement #-}
 
-foreign import javascript unsafe "window[\"HTMLAreaElement\"]" gTypeHTMLAreaElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAreaElement\"])" gTypeHTMLAreaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAttachmentElement".
 -- Base interface functions are in:
@@ -10936,7 +10936,7 @@ noHTMLAttachmentElement :: Maybe HTMLAttachmentElement
 noHTMLAttachmentElement = Nothing
 {-# INLINE noHTMLAttachmentElement #-}
 
-foreign import javascript unsafe "window[\"HTMLAttachmentElement\"]" gTypeHTMLAttachmentElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAttachmentElement\"])" gTypeHTMLAttachmentElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLAudioElement".
 -- Base interface functions are in:
@@ -10997,7 +10997,7 @@ noHTMLAudioElement :: Maybe HTMLAudioElement
 noHTMLAudioElement = Nothing
 {-# INLINE noHTMLAudioElement #-}
 
-foreign import javascript unsafe "window[\"HTMLAudioElement\"]" gTypeHTMLAudioElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLAudioElement\"])" gTypeHTMLAudioElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBRElement".
 -- Base interface functions are in:
@@ -11056,7 +11056,7 @@ noHTMLBRElement :: Maybe HTMLBRElement
 noHTMLBRElement = Nothing
 {-# INLINE noHTMLBRElement #-}
 
-foreign import javascript unsafe "window[\"HTMLBRElement\"]" gTypeHTMLBRElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLBRElement\"])" gTypeHTMLBRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBaseElement".
 -- Base interface functions are in:
@@ -11115,7 +11115,7 @@ noHTMLBaseElement :: Maybe HTMLBaseElement
 noHTMLBaseElement = Nothing
 {-# INLINE noHTMLBaseElement #-}
 
-foreign import javascript unsafe "window[\"HTMLBaseElement\"]" gTypeHTMLBaseElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLBaseElement\"])" gTypeHTMLBaseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLBodyElement".
 -- Base interface functions are in:
@@ -11176,7 +11176,7 @@ noHTMLBodyElement :: Maybe HTMLBodyElement
 noHTMLBodyElement = Nothing
 {-# INLINE noHTMLBodyElement #-}
 
-foreign import javascript unsafe "window[\"HTMLBodyElement\"]" gTypeHTMLBodyElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLBodyElement\"])" gTypeHTMLBodyElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLButtonElement".
 -- Base interface functions are in:
@@ -11235,7 +11235,7 @@ noHTMLButtonElement :: Maybe HTMLButtonElement
 noHTMLButtonElement = Nothing
 {-# INLINE noHTMLButtonElement #-}
 
-foreign import javascript unsafe "window[\"HTMLButtonElement\"]" gTypeHTMLButtonElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLButtonElement\"])" gTypeHTMLButtonElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCanvasElement".
 -- Base interface functions are in:
@@ -11294,7 +11294,7 @@ noHTMLCanvasElement :: Maybe HTMLCanvasElement
 noHTMLCanvasElement = Nothing
 {-# INLINE noHTMLCanvasElement #-}
 
-foreign import javascript unsafe "window[\"HTMLCanvasElement\"]" gTypeHTMLCanvasElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLCanvasElement\"])" gTypeHTMLCanvasElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLCollection".
 --
@@ -11332,7 +11332,7 @@ noHTMLCollection :: Maybe HTMLCollection
 noHTMLCollection = Nothing
 {-# INLINE noHTMLCollection #-}
 
-foreign import javascript unsafe "window[\"HTMLCollection\"]" gTypeHTMLCollection :: GType
+foreign import javascript unsafe "(() => window[\"HTMLCollection\"])" gTypeHTMLCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDListElement".
 -- Base interface functions are in:
@@ -11391,7 +11391,7 @@ noHTMLDListElement :: Maybe HTMLDListElement
 noHTMLDListElement = Nothing
 {-# INLINE noHTMLDListElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDListElement\"]" gTypeHTMLDListElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDListElement\"])" gTypeHTMLDListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDataElement".
 -- Base interface functions are in:
@@ -11450,7 +11450,7 @@ noHTMLDataElement :: Maybe HTMLDataElement
 noHTMLDataElement = Nothing
 {-# INLINE noHTMLDataElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDataElement\"]" gTypeHTMLDataElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDataElement\"])" gTypeHTMLDataElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDataListElement".
 -- Base interface functions are in:
@@ -11509,7 +11509,7 @@ noHTMLDataListElement :: Maybe HTMLDataListElement
 noHTMLDataListElement = Nothing
 {-# INLINE noHTMLDataListElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDataListElement\"]" gTypeHTMLDataListElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDataListElement\"])" gTypeHTMLDataListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDetailsElement".
 -- Base interface functions are in:
@@ -11568,7 +11568,7 @@ noHTMLDetailsElement :: Maybe HTMLDetailsElement
 noHTMLDetailsElement = Nothing
 {-# INLINE noHTMLDetailsElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDetailsElement\"]" gTypeHTMLDetailsElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDetailsElement\"])" gTypeHTMLDetailsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDirectoryElement".
 -- Base interface functions are in:
@@ -11627,7 +11627,7 @@ noHTMLDirectoryElement :: Maybe HTMLDirectoryElement
 noHTMLDirectoryElement = Nothing
 {-# INLINE noHTMLDirectoryElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDirectoryElement\"]" gTypeHTMLDirectoryElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDirectoryElement\"])" gTypeHTMLDirectoryElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDivElement".
 -- Base interface functions are in:
@@ -11686,7 +11686,7 @@ noHTMLDivElement :: Maybe HTMLDivElement
 noHTMLDivElement = Nothing
 {-# INLINE noHTMLDivElement #-}
 
-foreign import javascript unsafe "window[\"HTMLDivElement\"]" gTypeHTMLDivElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDivElement\"])" gTypeHTMLDivElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLDocument".
 -- Base interface functions are in:
@@ -11737,7 +11737,7 @@ noHTMLDocument :: Maybe HTMLDocument
 noHTMLDocument = Nothing
 {-# INLINE noHTMLDocument #-}
 
-foreign import javascript unsafe "window[\"HTMLDocument\"]" gTypeHTMLDocument :: GType
+foreign import javascript unsafe "(() => window[\"HTMLDocument\"])" gTypeHTMLDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLElement".
 -- Base interface functions are in:
@@ -11799,7 +11799,7 @@ noHTMLElement :: Maybe HTMLElement
 noHTMLElement = Nothing
 {-# INLINE noHTMLElement #-}
 
-foreign import javascript unsafe "window[\"HTMLElement\"]" gTypeHTMLElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLElement\"])" gTypeHTMLElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLEmbedElement".
 -- Base interface functions are in:
@@ -11858,7 +11858,7 @@ noHTMLEmbedElement :: Maybe HTMLEmbedElement
 noHTMLEmbedElement = Nothing
 {-# INLINE noHTMLEmbedElement #-}
 
-foreign import javascript unsafe "window[\"HTMLEmbedElement\"]" gTypeHTMLEmbedElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLEmbedElement\"])" gTypeHTMLEmbedElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFieldSetElement".
 -- Base interface functions are in:
@@ -11917,7 +11917,7 @@ noHTMLFieldSetElement :: Maybe HTMLFieldSetElement
 noHTMLFieldSetElement = Nothing
 {-# INLINE noHTMLFieldSetElement #-}
 
-foreign import javascript unsafe "window[\"HTMLFieldSetElement\"]" gTypeHTMLFieldSetElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFieldSetElement\"])" gTypeHTMLFieldSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFontElement".
 -- Base interface functions are in:
@@ -11976,7 +11976,7 @@ noHTMLFontElement :: Maybe HTMLFontElement
 noHTMLFontElement = Nothing
 {-# INLINE noHTMLFontElement #-}
 
-foreign import javascript unsafe "window[\"HTMLFontElement\"]" gTypeHTMLFontElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFontElement\"])" gTypeHTMLFontElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormControlsCollection".
 -- Base interface functions are in:
@@ -12013,7 +12013,7 @@ noHTMLFormControlsCollection :: Maybe HTMLFormControlsCollection
 noHTMLFormControlsCollection = Nothing
 {-# INLINE noHTMLFormControlsCollection #-}
 
-foreign import javascript unsafe "window[\"HTMLFormControlsCollection\"]" gTypeHTMLFormControlsCollection :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFormControlsCollection\"])" gTypeHTMLFormControlsCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFormElement".
 -- Base interface functions are in:
@@ -12072,7 +12072,7 @@ noHTMLFormElement :: Maybe HTMLFormElement
 noHTMLFormElement = Nothing
 {-# INLINE noHTMLFormElement #-}
 
-foreign import javascript unsafe "window[\"HTMLFormElement\"]" gTypeHTMLFormElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFormElement\"])" gTypeHTMLFormElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameElement".
 -- Base interface functions are in:
@@ -12131,7 +12131,7 @@ noHTMLFrameElement :: Maybe HTMLFrameElement
 noHTMLFrameElement = Nothing
 {-# INLINE noHTMLFrameElement #-}
 
-foreign import javascript unsafe "window[\"HTMLFrameElement\"]" gTypeHTMLFrameElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFrameElement\"])" gTypeHTMLFrameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLFrameSetElement".
 -- Base interface functions are in:
@@ -12192,7 +12192,7 @@ noHTMLFrameSetElement :: Maybe HTMLFrameSetElement
 noHTMLFrameSetElement = Nothing
 {-# INLINE noHTMLFrameSetElement #-}
 
-foreign import javascript unsafe "window[\"HTMLFrameSetElement\"]" gTypeHTMLFrameSetElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLFrameSetElement\"])" gTypeHTMLFrameSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHRElement".
 -- Base interface functions are in:
@@ -12251,7 +12251,7 @@ noHTMLHRElement :: Maybe HTMLHRElement
 noHTMLHRElement = Nothing
 {-# INLINE noHTMLHRElement #-}
 
-foreign import javascript unsafe "window[\"HTMLHRElement\"]" gTypeHTMLHRElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLHRElement\"])" gTypeHTMLHRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadElement".
 -- Base interface functions are in:
@@ -12310,7 +12310,7 @@ noHTMLHeadElement :: Maybe HTMLHeadElement
 noHTMLHeadElement = Nothing
 {-# INLINE noHTMLHeadElement #-}
 
-foreign import javascript unsafe "window[\"HTMLHeadElement\"]" gTypeHTMLHeadElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLHeadElement\"])" gTypeHTMLHeadElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHeadingElement".
 -- Base interface functions are in:
@@ -12369,7 +12369,7 @@ noHTMLHeadingElement :: Maybe HTMLHeadingElement
 noHTMLHeadingElement = Nothing
 {-# INLINE noHTMLHeadingElement #-}
 
-foreign import javascript unsafe "window[\"HTMLHeadingElement\"]" gTypeHTMLHeadingElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLHeadingElement\"])" gTypeHTMLHeadingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHtmlElement".
 -- Base interface functions are in:
@@ -12428,7 +12428,7 @@ noHTMLHtmlElement :: Maybe HTMLHtmlElement
 noHTMLHtmlElement = Nothing
 {-# INLINE noHTMLHtmlElement #-}
 
-foreign import javascript unsafe "window[\"HTMLHtmlElement\"]" gTypeHTMLHtmlElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLHtmlElement\"])" gTypeHTMLHtmlElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLHyperlinkElementUtils".
 --
@@ -12466,7 +12466,7 @@ noHTMLHyperlinkElementUtils :: Maybe HTMLHyperlinkElementUtils
 noHTMLHyperlinkElementUtils = Nothing
 {-# INLINE noHTMLHyperlinkElementUtils #-}
 
-foreign import javascript unsafe "window[\"HTMLHyperlinkElementUtils\"]" gTypeHTMLHyperlinkElementUtils :: GType
+foreign import javascript unsafe "(() => window[\"HTMLHyperlinkElementUtils\"])" gTypeHTMLHyperlinkElementUtils :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLIFrameElement".
 -- Base interface functions are in:
@@ -12525,7 +12525,7 @@ noHTMLIFrameElement :: Maybe HTMLIFrameElement
 noHTMLIFrameElement = Nothing
 {-# INLINE noHTMLIFrameElement #-}
 
-foreign import javascript unsafe "window[\"HTMLIFrameElement\"]" gTypeHTMLIFrameElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLIFrameElement\"])" gTypeHTMLIFrameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLImageElement".
 -- Base interface functions are in:
@@ -12584,7 +12584,7 @@ noHTMLImageElement :: Maybe HTMLImageElement
 noHTMLImageElement = Nothing
 {-# INLINE noHTMLImageElement #-}
 
-foreign import javascript unsafe "window[\"HTMLImageElement\"]" gTypeHTMLImageElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLImageElement\"])" gTypeHTMLImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLInputElement".
 -- Base interface functions are in:
@@ -12643,7 +12643,7 @@ noHTMLInputElement :: Maybe HTMLInputElement
 noHTMLInputElement = Nothing
 {-# INLINE noHTMLInputElement #-}
 
-foreign import javascript unsafe "window[\"HTMLInputElement\"]" gTypeHTMLInputElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLInputElement\"])" gTypeHTMLInputElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLKeygenElement".
 -- Base interface functions are in:
@@ -12702,7 +12702,7 @@ noHTMLKeygenElement :: Maybe HTMLKeygenElement
 noHTMLKeygenElement = Nothing
 {-# INLINE noHTMLKeygenElement #-}
 
-foreign import javascript unsafe "window[\"HTMLKeygenElement\"]" gTypeHTMLKeygenElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLKeygenElement\"])" gTypeHTMLKeygenElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLIElement".
 -- Base interface functions are in:
@@ -12761,7 +12761,7 @@ noHTMLLIElement :: Maybe HTMLLIElement
 noHTMLLIElement = Nothing
 {-# INLINE noHTMLLIElement #-}
 
-foreign import javascript unsafe "window[\"HTMLLIElement\"]" gTypeHTMLLIElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLLIElement\"])" gTypeHTMLLIElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLabelElement".
 -- Base interface functions are in:
@@ -12820,7 +12820,7 @@ noHTMLLabelElement :: Maybe HTMLLabelElement
 noHTMLLabelElement = Nothing
 {-# INLINE noHTMLLabelElement #-}
 
-foreign import javascript unsafe "window[\"HTMLLabelElement\"]" gTypeHTMLLabelElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLLabelElement\"])" gTypeHTMLLabelElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLegendElement".
 -- Base interface functions are in:
@@ -12879,7 +12879,7 @@ noHTMLLegendElement :: Maybe HTMLLegendElement
 noHTMLLegendElement = Nothing
 {-# INLINE noHTMLLegendElement #-}
 
-foreign import javascript unsafe "window[\"HTMLLegendElement\"]" gTypeHTMLLegendElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLLegendElement\"])" gTypeHTMLLegendElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLLinkElement".
 -- Base interface functions are in:
@@ -12938,7 +12938,7 @@ noHTMLLinkElement :: Maybe HTMLLinkElement
 noHTMLLinkElement = Nothing
 {-# INLINE noHTMLLinkElement #-}
 
-foreign import javascript unsafe "window[\"HTMLLinkElement\"]" gTypeHTMLLinkElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLLinkElement\"])" gTypeHTMLLinkElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMapElement".
 -- Base interface functions are in:
@@ -12997,7 +12997,7 @@ noHTMLMapElement :: Maybe HTMLMapElement
 noHTMLMapElement = Nothing
 {-# INLINE noHTMLMapElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMapElement\"]" gTypeHTMLMapElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMapElement\"])" gTypeHTMLMapElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMarqueeElement".
 -- Base interface functions are in:
@@ -13056,7 +13056,7 @@ noHTMLMarqueeElement :: Maybe HTMLMarqueeElement
 noHTMLMarqueeElement = Nothing
 {-# INLINE noHTMLMarqueeElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMarqueeElement\"]" gTypeHTMLMarqueeElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMarqueeElement\"])" gTypeHTMLMarqueeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMediaElement".
 -- Base interface functions are in:
@@ -13120,7 +13120,7 @@ noHTMLMediaElement :: Maybe HTMLMediaElement
 noHTMLMediaElement = Nothing
 {-# INLINE noHTMLMediaElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMediaElement\"]" gTypeHTMLMediaElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMediaElement\"])" gTypeHTMLMediaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMenuElement".
 -- Base interface functions are in:
@@ -13179,7 +13179,7 @@ noHTMLMenuElement :: Maybe HTMLMenuElement
 noHTMLMenuElement = Nothing
 {-# INLINE noHTMLMenuElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMenuElement\"]" gTypeHTMLMenuElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMenuElement\"])" gTypeHTMLMenuElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMetaElement".
 -- Base interface functions are in:
@@ -13238,7 +13238,7 @@ noHTMLMetaElement :: Maybe HTMLMetaElement
 noHTMLMetaElement = Nothing
 {-# INLINE noHTMLMetaElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMetaElement\"]" gTypeHTMLMetaElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMetaElement\"])" gTypeHTMLMetaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLMeterElement".
 -- Base interface functions are in:
@@ -13297,7 +13297,7 @@ noHTMLMeterElement :: Maybe HTMLMeterElement
 noHTMLMeterElement = Nothing
 {-# INLINE noHTMLMeterElement #-}
 
-foreign import javascript unsafe "window[\"HTMLMeterElement\"]" gTypeHTMLMeterElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLMeterElement\"])" gTypeHTMLMeterElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLModElement".
 -- Base interface functions are in:
@@ -13356,7 +13356,7 @@ noHTMLModElement :: Maybe HTMLModElement
 noHTMLModElement = Nothing
 {-# INLINE noHTMLModElement #-}
 
-foreign import javascript unsafe "window[\"HTMLModElement\"]" gTypeHTMLModElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLModElement\"])" gTypeHTMLModElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOListElement".
 -- Base interface functions are in:
@@ -13415,7 +13415,7 @@ noHTMLOListElement :: Maybe HTMLOListElement
 noHTMLOListElement = Nothing
 {-# INLINE noHTMLOListElement #-}
 
-foreign import javascript unsafe "window[\"HTMLOListElement\"]" gTypeHTMLOListElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLOListElement\"])" gTypeHTMLOListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLObjectElement".
 -- Base interface functions are in:
@@ -13474,7 +13474,7 @@ noHTMLObjectElement :: Maybe HTMLObjectElement
 noHTMLObjectElement = Nothing
 {-# INLINE noHTMLObjectElement #-}
 
-foreign import javascript unsafe "window[\"HTMLObjectElement\"]" gTypeHTMLObjectElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLObjectElement\"])" gTypeHTMLObjectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptGroupElement".
 -- Base interface functions are in:
@@ -13533,7 +13533,7 @@ noHTMLOptGroupElement :: Maybe HTMLOptGroupElement
 noHTMLOptGroupElement = Nothing
 {-# INLINE noHTMLOptGroupElement #-}
 
-foreign import javascript unsafe "window[\"HTMLOptGroupElement\"]" gTypeHTMLOptGroupElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLOptGroupElement\"])" gTypeHTMLOptGroupElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionElement".
 -- Base interface functions are in:
@@ -13592,7 +13592,7 @@ noHTMLOptionElement :: Maybe HTMLOptionElement
 noHTMLOptionElement = Nothing
 {-# INLINE noHTMLOptionElement #-}
 
-foreign import javascript unsafe "window[\"HTMLOptionElement\"]" gTypeHTMLOptionElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLOptionElement\"])" gTypeHTMLOptionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOptionsCollection".
 -- Base interface functions are in:
@@ -13629,7 +13629,7 @@ noHTMLOptionsCollection :: Maybe HTMLOptionsCollection
 noHTMLOptionsCollection = Nothing
 {-# INLINE noHTMLOptionsCollection #-}
 
-foreign import javascript unsafe "window[\"HTMLOptionsCollection\"]" gTypeHTMLOptionsCollection :: GType
+foreign import javascript unsafe "(() => window[\"HTMLOptionsCollection\"])" gTypeHTMLOptionsCollection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLOutputElement".
 -- Base interface functions are in:
@@ -13688,7 +13688,7 @@ noHTMLOutputElement :: Maybe HTMLOutputElement
 noHTMLOutputElement = Nothing
 {-# INLINE noHTMLOutputElement #-}
 
-foreign import javascript unsafe "window[\"HTMLOutputElement\"]" gTypeHTMLOutputElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLOutputElement\"])" gTypeHTMLOutputElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParagraphElement".
 -- Base interface functions are in:
@@ -13747,7 +13747,7 @@ noHTMLParagraphElement :: Maybe HTMLParagraphElement
 noHTMLParagraphElement = Nothing
 {-# INLINE noHTMLParagraphElement #-}
 
-foreign import javascript unsafe "window[\"HTMLParagraphElement\"]" gTypeHTMLParagraphElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLParagraphElement\"])" gTypeHTMLParagraphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLParamElement".
 -- Base interface functions are in:
@@ -13806,7 +13806,7 @@ noHTMLParamElement :: Maybe HTMLParamElement
 noHTMLParamElement = Nothing
 {-# INLINE noHTMLParamElement #-}
 
-foreign import javascript unsafe "window[\"HTMLParamElement\"]" gTypeHTMLParamElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLParamElement\"])" gTypeHTMLParamElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLPictureElement".
 -- Base interface functions are in:
@@ -13865,7 +13865,7 @@ noHTMLPictureElement :: Maybe HTMLPictureElement
 noHTMLPictureElement = Nothing
 {-# INLINE noHTMLPictureElement #-}
 
-foreign import javascript unsafe "window[\"HTMLPictureElement\"]" gTypeHTMLPictureElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLPictureElement\"])" gTypeHTMLPictureElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLPreElement".
 -- Base interface functions are in:
@@ -13924,7 +13924,7 @@ noHTMLPreElement :: Maybe HTMLPreElement
 noHTMLPreElement = Nothing
 {-# INLINE noHTMLPreElement #-}
 
-foreign import javascript unsafe "window[\"HTMLPreElement\"]" gTypeHTMLPreElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLPreElement\"])" gTypeHTMLPreElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLProgressElement".
 -- Base interface functions are in:
@@ -13983,7 +13983,7 @@ noHTMLProgressElement :: Maybe HTMLProgressElement
 noHTMLProgressElement = Nothing
 {-# INLINE noHTMLProgressElement #-}
 
-foreign import javascript unsafe "window[\"HTMLProgressElement\"]" gTypeHTMLProgressElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLProgressElement\"])" gTypeHTMLProgressElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLQuoteElement".
 -- Base interface functions are in:
@@ -14042,7 +14042,7 @@ noHTMLQuoteElement :: Maybe HTMLQuoteElement
 noHTMLQuoteElement = Nothing
 {-# INLINE noHTMLQuoteElement #-}
 
-foreign import javascript unsafe "window[\"HTMLQuoteElement\"]" gTypeHTMLQuoteElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLQuoteElement\"])" gTypeHTMLQuoteElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLScriptElement".
 -- Base interface functions are in:
@@ -14101,7 +14101,7 @@ noHTMLScriptElement :: Maybe HTMLScriptElement
 noHTMLScriptElement = Nothing
 {-# INLINE noHTMLScriptElement #-}
 
-foreign import javascript unsafe "window[\"HTMLScriptElement\"]" gTypeHTMLScriptElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLScriptElement\"])" gTypeHTMLScriptElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSelectElement".
 -- Base interface functions are in:
@@ -14160,7 +14160,7 @@ noHTMLSelectElement :: Maybe HTMLSelectElement
 noHTMLSelectElement = Nothing
 {-# INLINE noHTMLSelectElement #-}
 
-foreign import javascript unsafe "window[\"HTMLSelectElement\"]" gTypeHTMLSelectElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLSelectElement\"])" gTypeHTMLSelectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSlotElement".
 -- Base interface functions are in:
@@ -14219,7 +14219,7 @@ noHTMLSlotElement :: Maybe HTMLSlotElement
 noHTMLSlotElement = Nothing
 {-# INLINE noHTMLSlotElement #-}
 
-foreign import javascript unsafe "window[\"HTMLSlotElement\"]" gTypeHTMLSlotElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLSlotElement\"])" gTypeHTMLSlotElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSourceElement".
 -- Base interface functions are in:
@@ -14278,7 +14278,7 @@ noHTMLSourceElement :: Maybe HTMLSourceElement
 noHTMLSourceElement = Nothing
 {-# INLINE noHTMLSourceElement #-}
 
-foreign import javascript unsafe "window[\"HTMLSourceElement\"]" gTypeHTMLSourceElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLSourceElement\"])" gTypeHTMLSourceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLSpanElement".
 -- Base interface functions are in:
@@ -14337,7 +14337,7 @@ noHTMLSpanElement :: Maybe HTMLSpanElement
 noHTMLSpanElement = Nothing
 {-# INLINE noHTMLSpanElement #-}
 
-foreign import javascript unsafe "window[\"HTMLSpanElement\"]" gTypeHTMLSpanElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLSpanElement\"])" gTypeHTMLSpanElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLStyleElement".
 -- Base interface functions are in:
@@ -14396,7 +14396,7 @@ noHTMLStyleElement :: Maybe HTMLStyleElement
 noHTMLStyleElement = Nothing
 {-# INLINE noHTMLStyleElement #-}
 
-foreign import javascript unsafe "window[\"HTMLStyleElement\"]" gTypeHTMLStyleElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLStyleElement\"])" gTypeHTMLStyleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCaptionElement".
 -- Base interface functions are in:
@@ -14455,7 +14455,7 @@ noHTMLTableCaptionElement :: Maybe HTMLTableCaptionElement
 noHTMLTableCaptionElement = Nothing
 {-# INLINE noHTMLTableCaptionElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableCaptionElement\"]" gTypeHTMLTableCaptionElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableCaptionElement\"])" gTypeHTMLTableCaptionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableCellElement".
 -- Base interface functions are in:
@@ -14514,7 +14514,7 @@ noHTMLTableCellElement :: Maybe HTMLTableCellElement
 noHTMLTableCellElement = Nothing
 {-# INLINE noHTMLTableCellElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableCellElement\"]" gTypeHTMLTableCellElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableCellElement\"])" gTypeHTMLTableCellElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableColElement".
 -- Base interface functions are in:
@@ -14573,7 +14573,7 @@ noHTMLTableColElement :: Maybe HTMLTableColElement
 noHTMLTableColElement = Nothing
 {-# INLINE noHTMLTableColElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableColElement\"]" gTypeHTMLTableColElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableColElement\"])" gTypeHTMLTableColElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableElement".
 -- Base interface functions are in:
@@ -14632,7 +14632,7 @@ noHTMLTableElement :: Maybe HTMLTableElement
 noHTMLTableElement = Nothing
 {-# INLINE noHTMLTableElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableElement\"]" gTypeHTMLTableElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableElement\"])" gTypeHTMLTableElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableRowElement".
 -- Base interface functions are in:
@@ -14691,7 +14691,7 @@ noHTMLTableRowElement :: Maybe HTMLTableRowElement
 noHTMLTableRowElement = Nothing
 {-# INLINE noHTMLTableRowElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableRowElement\"]" gTypeHTMLTableRowElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableRowElement\"])" gTypeHTMLTableRowElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTableSectionElement".
 -- Base interface functions are in:
@@ -14750,7 +14750,7 @@ noHTMLTableSectionElement :: Maybe HTMLTableSectionElement
 noHTMLTableSectionElement = Nothing
 {-# INLINE noHTMLTableSectionElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTableSectionElement\"]" gTypeHTMLTableSectionElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTableSectionElement\"])" gTypeHTMLTableSectionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTemplateElement".
 -- Base interface functions are in:
@@ -14809,7 +14809,7 @@ noHTMLTemplateElement :: Maybe HTMLTemplateElement
 noHTMLTemplateElement = Nothing
 {-# INLINE noHTMLTemplateElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTemplateElement\"]" gTypeHTMLTemplateElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTemplateElement\"])" gTypeHTMLTemplateElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTextAreaElement".
 -- Base interface functions are in:
@@ -14868,7 +14868,7 @@ noHTMLTextAreaElement :: Maybe HTMLTextAreaElement
 noHTMLTextAreaElement = Nothing
 {-# INLINE noHTMLTextAreaElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTextAreaElement\"]" gTypeHTMLTextAreaElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTextAreaElement\"])" gTypeHTMLTextAreaElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTimeElement".
 -- Base interface functions are in:
@@ -14927,7 +14927,7 @@ noHTMLTimeElement :: Maybe HTMLTimeElement
 noHTMLTimeElement = Nothing
 {-# INLINE noHTMLTimeElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTimeElement\"]" gTypeHTMLTimeElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTimeElement\"])" gTypeHTMLTimeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTitleElement".
 -- Base interface functions are in:
@@ -14986,7 +14986,7 @@ noHTMLTitleElement :: Maybe HTMLTitleElement
 noHTMLTitleElement = Nothing
 {-# INLINE noHTMLTitleElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTitleElement\"]" gTypeHTMLTitleElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTitleElement\"])" gTypeHTMLTitleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLTrackElement".
 -- Base interface functions are in:
@@ -15045,7 +15045,7 @@ noHTMLTrackElement :: Maybe HTMLTrackElement
 noHTMLTrackElement = Nothing
 {-# INLINE noHTMLTrackElement #-}
 
-foreign import javascript unsafe "window[\"HTMLTrackElement\"]" gTypeHTMLTrackElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLTrackElement\"])" gTypeHTMLTrackElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUListElement".
 -- Base interface functions are in:
@@ -15104,7 +15104,7 @@ noHTMLUListElement :: Maybe HTMLUListElement
 noHTMLUListElement = Nothing
 {-# INLINE noHTMLUListElement #-}
 
-foreign import javascript unsafe "window[\"HTMLUListElement\"]" gTypeHTMLUListElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLUListElement\"])" gTypeHTMLUListElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLUnknownElement".
 -- Base interface functions are in:
@@ -15163,7 +15163,7 @@ noHTMLUnknownElement :: Maybe HTMLUnknownElement
 noHTMLUnknownElement = Nothing
 {-# INLINE noHTMLUnknownElement #-}
 
-foreign import javascript unsafe "window[\"HTMLUnknownElement\"]" gTypeHTMLUnknownElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLUnknownElement\"])" gTypeHTMLUnknownElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HTMLVideoElement".
 -- Base interface functions are in:
@@ -15224,7 +15224,7 @@ noHTMLVideoElement :: Maybe HTMLVideoElement
 noHTMLVideoElement = Nothing
 {-# INLINE noHTMLVideoElement #-}
 
-foreign import javascript unsafe "window[\"HTMLVideoElement\"]" gTypeHTMLVideoElement :: GType
+foreign import javascript unsafe "(() => window[\"HTMLVideoElement\"])" gTypeHTMLVideoElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HashChangeEvent".
 -- Base interface functions are in:
@@ -15261,7 +15261,7 @@ noHashChangeEvent :: Maybe HashChangeEvent
 noHashChangeEvent = Nothing
 {-# INLINE noHashChangeEvent #-}
 
-foreign import javascript unsafe "window[\"HashChangeEvent\"]" gTypeHashChangeEvent :: GType
+foreign import javascript unsafe "(() => window[\"HashChangeEvent\"])" gTypeHashChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HashChangeEventInit".
 -- Base interface functions are in:
@@ -15298,7 +15298,7 @@ noHashChangeEventInit :: Maybe HashChangeEventInit
 noHashChangeEventInit = Nothing
 {-# INLINE noHashChangeEventInit #-}
 
-foreign import javascript unsafe "window[\"HashChangeEventInit\"]" gTypeHashChangeEventInit :: GType
+foreign import javascript unsafe "(() => window[\"HashChangeEventInit\"])" gTypeHashChangeEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Headers".
 --
@@ -15331,7 +15331,7 @@ noHeaders :: Maybe Headers
 noHeaders = Nothing
 {-# INLINE noHeaders #-}
 
-foreign import javascript unsafe "window[\"Headers\"]" gTypeHeaders :: GType
+foreign import javascript unsafe "(() => window[\"Headers\"])" gTypeHeaders :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.History".
 --
@@ -15364,7 +15364,7 @@ noHistory :: Maybe History
 noHistory = Nothing
 {-# INLINE noHistory #-}
 
-foreign import javascript unsafe "window[\"History\"]" gTypeHistory :: GType
+foreign import javascript unsafe "(() => window[\"History\"])" gTypeHistory :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HkdfParams".
 -- Base interface functions are in:
@@ -15401,7 +15401,7 @@ noHkdfParams :: Maybe HkdfParams
 noHkdfParams = Nothing
 {-# INLINE noHkdfParams #-}
 
-foreign import javascript unsafe "window[\"HkdfParams\"]" gTypeHkdfParams :: GType
+foreign import javascript unsafe "(() => window[\"HkdfParams\"])" gTypeHkdfParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.HmacKeyParams".
 -- Base interface functions are in:
@@ -15438,7 +15438,7 @@ noHmacKeyParams :: Maybe HmacKeyParams
 noHmacKeyParams = Nothing
 {-# INLINE noHmacKeyParams #-}
 
-foreign import javascript unsafe "window[\"HmacKeyParams\"]" gTypeHmacKeyParams :: GType
+foreign import javascript unsafe "(() => window[\"HmacKeyParams\"])" gTypeHmacKeyParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursor".
 --
@@ -15476,7 +15476,7 @@ noIDBCursor :: Maybe IDBCursor
 noIDBCursor = Nothing
 {-# INLINE noIDBCursor #-}
 
-foreign import javascript unsafe "window[\"IDBCursor\"]" gTypeIDBCursor :: GType
+foreign import javascript unsafe "(() => window[\"IDBCursor\"])" gTypeIDBCursor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBCursorWithValue".
 -- Base interface functions are in:
@@ -15513,7 +15513,7 @@ noIDBCursorWithValue :: Maybe IDBCursorWithValue
 noIDBCursorWithValue = Nothing
 {-# INLINE noIDBCursorWithValue #-}
 
-foreign import javascript unsafe "window[\"IDBCursorWithValue\"]" gTypeIDBCursorWithValue :: GType
+foreign import javascript unsafe "(() => window[\"IDBCursorWithValue\"])" gTypeIDBCursorWithValue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBDatabase".
 -- Base interface functions are in:
@@ -15550,7 +15550,7 @@ noIDBDatabase :: Maybe IDBDatabase
 noIDBDatabase = Nothing
 {-# INLINE noIDBDatabase #-}
 
-foreign import javascript unsafe "window[\"IDBDatabase\"]" gTypeIDBDatabase :: GType
+foreign import javascript unsafe "(() => window[\"IDBDatabase\"])" gTypeIDBDatabase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBFactory".
 --
@@ -15583,7 +15583,7 @@ noIDBFactory :: Maybe IDBFactory
 noIDBFactory = Nothing
 {-# INLINE noIDBFactory #-}
 
-foreign import javascript unsafe "window[\"IDBFactory\"]" gTypeIDBFactory :: GType
+foreign import javascript unsafe "(() => window[\"IDBFactory\"])" gTypeIDBFactory :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndex".
 --
@@ -15616,7 +15616,7 @@ noIDBIndex :: Maybe IDBIndex
 noIDBIndex = Nothing
 {-# INLINE noIDBIndex #-}
 
-foreign import javascript unsafe "window[\"IDBIndex\"]" gTypeIDBIndex :: GType
+foreign import javascript unsafe "(() => window[\"IDBIndex\"])" gTypeIDBIndex :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBIndexParameters".
 --
@@ -15649,7 +15649,7 @@ noIDBIndexParameters :: Maybe IDBIndexParameters
 noIDBIndexParameters = Nothing
 {-# INLINE noIDBIndexParameters #-}
 
-foreign import javascript unsafe "window[\"IDBIndexParameters\"]" gTypeIDBIndexParameters :: GType
+foreign import javascript unsafe "(() => window[\"IDBIndexParameters\"])" gTypeIDBIndexParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBKeyRange".
 --
@@ -15682,7 +15682,7 @@ noIDBKeyRange :: Maybe IDBKeyRange
 noIDBKeyRange = Nothing
 {-# INLINE noIDBKeyRange #-}
 
-foreign import javascript unsafe "window[\"IDBKeyRange\"]" gTypeIDBKeyRange :: GType
+foreign import javascript unsafe "(() => window[\"IDBKeyRange\"])" gTypeIDBKeyRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStore".
 --
@@ -15715,7 +15715,7 @@ noIDBObjectStore :: Maybe IDBObjectStore
 noIDBObjectStore = Nothing
 {-# INLINE noIDBObjectStore #-}
 
-foreign import javascript unsafe "window[\"IDBObjectStore\"]" gTypeIDBObjectStore :: GType
+foreign import javascript unsafe "(() => window[\"IDBObjectStore\"])" gTypeIDBObjectStore :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBObjectStoreParameters".
 --
@@ -15748,7 +15748,7 @@ noIDBObjectStoreParameters :: Maybe IDBObjectStoreParameters
 noIDBObjectStoreParameters = Nothing
 {-# INLINE noIDBObjectStoreParameters #-}
 
-foreign import javascript unsafe "window[\"IDBObjectStoreParameters\"]" gTypeIDBObjectStoreParameters :: GType
+foreign import javascript unsafe "(() => window[\"IDBObjectStoreParameters\"])" gTypeIDBObjectStoreParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBOpenDBRequest".
 -- Base interface functions are in:
@@ -15787,7 +15787,7 @@ noIDBOpenDBRequest :: Maybe IDBOpenDBRequest
 noIDBOpenDBRequest = Nothing
 {-# INLINE noIDBOpenDBRequest #-}
 
-foreign import javascript unsafe "window[\"IDBOpenDBRequest\"]" gTypeIDBOpenDBRequest :: GType
+foreign import javascript unsafe "(() => window[\"IDBOpenDBRequest\"])" gTypeIDBOpenDBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBRequest".
 -- Base interface functions are in:
@@ -15829,7 +15829,7 @@ noIDBRequest :: Maybe IDBRequest
 noIDBRequest = Nothing
 {-# INLINE noIDBRequest #-}
 
-foreign import javascript unsafe "window[\"IDBRequest\"]" gTypeIDBRequest :: GType
+foreign import javascript unsafe "(() => window[\"IDBRequest\"])" gTypeIDBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBTransaction".
 -- Base interface functions are in:
@@ -15866,7 +15866,7 @@ noIDBTransaction :: Maybe IDBTransaction
 noIDBTransaction = Nothing
 {-# INLINE noIDBTransaction #-}
 
-foreign import javascript unsafe "window[\"IDBTransaction\"]" gTypeIDBTransaction :: GType
+foreign import javascript unsafe "(() => window[\"IDBTransaction\"])" gTypeIDBTransaction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBVersionChangeEvent".
 -- Base interface functions are in:
@@ -15903,7 +15903,7 @@ noIDBVersionChangeEvent :: Maybe IDBVersionChangeEvent
 noIDBVersionChangeEvent = Nothing
 {-# INLINE noIDBVersionChangeEvent #-}
 
-foreign import javascript unsafe "window[\"IDBVersionChangeEvent\"]" gTypeIDBVersionChangeEvent :: GType
+foreign import javascript unsafe "(() => window[\"IDBVersionChangeEvent\"])" gTypeIDBVersionChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IDBVersionChangeEventInit".
 -- Base interface functions are in:
@@ -15940,7 +15940,7 @@ noIDBVersionChangeEventInit :: Maybe IDBVersionChangeEventInit
 noIDBVersionChangeEventInit = Nothing
 {-# INLINE noIDBVersionChangeEventInit #-}
 
-foreign import javascript unsafe "window[\"IDBVersionChangeEventInit\"]" gTypeIDBVersionChangeEventInit :: GType
+foreign import javascript unsafe "(() => window[\"IDBVersionChangeEventInit\"])" gTypeIDBVersionChangeEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ImageData".
 --
@@ -15973,7 +15973,7 @@ noImageData :: Maybe ImageData
 noImageData = Nothing
 {-# INLINE noImageData #-}
 
-foreign import javascript unsafe "window[\"ImageData\"]" gTypeImageData :: GType
+foreign import javascript unsafe "(() => window[\"ImageData\"])" gTypeImageData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.InputEvent".
 -- Base interface functions are in:
@@ -16012,7 +16012,7 @@ noInputEvent :: Maybe InputEvent
 noInputEvent = Nothing
 {-# INLINE noInputEvent #-}
 
-foreign import javascript unsafe "window[\"InputEvent\"]" gTypeInputEvent :: GType
+foreign import javascript unsafe "(() => window[\"InputEvent\"])" gTypeInputEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.InputEventInit".
 -- Base interface functions are in:
@@ -16051,7 +16051,7 @@ noInputEventInit :: Maybe InputEventInit
 noInputEventInit = Nothing
 {-# INLINE noInputEventInit #-}
 
-foreign import javascript unsafe "window[\"InputEventInit\"]" gTypeInputEventInit :: GType
+foreign import javascript unsafe "(() => window[\"InputEventInit\"])" gTypeInputEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.InspectorFrontendHost".
 --
@@ -16084,7 +16084,7 @@ noInspectorFrontendHost :: Maybe InspectorFrontendHost
 noInspectorFrontendHost = Nothing
 {-# INLINE noInspectorFrontendHost #-}
 
-foreign import javascript unsafe "window[\"InspectorFrontendHost\"]" gTypeInspectorFrontendHost :: GType
+foreign import javascript unsafe "(() => window[\"InspectorFrontendHost\"])" gTypeInspectorFrontendHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IntersectionObserver".
 --
@@ -16117,7 +16117,7 @@ noIntersectionObserver :: Maybe IntersectionObserver
 noIntersectionObserver = Nothing
 {-# INLINE noIntersectionObserver #-}
 
-foreign import javascript unsafe "window[\"IntersectionObserver\"]" gTypeIntersectionObserver :: GType
+foreign import javascript unsafe "(() => window[\"IntersectionObserver\"])" gTypeIntersectionObserver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IntersectionObserverEntry".
 --
@@ -16150,7 +16150,7 @@ noIntersectionObserverEntry :: Maybe IntersectionObserverEntry
 noIntersectionObserverEntry = Nothing
 {-# INLINE noIntersectionObserverEntry #-}
 
-foreign import javascript unsafe "window[\"IntersectionObserverEntry\"]" gTypeIntersectionObserverEntry :: GType
+foreign import javascript unsafe "(() => window[\"IntersectionObserverEntry\"])" gTypeIntersectionObserverEntry :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IntersectionObserverEntryInit".
 --
@@ -16183,7 +16183,7 @@ noIntersectionObserverEntryInit :: Maybe IntersectionObserverEntryInit
 noIntersectionObserverEntryInit = Nothing
 {-# INLINE noIntersectionObserverEntryInit #-}
 
-foreign import javascript unsafe "window[\"IntersectionObserverEntryInit\"]" gTypeIntersectionObserverEntryInit :: GType
+foreign import javascript unsafe "(() => window[\"IntersectionObserverEntryInit\"])" gTypeIntersectionObserverEntryInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.IntersectionObserverInit".
 --
@@ -16216,7 +16216,7 @@ noIntersectionObserverInit :: Maybe IntersectionObserverInit
 noIntersectionObserverInit = Nothing
 {-# INLINE noIntersectionObserverInit #-}
 
-foreign import javascript unsafe "window[\"IntersectionObserverInit\"]" gTypeIntersectionObserverInit :: GType
+foreign import javascript unsafe "(() => window[\"IntersectionObserverInit\"])" gTypeIntersectionObserverInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.JsonWebKey".
 --
@@ -16249,7 +16249,7 @@ noJsonWebKey :: Maybe JsonWebKey
 noJsonWebKey = Nothing
 {-# INLINE noJsonWebKey #-}
 
-foreign import javascript unsafe "window[\"JsonWebKey\"]" gTypeJsonWebKey :: GType
+foreign import javascript unsafe "(() => window[\"JsonWebKey\"])" gTypeJsonWebKey :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.KeyboardEvent".
 -- Base interface functions are in:
@@ -16288,7 +16288,7 @@ noKeyboardEvent :: Maybe KeyboardEvent
 noKeyboardEvent = Nothing
 {-# INLINE noKeyboardEvent #-}
 
-foreign import javascript unsafe "window[\"KeyboardEvent\"]" gTypeKeyboardEvent :: GType
+foreign import javascript unsafe "(() => window[\"KeyboardEvent\"])" gTypeKeyboardEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.KeyboardEventInit".
 -- Base interface functions are in:
@@ -16329,7 +16329,7 @@ noKeyboardEventInit :: Maybe KeyboardEventInit
 noKeyboardEventInit = Nothing
 {-# INLINE noKeyboardEventInit #-}
 
-foreign import javascript unsafe "window[\"KeyboardEventInit\"]" gTypeKeyboardEventInit :: GType
+foreign import javascript unsafe "(() => window[\"KeyboardEventInit\"])" gTypeKeyboardEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.KeyframeEffect".
 -- Base interface functions are in:
@@ -16366,7 +16366,7 @@ noKeyframeEffect :: Maybe KeyframeEffect
 noKeyframeEffect = Nothing
 {-# INLINE noKeyframeEffect #-}
 
-foreign import javascript unsafe "window[\"KeyframeEffect\"]" gTypeKeyframeEffect :: GType
+foreign import javascript unsafe "(() => window[\"KeyframeEffect\"])" gTypeKeyframeEffect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Location".
 --
@@ -16399,7 +16399,7 @@ noLocation :: Maybe Location
 noLocation = Nothing
 {-# INLINE noLocation #-}
 
-foreign import javascript unsafe "window[\"Location\"]" gTypeLocation :: GType
+foreign import javascript unsafe "(() => window[\"Location\"])" gTypeLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.LongRange".
 --
@@ -16437,7 +16437,7 @@ noLongRange :: Maybe LongRange
 noLongRange = Nothing
 {-# INLINE noLongRange #-}
 
-foreign import javascript unsafe "window[\"LongRange\"]" gTypeLongRange :: GType
+foreign import javascript unsafe "(() => window[\"LongRange\"])" gTypeLongRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaController".
 -- Base interface functions are in:
@@ -16474,7 +16474,7 @@ noMediaController :: Maybe MediaController
 noMediaController = Nothing
 {-# INLINE noMediaController #-}
 
-foreign import javascript unsafe "window[\"MediaController\"]" gTypeMediaController :: GType
+foreign import javascript unsafe "(() => window[\"MediaController\"])" gTypeMediaController :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaControlsHost".
 --
@@ -16507,7 +16507,7 @@ noMediaControlsHost :: Maybe MediaControlsHost
 noMediaControlsHost = Nothing
 {-# INLINE noMediaControlsHost #-}
 
-foreign import javascript unsafe "window[\"MediaControlsHost\"]" gTypeMediaControlsHost :: GType
+foreign import javascript unsafe "(() => window[\"MediaControlsHost\"])" gTypeMediaControlsHost :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaDeviceInfo".
 --
@@ -16540,7 +16540,7 @@ noMediaDeviceInfo :: Maybe MediaDeviceInfo
 noMediaDeviceInfo = Nothing
 {-# INLINE noMediaDeviceInfo #-}
 
-foreign import javascript unsafe "window[\"MediaDeviceInfo\"]" gTypeMediaDeviceInfo :: GType
+foreign import javascript unsafe "(() => window[\"MediaDeviceInfo\"])" gTypeMediaDeviceInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaDevices".
 --
@@ -16573,7 +16573,7 @@ noMediaDevices :: Maybe MediaDevices
 noMediaDevices = Nothing
 {-# INLINE noMediaDevices #-}
 
-foreign import javascript unsafe "window[\"MediaDevices\"]" gTypeMediaDevices :: GType
+foreign import javascript unsafe "(() => window[\"MediaDevices\"])" gTypeMediaDevices :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaElementAudioSourceNode".
 -- Base interface functions are in:
@@ -16612,7 +16612,7 @@ noMediaElementAudioSourceNode :: Maybe MediaElementAudioSourceNode
 noMediaElementAudioSourceNode = Nothing
 {-# INLINE noMediaElementAudioSourceNode #-}
 
-foreign import javascript unsafe "window[\"MediaElementAudioSourceNode\"]" gTypeMediaElementAudioSourceNode :: GType
+foreign import javascript unsafe "(() => window[\"MediaElementAudioSourceNode\"])" gTypeMediaElementAudioSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaEncryptedEvent".
 -- Base interface functions are in:
@@ -16649,7 +16649,7 @@ noMediaEncryptedEvent :: Maybe MediaEncryptedEvent
 noMediaEncryptedEvent = Nothing
 {-# INLINE noMediaEncryptedEvent #-}
 
-foreign import javascript unsafe "window[\"MediaEncryptedEvent\"]" gTypeMediaEncryptedEvent :: GType
+foreign import javascript unsafe "(() => window[\"MediaEncryptedEvent\"])" gTypeMediaEncryptedEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaEncryptedEventInit".
 -- Base interface functions are in:
@@ -16686,7 +16686,7 @@ noMediaEncryptedEventInit :: Maybe MediaEncryptedEventInit
 noMediaEncryptedEventInit = Nothing
 {-# INLINE noMediaEncryptedEventInit #-}
 
-foreign import javascript unsafe "window[\"MediaEncryptedEventInit\"]" gTypeMediaEncryptedEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MediaEncryptedEventInit\"])" gTypeMediaEncryptedEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaError".
 --
@@ -16719,7 +16719,7 @@ noMediaError :: Maybe MediaError
 noMediaError = Nothing
 {-# INLINE noMediaError #-}
 
-foreign import javascript unsafe "window[\"MediaError\"]" gTypeMediaError :: GType
+foreign import javascript unsafe "(() => window[\"MediaError\"])" gTypeMediaError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyMessageEvent".
 -- Base interface functions are in:
@@ -16756,7 +16756,7 @@ noMediaKeyMessageEvent :: Maybe MediaKeyMessageEvent
 noMediaKeyMessageEvent = Nothing
 {-# INLINE noMediaKeyMessageEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeMediaKeyMessageEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyMessageEvent\"])" gTypeMediaKeyMessageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyMessageEventInit".
 -- Base interface functions are in:
@@ -16793,7 +16793,7 @@ noMediaKeyMessageEventInit :: Maybe MediaKeyMessageEventInit
 noMediaKeyMessageEventInit = Nothing
 {-# INLINE noMediaKeyMessageEventInit #-}
 
-foreign import javascript unsafe "window[\"MediaKeyMessageEventInit\"]" gTypeMediaKeyMessageEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MediaKeyMessageEventInit\"])" gTypeMediaKeyMessageEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySession".
 -- Base interface functions are in:
@@ -16830,7 +16830,7 @@ noMediaKeySession :: Maybe MediaKeySession
 noMediaKeySession = Nothing
 {-# INLINE noMediaKeySession #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeMediaKeySession :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeySession\"])" gTypeMediaKeySession :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeyStatusMap".
 --
@@ -16863,7 +16863,7 @@ noMediaKeyStatusMap :: Maybe MediaKeyStatusMap
 noMediaKeyStatusMap = Nothing
 {-# INLINE noMediaKeyStatusMap #-}
 
-foreign import javascript unsafe "window[\"MediaKeyStatusMap\"]" gTypeMediaKeyStatusMap :: GType
+foreign import javascript unsafe "(() => window[\"MediaKeyStatusMap\"])" gTypeMediaKeyStatusMap :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySystemAccess".
 --
@@ -16896,7 +16896,7 @@ noMediaKeySystemAccess :: Maybe MediaKeySystemAccess
 noMediaKeySystemAccess = Nothing
 {-# INLINE noMediaKeySystemAccess #-}
 
-foreign import javascript unsafe "window[\"MediaKeySystemAccess\"]" gTypeMediaKeySystemAccess :: GType
+foreign import javascript unsafe "(() => window[\"MediaKeySystemAccess\"])" gTypeMediaKeySystemAccess :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySystemConfiguration".
 --
@@ -16929,7 +16929,7 @@ noMediaKeySystemConfiguration :: Maybe MediaKeySystemConfiguration
 noMediaKeySystemConfiguration = Nothing
 {-# INLINE noMediaKeySystemConfiguration #-}
 
-foreign import javascript unsafe "window[\"MediaKeySystemConfiguration\"]" gTypeMediaKeySystemConfiguration :: GType
+foreign import javascript unsafe "(() => window[\"MediaKeySystemConfiguration\"])" gTypeMediaKeySystemConfiguration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeySystemMediaCapability".
 --
@@ -16962,7 +16962,7 @@ noMediaKeySystemMediaCapability :: Maybe MediaKeySystemMediaCapability
 noMediaKeySystemMediaCapability = Nothing
 {-# INLINE noMediaKeySystemMediaCapability #-}
 
-foreign import javascript unsafe "window[\"MediaKeySystemMediaCapability\"]" gTypeMediaKeySystemMediaCapability :: GType
+foreign import javascript unsafe "(() => window[\"MediaKeySystemMediaCapability\"])" gTypeMediaKeySystemMediaCapability :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaKeys".
 --
@@ -16995,7 +16995,7 @@ noMediaKeys :: Maybe MediaKeys
 noMediaKeys = Nothing
 {-# INLINE noMediaKeys #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeMediaKeys :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeys\"])" gTypeMediaKeys :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaList".
 --
@@ -17028,7 +17028,7 @@ noMediaList :: Maybe MediaList
 noMediaList = Nothing
 {-# INLINE noMediaList #-}
 
-foreign import javascript unsafe "window[\"MediaList\"]" gTypeMediaList :: GType
+foreign import javascript unsafe "(() => window[\"MediaList\"])" gTypeMediaList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaMetadata".
 --
@@ -17061,7 +17061,7 @@ noMediaMetadata :: Maybe MediaMetadata
 noMediaMetadata = Nothing
 {-# INLINE noMediaMetadata #-}
 
-foreign import javascript unsafe "window[\"MediaMetadata\"]" gTypeMediaMetadata :: GType
+foreign import javascript unsafe "(() => window[\"MediaMetadata\"])" gTypeMediaMetadata :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaQueryList".
 --
@@ -17094,7 +17094,7 @@ noMediaQueryList :: Maybe MediaQueryList
 noMediaQueryList = Nothing
 {-# INLINE noMediaQueryList #-}
 
-foreign import javascript unsafe "window[\"MediaQueryList\"]" gTypeMediaQueryList :: GType
+foreign import javascript unsafe "(() => window[\"MediaQueryList\"])" gTypeMediaQueryList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaRemoteControls".
 -- Base interface functions are in:
@@ -17131,7 +17131,7 @@ noMediaRemoteControls :: Maybe MediaRemoteControls
 noMediaRemoteControls = Nothing
 {-# INLINE noMediaRemoteControls #-}
 
-foreign import javascript unsafe "window[\"MediaRemoteControls\"]" gTypeMediaRemoteControls :: GType
+foreign import javascript unsafe "(() => window[\"MediaRemoteControls\"])" gTypeMediaRemoteControls :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSession".
 --
@@ -17164,7 +17164,7 @@ noMediaSession :: Maybe MediaSession
 noMediaSession = Nothing
 {-# INLINE noMediaSession #-}
 
-foreign import javascript unsafe "window[\"MediaSession\"]" gTypeMediaSession :: GType
+foreign import javascript unsafe "(() => window[\"MediaSession\"])" gTypeMediaSession :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaSource".
 -- Base interface functions are in:
@@ -17201,7 +17201,7 @@ noMediaSource :: Maybe MediaSource
 noMediaSource = Nothing
 {-# INLINE noMediaSource #-}
 
-foreign import javascript unsafe "window[\"MediaSource\"]" gTypeMediaSource :: GType
+foreign import javascript unsafe "(() => window[\"MediaSource\"])" gTypeMediaSource :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStream".
 -- Base interface functions are in:
@@ -17238,7 +17238,7 @@ noMediaStream :: Maybe MediaStream
 noMediaStream = Nothing
 {-# INLINE noMediaStream #-}
 
-foreign import javascript unsafe "window[\"webkitMediaStream\"]" gTypeMediaStream :: GType
+foreign import javascript unsafe "(() => window[\"webkitMediaStream\"])" gTypeMediaStream :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioDestinationNode".
 -- Base interface functions are in:
@@ -17277,7 +17277,7 @@ noMediaStreamAudioDestinationNode :: Maybe MediaStreamAudioDestinationNode
 noMediaStreamAudioDestinationNode = Nothing
 {-# INLINE noMediaStreamAudioDestinationNode #-}
 
-foreign import javascript unsafe "window[\"MediaStreamAudioDestinationNode\"]" gTypeMediaStreamAudioDestinationNode :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamAudioDestinationNode\"])" gTypeMediaStreamAudioDestinationNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamAudioSourceNode".
 -- Base interface functions are in:
@@ -17316,7 +17316,7 @@ noMediaStreamAudioSourceNode :: Maybe MediaStreamAudioSourceNode
 noMediaStreamAudioSourceNode = Nothing
 {-# INLINE noMediaStreamAudioSourceNode #-}
 
-foreign import javascript unsafe "window[\"MediaStreamAudioSourceNode\"]" gTypeMediaStreamAudioSourceNode :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamAudioSourceNode\"])" gTypeMediaStreamAudioSourceNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamConstraints".
 --
@@ -17349,7 +17349,7 @@ noMediaStreamConstraints :: Maybe MediaStreamConstraints
 noMediaStreamConstraints = Nothing
 {-# INLINE noMediaStreamConstraints #-}
 
-foreign import javascript unsafe "window[\"MediaStreamConstraints\"]" gTypeMediaStreamConstraints :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamConstraints\"])" gTypeMediaStreamConstraints :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamEvent".
 -- Base interface functions are in:
@@ -17386,7 +17386,7 @@ noMediaStreamEvent :: Maybe MediaStreamEvent
 noMediaStreamEvent = Nothing
 {-# INLINE noMediaStreamEvent #-}
 
-foreign import javascript unsafe "window[\"MediaStreamEvent\"]" gTypeMediaStreamEvent :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamEvent\"])" gTypeMediaStreamEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamEventInit".
 -- Base interface functions are in:
@@ -17423,7 +17423,7 @@ noMediaStreamEventInit :: Maybe MediaStreamEventInit
 noMediaStreamEventInit = Nothing
 {-# INLINE noMediaStreamEventInit #-}
 
-foreign import javascript unsafe "window[\"MediaStreamEventInit\"]" gTypeMediaStreamEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamEventInit\"])" gTypeMediaStreamEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrack".
 -- Base interface functions are in:
@@ -17465,7 +17465,7 @@ noMediaStreamTrack :: Maybe MediaStreamTrack
 noMediaStreamTrack = Nothing
 {-# INLINE noMediaStreamTrack #-}
 
-foreign import javascript unsafe "window[\"MediaStreamTrack\"]" gTypeMediaStreamTrack :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamTrack\"])" gTypeMediaStreamTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackEvent".
 -- Base interface functions are in:
@@ -17502,7 +17502,7 @@ noMediaStreamTrackEvent :: Maybe MediaStreamTrackEvent
 noMediaStreamTrackEvent = Nothing
 {-# INLINE noMediaStreamTrackEvent #-}
 
-foreign import javascript unsafe "window[\"MediaStreamTrackEvent\"]" gTypeMediaStreamTrackEvent :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamTrackEvent\"])" gTypeMediaStreamTrackEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaStreamTrackEventInit".
 -- Base interface functions are in:
@@ -17539,7 +17539,7 @@ noMediaStreamTrackEventInit :: Maybe MediaStreamTrackEventInit
 noMediaStreamTrackEventInit = Nothing
 {-# INLINE noMediaStreamTrackEventInit #-}
 
-foreign import javascript unsafe "window[\"MediaStreamTrackEventInit\"]" gTypeMediaStreamTrackEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MediaStreamTrackEventInit\"])" gTypeMediaStreamTrackEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackCapabilities".
 --
@@ -17572,7 +17572,7 @@ noMediaTrackCapabilities :: Maybe MediaTrackCapabilities
 noMediaTrackCapabilities = Nothing
 {-# INLINE noMediaTrackCapabilities #-}
 
-foreign import javascript unsafe "window[\"MediaTrackCapabilities\"]" gTypeMediaTrackCapabilities :: GType
+foreign import javascript unsafe "(() => window[\"MediaTrackCapabilities\"])" gTypeMediaTrackCapabilities :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraintSet".
 --
@@ -17610,7 +17610,7 @@ noMediaTrackConstraintSet :: Maybe MediaTrackConstraintSet
 noMediaTrackConstraintSet = Nothing
 {-# INLINE noMediaTrackConstraintSet #-}
 
-foreign import javascript unsafe "window[\"MediaTrackConstraintSet\"]" gTypeMediaTrackConstraintSet :: GType
+foreign import javascript unsafe "(() => window[\"MediaTrackConstraintSet\"])" gTypeMediaTrackConstraintSet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackConstraints".
 -- Base interface functions are in:
@@ -17647,7 +17647,7 @@ noMediaTrackConstraints :: Maybe MediaTrackConstraints
 noMediaTrackConstraints = Nothing
 {-# INLINE noMediaTrackConstraints #-}
 
-foreign import javascript unsafe "window[\"MediaTrackConstraints\"]" gTypeMediaTrackConstraints :: GType
+foreign import javascript unsafe "(() => window[\"MediaTrackConstraints\"])" gTypeMediaTrackConstraints :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackSettings".
 --
@@ -17680,7 +17680,7 @@ noMediaTrackSettings :: Maybe MediaTrackSettings
 noMediaTrackSettings = Nothing
 {-# INLINE noMediaTrackSettings #-}
 
-foreign import javascript unsafe "window[\"MediaTrackSettings\"]" gTypeMediaTrackSettings :: GType
+foreign import javascript unsafe "(() => window[\"MediaTrackSettings\"])" gTypeMediaTrackSettings :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MediaTrackSupportedConstraints".
 --
@@ -17713,7 +17713,7 @@ noMediaTrackSupportedConstraints :: Maybe MediaTrackSupportedConstraints
 noMediaTrackSupportedConstraints = Nothing
 {-# INLINE noMediaTrackSupportedConstraints #-}
 
-foreign import javascript unsafe "window[\"MediaTrackSupportedConstraints\"]" gTypeMediaTrackSupportedConstraints :: GType
+foreign import javascript unsafe "(() => window[\"MediaTrackSupportedConstraints\"])" gTypeMediaTrackSupportedConstraints :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessageChannel".
 --
@@ -17746,7 +17746,7 @@ noMessageChannel :: Maybe MessageChannel
 noMessageChannel = Nothing
 {-# INLINE noMessageChannel #-}
 
-foreign import javascript unsafe "window[\"MessageChannel\"]" gTypeMessageChannel :: GType
+foreign import javascript unsafe "(() => window[\"MessageChannel\"])" gTypeMessageChannel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessageEvent".
 -- Base interface functions are in:
@@ -17783,7 +17783,7 @@ noMessageEvent :: Maybe MessageEvent
 noMessageEvent = Nothing
 {-# INLINE noMessageEvent #-}
 
-foreign import javascript unsafe "window[\"MessageEvent\"]" gTypeMessageEvent :: GType
+foreign import javascript unsafe "(() => window[\"MessageEvent\"])" gTypeMessageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessageEventInit".
 -- Base interface functions are in:
@@ -17820,7 +17820,7 @@ noMessageEventInit :: Maybe MessageEventInit
 noMessageEventInit = Nothing
 {-# INLINE noMessageEventInit #-}
 
-foreign import javascript unsafe "window[\"MessageEventInit\"]" gTypeMessageEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MessageEventInit\"])" gTypeMessageEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MessagePort".
 -- Base interface functions are in:
@@ -17857,7 +17857,7 @@ noMessagePort :: Maybe MessagePort
 noMessagePort = Nothing
 {-# INLINE noMessagePort #-}
 
-foreign import javascript unsafe "window[\"MessagePort\"]" gTypeMessagePort :: GType
+foreign import javascript unsafe "(() => window[\"MessagePort\"])" gTypeMessagePort :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MimeType".
 --
@@ -17890,7 +17890,7 @@ noMimeType :: Maybe MimeType
 noMimeType = Nothing
 {-# INLINE noMimeType #-}
 
-foreign import javascript unsafe "window[\"MimeType\"]" gTypeMimeType :: GType
+foreign import javascript unsafe "(() => window[\"MimeType\"])" gTypeMimeType :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MimeTypeArray".
 --
@@ -17923,7 +17923,7 @@ noMimeTypeArray :: Maybe MimeTypeArray
 noMimeTypeArray = Nothing
 {-# INLINE noMimeTypeArray #-}
 
-foreign import javascript unsafe "window[\"MimeTypeArray\"]" gTypeMimeTypeArray :: GType
+foreign import javascript unsafe "(() => window[\"MimeTypeArray\"])" gTypeMimeTypeArray :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MouseEvent".
 -- Base interface functions are in:
@@ -17967,7 +17967,7 @@ noMouseEvent :: Maybe MouseEvent
 noMouseEvent = Nothing
 {-# INLINE noMouseEvent #-}
 
-foreign import javascript unsafe "window[\"MouseEvent\"]" gTypeMouseEvent :: GType
+foreign import javascript unsafe "(() => window[\"MouseEvent\"])" gTypeMouseEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MouseEventInit".
 -- Base interface functions are in:
@@ -18013,7 +18013,7 @@ noMouseEventInit :: Maybe MouseEventInit
 noMouseEventInit = Nothing
 {-# INLINE noMouseEventInit #-}
 
-foreign import javascript unsafe "window[\"MouseEventInit\"]" gTypeMouseEventInit :: GType
+foreign import javascript unsafe "(() => window[\"MouseEventInit\"])" gTypeMouseEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationEvent".
 -- Base interface functions are in:
@@ -18050,7 +18050,7 @@ noMutationEvent :: Maybe MutationEvent
 noMutationEvent = Nothing
 {-# INLINE noMutationEvent #-}
 
-foreign import javascript unsafe "window[\"MutationEvent\"]" gTypeMutationEvent :: GType
+foreign import javascript unsafe "(() => window[\"MutationEvent\"])" gTypeMutationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserver".
 --
@@ -18083,7 +18083,7 @@ noMutationObserver :: Maybe MutationObserver
 noMutationObserver = Nothing
 {-# INLINE noMutationObserver #-}
 
-foreign import javascript unsafe "window[\"MutationObserver\"]" gTypeMutationObserver :: GType
+foreign import javascript unsafe "(() => window[\"MutationObserver\"])" gTypeMutationObserver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationObserverInit".
 --
@@ -18116,7 +18116,7 @@ noMutationObserverInit :: Maybe MutationObserverInit
 noMutationObserverInit = Nothing
 {-# INLINE noMutationObserverInit #-}
 
-foreign import javascript unsafe "window[\"MutationObserverInit\"]" gTypeMutationObserverInit :: GType
+foreign import javascript unsafe "(() => window[\"MutationObserverInit\"])" gTypeMutationObserverInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.MutationRecord".
 --
@@ -18149,7 +18149,7 @@ noMutationRecord :: Maybe MutationRecord
 noMutationRecord = Nothing
 {-# INLINE noMutationRecord #-}
 
-foreign import javascript unsafe "window[\"MutationRecord\"]" gTypeMutationRecord :: GType
+foreign import javascript unsafe "(() => window[\"MutationRecord\"])" gTypeMutationRecord :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NamedNodeMap".
 --
@@ -18182,7 +18182,7 @@ noNamedNodeMap :: Maybe NamedNodeMap
 noNamedNodeMap = Nothing
 {-# INLINE noNamedNodeMap #-}
 
-foreign import javascript unsafe "window[\"NamedNodeMap\"]" gTypeNamedNodeMap :: GType
+foreign import javascript unsafe "(() => window[\"NamedNodeMap\"])" gTypeNamedNodeMap :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Navigator".
 -- Base interface functions are in:
@@ -18225,7 +18225,7 @@ noNavigator :: Maybe Navigator
 noNavigator = Nothing
 {-# INLINE noNavigator #-}
 
-foreign import javascript unsafe "window[\"Navigator\"]" gTypeNavigator :: GType
+foreign import javascript unsafe "(() => window[\"Navigator\"])" gTypeNavigator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorConcurrentHardware".
 --
@@ -18263,7 +18263,7 @@ noNavigatorConcurrentHardware :: Maybe NavigatorConcurrentHardware
 noNavigatorConcurrentHardware = Nothing
 {-# INLINE noNavigatorConcurrentHardware #-}
 
-foreign import javascript unsafe "window[\"NavigatorConcurrentHardware\"]" gTypeNavigatorConcurrentHardware :: GType
+foreign import javascript unsafe "(() => window[\"NavigatorConcurrentHardware\"])" gTypeNavigatorConcurrentHardware :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorID".
 --
@@ -18301,7 +18301,7 @@ noNavigatorID :: Maybe NavigatorID
 noNavigatorID = Nothing
 {-# INLINE noNavigatorID #-}
 
-foreign import javascript unsafe "window[\"NavigatorID\"]" gTypeNavigatorID :: GType
+foreign import javascript unsafe "(() => window[\"NavigatorID\"])" gTypeNavigatorID :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorLanguage".
 --
@@ -18339,7 +18339,7 @@ noNavigatorLanguage :: Maybe NavigatorLanguage
 noNavigatorLanguage = Nothing
 {-# INLINE noNavigatorLanguage #-}
 
-foreign import javascript unsafe "window[\"NavigatorLanguage\"]" gTypeNavigatorLanguage :: GType
+foreign import javascript unsafe "(() => window[\"NavigatorLanguage\"])" gTypeNavigatorLanguage :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorOnLine".
 --
@@ -18377,7 +18377,7 @@ noNavigatorOnLine :: Maybe NavigatorOnLine
 noNavigatorOnLine = Nothing
 {-# INLINE noNavigatorOnLine #-}
 
-foreign import javascript unsafe "window[\"NavigatorOnLine\"]" gTypeNavigatorOnLine :: GType
+foreign import javascript unsafe "(() => window[\"NavigatorOnLine\"])" gTypeNavigatorOnLine :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NavigatorUserMediaError".
 -- Base interface functions are in:
@@ -18414,7 +18414,7 @@ noNavigatorUserMediaError :: Maybe NavigatorUserMediaError
 noNavigatorUserMediaError = Nothing
 {-# INLINE noNavigatorUserMediaError #-}
 
-foreign import javascript unsafe "window[\"NavigatorUserMediaError\"]" gTypeNavigatorUserMediaError :: GType
+foreign import javascript unsafe "(() => window[\"NavigatorUserMediaError\"])" gTypeNavigatorUserMediaError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Node".
 -- Base interface functions are in:
@@ -18456,7 +18456,7 @@ noNode :: Maybe Node
 noNode = Nothing
 {-# INLINE noNode #-}
 
-foreign import javascript unsafe "window[\"Node\"]" gTypeNode :: GType
+foreign import javascript unsafe "(() => window[\"Node\"])" gTypeNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NodeIterator".
 --
@@ -18489,7 +18489,7 @@ noNodeIterator :: Maybe NodeIterator
 noNodeIterator = Nothing
 {-# INLINE noNodeIterator #-}
 
-foreign import javascript unsafe "window[\"NodeIterator\"]" gTypeNodeIterator :: GType
+foreign import javascript unsafe "(() => window[\"NodeIterator\"])" gTypeNodeIterator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NodeList".
 --
@@ -18527,7 +18527,7 @@ noNodeList :: Maybe NodeList
 noNodeList = Nothing
 {-# INLINE noNodeList #-}
 
-foreign import javascript unsafe "window[\"NodeList\"]" gTypeNodeList :: GType
+foreign import javascript unsafe "(() => window[\"NodeList\"])" gTypeNodeList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NonDocumentTypeChildNode".
 --
@@ -18565,7 +18565,7 @@ noNonDocumentTypeChildNode :: Maybe NonDocumentTypeChildNode
 noNonDocumentTypeChildNode = Nothing
 {-# INLINE noNonDocumentTypeChildNode #-}
 
-foreign import javascript unsafe "window[\"NonDocumentTypeChildNode\"]" gTypeNonDocumentTypeChildNode :: GType
+foreign import javascript unsafe "(() => window[\"NonDocumentTypeChildNode\"])" gTypeNonDocumentTypeChildNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NonElementParentNode".
 --
@@ -18603,7 +18603,7 @@ noNonElementParentNode :: Maybe NonElementParentNode
 noNonElementParentNode = Nothing
 {-# INLINE noNonElementParentNode #-}
 
-foreign import javascript unsafe "window[\"NonElementParentNode\"]" gTypeNonElementParentNode :: GType
+foreign import javascript unsafe "(() => window[\"NonElementParentNode\"])" gTypeNonElementParentNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Notification".
 -- Base interface functions are in:
@@ -18640,7 +18640,7 @@ noNotification :: Maybe Notification
 noNotification = Nothing
 {-# INLINE noNotification #-}
 
-foreign import javascript unsafe "window[\"Notification\"]" gTypeNotification :: GType
+foreign import javascript unsafe "(() => window[\"Notification\"])" gTypeNotification :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.NotificationOptions".
 --
@@ -18673,7 +18673,7 @@ noNotificationOptions :: Maybe NotificationOptions
 noNotificationOptions = Nothing
 {-# INLINE noNotificationOptions #-}
 
-foreign import javascript unsafe "window[\"NotificationOptions\"]" gTypeNotificationOptions :: GType
+foreign import javascript unsafe "(() => window[\"NotificationOptions\"])" gTypeNotificationOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESElementIndexUint".
 --
@@ -18706,7 +18706,7 @@ noOESElementIndexUint :: Maybe OESElementIndexUint
 noOESElementIndexUint = Nothing
 {-# INLINE noOESElementIndexUint #-}
 
-foreign import javascript unsafe "window[\"OESElementIndexUint\"]" gTypeOESElementIndexUint :: GType
+foreign import javascript unsafe "(() => window[\"OESElementIndexUint\"])" gTypeOESElementIndexUint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESStandardDerivatives".
 --
@@ -18739,7 +18739,7 @@ noOESStandardDerivatives :: Maybe OESStandardDerivatives
 noOESStandardDerivatives = Nothing
 {-# INLINE noOESStandardDerivatives #-}
 
-foreign import javascript unsafe "window[\"OESStandardDerivatives\"]" gTypeOESStandardDerivatives :: GType
+foreign import javascript unsafe "(() => window[\"OESStandardDerivatives\"])" gTypeOESStandardDerivatives :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloat".
 --
@@ -18772,7 +18772,7 @@ noOESTextureFloat :: Maybe OESTextureFloat
 noOESTextureFloat = Nothing
 {-# INLINE noOESTextureFloat #-}
 
-foreign import javascript unsafe "window[\"OESTextureFloat\"]" gTypeOESTextureFloat :: GType
+foreign import javascript unsafe "(() => window[\"OESTextureFloat\"])" gTypeOESTextureFloat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureFloatLinear".
 --
@@ -18805,7 +18805,7 @@ noOESTextureFloatLinear :: Maybe OESTextureFloatLinear
 noOESTextureFloatLinear = Nothing
 {-# INLINE noOESTextureFloatLinear #-}
 
-foreign import javascript unsafe "window[\"OESTextureFloatLinear\"]" gTypeOESTextureFloatLinear :: GType
+foreign import javascript unsafe "(() => window[\"OESTextureFloatLinear\"])" gTypeOESTextureFloatLinear :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloat".
 --
@@ -18838,7 +18838,7 @@ noOESTextureHalfFloat :: Maybe OESTextureHalfFloat
 noOESTextureHalfFloat = Nothing
 {-# INLINE noOESTextureHalfFloat #-}
 
-foreign import javascript unsafe "window[\"OESTextureHalfFloat\"]" gTypeOESTextureHalfFloat :: GType
+foreign import javascript unsafe "(() => window[\"OESTextureHalfFloat\"])" gTypeOESTextureHalfFloat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESTextureHalfFloatLinear".
 --
@@ -18871,7 +18871,7 @@ noOESTextureHalfFloatLinear :: Maybe OESTextureHalfFloatLinear
 noOESTextureHalfFloatLinear = Nothing
 {-# INLINE noOESTextureHalfFloatLinear #-}
 
-foreign import javascript unsafe "window[\"OESTextureHalfFloatLinear\"]" gTypeOESTextureHalfFloatLinear :: GType
+foreign import javascript unsafe "(() => window[\"OESTextureHalfFloatLinear\"])" gTypeOESTextureHalfFloatLinear :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OESVertexArrayObject".
 --
@@ -18904,7 +18904,7 @@ noOESVertexArrayObject :: Maybe OESVertexArrayObject
 noOESVertexArrayObject = Nothing
 {-# INLINE noOESVertexArrayObject #-}
 
-foreign import javascript unsafe "window[\"OESVertexArrayObject\"]" gTypeOESVertexArrayObject :: GType
+foreign import javascript unsafe "(() => window[\"OESVertexArrayObject\"])" gTypeOESVertexArrayObject :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioCompletionEvent".
 -- Base interface functions are in:
@@ -18941,7 +18941,7 @@ noOfflineAudioCompletionEvent :: Maybe OfflineAudioCompletionEvent
 noOfflineAudioCompletionEvent = Nothing
 {-# INLINE noOfflineAudioCompletionEvent #-}
 
-foreign import javascript unsafe "window[\"OfflineAudioCompletionEvent\"]" gTypeOfflineAudioCompletionEvent :: GType
+foreign import javascript unsafe "(() => window[\"OfflineAudioCompletionEvent\"])" gTypeOfflineAudioCompletionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OfflineAudioContext".
 -- Base interface functions are in:
@@ -18980,7 +18980,7 @@ noOfflineAudioContext :: Maybe OfflineAudioContext
 noOfflineAudioContext = Nothing
 {-# INLINE noOfflineAudioContext #-}
 
-foreign import javascript unsafe "window[\"OfflineAudioContext\"]" gTypeOfflineAudioContext :: GType
+foreign import javascript unsafe "(() => window[\"OfflineAudioContext\"])" gTypeOfflineAudioContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OscillatorNode".
 -- Base interface functions are in:
@@ -19019,7 +19019,7 @@ noOscillatorNode :: Maybe OscillatorNode
 noOscillatorNode = Nothing
 {-# INLINE noOscillatorNode #-}
 
-foreign import javascript unsafe "window[\"OscillatorNode\"]" gTypeOscillatorNode :: GType
+foreign import javascript unsafe "(() => window[\"OscillatorNode\"])" gTypeOscillatorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverconstrainedError".
 --
@@ -19052,7 +19052,7 @@ noOverconstrainedError :: Maybe OverconstrainedError
 noOverconstrainedError = Nothing
 {-# INLINE noOverconstrainedError #-}
 
-foreign import javascript unsafe "window[\"OverconstrainedError\"]" gTypeOverconstrainedError :: GType
+foreign import javascript unsafe "(() => window[\"OverconstrainedError\"])" gTypeOverconstrainedError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverconstrainedErrorEvent".
 -- Base interface functions are in:
@@ -19089,7 +19089,7 @@ noOverconstrainedErrorEvent :: Maybe OverconstrainedErrorEvent
 noOverconstrainedErrorEvent = Nothing
 {-# INLINE noOverconstrainedErrorEvent #-}
 
-foreign import javascript unsafe "window[\"OverconstrainedErrorEvent\"]" gTypeOverconstrainedErrorEvent :: GType
+foreign import javascript unsafe "(() => window[\"OverconstrainedErrorEvent\"])" gTypeOverconstrainedErrorEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverconstrainedErrorEventInit".
 -- Base interface functions are in:
@@ -19126,7 +19126,7 @@ noOverconstrainedErrorEventInit :: Maybe OverconstrainedErrorEventInit
 noOverconstrainedErrorEventInit = Nothing
 {-# INLINE noOverconstrainedErrorEventInit #-}
 
-foreign import javascript unsafe "window[\"OverconstrainedErrorEventInit\"]" gTypeOverconstrainedErrorEventInit :: GType
+foreign import javascript unsafe "(() => window[\"OverconstrainedErrorEventInit\"])" gTypeOverconstrainedErrorEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverflowEvent".
 -- Base interface functions are in:
@@ -19163,7 +19163,7 @@ noOverflowEvent :: Maybe OverflowEvent
 noOverflowEvent = Nothing
 {-# INLINE noOverflowEvent #-}
 
-foreign import javascript unsafe "window[\"OverflowEvent\"]" gTypeOverflowEvent :: GType
+foreign import javascript unsafe "(() => window[\"OverflowEvent\"])" gTypeOverflowEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.OverflowEventInit".
 -- Base interface functions are in:
@@ -19200,7 +19200,7 @@ noOverflowEventInit :: Maybe OverflowEventInit
 noOverflowEventInit = Nothing
 {-# INLINE noOverflowEventInit #-}
 
-foreign import javascript unsafe "window[\"OverflowEventInit\"]" gTypeOverflowEventInit :: GType
+foreign import javascript unsafe "(() => window[\"OverflowEventInit\"])" gTypeOverflowEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PageTransitionEvent".
 -- Base interface functions are in:
@@ -19237,7 +19237,7 @@ noPageTransitionEvent :: Maybe PageTransitionEvent
 noPageTransitionEvent = Nothing
 {-# INLINE noPageTransitionEvent #-}
 
-foreign import javascript unsafe "window[\"PageTransitionEvent\"]" gTypePageTransitionEvent :: GType
+foreign import javascript unsafe "(() => window[\"PageTransitionEvent\"])" gTypePageTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PageTransitionEventInit".
 -- Base interface functions are in:
@@ -19274,7 +19274,7 @@ noPageTransitionEventInit :: Maybe PageTransitionEventInit
 noPageTransitionEventInit = Nothing
 {-# INLINE noPageTransitionEventInit #-}
 
-foreign import javascript unsafe "window[\"PageTransitionEventInit\"]" gTypePageTransitionEventInit :: GType
+foreign import javascript unsafe "(() => window[\"PageTransitionEventInit\"])" gTypePageTransitionEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PannerNode".
 -- Base interface functions are in:
@@ -19313,7 +19313,7 @@ noPannerNode :: Maybe PannerNode
 noPannerNode = Nothing
 {-# INLINE noPannerNode #-}
 
-foreign import javascript unsafe "window[\"webkitAudioPannerNode\"]" gTypePannerNode :: GType
+foreign import javascript unsafe "(() => window[\"webkitAudioPannerNode\"])" gTypePannerNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ParentNode".
 --
@@ -19351,7 +19351,7 @@ noParentNode :: Maybe ParentNode
 noParentNode = Nothing
 {-# INLINE noParentNode #-}
 
-foreign import javascript unsafe "window[\"ParentNode\"]" gTypeParentNode :: GType
+foreign import javascript unsafe "(() => window[\"ParentNode\"])" gTypeParentNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PasswordCredential".
 -- Base interface functions are in:
@@ -19390,7 +19390,7 @@ noPasswordCredential :: Maybe PasswordCredential
 noPasswordCredential = Nothing
 {-# INLINE noPasswordCredential #-}
 
-foreign import javascript unsafe "window[\"PasswordCredential\"]" gTypePasswordCredential :: GType
+foreign import javascript unsafe "(() => window[\"PasswordCredential\"])" gTypePasswordCredential :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PasswordCredentialData".
 -- Base interface functions are in:
@@ -19429,7 +19429,7 @@ noPasswordCredentialData :: Maybe PasswordCredentialData
 noPasswordCredentialData = Nothing
 {-# INLINE noPasswordCredentialData #-}
 
-foreign import javascript unsafe "window[\"PasswordCredentialData\"]" gTypePasswordCredentialData :: GType
+foreign import javascript unsafe "(() => window[\"PasswordCredentialData\"])" gTypePasswordCredentialData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Path2D".
 -- Base interface functions are in:
@@ -19466,7 +19466,7 @@ noPath2D :: Maybe Path2D
 noPath2D = Nothing
 {-# INLINE noPath2D #-}
 
-foreign import javascript unsafe "window[\"Path2D\"]" gTypePath2D :: GType
+foreign import javascript unsafe "(() => window[\"Path2D\"])" gTypePath2D :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Pbkdf2Params".
 -- Base interface functions are in:
@@ -19503,7 +19503,7 @@ noPbkdf2Params :: Maybe Pbkdf2Params
 noPbkdf2Params = Nothing
 {-# INLINE noPbkdf2Params #-}
 
-foreign import javascript unsafe "window[\"Pbkdf2Params\"]" gTypePbkdf2Params :: GType
+foreign import javascript unsafe "(() => window[\"Pbkdf2Params\"])" gTypePbkdf2Params :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Performance".
 -- Base interface functions are in:
@@ -19540,7 +19540,7 @@ noPerformance :: Maybe Performance
 noPerformance = Nothing
 {-# INLINE noPerformance #-}
 
-foreign import javascript unsafe "window[\"Performance\"]" gTypePerformance :: GType
+foreign import javascript unsafe "(() => window[\"Performance\"])" gTypePerformance :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceEntry".
 --
@@ -19578,7 +19578,7 @@ noPerformanceEntry :: Maybe PerformanceEntry
 noPerformanceEntry = Nothing
 {-# INLINE noPerformanceEntry #-}
 
-foreign import javascript unsafe "window[\"PerformanceEntry\"]" gTypePerformanceEntry :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceEntry\"])" gTypePerformanceEntry :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMark".
 -- Base interface functions are in:
@@ -19615,7 +19615,7 @@ noPerformanceMark :: Maybe PerformanceMark
 noPerformanceMark = Nothing
 {-# INLINE noPerformanceMark #-}
 
-foreign import javascript unsafe "window[\"PerformanceMark\"]" gTypePerformanceMark :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceMark\"])" gTypePerformanceMark :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceMeasure".
 -- Base interface functions are in:
@@ -19652,7 +19652,7 @@ noPerformanceMeasure :: Maybe PerformanceMeasure
 noPerformanceMeasure = Nothing
 {-# INLINE noPerformanceMeasure #-}
 
-foreign import javascript unsafe "window[\"PerformanceMeasure\"]" gTypePerformanceMeasure :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceMeasure\"])" gTypePerformanceMeasure :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceNavigation".
 --
@@ -19685,7 +19685,7 @@ noPerformanceNavigation :: Maybe PerformanceNavigation
 noPerformanceNavigation = Nothing
 {-# INLINE noPerformanceNavigation #-}
 
-foreign import javascript unsafe "window[\"PerformanceNavigation\"]" gTypePerformanceNavigation :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceNavigation\"])" gTypePerformanceNavigation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceObserver".
 --
@@ -19718,7 +19718,7 @@ noPerformanceObserver :: Maybe PerformanceObserver
 noPerformanceObserver = Nothing
 {-# INLINE noPerformanceObserver #-}
 
-foreign import javascript unsafe "window[\"PerformanceObserver\"]" gTypePerformanceObserver :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceObserver\"])" gTypePerformanceObserver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceObserverEntryList".
 --
@@ -19751,7 +19751,7 @@ noPerformanceObserverEntryList :: Maybe PerformanceObserverEntryList
 noPerformanceObserverEntryList = Nothing
 {-# INLINE noPerformanceObserverEntryList #-}
 
-foreign import javascript unsafe "window[\"PerformanceObserverEntryList\"]" gTypePerformanceObserverEntryList :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceObserverEntryList\"])" gTypePerformanceObserverEntryList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceObserverInit".
 --
@@ -19784,7 +19784,7 @@ noPerformanceObserverInit :: Maybe PerformanceObserverInit
 noPerformanceObserverInit = Nothing
 {-# INLINE noPerformanceObserverInit #-}
 
-foreign import javascript unsafe "window[\"PerformanceObserverInit\"]" gTypePerformanceObserverInit :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceObserverInit\"])" gTypePerformanceObserverInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceResourceTiming".
 -- Base interface functions are in:
@@ -19821,7 +19821,7 @@ noPerformanceResourceTiming :: Maybe PerformanceResourceTiming
 noPerformanceResourceTiming = Nothing
 {-# INLINE noPerformanceResourceTiming #-}
 
-foreign import javascript unsafe "window[\"PerformanceResourceTiming\"]" gTypePerformanceResourceTiming :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceResourceTiming\"])" gTypePerformanceResourceTiming :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PerformanceTiming".
 --
@@ -19854,7 +19854,7 @@ noPerformanceTiming :: Maybe PerformanceTiming
 noPerformanceTiming = Nothing
 {-# INLINE noPerformanceTiming #-}
 
-foreign import javascript unsafe "window[\"PerformanceTiming\"]" gTypePerformanceTiming :: GType
+foreign import javascript unsafe "(() => window[\"PerformanceTiming\"])" gTypePerformanceTiming :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PeriodicWave".
 --
@@ -19887,7 +19887,7 @@ noPeriodicWave :: Maybe PeriodicWave
 noPeriodicWave = Nothing
 {-# INLINE noPeriodicWave #-}
 
-foreign import javascript unsafe "window[\"PeriodicWave\"]" gTypePeriodicWave :: GType
+foreign import javascript unsafe "(() => window[\"PeriodicWave\"])" gTypePeriodicWave :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Plugin".
 --
@@ -19920,7 +19920,7 @@ noPlugin :: Maybe Plugin
 noPlugin = Nothing
 {-# INLINE noPlugin #-}
 
-foreign import javascript unsafe "window[\"Plugin\"]" gTypePlugin :: GType
+foreign import javascript unsafe "(() => window[\"Plugin\"])" gTypePlugin :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PluginArray".
 --
@@ -19953,7 +19953,7 @@ noPluginArray :: Maybe PluginArray
 noPluginArray = Nothing
 {-# INLINE noPluginArray #-}
 
-foreign import javascript unsafe "window[\"PluginArray\"]" gTypePluginArray :: GType
+foreign import javascript unsafe "(() => window[\"PluginArray\"])" gTypePluginArray :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PopStateEvent".
 -- Base interface functions are in:
@@ -19990,7 +19990,7 @@ noPopStateEvent :: Maybe PopStateEvent
 noPopStateEvent = Nothing
 {-# INLINE noPopStateEvent #-}
 
-foreign import javascript unsafe "window[\"PopStateEvent\"]" gTypePopStateEvent :: GType
+foreign import javascript unsafe "(() => window[\"PopStateEvent\"])" gTypePopStateEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PopStateEventInit".
 -- Base interface functions are in:
@@ -20027,7 +20027,7 @@ noPopStateEventInit :: Maybe PopStateEventInit
 noPopStateEventInit = Nothing
 {-# INLINE noPopStateEventInit #-}
 
-foreign import javascript unsafe "window[\"PopStateEventInit\"]" gTypePopStateEventInit :: GType
+foreign import javascript unsafe "(() => window[\"PopStateEventInit\"])" gTypePopStateEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PositionError".
 --
@@ -20060,7 +20060,7 @@ noPositionError :: Maybe PositionError
 noPositionError = Nothing
 {-# INLINE noPositionError #-}
 
-foreign import javascript unsafe "window[\"PositionError\"]" gTypePositionError :: GType
+foreign import javascript unsafe "(() => window[\"PositionError\"])" gTypePositionError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PositionOptions".
 --
@@ -20093,7 +20093,7 @@ noPositionOptions :: Maybe PositionOptions
 noPositionOptions = Nothing
 {-# INLINE noPositionOptions #-}
 
-foreign import javascript unsafe "window[\"PositionOptions\"]" gTypePositionOptions :: GType
+foreign import javascript unsafe "(() => window[\"PositionOptions\"])" gTypePositionOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ProcessingInstruction".
 -- Base interface functions are in:
@@ -20138,7 +20138,7 @@ noProcessingInstruction :: Maybe ProcessingInstruction
 noProcessingInstruction = Nothing
 {-# INLINE noProcessingInstruction #-}
 
-foreign import javascript unsafe "window[\"ProcessingInstruction\"]" gTypeProcessingInstruction :: GType
+foreign import javascript unsafe "(() => window[\"ProcessingInstruction\"])" gTypeProcessingInstruction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ProgressEvent".
 -- Base interface functions are in:
@@ -20180,7 +20180,7 @@ noProgressEvent :: Maybe ProgressEvent
 noProgressEvent = Nothing
 {-# INLINE noProgressEvent #-}
 
-foreign import javascript unsafe "window[\"ProgressEvent\"]" gTypeProgressEvent :: GType
+foreign import javascript unsafe "(() => window[\"ProgressEvent\"])" gTypeProgressEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ProgressEventInit".
 -- Base interface functions are in:
@@ -20217,7 +20217,7 @@ noProgressEventInit :: Maybe ProgressEventInit
 noProgressEventInit = Nothing
 {-# INLINE noProgressEventInit #-}
 
-foreign import javascript unsafe "window[\"ProgressEventInit\"]" gTypeProgressEventInit :: GType
+foreign import javascript unsafe "(() => window[\"ProgressEventInit\"])" gTypeProgressEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PromiseRejectionEvent".
 -- Base interface functions are in:
@@ -20254,7 +20254,7 @@ noPromiseRejectionEvent :: Maybe PromiseRejectionEvent
 noPromiseRejectionEvent = Nothing
 {-# INLINE noPromiseRejectionEvent #-}
 
-foreign import javascript unsafe "window[\"PromiseRejectionEvent\"]" gTypePromiseRejectionEvent :: GType
+foreign import javascript unsafe "(() => window[\"PromiseRejectionEvent\"])" gTypePromiseRejectionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.PromiseRejectionEventInit".
 -- Base interface functions are in:
@@ -20291,7 +20291,7 @@ noPromiseRejectionEventInit :: Maybe PromiseRejectionEventInit
 noPromiseRejectionEventInit = Nothing
 {-# INLINE noPromiseRejectionEventInit #-}
 
-foreign import javascript unsafe "window[\"PromiseRejectionEventInit\"]" gTypePromiseRejectionEventInit :: GType
+foreign import javascript unsafe "(() => window[\"PromiseRejectionEventInit\"])" gTypePromiseRejectionEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.QuickTimePluginReplacement".
 --
@@ -20324,7 +20324,7 @@ noQuickTimePluginReplacement :: Maybe QuickTimePluginReplacement
 noQuickTimePluginReplacement = Nothing
 {-# INLINE noQuickTimePluginReplacement #-}
 
-foreign import javascript unsafe "window[\"QuickTimePluginReplacement\"]" gTypeQuickTimePluginReplacement :: GType
+foreign import javascript unsafe "(() => window[\"QuickTimePluginReplacement\"])" gTypeQuickTimePluginReplacement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RGBColor".
 --
@@ -20357,7 +20357,7 @@ noRGBColor :: Maybe RGBColor
 noRGBColor = Nothing
 {-# INLINE noRGBColor #-}
 
-foreign import javascript unsafe "window[\"RGBColor\"]" gTypeRGBColor :: GType
+foreign import javascript unsafe "(() => window[\"RGBColor\"])" gTypeRGBColor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCAnswerOptions".
 -- Base interface functions are in:
@@ -20394,7 +20394,7 @@ noRTCAnswerOptions :: Maybe RTCAnswerOptions
 noRTCAnswerOptions = Nothing
 {-# INLINE noRTCAnswerOptions #-}
 
-foreign import javascript unsafe "window[\"RTCAnswerOptions\"]" gTypeRTCAnswerOptions :: GType
+foreign import javascript unsafe "(() => window[\"RTCAnswerOptions\"])" gTypeRTCAnswerOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCConfiguration".
 --
@@ -20427,7 +20427,7 @@ noRTCConfiguration :: Maybe RTCConfiguration
 noRTCConfiguration = Nothing
 {-# INLINE noRTCConfiguration #-}
 
-foreign import javascript unsafe "window[\"RTCConfiguration\"]" gTypeRTCConfiguration :: GType
+foreign import javascript unsafe "(() => window[\"RTCConfiguration\"])" gTypeRTCConfiguration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFSender".
 -- Base interface functions are in:
@@ -20464,7 +20464,7 @@ noRTCDTMFSender :: Maybe RTCDTMFSender
 noRTCDTMFSender = Nothing
 {-# INLINE noRTCDTMFSender #-}
 
-foreign import javascript unsafe "window[\"RTCDTMFSender\"]" gTypeRTCDTMFSender :: GType
+foreign import javascript unsafe "(() => window[\"RTCDTMFSender\"])" gTypeRTCDTMFSender :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFToneChangeEvent".
 -- Base interface functions are in:
@@ -20501,7 +20501,7 @@ noRTCDTMFToneChangeEvent :: Maybe RTCDTMFToneChangeEvent
 noRTCDTMFToneChangeEvent = Nothing
 {-# INLINE noRTCDTMFToneChangeEvent #-}
 
-foreign import javascript unsafe "window[\"RTCDTMFToneChangeEvent\"]" gTypeRTCDTMFToneChangeEvent :: GType
+foreign import javascript unsafe "(() => window[\"RTCDTMFToneChangeEvent\"])" gTypeRTCDTMFToneChangeEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDTMFToneChangeEventInit".
 -- Base interface functions are in:
@@ -20538,7 +20538,7 @@ noRTCDTMFToneChangeEventInit :: Maybe RTCDTMFToneChangeEventInit
 noRTCDTMFToneChangeEventInit = Nothing
 {-# INLINE noRTCDTMFToneChangeEventInit #-}
 
-foreign import javascript unsafe "window[\"RTCDTMFToneChangeEventInit\"]" gTypeRTCDTMFToneChangeEventInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCDTMFToneChangeEventInit\"])" gTypeRTCDTMFToneChangeEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannel".
 -- Base interface functions are in:
@@ -20575,7 +20575,7 @@ noRTCDataChannel :: Maybe RTCDataChannel
 noRTCDataChannel = Nothing
 {-# INLINE noRTCDataChannel #-}
 
-foreign import javascript unsafe "window[\"RTCDataChannel\"]" gTypeRTCDataChannel :: GType
+foreign import javascript unsafe "(() => window[\"RTCDataChannel\"])" gTypeRTCDataChannel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEvent".
 -- Base interface functions are in:
@@ -20612,7 +20612,7 @@ noRTCDataChannelEvent :: Maybe RTCDataChannelEvent
 noRTCDataChannelEvent = Nothing
 {-# INLINE noRTCDataChannelEvent #-}
 
-foreign import javascript unsafe "window[\"RTCDataChannelEvent\"]" gTypeRTCDataChannelEvent :: GType
+foreign import javascript unsafe "(() => window[\"RTCDataChannelEvent\"])" gTypeRTCDataChannelEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelEventInit".
 -- Base interface functions are in:
@@ -20649,7 +20649,7 @@ noRTCDataChannelEventInit :: Maybe RTCDataChannelEventInit
 noRTCDataChannelEventInit = Nothing
 {-# INLINE noRTCDataChannelEventInit #-}
 
-foreign import javascript unsafe "window[\"RTCDataChannelEventInit\"]" gTypeRTCDataChannelEventInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCDataChannelEventInit\"])" gTypeRTCDataChannelEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelInit".
 --
@@ -20682,7 +20682,7 @@ noRTCDataChannelInit :: Maybe RTCDataChannelInit
 noRTCDataChannelInit = Nothing
 {-# INLINE noRTCDataChannelInit #-}
 
-foreign import javascript unsafe "window[\"RTCDataChannelInit\"]" gTypeRTCDataChannelInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCDataChannelInit\"])" gTypeRTCDataChannelInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCDataChannelStats".
 -- Base interface functions are in:
@@ -20719,7 +20719,7 @@ noRTCDataChannelStats :: Maybe RTCDataChannelStats
 noRTCDataChannelStats = Nothing
 {-# INLINE noRTCDataChannelStats #-}
 
-foreign import javascript unsafe "window[\"RTCDataChannelStats\"]" gTypeRTCDataChannelStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCDataChannelStats\"])" gTypeRTCDataChannelStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidate".
 --
@@ -20752,7 +20752,7 @@ noRTCIceCandidate :: Maybe RTCIceCandidate
 noRTCIceCandidate = Nothing
 {-# INLINE noRTCIceCandidate #-}
 
-foreign import javascript unsafe "window[\"RTCIceCandidate\"]" gTypeRTCIceCandidate :: GType
+foreign import javascript unsafe "(() => window[\"RTCIceCandidate\"])" gTypeRTCIceCandidate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidateEvent".
 -- Base interface functions are in:
@@ -20789,7 +20789,7 @@ noRTCIceCandidateEvent :: Maybe RTCIceCandidateEvent
 noRTCIceCandidateEvent = Nothing
 {-# INLINE noRTCIceCandidateEvent #-}
 
-foreign import javascript unsafe "window[\"RTCIceCandidateEvent\"]" gTypeRTCIceCandidateEvent :: GType
+foreign import javascript unsafe "(() => window[\"RTCIceCandidateEvent\"])" gTypeRTCIceCandidateEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceCandidateInit".
 --
@@ -20822,7 +20822,7 @@ noRTCIceCandidateInit :: Maybe RTCIceCandidateInit
 noRTCIceCandidateInit = Nothing
 {-# INLINE noRTCIceCandidateInit #-}
 
-foreign import javascript unsafe "window[\"RTCIceCandidateInit\"]" gTypeRTCIceCandidateInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCIceCandidateInit\"])" gTypeRTCIceCandidateInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceServer".
 --
@@ -20855,7 +20855,7 @@ noRTCIceServer :: Maybe RTCIceServer
 noRTCIceServer = Nothing
 {-# INLINE noRTCIceServer #-}
 
-foreign import javascript unsafe "window[\"RTCIceServer\"]" gTypeRTCIceServer :: GType
+foreign import javascript unsafe "(() => window[\"RTCIceServer\"])" gTypeRTCIceServer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCIceTransport".
 --
@@ -20888,7 +20888,7 @@ noRTCIceTransport :: Maybe RTCIceTransport
 noRTCIceTransport = Nothing
 {-# INLINE noRTCIceTransport #-}
 
-foreign import javascript unsafe "window[\"RTCIceTransport\"]" gTypeRTCIceTransport :: GType
+foreign import javascript unsafe "(() => window[\"RTCIceTransport\"])" gTypeRTCIceTransport :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCInboundRTPStreamStats".
 -- Base interface functions are in:
@@ -20927,7 +20927,7 @@ noRTCInboundRTPStreamStats :: Maybe RTCInboundRTPStreamStats
 noRTCInboundRTPStreamStats = Nothing
 {-# INLINE noRTCInboundRTPStreamStats #-}
 
-foreign import javascript unsafe "window[\"RTCInboundRTPStreamStats\"]" gTypeRTCInboundRTPStreamStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCInboundRTPStreamStats\"])" gTypeRTCInboundRTPStreamStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCMediaStreamTrackStats".
 -- Base interface functions are in:
@@ -20964,7 +20964,7 @@ noRTCMediaStreamTrackStats :: Maybe RTCMediaStreamTrackStats
 noRTCMediaStreamTrackStats = Nothing
 {-# INLINE noRTCMediaStreamTrackStats #-}
 
-foreign import javascript unsafe "window[\"RTCMediaStreamTrackStats\"]" gTypeRTCMediaStreamTrackStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCMediaStreamTrackStats\"])" gTypeRTCMediaStreamTrackStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCOfferAnswerOptions".
 --
@@ -21002,7 +21002,7 @@ noRTCOfferAnswerOptions :: Maybe RTCOfferAnswerOptions
 noRTCOfferAnswerOptions = Nothing
 {-# INLINE noRTCOfferAnswerOptions #-}
 
-foreign import javascript unsafe "window[\"RTCOfferAnswerOptions\"]" gTypeRTCOfferAnswerOptions :: GType
+foreign import javascript unsafe "(() => window[\"RTCOfferAnswerOptions\"])" gTypeRTCOfferAnswerOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCOfferOptions".
 -- Base interface functions are in:
@@ -21039,7 +21039,7 @@ noRTCOfferOptions :: Maybe RTCOfferOptions
 noRTCOfferOptions = Nothing
 {-# INLINE noRTCOfferOptions #-}
 
-foreign import javascript unsafe "window[\"RTCOfferOptions\"]" gTypeRTCOfferOptions :: GType
+foreign import javascript unsafe "(() => window[\"RTCOfferOptions\"])" gTypeRTCOfferOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCOutboundRTPStreamStats".
 -- Base interface functions are in:
@@ -21078,7 +21078,7 @@ noRTCOutboundRTPStreamStats :: Maybe RTCOutboundRTPStreamStats
 noRTCOutboundRTPStreamStats = Nothing
 {-# INLINE noRTCOutboundRTPStreamStats #-}
 
-foreign import javascript unsafe "window[\"RTCOutboundRTPStreamStats\"]" gTypeRTCOutboundRTPStreamStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCOutboundRTPStreamStats\"])" gTypeRTCOutboundRTPStreamStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnection".
 -- Base interface functions are in:
@@ -21115,7 +21115,7 @@ noRTCPeerConnection :: Maybe RTCPeerConnection
 noRTCPeerConnection = Nothing
 {-# INLINE noRTCPeerConnection #-}
 
-foreign import javascript unsafe "window[\"webkitRTCPeerConnection\"]" gTypeRTCPeerConnection :: GType
+foreign import javascript unsafe "(() => window[\"webkitRTCPeerConnection\"])" gTypeRTCPeerConnection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCPeerConnectionIceEvent".
 -- Base interface functions are in:
@@ -21152,7 +21152,7 @@ noRTCPeerConnectionIceEvent :: Maybe RTCPeerConnectionIceEvent
 noRTCPeerConnectionIceEvent = Nothing
 {-# INLINE noRTCPeerConnectionIceEvent #-}
 
-foreign import javascript unsafe "window[\"RTCPeerConnectionIceEvent\"]" gTypeRTCPeerConnectionIceEvent :: GType
+foreign import javascript unsafe "(() => window[\"RTCPeerConnectionIceEvent\"])" gTypeRTCPeerConnectionIceEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRTPStreamStats".
 -- Base interface functions are in:
@@ -21194,7 +21194,7 @@ noRTCRTPStreamStats :: Maybe RTCRTPStreamStats
 noRTCRTPStreamStats = Nothing
 {-# INLINE noRTCRTPStreamStats #-}
 
-foreign import javascript unsafe "window[\"RTCRTPStreamStats\"]" gTypeRTCRTPStreamStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCRTPStreamStats\"])" gTypeRTCRTPStreamStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpCodecParameters".
 --
@@ -21227,7 +21227,7 @@ noRTCRtpCodecParameters :: Maybe RTCRtpCodecParameters
 noRTCRtpCodecParameters = Nothing
 {-# INLINE noRTCRtpCodecParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpCodecParameters\"]" gTypeRTCRtpCodecParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpCodecParameters\"])" gTypeRTCRtpCodecParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpEncodingParameters".
 --
@@ -21260,7 +21260,7 @@ noRTCRtpEncodingParameters :: Maybe RTCRtpEncodingParameters
 noRTCRtpEncodingParameters = Nothing
 {-# INLINE noRTCRtpEncodingParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpEncodingParameters\"]" gTypeRTCRtpEncodingParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpEncodingParameters\"])" gTypeRTCRtpEncodingParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpFecParameters".
 --
@@ -21293,7 +21293,7 @@ noRTCRtpFecParameters :: Maybe RTCRtpFecParameters
 noRTCRtpFecParameters = Nothing
 {-# INLINE noRTCRtpFecParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpFecParameters\"]" gTypeRTCRtpFecParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpFecParameters\"])" gTypeRTCRtpFecParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpHeaderExtensionParameters".
 --
@@ -21326,7 +21326,7 @@ noRTCRtpHeaderExtensionParameters :: Maybe RTCRtpHeaderExtensionParameters
 noRTCRtpHeaderExtensionParameters = Nothing
 {-# INLINE noRTCRtpHeaderExtensionParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpHeaderExtensionParameters\"]" gTypeRTCRtpHeaderExtensionParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpHeaderExtensionParameters\"])" gTypeRTCRtpHeaderExtensionParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpParameters".
 --
@@ -21359,7 +21359,7 @@ noRTCRtpParameters :: Maybe RTCRtpParameters
 noRTCRtpParameters = Nothing
 {-# INLINE noRTCRtpParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpParameters\"]" gTypeRTCRtpParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpParameters\"])" gTypeRTCRtpParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpReceiver".
 --
@@ -21392,7 +21392,7 @@ noRTCRtpReceiver :: Maybe RTCRtpReceiver
 noRTCRtpReceiver = Nothing
 {-# INLINE noRTCRtpReceiver #-}
 
-foreign import javascript unsafe "window[\"RTCRtpReceiver\"]" gTypeRTCRtpReceiver :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpReceiver\"])" gTypeRTCRtpReceiver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpRtxParameters".
 --
@@ -21425,7 +21425,7 @@ noRTCRtpRtxParameters :: Maybe RTCRtpRtxParameters
 noRTCRtpRtxParameters = Nothing
 {-# INLINE noRTCRtpRtxParameters #-}
 
-foreign import javascript unsafe "window[\"RTCRtpRtxParameters\"]" gTypeRTCRtpRtxParameters :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpRtxParameters\"])" gTypeRTCRtpRtxParameters :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpSender".
 --
@@ -21458,7 +21458,7 @@ noRTCRtpSender :: Maybe RTCRtpSender
 noRTCRtpSender = Nothing
 {-# INLINE noRTCRtpSender #-}
 
-foreign import javascript unsafe "window[\"RTCRtpSender\"]" gTypeRTCRtpSender :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpSender\"])" gTypeRTCRtpSender :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpTransceiver".
 --
@@ -21491,7 +21491,7 @@ noRTCRtpTransceiver :: Maybe RTCRtpTransceiver
 noRTCRtpTransceiver = Nothing
 {-# INLINE noRTCRtpTransceiver #-}
 
-foreign import javascript unsafe "window[\"RTCRtpTransceiver\"]" gTypeRTCRtpTransceiver :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpTransceiver\"])" gTypeRTCRtpTransceiver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCRtpTransceiverInit".
 --
@@ -21524,7 +21524,7 @@ noRTCRtpTransceiverInit :: Maybe RTCRtpTransceiverInit
 noRTCRtpTransceiverInit = Nothing
 {-# INLINE noRTCRtpTransceiverInit #-}
 
-foreign import javascript unsafe "window[\"RTCRtpTransceiverInit\"]" gTypeRTCRtpTransceiverInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCRtpTransceiverInit\"])" gTypeRTCRtpTransceiverInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescription".
 --
@@ -21557,7 +21557,7 @@ noRTCSessionDescription :: Maybe RTCSessionDescription
 noRTCSessionDescription = Nothing
 {-# INLINE noRTCSessionDescription #-}
 
-foreign import javascript unsafe "window[\"RTCSessionDescription\"]" gTypeRTCSessionDescription :: GType
+foreign import javascript unsafe "(() => window[\"RTCSessionDescription\"])" gTypeRTCSessionDescription :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCSessionDescriptionInit".
 --
@@ -21590,7 +21590,7 @@ noRTCSessionDescriptionInit :: Maybe RTCSessionDescriptionInit
 noRTCSessionDescriptionInit = Nothing
 {-# INLINE noRTCSessionDescriptionInit #-}
 
-foreign import javascript unsafe "window[\"RTCSessionDescriptionInit\"]" gTypeRTCSessionDescriptionInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCSessionDescriptionInit\"])" gTypeRTCSessionDescriptionInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStats".
 --
@@ -21628,7 +21628,7 @@ noRTCStats :: Maybe RTCStats
 noRTCStats = Nothing
 {-# INLINE noRTCStats #-}
 
-foreign import javascript unsafe "window[\"RTCStats\"]" gTypeRTCStats :: GType
+foreign import javascript unsafe "(() => window[\"RTCStats\"])" gTypeRTCStats :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCStatsReport".
 --
@@ -21661,7 +21661,7 @@ noRTCStatsReport :: Maybe RTCStatsReport
 noRTCStatsReport = Nothing
 {-# INLINE noRTCStatsReport #-}
 
-foreign import javascript unsafe "window[\"RTCStatsReport\"]" gTypeRTCStatsReport :: GType
+foreign import javascript unsafe "(() => window[\"RTCStatsReport\"])" gTypeRTCStatsReport :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCTrackEvent".
 -- Base interface functions are in:
@@ -21698,7 +21698,7 @@ noRTCTrackEvent :: Maybe RTCTrackEvent
 noRTCTrackEvent = Nothing
 {-# INLINE noRTCTrackEvent #-}
 
-foreign import javascript unsafe "window[\"RTCTrackEvent\"]" gTypeRTCTrackEvent :: GType
+foreign import javascript unsafe "(() => window[\"RTCTrackEvent\"])" gTypeRTCTrackEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RTCTrackEventInit".
 -- Base interface functions are in:
@@ -21735,7 +21735,7 @@ noRTCTrackEventInit :: Maybe RTCTrackEventInit
 noRTCTrackEventInit = Nothing
 {-# INLINE noRTCTrackEventInit #-}
 
-foreign import javascript unsafe "window[\"RTCTrackEventInit\"]" gTypeRTCTrackEventInit :: GType
+foreign import javascript unsafe "(() => window[\"RTCTrackEventInit\"])" gTypeRTCTrackEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RadioNodeList".
 -- Base interface functions are in:
@@ -21772,7 +21772,7 @@ noRadioNodeList :: Maybe RadioNodeList
 noRadioNodeList = Nothing
 {-# INLINE noRadioNodeList #-}
 
-foreign import javascript unsafe "window[\"RadioNodeList\"]" gTypeRadioNodeList :: GType
+foreign import javascript unsafe "(() => window[\"RadioNodeList\"])" gTypeRadioNodeList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Range".
 --
@@ -21805,7 +21805,7 @@ noRange :: Maybe Range
 noRange = Nothing
 {-# INLINE noRange #-}
 
-foreign import javascript unsafe "window[\"Range\"]" gTypeRange :: GType
+foreign import javascript unsafe "(() => window[\"Range\"])" gTypeRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableByteStreamController".
 --
@@ -21838,7 +21838,7 @@ noReadableByteStreamController :: Maybe ReadableByteStreamController
 noReadableByteStreamController = Nothing
 {-# INLINE noReadableByteStreamController #-}
 
-foreign import javascript unsafe "window[\"ReadableByteStreamController\"]" gTypeReadableByteStreamController :: GType
+foreign import javascript unsafe "(() => window[\"ReadableByteStreamController\"])" gTypeReadableByteStreamController :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStream".
 --
@@ -21871,7 +21871,7 @@ noReadableStream :: Maybe ReadableStream
 noReadableStream = Nothing
 {-# INLINE noReadableStream #-}
 
-foreign import javascript unsafe "window[\"ReadableStream\"]" gTypeReadableStream :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStream\"])" gTypeReadableStream :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamBYOBReader".
 --
@@ -21904,7 +21904,7 @@ noReadableStreamBYOBReader :: Maybe ReadableStreamBYOBReader
 noReadableStreamBYOBReader = Nothing
 {-# INLINE noReadableStreamBYOBReader #-}
 
-foreign import javascript unsafe "window[\"ReadableStreamBYOBReader\"]" gTypeReadableStreamBYOBReader :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStreamBYOBReader\"])" gTypeReadableStreamBYOBReader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamBYOBRequest".
 --
@@ -21937,7 +21937,7 @@ noReadableStreamBYOBRequest :: Maybe ReadableStreamBYOBRequest
 noReadableStreamBYOBRequest = Nothing
 {-# INLINE noReadableStreamBYOBRequest #-}
 
-foreign import javascript unsafe "window[\"ReadableStreamBYOBRequest\"]" gTypeReadableStreamBYOBRequest :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStreamBYOBRequest\"])" gTypeReadableStreamBYOBRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamDefaultController".
 --
@@ -21970,7 +21970,7 @@ noReadableStreamDefaultController :: Maybe ReadableStreamDefaultController
 noReadableStreamDefaultController = Nothing
 {-# INLINE noReadableStreamDefaultController #-}
 
-foreign import javascript unsafe "window[\"ReadableStreamDefaultController\"]" gTypeReadableStreamDefaultController :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStreamDefaultController\"])" gTypeReadableStreamDefaultController :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamDefaultReader".
 --
@@ -22003,7 +22003,7 @@ noReadableStreamDefaultReader :: Maybe ReadableStreamDefaultReader
 noReadableStreamDefaultReader = Nothing
 {-# INLINE noReadableStreamDefaultReader #-}
 
-foreign import javascript unsafe "window[\"ReadableStreamDefaultReader\"]" gTypeReadableStreamDefaultReader :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStreamDefaultReader\"])" gTypeReadableStreamDefaultReader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ReadableStreamSource".
 --
@@ -22036,7 +22036,7 @@ noReadableStreamSource :: Maybe ReadableStreamSource
 noReadableStreamSource = Nothing
 {-# INLINE noReadableStreamSource #-}
 
-foreign import javascript unsafe "window[\"ReadableStreamSource\"]" gTypeReadableStreamSource :: GType
+foreign import javascript unsafe "(() => window[\"ReadableStreamSource\"])" gTypeReadableStreamSource :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Rect".
 --
@@ -22069,7 +22069,7 @@ noRect :: Maybe Rect
 noRect = Nothing
 {-# INLINE noRect #-}
 
-foreign import javascript unsafe "window[\"Rect\"]" gTypeRect :: GType
+foreign import javascript unsafe "(() => window[\"Rect\"])" gTypeRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Request".
 -- Base interface functions are in:
@@ -22106,7 +22106,7 @@ noRequest :: Maybe Request
 noRequest = Nothing
 {-# INLINE noRequest #-}
 
-foreign import javascript unsafe "window[\"Request\"]" gTypeRequest :: GType
+foreign import javascript unsafe "(() => window[\"Request\"])" gTypeRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RequestInit".
 --
@@ -22139,7 +22139,7 @@ noRequestInit :: Maybe RequestInit
 noRequestInit = Nothing
 {-# INLINE noRequestInit #-}
 
-foreign import javascript unsafe "window[\"RequestInit\"]" gTypeRequestInit :: GType
+foreign import javascript unsafe "(() => window[\"RequestInit\"])" gTypeRequestInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Response".
 --
@@ -22172,7 +22172,7 @@ noResponse :: Maybe Response
 noResponse = Nothing
 {-# INLINE noResponse #-}
 
-foreign import javascript unsafe "window[\"Response\"]" gTypeResponse :: GType
+foreign import javascript unsafe "(() => window[\"Response\"])" gTypeResponse :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RotationRate".
 --
@@ -22205,7 +22205,7 @@ noRotationRate :: Maybe RotationRate
 noRotationRate = Nothing
 {-# INLINE noRotationRate #-}
 
-foreign import javascript unsafe "window[\"RotationRate\"]" gTypeRotationRate :: GType
+foreign import javascript unsafe "(() => window[\"RotationRate\"])" gTypeRotationRate :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RsaHashedImportParams".
 -- Base interface functions are in:
@@ -22242,7 +22242,7 @@ noRsaHashedImportParams :: Maybe RsaHashedImportParams
 noRsaHashedImportParams = Nothing
 {-# INLINE noRsaHashedImportParams #-}
 
-foreign import javascript unsafe "window[\"RsaHashedImportParams\"]" gTypeRsaHashedImportParams :: GType
+foreign import javascript unsafe "(() => window[\"RsaHashedImportParams\"])" gTypeRsaHashedImportParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RsaHashedKeyGenParams".
 -- Base interface functions are in:
@@ -22281,7 +22281,7 @@ noRsaHashedKeyGenParams :: Maybe RsaHashedKeyGenParams
 noRsaHashedKeyGenParams = Nothing
 {-# INLINE noRsaHashedKeyGenParams #-}
 
-foreign import javascript unsafe "window[\"RsaHashedKeyGenParams\"]" gTypeRsaHashedKeyGenParams :: GType
+foreign import javascript unsafe "(() => window[\"RsaHashedKeyGenParams\"])" gTypeRsaHashedKeyGenParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RsaKeyGenParams".
 -- Base interface functions are in:
@@ -22323,7 +22323,7 @@ noRsaKeyGenParams :: Maybe RsaKeyGenParams
 noRsaKeyGenParams = Nothing
 {-# INLINE noRsaKeyGenParams #-}
 
-foreign import javascript unsafe "window[\"RsaKeyGenParams\"]" gTypeRsaKeyGenParams :: GType
+foreign import javascript unsafe "(() => window[\"RsaKeyGenParams\"])" gTypeRsaKeyGenParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RsaOaepParams".
 -- Base interface functions are in:
@@ -22360,7 +22360,7 @@ noRsaOaepParams :: Maybe RsaOaepParams
 noRsaOaepParams = Nothing
 {-# INLINE noRsaOaepParams #-}
 
-foreign import javascript unsafe "window[\"RsaOaepParams\"]" gTypeRsaOaepParams :: GType
+foreign import javascript unsafe "(() => window[\"RsaOaepParams\"])" gTypeRsaOaepParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.RsaOtherPrimesInfo".
 --
@@ -22393,7 +22393,7 @@ noRsaOtherPrimesInfo :: Maybe RsaOtherPrimesInfo
 noRsaOtherPrimesInfo = Nothing
 {-# INLINE noRsaOtherPrimesInfo #-}
 
-foreign import javascript unsafe "window[\"RsaOtherPrimesInfo\"]" gTypeRsaOtherPrimesInfo :: GType
+foreign import javascript unsafe "(() => window[\"RsaOtherPrimesInfo\"])" gTypeRsaOtherPrimesInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLError".
 --
@@ -22426,7 +22426,7 @@ noSQLError :: Maybe SQLError
 noSQLError = Nothing
 {-# INLINE noSQLError #-}
 
-foreign import javascript unsafe "window[\"SQLError\"]" gTypeSQLError :: GType
+foreign import javascript unsafe "(() => window[\"SQLError\"])" gTypeSQLError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLException".
 --
@@ -22459,7 +22459,7 @@ noSQLException :: Maybe SQLException
 noSQLException = Nothing
 {-# INLINE noSQLException #-}
 
-foreign import javascript unsafe "window[\"SQLException\"]" gTypeSQLException :: GType
+foreign import javascript unsafe "(() => window[\"SQLException\"])" gTypeSQLException :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSet".
 --
@@ -22492,7 +22492,7 @@ noSQLResultSet :: Maybe SQLResultSet
 noSQLResultSet = Nothing
 {-# INLINE noSQLResultSet #-}
 
-foreign import javascript unsafe "window[\"SQLResultSet\"]" gTypeSQLResultSet :: GType
+foreign import javascript unsafe "(() => window[\"SQLResultSet\"])" gTypeSQLResultSet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLResultSetRowList".
 --
@@ -22525,7 +22525,7 @@ noSQLResultSetRowList :: Maybe SQLResultSetRowList
 noSQLResultSetRowList = Nothing
 {-# INLINE noSQLResultSetRowList #-}
 
-foreign import javascript unsafe "window[\"SQLResultSetRowList\"]" gTypeSQLResultSetRowList :: GType
+foreign import javascript unsafe "(() => window[\"SQLResultSetRowList\"])" gTypeSQLResultSetRowList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SQLTransaction".
 --
@@ -22558,7 +22558,7 @@ noSQLTransaction :: Maybe SQLTransaction
 noSQLTransaction = Nothing
 {-# INLINE noSQLTransaction #-}
 
-foreign import javascript unsafe "window[\"SQLTransaction\"]" gTypeSQLTransaction :: GType
+foreign import javascript unsafe "(() => window[\"SQLTransaction\"])" gTypeSQLTransaction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAElement".
 -- Base interface functions are in:
@@ -22625,7 +22625,7 @@ noSVGAElement :: Maybe SVGAElement
 noSVGAElement = Nothing
 {-# INLINE noSVGAElement #-}
 
-foreign import javascript unsafe "window[\"SVGAElement\"]" gTypeSVGAElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAElement\"])" gTypeSVGAElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphDefElement".
 -- Base interface functions are in:
@@ -22684,7 +22684,7 @@ noSVGAltGlyphDefElement :: Maybe SVGAltGlyphDefElement
 noSVGAltGlyphDefElement = Nothing
 {-# INLINE noSVGAltGlyphDefElement #-}
 
-foreign import javascript unsafe "window[\"SVGAltGlyphDefElement\"]" gTypeSVGAltGlyphDefElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAltGlyphDefElement\"])" gTypeSVGAltGlyphDefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphElement".
 -- Base interface functions are in:
@@ -22755,7 +22755,7 @@ noSVGAltGlyphElement :: Maybe SVGAltGlyphElement
 noSVGAltGlyphElement = Nothing
 {-# INLINE noSVGAltGlyphElement #-}
 
-foreign import javascript unsafe "window[\"SVGAltGlyphElement\"]" gTypeSVGAltGlyphElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAltGlyphElement\"])" gTypeSVGAltGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAltGlyphItemElement".
 -- Base interface functions are in:
@@ -22814,7 +22814,7 @@ noSVGAltGlyphItemElement :: Maybe SVGAltGlyphItemElement
 noSVGAltGlyphItemElement = Nothing
 {-# INLINE noSVGAltGlyphItemElement #-}
 
-foreign import javascript unsafe "window[\"SVGAltGlyphItemElement\"]" gTypeSVGAltGlyphItemElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAltGlyphItemElement\"])" gTypeSVGAltGlyphItemElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAngle".
 --
@@ -22847,7 +22847,7 @@ noSVGAngle :: Maybe SVGAngle
 noSVGAngle = Nothing
 {-# INLINE noSVGAngle #-}
 
-foreign import javascript unsafe "window[\"SVGAngle\"]" gTypeSVGAngle :: GType
+foreign import javascript unsafe "(() => window[\"SVGAngle\"])" gTypeSVGAngle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateColorElement".
 -- Base interface functions are in:
@@ -22912,7 +22912,7 @@ noSVGAnimateColorElement :: Maybe SVGAnimateColorElement
 noSVGAnimateColorElement = Nothing
 {-# INLINE noSVGAnimateColorElement #-}
 
-foreign import javascript unsafe "window[\"SVGAnimateColorElement\"]" gTypeSVGAnimateColorElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimateColorElement\"])" gTypeSVGAnimateColorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateElement".
 -- Base interface functions are in:
@@ -22977,7 +22977,7 @@ noSVGAnimateElement :: Maybe SVGAnimateElement
 noSVGAnimateElement = Nothing
 {-# INLINE noSVGAnimateElement #-}
 
-foreign import javascript unsafe "window[\"SVGAnimateElement\"]" gTypeSVGAnimateElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimateElement\"])" gTypeSVGAnimateElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateMotionElement".
 -- Base interface functions are in:
@@ -23042,7 +23042,7 @@ noSVGAnimateMotionElement :: Maybe SVGAnimateMotionElement
 noSVGAnimateMotionElement = Nothing
 {-# INLINE noSVGAnimateMotionElement #-}
 
-foreign import javascript unsafe "window[\"SVGAnimateMotionElement\"]" gTypeSVGAnimateMotionElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimateMotionElement\"])" gTypeSVGAnimateMotionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimateTransformElement".
 -- Base interface functions are in:
@@ -23107,7 +23107,7 @@ noSVGAnimateTransformElement :: Maybe SVGAnimateTransformElement
 noSVGAnimateTransformElement = Nothing
 {-# INLINE noSVGAnimateTransformElement #-}
 
-foreign import javascript unsafe "window[\"SVGAnimateTransformElement\"]" gTypeSVGAnimateTransformElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimateTransformElement\"])" gTypeSVGAnimateTransformElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedAngle".
 --
@@ -23140,7 +23140,7 @@ noSVGAnimatedAngle :: Maybe SVGAnimatedAngle
 noSVGAnimatedAngle = Nothing
 {-# INLINE noSVGAnimatedAngle #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedAngle\"]" gTypeSVGAnimatedAngle :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedAngle\"])" gTypeSVGAnimatedAngle :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedBoolean".
 --
@@ -23173,7 +23173,7 @@ noSVGAnimatedBoolean :: Maybe SVGAnimatedBoolean
 noSVGAnimatedBoolean = Nothing
 {-# INLINE noSVGAnimatedBoolean #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedBoolean\"]" gTypeSVGAnimatedBoolean :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedBoolean\"])" gTypeSVGAnimatedBoolean :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedEnumeration".
 --
@@ -23206,7 +23206,7 @@ noSVGAnimatedEnumeration :: Maybe SVGAnimatedEnumeration
 noSVGAnimatedEnumeration = Nothing
 {-# INLINE noSVGAnimatedEnumeration #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedEnumeration\"]" gTypeSVGAnimatedEnumeration :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedEnumeration\"])" gTypeSVGAnimatedEnumeration :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedInteger".
 --
@@ -23239,7 +23239,7 @@ noSVGAnimatedInteger :: Maybe SVGAnimatedInteger
 noSVGAnimatedInteger = Nothing
 {-# INLINE noSVGAnimatedInteger #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedInteger\"]" gTypeSVGAnimatedInteger :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedInteger\"])" gTypeSVGAnimatedInteger :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLength".
 --
@@ -23272,7 +23272,7 @@ noSVGAnimatedLength :: Maybe SVGAnimatedLength
 noSVGAnimatedLength = Nothing
 {-# INLINE noSVGAnimatedLength #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedLength\"]" gTypeSVGAnimatedLength :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedLength\"])" gTypeSVGAnimatedLength :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedLengthList".
 --
@@ -23305,7 +23305,7 @@ noSVGAnimatedLengthList :: Maybe SVGAnimatedLengthList
 noSVGAnimatedLengthList = Nothing
 {-# INLINE noSVGAnimatedLengthList #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedLengthList\"]" gTypeSVGAnimatedLengthList :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedLengthList\"])" gTypeSVGAnimatedLengthList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumber".
 --
@@ -23338,7 +23338,7 @@ noSVGAnimatedNumber :: Maybe SVGAnimatedNumber
 noSVGAnimatedNumber = Nothing
 {-# INLINE noSVGAnimatedNumber #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedNumber\"]" gTypeSVGAnimatedNumber :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedNumber\"])" gTypeSVGAnimatedNumber :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedNumberList".
 --
@@ -23371,7 +23371,7 @@ noSVGAnimatedNumberList :: Maybe SVGAnimatedNumberList
 noSVGAnimatedNumberList = Nothing
 {-# INLINE noSVGAnimatedNumberList #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedNumberList\"]" gTypeSVGAnimatedNumberList :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedNumberList\"])" gTypeSVGAnimatedNumberList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedPreserveAspectRatio".
 --
@@ -23404,7 +23404,7 @@ noSVGAnimatedPreserveAspectRatio :: Maybe SVGAnimatedPreserveAspectRatio
 noSVGAnimatedPreserveAspectRatio = Nothing
 {-# INLINE noSVGAnimatedPreserveAspectRatio #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedPreserveAspectRatio\"]" gTypeSVGAnimatedPreserveAspectRatio :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedPreserveAspectRatio\"])" gTypeSVGAnimatedPreserveAspectRatio :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedRect".
 --
@@ -23437,7 +23437,7 @@ noSVGAnimatedRect :: Maybe SVGAnimatedRect
 noSVGAnimatedRect = Nothing
 {-# INLINE noSVGAnimatedRect #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedRect\"]" gTypeSVGAnimatedRect :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedRect\"])" gTypeSVGAnimatedRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedString".
 --
@@ -23470,7 +23470,7 @@ noSVGAnimatedString :: Maybe SVGAnimatedString
 noSVGAnimatedString = Nothing
 {-# INLINE noSVGAnimatedString #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedString\"]" gTypeSVGAnimatedString :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedString\"])" gTypeSVGAnimatedString :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimatedTransformList".
 --
@@ -23503,7 +23503,7 @@ noSVGAnimatedTransformList :: Maybe SVGAnimatedTransformList
 noSVGAnimatedTransformList = Nothing
 {-# INLINE noSVGAnimatedTransformList #-}
 
-foreign import javascript unsafe "window[\"SVGAnimatedTransformList\"]" gTypeSVGAnimatedTransformList :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimatedTransformList\"])" gTypeSVGAnimatedTransformList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGAnimationElement".
 -- Base interface functions are in:
@@ -23571,7 +23571,7 @@ noSVGAnimationElement :: Maybe SVGAnimationElement
 noSVGAnimationElement = Nothing
 {-# INLINE noSVGAnimationElement #-}
 
-foreign import javascript unsafe "window[\"SVGAnimationElement\"]" gTypeSVGAnimationElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGAnimationElement\"])" gTypeSVGAnimationElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCircleElement".
 -- Base interface functions are in:
@@ -23636,7 +23636,7 @@ noSVGCircleElement :: Maybe SVGCircleElement
 noSVGCircleElement = Nothing
 {-# INLINE noSVGCircleElement #-}
 
-foreign import javascript unsafe "window[\"SVGCircleElement\"]" gTypeSVGCircleElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGCircleElement\"])" gTypeSVGCircleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGClipPathElement".
 -- Base interface functions are in:
@@ -23701,7 +23701,7 @@ noSVGClipPathElement :: Maybe SVGClipPathElement
 noSVGClipPathElement = Nothing
 {-# INLINE noSVGClipPathElement #-}
 
-foreign import javascript unsafe "window[\"SVGClipPathElement\"]" gTypeSVGClipPathElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGClipPathElement\"])" gTypeSVGClipPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGComponentTransferFunctionElement".
 -- Base interface functions are in:
@@ -23765,7 +23765,7 @@ noSVGComponentTransferFunctionElement :: Maybe SVGComponentTransferFunctionEleme
 noSVGComponentTransferFunctionElement = Nothing
 {-# INLINE noSVGComponentTransferFunctionElement #-}
 
-foreign import javascript unsafe "window[\"SVGComponentTransferFunctionElement\"]" gTypeSVGComponentTransferFunctionElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGComponentTransferFunctionElement\"])" gTypeSVGComponentTransferFunctionElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGCursorElement".
 -- Base interface functions are in:
@@ -23830,7 +23830,7 @@ noSVGCursorElement :: Maybe SVGCursorElement
 noSVGCursorElement = Nothing
 {-# INLINE noSVGCursorElement #-}
 
-foreign import javascript unsafe "window[\"SVGCursorElement\"]" gTypeSVGCursorElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGCursorElement\"])" gTypeSVGCursorElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDefsElement".
 -- Base interface functions are in:
@@ -23895,7 +23895,7 @@ noSVGDefsElement :: Maybe SVGDefsElement
 noSVGDefsElement = Nothing
 {-# INLINE noSVGDefsElement #-}
 
-foreign import javascript unsafe "window[\"SVGDefsElement\"]" gTypeSVGDefsElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGDefsElement\"])" gTypeSVGDefsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGDescElement".
 -- Base interface functions are in:
@@ -23954,7 +23954,7 @@ noSVGDescElement :: Maybe SVGDescElement
 noSVGDescElement = Nothing
 {-# INLINE noSVGDescElement #-}
 
-foreign import javascript unsafe "window[\"SVGDescElement\"]" gTypeSVGDescElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGDescElement\"])" gTypeSVGDescElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGElement".
 -- Base interface functions are in:
@@ -24016,7 +24016,7 @@ noSVGElement :: Maybe SVGElement
 noSVGElement = Nothing
 {-# INLINE noSVGElement #-}
 
-foreign import javascript unsafe "window[\"SVGElement\"]" gTypeSVGElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGElement\"])" gTypeSVGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGEllipseElement".
 -- Base interface functions are in:
@@ -24081,7 +24081,7 @@ noSVGEllipseElement :: Maybe SVGEllipseElement
 noSVGEllipseElement = Nothing
 {-# INLINE noSVGEllipseElement #-}
 
-foreign import javascript unsafe "window[\"SVGEllipseElement\"]" gTypeSVGEllipseElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGEllipseElement\"])" gTypeSVGEllipseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGException".
 --
@@ -24114,7 +24114,7 @@ noSVGException :: Maybe SVGException
 noSVGException = Nothing
 {-# INLINE noSVGException #-}
 
-foreign import javascript unsafe "window[\"SVGException\"]" gTypeSVGException :: GType
+foreign import javascript unsafe "(() => window[\"SVGException\"])" gTypeSVGException :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGExternalResourcesRequired".
 --
@@ -24152,7 +24152,7 @@ noSVGExternalResourcesRequired :: Maybe SVGExternalResourcesRequired
 noSVGExternalResourcesRequired = Nothing
 {-# INLINE noSVGExternalResourcesRequired #-}
 
-foreign import javascript unsafe "window[\"SVGExternalResourcesRequired\"]" gTypeSVGExternalResourcesRequired :: GType
+foreign import javascript unsafe "(() => window[\"SVGExternalResourcesRequired\"])" gTypeSVGExternalResourcesRequired :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEBlendElement".
 -- Base interface functions are in:
@@ -24213,7 +24213,7 @@ noSVGFEBlendElement :: Maybe SVGFEBlendElement
 noSVGFEBlendElement = Nothing
 {-# INLINE noSVGFEBlendElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEBlendElement\"]" gTypeSVGFEBlendElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEBlendElement\"])" gTypeSVGFEBlendElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEColorMatrixElement".
 -- Base interface functions are in:
@@ -24274,7 +24274,7 @@ noSVGFEColorMatrixElement :: Maybe SVGFEColorMatrixElement
 noSVGFEColorMatrixElement = Nothing
 {-# INLINE noSVGFEColorMatrixElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEColorMatrixElement\"]" gTypeSVGFEColorMatrixElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEColorMatrixElement\"])" gTypeSVGFEColorMatrixElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEComponentTransferElement".
 -- Base interface functions are in:
@@ -24335,7 +24335,7 @@ noSVGFEComponentTransferElement :: Maybe SVGFEComponentTransferElement
 noSVGFEComponentTransferElement = Nothing
 {-# INLINE noSVGFEComponentTransferElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEComponentTransferElement\"]" gTypeSVGFEComponentTransferElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEComponentTransferElement\"])" gTypeSVGFEComponentTransferElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFECompositeElement".
 -- Base interface functions are in:
@@ -24396,7 +24396,7 @@ noSVGFECompositeElement :: Maybe SVGFECompositeElement
 noSVGFECompositeElement = Nothing
 {-# INLINE noSVGFECompositeElement #-}
 
-foreign import javascript unsafe "window[\"SVGFECompositeElement\"]" gTypeSVGFECompositeElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFECompositeElement\"])" gTypeSVGFECompositeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEConvolveMatrixElement".
 -- Base interface functions are in:
@@ -24457,7 +24457,7 @@ noSVGFEConvolveMatrixElement :: Maybe SVGFEConvolveMatrixElement
 noSVGFEConvolveMatrixElement = Nothing
 {-# INLINE noSVGFEConvolveMatrixElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEConvolveMatrixElement\"]" gTypeSVGFEConvolveMatrixElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEConvolveMatrixElement\"])" gTypeSVGFEConvolveMatrixElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDiffuseLightingElement".
 -- Base interface functions are in:
@@ -24518,7 +24518,7 @@ noSVGFEDiffuseLightingElement :: Maybe SVGFEDiffuseLightingElement
 noSVGFEDiffuseLightingElement = Nothing
 {-# INLINE noSVGFEDiffuseLightingElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEDiffuseLightingElement\"]" gTypeSVGFEDiffuseLightingElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEDiffuseLightingElement\"])" gTypeSVGFEDiffuseLightingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDisplacementMapElement".
 -- Base interface functions are in:
@@ -24579,7 +24579,7 @@ noSVGFEDisplacementMapElement :: Maybe SVGFEDisplacementMapElement
 noSVGFEDisplacementMapElement = Nothing
 {-# INLINE noSVGFEDisplacementMapElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEDisplacementMapElement\"]" gTypeSVGFEDisplacementMapElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEDisplacementMapElement\"])" gTypeSVGFEDisplacementMapElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDistantLightElement".
 -- Base interface functions are in:
@@ -24638,7 +24638,7 @@ noSVGFEDistantLightElement :: Maybe SVGFEDistantLightElement
 noSVGFEDistantLightElement = Nothing
 {-# INLINE noSVGFEDistantLightElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEDistantLightElement\"]" gTypeSVGFEDistantLightElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEDistantLightElement\"])" gTypeSVGFEDistantLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEDropShadowElement".
 -- Base interface functions are in:
@@ -24699,7 +24699,7 @@ noSVGFEDropShadowElement :: Maybe SVGFEDropShadowElement
 noSVGFEDropShadowElement = Nothing
 {-# INLINE noSVGFEDropShadowElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEDropShadowElement\"]" gTypeSVGFEDropShadowElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEDropShadowElement\"])" gTypeSVGFEDropShadowElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFloodElement".
 -- Base interface functions are in:
@@ -24760,7 +24760,7 @@ noSVGFEFloodElement :: Maybe SVGFEFloodElement
 noSVGFEFloodElement = Nothing
 {-# INLINE noSVGFEFloodElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEFloodElement\"]" gTypeSVGFEFloodElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEFloodElement\"])" gTypeSVGFEFloodElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncAElement".
 -- Base interface functions are in:
@@ -24821,7 +24821,7 @@ noSVGFEFuncAElement :: Maybe SVGFEFuncAElement
 noSVGFEFuncAElement = Nothing
 {-# INLINE noSVGFEFuncAElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEFuncAElement\"]" gTypeSVGFEFuncAElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEFuncAElement\"])" gTypeSVGFEFuncAElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncBElement".
 -- Base interface functions are in:
@@ -24882,7 +24882,7 @@ noSVGFEFuncBElement :: Maybe SVGFEFuncBElement
 noSVGFEFuncBElement = Nothing
 {-# INLINE noSVGFEFuncBElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEFuncBElement\"]" gTypeSVGFEFuncBElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEFuncBElement\"])" gTypeSVGFEFuncBElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncGElement".
 -- Base interface functions are in:
@@ -24943,7 +24943,7 @@ noSVGFEFuncGElement :: Maybe SVGFEFuncGElement
 noSVGFEFuncGElement = Nothing
 {-# INLINE noSVGFEFuncGElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEFuncGElement\"]" gTypeSVGFEFuncGElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEFuncGElement\"])" gTypeSVGFEFuncGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEFuncRElement".
 -- Base interface functions are in:
@@ -25004,7 +25004,7 @@ noSVGFEFuncRElement :: Maybe SVGFEFuncRElement
 noSVGFEFuncRElement = Nothing
 {-# INLINE noSVGFEFuncRElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEFuncRElement\"]" gTypeSVGFEFuncRElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEFuncRElement\"])" gTypeSVGFEFuncRElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEGaussianBlurElement".
 -- Base interface functions are in:
@@ -25065,7 +25065,7 @@ noSVGFEGaussianBlurElement :: Maybe SVGFEGaussianBlurElement
 noSVGFEGaussianBlurElement = Nothing
 {-# INLINE noSVGFEGaussianBlurElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEGaussianBlurElement\"]" gTypeSVGFEGaussianBlurElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEGaussianBlurElement\"])" gTypeSVGFEGaussianBlurElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEImageElement".
 -- Base interface functions are in:
@@ -25130,7 +25130,7 @@ noSVGFEImageElement :: Maybe SVGFEImageElement
 noSVGFEImageElement = Nothing
 {-# INLINE noSVGFEImageElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEImageElement\"]" gTypeSVGFEImageElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEImageElement\"])" gTypeSVGFEImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeElement".
 -- Base interface functions are in:
@@ -25191,7 +25191,7 @@ noSVGFEMergeElement :: Maybe SVGFEMergeElement
 noSVGFEMergeElement = Nothing
 {-# INLINE noSVGFEMergeElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEMergeElement\"]" gTypeSVGFEMergeElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEMergeElement\"])" gTypeSVGFEMergeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMergeNodeElement".
 -- Base interface functions are in:
@@ -25250,7 +25250,7 @@ noSVGFEMergeNodeElement :: Maybe SVGFEMergeNodeElement
 noSVGFEMergeNodeElement = Nothing
 {-# INLINE noSVGFEMergeNodeElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEMergeNodeElement\"]" gTypeSVGFEMergeNodeElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEMergeNodeElement\"])" gTypeSVGFEMergeNodeElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEMorphologyElement".
 -- Base interface functions are in:
@@ -25311,7 +25311,7 @@ noSVGFEMorphologyElement :: Maybe SVGFEMorphologyElement
 noSVGFEMorphologyElement = Nothing
 {-# INLINE noSVGFEMorphologyElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEMorphologyElement\"]" gTypeSVGFEMorphologyElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEMorphologyElement\"])" gTypeSVGFEMorphologyElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEOffsetElement".
 -- Base interface functions are in:
@@ -25372,7 +25372,7 @@ noSVGFEOffsetElement :: Maybe SVGFEOffsetElement
 noSVGFEOffsetElement = Nothing
 {-# INLINE noSVGFEOffsetElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEOffsetElement\"]" gTypeSVGFEOffsetElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEOffsetElement\"])" gTypeSVGFEOffsetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFEPointLightElement".
 -- Base interface functions are in:
@@ -25431,7 +25431,7 @@ noSVGFEPointLightElement :: Maybe SVGFEPointLightElement
 noSVGFEPointLightElement = Nothing
 {-# INLINE noSVGFEPointLightElement #-}
 
-foreign import javascript unsafe "window[\"SVGFEPointLightElement\"]" gTypeSVGFEPointLightElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFEPointLightElement\"])" gTypeSVGFEPointLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpecularLightingElement".
 -- Base interface functions are in:
@@ -25492,7 +25492,7 @@ noSVGFESpecularLightingElement :: Maybe SVGFESpecularLightingElement
 noSVGFESpecularLightingElement = Nothing
 {-# INLINE noSVGFESpecularLightingElement #-}
 
-foreign import javascript unsafe "window[\"SVGFESpecularLightingElement\"]" gTypeSVGFESpecularLightingElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFESpecularLightingElement\"])" gTypeSVGFESpecularLightingElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFESpotLightElement".
 -- Base interface functions are in:
@@ -25551,7 +25551,7 @@ noSVGFESpotLightElement :: Maybe SVGFESpotLightElement
 noSVGFESpotLightElement = Nothing
 {-# INLINE noSVGFESpotLightElement #-}
 
-foreign import javascript unsafe "window[\"SVGFESpotLightElement\"]" gTypeSVGFESpotLightElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFESpotLightElement\"])" gTypeSVGFESpotLightElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETileElement".
 -- Base interface functions are in:
@@ -25612,7 +25612,7 @@ noSVGFETileElement :: Maybe SVGFETileElement
 noSVGFETileElement = Nothing
 {-# INLINE noSVGFETileElement #-}
 
-foreign import javascript unsafe "window[\"SVGFETileElement\"]" gTypeSVGFETileElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFETileElement\"])" gTypeSVGFETileElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFETurbulenceElement".
 -- Base interface functions are in:
@@ -25673,7 +25673,7 @@ noSVGFETurbulenceElement :: Maybe SVGFETurbulenceElement
 noSVGFETurbulenceElement = Nothing
 {-# INLINE noSVGFETurbulenceElement #-}
 
-foreign import javascript unsafe "window[\"SVGFETurbulenceElement\"]" gTypeSVGFETurbulenceElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFETurbulenceElement\"])" gTypeSVGFETurbulenceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterElement".
 -- Base interface functions are in:
@@ -25736,7 +25736,7 @@ noSVGFilterElement :: Maybe SVGFilterElement
 noSVGFilterElement = Nothing
 {-# INLINE noSVGFilterElement #-}
 
-foreign import javascript unsafe "window[\"SVGFilterElement\"]" gTypeSVGFilterElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFilterElement\"])" gTypeSVGFilterElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFilterPrimitiveStandardAttributes".
 --
@@ -25774,7 +25774,7 @@ noSVGFilterPrimitiveStandardAttributes :: Maybe SVGFilterPrimitiveStandardAttrib
 noSVGFilterPrimitiveStandardAttributes = Nothing
 {-# INLINE noSVGFilterPrimitiveStandardAttributes #-}
 
-foreign import javascript unsafe "window[\"SVGFilterPrimitiveStandardAttributes\"]" gTypeSVGFilterPrimitiveStandardAttributes :: GType
+foreign import javascript unsafe "(() => window[\"SVGFilterPrimitiveStandardAttributes\"])" gTypeSVGFilterPrimitiveStandardAttributes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFitToViewBox".
 --
@@ -25812,7 +25812,7 @@ noSVGFitToViewBox :: Maybe SVGFitToViewBox
 noSVGFitToViewBox = Nothing
 {-# INLINE noSVGFitToViewBox #-}
 
-foreign import javascript unsafe "window[\"SVGFitToViewBox\"]" gTypeSVGFitToViewBox :: GType
+foreign import javascript unsafe "(() => window[\"SVGFitToViewBox\"])" gTypeSVGFitToViewBox :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontElement".
 -- Base interface functions are in:
@@ -25871,7 +25871,7 @@ noSVGFontElement :: Maybe SVGFontElement
 noSVGFontElement = Nothing
 {-# INLINE noSVGFontElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontElement\"]" gTypeSVGFontElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontElement\"])" gTypeSVGFontElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceElement".
 -- Base interface functions are in:
@@ -25930,7 +25930,7 @@ noSVGFontFaceElement :: Maybe SVGFontFaceElement
 noSVGFontFaceElement = Nothing
 {-# INLINE noSVGFontFaceElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontFaceElement\"]" gTypeSVGFontFaceElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontFaceElement\"])" gTypeSVGFontFaceElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceFormatElement".
 -- Base interface functions are in:
@@ -25989,7 +25989,7 @@ noSVGFontFaceFormatElement :: Maybe SVGFontFaceFormatElement
 noSVGFontFaceFormatElement = Nothing
 {-# INLINE noSVGFontFaceFormatElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontFaceFormatElement\"]" gTypeSVGFontFaceFormatElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontFaceFormatElement\"])" gTypeSVGFontFaceFormatElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceNameElement".
 -- Base interface functions are in:
@@ -26048,7 +26048,7 @@ noSVGFontFaceNameElement :: Maybe SVGFontFaceNameElement
 noSVGFontFaceNameElement = Nothing
 {-# INLINE noSVGFontFaceNameElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontFaceNameElement\"]" gTypeSVGFontFaceNameElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontFaceNameElement\"])" gTypeSVGFontFaceNameElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceSrcElement".
 -- Base interface functions are in:
@@ -26107,7 +26107,7 @@ noSVGFontFaceSrcElement :: Maybe SVGFontFaceSrcElement
 noSVGFontFaceSrcElement = Nothing
 {-# INLINE noSVGFontFaceSrcElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontFaceSrcElement\"]" gTypeSVGFontFaceSrcElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontFaceSrcElement\"])" gTypeSVGFontFaceSrcElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGFontFaceUriElement".
 -- Base interface functions are in:
@@ -26166,7 +26166,7 @@ noSVGFontFaceUriElement :: Maybe SVGFontFaceUriElement
 noSVGFontFaceUriElement = Nothing
 {-# INLINE noSVGFontFaceUriElement #-}
 
-foreign import javascript unsafe "window[\"SVGFontFaceUriElement\"]" gTypeSVGFontFaceUriElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGFontFaceUriElement\"])" gTypeSVGFontFaceUriElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGForeignObjectElement".
 -- Base interface functions are in:
@@ -26231,7 +26231,7 @@ noSVGForeignObjectElement :: Maybe SVGForeignObjectElement
 noSVGForeignObjectElement = Nothing
 {-# INLINE noSVGForeignObjectElement #-}
 
-foreign import javascript unsafe "window[\"SVGForeignObjectElement\"]" gTypeSVGForeignObjectElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGForeignObjectElement\"])" gTypeSVGForeignObjectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGElement".
 -- Base interface functions are in:
@@ -26296,7 +26296,7 @@ noSVGGElement :: Maybe SVGGElement
 noSVGGElement = Nothing
 {-# INLINE noSVGGElement #-}
 
-foreign import javascript unsafe "window[\"SVGGElement\"]" gTypeSVGGElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGGElement\"])" gTypeSVGGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphElement".
 -- Base interface functions are in:
@@ -26355,7 +26355,7 @@ noSVGGlyphElement :: Maybe SVGGlyphElement
 noSVGGlyphElement = Nothing
 {-# INLINE noSVGGlyphElement #-}
 
-foreign import javascript unsafe "window[\"SVGGlyphElement\"]" gTypeSVGGlyphElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGGlyphElement\"])" gTypeSVGGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGlyphRefElement".
 -- Base interface functions are in:
@@ -26416,7 +26416,7 @@ noSVGGlyphRefElement :: Maybe SVGGlyphRefElement
 noSVGGlyphRefElement = Nothing
 {-# INLINE noSVGGlyphRefElement #-}
 
-foreign import javascript unsafe "window[\"SVGGlyphRefElement\"]" gTypeSVGGlyphRefElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGGlyphRefElement\"])" gTypeSVGGlyphRefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGradientElement".
 -- Base interface functions are in:
@@ -26484,7 +26484,7 @@ noSVGGradientElement :: Maybe SVGGradientElement
 noSVGGradientElement = Nothing
 {-# INLINE noSVGGradientElement #-}
 
-foreign import javascript unsafe "window[\"SVGGradientElement\"]" gTypeSVGGradientElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGGradientElement\"])" gTypeSVGGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGGraphicsElement".
 -- Base interface functions are in:
@@ -26550,7 +26550,7 @@ noSVGGraphicsElement :: Maybe SVGGraphicsElement
 noSVGGraphicsElement = Nothing
 {-# INLINE noSVGGraphicsElement #-}
 
-foreign import javascript unsafe "window[\"SVGGraphicsElement\"]" gTypeSVGGraphicsElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGGraphicsElement\"])" gTypeSVGGraphicsElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGHKernElement".
 -- Base interface functions are in:
@@ -26609,7 +26609,7 @@ noSVGHKernElement :: Maybe SVGHKernElement
 noSVGHKernElement = Nothing
 {-# INLINE noSVGHKernElement #-}
 
-foreign import javascript unsafe "window[\"SVGHKernElement\"]" gTypeSVGHKernElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGHKernElement\"])" gTypeSVGHKernElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGImageElement".
 -- Base interface functions are in:
@@ -26676,7 +26676,7 @@ noSVGImageElement :: Maybe SVGImageElement
 noSVGImageElement = Nothing
 {-# INLINE noSVGImageElement #-}
 
-foreign import javascript unsafe "window[\"SVGImageElement\"]" gTypeSVGImageElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGImageElement\"])" gTypeSVGImageElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLength".
 --
@@ -26709,7 +26709,7 @@ noSVGLength :: Maybe SVGLength
 noSVGLength = Nothing
 {-# INLINE noSVGLength #-}
 
-foreign import javascript unsafe "window[\"SVGLength\"]" gTypeSVGLength :: GType
+foreign import javascript unsafe "(() => window[\"SVGLength\"])" gTypeSVGLength :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLengthList".
 --
@@ -26742,7 +26742,7 @@ noSVGLengthList :: Maybe SVGLengthList
 noSVGLengthList = Nothing
 {-# INLINE noSVGLengthList #-}
 
-foreign import javascript unsafe "window[\"SVGLengthList\"]" gTypeSVGLengthList :: GType
+foreign import javascript unsafe "(() => window[\"SVGLengthList\"])" gTypeSVGLengthList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLineElement".
 -- Base interface functions are in:
@@ -26807,7 +26807,7 @@ noSVGLineElement :: Maybe SVGLineElement
 noSVGLineElement = Nothing
 {-# INLINE noSVGLineElement #-}
 
-foreign import javascript unsafe "window[\"SVGLineElement\"]" gTypeSVGLineElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGLineElement\"])" gTypeSVGLineElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGLinearGradientElement".
 -- Base interface functions are in:
@@ -26872,7 +26872,7 @@ noSVGLinearGradientElement :: Maybe SVGLinearGradientElement
 noSVGLinearGradientElement = Nothing
 {-# INLINE noSVGLinearGradientElement #-}
 
-foreign import javascript unsafe "window[\"SVGLinearGradientElement\"]" gTypeSVGLinearGradientElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGLinearGradientElement\"])" gTypeSVGLinearGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMPathElement".
 -- Base interface functions are in:
@@ -26935,7 +26935,7 @@ noSVGMPathElement :: Maybe SVGMPathElement
 noSVGMPathElement = Nothing
 {-# INLINE noSVGMPathElement #-}
 
-foreign import javascript unsafe "window[\"SVGMPathElement\"]" gTypeSVGMPathElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGMPathElement\"])" gTypeSVGMPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMarkerElement".
 -- Base interface functions are in:
@@ -26998,7 +26998,7 @@ noSVGMarkerElement :: Maybe SVGMarkerElement
 noSVGMarkerElement = Nothing
 {-# INLINE noSVGMarkerElement #-}
 
-foreign import javascript unsafe "window[\"SVGMarkerElement\"]" gTypeSVGMarkerElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGMarkerElement\"])" gTypeSVGMarkerElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMaskElement".
 -- Base interface functions are in:
@@ -27061,7 +27061,7 @@ noSVGMaskElement :: Maybe SVGMaskElement
 noSVGMaskElement = Nothing
 {-# INLINE noSVGMaskElement #-}
 
-foreign import javascript unsafe "window[\"SVGMaskElement\"]" gTypeSVGMaskElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGMaskElement\"])" gTypeSVGMaskElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMatrix".
 --
@@ -27094,7 +27094,7 @@ noSVGMatrix :: Maybe SVGMatrix
 noSVGMatrix = Nothing
 {-# INLINE noSVGMatrix #-}
 
-foreign import javascript unsafe "window[\"SVGMatrix\"]" gTypeSVGMatrix :: GType
+foreign import javascript unsafe "(() => window[\"SVGMatrix\"])" gTypeSVGMatrix :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMetadataElement".
 -- Base interface functions are in:
@@ -27153,7 +27153,7 @@ noSVGMetadataElement :: Maybe SVGMetadataElement
 noSVGMetadataElement = Nothing
 {-# INLINE noSVGMetadataElement #-}
 
-foreign import javascript unsafe "window[\"SVGMetadataElement\"]" gTypeSVGMetadataElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGMetadataElement\"])" gTypeSVGMetadataElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGMissingGlyphElement".
 -- Base interface functions are in:
@@ -27212,7 +27212,7 @@ noSVGMissingGlyphElement :: Maybe SVGMissingGlyphElement
 noSVGMissingGlyphElement = Nothing
 {-# INLINE noSVGMissingGlyphElement #-}
 
-foreign import javascript unsafe "window[\"SVGMissingGlyphElement\"]" gTypeSVGMissingGlyphElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGMissingGlyphElement\"])" gTypeSVGMissingGlyphElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumber".
 --
@@ -27245,7 +27245,7 @@ noSVGNumber :: Maybe SVGNumber
 noSVGNumber = Nothing
 {-# INLINE noSVGNumber #-}
 
-foreign import javascript unsafe "window[\"SVGNumber\"]" gTypeSVGNumber :: GType
+foreign import javascript unsafe "(() => window[\"SVGNumber\"])" gTypeSVGNumber :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGNumberList".
 --
@@ -27278,7 +27278,7 @@ noSVGNumberList :: Maybe SVGNumberList
 noSVGNumberList = Nothing
 {-# INLINE noSVGNumberList #-}
 
-foreign import javascript unsafe "window[\"SVGNumberList\"]" gTypeSVGNumberList :: GType
+foreign import javascript unsafe "(() => window[\"SVGNumberList\"])" gTypeSVGNumberList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathElement".
 -- Base interface functions are in:
@@ -27343,7 +27343,7 @@ noSVGPathElement :: Maybe SVGPathElement
 noSVGPathElement = Nothing
 {-# INLINE noSVGPathElement #-}
 
-foreign import javascript unsafe "window[\"SVGPathElement\"]" gTypeSVGPathElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathElement\"])" gTypeSVGPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSeg".
 --
@@ -27381,7 +27381,7 @@ noSVGPathSeg :: Maybe SVGPathSeg
 noSVGPathSeg = Nothing
 {-# INLINE noSVGPathSeg #-}
 
-foreign import javascript unsafe "window[\"SVGPathSeg\"]" gTypeSVGPathSeg :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSeg\"])" gTypeSVGPathSeg :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcAbs".
 -- Base interface functions are in:
@@ -27418,7 +27418,7 @@ noSVGPathSegArcAbs :: Maybe SVGPathSegArcAbs
 noSVGPathSegArcAbs = Nothing
 {-# INLINE noSVGPathSegArcAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegArcAbs\"]" gTypeSVGPathSegArcAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegArcAbs\"])" gTypeSVGPathSegArcAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegArcRel".
 -- Base interface functions are in:
@@ -27455,7 +27455,7 @@ noSVGPathSegArcRel :: Maybe SVGPathSegArcRel
 noSVGPathSegArcRel = Nothing
 {-# INLINE noSVGPathSegArcRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegArcRel\"]" gTypeSVGPathSegArcRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegArcRel\"])" gTypeSVGPathSegArcRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegClosePath".
 -- Base interface functions are in:
@@ -27492,7 +27492,7 @@ noSVGPathSegClosePath :: Maybe SVGPathSegClosePath
 noSVGPathSegClosePath = Nothing
 {-# INLINE noSVGPathSegClosePath #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegClosePath\"]" gTypeSVGPathSegClosePath :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegClosePath\"])" gTypeSVGPathSegClosePath :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicAbs".
 -- Base interface functions are in:
@@ -27529,7 +27529,7 @@ noSVGPathSegCurvetoCubicAbs :: Maybe SVGPathSegCurvetoCubicAbs
 noSVGPathSegCurvetoCubicAbs = Nothing
 {-# INLINE noSVGPathSegCurvetoCubicAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicAbs\"]" gTypeSVGPathSegCurvetoCubicAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoCubicAbs\"])" gTypeSVGPathSegCurvetoCubicAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicRel".
 -- Base interface functions are in:
@@ -27566,7 +27566,7 @@ noSVGPathSegCurvetoCubicRel :: Maybe SVGPathSegCurvetoCubicRel
 noSVGPathSegCurvetoCubicRel = Nothing
 {-# INLINE noSVGPathSegCurvetoCubicRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicRel\"]" gTypeSVGPathSegCurvetoCubicRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoCubicRel\"])" gTypeSVGPathSegCurvetoCubicRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothAbs".
 -- Base interface functions are in:
@@ -27603,7 +27603,7 @@ noSVGPathSegCurvetoCubicSmoothAbs :: Maybe SVGPathSegCurvetoCubicSmoothAbs
 noSVGPathSegCurvetoCubicSmoothAbs = Nothing
 {-# INLINE noSVGPathSegCurvetoCubicSmoothAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothAbs\"]" gTypeSVGPathSegCurvetoCubicSmoothAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoCubicSmoothAbs\"])" gTypeSVGPathSegCurvetoCubicSmoothAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoCubicSmoothRel".
 -- Base interface functions are in:
@@ -27640,7 +27640,7 @@ noSVGPathSegCurvetoCubicSmoothRel :: Maybe SVGPathSegCurvetoCubicSmoothRel
 noSVGPathSegCurvetoCubicSmoothRel = Nothing
 {-# INLINE noSVGPathSegCurvetoCubicSmoothRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoCubicSmoothRel\"]" gTypeSVGPathSegCurvetoCubicSmoothRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoCubicSmoothRel\"])" gTypeSVGPathSegCurvetoCubicSmoothRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticAbs".
 -- Base interface functions are in:
@@ -27677,7 +27677,7 @@ noSVGPathSegCurvetoQuadraticAbs :: Maybe SVGPathSegCurvetoQuadraticAbs
 noSVGPathSegCurvetoQuadraticAbs = Nothing
 {-# INLINE noSVGPathSegCurvetoQuadraticAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticAbs\"]" gTypeSVGPathSegCurvetoQuadraticAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoQuadraticAbs\"])" gTypeSVGPathSegCurvetoQuadraticAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticRel".
 -- Base interface functions are in:
@@ -27714,7 +27714,7 @@ noSVGPathSegCurvetoQuadraticRel :: Maybe SVGPathSegCurvetoQuadraticRel
 noSVGPathSegCurvetoQuadraticRel = Nothing
 {-# INLINE noSVGPathSegCurvetoQuadraticRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticRel\"]" gTypeSVGPathSegCurvetoQuadraticRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoQuadraticRel\"])" gTypeSVGPathSegCurvetoQuadraticRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothAbs".
 -- Base interface functions are in:
@@ -27751,7 +27751,7 @@ noSVGPathSegCurvetoQuadraticSmoothAbs :: Maybe SVGPathSegCurvetoQuadraticSmoothA
 noSVGPathSegCurvetoQuadraticSmoothAbs = Nothing
 {-# INLINE noSVGPathSegCurvetoQuadraticSmoothAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"]" gTypeSVGPathSegCurvetoQuadraticSmoothAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoQuadraticSmoothAbs\"])" gTypeSVGPathSegCurvetoQuadraticSmoothAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegCurvetoQuadraticSmoothRel".
 -- Base interface functions are in:
@@ -27788,7 +27788,7 @@ noSVGPathSegCurvetoQuadraticSmoothRel :: Maybe SVGPathSegCurvetoQuadraticSmoothR
 noSVGPathSegCurvetoQuadraticSmoothRel = Nothing
 {-# INLINE noSVGPathSegCurvetoQuadraticSmoothRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegCurvetoQuadraticSmoothRel\"]" gTypeSVGPathSegCurvetoQuadraticSmoothRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegCurvetoQuadraticSmoothRel\"])" gTypeSVGPathSegCurvetoQuadraticSmoothRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoAbs".
 -- Base interface functions are in:
@@ -27825,7 +27825,7 @@ noSVGPathSegLinetoAbs :: Maybe SVGPathSegLinetoAbs
 noSVGPathSegLinetoAbs = Nothing
 {-# INLINE noSVGPathSegLinetoAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoAbs\"]" gTypeSVGPathSegLinetoAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoAbs\"])" gTypeSVGPathSegLinetoAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalAbs".
 -- Base interface functions are in:
@@ -27862,7 +27862,7 @@ noSVGPathSegLinetoHorizontalAbs :: Maybe SVGPathSegLinetoHorizontalAbs
 noSVGPathSegLinetoHorizontalAbs = Nothing
 {-# INLINE noSVGPathSegLinetoHorizontalAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalAbs\"]" gTypeSVGPathSegLinetoHorizontalAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoHorizontalAbs\"])" gTypeSVGPathSegLinetoHorizontalAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoHorizontalRel".
 -- Base interface functions are in:
@@ -27899,7 +27899,7 @@ noSVGPathSegLinetoHorizontalRel :: Maybe SVGPathSegLinetoHorizontalRel
 noSVGPathSegLinetoHorizontalRel = Nothing
 {-# INLINE noSVGPathSegLinetoHorizontalRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoHorizontalRel\"]" gTypeSVGPathSegLinetoHorizontalRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoHorizontalRel\"])" gTypeSVGPathSegLinetoHorizontalRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoRel".
 -- Base interface functions are in:
@@ -27936,7 +27936,7 @@ noSVGPathSegLinetoRel :: Maybe SVGPathSegLinetoRel
 noSVGPathSegLinetoRel = Nothing
 {-# INLINE noSVGPathSegLinetoRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoRel\"]" gTypeSVGPathSegLinetoRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoRel\"])" gTypeSVGPathSegLinetoRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalAbs".
 -- Base interface functions are in:
@@ -27973,7 +27973,7 @@ noSVGPathSegLinetoVerticalAbs :: Maybe SVGPathSegLinetoVerticalAbs
 noSVGPathSegLinetoVerticalAbs = Nothing
 {-# INLINE noSVGPathSegLinetoVerticalAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalAbs\"]" gTypeSVGPathSegLinetoVerticalAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoVerticalAbs\"])" gTypeSVGPathSegLinetoVerticalAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegLinetoVerticalRel".
 -- Base interface functions are in:
@@ -28010,7 +28010,7 @@ noSVGPathSegLinetoVerticalRel :: Maybe SVGPathSegLinetoVerticalRel
 noSVGPathSegLinetoVerticalRel = Nothing
 {-# INLINE noSVGPathSegLinetoVerticalRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegLinetoVerticalRel\"]" gTypeSVGPathSegLinetoVerticalRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegLinetoVerticalRel\"])" gTypeSVGPathSegLinetoVerticalRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegList".
 --
@@ -28043,7 +28043,7 @@ noSVGPathSegList :: Maybe SVGPathSegList
 noSVGPathSegList = Nothing
 {-# INLINE noSVGPathSegList #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegList\"]" gTypeSVGPathSegList :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegList\"])" gTypeSVGPathSegList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoAbs".
 -- Base interface functions are in:
@@ -28080,7 +28080,7 @@ noSVGPathSegMovetoAbs :: Maybe SVGPathSegMovetoAbs
 noSVGPathSegMovetoAbs = Nothing
 {-# INLINE noSVGPathSegMovetoAbs #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegMovetoAbs\"]" gTypeSVGPathSegMovetoAbs :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegMovetoAbs\"])" gTypeSVGPathSegMovetoAbs :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPathSegMovetoRel".
 -- Base interface functions are in:
@@ -28117,7 +28117,7 @@ noSVGPathSegMovetoRel :: Maybe SVGPathSegMovetoRel
 noSVGPathSegMovetoRel = Nothing
 {-# INLINE noSVGPathSegMovetoRel #-}
 
-foreign import javascript unsafe "window[\"SVGPathSegMovetoRel\"]" gTypeSVGPathSegMovetoRel :: GType
+foreign import javascript unsafe "(() => window[\"SVGPathSegMovetoRel\"])" gTypeSVGPathSegMovetoRel :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPatternElement".
 -- Base interface functions are in:
@@ -28184,7 +28184,7 @@ noSVGPatternElement :: Maybe SVGPatternElement
 noSVGPatternElement = Nothing
 {-# INLINE noSVGPatternElement #-}
 
-foreign import javascript unsafe "window[\"SVGPatternElement\"]" gTypeSVGPatternElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGPatternElement\"])" gTypeSVGPatternElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPoint".
 --
@@ -28217,7 +28217,7 @@ noSVGPoint :: Maybe SVGPoint
 noSVGPoint = Nothing
 {-# INLINE noSVGPoint #-}
 
-foreign import javascript unsafe "window[\"SVGPoint\"]" gTypeSVGPoint :: GType
+foreign import javascript unsafe "(() => window[\"SVGPoint\"])" gTypeSVGPoint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPointList".
 --
@@ -28250,7 +28250,7 @@ noSVGPointList :: Maybe SVGPointList
 noSVGPointList = Nothing
 {-# INLINE noSVGPointList #-}
 
-foreign import javascript unsafe "window[\"SVGPointList\"]" gTypeSVGPointList :: GType
+foreign import javascript unsafe "(() => window[\"SVGPointList\"])" gTypeSVGPointList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolygonElement".
 -- Base interface functions are in:
@@ -28315,7 +28315,7 @@ noSVGPolygonElement :: Maybe SVGPolygonElement
 noSVGPolygonElement = Nothing
 {-# INLINE noSVGPolygonElement #-}
 
-foreign import javascript unsafe "window[\"SVGPolygonElement\"]" gTypeSVGPolygonElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGPolygonElement\"])" gTypeSVGPolygonElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPolylineElement".
 -- Base interface functions are in:
@@ -28380,7 +28380,7 @@ noSVGPolylineElement :: Maybe SVGPolylineElement
 noSVGPolylineElement = Nothing
 {-# INLINE noSVGPolylineElement #-}
 
-foreign import javascript unsafe "window[\"SVGPolylineElement\"]" gTypeSVGPolylineElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGPolylineElement\"])" gTypeSVGPolylineElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGPreserveAspectRatio".
 --
@@ -28413,7 +28413,7 @@ noSVGPreserveAspectRatio :: Maybe SVGPreserveAspectRatio
 noSVGPreserveAspectRatio = Nothing
 {-# INLINE noSVGPreserveAspectRatio #-}
 
-foreign import javascript unsafe "window[\"SVGPreserveAspectRatio\"]" gTypeSVGPreserveAspectRatio :: GType
+foreign import javascript unsafe "(() => window[\"SVGPreserveAspectRatio\"])" gTypeSVGPreserveAspectRatio :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRadialGradientElement".
 -- Base interface functions are in:
@@ -28478,7 +28478,7 @@ noSVGRadialGradientElement :: Maybe SVGRadialGradientElement
 noSVGRadialGradientElement = Nothing
 {-# INLINE noSVGRadialGradientElement #-}
 
-foreign import javascript unsafe "window[\"SVGRadialGradientElement\"]" gTypeSVGRadialGradientElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGRadialGradientElement\"])" gTypeSVGRadialGradientElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRect".
 --
@@ -28511,7 +28511,7 @@ noSVGRect :: Maybe SVGRect
 noSVGRect = Nothing
 {-# INLINE noSVGRect #-}
 
-foreign import javascript unsafe "window[\"SVGRect\"]" gTypeSVGRect :: GType
+foreign import javascript unsafe "(() => window[\"SVGRect\"])" gTypeSVGRect :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRectElement".
 -- Base interface functions are in:
@@ -28576,7 +28576,7 @@ noSVGRectElement :: Maybe SVGRectElement
 noSVGRectElement = Nothing
 {-# INLINE noSVGRectElement #-}
 
-foreign import javascript unsafe "window[\"SVGRectElement\"]" gTypeSVGRectElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGRectElement\"])" gTypeSVGRectElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGRenderingIntent".
 --
@@ -28609,7 +28609,7 @@ noSVGRenderingIntent :: Maybe SVGRenderingIntent
 noSVGRenderingIntent = Nothing
 {-# INLINE noSVGRenderingIntent #-}
 
-foreign import javascript unsafe "window[\"SVGRenderingIntent\"]" gTypeSVGRenderingIntent :: GType
+foreign import javascript unsafe "(() => window[\"SVGRenderingIntent\"])" gTypeSVGRenderingIntent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSVGElement".
 -- Base interface functions are in:
@@ -28678,7 +28678,7 @@ noSVGSVGElement :: Maybe SVGSVGElement
 noSVGSVGElement = Nothing
 {-# INLINE noSVGSVGElement #-}
 
-foreign import javascript unsafe "window[\"SVGSVGElement\"]" gTypeSVGSVGElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGSVGElement\"])" gTypeSVGSVGElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGScriptElement".
 -- Base interface functions are in:
@@ -28741,7 +28741,7 @@ noSVGScriptElement :: Maybe SVGScriptElement
 noSVGScriptElement = Nothing
 {-# INLINE noSVGScriptElement #-}
 
-foreign import javascript unsafe "window[\"SVGScriptElement\"]" gTypeSVGScriptElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGScriptElement\"])" gTypeSVGScriptElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSetElement".
 -- Base interface functions are in:
@@ -28806,7 +28806,7 @@ noSVGSetElement :: Maybe SVGSetElement
 noSVGSetElement = Nothing
 {-# INLINE noSVGSetElement #-}
 
-foreign import javascript unsafe "window[\"SVGSetElement\"]" gTypeSVGSetElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGSetElement\"])" gTypeSVGSetElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStopElement".
 -- Base interface functions are in:
@@ -28865,7 +28865,7 @@ noSVGStopElement :: Maybe SVGStopElement
 noSVGStopElement = Nothing
 {-# INLINE noSVGStopElement #-}
 
-foreign import javascript unsafe "window[\"SVGStopElement\"]" gTypeSVGStopElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGStopElement\"])" gTypeSVGStopElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStringList".
 --
@@ -28898,7 +28898,7 @@ noSVGStringList :: Maybe SVGStringList
 noSVGStringList = Nothing
 {-# INLINE noSVGStringList #-}
 
-foreign import javascript unsafe "window[\"SVGStringList\"]" gTypeSVGStringList :: GType
+foreign import javascript unsafe "(() => window[\"SVGStringList\"])" gTypeSVGStringList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGStyleElement".
 -- Base interface functions are in:
@@ -28957,7 +28957,7 @@ noSVGStyleElement :: Maybe SVGStyleElement
 noSVGStyleElement = Nothing
 {-# INLINE noSVGStyleElement #-}
 
-foreign import javascript unsafe "window[\"SVGStyleElement\"]" gTypeSVGStyleElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGStyleElement\"])" gTypeSVGStyleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSwitchElement".
 -- Base interface functions are in:
@@ -29022,7 +29022,7 @@ noSVGSwitchElement :: Maybe SVGSwitchElement
 noSVGSwitchElement = Nothing
 {-# INLINE noSVGSwitchElement #-}
 
-foreign import javascript unsafe "window[\"SVGSwitchElement\"]" gTypeSVGSwitchElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGSwitchElement\"])" gTypeSVGSwitchElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGSymbolElement".
 -- Base interface functions are in:
@@ -29085,7 +29085,7 @@ noSVGSymbolElement :: Maybe SVGSymbolElement
 noSVGSymbolElement = Nothing
 {-# INLINE noSVGSymbolElement #-}
 
-foreign import javascript unsafe "window[\"SVGSymbolElement\"]" gTypeSVGSymbolElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGSymbolElement\"])" gTypeSVGSymbolElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTRefElement".
 -- Base interface functions are in:
@@ -29156,7 +29156,7 @@ noSVGTRefElement :: Maybe SVGTRefElement
 noSVGTRefElement = Nothing
 {-# INLINE noSVGTRefElement #-}
 
-foreign import javascript unsafe "window[\"SVGTRefElement\"]" gTypeSVGTRefElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTRefElement\"])" gTypeSVGTRefElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTSpanElement".
 -- Base interface functions are in:
@@ -29225,7 +29225,7 @@ noSVGTSpanElement :: Maybe SVGTSpanElement
 noSVGTSpanElement = Nothing
 {-# INLINE noSVGTSpanElement #-}
 
-foreign import javascript unsafe "window[\"SVGTSpanElement\"]" gTypeSVGTSpanElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTSpanElement\"])" gTypeSVGTSpanElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTests".
 --
@@ -29263,7 +29263,7 @@ noSVGTests :: Maybe SVGTests
 noSVGTests = Nothing
 {-# INLINE noSVGTests #-}
 
-foreign import javascript unsafe "window[\"SVGTests\"]" gTypeSVGTests :: GType
+foreign import javascript unsafe "(() => window[\"SVGTests\"])" gTypeSVGTests :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextContentElement".
 -- Base interface functions are in:
@@ -29333,7 +29333,7 @@ noSVGTextContentElement :: Maybe SVGTextContentElement
 noSVGTextContentElement = Nothing
 {-# INLINE noSVGTextContentElement #-}
 
-foreign import javascript unsafe "window[\"SVGTextContentElement\"]" gTypeSVGTextContentElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTextContentElement\"])" gTypeSVGTextContentElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextElement".
 -- Base interface functions are in:
@@ -29402,7 +29402,7 @@ noSVGTextElement :: Maybe SVGTextElement
 noSVGTextElement = Nothing
 {-# INLINE noSVGTextElement #-}
 
-foreign import javascript unsafe "window[\"SVGTextElement\"]" gTypeSVGTextElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTextElement\"])" gTypeSVGTextElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPathElement".
 -- Base interface functions are in:
@@ -29471,7 +29471,7 @@ noSVGTextPathElement :: Maybe SVGTextPathElement
 noSVGTextPathElement = Nothing
 {-# INLINE noSVGTextPathElement #-}
 
-foreign import javascript unsafe "window[\"SVGTextPathElement\"]" gTypeSVGTextPathElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTextPathElement\"])" gTypeSVGTextPathElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTextPositioningElement".
 -- Base interface functions are in:
@@ -29543,7 +29543,7 @@ noSVGTextPositioningElement :: Maybe SVGTextPositioningElement
 noSVGTextPositioningElement = Nothing
 {-# INLINE noSVGTextPositioningElement #-}
 
-foreign import javascript unsafe "window[\"SVGTextPositioningElement\"]" gTypeSVGTextPositioningElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTextPositioningElement\"])" gTypeSVGTextPositioningElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTitleElement".
 -- Base interface functions are in:
@@ -29602,7 +29602,7 @@ noSVGTitleElement :: Maybe SVGTitleElement
 noSVGTitleElement = Nothing
 {-# INLINE noSVGTitleElement #-}
 
-foreign import javascript unsafe "window[\"SVGTitleElement\"]" gTypeSVGTitleElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGTitleElement\"])" gTypeSVGTitleElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransform".
 --
@@ -29635,7 +29635,7 @@ noSVGTransform :: Maybe SVGTransform
 noSVGTransform = Nothing
 {-# INLINE noSVGTransform #-}
 
-foreign import javascript unsafe "window[\"SVGTransform\"]" gTypeSVGTransform :: GType
+foreign import javascript unsafe "(() => window[\"SVGTransform\"])" gTypeSVGTransform :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGTransformList".
 --
@@ -29668,7 +29668,7 @@ noSVGTransformList :: Maybe SVGTransformList
 noSVGTransformList = Nothing
 {-# INLINE noSVGTransformList #-}
 
-foreign import javascript unsafe "window[\"SVGTransformList\"]" gTypeSVGTransformList :: GType
+foreign import javascript unsafe "(() => window[\"SVGTransformList\"])" gTypeSVGTransformList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGURIReference".
 --
@@ -29706,7 +29706,7 @@ noSVGURIReference :: Maybe SVGURIReference
 noSVGURIReference = Nothing
 {-# INLINE noSVGURIReference #-}
 
-foreign import javascript unsafe "window[\"SVGURIReference\"]" gTypeSVGURIReference :: GType
+foreign import javascript unsafe "(() => window[\"SVGURIReference\"])" gTypeSVGURIReference :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUnitTypes".
 --
@@ -29739,7 +29739,7 @@ noSVGUnitTypes :: Maybe SVGUnitTypes
 noSVGUnitTypes = Nothing
 {-# INLINE noSVGUnitTypes #-}
 
-foreign import javascript unsafe "window[\"SVGUnitTypes\"]" gTypeSVGUnitTypes :: GType
+foreign import javascript unsafe "(() => window[\"SVGUnitTypes\"])" gTypeSVGUnitTypes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGUseElement".
 -- Base interface functions are in:
@@ -29806,7 +29806,7 @@ noSVGUseElement :: Maybe SVGUseElement
 noSVGUseElement = Nothing
 {-# INLINE noSVGUseElement #-}
 
-foreign import javascript unsafe "window[\"SVGUseElement\"]" gTypeSVGUseElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGUseElement\"])" gTypeSVGUseElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGVKernElement".
 -- Base interface functions are in:
@@ -29865,7 +29865,7 @@ noSVGVKernElement :: Maybe SVGVKernElement
 noSVGVKernElement = Nothing
 {-# INLINE noSVGVKernElement #-}
 
-foreign import javascript unsafe "window[\"SVGVKernElement\"]" gTypeSVGVKernElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGVKernElement\"])" gTypeSVGVKernElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewElement".
 -- Base interface functions are in:
@@ -29930,7 +29930,7 @@ noSVGViewElement :: Maybe SVGViewElement
 noSVGViewElement = Nothing
 {-# INLINE noSVGViewElement #-}
 
-foreign import javascript unsafe "window[\"SVGViewElement\"]" gTypeSVGViewElement :: GType
+foreign import javascript unsafe "(() => window[\"SVGViewElement\"])" gTypeSVGViewElement :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGViewSpec".
 -- Base interface functions are in:
@@ -29967,7 +29967,7 @@ noSVGViewSpec :: Maybe SVGViewSpec
 noSVGViewSpec = Nothing
 {-# INLINE noSVGViewSpec #-}
 
-foreign import javascript unsafe "window[\"SVGViewSpec\"]" gTypeSVGViewSpec :: GType
+foreign import javascript unsafe "(() => window[\"SVGViewSpec\"])" gTypeSVGViewSpec :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomAndPan".
 --
@@ -30005,7 +30005,7 @@ noSVGZoomAndPan :: Maybe SVGZoomAndPan
 noSVGZoomAndPan = Nothing
 {-# INLINE noSVGZoomAndPan #-}
 
-foreign import javascript unsafe "window[\"SVGZoomAndPan\"]" gTypeSVGZoomAndPan :: GType
+foreign import javascript unsafe "(() => window[\"SVGZoomAndPan\"])" gTypeSVGZoomAndPan :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SVGZoomEvent".
 -- Base interface functions are in:
@@ -30044,7 +30044,7 @@ noSVGZoomEvent :: Maybe SVGZoomEvent
 noSVGZoomEvent = Nothing
 {-# INLINE noSVGZoomEvent #-}
 
-foreign import javascript unsafe "window[\"SVGZoomEvent\"]" gTypeSVGZoomEvent :: GType
+foreign import javascript unsafe "(() => window[\"SVGZoomEvent\"])" gTypeSVGZoomEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Screen".
 --
@@ -30077,7 +30077,7 @@ noScreen :: Maybe Screen
 noScreen = Nothing
 {-# INLINE noScreen #-}
 
-foreign import javascript unsafe "window[\"Screen\"]" gTypeScreen :: GType
+foreign import javascript unsafe "(() => window[\"Screen\"])" gTypeScreen :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ScriptProcessorNode".
 -- Base interface functions are in:
@@ -30116,7 +30116,7 @@ noScriptProcessorNode :: Maybe ScriptProcessorNode
 noScriptProcessorNode = Nothing
 {-# INLINE noScriptProcessorNode #-}
 
-foreign import javascript unsafe "window[\"ScriptProcessorNode\"]" gTypeScriptProcessorNode :: GType
+foreign import javascript unsafe "(() => window[\"ScriptProcessorNode\"])" gTypeScriptProcessorNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ScrollToOptions".
 --
@@ -30149,7 +30149,7 @@ noScrollToOptions :: Maybe ScrollToOptions
 noScrollToOptions = Nothing
 {-# INLINE noScrollToOptions #-}
 
-foreign import javascript unsafe "window[\"ScrollToOptions\"]" gTypeScrollToOptions :: GType
+foreign import javascript unsafe "(() => window[\"ScrollToOptions\"])" gTypeScrollToOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEvent".
 -- Base interface functions are in:
@@ -30186,7 +30186,7 @@ noSecurityPolicyViolationEvent :: Maybe SecurityPolicyViolationEvent
 noSecurityPolicyViolationEvent = Nothing
 {-# INLINE noSecurityPolicyViolationEvent #-}
 
-foreign import javascript unsafe "window[\"SecurityPolicyViolationEvent\"]" gTypeSecurityPolicyViolationEvent :: GType
+foreign import javascript unsafe "(() => window[\"SecurityPolicyViolationEvent\"])" gTypeSecurityPolicyViolationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SecurityPolicyViolationEventInit".
 -- Base interface functions are in:
@@ -30223,7 +30223,7 @@ noSecurityPolicyViolationEventInit :: Maybe SecurityPolicyViolationEventInit
 noSecurityPolicyViolationEventInit = Nothing
 {-# INLINE noSecurityPolicyViolationEventInit #-}
 
-foreign import javascript unsafe "window[\"SecurityPolicyViolationEventInit\"]" gTypeSecurityPolicyViolationEventInit :: GType
+foreign import javascript unsafe "(() => window[\"SecurityPolicyViolationEventInit\"])" gTypeSecurityPolicyViolationEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Selection".
 --
@@ -30256,7 +30256,7 @@ noSelection :: Maybe Selection
 noSelection = Nothing
 {-# INLINE noSelection #-}
 
-foreign import javascript unsafe "window[\"Selection\"]" gTypeSelection :: GType
+foreign import javascript unsafe "(() => window[\"Selection\"])" gTypeSelection :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ShadowRoot".
 -- Base interface functions are in:
@@ -30303,7 +30303,7 @@ noShadowRoot :: Maybe ShadowRoot
 noShadowRoot = Nothing
 {-# INLINE noShadowRoot #-}
 
-foreign import javascript unsafe "window[\"ShadowRoot\"]" gTypeShadowRoot :: GType
+foreign import javascript unsafe "(() => window[\"ShadowRoot\"])" gTypeShadowRoot :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ShadowRootInit".
 --
@@ -30336,7 +30336,7 @@ noShadowRootInit :: Maybe ShadowRootInit
 noShadowRootInit = Nothing
 {-# INLINE noShadowRootInit #-}
 
-foreign import javascript unsafe "window[\"ShadowRootInit\"]" gTypeShadowRootInit :: GType
+foreign import javascript unsafe "(() => window[\"ShadowRootInit\"])" gTypeShadowRootInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SiteBoundCredential".
 -- Base interface functions are in:
@@ -30378,7 +30378,7 @@ noSiteBoundCredential :: Maybe SiteBoundCredential
 noSiteBoundCredential = Nothing
 {-# INLINE noSiteBoundCredential #-}
 
-foreign import javascript unsafe "window[\"SiteBoundCredential\"]" gTypeSiteBoundCredential :: GType
+foreign import javascript unsafe "(() => window[\"SiteBoundCredential\"])" gTypeSiteBoundCredential :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SiteBoundCredentialData".
 -- Base interface functions are in:
@@ -30420,7 +30420,7 @@ noSiteBoundCredentialData :: Maybe SiteBoundCredentialData
 noSiteBoundCredentialData = Nothing
 {-# INLINE noSiteBoundCredentialData #-}
 
-foreign import javascript unsafe "window[\"SiteBoundCredentialData\"]" gTypeSiteBoundCredentialData :: GType
+foreign import javascript unsafe "(() => window[\"SiteBoundCredentialData\"])" gTypeSiteBoundCredentialData :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Slotable".
 --
@@ -30458,7 +30458,7 @@ noSlotable :: Maybe Slotable
 noSlotable = Nothing
 {-# INLINE noSlotable #-}
 
-foreign import javascript unsafe "window[\"Slotable\"]" gTypeSlotable :: GType
+foreign import javascript unsafe "(() => window[\"Slotable\"])" gTypeSlotable :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBuffer".
 -- Base interface functions are in:
@@ -30495,7 +30495,7 @@ noSourceBuffer :: Maybe SourceBuffer
 noSourceBuffer = Nothing
 {-# INLINE noSourceBuffer #-}
 
-foreign import javascript unsafe "window[\"SourceBuffer\"]" gTypeSourceBuffer :: GType
+foreign import javascript unsafe "(() => window[\"SourceBuffer\"])" gTypeSourceBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SourceBufferList".
 -- Base interface functions are in:
@@ -30532,7 +30532,7 @@ noSourceBufferList :: Maybe SourceBufferList
 noSourceBufferList = Nothing
 {-# INLINE noSourceBufferList #-}
 
-foreign import javascript unsafe "window[\"SourceBufferList\"]" gTypeSourceBufferList :: GType
+foreign import javascript unsafe "(() => window[\"SourceBufferList\"])" gTypeSourceBufferList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechGrammar".
 --
@@ -30566,7 +30566,7 @@ noSpeechGrammar :: Maybe SpeechGrammar
 noSpeechGrammar = Nothing
 {-# INLINE noSpeechGrammar #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechGrammar\"]" gTypeSpeechGrammar :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechGrammar\"])" gTypeSpeechGrammar :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechGrammar".
 --
@@ -30600,7 +30600,7 @@ noSpeechGrammarList :: Maybe SpeechGrammarList
 noSpeechGrammarList = Nothing
 {-# INLINE noSpeechGrammarList #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechGrammarList\"]" gTypeSpeechGrammarList :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechGrammarList\"])" gTypeSpeechGrammarList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognition".
 --
@@ -30635,7 +30635,7 @@ noSpeechRecognition :: Maybe SpeechRecognition
 noSpeechRecognition = Nothing
 {-# INLINE noSpeechRecognition #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognition\"]" gTypeSpeechRecognition :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognition\"])" gTypeSpeechRecognition :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
 --
@@ -30670,7 +30670,7 @@ noSpeechRecognitionEvent :: Maybe SpeechRecognitionEvent
 noSpeechRecognitionEvent = Nothing
 {-# INLINE noSpeechRecognitionEvent #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognitionEvent\"]" gTypeSpeechRecognitionEvent :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognitionEvent\"])" gTypeSpeechRecognitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
 --
@@ -30704,7 +30704,7 @@ noSpeechRecognitionAlternative :: Maybe SpeechRecognitionAlternative
 noSpeechRecognitionAlternative = Nothing
 {-# INLINE noSpeechRecognitionAlternative #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognitionAlternative\"]" gTypeSpeechRecognitionAlternative :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognitionAlternative\"])" gTypeSpeechRecognitionAlternative :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
 --
@@ -30738,7 +30738,7 @@ noSpeechRecognitionResult :: Maybe SpeechRecognitionResult
 noSpeechRecognitionResult = Nothing
 {-# INLINE noSpeechRecognitionResult #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognitionResult\"]" gTypeSpeechRecognitionResult :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognitionResult\"])" gTypeSpeechRecognitionResult :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionEvent".
 --
@@ -30772,7 +30772,7 @@ noSpeechRecognitionResultList :: Maybe SpeechRecognitionResultList
 noSpeechRecognitionResultList = Nothing
 {-# INLINE noSpeechRecognitionResultList #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognitionResultList\"]" gTypeSpeechRecognitionResultList :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognitionResultList\"])" gTypeSpeechRecognitionResultList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechRecognitionError".
 --
@@ -30807,7 +30807,7 @@ noSpeechRecognitionError :: Maybe SpeechRecognitionError
 noSpeechRecognitionError = Nothing
 {-# INLINE noSpeechRecognitionError #-}
 
-foreign import javascript unsafe "window[\"webkitSpeechRecognitionError\"]" gTypeSpeechRecognitionError :: GType
+foreign import javascript unsafe "(() => window[\"webkitSpeechRecognitionError\"])" gTypeSpeechRecognitionError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesis".
 --
@@ -30840,7 +30840,7 @@ noSpeechSynthesis :: Maybe SpeechSynthesis
 noSpeechSynthesis = Nothing
 {-# INLINE noSpeechSynthesis #-}
 
-foreign import javascript unsafe "window[\"SpeechSynthesis\"]" gTypeSpeechSynthesis :: GType
+foreign import javascript unsafe "(() => window[\"SpeechSynthesis\"])" gTypeSpeechSynthesis :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisEvent".
 -- Base interface functions are in:
@@ -30877,7 +30877,7 @@ noSpeechSynthesisEvent :: Maybe SpeechSynthesisEvent
 noSpeechSynthesisEvent = Nothing
 {-# INLINE noSpeechSynthesisEvent #-}
 
-foreign import javascript unsafe "window[\"SpeechSynthesisEvent\"]" gTypeSpeechSynthesisEvent :: GType
+foreign import javascript unsafe "(() => window[\"SpeechSynthesisEvent\"])" gTypeSpeechSynthesisEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisUtterance".
 -- Base interface functions are in:
@@ -30914,7 +30914,7 @@ noSpeechSynthesisUtterance :: Maybe SpeechSynthesisUtterance
 noSpeechSynthesisUtterance = Nothing
 {-# INLINE noSpeechSynthesisUtterance #-}
 
-foreign import javascript unsafe "window[\"SpeechSynthesisUtterance\"]" gTypeSpeechSynthesisUtterance :: GType
+foreign import javascript unsafe "(() => window[\"SpeechSynthesisUtterance\"])" gTypeSpeechSynthesisUtterance :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SpeechSynthesisVoice".
 --
@@ -30947,7 +30947,7 @@ noSpeechSynthesisVoice :: Maybe SpeechSynthesisVoice
 noSpeechSynthesisVoice = Nothing
 {-# INLINE noSpeechSynthesisVoice #-}
 
-foreign import javascript unsafe "window[\"SpeechSynthesisVoice\"]" gTypeSpeechSynthesisVoice :: GType
+foreign import javascript unsafe "(() => window[\"SpeechSynthesisVoice\"])" gTypeSpeechSynthesisVoice :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StaticRange".
 --
@@ -30980,7 +30980,7 @@ noStaticRange :: Maybe StaticRange
 noStaticRange = Nothing
 {-# INLINE noStaticRange #-}
 
-foreign import javascript unsafe "window[\"StaticRange\"]" gTypeStaticRange :: GType
+foreign import javascript unsafe "(() => window[\"StaticRange\"])" gTypeStaticRange :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Storage".
 --
@@ -31013,7 +31013,7 @@ noStorage :: Maybe Storage
 noStorage = Nothing
 {-# INLINE noStorage #-}
 
-foreign import javascript unsafe "window[\"Storage\"]" gTypeStorage :: GType
+foreign import javascript unsafe "(() => window[\"Storage\"])" gTypeStorage :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageEvent".
 -- Base interface functions are in:
@@ -31050,7 +31050,7 @@ noStorageEvent :: Maybe StorageEvent
 noStorageEvent = Nothing
 {-# INLINE noStorageEvent #-}
 
-foreign import javascript unsafe "window[\"StorageEvent\"]" gTypeStorageEvent :: GType
+foreign import javascript unsafe "(() => window[\"StorageEvent\"])" gTypeStorageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageEventInit".
 -- Base interface functions are in:
@@ -31087,7 +31087,7 @@ noStorageEventInit :: Maybe StorageEventInit
 noStorageEventInit = Nothing
 {-# INLINE noStorageEventInit #-}
 
-foreign import javascript unsafe "window[\"StorageEventInit\"]" gTypeStorageEventInit :: GType
+foreign import javascript unsafe "(() => window[\"StorageEventInit\"])" gTypeStorageEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageInfo".
 --
@@ -31120,7 +31120,7 @@ noStorageInfo :: Maybe StorageInfo
 noStorageInfo = Nothing
 {-# INLINE noStorageInfo #-}
 
-foreign import javascript unsafe "window[\"StorageInfo\"]" gTypeStorageInfo :: GType
+foreign import javascript unsafe "(() => window[\"StorageInfo\"])" gTypeStorageInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StorageQuota".
 --
@@ -31153,7 +31153,7 @@ noStorageQuota :: Maybe StorageQuota
 noStorageQuota = Nothing
 {-# INLINE noStorageQuota #-}
 
-foreign import javascript unsafe "window[\"StorageQuota\"]" gTypeStorageQuota :: GType
+foreign import javascript unsafe "(() => window[\"StorageQuota\"])" gTypeStorageQuota :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleMedia".
 --
@@ -31186,7 +31186,7 @@ noStyleMedia :: Maybe StyleMedia
 noStyleMedia = Nothing
 {-# INLINE noStyleMedia #-}
 
-foreign import javascript unsafe "window[\"StyleMedia\"]" gTypeStyleMedia :: GType
+foreign import javascript unsafe "(() => window[\"StyleMedia\"])" gTypeStyleMedia :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheet".
 --
@@ -31224,7 +31224,7 @@ noStyleSheet :: Maybe StyleSheet
 noStyleSheet = Nothing
 {-# INLINE noStyleSheet #-}
 
-foreign import javascript unsafe "window[\"StyleSheet\"]" gTypeStyleSheet :: GType
+foreign import javascript unsafe "(() => window[\"StyleSheet\"])" gTypeStyleSheet :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.StyleSheetList".
 --
@@ -31257,7 +31257,7 @@ noStyleSheetList :: Maybe StyleSheetList
 noStyleSheetList = Nothing
 {-# INLINE noStyleSheetList #-}
 
-foreign import javascript unsafe "window[\"StyleSheetList\"]" gTypeStyleSheetList :: GType
+foreign import javascript unsafe "(() => window[\"StyleSheetList\"])" gTypeStyleSheetList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.SubtleCrypto".
 --
@@ -31290,7 +31290,7 @@ noSubtleCrypto :: Maybe SubtleCrypto
 noSubtleCrypto = Nothing
 {-# INLINE noSubtleCrypto #-}
 
-foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeSubtleCrypto :: GType
+foreign import javascript unsafe "(() => window[\"WebKitSubtleCrypto\"])" gTypeSubtleCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Text".
 -- Base interface functions are in:
@@ -31342,7 +31342,7 @@ noText :: Maybe Text
 noText = Nothing
 {-# INLINE noText #-}
 
-foreign import javascript unsafe "window[\"Text\"]" gTypeText :: GType
+foreign import javascript unsafe "(() => window[\"Text\"])" gTypeText :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextDecodeOptions".
 --
@@ -31375,7 +31375,7 @@ noTextDecodeOptions :: Maybe TextDecodeOptions
 noTextDecodeOptions = Nothing
 {-# INLINE noTextDecodeOptions #-}
 
-foreign import javascript unsafe "window[\"TextDecodeOptions\"]" gTypeTextDecodeOptions :: GType
+foreign import javascript unsafe "(() => window[\"TextDecodeOptions\"])" gTypeTextDecodeOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextDecoder".
 --
@@ -31408,7 +31408,7 @@ noTextDecoder :: Maybe TextDecoder
 noTextDecoder = Nothing
 {-# INLINE noTextDecoder #-}
 
-foreign import javascript unsafe "window[\"TextDecoder\"]" gTypeTextDecoder :: GType
+foreign import javascript unsafe "(() => window[\"TextDecoder\"])" gTypeTextDecoder :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextDecoderOptions".
 --
@@ -31441,7 +31441,7 @@ noTextDecoderOptions :: Maybe TextDecoderOptions
 noTextDecoderOptions = Nothing
 {-# INLINE noTextDecoderOptions #-}
 
-foreign import javascript unsafe "window[\"TextDecoderOptions\"]" gTypeTextDecoderOptions :: GType
+foreign import javascript unsafe "(() => window[\"TextDecoderOptions\"])" gTypeTextDecoderOptions :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextEncoder".
 --
@@ -31474,7 +31474,7 @@ noTextEncoder :: Maybe TextEncoder
 noTextEncoder = Nothing
 {-# INLINE noTextEncoder #-}
 
-foreign import javascript unsafe "window[\"TextEncoder\"]" gTypeTextEncoder :: GType
+foreign import javascript unsafe "(() => window[\"TextEncoder\"])" gTypeTextEncoder :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextEvent".
 -- Base interface functions are in:
@@ -31513,7 +31513,7 @@ noTextEvent :: Maybe TextEvent
 noTextEvent = Nothing
 {-# INLINE noTextEvent #-}
 
-foreign import javascript unsafe "window[\"TextEvent\"]" gTypeTextEvent :: GType
+foreign import javascript unsafe "(() => window[\"TextEvent\"])" gTypeTextEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextMetrics".
 --
@@ -31546,7 +31546,7 @@ noTextMetrics :: Maybe TextMetrics
 noTextMetrics = Nothing
 {-# INLINE noTextMetrics #-}
 
-foreign import javascript unsafe "window[\"TextMetrics\"]" gTypeTextMetrics :: GType
+foreign import javascript unsafe "(() => window[\"TextMetrics\"])" gTypeTextMetrics :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrack".
 -- Base interface functions are in:
@@ -31583,7 +31583,7 @@ noTextTrack :: Maybe TextTrack
 noTextTrack = Nothing
 {-# INLINE noTextTrack #-}
 
-foreign import javascript unsafe "window[\"TextTrack\"]" gTypeTextTrack :: GType
+foreign import javascript unsafe "(() => window[\"TextTrack\"])" gTypeTextTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCue".
 -- Base interface functions are in:
@@ -31625,7 +31625,7 @@ noTextTrackCue :: Maybe TextTrackCue
 noTextTrackCue = Nothing
 {-# INLINE noTextTrackCue #-}
 
-foreign import javascript unsafe "window[\"TextTrackCue\"]" gTypeTextTrackCue :: GType
+foreign import javascript unsafe "(() => window[\"TextTrackCue\"])" gTypeTextTrackCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackCueList".
 --
@@ -31658,7 +31658,7 @@ noTextTrackCueList :: Maybe TextTrackCueList
 noTextTrackCueList = Nothing
 {-# INLINE noTextTrackCueList #-}
 
-foreign import javascript unsafe "window[\"TextTrackCueList\"]" gTypeTextTrackCueList :: GType
+foreign import javascript unsafe "(() => window[\"TextTrackCueList\"])" gTypeTextTrackCueList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TextTrackList".
 -- Base interface functions are in:
@@ -31695,7 +31695,7 @@ noTextTrackList :: Maybe TextTrackList
 noTextTrackList = Nothing
 {-# INLINE noTextTrackList #-}
 
-foreign import javascript unsafe "window[\"TextTrackList\"]" gTypeTextTrackList :: GType
+foreign import javascript unsafe "(() => window[\"TextTrackList\"])" gTypeTextTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TimeRanges".
 --
@@ -31728,7 +31728,7 @@ noTimeRanges :: Maybe TimeRanges
 noTimeRanges = Nothing
 {-# INLINE noTimeRanges #-}
 
-foreign import javascript unsafe "window[\"TimeRanges\"]" gTypeTimeRanges :: GType
+foreign import javascript unsafe "(() => window[\"TimeRanges\"])" gTypeTimeRanges :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Touch".
 --
@@ -31761,7 +31761,7 @@ noTouch :: Maybe Touch
 noTouch = Nothing
 {-# INLINE noTouch #-}
 
-foreign import javascript unsafe "window[\"Touch\"]" gTypeTouch :: GType
+foreign import javascript unsafe "(() => window[\"Touch\"])" gTypeTouch :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TouchEvent".
 -- Base interface functions are in:
@@ -31800,7 +31800,7 @@ noTouchEvent :: Maybe TouchEvent
 noTouchEvent = Nothing
 {-# INLINE noTouchEvent #-}
 
-foreign import javascript unsafe "window[\"TouchEvent\"]" gTypeTouchEvent :: GType
+foreign import javascript unsafe "(() => window[\"TouchEvent\"])" gTypeTouchEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TouchEventInit".
 -- Base interface functions are in:
@@ -31839,7 +31839,7 @@ noTouchEventInit :: Maybe TouchEventInit
 noTouchEventInit = Nothing
 {-# INLINE noTouchEventInit #-}
 
-foreign import javascript unsafe "window[\"TouchEventInit\"]" gTypeTouchEventInit :: GType
+foreign import javascript unsafe "(() => window[\"TouchEventInit\"])" gTypeTouchEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TouchList".
 --
@@ -31872,7 +31872,7 @@ noTouchList :: Maybe TouchList
 noTouchList = Nothing
 {-# INLINE noTouchList #-}
 
-foreign import javascript unsafe "window[\"TouchList\"]" gTypeTouchList :: GType
+foreign import javascript unsafe "(() => window[\"TouchList\"])" gTypeTouchList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TrackEvent".
 -- Base interface functions are in:
@@ -31909,7 +31909,7 @@ noTrackEvent :: Maybe TrackEvent
 noTrackEvent = Nothing
 {-# INLINE noTrackEvent #-}
 
-foreign import javascript unsafe "window[\"TrackEvent\"]" gTypeTrackEvent :: GType
+foreign import javascript unsafe "(() => window[\"TrackEvent\"])" gTypeTrackEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TrackEventInit".
 -- Base interface functions are in:
@@ -31946,7 +31946,7 @@ noTrackEventInit :: Maybe TrackEventInit
 noTrackEventInit = Nothing
 {-# INLINE noTrackEventInit #-}
 
-foreign import javascript unsafe "window[\"TrackEventInit\"]" gTypeTrackEventInit :: GType
+foreign import javascript unsafe "(() => window[\"TrackEventInit\"])" gTypeTrackEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TransitionEvent".
 -- Base interface functions are in:
@@ -31983,7 +31983,7 @@ noTransitionEvent :: Maybe TransitionEvent
 noTransitionEvent = Nothing
 {-# INLINE noTransitionEvent #-}
 
-foreign import javascript unsafe "window[\"TransitionEvent\"]" gTypeTransitionEvent :: GType
+foreign import javascript unsafe "(() => window[\"TransitionEvent\"])" gTypeTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TransitionEventInit".
 -- Base interface functions are in:
@@ -32020,7 +32020,7 @@ noTransitionEventInit :: Maybe TransitionEventInit
 noTransitionEventInit = Nothing
 {-# INLINE noTransitionEventInit #-}
 
-foreign import javascript unsafe "window[\"TransitionEventInit\"]" gTypeTransitionEventInit :: GType
+foreign import javascript unsafe "(() => window[\"TransitionEventInit\"])" gTypeTransitionEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.TreeWalker".
 --
@@ -32053,7 +32053,7 @@ noTreeWalker :: Maybe TreeWalker
 noTreeWalker = Nothing
 {-# INLINE noTreeWalker #-}
 
-foreign import javascript unsafe "window[\"TreeWalker\"]" gTypeTreeWalker :: GType
+foreign import javascript unsafe "(() => window[\"TreeWalker\"])" gTypeTreeWalker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UIEvent".
 -- Base interface functions are in:
@@ -32095,7 +32095,7 @@ noUIEvent :: Maybe UIEvent
 noUIEvent = Nothing
 {-# INLINE noUIEvent #-}
 
-foreign import javascript unsafe "window[\"UIEvent\"]" gTypeUIEvent :: GType
+foreign import javascript unsafe "(() => window[\"UIEvent\"])" gTypeUIEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UIEventInit".
 -- Base interface functions are in:
@@ -32137,7 +32137,7 @@ noUIEventInit :: Maybe UIEventInit
 noUIEventInit = Nothing
 {-# INLINE noUIEventInit #-}
 
-foreign import javascript unsafe "window[\"UIEventInit\"]" gTypeUIEventInit :: GType
+foreign import javascript unsafe "(() => window[\"UIEventInit\"])" gTypeUIEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.URL".
 --
@@ -32170,7 +32170,7 @@ noURL :: Maybe URL
 noURL = Nothing
 {-# INLINE noURL #-}
 
-foreign import javascript unsafe "window[\"URL\"]" gTypeURL :: GType
+foreign import javascript unsafe "(() => window[\"URL\"])" gTypeURL :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.URLSearchParams".
 --
@@ -32203,7 +32203,7 @@ noURLSearchParams :: Maybe URLSearchParams
 noURLSearchParams = Nothing
 {-# INLINE noURLSearchParams #-}
 
-foreign import javascript unsafe "window[\"URLSearchParams\"]" gTypeURLSearchParams :: GType
+foreign import javascript unsafe "(() => window[\"URLSearchParams\"])" gTypeURLSearchParams :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandler".
 --
@@ -32236,7 +32236,7 @@ noUserMessageHandler :: Maybe UserMessageHandler
 noUserMessageHandler = Nothing
 {-# INLINE noUserMessageHandler #-}
 
-foreign import javascript unsafe "window[\"UserMessageHandler\"]" gTypeUserMessageHandler :: GType
+foreign import javascript unsafe "(() => window[\"UserMessageHandler\"])" gTypeUserMessageHandler :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.UserMessageHandlersNamespace".
 --
@@ -32269,7 +32269,7 @@ noUserMessageHandlersNamespace :: Maybe UserMessageHandlersNamespace
 noUserMessageHandlersNamespace = Nothing
 {-# INLINE noUserMessageHandlersNamespace #-}
 
-foreign import javascript unsafe "window[\"UserMessageHandlersNamespace\"]" gTypeUserMessageHandlersNamespace :: GType
+foreign import javascript unsafe "(() => window[\"UserMessageHandlersNamespace\"])" gTypeUserMessageHandlersNamespace :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTCue".
 -- Base interface functions are in:
@@ -32308,7 +32308,7 @@ noVTTCue :: Maybe VTTCue
 noVTTCue = Nothing
 {-# INLINE noVTTCue #-}
 
-foreign import javascript unsafe "window[\"VTTCue\"]" gTypeVTTCue :: GType
+foreign import javascript unsafe "(() => window[\"VTTCue\"])" gTypeVTTCue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegion".
 --
@@ -32341,7 +32341,7 @@ noVTTRegion :: Maybe VTTRegion
 noVTTRegion = Nothing
 {-# INLINE noVTTRegion #-}
 
-foreign import javascript unsafe "window[\"VTTRegion\"]" gTypeVTTRegion :: GType
+foreign import javascript unsafe "(() => window[\"VTTRegion\"])" gTypeVTTRegion :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VTTRegionList".
 --
@@ -32374,7 +32374,7 @@ noVTTRegionList :: Maybe VTTRegionList
 noVTTRegionList = Nothing
 {-# INLINE noVTTRegionList #-}
 
-foreign import javascript unsafe "window[\"VTTRegionList\"]" gTypeVTTRegionList :: GType
+foreign import javascript unsafe "(() => window[\"VTTRegionList\"])" gTypeVTTRegionList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.ValidityState".
 --
@@ -32407,7 +32407,7 @@ noValidityState :: Maybe ValidityState
 noValidityState = Nothing
 {-# INLINE noValidityState #-}
 
-foreign import javascript unsafe "window[\"ValidityState\"]" gTypeValidityState :: GType
+foreign import javascript unsafe "(() => window[\"ValidityState\"])" gTypeValidityState :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoPlaybackQuality".
 --
@@ -32440,7 +32440,7 @@ noVideoPlaybackQuality :: Maybe VideoPlaybackQuality
 noVideoPlaybackQuality = Nothing
 {-# INLINE noVideoPlaybackQuality #-}
 
-foreign import javascript unsafe "window[\"VideoPlaybackQuality\"]" gTypeVideoPlaybackQuality :: GType
+foreign import javascript unsafe "(() => window[\"VideoPlaybackQuality\"])" gTypeVideoPlaybackQuality :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrack".
 --
@@ -32473,7 +32473,7 @@ noVideoTrack :: Maybe VideoTrack
 noVideoTrack = Nothing
 {-# INLINE noVideoTrack #-}
 
-foreign import javascript unsafe "window[\"VideoTrack\"]" gTypeVideoTrack :: GType
+foreign import javascript unsafe "(() => window[\"VideoTrack\"])" gTypeVideoTrack :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.VideoTrackList".
 -- Base interface functions are in:
@@ -32510,7 +32510,7 @@ noVideoTrackList :: Maybe VideoTrackList
 noVideoTrackList = Nothing
 {-# INLINE noVideoTrackList #-}
 
-foreign import javascript unsafe "window[\"VideoTrackList\"]" gTypeVideoTrackList :: GType
+foreign import javascript unsafe "(() => window[\"VideoTrackList\"])" gTypeVideoTrackList :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WaveShaperNode".
 -- Base interface functions are in:
@@ -32549,7 +32549,7 @@ noWaveShaperNode :: Maybe WaveShaperNode
 noWaveShaperNode = Nothing
 {-# INLINE noWaveShaperNode #-}
 
-foreign import javascript unsafe "window[\"WaveShaperNode\"]" gTypeWaveShaperNode :: GType
+foreign import javascript unsafe "(() => window[\"WaveShaperNode\"])" gTypeWaveShaperNode :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGL2RenderingContext".
 -- Base interface functions are in:
@@ -32586,7 +32586,7 @@ noWebGL2RenderingContext :: Maybe WebGL2RenderingContext
 noWebGL2RenderingContext = Nothing
 {-# INLINE noWebGL2RenderingContext #-}
 
-foreign import javascript unsafe "window[\"WebGL2RenderingContext\"]" gTypeWebGL2RenderingContext :: GType
+foreign import javascript unsafe "(() => window[\"WebGL2RenderingContext\"])" gTypeWebGL2RenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLActiveInfo".
 --
@@ -32619,7 +32619,7 @@ noWebGLActiveInfo :: Maybe WebGLActiveInfo
 noWebGLActiveInfo = Nothing
 {-# INLINE noWebGLActiveInfo #-}
 
-foreign import javascript unsafe "window[\"WebGLActiveInfo\"]" gTypeWebGLActiveInfo :: GType
+foreign import javascript unsafe "(() => window[\"WebGLActiveInfo\"])" gTypeWebGLActiveInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLBuffer".
 --
@@ -32652,7 +32652,7 @@ noWebGLBuffer :: Maybe WebGLBuffer
 noWebGLBuffer = Nothing
 {-# INLINE noWebGLBuffer #-}
 
-foreign import javascript unsafe "window[\"WebGLBuffer\"]" gTypeWebGLBuffer :: GType
+foreign import javascript unsafe "(() => window[\"WebGLBuffer\"])" gTypeWebGLBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureATC".
 --
@@ -32685,7 +32685,7 @@ noWebGLCompressedTextureATC :: Maybe WebGLCompressedTextureATC
 noWebGLCompressedTextureATC = Nothing
 {-# INLINE noWebGLCompressedTextureATC #-}
 
-foreign import javascript unsafe "window[\"WebGLCompressedTextureATC\"]" gTypeWebGLCompressedTextureATC :: GType
+foreign import javascript unsafe "(() => window[\"WebGLCompressedTextureATC\"])" gTypeWebGLCompressedTextureATC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTexturePVRTC".
 --
@@ -32718,7 +32718,7 @@ noWebGLCompressedTexturePVRTC :: Maybe WebGLCompressedTexturePVRTC
 noWebGLCompressedTexturePVRTC = Nothing
 {-# INLINE noWebGLCompressedTexturePVRTC #-}
 
-foreign import javascript unsafe "window[\"WebGLCompressedTexturePVRTC\"]" gTypeWebGLCompressedTexturePVRTC :: GType
+foreign import javascript unsafe "(() => window[\"WebGLCompressedTexturePVRTC\"])" gTypeWebGLCompressedTexturePVRTC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLCompressedTextureS3TC".
 --
@@ -32751,7 +32751,7 @@ noWebGLCompressedTextureS3TC :: Maybe WebGLCompressedTextureS3TC
 noWebGLCompressedTextureS3TC = Nothing
 {-# INLINE noWebGLCompressedTextureS3TC #-}
 
-foreign import javascript unsafe "window[\"WebGLCompressedTextureS3TC\"]" gTypeWebGLCompressedTextureS3TC :: GType
+foreign import javascript unsafe "(() => window[\"WebGLCompressedTextureS3TC\"])" gTypeWebGLCompressedTextureS3TC :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextAttributes".
 --
@@ -32784,7 +32784,7 @@ noWebGLContextAttributes :: Maybe WebGLContextAttributes
 noWebGLContextAttributes = Nothing
 {-# INLINE noWebGLContextAttributes #-}
 
-foreign import javascript unsafe "window[\"WebGLContextAttributes\"]" gTypeWebGLContextAttributes :: GType
+foreign import javascript unsafe "(() => window[\"WebGLContextAttributes\"])" gTypeWebGLContextAttributes :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextEvent".
 -- Base interface functions are in:
@@ -32821,7 +32821,7 @@ noWebGLContextEvent :: Maybe WebGLContextEvent
 noWebGLContextEvent = Nothing
 {-# INLINE noWebGLContextEvent #-}
 
-foreign import javascript unsafe "window[\"WebGLContextEvent\"]" gTypeWebGLContextEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebGLContextEvent\"])" gTypeWebGLContextEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLContextEventInit".
 -- Base interface functions are in:
@@ -32858,7 +32858,7 @@ noWebGLContextEventInit :: Maybe WebGLContextEventInit
 noWebGLContextEventInit = Nothing
 {-# INLINE noWebGLContextEventInit #-}
 
-foreign import javascript unsafe "window[\"WebGLContextEventInit\"]" gTypeWebGLContextEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebGLContextEventInit\"])" gTypeWebGLContextEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugRendererInfo".
 --
@@ -32891,7 +32891,7 @@ noWebGLDebugRendererInfo :: Maybe WebGLDebugRendererInfo
 noWebGLDebugRendererInfo = Nothing
 {-# INLINE noWebGLDebugRendererInfo #-}
 
-foreign import javascript unsafe "window[\"WebGLDebugRendererInfo\"]" gTypeWebGLDebugRendererInfo :: GType
+foreign import javascript unsafe "(() => window[\"WebGLDebugRendererInfo\"])" gTypeWebGLDebugRendererInfo :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDebugShaders".
 --
@@ -32924,7 +32924,7 @@ noWebGLDebugShaders :: Maybe WebGLDebugShaders
 noWebGLDebugShaders = Nothing
 {-# INLINE noWebGLDebugShaders #-}
 
-foreign import javascript unsafe "window[\"WebGLDebugShaders\"]" gTypeWebGLDebugShaders :: GType
+foreign import javascript unsafe "(() => window[\"WebGLDebugShaders\"])" gTypeWebGLDebugShaders :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDepthTexture".
 --
@@ -32957,7 +32957,7 @@ noWebGLDepthTexture :: Maybe WebGLDepthTexture
 noWebGLDepthTexture = Nothing
 {-# INLINE noWebGLDepthTexture #-}
 
-foreign import javascript unsafe "window[\"WebGLDepthTexture\"]" gTypeWebGLDepthTexture :: GType
+foreign import javascript unsafe "(() => window[\"WebGLDepthTexture\"])" gTypeWebGLDepthTexture :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLDrawBuffers".
 --
@@ -32990,7 +32990,7 @@ noWebGLDrawBuffers :: Maybe WebGLDrawBuffers
 noWebGLDrawBuffers = Nothing
 {-# INLINE noWebGLDrawBuffers #-}
 
-foreign import javascript unsafe "window[\"WebGLDrawBuffers\"]" gTypeWebGLDrawBuffers :: GType
+foreign import javascript unsafe "(() => window[\"WebGLDrawBuffers\"])" gTypeWebGLDrawBuffers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLFramebuffer".
 --
@@ -33023,7 +33023,7 @@ noWebGLFramebuffer :: Maybe WebGLFramebuffer
 noWebGLFramebuffer = Nothing
 {-# INLINE noWebGLFramebuffer #-}
 
-foreign import javascript unsafe "window[\"WebGLFramebuffer\"]" gTypeWebGLFramebuffer :: GType
+foreign import javascript unsafe "(() => window[\"WebGLFramebuffer\"])" gTypeWebGLFramebuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLLoseContext".
 --
@@ -33056,7 +33056,7 @@ noWebGLLoseContext :: Maybe WebGLLoseContext
 noWebGLLoseContext = Nothing
 {-# INLINE noWebGLLoseContext #-}
 
-foreign import javascript unsafe "window[\"WebGLLoseContext\"]" gTypeWebGLLoseContext :: GType
+foreign import javascript unsafe "(() => window[\"WebGLLoseContext\"])" gTypeWebGLLoseContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLProgram".
 --
@@ -33089,7 +33089,7 @@ noWebGLProgram :: Maybe WebGLProgram
 noWebGLProgram = Nothing
 {-# INLINE noWebGLProgram #-}
 
-foreign import javascript unsafe "window[\"WebGLProgram\"]" gTypeWebGLProgram :: GType
+foreign import javascript unsafe "(() => window[\"WebGLProgram\"])" gTypeWebGLProgram :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLQuery".
 --
@@ -33122,7 +33122,7 @@ noWebGLQuery :: Maybe WebGLQuery
 noWebGLQuery = Nothing
 {-# INLINE noWebGLQuery #-}
 
-foreign import javascript unsafe "window[\"WebGLQuery\"]" gTypeWebGLQuery :: GType
+foreign import javascript unsafe "(() => window[\"WebGLQuery\"])" gTypeWebGLQuery :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderbuffer".
 --
@@ -33155,7 +33155,7 @@ noWebGLRenderbuffer :: Maybe WebGLRenderbuffer
 noWebGLRenderbuffer = Nothing
 {-# INLINE noWebGLRenderbuffer #-}
 
-foreign import javascript unsafe "window[\"WebGLRenderbuffer\"]" gTypeWebGLRenderbuffer :: GType
+foreign import javascript unsafe "(() => window[\"WebGLRenderbuffer\"])" gTypeWebGLRenderbuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContext".
 -- Base interface functions are in:
@@ -33192,7 +33192,7 @@ noWebGLRenderingContext :: Maybe WebGLRenderingContext
 noWebGLRenderingContext = Nothing
 {-# INLINE noWebGLRenderingContext #-}
 
-foreign import javascript unsafe "window[\"WebGLRenderingContext\"]" gTypeWebGLRenderingContext :: GType
+foreign import javascript unsafe "(() => window[\"WebGLRenderingContext\"])" gTypeWebGLRenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLRenderingContextBase".
 --
@@ -33230,7 +33230,7 @@ noWebGLRenderingContextBase :: Maybe WebGLRenderingContextBase
 noWebGLRenderingContextBase = Nothing
 {-# INLINE noWebGLRenderingContextBase #-}
 
-foreign import javascript unsafe "window[\"WebGLRenderingContextBase\"]" gTypeWebGLRenderingContextBase :: GType
+foreign import javascript unsafe "(() => window[\"WebGLRenderingContextBase\"])" gTypeWebGLRenderingContextBase :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSampler".
 --
@@ -33263,7 +33263,7 @@ noWebGLSampler :: Maybe WebGLSampler
 noWebGLSampler = Nothing
 {-# INLINE noWebGLSampler #-}
 
-foreign import javascript unsafe "window[\"WebGLSampler\"]" gTypeWebGLSampler :: GType
+foreign import javascript unsafe "(() => window[\"WebGLSampler\"])" gTypeWebGLSampler :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShader".
 --
@@ -33296,7 +33296,7 @@ noWebGLShader :: Maybe WebGLShader
 noWebGLShader = Nothing
 {-# INLINE noWebGLShader #-}
 
-foreign import javascript unsafe "window[\"WebGLShader\"]" gTypeWebGLShader :: GType
+foreign import javascript unsafe "(() => window[\"WebGLShader\"])" gTypeWebGLShader :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLShaderPrecisionFormat".
 --
@@ -33329,7 +33329,7 @@ noWebGLShaderPrecisionFormat :: Maybe WebGLShaderPrecisionFormat
 noWebGLShaderPrecisionFormat = Nothing
 {-# INLINE noWebGLShaderPrecisionFormat #-}
 
-foreign import javascript unsafe "window[\"WebGLShaderPrecisionFormat\"]" gTypeWebGLShaderPrecisionFormat :: GType
+foreign import javascript unsafe "(() => window[\"WebGLShaderPrecisionFormat\"])" gTypeWebGLShaderPrecisionFormat :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLSync".
 --
@@ -33362,7 +33362,7 @@ noWebGLSync :: Maybe WebGLSync
 noWebGLSync = Nothing
 {-# INLINE noWebGLSync #-}
 
-foreign import javascript unsafe "window[\"WebGLSync\"]" gTypeWebGLSync :: GType
+foreign import javascript unsafe "(() => window[\"WebGLSync\"])" gTypeWebGLSync :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTexture".
 --
@@ -33395,7 +33395,7 @@ noWebGLTexture :: Maybe WebGLTexture
 noWebGLTexture = Nothing
 {-# INLINE noWebGLTexture #-}
 
-foreign import javascript unsafe "window[\"WebGLTexture\"]" gTypeWebGLTexture :: GType
+foreign import javascript unsafe "(() => window[\"WebGLTexture\"])" gTypeWebGLTexture :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLTransformFeedback".
 --
@@ -33428,7 +33428,7 @@ noWebGLTransformFeedback :: Maybe WebGLTransformFeedback
 noWebGLTransformFeedback = Nothing
 {-# INLINE noWebGLTransformFeedback #-}
 
-foreign import javascript unsafe "window[\"WebGLTransformFeedback\"]" gTypeWebGLTransformFeedback :: GType
+foreign import javascript unsafe "(() => window[\"WebGLTransformFeedback\"])" gTypeWebGLTransformFeedback :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLUniformLocation".
 --
@@ -33461,7 +33461,7 @@ noWebGLUniformLocation :: Maybe WebGLUniformLocation
 noWebGLUniformLocation = Nothing
 {-# INLINE noWebGLUniformLocation #-}
 
-foreign import javascript unsafe "window[\"WebGLUniformLocation\"]" gTypeWebGLUniformLocation :: GType
+foreign import javascript unsafe "(() => window[\"WebGLUniformLocation\"])" gTypeWebGLUniformLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObject".
 --
@@ -33494,7 +33494,7 @@ noWebGLVertexArrayObject :: Maybe WebGLVertexArrayObject
 noWebGLVertexArrayObject = Nothing
 {-# INLINE noWebGLVertexArrayObject #-}
 
-foreign import javascript unsafe "window[\"WebGLVertexArrayObject\"]" gTypeWebGLVertexArrayObject :: GType
+foreign import javascript unsafe "(() => window[\"WebGLVertexArrayObject\"])" gTypeWebGLVertexArrayObject :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGLVertexArrayObjectOES".
 --
@@ -33527,7 +33527,7 @@ noWebGLVertexArrayObjectOES :: Maybe WebGLVertexArrayObjectOES
 noWebGLVertexArrayObjectOES = Nothing
 {-# INLINE noWebGLVertexArrayObjectOES #-}
 
-foreign import javascript unsafe "window[\"WebGLVertexArrayObjectOES\"]" gTypeWebGLVertexArrayObjectOES :: GType
+foreign import javascript unsafe "(() => window[\"WebGLVertexArrayObjectOES\"])" gTypeWebGLVertexArrayObjectOES :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUBuffer".
 --
@@ -33560,7 +33560,7 @@ noWebGPUBuffer :: Maybe WebGPUBuffer
 noWebGPUBuffer = Nothing
 {-# INLINE noWebGPUBuffer #-}
 
-foreign import javascript unsafe "window[\"WebGPUBuffer\"]" gTypeWebGPUBuffer :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUBuffer\"])" gTypeWebGPUBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUCommandBuffer".
 --
@@ -33593,7 +33593,7 @@ noWebGPUCommandBuffer :: Maybe WebGPUCommandBuffer
 noWebGPUCommandBuffer = Nothing
 {-# INLINE noWebGPUCommandBuffer #-}
 
-foreign import javascript unsafe "window[\"WebGPUCommandBuffer\"]" gTypeWebGPUCommandBuffer :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUCommandBuffer\"])" gTypeWebGPUCommandBuffer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUCommandQueue".
 --
@@ -33626,7 +33626,7 @@ noWebGPUCommandQueue :: Maybe WebGPUCommandQueue
 noWebGPUCommandQueue = Nothing
 {-# INLINE noWebGPUCommandQueue #-}
 
-foreign import javascript unsafe "window[\"WebGPUCommandQueue\"]" gTypeWebGPUCommandQueue :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUCommandQueue\"])" gTypeWebGPUCommandQueue :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUComputeCommandEncoder".
 --
@@ -33659,7 +33659,7 @@ noWebGPUComputeCommandEncoder :: Maybe WebGPUComputeCommandEncoder
 noWebGPUComputeCommandEncoder = Nothing
 {-# INLINE noWebGPUComputeCommandEncoder #-}
 
-foreign import javascript unsafe "window[\"WebGPUComputeCommandEncoder\"]" gTypeWebGPUComputeCommandEncoder :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUComputeCommandEncoder\"])" gTypeWebGPUComputeCommandEncoder :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUComputePipelineState".
 --
@@ -33692,7 +33692,7 @@ noWebGPUComputePipelineState :: Maybe WebGPUComputePipelineState
 noWebGPUComputePipelineState = Nothing
 {-# INLINE noWebGPUComputePipelineState #-}
 
-foreign import javascript unsafe "window[\"WebGPUComputePipelineState\"]" gTypeWebGPUComputePipelineState :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUComputePipelineState\"])" gTypeWebGPUComputePipelineState :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUDepthStencilDescriptor".
 --
@@ -33725,7 +33725,7 @@ noWebGPUDepthStencilDescriptor :: Maybe WebGPUDepthStencilDescriptor
 noWebGPUDepthStencilDescriptor = Nothing
 {-# INLINE noWebGPUDepthStencilDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPUDepthStencilDescriptor\"]" gTypeWebGPUDepthStencilDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUDepthStencilDescriptor\"])" gTypeWebGPUDepthStencilDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUDepthStencilState".
 --
@@ -33758,7 +33758,7 @@ noWebGPUDepthStencilState :: Maybe WebGPUDepthStencilState
 noWebGPUDepthStencilState = Nothing
 {-# INLINE noWebGPUDepthStencilState #-}
 
-foreign import javascript unsafe "window[\"WebGPUDepthStencilState\"]" gTypeWebGPUDepthStencilState :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUDepthStencilState\"])" gTypeWebGPUDepthStencilState :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUDrawable".
 --
@@ -33791,7 +33791,7 @@ noWebGPUDrawable :: Maybe WebGPUDrawable
 noWebGPUDrawable = Nothing
 {-# INLINE noWebGPUDrawable #-}
 
-foreign import javascript unsafe "window[\"WebGPUDrawable\"]" gTypeWebGPUDrawable :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUDrawable\"])" gTypeWebGPUDrawable :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUFunction".
 --
@@ -33824,7 +33824,7 @@ noWebGPUFunction :: Maybe WebGPUFunction
 noWebGPUFunction = Nothing
 {-# INLINE noWebGPUFunction #-}
 
-foreign import javascript unsafe "window[\"WebGPUFunction\"]" gTypeWebGPUFunction :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUFunction\"])" gTypeWebGPUFunction :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPULibrary".
 --
@@ -33857,7 +33857,7 @@ noWebGPULibrary :: Maybe WebGPULibrary
 noWebGPULibrary = Nothing
 {-# INLINE noWebGPULibrary #-}
 
-foreign import javascript unsafe "window[\"WebGPULibrary\"]" gTypeWebGPULibrary :: GType
+foreign import javascript unsafe "(() => window[\"WebGPULibrary\"])" gTypeWebGPULibrary :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderCommandEncoder".
 --
@@ -33890,7 +33890,7 @@ noWebGPURenderCommandEncoder :: Maybe WebGPURenderCommandEncoder
 noWebGPURenderCommandEncoder = Nothing
 {-# INLINE noWebGPURenderCommandEncoder #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderCommandEncoder\"]" gTypeWebGPURenderCommandEncoder :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderCommandEncoder\"])" gTypeWebGPURenderCommandEncoder :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassAttachmentDescriptor".
 --
@@ -33928,7 +33928,7 @@ noWebGPURenderPassAttachmentDescriptor :: Maybe WebGPURenderPassAttachmentDescri
 noWebGPURenderPassAttachmentDescriptor = Nothing
 {-# INLINE noWebGPURenderPassAttachmentDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPassAttachmentDescriptor\"]" gTypeWebGPURenderPassAttachmentDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPassAttachmentDescriptor\"])" gTypeWebGPURenderPassAttachmentDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassColorAttachmentDescriptor".
 -- Base interface functions are in:
@@ -33965,7 +33965,7 @@ noWebGPURenderPassColorAttachmentDescriptor :: Maybe WebGPURenderPassColorAttach
 noWebGPURenderPassColorAttachmentDescriptor = Nothing
 {-# INLINE noWebGPURenderPassColorAttachmentDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPassColorAttachmentDescriptor\"]" gTypeWebGPURenderPassColorAttachmentDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPassColorAttachmentDescriptor\"])" gTypeWebGPURenderPassColorAttachmentDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassDepthAttachmentDescriptor".
 -- Base interface functions are in:
@@ -34002,7 +34002,7 @@ noWebGPURenderPassDepthAttachmentDescriptor :: Maybe WebGPURenderPassDepthAttach
 noWebGPURenderPassDepthAttachmentDescriptor = Nothing
 {-# INLINE noWebGPURenderPassDepthAttachmentDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPassDepthAttachmentDescriptor\"]" gTypeWebGPURenderPassDepthAttachmentDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPassDepthAttachmentDescriptor\"])" gTypeWebGPURenderPassDepthAttachmentDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPassDescriptor".
 --
@@ -34035,7 +34035,7 @@ noWebGPURenderPassDescriptor :: Maybe WebGPURenderPassDescriptor
 noWebGPURenderPassDescriptor = Nothing
 {-# INLINE noWebGPURenderPassDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPassDescriptor\"]" gTypeWebGPURenderPassDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPassDescriptor\"])" gTypeWebGPURenderPassDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineColorAttachmentDescriptor".
 --
@@ -34068,7 +34068,7 @@ noWebGPURenderPipelineColorAttachmentDescriptor :: Maybe WebGPURenderPipelineCol
 noWebGPURenderPipelineColorAttachmentDescriptor = Nothing
 {-# INLINE noWebGPURenderPipelineColorAttachmentDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPipelineColorAttachmentDescriptor\"]" gTypeWebGPURenderPipelineColorAttachmentDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPipelineColorAttachmentDescriptor\"])" gTypeWebGPURenderPipelineColorAttachmentDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineDescriptor".
 --
@@ -34101,7 +34101,7 @@ noWebGPURenderPipelineDescriptor :: Maybe WebGPURenderPipelineDescriptor
 noWebGPURenderPipelineDescriptor = Nothing
 {-# INLINE noWebGPURenderPipelineDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPipelineDescriptor\"]" gTypeWebGPURenderPipelineDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPipelineDescriptor\"])" gTypeWebGPURenderPipelineDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderPipelineState".
 --
@@ -34134,7 +34134,7 @@ noWebGPURenderPipelineState :: Maybe WebGPURenderPipelineState
 noWebGPURenderPipelineState = Nothing
 {-# INLINE noWebGPURenderPipelineState #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderPipelineState\"]" gTypeWebGPURenderPipelineState :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderPipelineState\"])" gTypeWebGPURenderPipelineState :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPURenderingContext".
 --
@@ -34167,7 +34167,7 @@ noWebGPURenderingContext :: Maybe WebGPURenderingContext
 noWebGPURenderingContext = Nothing
 {-# INLINE noWebGPURenderingContext #-}
 
-foreign import javascript unsafe "window[\"WebGPURenderingContext\"]" gTypeWebGPURenderingContext :: GType
+foreign import javascript unsafe "(() => window[\"WebGPURenderingContext\"])" gTypeWebGPURenderingContext :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUSize".
 --
@@ -34200,7 +34200,7 @@ noWebGPUSize :: Maybe WebGPUSize
 noWebGPUSize = Nothing
 {-# INLINE noWebGPUSize #-}
 
-foreign import javascript unsafe "window[\"WebGPUSize\"]" gTypeWebGPUSize :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUSize\"])" gTypeWebGPUSize :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUTexture".
 --
@@ -34233,7 +34233,7 @@ noWebGPUTexture :: Maybe WebGPUTexture
 noWebGPUTexture = Nothing
 {-# INLINE noWebGPUTexture #-}
 
-foreign import javascript unsafe "window[\"WebGPUTexture\"]" gTypeWebGPUTexture :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUTexture\"])" gTypeWebGPUTexture :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebGPUTextureDescriptor".
 --
@@ -34266,7 +34266,7 @@ noWebGPUTextureDescriptor :: Maybe WebGPUTextureDescriptor
 noWebGPUTextureDescriptor = Nothing
 {-# INLINE noWebGPUTextureDescriptor #-}
 
-foreign import javascript unsafe "window[\"WebGPUTextureDescriptor\"]" gTypeWebGPUTextureDescriptor :: GType
+foreign import javascript unsafe "(() => window[\"WebGPUTextureDescriptor\"])" gTypeWebGPUTextureDescriptor :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEvent".
 -- Base interface functions are in:
@@ -34303,7 +34303,7 @@ noWebKitAnimationEvent :: Maybe WebKitAnimationEvent
 noWebKitAnimationEvent = Nothing
 {-# INLINE noWebKitAnimationEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitAnimationEvent\"]" gTypeWebKitAnimationEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitAnimationEvent\"])" gTypeWebKitAnimationEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitAnimationEventInit".
 -- Base interface functions are in:
@@ -34340,7 +34340,7 @@ noWebKitAnimationEventInit :: Maybe WebKitAnimationEventInit
 noWebKitAnimationEventInit = Nothing
 {-# INLINE noWebKitAnimationEventInit #-}
 
-foreign import javascript unsafe "window[\"WebKitAnimationEventInit\"]" gTypeWebKitAnimationEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebKitAnimationEventInit\"])" gTypeWebKitAnimationEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSMatrix".
 --
@@ -34373,7 +34373,7 @@ noWebKitCSSMatrix :: Maybe WebKitCSSMatrix
 noWebKitCSSMatrix = Nothing
 {-# INLINE noWebKitCSSMatrix #-}
 
-foreign import javascript unsafe "window[\"WebKitCSSMatrix\"]" gTypeWebKitCSSMatrix :: GType
+foreign import javascript unsafe "(() => window[\"WebKitCSSMatrix\"])" gTypeWebKitCSSMatrix :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSRegionRule".
 -- Base interface functions are in:
@@ -34410,7 +34410,7 @@ noWebKitCSSRegionRule :: Maybe WebKitCSSRegionRule
 noWebKitCSSRegionRule = Nothing
 {-# INLINE noWebKitCSSRegionRule #-}
 
-foreign import javascript unsafe "window[\"WebKitCSSRegionRule\"]" gTypeWebKitCSSRegionRule :: GType
+foreign import javascript unsafe "(() => window[\"WebKitCSSRegionRule\"])" gTypeWebKitCSSRegionRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitCSSViewportRule".
 -- Base interface functions are in:
@@ -34447,7 +34447,7 @@ noWebKitCSSViewportRule :: Maybe WebKitCSSViewportRule
 noWebKitCSSViewportRule = Nothing
 {-# INLINE noWebKitCSSViewportRule #-}
 
-foreign import javascript unsafe "window[\"WebKitCSSViewportRule\"]" gTypeWebKitCSSViewportRule :: GType
+foreign import javascript unsafe "(() => window[\"WebKitCSSViewportRule\"])" gTypeWebKitCSSViewportRule :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeyError".
 --
@@ -34480,7 +34480,7 @@ noWebKitMediaKeyError :: Maybe WebKitMediaKeyError
 noWebKitMediaKeyError = Nothing
 {-# INLINE noWebKitMediaKeyError #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyError\"]" gTypeWebKitMediaKeyError :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyError\"])" gTypeWebKitMediaKeyError :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeyMessageEvent".
 -- Base interface functions are in:
@@ -34517,7 +34517,7 @@ noWebKitMediaKeyMessageEvent :: Maybe WebKitMediaKeyMessageEvent
 noWebKitMediaKeyMessageEvent = Nothing
 {-# INLINE noWebKitMediaKeyMessageEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEvent\"]" gTypeWebKitMediaKeyMessageEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyMessageEvent\"])" gTypeWebKitMediaKeyMessageEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeyMessageEventInit".
 -- Base interface functions are in:
@@ -34554,7 +34554,7 @@ noWebKitMediaKeyMessageEventInit :: Maybe WebKitMediaKeyMessageEventInit
 noWebKitMediaKeyMessageEventInit = Nothing
 {-# INLINE noWebKitMediaKeyMessageEventInit #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyMessageEventInit\"]" gTypeWebKitMediaKeyMessageEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyMessageEventInit\"])" gTypeWebKitMediaKeyMessageEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeyNeededEvent".
 -- Base interface functions are in:
@@ -34591,7 +34591,7 @@ noWebKitMediaKeyNeededEvent :: Maybe WebKitMediaKeyNeededEvent
 noWebKitMediaKeyNeededEvent = Nothing
 {-# INLINE noWebKitMediaKeyNeededEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyNeededEvent\"]" gTypeWebKitMediaKeyNeededEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyNeededEvent\"])" gTypeWebKitMediaKeyNeededEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeyNeededEventInit".
 -- Base interface functions are in:
@@ -34628,7 +34628,7 @@ noWebKitMediaKeyNeededEventInit :: Maybe WebKitMediaKeyNeededEventInit
 noWebKitMediaKeyNeededEventInit = Nothing
 {-# INLINE noWebKitMediaKeyNeededEventInit #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeyNeededEventInit\"]" gTypeWebKitMediaKeyNeededEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeyNeededEventInit\"])" gTypeWebKitMediaKeyNeededEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeySession".
 -- Base interface functions are in:
@@ -34665,7 +34665,7 @@ noWebKitMediaKeySession :: Maybe WebKitMediaKeySession
 noWebKitMediaKeySession = Nothing
 {-# INLINE noWebKitMediaKeySession #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeySession\"]" gTypeWebKitMediaKeySession :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeySession\"])" gTypeWebKitMediaKeySession :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitMediaKeys".
 --
@@ -34698,7 +34698,7 @@ noWebKitMediaKeys :: Maybe WebKitMediaKeys
 noWebKitMediaKeys = Nothing
 {-# INLINE noWebKitMediaKeys #-}
 
-foreign import javascript unsafe "window[\"WebKitMediaKeys\"]" gTypeWebKitMediaKeys :: GType
+foreign import javascript unsafe "(() => window[\"WebKitMediaKeys\"])" gTypeWebKitMediaKeys :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamedFlow".
 -- Base interface functions are in:
@@ -34735,7 +34735,7 @@ noWebKitNamedFlow :: Maybe WebKitNamedFlow
 noWebKitNamedFlow = Nothing
 {-# INLINE noWebKitNamedFlow #-}
 
-foreign import javascript unsafe "window[\"WebKitNamedFlow\"]" gTypeWebKitNamedFlow :: GType
+foreign import javascript unsafe "(() => window[\"WebKitNamedFlow\"])" gTypeWebKitNamedFlow :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitNamespace".
 --
@@ -34768,7 +34768,7 @@ noWebKitNamespace :: Maybe WebKitNamespace
 noWebKitNamespace = Nothing
 {-# INLINE noWebKitNamespace #-}
 
-foreign import javascript unsafe "window[\"WebKitNamespace\"]" gTypeWebKitNamespace :: GType
+foreign import javascript unsafe "(() => window[\"WebKitNamespace\"])" gTypeWebKitNamespace :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPlaybackTargetAvailabilityEvent".
 -- Base interface functions are in:
@@ -34805,7 +34805,7 @@ noWebKitPlaybackTargetAvailabilityEvent :: Maybe WebKitPlaybackTargetAvailabilit
 noWebKitPlaybackTargetAvailabilityEvent = Nothing
 {-# INLINE noWebKitPlaybackTargetAvailabilityEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEvent\"]" gTypeWebKitPlaybackTargetAvailabilityEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitPlaybackTargetAvailabilityEvent\"])" gTypeWebKitPlaybackTargetAvailabilityEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPlaybackTargetAvailabilityEventInit".
 -- Base interface functions are in:
@@ -34842,7 +34842,7 @@ noWebKitPlaybackTargetAvailabilityEventInit :: Maybe WebKitPlaybackTargetAvailab
 noWebKitPlaybackTargetAvailabilityEventInit = Nothing
 {-# INLINE noWebKitPlaybackTargetAvailabilityEventInit #-}
 
-foreign import javascript unsafe "window[\"WebKitPlaybackTargetAvailabilityEventInit\"]" gTypeWebKitPlaybackTargetAvailabilityEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebKitPlaybackTargetAvailabilityEventInit\"])" gTypeWebKitPlaybackTargetAvailabilityEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitPoint".
 --
@@ -34875,7 +34875,7 @@ noWebKitPoint :: Maybe WebKitPoint
 noWebKitPoint = Nothing
 {-# INLINE noWebKitPoint #-}
 
-foreign import javascript unsafe "window[\"WebKitPoint\"]" gTypeWebKitPoint :: GType
+foreign import javascript unsafe "(() => window[\"WebKitPoint\"])" gTypeWebKitPoint :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitSubtleCrypto".
 --
@@ -34908,7 +34908,7 @@ noWebKitSubtleCrypto :: Maybe WebKitSubtleCrypto
 noWebKitSubtleCrypto = Nothing
 {-# INLINE noWebKitSubtleCrypto #-}
 
-foreign import javascript unsafe "window[\"WebKitSubtleCrypto\"]" gTypeWebKitSubtleCrypto :: GType
+foreign import javascript unsafe "(() => window[\"WebKitSubtleCrypto\"])" gTypeWebKitSubtleCrypto :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitTransitionEvent".
 -- Base interface functions are in:
@@ -34945,7 +34945,7 @@ noWebKitTransitionEvent :: Maybe WebKitTransitionEvent
 noWebKitTransitionEvent = Nothing
 {-# INLINE noWebKitTransitionEvent #-}
 
-foreign import javascript unsafe "window[\"WebKitTransitionEvent\"]" gTypeWebKitTransitionEvent :: GType
+foreign import javascript unsafe "(() => window[\"WebKitTransitionEvent\"])" gTypeWebKitTransitionEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebKitTransitionEventInit".
 -- Base interface functions are in:
@@ -34982,7 +34982,7 @@ noWebKitTransitionEventInit :: Maybe WebKitTransitionEventInit
 noWebKitTransitionEventInit = Nothing
 {-# INLINE noWebKitTransitionEventInit #-}
 
-foreign import javascript unsafe "window[\"WebKitTransitionEventInit\"]" gTypeWebKitTransitionEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WebKitTransitionEventInit\"])" gTypeWebKitTransitionEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WebSocket".
 -- Base interface functions are in:
@@ -35019,7 +35019,7 @@ noWebSocket :: Maybe WebSocket
 noWebSocket = Nothing
 {-# INLINE noWebSocket #-}
 
-foreign import javascript unsafe "window[\"WebSocket\"]" gTypeWebSocket :: GType
+foreign import javascript unsafe "(() => window[\"WebSocket\"])" gTypeWebSocket :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WheelEvent".
 -- Base interface functions are in:
@@ -35060,7 +35060,7 @@ noWheelEvent :: Maybe WheelEvent
 noWheelEvent = Nothing
 {-# INLINE noWheelEvent #-}
 
-foreign import javascript unsafe "window[\"WheelEvent\"]" gTypeWheelEvent :: GType
+foreign import javascript unsafe "(() => window[\"WheelEvent\"])" gTypeWheelEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WheelEventInit".
 -- Base interface functions are in:
@@ -35103,7 +35103,7 @@ noWheelEventInit :: Maybe WheelEventInit
 noWheelEventInit = Nothing
 {-# INLINE noWheelEventInit #-}
 
-foreign import javascript unsafe "window[\"WheelEventInit\"]" gTypeWheelEventInit :: GType
+foreign import javascript unsafe "(() => window[\"WheelEventInit\"])" gTypeWheelEventInit :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Window".
 -- Base interface functions are in:
@@ -35150,7 +35150,7 @@ noWindow :: Maybe Window
 noWindow = Nothing
 {-# INLINE noWindow #-}
 
-foreign import javascript unsafe "window[\"Window\"]" gTypeWindow :: GType
+foreign import javascript unsafe "(() => window[\"Window\"])" gTypeWindow :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WindowEventHandlers".
 --
@@ -35188,7 +35188,7 @@ noWindowEventHandlers :: Maybe WindowEventHandlers
 noWindowEventHandlers = Nothing
 {-# INLINE noWindowEventHandlers #-}
 
-foreign import javascript unsafe "window[\"WindowEventHandlers\"]" gTypeWindowEventHandlers :: GType
+foreign import javascript unsafe "(() => window[\"WindowEventHandlers\"])" gTypeWindowEventHandlers :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WindowOrWorkerGlobalScope".
 --
@@ -35226,7 +35226,7 @@ noWindowOrWorkerGlobalScope :: Maybe WindowOrWorkerGlobalScope
 noWindowOrWorkerGlobalScope = Nothing
 {-# INLINE noWindowOrWorkerGlobalScope #-}
 
-foreign import javascript unsafe "window[\"WindowOrWorkerGlobalScope\"]" gTypeWindowOrWorkerGlobalScope :: GType
+foreign import javascript unsafe "(() => window[\"WindowOrWorkerGlobalScope\"])" gTypeWindowOrWorkerGlobalScope :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.Worker".
 -- Base interface functions are in:
@@ -35265,7 +35265,7 @@ noWorker :: Maybe Worker
 noWorker = Nothing
 {-# INLINE noWorker #-}
 
-foreign import javascript unsafe "window[\"Worker\"]" gTypeWorker :: GType
+foreign import javascript unsafe "(() => window[\"Worker\"])" gTypeWorker :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerGlobalScope".
 -- Base interface functions are in:
@@ -35313,7 +35313,7 @@ noWorkerGlobalScope :: Maybe WorkerGlobalScope
 noWorkerGlobalScope = Nothing
 {-# INLINE noWorkerGlobalScope #-}
 
-foreign import javascript unsafe "window[\"WorkerGlobalScope\"]" gTypeWorkerGlobalScope :: GType
+foreign import javascript unsafe "(() => window[\"WorkerGlobalScope\"])" gTypeWorkerGlobalScope :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerLocation".
 --
@@ -35346,7 +35346,7 @@ noWorkerLocation :: Maybe WorkerLocation
 noWorkerLocation = Nothing
 {-# INLINE noWorkerLocation #-}
 
-foreign import javascript unsafe "window[\"WorkerLocation\"]" gTypeWorkerLocation :: GType
+foreign import javascript unsafe "(() => window[\"WorkerLocation\"])" gTypeWorkerLocation :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WorkerNavigator".
 -- Base interface functions are in:
@@ -35389,7 +35389,7 @@ noWorkerNavigator :: Maybe WorkerNavigator
 noWorkerNavigator = Nothing
 {-# INLINE noWorkerNavigator #-}
 
-foreign import javascript unsafe "window[\"WorkerNavigator\"]" gTypeWorkerNavigator :: GType
+foreign import javascript unsafe "(() => window[\"WorkerNavigator\"])" gTypeWorkerNavigator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.WritableStream".
 --
@@ -35422,7 +35422,7 @@ noWritableStream :: Maybe WritableStream
 noWritableStream = Nothing
 {-# INLINE noWritableStream #-}
 
-foreign import javascript unsafe "window[\"WritableStream\"]" gTypeWritableStream :: GType
+foreign import javascript unsafe "(() => window[\"WritableStream\"])" gTypeWritableStream :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLDocument".
 -- Base interface functions are in:
@@ -35473,7 +35473,7 @@ noXMLDocument :: Maybe XMLDocument
 noXMLDocument = Nothing
 {-# INLINE noXMLDocument #-}
 
-foreign import javascript unsafe "window[\"XMLDocument\"]" gTypeXMLDocument :: GType
+foreign import javascript unsafe "(() => window[\"XMLDocument\"])" gTypeXMLDocument :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequest".
 -- Base interface functions are in:
@@ -35512,7 +35512,7 @@ noXMLHttpRequest :: Maybe XMLHttpRequest
 noXMLHttpRequest = Nothing
 {-# INLINE noXMLHttpRequest #-}
 
-foreign import javascript unsafe "window[\"XMLHttpRequest\"]" gTypeXMLHttpRequest :: GType
+foreign import javascript unsafe "(() => window[\"XMLHttpRequest\"])" gTypeXMLHttpRequest :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestEventTarget".
 -- Base interface functions are in:
@@ -35554,7 +35554,7 @@ noXMLHttpRequestEventTarget :: Maybe XMLHttpRequestEventTarget
 noXMLHttpRequestEventTarget = Nothing
 {-# INLINE noXMLHttpRequestEventTarget #-}
 
-foreign import javascript unsafe "window[\"XMLHttpRequestEventTarget\"]" gTypeXMLHttpRequestEventTarget :: GType
+foreign import javascript unsafe "(() => window[\"XMLHttpRequestEventTarget\"])" gTypeXMLHttpRequestEventTarget :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestProgressEvent".
 -- Base interface functions are in:
@@ -35593,7 +35593,7 @@ noXMLHttpRequestProgressEvent :: Maybe XMLHttpRequestProgressEvent
 noXMLHttpRequestProgressEvent = Nothing
 {-# INLINE noXMLHttpRequestProgressEvent #-}
 
-foreign import javascript unsafe "window[\"XMLHttpRequestProgressEvent\"]" gTypeXMLHttpRequestProgressEvent :: GType
+foreign import javascript unsafe "(() => window[\"XMLHttpRequestProgressEvent\"])" gTypeXMLHttpRequestProgressEvent :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLHttpRequestUpload".
 -- Base interface functions are in:
@@ -35632,7 +35632,7 @@ noXMLHttpRequestUpload :: Maybe XMLHttpRequestUpload
 noXMLHttpRequestUpload = Nothing
 {-# INLINE noXMLHttpRequestUpload #-}
 
-foreign import javascript unsafe "window[\"XMLHttpRequestUpload\"]" gTypeXMLHttpRequestUpload :: GType
+foreign import javascript unsafe "(() => window[\"XMLHttpRequestUpload\"])" gTypeXMLHttpRequestUpload :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XMLSerializer".
 --
@@ -35665,7 +35665,7 @@ noXMLSerializer :: Maybe XMLSerializer
 noXMLSerializer = Nothing
 {-# INLINE noXMLSerializer #-}
 
-foreign import javascript unsafe "window[\"XMLSerializer\"]" gTypeXMLSerializer :: GType
+foreign import javascript unsafe "(() => window[\"XMLSerializer\"])" gTypeXMLSerializer :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathEvaluator".
 --
@@ -35698,7 +35698,7 @@ noXPathEvaluator :: Maybe XPathEvaluator
 noXPathEvaluator = Nothing
 {-# INLINE noXPathEvaluator #-}
 
-foreign import javascript unsafe "window[\"XPathEvaluator\"]" gTypeXPathEvaluator :: GType
+foreign import javascript unsafe "(() => window[\"XPathEvaluator\"])" gTypeXPathEvaluator :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathException".
 --
@@ -35731,7 +35731,7 @@ noXPathException :: Maybe XPathException
 noXPathException = Nothing
 {-# INLINE noXPathException #-}
 
-foreign import javascript unsafe "window[\"XPathException\"]" gTypeXPathException :: GType
+foreign import javascript unsafe "(() => window[\"XPathException\"])" gTypeXPathException :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathExpression".
 --
@@ -35764,7 +35764,7 @@ noXPathExpression :: Maybe XPathExpression
 noXPathExpression = Nothing
 {-# INLINE noXPathExpression #-}
 
-foreign import javascript unsafe "window[\"XPathExpression\"]" gTypeXPathExpression :: GType
+foreign import javascript unsafe "(() => window[\"XPathExpression\"])" gTypeXPathExpression :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathNSResolver".
 --
@@ -35797,7 +35797,7 @@ noXPathNSResolver :: Maybe XPathNSResolver
 noXPathNSResolver = Nothing
 {-# INLINE noXPathNSResolver #-}
 
-foreign import javascript unsafe "window[\"XPathNSResolver\"]" gTypeXPathNSResolver :: GType
+foreign import javascript unsafe "(() => window[\"XPathNSResolver\"])" gTypeXPathNSResolver :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XPathResult".
 --
@@ -35830,7 +35830,7 @@ noXPathResult :: Maybe XPathResult
 noXPathResult = Nothing
 {-# INLINE noXPathResult #-}
 
-foreign import javascript unsafe "window[\"XPathResult\"]" gTypeXPathResult :: GType
+foreign import javascript unsafe "(() => window[\"XPathResult\"])" gTypeXPathResult :: GType
 
 -- | Functions for this inteface are in "GHCJS.DOM.XSLTProcessor".
 --
@@ -35863,4 +35863,4 @@ noXSLTProcessor :: Maybe XSLTProcessor
 noXSLTProcessor = Nothing
 {-# INLINE noXSLTProcessor #-}
 
-foreign import javascript unsafe "window[\"XSLTProcessor\"]" gTypeXSLTProcessor :: GType
+foreign import javascript unsafe "(() => window[\"XSLTProcessor\"])" gTypeXSLTProcessor :: GType
