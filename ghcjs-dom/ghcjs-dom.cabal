@@ -7,7 +7,7 @@ license-file: LICENSE
 maintainer: Hamish Mackenzie <Hamish.K.Mackenzie@googlemail.com>
 synopsis: DOM library that supports both GHCJS and GHC
 description:
-    Documentent Object Model (DOM) functions that work with
+    Document Object Model (DOM) functions that work with
     GHCJS, but can also be used with GHC and a Browser.
 category: Web
 author: Hamish Mackenzie
