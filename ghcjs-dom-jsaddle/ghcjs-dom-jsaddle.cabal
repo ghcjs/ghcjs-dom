@@ -6,7 +6,7 @@ license: MIT
 license-file: LICENSE
 maintainer: Hamish Mackenzie <Hamish.K.Mackenzie@googlemail.com>
 synopsis: DOM library that supports both GHCJS and GHC using jsaddle
-description: Documentent Object Model (DOM) functions that work with
+description: Document Object Model (DOM) functions that work with
              GHCJS, but can also be used with GHC and a Browser.
 author: Hamish Mackenzie
 category: Web

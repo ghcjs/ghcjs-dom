@@ -6,7 +6,7 @@ license: MIT
 license-file: LICENSE
 maintainer: Hamish Mackenzie <Hamish.K.Mackenzie@googlemail.com>
 synopsis: DOM library using JSFFI and GHCJS
-description: Documentent Object Model (DOM) functions that work with
+description: Document Object Model (DOM) functions that work with
              GHCJS.
 author: Hamish Mackenzie
 category: Web
