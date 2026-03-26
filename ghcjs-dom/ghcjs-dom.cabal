@@ -1,6 +1,6 @@
 cabal-version: 3.6
 name: ghcjs-dom
-version: 0.9.9.2
+version: 0.9.9.3
 build-type: Simple
 license: MIT
 license-file: LICENSE
@@ -34,7 +34,7 @@ flag debug
 
 library
     build-depends: base <5,
-                   containers >=0.5.7.1 && <0.8,
+                   containers >=0.5.7.1 && <0.9,
                    transformers >=0.2 && <0.7,
                    text >= 0.11.0.6 && < 2.2
 
