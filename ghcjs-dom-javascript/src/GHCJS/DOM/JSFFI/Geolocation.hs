@@ -1,5 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI, GHCForeignImportPrim,
-             UnboxedTuples, MagicHash, UnliftedFFITypes, LambdaCase, CPP #-}
+{-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 module GHCJS.DOM.JSFFI.Geolocation (
     module Generated
   , js_getCurrentPosition
@@ -7,32 +6,27 @@ module GHCJS.DOM.JSFFI.Geolocation (
   , getCurrentPosition
 ) where
 
-import GHC.Base (IO(..))
-import GHC.Prim (RealWorld, State#, ByteArray#)
-
 import Control.Monad.IO.Class (MonadIO(..))
 
-#if __GHCJS__
-import GHCJS.Prim (JSVal(..))
-#elif defined(javascript_HOST_ARCH)
-import GHC.JS.Prim (JSVal(..))
-#endif
 import GHCJS.DOM.Types
+import GHCJS.Foreign (isNull)
 
-import GHCJS.DOM.JSFFI.PositionError (throwPositionException)
+import GHCJS.DOM.JSFFI.GeolocationPositionError (throwPositionException)
 import GHCJS.DOM.JSFFI.Generated.Geolocation as Generated hiding (js_getCurrentPosition, getCurrentPosition)
 
+-- | Calls back with (error, null) or (null, position).
 foreign import javascript interruptible
-        "$1[\"getCurrentPosition\"](function(pos) { $c(true, pos); }, function(e) { $c(false, e); }, $2);" js_getCurrentPosition ::
-        Geolocation -> Nullable PositionOptions -> State# RealWorld -> (# State# RealWorld, Bool, ByteArray# #)
+        "(($1, $2, $c) => { $1[\"getCurrentPosition\"](function(p) { $c(null, p); }, function(e) { $c(e, null); }, $2); })"
+        js_getCurrentPosition :: Geolocation -> JSVal -> IO (JSVal, JSVal)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.getCurrentPosition Mozilla Geolocation.getCurrentPosition documentation>
-getCurrentPosition' :: MonadIO m => Geolocation -> Maybe PositionOptions -> m (Either PositionError Geoposition)
-getCurrentPosition' self options = liftIO . IO $ \s# ->
-      case js_getCurrentPosition self (maybeToNullable options) s# of
-          (# s2#, False, error #) -> (# s2#, Left  (PositionError (JSVal error)) #)
-          (# s2#, True,  pos   #) -> (# s2#, Right (Geoposition   (JSVal pos  )) #)
+-- | Blocking version of
+-- <https://developer.mozilla.org/docs/Web/API/Geolocation/getCurrentPosition Geolocation.getCurrentPosition>.
+getCurrentPosition' :: MonadIO m => Geolocation -> Maybe PositionOptions -> m (Either GeolocationPositionError GeolocationPosition)
+getCurrentPosition' self options = liftIO $ do
+    opts <- toJSVal options
+    (e, pos) <- js_getCurrentPosition self opts
+    return $ if isNull e then Right (GeolocationPosition pos) else Left (GeolocationPositionError e)
 
--- | <https://developer.mozilla.org/en-US/docs/Web/API/Geolocation.getCurrentPosition Mozilla Geolocation.getCurrentPosition documentation>
-getCurrentPosition :: MonadIO m => Geolocation -> Maybe PositionOptions -> m Geoposition
+-- | Like 'getCurrentPosition'' but throws 'PositionException' on error.
+getCurrentPosition :: MonadIO m => Geolocation -> Maybe PositionOptions -> m GeolocationPosition
 getCurrentPosition self options = getCurrentPosition' self options >>= either throwPositionException return

@@ -27,13 +27,12 @@ import GHC.Exts (Constraint)
 import GHCJS.DOM (currentDocumentUnchecked)
 import GHCJS.DOM.Types
        (HTMLDivElement(..), HTMLStyleElement(..), uncheckedCastTo,
-        HTMLUListElement(..), MouseEvent(..), Document(..), Element(..),
+        HTMLUListElement(..), PointerEvent(..), Document(..), Element(..),
         HTMLAnchorElement(..), MonadJSM, JSM, liftJSM, JSString)
 import GHCJS.DOM.Debug.Internal (DomHasCallStack, getElementStack, debugEnabled)
 import GHCJS.DOM.Document
        (createTextNode, getBodyUnchecked,
-        getElementsByTagName, createElement)
-import GHCJS.DOM.DocumentOrShadowRoot (elementFromPoint)
+        getElementsByTagName, createElement, elementFromPoint)
 import GHCJS.DOM.Element
        (getTagName, setAttribute, getAttribute, setInnerHTML)
 import GHCJS.DOM.EventM
@@ -132,7 +131,7 @@ addDebugMenu' getSourceLink = liftJSM $ do
         False -> return ()
 
   where
-    addMenu :: MonadJSM m => Document -> SaferEventListener HTMLAnchorElement MouseEvent -> HTMLUListElement -> Element -> m ()
+    addMenu :: MonadJSM m => Document -> SaferEventListener HTMLAnchorElement PointerEvent -> HTMLUListElement -> Element -> m ()
     addMenu doc clickListener parentMenu = loop
       where
         loop e = do
@@ -142,7 +141,7 @@ addDebugMenu' getSourceLink = liftJSM $ do
     addElementMenu
         :: MonadJSM m
         => Document
-        -> SaferEventListener HTMLAnchorElement MouseEvent
+        -> SaferEventListener HTMLAnchorElement PointerEvent
         -> HTMLUListElement
         -> Element
         -> [(String, SrcLoc)]
